@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@k/shared-ui": ["packages/shared-ui/src/index.ts"],
-      "@k/shared-ui/server": ["packages/shared-ui/src/server.ts"]
+      "@k/shared-ui/server": ["packages/shared-ui/src/server.ts"],
+      "@kampuni/common": ["packages/common/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
