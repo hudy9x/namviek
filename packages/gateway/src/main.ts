@@ -5,13 +5,14 @@
 
 import express from 'express';
 import * as path from 'path';
+import { common } from "@kampuni/common";
 
 const app = express();
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to gateway!' });
+  res.send({ message: 'Welcome to gateway!', text: common() });
 });
 
 const port = process.env.PORT || 3333;
