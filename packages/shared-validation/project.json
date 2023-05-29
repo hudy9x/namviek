@@ -1,22 +1,21 @@
 {
-  "name": "shared-ui",
+  "name": "shared-validation",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/shared-ui/src",
+  "sourceRoot": "packages/shared-validation/src",
   "projectType": "library",
-  "tags": [],
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/shared-ui/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["packages/shared-validation/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/shared-ui/jest.config.ts",
+        "jestConfig": "packages/shared-validation/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -26,5 +25,6 @@
         }
       }
     }
-  }
+  },
+  "tags": []
 }

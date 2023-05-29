@@ -15,9 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@k/shared-ui": ["packages/shared-ui/src/index.ts"],
-      "@k/shared-ui/server": ["packages/shared-ui/src/server.ts"],
-      "@kampuni/common": ["packages/common/src/index.ts"]
+      "@shared/libs": ["packages/shared-libs/src/index.ts"],
+      "@shared/types": ["packages/shared-types/src/index.ts"],
+      "@shared/ui": ["packages/shared-ui/src/index.ts"],
+      "@shared/ui/server": ["packages/shared-ui/src/server.ts"],
+      "@shared/validation": ["packages/shared-validation/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
