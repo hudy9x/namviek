@@ -1165,6 +1165,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@hono/node-server@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.0.2.tgz#0a3cea255b89b49f00c36a11d2a8c7de617af850"
+  integrity sha512-j8oduBujeGN2+Zx8G1dp3yhiLrqCs/dMJp1wKSlXmMeAxpjVgUtYLaUjhY69lPVDyTjoBb3fmHXCX6e2iIgB9A==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
@@ -5823,6 +5828,11 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+hono@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-3.2.3.tgz#419b328c26aa868d517e3ace00b01e5f6084e094"
+  integrity sha512-Qm8Kbu+cUPVk2mbe5w224Z7HEyJQs6j0VAxUqEtqYDw6gGaHUcYOqJJ/G++AMlxhVkS5YzV1voiR5PZwhYkXuQ==
 
 hpack.js@^2.1.6:
   version "2.1.6"

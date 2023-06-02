@@ -2,12 +2,17 @@
   "name": "kampuni",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx",
+    "hono-dev": "ENV=dev nx serve --project=be-honojs"
+  },
   "private": true,
   "dependencies": {
+    "@hono/node-server": "^1.0.2",
     "@swc/helpers": "~0.5.0",
     "axios": "^1.0.0",
     "express": "^4.18.1",
+    "hono": "^3.2.3",
     "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
