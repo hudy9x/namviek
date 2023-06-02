@@ -3,13 +3,35 @@
  * This is only a minimal backend to get started.
  */
 
-import express from 'express';
+import express, { Application, Response, Request } from 'express';
+import cors from "cors";
 import * as path from 'path';
+import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
 import { sharedLibs } from "@shared/libs";
 
-const app = express();
+const app: Application = express();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+declare global {
+	namespace Express {
+		interface Request extends LooseAuthProp { }
+	}
+}
+
+// app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+app.use(cors())
+
+app.get('')
+
+app.get('/api/home', ClerkExpressWithAuth({}), (req: WithAuthProp<Request>, res: Response) => {
+
+	console.log(req.auth)
+
+	res.json({
+		status: 200,
+		message: 'success'
+	})
+})
 
 app.get('/api', (req, res) => {
 	res.send({
