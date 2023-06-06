@@ -1,0 +1,52 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("mongodb+srv://kadmin:CNl8IgyZZ8LRKUPc@cluster0.weszq.mongodb.net/?retryWrites=true&w=majority")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  name  String?
+	country String?
+	bio String?
+	dob DateTime?
+	createdAt DateTime
+	createdBy String @db.ObjectId
+	updatedAt DateTime?
+	updatedBy String? @db.ObjectId
+}
+
+model Task {
+	id    String @id @default(auto()) @map("_id") @db.ObjectId
+	title String
+	desc String?
+	dueDate DateTime?
+	startDate DateTime?
+	projectId String @db.ObjectId
+	createdBy String @db.ObjectId
+	createdAt DateTime
+	updatedBy String? @db.ObjectId
+	updatedAt DateTime?
+}
+
+model Project {
+	id String @id @default(auto()) @map("_id") @db.ObjectId
+	title String
+	desc String?
+	cover String?
+	icon String?
+	createdBy String @db.ObjectId
+	createdAt DateTime
+	organizationId String @db.ObjectId
+	updatedBy String? @db.ObjectId
+	updatedAt DateTime?
+
+}
+
+
+
+ 
