@@ -1,3 +1,4 @@
+
 datasource db {
   provider = "mongodb"
   url      = env("mongodb+srv://kadmin:CNl8IgyZZ8LRKUPc@cluster0.weszq.mongodb.net/?retryWrites=true&w=majority")
@@ -15,9 +16,9 @@ model User {
 	bio String?
 	dob DateTime?
 	createdAt DateTime
-	createdBy String @db.ObjectId
+	createdBy String
 	updatedAt DateTime?
-	updatedBy String? @db.ObjectId
+	updatedBy String? 
 }
 
 model Task {
@@ -27,9 +28,9 @@ model Task {
 	dueDate DateTime?
 	startDate DateTime?
 	projectId String @db.ObjectId
-	createdBy String @db.ObjectId
+	createdBy String
 	createdAt DateTime
-	updatedBy String? @db.ObjectId
+	updatedBy String?
 	updatedAt DateTime?
 }
 
@@ -39,10 +40,10 @@ model Project {
 	desc String?
 	cover String?
 	icon String?
-	createdBy String @db.ObjectId
+	createdBy String
 	createdAt DateTime
-	organizationId String @db.ObjectId
-	updatedBy String? @db.ObjectId
+	organizationId String
+	updatedBy String?
 	updatedAt DateTime?
 
 }

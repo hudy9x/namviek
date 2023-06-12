@@ -5,9 +5,9 @@
 
 import express, { Application, Response, Request } from 'express';
 import cors from "cors";
-import * as path from 'path';
-import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
+import { ClerkExpressRequireAuth, ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
 import { sharedLibs } from "@shared/libs";
+import { addTask } from "@shared/models";
 
 const app: Application = express();
 
@@ -17,11 +17,20 @@ declare global {
 	}
 }
 
-// app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
 app.use(cors())
 
-app.get('')
+app.post('/api/task', ClerkExpressRequireAuth({}), (req: WithAuthProp<Request>, res: Response) => {
+
+	addTask().then(() => {
+
+		res.json({
+			status: 200,
+			message: 'Done'
+		})
+	})
+
+
+})
 
 app.get('/api/home', ClerkExpressWithAuth({}), (req: WithAuthProp<Request>, res: Response) => {
 

@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@shared/libs": ["packages/shared-libs/src/index.ts"],
+      "@shared/models": ["packages/shared-models/src/index.ts"],
       "@shared/types": ["packages/shared-types/src/index.ts"],
       "@shared/ui": ["packages/shared-ui/src/index.ts"],
       "@shared/ui/server": ["packages/shared-ui/src/server.ts"],

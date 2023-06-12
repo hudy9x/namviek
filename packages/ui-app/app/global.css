@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.root-container {
+	@apply flex;
+}
+
+.root-sidebar {
+	@apply h-screen border-r;
+	@apply flex items-start;
+}
+
+.primary-sidebar {
+	@apply flex flex-col justify-between h-screen border-r;
+}
+
+.root-sidebar .main-nav-icon {
+	@apply p-4 w-12 h-12 text-gray-400;
+}
+
+.main-nav-icon.active {
+	@apply text-indigo-500;
+}
+
+.side-nav {
+	@apply border-t py-4;
+	@apply w-[250px] shrink-0;
+}
+
+.side-nav h2{
+	@apply uppercase text-xs font-medium text-gray-500 px-3 pb-3;
+	@apply flex justify-between items-center;
+}
+
+.side-nav .section-icon {
+	@apply cursor-pointer hover:bg-gray-100 w-6 h-6 p-0.5;
+}
+
+.side-nav nav a {
+	@apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2;
+	@apply hover:bg-gray-100;
+}
+
+.side-nav .nav-icon {
+	@apply text-sm text-gray-400;
+}

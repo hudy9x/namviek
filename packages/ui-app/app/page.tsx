@@ -11,7 +11,6 @@ export default async function Index() {
   return (
     <div className={styles.page}>
       <div className="wrapper">
-				<UserButton afterSignOutUrl='/sign-in'/>
 				<TestBtn/>
       </div>
     </div>

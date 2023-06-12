@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-		"prisma": "prisma"
-	},
+    "prisma": "prisma"
+  },
   "private": true,
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.10.2",
@@ -19,6 +19,7 @@
     "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.9.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
