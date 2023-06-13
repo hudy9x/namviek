@@ -8,10 +8,16 @@ module.exports = {
       __dirname,
       '{src,pages,components,app,layouts}/**/*!(*.stories|*.spec).{ts,tsx,html}'
     ),
+    join(
+      __dirname,
+      '../shared-ui/src/**/*!(*.stories|*.spec).{ts,tsx}'
+    ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+		require('@tailwindcss/forms')
+	],
 };

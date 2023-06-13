@@ -1,0 +1,46 @@
+.form-input {
+  @apply rounded-md border-gray-300 shadow-sm w-full;
+  @apply focus:border-indigo-500 focus:ring-indigo-200 sm:text-sm focus:ring-2;
+}
+
+.form-control label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+.form-control.required label {
+  @apply relative inline-block;
+}
+
+.form-control.required label:after {
+  @apply absolute top-2 -right-3 w-1.5 h-1.5 rounded-full bg-red-400;
+  content: ''
+}
+
+.form-control.leading-icon .form-input {
+  @apply pl-11;
+}
+
+.form-control.disabled .form-input {
+  @apply bg-gray-100;
+}
+
+.form-control.readonly .form-input {
+  @apply bg-gray-50
+}
+
+.form-control.addon .form-control-wrapper {
+  @apply flex;
+}
+
+.form-control.addon .form-input {
+  @apply rounded-tl-none rounded-bl-none;
+}
+
+.form-control.error .form-input {
+  @apply border-red-500;
+  @apply focus:ring-red-200 focus:ring-2;
+}
+
+
+
+
