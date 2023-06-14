@@ -8,6 +8,7 @@ import { IoIosPlayCircle, IoMdLogOut } from "react-icons/io";
 import { HiOutlinePlusSm } from "react-icons/hi";
 import { Form, Modal } from "@shared/ui";
 import UserSection from "./UserSection";
+import Button from "packages/shared-ui/src/components/Button";
 
 export default function RootSidebar() {
 	const { signOut } = useClerk()
@@ -45,8 +46,9 @@ export default function RootSidebar() {
 						content={<div className="flex flex-col gap-4">
 							<Form.Input title="Project name" name="title"/>
 							<div className="flex justify-end">
-								<Modal.Close>
-									<div className="Button green">Save changes</div>
+								<Modal.Close className="btn btn-primary lg block">
+									<span>Create new</span>
+
 								</Modal.Close>
 
 							</div>

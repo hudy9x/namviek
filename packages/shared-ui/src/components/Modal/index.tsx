@@ -17,18 +17,18 @@ export default function Modal({ triggerBy, title, desc, content, backdrop = true
 				{triggerBy}
 			</Dialog.Trigger>
 			<Dialog.Portal>
-				{backdrop ? <Dialog.Overlay className="DialogOverlay" /> : null}
-				<Dialog.Content className="DialogContent">
-					{title ? <Dialog.Title className="DialogTitle">{title}</Dialog.Title> : null}
+				{backdrop ? <Dialog.Overlay className="modal-overlay" /> : null}
+				<Dialog.Content className="modal-content">
+					{title ? <Dialog.Title className="modal-title">{title}</Dialog.Title> : null}
 					{desc ?
-						<Dialog.Description className="DialogDescription">
+						<Dialog.Description className="modal-desc">
 							{desc}
 						</Dialog.Description> : null}
 
 					{content}
 
 					<Dialog.Close asChild>
-						<button className="IconButton" aria-label="Close">
+						<button className="modal-close" aria-label="Close">
 							<MdClose />
 						</button>
 					</Dialog.Close>

@@ -1,4 +1,3 @@
-
 datasource db {
   provider = "mongodb"
   url      = env("mongodb+srv://kadmin:CNl8IgyZZ8LRKUPc@cluster0.weszq.mongodb.net/?retryWrites=true&w=majority")
@@ -8,46 +7,61 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum MemberRole {
+  GUEST
+  MEMBER
+  MANAGER
+  LEADER
+}
+
 model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
-	country String?
-	bio String?
-	dob DateTime?
-	createdAt DateTime
-	createdBy String
-	updatedAt DateTime?
-	updatedBy String? 
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  name      String?
+  country   String?
+  bio       String?
+  dob       DateTime?
+  createdAt DateTime
+  createdBy String
+  updatedAt DateTime?
+  updatedBy String?
 }
 
 model Task {
-	id    String @id @default(auto()) @map("_id") @db.ObjectId
-	title String
-	desc String?
-	dueDate DateTime?
-	startDate DateTime?
-	projectId String @db.ObjectId
-	createdBy String
-	createdAt DateTime
-	updatedBy String?
-	updatedAt DateTime?
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  desc      String?
+  dueDate   DateTime?
+  startDate DateTime?
+  projectId String    @db.ObjectId
+  createdBy String
+  createdAt DateTime
+  updatedBy String?
+  updatedAt DateTime?
 }
 
 model Project {
-	id String @id @default(auto()) @map("_id") @db.ObjectId
-	title String
-	desc String?
-	cover String?
-	icon String?
-	createdBy String
-	createdAt DateTime
-	organizationId String
-	updatedBy String?
-	updatedAt DateTime?
-
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  desc           String?
+  cover          String?
+  icon           String?
+  createdBy      String
+  createdAt      DateTime
+  organizationId String
+  updatedBy      String?
+  updatedAt      DateTime?
 }
 
+model Members {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  uid       String
+  projectId String     @db.ObjectId
+  role      MemberRole
 
+  createdBy String
+  createdAt DateTime
+  updatedBy String?
+  updatedAt DateTime?
+}
 
- 

@@ -17,7 +17,15 @@ declare global {
 	}
 }
 
+type RequestAuth = WithAuthProp<Request>
+
 app.use(cors())
+
+app.post('/api/project', (req: RequestAuth, res: Response) => {
+	res.json({
+		status: 200
+	})
+})
 
 app.post('/api/task', ClerkExpressRequireAuth({}), (req: WithAuthProp<Request>, res: Response) => {
 
