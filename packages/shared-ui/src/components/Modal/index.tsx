@@ -1,18 +1,22 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { MdClose } from "react-icons/md";
 import "./styles.css";
+import { SetStateAction, useEffect, useState } from "react";
 
 interface ModalProps {
 	triggerBy: React.ReactNode
 	title: string
 	desc?: string
+	visible?: boolean
+	onVisibleChange?: React.Dispatch<(SetStateAction<boolean>)>
 	content: React.ReactNode
 	backdrop?: boolean
 }
 
-export default function Modal({ triggerBy, title, desc, content, backdrop = true }: ModalProps) {
+export default function Modal({ triggerBy, visible = false, onVisibleChange, title, desc, content, backdrop = true }: ModalProps) {
+
 	return <>
-		<Dialog.Root>
+		<Dialog.Root open={visible} onOpenChange={onVisibleChange}>
 			<Dialog.Trigger asChild>
 				{triggerBy}
 			</Dialog.Trigger>

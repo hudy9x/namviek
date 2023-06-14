@@ -1,6 +1,4 @@
-import { UserButton } from '@clerk/nextjs';
 import styles from './page.module.css';
-import TestBtn from '../components/TestBtn';
 
 export default async function Index() {
   /*
@@ -11,7 +9,6 @@ export default async function Index() {
   return (
     <div className={styles.page}>
       <div className="wrapper">
-				<TestBtn/>
       </div>
     </div>
   );

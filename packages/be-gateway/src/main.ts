@@ -6,8 +6,6 @@
 import express, { Application, Response, Request } from 'express';
 import cors from "cors";
 import { ClerkExpressRequireAuth, ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
-import { sharedLibs } from "@shared/libs";
-import { addTask } from "@shared/models";
 
 const app: Application = express();
 
@@ -20,29 +18,22 @@ declare global {
 type RequestAuth = WithAuthProp<Request>
 
 app.use(cors())
+app.use(express.json())
 
-app.post('/api/project', (req: RequestAuth, res: Response) => {
+app.post('/api/project', ClerkExpressWithAuth(), (req: RequestAuth, res: Response) => {
+
+	const body = req.body
+
+	console.log(body, req.auth)
+	
 	res.json({
-		status: 200
+		status: 200,
+		body
 	})
 })
 
-app.post('/api/task', ClerkExpressRequireAuth({}), (req: WithAuthProp<Request>, res: Response) => {
-
-	addTask().then(() => {
-
-		res.json({
-			status: 200,
-			message: 'Done'
-		})
-	})
-
-
-})
 
 app.get('/api/home', ClerkExpressWithAuth({}), (req: WithAuthProp<Request>, res: Response) => {
-
-	console.log(req.auth)
 
 	res.json({
 		status: 200,
@@ -50,12 +41,6 @@ app.get('/api/home', ClerkExpressWithAuth({}), (req: WithAuthProp<Request>, res:
 	})
 })
 
-app.get('/api', (req, res) => {
-	res.send({
-		message: 'Welcome to be-gateway!',
-		text: sharedLibs()
-	});
-});
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {

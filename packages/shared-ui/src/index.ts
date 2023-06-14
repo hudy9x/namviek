@@ -3,7 +3,7 @@
 // export * from './lib/shared-ui';
 import ModalComp from "./components/Modal";
 import * as FormControls from "./components/Controls"
-import * as ButtonControl from "./components/Button"
+import ButtonControl from "./components/Button"
 
 export const Modal = ModalComp
 export const Form = FormControls
