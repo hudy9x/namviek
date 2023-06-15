@@ -1,6 +1,6 @@
 datasource db {
   provider = "mongodb"
-  url      = env("mongodb+srv://kadmin:CNl8IgyZZ8LRKUPc@cluster0.weszq.mongodb.net/?retryWrites=true&w=majority")
+  url      = env("MONGODB_URL")
 }
 
 generator client {

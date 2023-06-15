@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prisma": "prisma"
+    "prisma": "prisma",
+		"postinstall": "prisma generate"
   },
   "private": true,
   "dependencies": {
@@ -14,6 +15,7 @@
     "@swc/helpers": "~0.5.0",
     "@tailwindcss/forms": "^0.5.3",
     "axios": "^1.0.0",
+    "bson": "^5.3.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "formik": "^2.4.1",
@@ -23,6 +25,7 @@
     "react-hook-form": "^7.44.3",
     "react-icons": "^4.9.0",
     "tslib": "^2.3.0",
+    "zod": "^3.21.4",
     "zustand": "^4.3.8"
   },
   "devDependencies": {

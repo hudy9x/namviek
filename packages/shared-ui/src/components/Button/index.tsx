@@ -25,6 +25,7 @@ interface IButtonProps {
   className?: string;
   block?: boolean;
   size?: "sm" | "base" | "lg";
+	type?: "button" | "reset" | "submit"
 }
 
 type ButtonPropsWithoutDuplicate = Omit<
@@ -41,6 +42,7 @@ const Button = ({
   warn,
   block,
   size = "base",
+	type = "button",
   leadingIcon,
   loading,
   disabled,
@@ -57,8 +59,10 @@ const Button = ({
     className,
   ].filter(Boolean);
 
+
+
   return (
-    <button className={classes.join(" ")} disabled={disabled} {...otherProps}>
+    <button type={type} className={classes.join(" ")} disabled={disabled} {...otherProps}>
       {leadingIcon && !loading ? leadingIcon : null}
       {loading ? <LoadingSpinner /> : null}
       {title}

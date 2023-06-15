@@ -1,10 +1,10 @@
 'use client'
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserSection from "../../../layouts/UserSection";
 import RootSidebar from "../../../layouts/RootSidebar";
 import ProjectAdd from "./ProjectAdd";
+import ProjectList from "./ProjectList";
 
 export default function ProjectSidebar() {
 	const pathname = usePathname()
@@ -22,22 +22,9 @@ export default function ProjectSidebar() {
 					<span>Projects</span>
 					<ProjectAdd/>
 				</div>
-				<nav>
-					<Link href="/home"><span className="nav-icon">👕</span> <span>Printgrows</span></Link>
-					<Link href="/home"><span className="nav-icon">👕</span> <span>Enorm.ai</span></Link>
-					<Link href="/home"><span className="nav-icon">👕</span> <span>Remockup</span></Link>
-				</nav>
+				<ProjectList/>
 			</section>
 
-			{/* <section className="side-nav"> */}
-			{/* 	<h2>Saved filters</h2> */}
-			{/* 	<nav> */}
-			{/* 		<Link href="/project/1"> */}
-			{/* 			<span className="nav-icon">👕</span> */}
-			{/* 			<span>10/2023</span> */}
-			{/* 		</Link> */}
-			{/* 	</nav> */}
-			{/* </section> */}
 		</nav>
 
 	</aside>

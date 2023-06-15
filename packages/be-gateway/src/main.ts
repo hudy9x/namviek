@@ -5,7 +5,8 @@
 
 import express, { Application, Response, Request } from 'express';
 import cors from "cors";
-import { ClerkExpressRequireAuth, ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
+import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
+import { mdProjectAdd } from "@shared/models";
 
 const app: Application = express();
 
@@ -20,15 +21,33 @@ type RequestAuth = WithAuthProp<Request>
 app.use(cors())
 app.use(express.json())
 
-app.post('/api/project', ClerkExpressWithAuth(), (req: RequestAuth, res: Response) => {
+app.get('/api/project', ClerkExpressWithAuth(), async(req: RequestAuth, res: Response) => {
 
-	const body = req.body
+})
 
-	console.log(body, req.auth)
+app.post('/api/project', ClerkExpressWithAuth(), async(req: RequestAuth, res: Response) => {
+
+	const body = req.body as { name: string, desc: string, organizationId: string }
+	const { userId } = req.auth;
+
+	console.log('orgina;', body.organizationId)
+
+	const result = await mdProjectAdd({
+		cover: null,
+		icon: null,
+		name: body.name,
+		desc: body.desc,
+		createdBy: userId,
+		createdAt: new Date(),
+		organizationId: body.organizationId || "897821",
+		updatedAt: null,
+		updatedBy: null
+	})
+
+	console.log(result)
 	
 	res.json({
 		status: 200,
-		body
 	})
 })
 
