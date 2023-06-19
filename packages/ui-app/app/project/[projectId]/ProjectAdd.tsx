@@ -7,10 +7,12 @@ import { HiOutlinePlusSm } from "react-icons/hi"
 import { validateQuickAddProject } from "@shared/validation";
 import { useServiceProject } from "../../services/project"
 import { useOrganization } from "@clerk/nextjs"
+import { useProjectStore } from "packages/ui-app/store/project"
 
 export default function ProjectAdd() {
 	const { organization } = useOrganization()
 	const { quickAddProject } = useServiceProject()
+	const { addProject } = useProjectStore()
 	const [visible, setVisible] = useState(false)
 
 	const formik = useFormik({
@@ -34,6 +36,16 @@ export default function ProjectAdd() {
 				...{
 					organizationId: organization?.id
 				}
+			}).then(res => res.json()).then(res => {
+					const { status, data } = res
+					console.log('done')
+					if (status !== 200) {
+						return;
+					}
+
+					console.log('add new project to store')
+					addProject(data)
+
 			})
 		}
 	})

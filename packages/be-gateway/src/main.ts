@@ -6,7 +6,8 @@
 import express, { Application, Response, Request } from 'express';
 import cors from "cors";
 import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
-import { mdProjectAdd } from "@shared/models";
+import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds } from "@shared/models";
+import { MemberRole } from '@prisma/client';
 
 const app: Application = express();
 
@@ -21,11 +22,46 @@ type RequestAuth = WithAuthProp<Request>
 app.use(cors())
 app.use(express.json())
 
-app.get('/api/project', ClerkExpressWithAuth(), async(req: RequestAuth, res: Response) => {
+app.get('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
+
+	const { userId } = req.auth
+
+	try {
+
+		const invitedProjects = await mdMemberGetProject(userId)
+
+		if (!invitedProjects) {
+			console.log("You're not invited to no projects")
+			return res.json({
+				status: 200,
+				data: []
+			})
+		}
+
+		const projectIds = invitedProjects.map(p => p.projectId)
+
+		const projects = await mdProjectGetAllByIds(projectIds)
+
+		console.log('get project success')
+
+		res.json({
+			status: 200,
+			data: projects
+		})
+
+	} catch (error) {
+		console.log('get project by member error', error)
+		res.json({
+			status: 500,
+			err: error,
+			data: []
+		})
+	}
+
 
 })
 
-app.post('/api/project', ClerkExpressWithAuth(), async(req: RequestAuth, res: Response) => {
+app.post('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
 
 	const body = req.body as { name: string, desc: string, organizationId: string }
 	const { userId } = req.auth;
@@ -44,10 +80,19 @@ app.post('/api/project', ClerkExpressWithAuth(), async(req: RequestAuth, res: Re
 		updatedBy: null
 	})
 
-	console.log(result)
-	
+	await mdMemberAdd({
+		uid: userId,
+		projectId: result.id,
+		role: MemberRole.MANAGER,
+		createdAt: new Date(),
+		createdBy: userId,
+		updatedBy: null,
+		updatedAt: null
+	})
+
 	res.json({
 		status: 200,
+		data: result
 	})
 })
 

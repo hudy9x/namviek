@@ -11,13 +11,16 @@ export const useProjectStore = create<ProjectState>((set) => ({
 	projects: [],
 
 	addProject: (data: Project) => set((state: ProjectState) => {
-		state.projects.push(data)
+		// state.projects.push(data)
+
+		state.projects = [...state.projects, data]
+		
 		return state
 	}),
 
 	addAllProject: (datas: Project[]) => set((state: ProjectState) => {
 		state.projects = datas
 		return state
-	})
+	}),
 
 }))

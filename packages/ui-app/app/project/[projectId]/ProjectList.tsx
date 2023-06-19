@@ -1,16 +1,26 @@
+'use client'
+
 import Link from "next/link";
 import { useProjectStore } from "packages/ui-app/store/project";
 import { useEffect } from "react";
 import { useServiceProject } from "../../services/project";
 
 export default function ProjectList() {
-	const { getProjects, addAllProject } = useServiceProject()
-	const projects = useProjectStore(state => state.projects)
+	const { getProjects } = useServiceProject()
+	const {projects, addAllProject} = useProjectStore(state => state)
+
+
+	console.log('project', projects)
 
 
 	useEffect(() => {
+		console.log('get all projects')
 		getProjects().then(res => res.json()).then(result => {
-			console.log(result)
+			const {data, status} = result
+
+			if (status !== 200) return;
+
+			addAllProject(data)
 
 		})
 	}, [])

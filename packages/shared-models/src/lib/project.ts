@@ -10,10 +10,10 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
 	})
 }
 
-export const mdProjectGetAll = async (uid: string) => {
+export const mdProjectGetAllByIds = async (ids: string[]) => {
 	return projectModel.findMany({
 		where: {
-			
+			id: { in: ids }
 		}
 	})
 }

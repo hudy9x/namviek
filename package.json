@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prisma": "prisma",
-		"postinstall": "prisma generate"
+    "postinstall": "prisma generate"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "formik": "^2.4.1",
+    "immer": "^10.0.2",
     "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
