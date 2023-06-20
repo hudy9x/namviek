@@ -41,10 +41,30 @@
 }
 
 .side-nav nav a {
-	@apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2;
-	@apply hover:bg-gray-100;
 }
 
 .side-nav .nav-icon {
 	@apply text-sm text-gray-400;
 }
+
+.nav .nav-item {
+	@apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
+	@apply hover:bg-gray-100;
+}
+
+.nav .nav-item.active {
+	@apply bg-indigo-50 text-indigo-900;
+}
+
+.tab {
+		@apply flex
+	}
+
+.tab-item {
+		@apply flex items-center gap-2 text-sm text-gray-600;
+		@apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
+	}
+
+.tab-item.active{
+		@apply border-indigo-400 text-indigo-700;
+	}

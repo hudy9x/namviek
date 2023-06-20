@@ -1,8 +1,8 @@
 'use client'
 
 import { usePathname } from "next/navigation";
-import UserSection from "../../../layouts/UserSection";
-import RootSidebar from "../../../layouts/RootSidebar";
+import UserSection from "../../layouts/UserSection";
+import RootSidebar from "../../layouts/RootSidebar";
 import ProjectAdd from "./ProjectAdd";
 import ProjectList from "./ProjectList";
 
