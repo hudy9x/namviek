@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prisma": "prisma",
+		"generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "postinstall": "prisma generate"
   },
   "private": true,

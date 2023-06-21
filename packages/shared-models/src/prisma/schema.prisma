@@ -14,6 +14,13 @@ enum MemberRole {
   LEADER
 }
 
+enum TaskPriority {
+  URGENT
+  HIGH
+  NORMAL
+  LOW
+}
+
 model User {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   email     String    @unique
@@ -21,33 +28,66 @@ model User {
   country   String?
   bio       String?
   dob       DateTime?
-  createdAt DateTime
-  createdBy String
+  members   Members[]
+  createdAt DateTime?
+  createdBy String?
   updatedAt DateTime?
   updatedBy String?
 }
 
 model Task {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  desc      String?
-  dueDate   DateTime?
-  startDate DateTime?
-  projectId String    @db.ObjectId
-  createdBy String
-  createdAt DateTime
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  desc          String?
+  dueDate       DateTime?
+  startDate     DateTime?
+  projectId     String        @db.ObjectId
+  priority      TaskPriority?
+  taskStatusIds String[]      @db.ObjectId
+  tagIds        String[]      @db.ObjectId
+  assigneeIds   String[]      @db.ObjectId
+  parentTaskId  String?        @db.ObjectId
+
+  // do not store `point` as objectID, cuz we just need to fill the point value
+  taskPoint Int?
+
+  createdBy String?
+  createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
 }
 
+model TaskStatus {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  color     String
+  order     Int
+  projectId String @db.ObjectId
+}
+
+// Tag used for Projects and Tasks
+model Tag {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  color     String
+  projectId String @db.ObjectId
+}
+
+model TaskPoint {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  point     Int
+  projectId String  @db.ObjectId
+  icon      String?
+}
+
 model Project {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
+  name           String
   desc           String?
   cover          String?
   icon           String?
-  createdBy      String
-  createdAt      DateTime
+  createdBy      String?
+  createdAt      DateTime?
   organizationId String
   updatedBy      String?
   updatedAt      DateTime?
@@ -58,10 +98,11 @@ model Members {
   uid       String
   projectId String     @db.ObjectId
   role      MemberRole
+  users     User       @relation(fields: [userId], references: [id])
+  userId    String     @db.ObjectId
 
-  createdBy String
-  createdAt DateTime
+  createdBy String?
+  createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
 }
-
