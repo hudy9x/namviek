@@ -1,0 +1,16 @@
+.org {
+	@apply bg-indigo-50 w-screen h-screen flex items-center justify-center;
+}
+
+.org-setup {
+	@apply bg-white w-[500px] p-8 border border-indigo-100 rounded-lg shadow-xl shadow-indigo-100;
+}
+
+.setup-step {
+	@apply text-xs text-gray-400 font-medium
+}
+
+.setup-step span {
+	@apply text-gray-800
+}
+

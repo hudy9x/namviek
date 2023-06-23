@@ -14,6 +14,17 @@ enum MemberRole {
   LEADER
 }
 
+enum OrganizationRole {
+  ADMIN
+  MEMBER
+}
+
+enum InvitationStatus {
+  REJECTED
+  ACCEPTED
+  INVITING
+}
+
 enum TaskPriority {
   URGENT
   HIGH
@@ -22,17 +33,35 @@ enum TaskPriority {
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  email     String    @unique
-  name      String?
-  country   String?
-  bio       String?
-  dob       DateTime?
-  members   Members[]
-  createdAt DateTime?
-  createdBy String?
-  updatedAt DateTime?
-  updatedBy String?
+  id                  String                @id @default(auto()) @map("_id") @db.ObjectId
+  email               String                @unique
+  name                String?
+  country             String?
+  bio                 String?
+  dob                 DateTime?
+  members             Members[]
+  organizationMembers OrganizationMembers[]
+  createdAt           DateTime?
+  createdBy           String?
+  updatedAt           DateTime?
+  updatedBy           String?
+}
+
+model Organization {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String  @unique
+  cover  String?
+  avatar String?
+  desc   String?
+}
+
+model OrganizationMembers {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  uid            String           @db.ObjectId
+  status         InvitationStatus
+  organizationId String           @db.ObjectId
+  role           OrganizationRole
+  users          User             @relation(fields: [uid], references: [id])
 }
 
 model Task {
@@ -46,7 +75,7 @@ model Task {
   taskStatusIds String[]      @db.ObjectId
   tagIds        String[]      @db.ObjectId
   assigneeIds   String[]      @db.ObjectId
-  parentTaskId  String?        @db.ObjectId
+  parentTaskId  String?       @db.ObjectId
 
   // do not store `point` as objectID, cuz we just need to fill the point value
   taskPoint Int?
@@ -95,11 +124,10 @@ model Project {
 
 model Members {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  uid       String
   projectId String     @db.ObjectId
   role      MemberRole
-  users     User       @relation(fields: [userId], references: [id])
-  userId    String     @db.ObjectId
+  users     User       @relation(fields: [uid], references: [id])
+  uid       String     @db.ObjectId
 
   createdBy String?
   createdAt DateTime?

@@ -6,8 +6,8 @@
 import express, { Application, Response, Request } from 'express';
 import cors from "cors";
 import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
-import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds } from "@shared/models";
-import { MemberRole } from '@prisma/client';
+import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from "@shared/models";
+import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
 
 const app: Application = express();
 
@@ -21,6 +21,42 @@ type RequestAuth = WithAuthProp<Request>
 
 app.use(cors())
 app.use(express.json())
+
+app.post('/api/organization', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
+	const { userId } = req.auth
+
+	try {
+		const body = req.body
+
+		const result = await mdOrgAdd({
+			name: body.name,
+			cover: null,
+			avatar: null,
+			desc: null
+		})
+
+		// FIXED : uid is incorrect type
+		await mdOrgMemAdd({
+			uid: userId,
+			organizationId: result.id,
+			role: OrganizationRole.ADMIN,
+			status: InvitationStatus.ACCEPTED
+		})
+
+		res.json({
+			status: 200,
+			err: null,
+			data: result
+		})
+
+	} catch (error) {
+		console.log(error)
+		res.json({
+			status: 500,
+			err: error
+		})
+	}
+})
 
 app.get('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
 
