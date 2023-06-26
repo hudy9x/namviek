@@ -130,6 +130,16 @@ model Project {
   updatedAt      DateTime?
 }
 
+model StatusSetting {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  color          String
+  createdBy      String
+  createdAt      DateTime
+  updatedBy      String?
+  updatedAt      DateTime?
+}
+
 model Members {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   projectId String     @db.ObjectId

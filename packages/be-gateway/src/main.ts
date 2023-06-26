@@ -3,19 +3,20 @@
  * This is only a minimal backend to get started.
  */
 
-import express, { Application, Response, Request } from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
-import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from '@shared/models';
-import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
+// import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from '@shared/models';
+// import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
 import Routes from './routes';
 
-const app: Application = express();
+export const app: Application = express();
 
 app.use(cors({
   exposedHeaders: ['Authorization', 'RefreshToken']
 }));
 app.use(express.json());
 
+//export type RequestAuth = WithAuthProp<Request>
 app.use('/api', Routes);
 // app.post('/api/organization', async (req: RequestAuth, res: Response) => {
 // 	const { userId } = req.auth;
