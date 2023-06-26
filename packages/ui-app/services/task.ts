@@ -1,4 +1,3 @@
-import { Task } from "@prisma/client"
 import { useRequest } from "./_request"
 
 export const useServiceProject = () => {

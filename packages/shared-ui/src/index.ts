@@ -6,7 +6,10 @@ import ButtonControl from "./components/Button"
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from "./components/Message";
 
+import useFormHook from "./hooks/useForm"
+
 export const Modal = ModalComp
 export const Form = FormControls
 export const Button = ButtonControl
+export const useForm = useFormHook
 

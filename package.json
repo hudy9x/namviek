@@ -4,13 +4,15 @@
   "license": "MIT",
   "scripts": {
     "prisma": "prisma",
-		"generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
+    "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "postinstall": "prisma generate"
   },
   "private": true,
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.10.2",
     "@clerk/nextjs": "^4.19.0",
+    "@fastify/autoload": "~5.7.1",
+    "@fastify/sensible": "~5.2.0",
     "@prisma/client": "^4.15.0",
     "@radix-ui/react-dialog": "^1.0.4",
     "@swc/helpers": "~0.5.0",
@@ -19,6 +21,8 @@
     "bson": "^5.3.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "fastify": "~4.13.0",
+    "fastify-plugin": "~4.5.0",
     "formik": "^2.4.1",
     "immer": "^10.0.2",
     "next": "13.4.1",

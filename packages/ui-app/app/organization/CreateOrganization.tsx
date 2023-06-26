@@ -24,7 +24,6 @@ export default function CreateOrganization() {
 		}
 	})
 
-
 	const registerForm = (name: keyof typeof formik.values, handler: typeof formik) => {
 		return {
 			name,
