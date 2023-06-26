@@ -1,3 +1,3 @@
 export function sharedModels(): string {
-  return 'shared-models';
+	return 'shared-models';
 }

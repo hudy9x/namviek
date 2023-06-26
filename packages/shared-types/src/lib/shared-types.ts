@@ -1,3 +1,3 @@
 export function sharedTypes(): string {
-  return 'shared-types';
+	return 'shared-types';
 }

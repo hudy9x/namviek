@@ -1,28 +1,29 @@
+import { z } from 'zod';
+import { User } from '@prisma/client';
+import { safeParse } from './lib';
 
-import { z } from "zod";
-import { User } from "@prisma/client";
-import { safeParse } from "./lib";
+const project = z
+	.object({
+		email: z.string().email(),
+		password: z.string().min(4).max(100),
+		name: z.string().min(2).max(30),
+		country: z.string(),
+		bio: z.string(),
+		dob: z.date(),
 
-const project = z.object({
-	email: z.string().email(),
-	password: z.string().min(4).max(100),
-	name: z.string().min(2).max(30),
-	country: z.string(),
-	bio: z.string(),
-	dob: z.date(),
-
-	createdBy: z.string(),
-	createdAt: z.date(),
-	updatedBy: z.string(),
-	updatedAt: z.date()
-}).partial()
+		createdBy: z.string(),
+		createdAt: z.date(),
+		updatedBy: z.string(),
+		updatedAt: z.date()
+	})
+	.partial();
 
 const registerUserSchema = project.required({
 	email: true,
 	name: true,
 	password: true
-})
+});
 
 export const validateRegisterUser = (data: Partial<User>) => {
-	return safeParse(registerUserSchema, data)
-}
+	return safeParse(registerUserSchema, data);
+};

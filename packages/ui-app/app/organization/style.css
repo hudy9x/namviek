@@ -7,10 +7,9 @@
 }
 
 .setup-step {
-	@apply text-xs text-gray-400 font-medium
+	@apply text-xs text-gray-400 font-medium;
 }
 
 .setup-step span {
-	@apply text-gray-800
+	@apply text-gray-800;
 }
-
