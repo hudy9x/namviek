@@ -68,3 +68,8 @@
 .tab-item.active{
 		@apply border-indigo-400 text-indigo-700;
 	}
+
+.sign-page {
+		background-image: url('/pat-1.webp');
+		background-size: 97%;
+	}

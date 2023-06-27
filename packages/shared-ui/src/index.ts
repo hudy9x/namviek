@@ -3,6 +3,7 @@
 import ModalComp from "./components/Modal";
 import * as FormControls from "./components/Controls"
 import ButtonControl from "./components/Button"
+import {LoadingSpinner} from "./components/Loading";
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from "./components/Message";
 
@@ -12,4 +13,5 @@ export const Modal = ModalComp
 export const Form = FormControls
 export const Button = ButtonControl
 export const useForm = useFormHook
+export const Loading = LoadingSpinner
 

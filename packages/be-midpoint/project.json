@@ -5,37 +5,24 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+			"executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "platform": "node",
+        "target": "node",
+        "compiler": "tsc",
         "outputPath": "dist/packages/be-midpoint",
-        "format": ["cjs"],
-        "bundle": false,
         "main": "packages/be-midpoint/src/main.ts",
         "tsConfig": "packages/be-midpoint/tsconfig.app.json",
         "assets": ["packages/be-midpoint/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
+        "isolatedConfig": true,
+        "webpackConfig": "packages/be-midpoint/webpack.config.js"
       },
       "configurations": {
         "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "production": {}
       }
-    },
+		},
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",

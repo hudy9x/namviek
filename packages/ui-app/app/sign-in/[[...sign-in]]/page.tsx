@@ -1,7 +1,5 @@
-import { SignIn } from "@clerk/nextjs";
+import SigninForm from "./SigninForm";
 
 export default function Page() {
-	return <div className="h-screen w-screen flex items-center justify-center">
-		<SignIn redirectUrl={'project/12'} />
-	</div>
+	return <SigninForm />
 }

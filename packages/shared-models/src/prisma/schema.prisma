@@ -7,6 +7,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UserStatus {
+		INACTIVE
+		ACTIVE
+	}
+
 enum MemberRole {
   GUEST
   MEMBER
@@ -37,6 +42,7 @@ model User {
   email               String                @unique
   password            String
   name                String?
+	status							UserStatus?
   country             String?
   bio                 String?
   dob                 DateTime?

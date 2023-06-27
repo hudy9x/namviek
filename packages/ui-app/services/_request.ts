@@ -1,4 +1,3 @@
-import { useAuth } from "@clerk/nextjs"
 
 const getUrl = (url: string) => {
 	let baseUrl = process.env.NEXT_PUBLIC_BE_GATEWAY || ''
@@ -10,10 +9,12 @@ const getUrl = (url: string) => {
 }
 
 export const useRequest = () => {
-	const { getToken } = useAuth()
+	const getToken = () => {
+		return '10928301928'
+	}
 
 	const post = async <T>(url: string, data: T) => {
-		const token = await getToken()
+		const token = getToken()
 
 		return fetch(getUrl(url), {
 			method: "POST",
@@ -26,7 +27,7 @@ export const useRequest = () => {
 	}
 
 	const get = async (url: string) => {
-		const token = await getToken()
+		const token = getToken()
 		return fetch(getUrl(url), {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ export const useRequest = () => {
 	}
 
 	const put = async <T>(url: string, data: T) => {
-		const token = await getToken()
+		const token = getToken()
 
 		return fetch(getUrl(url), {
 			method: "PUT",
@@ -49,7 +50,7 @@ export const useRequest = () => {
 
 
 	const del = async (url: string) => {
-		const token = await getToken()
+		const token = getToken()
 
 		return fetch(getUrl(url), {
 			method: "DELETE",

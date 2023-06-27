@@ -8,6 +8,7 @@ import cors from "cors";
 import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
 import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from "@shared/models";
 import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
+import Routes from "./routes";
 
 const app: Application = express();
 
@@ -22,6 +23,7 @@ type RequestAuth = WithAuthProp<Request>
 app.use(cors())
 app.use(express.json())
 
+app.use('/api', Routes)
 app.post('/api/organization', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
 	const { userId } = req.auth
 
