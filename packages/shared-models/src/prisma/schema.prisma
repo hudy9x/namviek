@@ -8,9 +8,9 @@ generator client {
 }
 
 enum UserStatus {
-		INACTIVE
-		ACTIVE
-	}
+  INACTIVE
+  ACTIVE
+}
 
 enum MemberRole {
   GUEST
@@ -42,9 +42,10 @@ model User {
   email               String                @unique
   password            String
   name                String?
-	status							UserStatus?
+  status              UserStatus?
   country             String?
   bio                 String?
+  photo               String?
   dob                 DateTime?
   members             Members[]
   organizationMembers OrganizationMembers[]

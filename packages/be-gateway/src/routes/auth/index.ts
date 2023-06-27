@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { validateRegisterUser } from '@shared/validation';
 import { mdUserAdd, mdUserFindEmail } from '@shared/models';
 import { compareHashPassword, hashPassword } from '../../lib/password';
+import { generateRefreshToken, generateToken } from '../../lib/jwt';
 
 const router = Router();
 
@@ -18,9 +19,24 @@ router.post('/auth/sign-in', async (req, res) => {
 
 		console.time();
 		const result = compareHashPassword(body.password, user.password);
+		if (!result) {
+			return res.json({ status: 400, error: 'Your email or password is invalid' })
+		}
 		console.timeEnd();
 
-		console.log(result);
+		const token = generateToken({
+			email: user.email,
+			name: user.name,
+			photo: user.photo
+		})
+
+		const refreshToken = generateRefreshToken({
+			email: user.email
+		})
+
+		res.setHeader('Authorization', token)
+		res.setHeader('RefreshToken', refreshToken)
+
 		res.json({ status: 200 });
 	} catch (error) {
 		res.json({ status: 500, error });
@@ -47,6 +63,7 @@ router.post('/auth/sign-up', async (req, res) => {
 			bio: null,
 			dob: null,
 			status: UserStatus.ACTIVE,
+			photo: null,
 
 			createdAt: new Date(),
 			createdBy: null,

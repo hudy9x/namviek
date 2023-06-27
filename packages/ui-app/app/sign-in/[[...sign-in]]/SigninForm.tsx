@@ -1,14 +1,16 @@
 
 'use client'
 
-import { Button, Form, messageError, useForm } from "@shared/ui";
+import { Button, Form, messageError, messageSuccess, useForm } from "@shared/ui";
 import { validateLoginUser } from "@shared/validation";
 import Link from "next/link";
+import { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import Logo from "../../../components/Logo";
 import { ISignin, signin } from "../../../services/auth";
-import { useState } from "react";
 
 export default function SigninForm() {
+	const {push} = useRouter()
 	const [loading, setLoading] = useState(false)
 	const { regField, regHandleSubmit } = useForm({
 		values: {
@@ -24,13 +26,24 @@ export default function SigninForm() {
 			setLoading(true)
 			console.log(values)
 			signin(values as ISignin).then(res => {
+				const { status } = res.data
 
-				console.log(res)
+				console.log(status)
+
+				if (status !== 200) {
+					messageError('Email or password is invalid')
+					return
+				}
+
+				push('/organization')
+				
+				// messageSuccess('Success')
+
 			}).catch(err => {
-					console.log(err)
-					messageError("Your email or password are invalid")
+				console.log(err)
+				messageError("Your email or password are invalid")
 			}).finally(() => {
-					setLoading(false)
+				setLoading(false)
 			})
 		}
 	})

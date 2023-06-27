@@ -2,10 +2,8 @@
 
 import { Button, Form, messageError, messageSuccess } from "@shared/ui"
 import { useFormik } from "formik"
-import { useServiceOrganization } from "packages/ui-app/services/organization"
 
 export default function CreateOrganization() {
-	const { addOrganization } = useServiceOrganization()
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -13,14 +11,14 @@ export default function CreateOrganization() {
 
 		},
 		onSubmit: (values) => {
-			addOrganization({
-				name: values.name
-			}).then(res => {
-				console.log('success')
-			}).catch(err => {
-				messageError('create error')
-				console.log(err)
-			})
+			// addOrganization({
+			// 	name: values.name
+			// }).then(res => {
+			// 	console.log('success')
+			// }).catch(err => {
+			// 	messageError('create error')
+			// 	console.log(err)
+			// })
 		}
 	})
 

@@ -1,12 +1,10 @@
 'use client'
 
-import { useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import { RiBarChartFill, RiCalendarFill, RiDashboardFill, RiHomeFill } from "react-icons/ri";
 import { IoIosPlayCircle, IoMdLogOut } from "react-icons/io";
 
 export default function RootSidebar() {
-	const { signOut } = useClerk()
 	return <nav className="primary-sidebar">
 		<section>
 			<Link href="/home"><RiHomeFill className="main-nav-icon" /></Link>
@@ -17,7 +15,6 @@ export default function RootSidebar() {
 		</section>
 		<section>
 			<IoMdLogOut className="main-nav-icon" onClick={() => {
-				signOut()
 			}} />
 		</section>
 	</nav>
