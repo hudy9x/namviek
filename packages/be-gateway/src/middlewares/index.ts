@@ -12,17 +12,16 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 	try {
 		const validToken = extractToken(authorization);
 		if (validToken) {
-      const user = validToken as JWTPayload
-      req.authen = user
+			const { id, email, name, photo, ...rest } = validToken as JWTPayload;
+			req.authen = { id, email, name, photo };
 			return next();
 		}
 
 		const validRefreshToken = await verifyRefreshToken(refreshToken);
 		if (validRefreshToken) {
-
-      const user = validToken as JWTPayload
+			const user = validToken as JWTPayload;
 			const token = generateToken({
-        id: user.id,
+				id: user.id,
 				email: user.email,
 				name: user.name,
 				photo: user.photo
@@ -34,12 +33,11 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 
 			res.setHeader('Authorization', token);
 			res.setHeader('RefreshToken', refreshToken);
-      
-      req.authen = user
+
+			req.authen = user;
 		}
 
-
-    return next()
+		return next();
 	} catch (error) {
 		console.log('authMiddlware:', error);
 		return res.status(440).end();
