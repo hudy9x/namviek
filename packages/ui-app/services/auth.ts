@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { httpPost } from "./_req"
 import { User } from "@prisma/client"
 

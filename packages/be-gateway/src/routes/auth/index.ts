@@ -17,14 +17,13 @@ router.post('/auth/sign-in', async (req, res) => {
 			return res.json({ status: 400, error: 'Your credential is invalid' });
 		}
 
-		console.time();
 		const result = compareHashPassword(body.password, user.password);
 		if (!result) {
 			return res.json({ status: 400, error: 'Your email or password is invalid' })
 		}
-		console.timeEnd();
 
 		const token = generateToken({
+      id: user.id,
 			email: user.email,
 			name: user.name,
 			photo: user.photo
@@ -34,11 +33,15 @@ router.post('/auth/sign-in', async (req, res) => {
 			email: user.email
 		})
 
+    console.log(token)
+    console.log(refreshToken)
+
 		res.setHeader('Authorization', token)
 		res.setHeader('RefreshToken', refreshToken)
 
 		res.json({ status: 200 });
 	} catch (error) {
+    console.log(error)
 		res.json({ status: 500, error });
 	}
 });

@@ -4,38 +4,40 @@
  */
 
 import express, { Application, Response, Request } from 'express';
-import cors from "cors";
-import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from "@clerk/clerk-sdk-node";
-import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from "@shared/models";
+import cors from 'cors';
+import { ClerkExpressWithAuth, LooseAuthProp, WithAuthProp } from '@clerk/clerk-sdk-node';
+import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from '@shared/models';
 import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
-import Routes from "./routes";
+import Routes from './routes';
 
 const app: Application = express();
 
 declare global {
 	namespace Express {
-		interface Request extends LooseAuthProp { }
+		interface Request extends LooseAuthProp {}
 	}
 }
 
-type RequestAuth = WithAuthProp<Request>
+type RequestAuth = WithAuthProp<Request>;
 
-app.use(cors())
-app.use(express.json())
+app.use(cors({
+  exposedHeaders: ['Authorization', 'RefreshToken']
+}));
+app.use(express.json());
 
-app.use('/api', Routes)
+app.use('/api', Routes);
 app.post('/api/organization', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
-	const { userId } = req.auth
+	const { userId } = req.auth;
 
 	try {
-		const body = req.body
+		const body = req.body;
 
 		const result = await mdOrgAdd({
 			name: body.name,
 			cover: null,
 			avatar: null,
 			desc: null
-		})
+		});
 
 		// FIXED : uid is incorrect type
 		await mdOrgMemAdd({
@@ -43,68 +45,60 @@ app.post('/api/organization', ClerkExpressWithAuth(), async (req: RequestAuth, r
 			organizationId: result.id,
 			role: OrganizationRole.ADMIN,
 			status: InvitationStatus.ACCEPTED
-		})
+		});
 
 		res.json({
 			status: 200,
 			err: null,
 			data: result
-		})
-
+		});
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		res.json({
 			status: 500,
 			err: error
-		})
+		});
 	}
-})
+});
 
 app.get('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
-
-	const { userId } = req.auth
+	const { userId } = req.auth;
 
 	try {
-
-		const invitedProjects = await mdMemberGetProject(userId)
+		const invitedProjects = await mdMemberGetProject(userId);
 
 		if (!invitedProjects) {
-			console.log("You're not invited to no projects")
+			console.log("You're not invited to no projects");
 			return res.json({
 				status: 200,
 				data: []
-			})
+			});
 		}
 
-		const projectIds = invitedProjects.map(p => p.projectId)
+		const projectIds = invitedProjects.map(p => p.projectId);
+		const projects = await mdProjectGetAllByIds(projectIds);
 
-		const projects = await mdProjectGetAllByIds(projectIds)
-
-		console.log('get project success')
+		console.log('get project success');
 
 		res.json({
 			status: 200,
 			data: projects
-		})
-
+		});
 	} catch (error) {
-		console.log('get project by member error', error)
+		console.log('get project by member error', error);
 		res.json({
 			status: 500,
 			err: error,
 			data: []
-		})
+		});
 	}
-
-
-})
+});
 
 app.post('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: Response) => {
-
-	const body = req.body as { name: string, desc: string, organizationId: string }
+	const body = req.body as { name: string; desc: string; organizationId: string };
 	const { userId } = req.auth;
 
-	console.log('orgina;', body.organizationId)
+	console.log('orgina;', body.organizationId);
 
 	const result = await mdProjectAdd({
 		cover: null,
@@ -113,10 +107,10 @@ app.post('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: R
 		desc: body.desc,
 		createdBy: userId,
 		createdAt: new Date(),
-		organizationId: body.organizationId || "897821",
+		organizationId: body.organizationId || '897821',
 		updatedAt: null,
 		updatedBy: null
-	})
+	});
 
 	await mdMemberAdd({
 		uid: userId,
@@ -126,22 +120,13 @@ app.post('/api/project', ClerkExpressWithAuth(), async (req: RequestAuth, res: R
 		createdBy: userId,
 		updatedBy: null,
 		updatedAt: null
-	})
+	});
 
 	res.json({
 		status: 200,
 		data: result
-	})
-})
-
-
-app.get('/api/home', ClerkExpressWithAuth({}), (req: WithAuthProp<Request>, res: Response) => {
-
-	res.json({
-		status: 200,
-		message: 'success'
-	})
-})
+	});
+});
 
 
 const port = process.env.PORT || 3333;

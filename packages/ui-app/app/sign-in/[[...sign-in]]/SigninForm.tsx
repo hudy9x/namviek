@@ -28,6 +28,8 @@ export default function SigninForm() {
 			signin(values as ISignin).then(res => {
 				const { status } = res.data
 
+        console.log(res.headers)
+
 				console.log(status)
 
 				if (status !== 200) {
