@@ -1,3 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.root-container {
+	@apply flex;
+}
+
+.root-sidebar {
+	@apply h-screen border-r;
+	@apply flex items-start;
+}
+
+.primary-sidebar {
+	@apply flex flex-col justify-between h-screen border-r;
+}
+
+.root-sidebar .main-nav-icon {
+	@apply m-2 p-3 w-10 h-10 text-gray-400 rounded-lg;
+	@apply cursor-pointer hover:text-gray-600 hover:bg-gray-100;
+}
+
+.main-nav-icon.active {
+	@apply text-indigo-500 bg-indigo-50;
+	@apply hover:text-indigo-600 hover:bg-indigo-50;
+}
+
+.side-nav {
+	@apply border-t py-4;
+	@apply w-[250px] shrink-0;
+}
+
+.side-nav h2, 
+.side-nav .side-title{
+	@apply uppercase text-xs font-medium text-gray-500 px-3 pb-3;
+	@apply flex justify-between items-center;
+}
+
+.side-nav .section-icon {
+	@apply cursor-pointer hover:bg-gray-100 border w-7 h-7 p-1 rounded-md;
+}
+
+.side-nav nav a {
+}
+
+.side-nav .nav-icon {
+	@apply text-sm text-gray-400;
+}
+
+.nav .nav-item {
+	@apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
+	@apply hover:bg-gray-100;
+}
+
+.nav .nav-item.active {
+	@apply bg-indigo-50 text-indigo-900;
+}
+
+.tab {
+		@apply flex
+	}
+
+.tab-item {
+		@apply flex items-center gap-2 text-sm text-gray-600;
+		@apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
+	}
+
+.tab-item.active{
+		@apply border-indigo-400 text-indigo-700;
+	}
+
+.sign-page {
+		background-image: url('/pat-1.webp');
+		background-size: 100%;
+	}

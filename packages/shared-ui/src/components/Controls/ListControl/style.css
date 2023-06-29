@@ -1,0 +1,39 @@
+.select-container{
+  @apply relative;
+}
+
+.select-container.select-none .select-options{
+  @apply hidden;
+}
+
+.select-container:not(.select-none) .select-button{
+  @apply border-indigo-500 ring-indigo-200 ring-2
+}
+
+.select-button {
+  @apply cursor-pointer relative
+}
+
+.select-clear-icon {
+  @apply absolute top-1 right-6 p-0.5 w-4 h-4 bg-gray-200 text-gray-500 rounded-full;
+}
+
+.select-button .trailing-icon{
+  @apply absolute top-1.5 right-1 text-gray-400
+}
+
+.select-options {
+  @apply py-1.5 bg-white rounded-md border shadow-sm;
+  @apply absolute mt-1.5 left-0 w-full;
+}
+
+.select-item {
+  @apply px-3 py-2 text-sm cursor-pointer hover:bg-slate-50
+}
+
+.select-item.active{
+  @apply bg-slate-100
+}
+
+
+

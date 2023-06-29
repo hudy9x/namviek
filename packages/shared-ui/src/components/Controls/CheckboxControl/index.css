@@ -1,0 +1,25 @@
+.inp-checkbox {
+  @apply relative flex items-start
+}
+
+.inp-checkbox input[type="checkbox"] {
+  @apply h-4 w-4 rounded border-gray-300 text-indigo-600;
+  @apply focus:ring-indigo-600;
+}
+
+.inp-checkbox [type="checkbox"]:checked:not(:disabled) {
+  @apply border-indigo-600;
+}
+
+.inp-checkbox [type='checkbox']:disabled {
+  @apply bg-gray-300;
+}
+
+/* .inp-checkbox input[checked] { */
+/*   @apply border-indigo-600; */
+/* } */
+/**/
+/* .inp-checkbox input[disabled][checked] { */
+/*   @apply bg-gray-100 cursor-not-allowed; */
+/*   @apply border-gray-300 text-gray-500;  */
+/* } */

@@ -1,0 +1,144 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum MemberRole {
+  GUEST
+  MEMBER
+  MANAGER
+  LEADER
+}
+
+enum OrganizationRole {
+  ADMIN
+  MEMBER
+}
+
+enum InvitationStatus {
+  REJECTED
+  ACCEPTED
+  INVITING
+}
+
+enum TaskPriority {
+  URGENT
+  HIGH
+  NORMAL
+  LOW
+}
+
+model User {
+  id                  String                @id @default(auto()) @map("_id") @db.ObjectId
+  email               String                @unique
+  password            String
+  name                String?
+  status              UserStatus?
+  country             String?
+  bio                 String?
+  photo               String?
+  dob                 DateTime?
+  members             Members[]
+  organizationMembers OrganizationMembers[]
+  createdAt           DateTime?
+  createdBy           String?
+  updatedAt           DateTime?
+  updatedBy           String?
+}
+
+model Organization {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String  @unique
+  cover  String?
+  avatar String?
+  desc   String?
+}
+
+model OrganizationMembers {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  uid            String           @db.ObjectId
+  status         InvitationStatus
+  organizationId String           @db.ObjectId
+  role           OrganizationRole
+  users          User             @relation(fields: [uid], references: [id])
+}
+
+model Task {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  desc          String?
+  dueDate       DateTime?
+  startDate     DateTime?
+  projectId     String        @db.ObjectId
+  priority      TaskPriority?
+  taskStatusIds String[]      @db.ObjectId
+  tagIds        String[]      @db.ObjectId
+  assigneeIds   String[]      @db.ObjectId
+  parentTaskId  String?       @db.ObjectId
+
+  // do not store `point` as objectID, cuz we just need to fill the point value
+  taskPoint Int?
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
+model TaskStatus {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  color     String
+  order     Int
+  projectId String @db.ObjectId
+}
+
+// Tag used for Projects and Tasks
+model Tag {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  color     String
+  projectId String @db.ObjectId
+}
+
+model TaskPoint {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  point     Int
+  projectId String  @db.ObjectId
+  icon      String?
+}
+
+model Project {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  desc           String?
+  cover          String?
+  icon           String?
+  createdBy      String?
+  createdAt      DateTime?
+  organizationId String
+  updatedBy      String?
+  updatedAt      DateTime?
+}
+
+model Members {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String     @db.ObjectId
+  role      MemberRole
+  users     User       @relation(fields: [uid], references: [id])
+  uid       String     @db.ObjectId
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}

@@ -1,0 +1,73 @@
+.btn {
+  @apply border border-gray-300 rounded px-3 py-2 bg-white;
+  @apply hover:bg-gray-50 active:bg-gray-100 text-sm;
+  @apply inline-flex items-center;
+}
+
+.btn.block {
+  @apply w-full justify-center;
+}
+
+/* Loading icon svg */
+.btn svg {
+  @apply text-gray-500 w-4 h-4 mr-1.5;
+}
+.btn.btn-primary svg,
+.btn.btn-warning svg,
+.btn.btn-danger svg
+{
+  @apply text-white w-4 h-4;
+}
+
+/* Button size */
+.btn.sm{
+  @apply px-2 py-1 text-xs;
+}
+
+.btn.sm svg{
+  @apply w-3 h-3
+}
+
+.btn.lg {
+  @apply px-5 py-3 text-lg rounded-md;
+}
+
+.btn.lg svg {
+  @apply w-5 h-5 mr-2;
+}
+
+/* Button colors */
+
+.btn.btn-primary {
+  @apply border-indigo-600 bg-indigo-600 text-white;
+  @apply hover:bg-indigo-500 active:bg-indigo-700;
+}
+
+.btn.btn-danger {
+  @apply border-red-400 bg-red-400 text-white;
+  @apply hover:bg-red-500 active:bg-red-600;
+}
+
+.btn.btn-warning {
+  @apply border-yellow-400 bg-yellow-400 text-white;
+  @apply hover:bg-yellow-300 active:bg-yellow-500;
+}
+
+.btn.btn-sm {
+  @apply px-2.5 py-1 text-sm rounded-md;
+}
+
+.btn[disabled] {
+  @apply cursor-not-allowed bg-gray-50 opacity-60;
+}
+
+.btn.btn-primary[disabled] {
+  @apply bg-indigo-600/70 border-indigo-400 opacity-90
+}
+.btn.btn-warning[disabled] {
+  @apply bg-yellow-400/80 border-yellow-300 opacity-90
+}
+.btn.btn-danger[disabled] {
+  @apply bg-red-400/70 border-red-300 opacity-90
+}
+
