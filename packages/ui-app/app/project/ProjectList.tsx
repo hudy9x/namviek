@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { useProjectStore } from "packages/ui-app/store/project";
+import { useProjectStore } from "../../store/project";
 import { useEffect } from "react";
 import { useServiceProject } from "../../services/project";
 import { useParams } from "next/navigation";
@@ -19,22 +19,22 @@ export default function ProjectList() {
 
 	useEffect(() => {
 		console.log('get all projects')
-		getProjects().then(res => res.json()).then(result => {
-			const { data, status } = result
-			const projects = data as Project[]
-
-			if (status !== 200) return;
-
-			addAllProject(data)
-			projects.some(p => {
-				if (p.id === params.projectId) {
-					onSelectProject(p.id)
-					return true;
-				}
-			})
-			
-
-		})
+		// getProjects().then(res => res.json()).then(result => {
+		// 	const { data, status } = result
+		// 	const projects = data as Project[]
+		//
+		// 	if (status !== 200) return;
+		//
+		// 	addAllProject(data)
+		// 	projects.some(p => {
+		// 		if (p.id === params.projectId) {
+		// 			onSelectProject(p.id)
+		// 			return true;
+		// 		}
+		// 	})
+		// 	
+		//
+		// })
 	}, [])
 
 

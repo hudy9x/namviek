@@ -6,11 +6,11 @@ import { useState } from "react"
 import { HiOutlinePlusSm } from "react-icons/hi"
 import { validateQuickAddProject } from "@shared/validation";
 import { useServiceProject } from "../../services/project"
-import { useOrganization } from "@clerk/nextjs"
-import { useProjectStore } from "packages/ui-app/store/project"
+// import { useOrganization } from "@clerk/nextjs"
+import { useProjectStore } from "../../store/project"
 
 export default function ProjectAdd() {
-	const { organization } = useOrganization()
+	// const { organization } = useOrganization()
 	const { quickAddProject } = useServiceProject()
 	const { addProject } = useProjectStore()
 	const [visible, setVisible] = useState(false)
@@ -34,7 +34,7 @@ export default function ProjectAdd() {
 			quickAddProject({
 				...values,
 				...{
-					organizationId: organization?.id
+					organizationId: 'dummy-project-id'
 				}
 			}).then(res => res.json()).then(res => {
 					const { status, data } = res
