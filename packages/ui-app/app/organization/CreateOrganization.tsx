@@ -3,8 +3,13 @@
 import { Button, Form, messageError, messageSuccess } from '@shared/ui';
 import { useFormik } from 'formik';
 import { orgCreate } from '../../services/organization';
+import { useUser } from '@goalie/nextjs';
 
 export default function CreateOrganization() {
+  const { user } = useUser();
+
+  console.log(user);
+
   const formik = useFormik({
     initialValues: {
       name: '',
