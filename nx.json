@@ -1,44 +1,40 @@
 {
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "MDBhNjkxNGEtOTRkMS00NzlmLWJjODEtOWI0Nzk0MjZmOGE5fHJlYWQtd3JpdGU="
-      }
-    }
-  },
-  "extends": "nx/presets/npm.json",
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "targetDefaults": {
-    "test": {
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
-    },
-    "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore"
-      ]
-    }
-  },
-  "generators": {
-    "@nx/react": {
-      "application": {
-        "babel": true
-      },
-      "library": {
-        "unitTestRunner": "jest"
-      }
-    },
-    "@nx/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  }
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx-cloud",
+			"options": {
+				"cacheableOperations": ["build", "lint", "test", "e2e"],
+				"accessToken": "MDBhNjkxNGEtOTRkMS00NzlmLWJjODEtOWI0Nzk0MjZmOGE5fHJlYWQtd3JpdGU="
+			}
+		}
+	},
+	"extends": "nx/presets/npm.json",
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"affected": {
+		"defaultBase": "master"
+	},
+	"targetDefaults": {
+		"test": {
+			"inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+		},
+		"lint": {
+			"inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+		}
+	},
+	"generators": {
+		"@nx/react": {
+			"application": {
+				"babel": true
+			},
+			"library": {
+				"unitTestRunner": "jest"
+			}
+		},
+		"@nx/next": {
+			"application": {
+				"style": "css",
+				"linter": "eslint"
+			}
+		}
+	}
 }
