@@ -1,15 +1,11 @@
 'use client';
 
-import { Button, Form, messageError, messageSuccess } from '@shared/ui';
+import { Button, Form } from '@shared/ui';
 import { useFormik } from 'formik';
-import { orgCreate } from '../../services/organization';
+import { orgCreate } from '../../../services/organization';
 import { useUser } from '@goalie/nextjs';
 
 export default function CreateOrganization() {
-  const { user } = useUser();
-
-  console.log(user);
-
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -17,16 +13,10 @@ export default function CreateOrganization() {
     },
     onSubmit: values => {
       orgCreate(values).then(res => {
-        console.log(res);
+        const { status } = res;
+        const { data } = res.data;
+        console.log(status, data);
       });
-      // addOrganization({
-      // 	name: values.name
-      // }).then(res => {
-      // 	console.log('success')
-      // }).catch(err => {
-      // 	messageError('create error')
-      // 	console.log(err)
-      // })
     }
   });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useState } from 'react';
 import { GoalieUser } from './types';
 import { getGoalieUser } from './lib/util';
 import useGoalieInProtectionMode from './useGoalieInProtectionMode';

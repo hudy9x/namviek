@@ -5,3 +5,7 @@ export * from './lib/goalie-nextjs';
 
 export * from './GoalierProvider'
 export * from './useUser'
+
+export * from './services/auth'
+export * from './services/organization'
+// export * from './services/organization'

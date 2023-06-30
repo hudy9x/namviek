@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Logo from '../../../components/Logo';
-import { ISignin, signin } from '../../../services/auth';
-import { saveGoalieUser } from '@goalie/nextjs';
+
+import { ISignin, saveGoalieUser, signin } from '@goalie/nextjs';
 
 export default function SigninForm() {
   const { push } = useRouter();
@@ -27,23 +27,7 @@ export default function SigninForm() {
       console.log(values);
       signin(values as ISignin)
         .then(res => {
-          const { status, data } = res.data;
-
-          console.log(data);
-
-          if (status !== 200) {
-            messageError('Email or password is invalid');
-            return;
-          }
-
-          saveGoalieUser({
-            id: data.id,
-            email: data.email,
-            name: data.name,
-            photo: data.photo
-          });
-
-          push('/organization');
+          push('/');
 
           // messageSuccess('Success')
         })
@@ -70,11 +54,11 @@ export default function SigninForm() {
           <div className="flex flex-col gap-4 mt-6">
             <Form.Input title="Email" {...regField('email')} />
             <Form.Input title="Password" type="password" {...regField('password')} />
-            <Button title="Sign in" type="submit" block primary />
+            <Button loading={loading} title="Sign in" type="submit" block primary />
           </div>
 
           <div className="mt-6 text-center text-gray-400 text-sm">
-            Don not have any account ?{' '}
+            Do not have any account ?{' '}
             <Link className="text-indigo-600 hover:underline" href={'/sign-up'}>
               Register
             </Link>

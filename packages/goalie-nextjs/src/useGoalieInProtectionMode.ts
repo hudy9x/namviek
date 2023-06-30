@@ -1,20 +1,30 @@
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { GoalieUser } from './types';
+import { clearGoalieUser, getDecodeRefreshToken } from './lib/util';
 
-export default function useGoalieInProtectionMode({user}: {user: GoalieUser | null}) {
+export default function useGoalieInProtectionMode({ user }: { user: GoalieUser | null }) {
 	const signinPage = '/sign-in';
 	const publicPages = ['/sign-in', '/sign-up'];
 	const pathname = usePathname();
 	const { push } = useRouter();
 
+	console.log('useGoalieprotect', user);
 
-  console.log('useGoalieprotect', user)
+	const onAuth = (user: GoalieUser, pathname: string) => {
+		console.log('onAuth', user);
+		const now = Date.now();
+    const decoded = getDecodeRefreshToken()
+		const exp = decoded.exp; // it is refresh token expired time
 
-	useEffect(() => {
+		// refresh token expired
+    // redirect to /sign-in
+		if (exp * 1000 < now) {
+			clearGoalieUser();
+			return push('/sign-in');
+		}
 
 		const notLogin = !user;
-    console.log('notelogin', notLogin, user)
 		const notInsidePublicPages = !publicPages.some(p => p.includes(pathname));
 		const insidePublicPages = !notInsidePublicPages;
 
@@ -25,5 +35,9 @@ export default function useGoalieInProtectionMode({user}: {user: GoalieUser | nu
 		} else if (insidePublicPages) {
 			push('/');
 		}
+	};
+
+	useEffect(() => {
+		user && onAuth(user, pathname);
 	}, [user, pathname]);
 }
