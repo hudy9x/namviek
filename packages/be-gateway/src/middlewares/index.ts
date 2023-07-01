@@ -9,8 +9,6 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 	const authorization = headers.authorization;
 	const refreshToken = headers.refreshtoken as string;
 
-  console.log(authorization)
-
 	try {
 		const validToken = extractToken(authorization);
 		if (validToken) {
@@ -23,6 +21,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 		const validRefreshToken = await verifyRefreshToken(refreshToken);
 		if (validRefreshToken) {
       console.log('token is invalid, but refresh token is valid')
+      console.log('re-generate new token vs refresh token')
 			const user = validToken as JWTPayload;
 			const token = generateToken({
 				id: user.id,
@@ -37,6 +36,8 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 
 			res.setHeader('Authorization', token);
 			res.setHeader('RefreshToken', refreshToken);
+
+      console.log('genereated succesfully')
 
 			req.authen = user;
 		}

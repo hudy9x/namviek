@@ -9,10 +9,7 @@ export default function useGoalieInProtectionMode({ user }: { user: GoalieUser |
 	const pathname = usePathname();
 	const { push } = useRouter();
 
-	console.log('useGoalieprotect', user);
-
 	const onAuth = (user: GoalieUser, pathname: string) => {
-		console.log('onAuth', user);
 		const now = Date.now();
     const decoded = getDecodeRefreshToken()
 		const exp = decoded.exp; // it is refresh token expired time

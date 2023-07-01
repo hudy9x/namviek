@@ -19,7 +19,6 @@ export const GoalieContext = createContext<IGoalieContext>({
 
 export const GoalieProvider = function ({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<GoalieUser | null>(getGoalieUser());
-  console.log('user', user)
   useGoalieInProtectionMode({user})
 
 	return (

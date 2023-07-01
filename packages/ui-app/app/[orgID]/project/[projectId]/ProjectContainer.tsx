@@ -1,7 +1,7 @@
 'use client'
 
 import { HiOutlineCog6Tooth, HiOutlineUserCircle, HiOutlineViewColumns, HiOutlineCalendar } from "react-icons/hi2";
-import { useProjectStore } from "../../../store/project"
+import { useProjectStore } from "../../../../store/project"
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 

@@ -13,7 +13,9 @@ router.get('/org', async (req: AuthRequest, res) => {
 		const { id } = req.authen;
 
 		const orgIds = await mdOrgMemGetByUid(id);
-		const orgs = await mdOrgGet(orgIds.map(org => org.id));
+		const orgs = await mdOrgGet(orgIds.map(org => org.organizationId));
+
+    console.log(orgs)
 
 		res.json({
 			status: 200,

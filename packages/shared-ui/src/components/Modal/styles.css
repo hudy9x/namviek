@@ -3,7 +3,7 @@
   background-color: rgba(0,0,0,.5);
   position: fixed;
   inset: 0;
-  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1); */
 }
 
 .modal-content {
@@ -13,11 +13,12 @@
   position: fixed;
   top: 50%;
   left: 50%;
+  /* FIXME: transform attribue make modal turn a litle bit blur */
   transform: translate(-50%, -50%);
   width: 90vw;
   max-width: 450px;
   max-height: 85vh;
-  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1); */
 	@apply p-6;
 }
 .modal-content:focus {
@@ -42,22 +43,22 @@
 }
 
 
-@keyframes overlayShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* @keyframes overlayShow { */
+/*   from { */
+/*     opacity: 0; */
+/*   } */
+/*   to { */
+/*     opacity: 1; */
+/*   } */
+/* } */
 
-@keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
+/* @keyframes contentShow { */
+/*   from { */
+/*     opacity: 0; */
+/*     transform: translate(-50%, -48%) scale(0.96); */
+/*   } */
+/*   to { */
+/*     opacity: 1; */
+/*     transform: translate(-50%, -50%) scale(1); */
+/*   } */
+/* } */

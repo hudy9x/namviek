@@ -1,8 +1,18 @@
 import { Organization, OrganizationMembers } from '@prisma/client';
 import { orgMemberModel, orgModel } from './_prisma';
 
-export const mdOrgGet = async (projectId: string | string[]) => {
+export const mdOrgGetOne = async (projectId: string | string[]) => {
   return orgModel.findFirst({
+    where: {
+      id: {
+        in: Array.isArray(projectId) ? projectId : [projectId]
+      }
+    }
+  });
+};
+
+export const mdOrgGet = async (projectId: string | string[]) => {
+  return orgModel.findMany({
     where: {
       id: {
         in: Array.isArray(projectId) ? projectId : [projectId]

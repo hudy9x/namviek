@@ -5,7 +5,7 @@ export const useUser = () => {
 	const { user, setUser } = useContext(GoalieContext);
 
 	return {
-		user,
+    user,
 		setUser
 	};
 };
