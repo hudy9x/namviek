@@ -1,0 +1,30 @@
+.avatar-root {
+  @apply w-9 h-9 rounded-full bg-pink-300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  overflow: hidden;
+  user-select: none;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: red;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+}
+

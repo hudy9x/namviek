@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.box {
+    @apply bg-white p-4 shadow-sm shadow-gray-300 rounded-md;
+    @apply transition-all hover:shadow-lg
+	}
+
+  .box-lg {
+    @apply p-6 rounded-lg;
+  }
+}
+
 .root-container {
 	@apply flex;
 }
@@ -30,8 +41,8 @@
 	@apply w-[250px] shrink-0;
 }
 
-.side-nav h2, 
-.side-nav .side-title{
+.side-nav h2,
+.side-nav .side-title {
 	@apply uppercase text-xs font-medium text-gray-500 px-3 pb-3;
 	@apply flex justify-between items-center;
 }
@@ -57,19 +68,19 @@
 }
 
 .tab {
-		@apply flex
-	}
+	@apply flex;
+}
 
 .tab-item {
-		@apply flex items-center gap-2 text-sm text-gray-600;
-		@apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
-	}
+	@apply flex items-center gap-2 text-sm text-gray-600;
+	@apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
+}
 
-.tab-item.active{
-		@apply border-indigo-400 text-indigo-700;
-	}
+.tab-item.active {
+	@apply border-indigo-400 text-indigo-700;
+}
 
 .sign-page {
-		background-image: url('/pat-1.webp');
-		background-size: 100%;
-	}
+	background-image: url('/pat-1.webp');
+	background-size: 100%;
+}

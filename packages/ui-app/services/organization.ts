@@ -1,6 +1,10 @@
-import { Organization } from "@prisma/client"
-import { httpPost } from "./_req"
+import { Organization } from '@prisma/client';
+import { httpGet, httpPost } from './_req';
 
 export const orgCreate = (data: Partial<Organization>) => {
-  return httpPost('/api/auth/org', data)
-}
+	return httpPost('/api/org', data);
+};
+
+export const orgGet = () => {
+	return httpGet('/api/org');
+};

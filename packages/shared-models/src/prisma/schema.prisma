@@ -56,11 +56,15 @@ model User {
 }
 
 model Organization {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  name   String  @unique
-  cover  String?
-  avatar String?
-  desc   String?
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String    @unique
+  cover     String?
+  avatar    String?
+  desc      String?
+  createdAt DateTime?
+  createdBy String?
+  updatedAt DateTime?
+  updatedBy String?
 }
 
 model OrganizationMembers {
@@ -70,6 +74,10 @@ model OrganizationMembers {
   organizationId String           @db.ObjectId
   role           OrganizationRole
   users          User             @relation(fields: [uid], references: [id])
+  createdAt      DateTime?
+  createdBy      String?
+  updatedAt      DateTime?
+  updatedBy      String?
 }
 
 model Task {

@@ -1,3 +1,10 @@
+import {
+  clearAllGoalieToken,
+  getGoalieRefreshToken,
+  getGoalieToken,
+  saveGoalieRefreshToken,
+  saveGoalieToken
+} from '@goalie/nextjs';
 import { messageError } from '@shared/ui';
 import axios from 'axios';
 
@@ -7,8 +14,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function(config) {
-    const refreshToken = localStorage.getItem('REFRESH_TOKEN') || '';
-    const authorization = localStorage.getItem('JWT_TOKEN') || '';
+    const authorization = getGoalieToken();
+    const refreshToken = getGoalieRefreshToken();
 
     config.headers.setAuthorization(authorization);
     config.headers.set('refreshtoken', refreshToken);
@@ -26,20 +33,20 @@ instance.interceptors.response.use(
     const refreshtoken = headers.refreshtoken;
 
     if (authorization && refreshtoken) {
-      localStorage.setItem('JWT_TOKEN', authorization);
-      localStorage.setItem('REFRESH_TOKEN', refreshtoken);
+      saveGoalieToken(authorization);
+      saveGoalieRefreshToken(refreshtoken);
     }
 
     return config;
   },
   function(error) {
-
-    const {response} = error
+    const { response } = error;
     if (response && response.status === 440) {
-      messageError('Your session is expired. Please login again !')
-
+      messageError('Your session is expired. Please login again !');
+      clearAllGoalieToken();
+      window.location.href = `/sign-in?redirectUrl=${window.location.pathname}`;
     }
-    console.log('ERRIRIRIR', response.status)
+    console.log('ERRIRIRIR', response.status);
     return Promise.reject(error);
   }
 );
