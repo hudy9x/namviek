@@ -1,11 +1,11 @@
-import RootPage from "../components/RootPage";
+// import RootPage from "../components/RootPage";
 
 export default async function Index() {
   console.log('091820938')
   return (
     <div>
       <div className="wrapper">
-        <RootPage/>
+        {/* <RootPage/> */}
       </div>
     </div>
   );
