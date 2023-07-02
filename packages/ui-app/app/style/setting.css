@@ -1,0 +1,26 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.list-setting {
+	@apply h-96 border-r-2
+}
+
+.item-setting {
+	@apply w-[250px] shrink-0 pb-4 cursor-pointer;
+}
+
+.item-text {
+ @apply uppercase text-xs font-medium text-gray-500 px-3 pb-3
+}
+
+.status-container {
+	width: 800px;
+	height: 345px;
+	@apply mt-4 border-solid border-2 rounded-md flex flex-col justify-between
+}
+
+.status-tag {
+	@apply text-xs w-fit h-fit bg-red-400 p-1 rounded
+}

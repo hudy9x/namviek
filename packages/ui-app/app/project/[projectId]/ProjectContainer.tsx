@@ -4,7 +4,7 @@ import { HiOutlineCog6Tooth, HiOutlineUserCircle, HiOutlineViewColumns, HiOutlin
 import { useProjectStore } from "../../../store/project"
 import { useSearchParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { Setting } from "./Setting";
+import { Setting } from "packages/ui-app/components/SettingApp";
 
 export default function ProjectContainer() {
 	const searchParams = useSearchParams()
@@ -51,7 +51,7 @@ export default function ProjectContainer() {
 			</div>
 		</div>
 
-		<div className="task bg-indigo-50/50 w-full">
+		<div className="task w-full">
 				{renderTab}
 		</div>
 
