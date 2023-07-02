@@ -26,19 +26,24 @@ export default function Modal({
     <Dialog.Root open={visible} onOpenChange={onVisibleChange}>
       <Dialog.Trigger asChild>{triggerBy}</Dialog.Trigger>
       <Dialog.Portal>
-        {backdrop ? <Dialog.Overlay className="modal-overlay" /> : null}
-        <Dialog.Content className="modal-content">
-          {title ? <Dialog.Title className="modal-title">{title}</Dialog.Title> : null}
-          {desc ? <Dialog.Description className="modal-desc">{desc}</Dialog.Description> : null}
+        <div className="fixed top-0 left-0 w-screen h-screen ">
+          <div className='relative w-full h-full flex items-center justify-center'>
 
-          {content}
+          <Dialog.Content className="modal-content">
+            {title ? <Dialog.Title className="modal-title">{title}</Dialog.Title> : null}
+            {desc ? <Dialog.Description className="modal-desc">{desc}</Dialog.Description> : null}
 
-          <Dialog.Close asChild>
-            <button className="modal-close" aria-label="Close">
-              <MdClose />
-            </button>
-          </Dialog.Close>
-        </Dialog.Content>
+            {content}
+
+            <Dialog.Close asChild>
+              <button className="modal-close" aria-label="Close">
+                <MdClose />
+              </button>
+            </Dialog.Close>
+          </Dialog.Content>
+          {backdrop ? <Dialog.Overlay className="modal-overlay" /> : null}
+          </div>
+        </div>
       </Dialog.Portal>
     </Dialog.Root>
   );

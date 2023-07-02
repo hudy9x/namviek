@@ -16,22 +16,22 @@ export default function useGoalieInProtectionMode({ user }: { user: GoalieUser |
 
 		// refresh token expired
     // redirect to /sign-in
-		if (exp * 1000 < now) {
-			clearGoalieUser();
-			return push('/sign-in');
-		}
+		// if (exp * 1000 < now) {
+		// 	clearGoalieUser();
+		// 	return push('/sign-in');
+		// }
 
-		const notLogin = !user;
-		const notInsidePublicPages = !publicPages.some(p => p.includes(pathname));
-		const insidePublicPages = !notInsidePublicPages;
-
-		if (notLogin) {
-			if (notInsidePublicPages) {
-				push(signinPage);
-			}
-		} else if (insidePublicPages) {
-			push('/');
-		}
+		// const notLogin = !user;
+		// const notInsidePublicPages = !publicPages.some(p => p.includes(pathname));
+		// const insidePublicPages = !notInsidePublicPages;
+		//
+		// if (notLogin) {
+		// 	if (notInsidePublicPages) {
+		// 		push(signinPage);
+		// 	}
+		// } else if (insidePublicPages) {
+		// 	push('/');
+		// }
 	};
 
 	useEffect(() => {
