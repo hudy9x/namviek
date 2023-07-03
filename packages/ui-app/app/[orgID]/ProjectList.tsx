@@ -38,7 +38,6 @@ export default function ProjectList() {
   return (
     <nav className="nav">
       {projects.map(project => {
-        console.log('project item', project);
         const active = params.projectId === project.id;
         return (
           <Link

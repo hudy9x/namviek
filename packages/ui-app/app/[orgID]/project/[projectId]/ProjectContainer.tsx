@@ -14,8 +14,6 @@ export default function ProjectContainer() {
   const { selectedProject } = useProjectStore(state => state);
   const mode = searchParams.get('mode');
 
-  console.log('109238')
-
   const [tabs] = useState([
     { name: 'Overview', href: '#', icon: HiOutlineUserCircle, current: false },
     { name: 'Task', href: '#', icon: HiOutlineMenuAlt1, current: false },
@@ -31,7 +29,7 @@ export default function ProjectContainer() {
 
   return (
     <div>
-      <div className="bg-white border-b border-gray-100 shadow-sm">
+      <div className="bg-white border-b border-gray-200">
         <h2 className="text-xl font-bold px-4 py-2">{selectedProject?.name}</h2>
         <div className="tab pl-1">
           {tabs.map((tab, index) => {
