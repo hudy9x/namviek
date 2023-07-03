@@ -4,8 +4,8 @@ import { Button, Form, Loading, messageError, useForm } from '@shared/ui';
 import { validateRegisterUser } from '@shared/validation';
 import Link from 'next/link';
 import Logo from '../../../components/Logo';
-import { signup } from '../../../services/auth';
 import { useState } from 'react';
+import { signup } from '@goalie/nextjs';
 
 export default function SignupForm() {
 	const [loading, setLoading] = useState(false);

@@ -1,30 +1,13 @@
-import { Project } from "@prisma/client"
-import { useRequest } from "./_request"
+import { Project } from '@prisma/client';
+import { httpGet, httpPost } from './_req';
 
-type IProjectAdd = Pick<Project, 'name' | 'desc'>
+type IProjectAdd = Pick<Project, 'name' | 'desc' | 'organizationId'>;
 
-export const useServiceProject = () => {
-	const { post, get } = useRequest()
+export const projectGet = () => {
+  return httpGet('/api/project');
+};
 
-	const quickAddProject = async ({ name, desc }: IProjectAdd) => {
-
-		return post('/api/project', {
-			name,
-			desc
-		})
-	}
-
-
-	const getProjects = async() => {
-		return get('/api/project')
-	}
-
-	return {
-		quickAddProject,
-		getProjects
-	}
-}
-
-
-
-
+export const projectQuickAdd = (data: IProjectAdd) => {
+  console.log('project add data', data)
+  return httpPost('/api/project', data);
+};

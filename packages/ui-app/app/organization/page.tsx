@@ -1,6 +1,12 @@
-import CreateOrganization from "./CreateOrganization";
-import "./style.css";
+import OrgList from './OrgList';
 
-export default function Page() {
-	return <CreateOrganization/>
+export default async function Index() {
+  console.log('091820938');
+  return (
+    <div>
+      <div className="wrapper">
+        <OrgList />
+      </div>
+    </div>
+  );
 }

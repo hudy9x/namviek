@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^4.15.0",
+    "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
     "@swc/helpers": "~0.5.0",
     "@tailwindcss/forms": "^0.5.3",
