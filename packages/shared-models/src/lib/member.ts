@@ -24,5 +24,13 @@ export const mdMemberBelongToProject = async (uid: string, projectId: string) =>
       uid,
       projectId
     }
-  })
-}
+  });
+};
+
+export const mdMemberGetAllByProjectId = async (projectId: string) => {
+  return memberModel.findFirst({
+    where: {
+      projectId
+    }
+  });
+};

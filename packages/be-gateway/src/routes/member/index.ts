@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
 import { AuthRequest } from '../../types';
-import { mdMemberAdd, mdMemberGetProject, mdProjectAdd, mdProjectGetAllByIds } from '@shared/models';
+import { mdMemberAdd, mdMemberGetAllByProjectId, mdMemberGetProject, mdProjectAdd, mdProjectGetAllByIds } from '@shared/models';
 import { MemberRole } from '@prisma/client';
 
 const router = Router();
@@ -11,29 +11,19 @@ router.use([authMiddleware, beProjectMemberMiddleware]);
 // It means GET:/api/project
 router.get('/project/member', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen;
+  const query = req.query;
 
   try {
-    const invitedProjects = await mdMemberGetProject(userId);
+    const members = await mdMemberGetAllByProjectId(query.projectId as string);
 
-    if (!invitedProjects) {
-      console.log("You're not invited to no projects");
-      return res.json({
-        status: 200,
-        data: []
-      });
-    }
-
-    const projectIds = invitedProjects.map(p => p.projectId);
-    const projects = await mdProjectGetAllByIds(projectIds);
-
-    console.log('get project success');
+    console.log(members);
 
     res.json({
       status: 200,
-      data: projects
+      data: members
     });
   } catch (error) {
-    console.log('get project by member error', error);
+    console.log('get project member error', error);
     res.json({
       status: 500,
       err: error,
