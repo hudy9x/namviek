@@ -1,11 +1,11 @@
 import { ListSetting } from "./ListSetting"
-import { Configuration } from "./Configuration"
+import { ProjectStatus } from "./ProjectStatus"
 
 export const Setting = () => {
  return (
   <div className="flex mt-8">
    <ListSetting/>
-   <Configuration/>
+   <ProjectStatus/>
   </div>
  )
 }

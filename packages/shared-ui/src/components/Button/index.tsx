@@ -59,8 +59,6 @@ const Button = ({
     className,
   ].filter(Boolean);
 
-
-
   return (
     <button type={type} className={classes.join(" ")} disabled={disabled} {...otherProps}>
       {leadingIcon && !loading ? leadingIcon : null}

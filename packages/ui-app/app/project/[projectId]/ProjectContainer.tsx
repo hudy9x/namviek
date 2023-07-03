@@ -3,8 +3,7 @@
 import { HiOutlineCog6Tooth, HiOutlineUserCircle, HiOutlineViewColumns, HiOutlineCalendar } from "react-icons/hi2";
 import { useProjectStore } from "../../../store/project"
 import { useSearchParams, useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
-import { Setting } from "packages/ui-app/components/SettingApp";
+import { useState } from "react";
 
 export default function ProjectContainer() {
 	const searchParams = useSearchParams()
@@ -18,16 +17,6 @@ export default function ProjectContainer() {
 		{ name: 'Calendar', href: '#', icon: HiOutlineCalendar, current: false },
 		{ name: 'Setting', href: '#', icon: HiOutlineCog6Tooth, current: false },
 	])
-
-	const renderTab = useMemo(() => {
-		switch (mode) {
-			case 'setting':
-				return <Setting/>
-		
-			default:
-				return null;
-		}
-	},[mode])
 
 	const onMoveTab = (name: string) => {
 		push(`/project/${selectedProject?.id}?mode=${name.toLowerCase()}`)
@@ -52,7 +41,7 @@ export default function ProjectContainer() {
 		</div>
 
 		<div className="task w-full">
-				{renderTab}
+
 		</div>
 
 	</div>

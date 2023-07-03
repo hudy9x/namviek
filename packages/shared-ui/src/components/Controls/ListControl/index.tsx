@@ -15,8 +15,10 @@ interface ListControlProps {
   readOnly?: boolean;
   required?: boolean;
   placeholder?: string;
+  visible: boolean 
   value: ListItemValue;
   children: JSX.Element[];
+  //onVisibleChange: React.Dispatch<SetStateAction<boolean>>;
   onFormikChange?: FormikFunc;
   onChange?: Dispatch<SetStateAction<ListItemValue>>;
 }
@@ -32,7 +34,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
     const handleClickOutside = (ev: MouseEvent) => {
       const target = ev.target as HTMLElement;
       ev.stopPropagation();
-
+      
       if (!target.closest(".select-wrapper")) {
         setVisible(false);
       }
@@ -41,8 +43,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
     const handleKeypress = (ev: KeyboardEvent) => {
       const key = ev.key.toLowerCase();
       if (key !== "escape") return;
-
-      setVisible(false);
+      setVisible(false)
     };
 
     document.addEventListener("mouseup", handleClickOutside);
@@ -61,6 +62,7 @@ export default function ListControl({
   title,
   name,
   disabled,
+  visible,
   readOnly,
   helper,
   placeholder = "",
@@ -70,15 +72,16 @@ export default function ListControl({
   onFormikChange,
   children,
 }: ListControlProps) {
-  const [visible, setVisible] = useState(false);
   const classes = ["select-container form-control"];
+  const [isVisible, setIsVisible] = useState<boolean>(true)
 
   disabled && classes.push("disabled");
   readOnly && classes.push("readonly");
   required && classes.push("required");
-
+  console.log(isVisible, 'isVisible')
   return (
     <div
+      id="id-list-control"
       className={`${
         visible && !disabled && !readOnly ? "" : "select-none"
       } ${classes.join(" ")}`}
@@ -89,8 +92,7 @@ export default function ListControl({
           value,
           onChange,
           visible,
-          setVisible,
-          name,
+          setIsVisible,
           onFormikChange,
           placeholder,
           disabled,

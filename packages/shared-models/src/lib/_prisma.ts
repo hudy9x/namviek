@@ -7,5 +7,5 @@ export const memberModel = pmClient.members
 export const userModel = pmClient.user
 export const orgModel = pmClient.organization
 export const orgMemberModel = pmClient.organizationMembers
-export const statusSettingModel = pmClient.statusSetting
+export const taskStatusModal = pmClient.taskStatus
 
