@@ -13,14 +13,17 @@ router.get('/project/member', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen;
   const query = req.query;
 
+  console.log('run here');
+
   try {
     const members = await mdMemberGetAllByProjectId(query.projectId as string);
 
     console.log(members);
+    const users = members.map(m => ({...m.users, role: m.role}))
 
     res.json({
       status: 200,
-      data: members
+      data: users
     });
   } catch (error) {
     console.log('get project member error', error);

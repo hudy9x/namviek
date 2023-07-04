@@ -6,6 +6,7 @@ import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { useState } from 'react';
 import ProjectTabContent from './ProjectTabContent';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
+import TaskCreate from './TaskCreate';
 
 export default function ProjectNav() {
 	const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ export default function ProjectNav() {
 	};
 
 	return (
-		<div className='project-nav'>
+		<div className="project-nav">
 			<div className="bg-white border-b border-gray-200">
 				<h2 className="text-xl font-bold px-4 py-2">{selectedProject?.name}</h2>
 				<div className="tab pl-1">
@@ -48,6 +49,7 @@ export default function ProjectNav() {
 			<div className="task bg-indigo-50/50 w-full">
 				<ProjectTabContent />
 			</div>
+			<TaskCreate />
 		</div>
 	);
 }

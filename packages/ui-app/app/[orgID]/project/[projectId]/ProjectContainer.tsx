@@ -2,18 +2,24 @@
 
 import { useEffect } from 'react';
 import ProjectNav from './ProjectNav';
-import { getProjectMember } from 'packages/ui-app/services/projectMember';
-import { useParams } from "next/navigation";
+import { getProjectMember } from '../../../../services/projectMember';
+import { useParams } from 'next/navigation';
+import { useMemberStore } from '../../../../store/member';
 
 export default function ProjectContainer() {
-  const params = useParams()
+	const params = useParams();
+	const { addAllMember } = useMemberStore();
 
-  useEffect(() => {
-    console.log('aaa', params)
-    // console.log('12897')
-    getProjectMember(params.projectId).then(res => {
-      console.log(res)
-    })
-  }, [])
+	useEffect(() => {
+		getProjectMember(params.projectId).then(res => {
+			const { data, status } = res.data;
+			if (status !== 200) {
+				addAllMember([]);
+				return;
+			}
+
+			addAllMember(data);
+		});
+	}, []);
 	return <ProjectNav />;
 }

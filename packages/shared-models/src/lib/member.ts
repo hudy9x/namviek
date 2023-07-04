@@ -28,9 +28,12 @@ export const mdMemberBelongToProject = async (uid: string, projectId: string) =>
 };
 
 export const mdMemberGetAllByProjectId = async (projectId: string) => {
-  return memberModel.findFirst({
+  return memberModel.findMany({
     where: {
       projectId
+    },
+    include: {
+      users: true
     }
   });
 };
