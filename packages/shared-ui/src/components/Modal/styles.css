@@ -36,7 +36,7 @@
 }
 
 .modal-close{
-	@apply w-9 h-9 p-1 hover:bg-gray-100 hover:text-gray-600 rounded-md text-gray-400;
+	@apply w-9 h-9 p-1 border hover:bg-gray-50 hover:text-gray-600 rounded-md text-gray-400;
 	@apply flex items-center justify-center;
 	@apply absolute top-5 right-6;
 }

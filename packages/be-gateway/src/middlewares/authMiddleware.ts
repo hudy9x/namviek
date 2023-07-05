@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from 'express';
 import { extractToken, generateRefreshToken, generateToken, verifyRefreshToken, verifyToken } from '../lib/jwt';
 import { mdUserFindEmail } from '@shared/models';
@@ -6,48 +5,61 @@ import { User } from '@prisma/client';
 import { AuthRequest, JWTPayload } from '../types';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
-	const headers = req.headers;
-	const authorization = headers.authorization;
-	const refreshToken = headers.refreshtoken as string;
+  const headers = req.headers;
+  const authorization = headers.authorization;
+  const refreshToken = headers.refreshtoken as string;
+  let validToken;
 
-	try {
-		const validToken = extractToken(authorization);
-		if (validToken) {
-      console.log('token is valid')
-			const { id, email, name, photo, ...rest } = validToken as JWTPayload;
-			req.authen = { id, email, name, photo };
-			return next();
-		}
+  try {
+    validToken = extractToken(authorization);
+    if (validToken) {
+      console.log('token is valid');
+      const { id, email, name, photo, ...rest } = validToken as JWTPayload;
+      req.authen = { id, email, name, photo };
+      return next();
+    }
+  } catch (err) {
+    console.log('token is INVALID');
+  }
 
-		const validRefreshToken = await verifyRefreshToken(refreshToken);
-		if (validRefreshToken) {
-      console.log('token is invalid, but refresh token is valid')
-      console.log('re-generate new token vs refresh token')
-			const user = validToken as JWTPayload;
-			const token = generateToken({
-				id: user.id,
-				email: user.email,
-				name: user.name,
-				photo: user.photo
-			});
+  console.log('trying to generate refresh token');
 
-			const refreshToken = generateRefreshToken({
-				email: user.email
-			});
+  try {
+    const validRefreshToken = await verifyRefreshToken(refreshToken);
+    console.log('valid', validRefreshToken);
+    if (validRefreshToken) {
+      console.log('token is invalid, but refresh token is valid');
+      console.log('re-generate new token vs refresh token');
+      const user = validToken as JWTPayload;
+      const token = generateToken({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        photo: user.photo
+      });
+      console.log('generated token');
 
-			res.setHeader('Authorization', token);
-			res.setHeader('RefreshToken', refreshToken);
+      const refreshToken = generateRefreshToken({
+        email: user.email
+      });
 
-      console.log('genereated succesfully')
+      console.log('generated refresh token');
 
-			req.authen = user;
-		}
+      res.setHeader('Authorization', token);
+      res.setHeader('RefreshToken', refreshToken);
 
-		return next();
-	} catch (error) {
-		console.log('authMiddlware:', error);
-		return res.status(440).end();
-	}
+      console.log('genereated succesfully');
 
-	// next()
+      req.authen = user;
+      return next();
+    }
+
+    console.log('refresh token is INVALID as well');
+    return res.status(440).end();
+  } catch (error) {
+    console.log('refresh token is INVALID as well');
+    return res.status(440).end();
+  }
+
+  // next()
 };
