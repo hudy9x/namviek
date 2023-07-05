@@ -1,6 +1,6 @@
 import { TaskPriority } from '@prisma/client';
 import { Form, ListItemValue } from '@shared/ui';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RiFlag2Fill } from 'react-icons/ri';
 
 const List = Form.List;
@@ -72,3 +72,4 @@ export default function PrioritySelect({ title, value, onChange, placeholder }: 
 		</List>
 	);
 }
+
