@@ -16,7 +16,7 @@ export const mdStatusGetAll = async (projectId: string) => {
 	})
 }
 
-export const mdStatusUpdate = async (id: string, data: TaskStatus) => {
+export const mdStatusUpdate = async (id: string, data: Partial<TaskStatus>) => {
 	return taskStatusModal.update({
 		where: {
 			id,

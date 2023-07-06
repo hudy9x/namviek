@@ -2,28 +2,32 @@ import { create } from "zustand";
 import { TaskStatus } from "@prisma/client";
 import { produce } from "immer";
 
+interface TaskStatusAll {
+  [projectId: string]: TaskStatus[];
+}
 interface TaskStatusState {
-	taskStatusArr: TaskStatus[]
+	taskStatus: TaskStatusAll
 	addTaskStatus: (data: TaskStatus) => void
   editTaskStatus: (data: TaskStatus) => void
+  delTaskStatus: (projectId: string, id: number) => void
 }
 
-export const useProjectStore = create<TaskStatusState>((set) => ({
-  taskStatusArr: [],
+export const useTaskStatusStore = create<TaskStatusState>((set) => ({
+  taskStatus: {},
 
   addTaskStatus: (data: TaskStatus) => set(produce((state: TaskStatusState) => {
-		state.taskStatusArr.push(data)
+		state.taskStatus[data.projectId].push(data)
 	})),
 
-  editTaskStatus: (data: TaskStatus) => set(produce((state: TaskStatusState) => {
-    state.taskStatusArr.forEach((status, index) => {
+  editTaskStatus: (data: Partial<TaskStatus>) => set(produce((state: TaskStatusState) => {
+    state.taskStatus[data.projectId].forEach((status, index) => {
       if (data.id === status.id) {
-        state.taskStatusArr[index] = {...data};
+        state.taskStatus[data.projectId][index] = {...data};
       }
     })
   })),
    
-  deleteTaskStatus: (id: string) => set(produce((state: TaskStatusState) => {
-    state.taskStatusArr = state.taskStatusArr.filter((status) => status.id !== id);
+  delTaskStatus: (projectId: string, id: number) => set(produce((state: TaskStatusState) => {
+    state.taskStatus[projectId] = state.taskStatus[projectId].filter((status) => status.id !== id);
   })),
 }))

@@ -1,12 +1,20 @@
 import { TaskStatus } from "@prisma/client"
-import { httpGet, httpPost, httpDel } from './_req';
+import { httpGet, httpPost, httpDel, httpPut } from './_req';
 
-export const addStatus = ({ name, color, projectId }: Pick<TaskStatus, 'name' | 'color' | 'projectId'>) => {
+export const addStatus = ({ name, color, projectId, order }: Pick<TaskStatus, 'name' | 'color' | 'projectId' | 'order'>) => {
 	const body = {
 		name,
-		color
+		color,
+		order
 	}
 	return httpPost(`/api/task-status/${projectId}`, body)
+}
+
+export const editStatus = ({ data, projectId }: {
+	data: Partial<TaskStatus>,
+	projectId: string
+}) => {
+	return httpPut(`/api/task-status/${projectId}`, data)
 }
 
 export const getAllStatus = ({ projectId } : Pick<TaskStatus, 'projectId'> ) => {

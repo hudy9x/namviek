@@ -33,7 +33,18 @@
 	background-color: #fbfcfe80;
 }
 
-.container-list {
-	background-color: red;
-	@apply w-4 h-4 bg-orange-900 rounded-sm mr-2
+.color-container {
+  @apply w-4 h-4 
+}
+
+.color-list {
+  width: 100px;
+  display: flex;
+  flex-flow: row wrap;
+  border: 1px solid #ccc;
+}
+
+.color {
+  width: 20px;
+  height: 20px;
 }

@@ -1,6 +1,5 @@
 import React, { SetStateAction } from 'react';
 import * as Popover from '@radix-ui/react-popover';
-import './styles.css';
 
 interface PopoverControl {
   triggerBy: React.ReactNode;
@@ -9,7 +8,7 @@ interface PopoverControl {
   content: React.ReactNode;
 }
 
-export const Popover = ({
+const PopoverControl = ({
   triggerBy,
   visible = false,
   onVisibleChange,
@@ -19,10 +18,12 @@ export const Popover = ({
     <Popover.Root open={visible} onOpenChange={onVisibleChange}>
       <Popover.Trigger asChild>{triggerBy}</Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="PopoverContent">
+        <Popover.Content>
           <div>{content}</div>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
   )
 }
+
+export default PopoverControl
