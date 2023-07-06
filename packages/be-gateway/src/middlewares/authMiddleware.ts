@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
-import { extractToken, generateRefreshToken, generateToken, verifyRefreshToken, verifyToken } from '../lib/jwt';
+import { NextFunction, Response } from 'express';
+import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken, verifyToken } from '../lib/jwt';
 import { mdUserFindEmail } from '@shared/models';
 import { User } from '@prisma/client';
 import { AuthRequest, JWTPayload } from '../types';
@@ -8,10 +8,10 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
   const headers = req.headers;
   const authorization = headers.authorization;
   const refreshToken = headers.refreshtoken as string;
-  let validToken;
+  console.log('refresh', refreshToken);
 
   try {
-    validToken = extractToken(authorization);
+    const validToken = extractToken(authorization);
     if (validToken) {
       console.log('token is valid');
       const { id, email, name, photo, ...rest } = validToken as JWTPayload;
@@ -30,7 +30,8 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     if (validRefreshToken) {
       console.log('token is invalid, but refresh token is valid');
       console.log('re-generate new token vs refresh token');
-      const user = validToken as JWTPayload;
+      const user = decodeToken(authorization) as JWTPayload;
+      console.log('user infor', user);
       const token = generateToken({
         id: user.id,
         email: user.email,

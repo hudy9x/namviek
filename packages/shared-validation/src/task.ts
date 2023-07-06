@@ -9,7 +9,7 @@ const task = z.object({
   startDate: z.date(),
   projectId: z.string(),
   priority: z.string(),
-  assigneeIds: z.string(),
+  assigneeIds: z.array(z.string()),
 
   createdBy: z.string(),
   createdAt: z.date(),

@@ -1,8 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import { extractToken, generateRefreshToken, generateToken, verifyRefreshToken, verifyToken } from '../lib/jwt';
-import { mdMemberBelongToProject, mdUserFindEmail } from '@shared/models';
-import { User } from '@prisma/client';
-import { AuthRequest, JWTPayload } from '../types';
+import { NextFunction, Response } from 'express';
+import { mdMemberBelongToProject } from '@shared/models';
+import { AuthRequest } from '../types';
 
 export const beProjectMemberMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const { id } = req.authen;
