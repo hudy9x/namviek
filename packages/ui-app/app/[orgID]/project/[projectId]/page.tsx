@@ -1,7 +1,11 @@
-import ProjectContainer from "./ProjectContainer";
+import ProjectContainer from './ProjectContainer';
+import './style.css'
 
 export default function Project({ params }: { params: { projectId: string } }) {
-	return <>
-		<ProjectContainer />
-	</>
+	console.log('params', params.projectId);
+	return (
+		<>
+			<ProjectContainer />
+		</>
+	);
 }

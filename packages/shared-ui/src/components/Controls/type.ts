@@ -22,7 +22,13 @@ type TextareaBaseProps = Omit<InputBaseProps, "onChange"> & {
   cols: number
 }
 
+type TexteditorBaseProps = Omit<InputBaseProps, "onChange"> & {
+  onChange: (ev: string) => void
+}
+
 export type InputProps = Partial<InputBaseProps>
 export type TextareaProps = Partial<TextareaBaseProps>
+export type TexteditorProps = Partial<TexteditorBaseProps>
+
 
 

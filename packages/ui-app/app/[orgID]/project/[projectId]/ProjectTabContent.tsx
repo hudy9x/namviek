@@ -8,7 +8,7 @@ export default function ProjectTabContent() {
   const mode = searchParams.get('mode')
 
   return (
-    <div className="" style={{ height: 'calc(100vh - 83px)' }}>
+    <div className="project-tab-content" style={{ height: 'calc(100vh - 83px)' }}>
       {mode === 'task' ? <TaskList /> : searchParams}
     </div>
   );

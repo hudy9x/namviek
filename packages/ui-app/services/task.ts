@@ -1,23 +1,12 @@
-import { useRequest } from "./_request"
+import { Task } from '@prisma/client';
+import { httpGet, httpPost } from './_req';
 
-export const useServiceProject = () => {
-	const { post, get } = useRequest()
+type ITaskFields = Partial<Task>;
 
-	const quickAddTask = async (data) => {
+export const taskGet = () => {
+  return httpGet('/api/project/task');
+};
 
-		return post('/api/task', {
-		})
-	}
-
-
-	const getTasks = async() => {
-		return get('/api/task')
-	}
-
-	return {
-		quickAddTask,
-		getTasks
-	}
-}
-
-
+export const taskAdd = (data: ITaskFields) => {
+  return httpPost('/api/project/task', data);
+};

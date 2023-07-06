@@ -1,0 +1,30 @@
+.popover-content {
+  @apply bg-white shadow border rounded-md text-gray-600 text-sm;
+}
+
+.popover-arrow {
+  fill: white;
+}
+
+.rdp-caption_label {
+  @apply text-gray-800;
+}
+.rdp-nav {
+  @apply space-x-2
+}
+.rdp-nav_button svg {
+  @apply w-2.5 h-2.5
+}
+
+.rdp-nav_button{
+  @apply border  border-gray-200 w-7 h-7
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  @apply bg-gray-100;
+}
+
+.rdp-day,
+.rdp-nav_button{
+  @apply rounded
+}

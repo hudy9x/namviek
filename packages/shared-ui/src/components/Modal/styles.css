@@ -1,6 +1,5 @@
-
 .modal-overlay {
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
   left: 0;
@@ -16,31 +15,30 @@
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   width: 90vw;
   max-width: 450px;
-  max-height: 85vh;
+  max-height: initial;
   /* animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1); */
-	@apply p-6 z-10;
+  @apply p-6 z-10 relative;
 }
 .modal-content:focus {
   outline: none;
 }
 
 .modal-title {
-	@apply text-xl font-bold pb-4;
+  @apply text-xl font-bold pb-4;
 }
 
 .modal-desc {
   margin: 10px 0 20px;
-	color: black;
+  color: black;
   font-size: 15px;
   line-height: 1.5;
 }
 
-.modal-close{
-	@apply w-9 h-9 p-1 hover:bg-gray-100 hover:text-gray-600 rounded-md text-gray-400;
-	@apply flex items-center justify-center;
-	@apply absolute top-5 right-6;
+.modal-close {
+  @apply w-9 h-9 p-1 border hover:bg-gray-50 hover:text-gray-600 rounded-md text-gray-400;
+  @apply flex items-center justify-center;
+  @apply absolute top-5 right-6;
 }
-
 
 /* @keyframes overlayShow { */
 /*   from { */
