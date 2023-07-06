@@ -13,9 +13,8 @@
 .ProseMirror h1,
 .ProseMirror h2,
 .ProseMirror h3 {
-  @apply font-bold;
+	@apply font-bold;
 }
-
 
 .ProseMirror h1 {
 	font-size: 2rem;
@@ -36,9 +35,9 @@
 }
 
 .ProseMirror a {
-  @apply text-indigo-600 underline hover:cursor-pointer hover:text-indigo-700;
+	@apply text-indigo-600 underline hover:cursor-pointer hover:text-indigo-700;
 }
 
 .ProseMirror blockquote {
-  @apply border-l-4 border-gray-400 ml-6 pl-6
+	@apply border-l-4 border-gray-400 ml-6 pl-6;
 }

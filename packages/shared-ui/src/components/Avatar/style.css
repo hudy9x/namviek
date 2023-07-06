@@ -42,7 +42,6 @@
 	font-weight: 500;
 }
 
-
 .avatar-root.size-base .avatar-fallback {
 	@apply text-sm;
 }
@@ -56,5 +55,5 @@
 }
 
 .avatar-root.size-sm .avatar-fallback {
-  font-size: 0.5rem;
+	font-size: 0.5rem;
 }
