@@ -1,5 +1,6 @@
 import { TaskStatus } from "@prisma/client"
 import { taskStatusModal } from "./_prisma"
+
 export const mdStatusAdd = async (data: Omit<TaskStatus, 'id'>) => {
 
 	return taskStatusModal.create({
@@ -12,6 +13,15 @@ export const mdStatusGetAll = async (projectId: string) => {
 		where: {
 			projectId
 		}
+	})
+}
+
+export const mdStatusUpdate = async (id: string, data: TaskStatus) => {
+	return taskStatusModal.update({
+		where: {
+			id,
+		},
+		data: data
 	})
 }
 

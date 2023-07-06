@@ -1,7 +1,7 @@
 import { Response, Router } from "express";
 import { TaskStatus } from "@prisma/client"
 import { authMiddleware } from '../../middlewares';
-import { mdStatusAdd, mdStatusGetAll, mdStatusDel } from "@shared/models";
+import { mdStatusAdd, mdStatusGetAll, mdStatusDel, mdStatusUpdate } from "@shared/models";
 import { AuthRequest } from '../../types';
 
 const router = Router();
@@ -52,6 +52,28 @@ router.get('/task-status/:projectId' , async (req, res) => {
   res.status(errorResponse.status).json(errorResponse)
  }
 })
+
+router.put('/task-status/:id', async (req: AuthRequest, res) => {
+  try {
+    const body = req.body as Partial<TaskStatus>;
+    const id = req.params.projectId
+    const data = { ...body };
+    const result = await mdStatusUpdate(id, data);
+
+    res.json({
+      status: 200,
+      data: result
+    });
+  } catch (error) {
+    const errorResponse = {
+      status: 500,
+      error: "Internal Server Error",
+    };
+    console.log(error);
+    res.status(errorResponse.status).json(errorResponse);
+  }
+});
+
 
 router.delete('/task-status/:id' , async (req, res: Response) => {
  try {
