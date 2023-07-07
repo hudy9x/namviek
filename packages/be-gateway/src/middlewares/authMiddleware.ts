@@ -1,7 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken, verifyToken } from '../lib/jwt';
-import { mdUserFindEmail } from '@shared/models';
-import { User } from '@prisma/client';
+import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken } from '../lib/jwt';
 import { AuthRequest, JWTPayload } from '../types';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -14,7 +12,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     const validToken = extractToken(authorization);
     if (validToken) {
       console.log('token is valid');
-      const { id, email, name, photo, ...rest } = validToken as JWTPayload;
+      const { id, email, name, photo } = validToken as JWTPayload;
       req.authen = { id, email, name, photo };
       return next();
     }

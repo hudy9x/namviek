@@ -16,7 +16,7 @@ export default function ProjectNav() {
   const mode = searchParams.get('mode');
 
   const [tabs] = useState([
-    { name: 'Overview', href: '#', icon: HiOutlineUserCircle, current: false },
+    // { name: 'Overview', href: '#', icon: HiOutlineUserCircle, current: false },
     { name: 'Task', href: '#', icon: HiOutlineMenuAlt1, current: false },
     { name: 'Board', href: '#', icon: HiOutlineViewColumns, current: false },
     { name: 'Calendar', href: '#', icon: HiOutlineCalendar, current: false },

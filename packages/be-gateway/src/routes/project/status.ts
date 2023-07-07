@@ -9,8 +9,10 @@ router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
 
   mdTaskStatusGetByProjectId(projectId)
     .then(result => {
-      console.log(result);
-      res.json({ status: 200 });
+      console.log('status =================')
+      console.log('done');
+      console.log('end status --------------')
+      res.json({ status: 200, data: result });
     })
     .catch(err => {
       console.log(err);

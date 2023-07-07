@@ -5,21 +5,65 @@ import ProjectNav from './ProjectNav';
 import { getProjectMember } from '../../../../services/member';
 import { useParams } from 'next/navigation';
 import { useMemberStore } from '../../../../store/member';
+import { projectStatusGet } from '../../../../services/status';
+import { projectPointGet } from '../../../../services/point';
+import { useProjectStatusStore } from '../../../../store/status';
+import { useProjectPointStore } from '../../../../store/point';
+import { TaskStatus } from '@prisma/client';
 
 export default function ProjectContainer() {
-  const params = useParams();
+  const { projectId } = useParams();
   const { addAllMember } = useMemberStore();
+  const { addAllStatuses } = useProjectStatusStore();
+  const { addAllPoints } = useProjectPointStore();
 
   useEffect(() => {
-    getProjectMember(params.projectId).then(res => {
-      const { data, status } = res.data;
-      if (status !== 200) {
-        addAllMember([]);
-        return;
-      }
+    getProjectMember(projectId)
+      .then(res => {
+        const { data, status } = res.data;
+        if (status !== 200) {
+          addAllMember([]);
+          return;
+        }
 
-      addAllMember(data);
-    });
-  }, []);
+        addAllMember(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    console.log('called')
+    projectStatusGet(projectId)
+      .then(res => {
+        const { data, status } = res.data;
+
+        if (status !== 200) {
+          addAllStatuses([]);
+          return;
+        }
+
+        console.log('done')
+        const statuses = data as TaskStatus[]
+
+        addAllStatuses(statuses.sort((a, b) => a.order - b.order));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    projectPointGet(projectId)
+      .then(res => {
+        const { data, status } = res.data;
+        if (status !== 200) {
+          addAllPoints([]);
+          return;
+        }
+
+        addAllPoints(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [projectId]);
   return <ProjectNav />;
 }

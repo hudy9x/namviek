@@ -46,7 +46,7 @@ export default function ProjectList() {
             onClick={() => {
               onSelectProject(project.id);
             }}
-            href={`${params.orgID}/project/${project.id}`}>
+            href={`${params.orgID}/project/${project.id}?mode=task`}>
             <span className="nav-icon">👕</span>
             <span>{project.name}</span>
           </Link>
