@@ -5,16 +5,16 @@ import { mdTaskPointGetByProjectId } from '@shared/models';
 const router = Router();
 
 router.get('/project/point/:projectId', async (req: AuthRequest, res) => {
-	const projectId = req.params.projectId;
+  const projectId = req.params.projectId;
 
-	mdTaskPointGetByProjectId(projectId)
-		.then(result => {
-			console.log(result);
-			res.json({ status: 200 });
-		})
-		.catch(err => {
-			console.log(err);
-		});
+  mdTaskPointGetByProjectId(projectId)
+    .then(result => {
+      console.log(result);
+      res.json({ status: 200 });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 export default router;
