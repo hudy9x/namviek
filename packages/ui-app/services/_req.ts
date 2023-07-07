@@ -44,8 +44,9 @@ instance.interceptors.response.use(
     if (response && response.status === 440) {
       messageError('Your session is expired. Please login again !');
       clearAllGoalieToken();
-      const pathname = window.location.pathname
-      
+
+      // window.location.href = '/sign-out';
+
       // console.log('href', pathname)
       // if (pathname.includes('/sign-in') || pathname.includes('/sign-up')) {
       //   return;

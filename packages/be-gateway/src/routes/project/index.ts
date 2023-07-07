@@ -4,9 +4,15 @@ import { AuthRequest } from '../../types';
 import { mdMemberAdd, mdMemberGetProject, mdProjectAdd, mdProjectGetAllByIds } from '@shared/models';
 import { MemberRole } from '@prisma/client';
 
+import StatusRouter from './status';
+import TagRouter from './tag';
+import PointRouter from './point';
+
 const router = Router();
 
 router.use([authMiddleware]);
+
+router.use([StatusRouter, TagRouter, PointRouter]);
 
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {

@@ -1,0 +1,43 @@
+.text-editor .ProseMirror {
+  min-height: 100px;
+}
+.ProseMirror-focused {
+  border: none;
+  outline: none;
+}
+
+.ProseMirror {
+  @apply space-y-6;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  @apply font-bold;
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+}
+.ProseMirror h2 {
+  font-size: 1.5rem;
+}
+.ProseMirror h3 {
+  font-size: 1rem;
+}
+
+.ProseMirror ul {
+  @apply list-disc pl-6;
+}
+
+.ProseMirror ol {
+  @apply list-decimal pl-6;
+}
+
+.ProseMirror a {
+  @apply text-indigo-600 underline hover:cursor-pointer hover:text-indigo-700;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-gray-400 ml-6 pl-6;
+}

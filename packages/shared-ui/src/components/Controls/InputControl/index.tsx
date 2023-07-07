@@ -9,7 +9,7 @@ export default function InputControl({
   placeholder, helper, required, error, 
   disabled, readOnly, icon, addon
 }: InputProps) {
-  let classes = ["form-control"]
+  const classes = ["form-control"]
   const [val, setVal] = useState(value)
 
   const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
