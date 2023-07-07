@@ -1,28 +1,38 @@
-import { TaskPoint } from '@prisma/client';
-import { tskPointModel } from './_prisma';
+import { TaskPoint } from '@prisma/client'
+import { tskPointModel } from './_prisma'
 
-export const mdTskPointGetOne = async (projectId: string | string[]) => {
+export const mdTaskPointGetManyByProjectIds = async (projectIds: string[]) => {
 	return tskPointModel.findFirst({
 		where: {
 			id: {
-				in: Array.isArray(projectId) ? projectId : [projectId]
+				in: projectIds
 			}
 		}
-	});
-};
+	})
+}
 
-export const mdTskPointGet = async (projectId: string) => {
+// export const mdTskPointGetOne = async (projectId: string | string[]) => {
+// 	return tskPointModel.findFirst({
+// 		where: {
+// 			id: {
+// 				in: Array.isArray(projectId) ? projectId : [projectId]
+// 			setting/point}
+// 		}
+// 	});
+// };
+
+export const mdTaskPointGetByProjectId = async (projectId: string) => {
 	return tskPointModel.findMany({
 		where: {
 			projectId: {
 				equals: projectId
 			}
 		}
-	});
-};
+	})
+}
 
-export const mdTskPointAdd = async (data: Pick<TaskPoint, 'point' | 'projectId'>) => {
+export const mdTaskPointAddOne = async (data: Pick<TaskPoint, 'point' | 'projectId' | 'icon'>) => {
 	return tskPointModel.create({
 		data: data
-	});
-};
+	})
+}
