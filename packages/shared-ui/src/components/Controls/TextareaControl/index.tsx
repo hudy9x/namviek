@@ -8,7 +8,7 @@ export default function TextareaControl({
   required, disabled, readOnly,
   rows = 4, cols,
 }: TextareaProps) {
-  let classes = ["form-control"]
+  const classes = ["form-control"]
   const [val, setValue] = useState(value)
 
   const onInputChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {

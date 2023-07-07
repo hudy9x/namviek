@@ -1,10 +1,12 @@
 import { Button } from "@shared/ui";
 import { useParams } from "next/navigation"
+import { ObjectId } from "bson";
 import { Popover } from "packages/shared-ui/src/components/Controls";
-import { addStatus, delStatus, editStatus } from "packages/ui-app/services/task-status";
-import { useTaskStatusStore } from "packages/ui-app/store/task-status";
-import { useState } from "react";
+import { projectStatusAdd, projectStatusDel, projectStatusEdit } from "packages/ui-app/services/status";
+import { useTaskStatusStore } from "packages/ui-app/store/taskStatus";
+import { useState, KeyboardEvent } from "react";
 import { HiOutlineBars4 } from "react-icons/hi2";
+import { TaskStatus } from "@prisma/client";
 
 export const colors = [
 	"red",
@@ -29,18 +31,27 @@ const DEFAULT_COLOR = 'white'
 
 export const ProjectStatus = () => {
 	const params = useParams();
-	const [isShowEdit, setShowEditName] = useState<boolean>(false)
 	const [visible, setVisible] = useState(false);
+	const [color, setColor] = useState<string>('');
+	const [editName, setEditName] = useState<string>('');
 	const [name, setName] = useState<string>('')
-	const { addTaskStatus, taskStatus, editTaskStatus, delTaskStatus } = useTaskStatusStore();
+	const { projectStatusAddStore, taskStatusAll, projectStatusEditStore, projectStatusDelStore } = useTaskStatusStore();
 	const [isShowAction, setIsShowAction] = useState(false);
+	const [isOpenEditName, setIsOpenEditName ] = useState(false);
 
 	const projectId = params.projectId 
 
 	const handleCreateStatus = async () => {
-		const order = taskStatus[projectId].length || 0
-		addTaskStatus({ name, projectId, DEFAULT_COLOR, order })
-		await addStatus({ name, projectId, color: DEFAULT_COLOR, order });
+		const order = taskStatusAll[projectId].length || 0
+		const newTaskStatus: TaskStatus = {
+			id: new ObjectId().toString(),
+			name,
+			color: DEFAULT_COLOR,
+			order,
+			projectId
+		}
+		projectStatusAddStore(newTaskStatus)
+		projectStatusAdd(newTaskStatus);
 	}
 
 	const handleChangeStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,28 +59,32 @@ export const ProjectStatus = () => {
 		setName(value)
 	}
 
-	const handleChangeColor = async (color: string) => {
-		editTaskStatus({ data: color, projectId })
-		await editStatus({ data: color, projectId })
+	const handleDelete = async (id: string) => {
+		projectStatusDelStore(projectId, id)
+		projectStatusDel(id)
 	}
 
-	const handleDelete = async (id: number) => {
-		delTaskStatus(projectId, id)
-		await delStatus({ id, projectId })
+	const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>, id: string, index: number) => {
+		if(isOpenEditName && e.key === 'Enter') {
+			const data = {
+				id,
+				name: editName,
+				color,
+				order: index,
+			}
+			projectStatusEditStore(data, projectId)
+			projectStatusEdit(data)
+		}
 	}
-
-	const handleEdit = () => {
-		
-	}
-	
 
 	return (
 		<div className="w-full ml-7">
 			<h3 className="font-semibold"> Status Setting </h3>
 			<div className="status-container">
 				<div>
-					{taskStatus[projectId].map((status, index) => (
+					{taskStatusAll[projectId].map((status, index) => (
 						<div key={index} className="flex justify-between p-3 border-b-2"
+						 onKeyDown={(e) => handleKeyPress(e, status.id, index)}
 							onMouseEnter={() => setIsShowAction(true)}
 							onMouseLeave={() => setIsShowAction(false)}
 						>
@@ -82,7 +97,7 @@ export const ProjectStatus = () => {
 									content={
 										<div className="color-list">
 											{colors.map((color, index) => (
-												<div key={index} style={{ backgroundColor: color }} onChange={() => handleChangeColor(color)} className="color"></div>
+												<div key={index} style={{ backgroundColor: color }} onChange={() => setColor(color)} className="color"></div>
 											))}
 										</div>
 									}
@@ -90,10 +105,10 @@ export const ProjectStatus = () => {
 									onVisibleChange={setVisible}
 								/>
 								{isShowAction && <div className="mr-2" >
-									<button onClick={() => handleDelete(index)} >Delete</button>
-									<button onClick={() => handleEdit}>Edit</button>
+									<button onClick={() => handleDelete(status.id)} >Delete</button>
+									<button onClick={() => setIsOpenEditName((prev) => !prev)}>Edit</button>
 								</div> }
-								<div className="mr-2 text-gray-500">{status.name}</div>
+								{isOpenEditName ? <input className='outline-none bg-indigo-50/50' defaultValue={status.name} onChange={(e) => setEditName(e.target.value)} value={editName}/> : <div className="mr-2 text-gray-500">{status.name}</div>}
 							</div>
 						</div>
 					))}

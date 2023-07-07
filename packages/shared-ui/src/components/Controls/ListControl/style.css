@@ -1,39 +1,55 @@
-.select-container{
+.select-container {
   @apply relative;
 }
 
-.select-container.select-none .select-options{
+.select-container.select-none .select-options {
   @apply hidden;
 }
 
-.select-container:not(.select-none) .select-button{
-  @apply border-indigo-500 ring-indigo-200 ring-2
+.select-container:not(.select-none) .select-button {
+  @apply border-indigo-500 ring-indigo-200 ring-2;
 }
 
 .select-button {
-  @apply cursor-pointer relative
+  @apply cursor-pointer relative;
 }
 
 .select-clear-icon {
   @apply absolute top-1 right-6 p-0.5 w-4 h-4 bg-gray-200 text-gray-500 rounded-full;
 }
 
-.select-button .trailing-icon{
-  @apply absolute top-1.5 right-1 text-gray-400
+.select-button .trailing-icon {
+  @apply absolute right-1 text-gray-400;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .select-options {
   @apply py-1.5 bg-white rounded-md border shadow-sm;
-  @apply absolute mt-1.5 left-0 w-full;
+  @apply absolute mt-1.5 left-0 w-full z-10 overflow-y-auto;
+  max-height: 200px;
+}
+
+.selected-item {
+  @apply inline-flex border bg-gray-50 py-1.5 px-2 rounded-md text-xs;
 }
 
 .select-item {
-  @apply px-3 py-2 text-sm cursor-pointer hover:bg-slate-50
+  @apply px-3 py-2 text-sm cursor-pointer hover:bg-slate-50 relative;
 }
 
-.select-item.active{
-  @apply bg-slate-100
+.select-item .select-check-icon {
+  @apply w-4 h-4 absolute right-2 top-2 text-transparent;
 }
 
+.select-item.active .select-check-icon {
+  @apply text-indigo-600;
+}
 
+.select-item.active {
+  @apply text-gray-400;
+}
 
+.selected-item {
+  @apply inline-flex border bg-gray-50 py-1.5 px-2 rounded-md text-xs;
+}

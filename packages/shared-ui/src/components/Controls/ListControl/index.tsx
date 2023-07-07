@@ -1,26 +1,27 @@
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { ListProvider } from "./context";
-import ListButton from "./ListButton";
-import ListItem from "./ListItem";
-import ListOptions from "./ListOptions";
-import { useListContext } from "./context";
-import { FormikFunc, ListItemValue } from "./type";
-import "./style.css";
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { ListProvider } from './context';
+import ListButton from './ListButton';
+import ListItem from './ListItem';
+import ListOptions from './ListOptions';
+import { useListContext } from './context';
+import { FormikFunc, ListItemValue } from './type';
+import './style.css';
+import ListSelectedItem from './ListSelectedItem';
 
 interface ListControlProps {
   name?: string;
   title?: string;
+  multiple?: boolean;
   helper?: string;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
   placeholder?: string;
-  visible: boolean 
-  value: ListItemValue;
+  value: ListItemValue | ListItemValue[];
   children: JSX.Element[];
-  //onVisibleChange: React.Dispatch<SetStateAction<boolean>>;
   onFormikChange?: FormikFunc;
   onChange?: Dispatch<SetStateAction<ListItemValue>>;
+  onMultiChange?: Dispatch<SetStateAction<ListItemValue[]>>;
 }
 
 interface ListContainerProps {
@@ -34,24 +35,25 @@ const ListContainer = ({ children }: ListContainerProps) => {
     const handleClickOutside = (ev: MouseEvent) => {
       const target = ev.target as HTMLElement;
       ev.stopPropagation();
-      
-      if (!target.closest(".select-wrapper")) {
+
+      if (!target.closest('.select-wrapper')) {
         setVisible(false);
       }
     };
 
     const handleKeypress = (ev: KeyboardEvent) => {
       const key = ev.key.toLowerCase();
-      if (key !== "escape") return;
-      setVisible(false)
+      if (key !== 'escape') return;
+
+      setVisible(false);
     };
 
-    document.addEventListener("mouseup", handleClickOutside);
-    document.addEventListener("keyup", handleKeypress);
+    document.addEventListener('mouseup', handleClickOutside);
+    document.addEventListener('keyup', handleKeypress);
 
     return () => {
-      document.removeEventListener("mouseup", handleClickOutside);
-      document.removeEventListener("keyup", handleKeypress);
+      document.removeEventListener('mouseup', handleClickOutside);
+      document.removeEventListener('keyup', handleKeypress);
     };
   }, [setVisible]);
 
@@ -61,44 +63,43 @@ const ListContainer = ({ children }: ListContainerProps) => {
 export default function ListControl({
   title,
   name,
+  multiple,
   disabled,
-  visible,
   readOnly,
   helper,
-  placeholder = "",
+  placeholder = '',
   value,
   required,
   onChange,
+  onMultiChange,
   onFormikChange,
-  children,
+  children
 }: ListControlProps) {
-  const classes = ["select-container form-control"];
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [visible, setVisible] = useState(false);
+  const classes = ['select-container form-control'];
 
-  disabled && classes.push("disabled");
-  readOnly && classes.push("readonly");
-  required && classes.push("required");
-  console.log(isVisible, 'isVisible')
+  disabled && classes.push('disabled');
+  readOnly && classes.push('readonly');
+  required && classes.push('required');
+  multiple && classes.push('multiple');
+
   return (
-    <div
-      id="id-list-control"
-      className={`${
-        visible && !disabled && !readOnly ? "" : "select-none"
-      } ${classes.join(" ")}`}
-    >
+    <div className={`${visible && !disabled && !readOnly ? '' : 'select-none'} ${classes.join(' ')}`}>
       {title ? <label>{title}</label> : null}
       <ListProvider
         value={{
+          multiple,
           value,
           onChange,
+          onMultiChange,
           visible,
-          setIsVisible,
+          setVisible,
+          name,
           onFormikChange,
           placeholder,
           disabled,
-          readOnly,
-        }}
-      >
+          readOnly
+        }}>
         <ListContainer>{children}</ListContainer>
       </ListProvider>
       {helper ? <p className="mt-2 text-sm text-gray-500">{helper}</p> : null}
@@ -106,6 +107,7 @@ export default function ListControl({
   );
 }
 
+ListControl.SelectedItem = ListSelectedItem;
 ListControl.Button = ListButton;
 ListControl.Options = ListOptions;
 ListControl.Item = ListItem;
