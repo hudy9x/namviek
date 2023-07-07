@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import ProjectNav from './ProjectNav';
-import { getProjectMember } from '../../../../services/projectMember';
+import { getProjectMember } from '../../../../services/member';
 import { useParams } from 'next/navigation';
 import { useMemberStore } from '../../../../store/member';
 
