@@ -34,3 +34,28 @@ export const mdTaskPointAddOne = async (data: Pick<TaskPoint, 'point' | 'project
     data: data
   })
 }
+
+export const mdTaskPointUpdateOne = async (data: TaskPoint) => {
+  const { id, ...newPoint } = data
+  try {
+    // return taskPointModel.update({
+    return taskPointModel
+      .update({
+        where: {
+          id
+        },
+        data: newPoint
+      })
+      .catch(err => console.log(`Update point get error: ${err}`))
+  } catch (e) {
+    console.log(JSON.stringify(e))
+  }
+}
+
+export const mdTaskPointDelOne = async (id: string) => {
+  return taskPointModel.delete({
+    where: {
+      id
+    }
+  })
+}
