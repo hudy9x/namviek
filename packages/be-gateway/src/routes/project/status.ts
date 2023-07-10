@@ -1,20 +1,20 @@
-import { Router } from 'express';
-import { AuthRequest } from '../../types';
-import { mdTaskStatusGetByProjectId } from '@shared/models';
+import { Router } from 'express'
+import { AuthRequest } from '../../types'
+import { mdTaskStatusGetByProjectId } from '@shared/models'
 
-const router = Router();
+const router = Router()
 
 router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
-	const projectId = req.params.projectId;
+  const projectId = req.params.projectId
 
-	mdTaskStatusGetByProjectId(projectId)
-		.then(result => {
-			console.log(result);
-			res.json({ status: 200 });
-		})
-		.catch(err => {
-			console.log(err);
-		});
-});
+  mdTaskStatusGetByProjectId(projectId)
+    .then(result => {
+      console.log(result)
+      res.json({ status: 200 })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+})
 
-export default router;
+export default router
