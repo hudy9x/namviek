@@ -43,7 +43,7 @@ const PointInput = ({ initPoint, handleSumit, handleDelete }: ITaskPointInput) =
     </div>
   )
 }
-function isNumber(str) {
+function isNumber(str: string) {
   if (str.trim() === '') {
     return false
   }
@@ -64,7 +64,7 @@ export default function ProjectPoint() {
   }, [points])
 
   useEffect(() => {
-    document.addEventListener('keydown', function (e: KeyboardEvent) {
+    const onKeyDownHandler = function (e: KeyboardEvent) {
       const target = e?.target as HTMLInputElement
       if (e.key === 'Enter' && target?.nodeName === 'INPUT') {
         try {
@@ -81,7 +81,9 @@ export default function ProjectPoint() {
           console.log('Input enter event got e: ', e)
         }
       }
-    })
+    }
+    document.addEventListener('keydown', onKeyDownHandler)
+    return () => document.removeEventListener('keydown', onKeyDownHandler)
   }, [])
 
   const handleDeletePoint = (id: string) => {
