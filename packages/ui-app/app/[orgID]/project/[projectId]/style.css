@@ -1,3 +1,23 @@
 .project-nav {
   @apply relative;
 }
+
+.task-assignee .select-button {
+  border: none;
+  padding: 0px;
+  box-shadow: none;
+}
+
+.task-assignee .trailing-icon {
+  display: none
+}
+
+.task-assignee .select-options {
+  width: 200px;
+}
+
+.task-assignee .selected-member-item{
+  padding: 0px;
+  background: transparent;
+  border: none;
+}

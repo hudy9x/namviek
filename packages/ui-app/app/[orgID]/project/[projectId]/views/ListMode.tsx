@@ -6,7 +6,12 @@ import { taskGetAll } from '../../../../../services/task';
 import { useParams } from 'next/navigation';
 import { messageError } from '@shared/ui';
 import { useTaskStore } from '../../../../../store/task';
-import StatusItem from 'packages/ui-app/app/_components/StatusItem';
+import StatusItem from '../../../../_components/StatusItem';
+import { format } from 'date-fns';
+import TaskCheckbox from '../../../../_components/TaskCheckbox';
+import TaskCheckAll from './TaskCheckAll';
+import TaskAssignee from './TaskAssignee';
+import TaskDate from './TaskDate';
 
 export default function ListMode() {
   const { projectId } = useParams();
@@ -32,37 +37,43 @@ export default function ListMode() {
   }, []);
 
   return (
-    <div>
+    <div className="pb-[100px]">
       {statuses.map(stt => {
         return (
           <div className="bg-white mb-4 rounded-md border mx-4 relative mt-4" key={stt.id}>
             <div className="px-3 py-2 border-b sticky top-0 bg-white rounded-t-md flex items-center justify-between z-10">
-              <span style={{ color: stt.color }} className="text-xs uppercase font-bold">
+              <div style={{ color: stt.color }} className="flex gap-2 items-center text-xs uppercase font-bold">
+                <TaskCheckAll />
                 {stt.name}
-              </span>
+              </div>
               <div className="flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
-                <div>Status</div>
                 <div>Assignee</div>
                 <div>Priority</div>
                 <div>Point</div>
-                <div>Date</div>
+                <div>Duedate</div>
                 <div>Created by</div>
               </div>
             </div>
             <div className="divide-y">
               {tasks.map(task => {
                 if (task.taskStatusId !== stt.id) return null;
+                const dueDate = task.dueDate ? new Date(task.dueDate) : null;
                 return (
                   <div className="px-3 py-2 text-sm flex items-center justify-between" key={task.id}>
-                    <span>{task.title}</span>
-                    <div className="flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
+                    <div className="flex items-center gap-2">
+                      <TaskCheckbox id={stt.id} />
+                      <StatusItem id={stt.id} />
+                      {task.title}
+                    </div>
+                    <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
                       <div>
-                        <StatusItem id={stt.id} />
+                        <TaskAssignee taskId={task.id} uids={task.assigneeIds} />
                       </div>
-                      <div>Assignee</div>
-                      <div>Priority</div>
-                      <div>Point</div>
-                      <div>Date</div>
+                      <div>{task.priority ? task.priority : '-'}</div>
+                      <div>{task.taskPoint ? task.taskPoint : '-'}</div>
+                      <div>
+                        <TaskDate taskId={task.id} date={task.dueDate ? new Date(task.dueDate) : null} />
+                      </div>
                       <div>Created by</div>
                     </div>
                   </div>

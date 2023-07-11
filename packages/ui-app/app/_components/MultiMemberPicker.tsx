@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 const List = Form.List;
 
 interface IMemberPicker {
-  multiple?: boolean;
   className?: string;
   title?: string;
   value?: string[];
@@ -13,7 +12,7 @@ interface IMemberPicker {
 
 const defaultAssignee = { id: 'NONE', title: 'No assignee' };
 
-export default function MemberPicker({ title, onChange, value, className, multiple = true }: IMemberPicker) {
+export default function MultiMemberPicker({ title, onChange, value, className }: IMemberPicker) {
   const { members } = useMemberStore(state => state);
   const [options, setOptions] = useState<ListItemValue[]>([defaultAssignee]);
   const selectedOption = options.filter(opt => value && value.some(v => v === opt.id));
@@ -40,19 +39,16 @@ export default function MemberPicker({ title, onChange, value, className, multip
     const selectedMembers = members.filter(m => selected.some(s => s.id === m.id));
     if (!selectedMembers.length) {
       return (
-        <div className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50 selected-member-item">
-          <Avatar name={'None'} size="sm" src={''} /> <span className="selected-member-name">No one</span>
+        <div className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50">
+          <Avatar name={'None'} size="sm" src={''} /> No one
         </div>
       );
     }
 
     return selectedMembers.map(sm => {
       return (
-        <div
-          key={sm.id}
-          className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50 selected-member-item">
-          <Avatar name={sm.name || ''} size="sm" src={sm.photo || ''} />{' '}
-          <span className="selected-member-name">{sm && sm.name ? sm.name : 'None'}</span>
+        <div key={sm.id} className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50">
+          <Avatar name={sm.name || ''} size="sm" src={sm.photo || ''} /> {sm && sm.name ? sm.name : 'None'}
         </div>
       );
     });
@@ -61,7 +57,7 @@ export default function MemberPicker({ title, onChange, value, className, multip
   return (
     <div className={className}>
       <List
-        multiple={multiple}
+        multiple
         title={title}
         value={val}
         onMultiChange={val => {
