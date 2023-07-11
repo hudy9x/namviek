@@ -34,17 +34,19 @@
 }
 
 .color-container {
-  @apply w-4 h-4 
+  @apply w-4 h-4 mr-2
 }
 
 .color-list {
-  width: 100px;
+  width: 115px;
   display: flex;
   flex-flow: row wrap;
+	background-color: #fff;
   border: 1px solid #ccc;
 }
 
-.color {
+.color-item {
   width: 20px;
   height: 20px;
+	border: 1px solid black;
 }

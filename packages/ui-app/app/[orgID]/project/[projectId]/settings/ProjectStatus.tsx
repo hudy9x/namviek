@@ -1,12 +1,12 @@
-import { Button } from "@shared/ui";
+import { Button, randomId } from "@shared/ui";
 import { useParams } from "next/navigation"
-import { ObjectId } from "bson";
 import { Popover } from "packages/shared-ui/src/components/Controls";
-import { projectStatusAdd, projectStatusDel, projectStatusEdit } from "packages/ui-app/services/status";
-import { useTaskStatusStore } from "packages/ui-app/store/taskStatus";
-import { useState, KeyboardEvent } from "react";
+import { projectStatusAdd, projectStatusDel, projectStatusEdit } from "../../../../../services/status";
+import { useTaskStatusStore } from "../../../../../store/taskStatus";
+import { useState, KeyboardEvent, useLayoutEffect, useEffect } from "react";
 import { HiOutlineBars4 } from "react-icons/hi2";
 import { TaskStatus } from "@prisma/client";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 export const colors = [
 	"red",
@@ -35,23 +35,23 @@ export const ProjectStatus = () => {
 	const [color, setColor] = useState<string>('');
 	const [editName, setEditName] = useState<string>('');
 	const [name, setName] = useState<string>('')
-	const { projectStatusAddStore, taskStatusAll, projectStatusEditStore, projectStatusDelStore } = useTaskStatusStore();
+	const { projectStatusAddStore, taskStatusAll, projectStatusEditStore, projectStatusDelStore, projectStatusInitialStore } = useTaskStatusStore();
 	const [isShowAction, setIsShowAction] = useState(false);
-	const [isOpenEditName, setIsOpenEditName ] = useState(false);
+	const [isOpenEditName, setIsOpenEditName] = useState(false);
 
-	const projectId = params.projectId 
-
+	const projectId = params.projectId
+	console.log(taskStatusAll, 'taskStatusAll')
 	const handleCreateStatus = async () => {
 		const order = taskStatusAll[projectId].length || 0
 		const newTaskStatus: TaskStatus = {
-			id: new ObjectId().toString(),
+			id: randomId(),
 			name,
 			color: DEFAULT_COLOR,
 			order,
 			projectId
 		}
 		projectStatusAddStore(newTaskStatus)
-		projectStatusAdd(newTaskStatus);
+		await projectStatusAdd(newTaskStatus);
 	}
 
 	const handleChangeStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,11 +61,11 @@ export const ProjectStatus = () => {
 
 	const handleDelete = async (id: string) => {
 		projectStatusDelStore(projectId, id)
-		projectStatusDel(id)
+		await projectStatusDel(id)
 	}
 
-	const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>, id: string, index: number) => {
-		if(isOpenEditName && e.key === 'Enter') {
+	const handleKeyPress = async (e: KeyboardEvent<HTMLDivElement>, id: string, index: number) => {
+		if (isOpenEditName && e.key === 'Enter') {
 			const data = {
 				id,
 				name: editName,
@@ -73,42 +73,61 @@ export const ProjectStatus = () => {
 				order: index,
 			}
 			projectStatusEditStore(data, projectId)
-			projectStatusEdit(data)
+			await projectStatusEdit(data)
 		}
 	}
 
+	const handleChangeColor = (color: string) => {
+		setColor(color)
+		setVisible(false)
+	}
+	
+	useEffect(() => {
+		// Create key-value status in store
+    if (Object.prototype.hasOwnProperty.call(taskStatusAll, params.projectId)) {
+      return
+    }
+    projectStatusInitialStore(params.projectId)
+	}, [params.projectId])
+
+	console.log(color)
 	return (
 		<div className="w-full ml-7">
 			<h3 className="font-semibold"> Status Setting </h3>
 			<div className="status-container">
 				<div>
-					{taskStatusAll[projectId].map((status, index) => (
+					{taskStatusAll[projectId] && taskStatusAll[projectId].map((status, index) => (
 						<div key={index} className="flex justify-between p-3 border-b-2"
-						 onKeyDown={(e) => handleKeyPress(e, status.id, index)}
+							onKeyDown={(e) => handleKeyPress(e, status.id, index)}
 							onMouseEnter={() => setIsShowAction(true)}
 							onMouseLeave={() => setIsShowAction(false)}
 						>
-							<div className="flex items-center">
-								<div className="text-2xl mr-2 text-gray-500">
+							<div className="flex items-center" >
+								<div className="text-xl mr-2 text-gray-500">
 									<HiOutlineBars4 />
 								</div>
 								<Popover
-									triggerBy={<div style={{ backgroundColor: status.color }} className="color-container"></div>}
+									triggerBy={<div style={{ backgroundColor: color ? color : status.color || DEFAULT_COLOR }} className="color-container"></div>}
 									content={
 										<div className="color-list">
 											{colors.map((color, index) => (
-												<div key={index} style={{ backgroundColor: color }} onChange={() => setColor(color)} className="color"></div>
+												<div key={index} style={{ backgroundColor: color }} onClick={() => handleChangeColor(color)} className="color-item m-1"></div>
 											))}
 										</div>
 									}
 									visible={visible}
 									onVisibleChange={setVisible}
 								/>
-								{isShowAction && <div className="mr-2" >
-									<button onClick={() => handleDelete(status.id)} >Delete</button>
-									<button onClick={() => setIsOpenEditName((prev) => !prev)}>Edit</button>
-								</div> }
-								{isOpenEditName ? <input className='outline-none bg-indigo-50/50' defaultValue={status.name} onChange={(e) => setEditName(e.target.value)} value={editName}/> : <div className="mr-2 text-gray-500">{status.name}</div>}
+								{isOpenEditName ? <input className='outline-none bg-indigo-50/50' defaultValue={status.name} onChange={(e) => setEditName(e.target.value)} value={editName} /> : <div className="mr-2 text-gray-500">{status.name}</div>}
+							</div>
+							<div className="flex items-center">
+								<AiOutlineDelete
+									onClick={() => handleDelete(status.id)}
+									className="mr-2"
+								/>
+								<AiOutlineEdit
+									onClick={() => setIsOpenEditName((prev) => !prev)}
+								/>
 							</div>
 						</div>
 					))}

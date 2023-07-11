@@ -19,3 +19,4 @@ export const Avatar = AvatarContainer;
 export const DatePicker = DatePickerContainer;
 
 export * from './components/Controls/ListControl/type';
+export * from './components/utils'
