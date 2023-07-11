@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { useSearchParams } from 'next/navigation'
-import TaskList from './TaskList'
-import Settings from './settings'
+import { useSearchParams } from 'next/navigation';
+import TaskList from './TaskList';
+import Settings from './settings';
 
 export default function ProjectTabContent() {
-	const searchParams = useSearchParams()
-	const mode = searchParams.get('mode')
+  const searchParams = useSearchParams();
+  const mode = searchParams.get('mode');
 
-	return (
-		<div className="" style={{ height: 'calc(100vh - 83px)' }}>
-			{mode === 'task' && <TaskList />}
-			{mode === 'setting' && <Settings />}
-		</div>
-	)
+  return (
+    <div className="" style={{ height: 'calc(100vh - 83px)' }}>
+      {mode === 'task' && <TaskList />}
+      {mode === 'setting' && <Settings />}
+    </div>
+  );
 }
