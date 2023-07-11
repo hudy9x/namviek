@@ -4,7 +4,7 @@ import { httpGet, httpPost } from './_req';
 type ITaskFields = Partial<Task>;
 
 export const taskGetAll = (projectId: string) => {
-  return httpGet(`/api/project/task/${projectId}`);
+  return httpGet(`/api/project/task?projectId=${projectId}`);
 };
 
 export const taskAdd = (data: ITaskFields) => {

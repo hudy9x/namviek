@@ -9,12 +9,13 @@ const router = Router();
 router.use([authMiddleware, beProjectMemberMiddleware]);
 
 // It means GET:/api/example
-router.get('/project/task/:projectId', async (req: AuthRequest, res) => {
-  const { projectId } = req.params;
+router.get('/project/task', async (req: AuthRequest, res) => {
+  console.log('called');
+  const projectId = req.query.projectId as string;
   try {
-    console.log('projectId', projectId)
+    console.log('projectId', projectId);
     const tasks = await mdTaskGetAll({ projectId });
-    res.json({ status: 200, tasks });
+    res.json({ status: 200, data: tasks });
   } catch (error) {
     res.json({ status: 500, error });
   }

@@ -4,10 +4,12 @@ import { AuthRequest } from '../types';
 
 export const beProjectMemberMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const { id } = req.authen;
-  const { body, query } = req;
-  const projectId = query.projectId || body.projectId;
+  const { body, query, params } = req;
+  const projectId = query.projectId || body.projectId || params.projectId;
 
   if (!projectId) {
+    console.log(params, query, body);
+    console.log('ERR: you must provide projectID');
     return res.json({
       status: 400,
       error: `You must provide 'projectId' in request: ${req.url}`
@@ -23,7 +25,7 @@ export const beProjectMemberMiddleware = async (req: AuthRequest, res: Response,
     });
   }
 
-  console.log('Passed !, you are project member')
+  console.log('Passed !, you are project member');
 
   // console.log('==================');
   // console.log('uid: ', id);
