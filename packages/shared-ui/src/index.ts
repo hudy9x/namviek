@@ -17,6 +17,6 @@ export const useForm = useFormHook;
 export const Loading = LoadingSpinner;
 export const Avatar = AvatarContainer;
 export const DatePicker = DatePickerContainer;
-
+export * from './components/OutsideClickHandler/index';
 export * from './components/Controls/ListControl/type';
 export * from './components/utils'

@@ -6,11 +6,11 @@ export const projectStatusGet = (projectId: string) => {
 };
 
 export const projectStatusAdd = (data: TaskStatus) => {
-  return httpPost(`/api/project/status/${data.projectId}`);
+  return httpPost(`/api/project/status/${data.projectId}`, data);
 };
 
 export const projectStatusEdit = (data: Partial<TaskStatus>) => {
-	return httpPut(`/api/project/status/${data.id}`, data)
+	return httpPut('/api/project/status', data)
 }
 
 export const projectStatusDel = (id: string) => {

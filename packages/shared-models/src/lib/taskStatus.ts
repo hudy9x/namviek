@@ -15,12 +15,13 @@ export const mdTaskStatusAdd = async (data: Omit<TaskStatus, 'id'>) => {
 	})
 }
 
-export const mdTaskStatusUpdate = async (id: string, data: Partial<TaskStatus>) => {
+export const mdTaskStatusUpdate = async (data: Partial<TaskStatus>) => {
+	const { id, ...newTaskStatus } = data
 	return taskStatusModel.update({
 		where: {
 			id,
 		},
-		data: data
+		data: newTaskStatus
 	})
 }
 

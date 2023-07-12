@@ -13,15 +13,16 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
     name: body.name,
     color: body.color,
     order: body.order
-  }
-  mdTaskStatusAdd(data).then((result) => {
-    console.log(result);
-    res.json({ status: 200 });
-  })
-    .catch(err => {
-      console.log(err)
+  };
+  mdTaskStatusAdd(data)
+    .then(result => {
+      console.log(result);
+      res.json({ status: 200, data: result });
     })
-})
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
   const projectId = req.params.projectId;
@@ -29,20 +30,18 @@ router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
   mdTaskStatusGetByProjectId(projectId)
     .then(result => {
       console.log(result);
-      res.json({ status: 200 });
+      res.json({ status: 200, data: result });
     })
     .catch(err => {
       console.log(err);
     });
 });
 
-router.put('/project/status/:id', async (req: AuthRequest, res) => {
+router.put('/project/status', async (req: AuthRequest, res) => {
   const body = req.body as Partial<TaskStatus>;
-  const id = req.params.id;
-  mdTaskStatusUpdate(id, body)
+  mdTaskStatusUpdate(body)
     .then(result => {
-      console.log(result);
-      res.json({ status: 200 });
+      res.json({ status: 200, data: result });
     })
     .catch(err => {
       console.log(err);
@@ -54,7 +53,7 @@ router.delete('/project/status/:id', async (req: AuthRequest, res) => {
   mdTaskStatusDel(id)
     .then(result => {
       console.log(result);
-      res.json({ status: 200 });
+      res.json({ status: 200, data: result });
     })
     .catch(err => {
       console.log(err);

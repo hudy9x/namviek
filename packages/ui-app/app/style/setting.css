@@ -46,7 +46,12 @@
 }
 
 .color-item {
-  width: 20px;
-  height: 20px;
+ width: 20px;
+ height: 20px;
+	background-color: #fbf7ff;
 	border: 1px solid black;
+}
+
+.input-status {
+	background-color: #fbf7ff;
 }
