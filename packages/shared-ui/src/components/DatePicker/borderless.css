@@ -1,0 +1,10 @@
+.datepicker-borderless .form-input {
+  border: none;
+  padding: none;
+  box-shadow: none;
+}
+
+.datepicker-borderless svg {
+  display: none
+}
+

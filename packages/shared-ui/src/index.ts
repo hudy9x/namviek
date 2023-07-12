@@ -7,6 +7,7 @@ import { LoadingSpinner } from './components/Loading';
 import useFormHook from './hooks/useForm';
 import AvatarContainer from './components/Avatar';
 import DatePickerContainer from './components/DatePicker';
+import BorderlessDatePickerContainer from "./components/DatePicker/Borderless";
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from './components/Message';
 
@@ -17,5 +18,6 @@ export const useForm = useFormHook;
 export const Loading = LoadingSpinner;
 export const Avatar = AvatarContainer;
 export const DatePicker = DatePickerContainer;
+export const DatePickerBorderless = BorderlessDatePickerContainer;
 
 export * from './components/Controls/ListControl/type';

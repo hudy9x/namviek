@@ -26,7 +26,7 @@ export default function Modal({
     <Dialog.Root open={visible} onOpenChange={onVisibleChange}>
       <Dialog.Trigger asChild>{triggerBy}</Dialog.Trigger>
       <Dialog.Portal>
-        <div className="fixed top-0 left-0 w-screen h-screen ">
+        <div className="fixed top-0 left-0 w-screen h-screen z-20">
           <div className='relative w-full h-full flex items-center justify-center'>
 
           <Dialog.Content className="modal-content">

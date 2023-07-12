@@ -2,6 +2,10 @@
   @apply bg-white shadow border rounded-md text-gray-600 text-sm;
 }
 
+[data-radix-popper-content-wrapper] {
+  z-index: 20 !important;
+}
+
 .popover-arrow {
   fill: white;
 }

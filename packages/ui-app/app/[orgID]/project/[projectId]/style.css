@@ -2,18 +2,20 @@
   @apply relative;
 }
 
-.task-assignee .select-button {
+.task-assignee .select-button, .task-priority .select-button {
   border: none;
   padding: 0px;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
-.task-assignee .trailing-icon {
+.task-assignee .trailing-icon, 
+.task-priority .trailing-icon{
   display: none
 }
 
 .task-assignee .select-options {
   width: 200px;
+  z-index: 12;
 }
 
 .task-assignee .selected-member-item{
@@ -21,3 +23,13 @@
   background: transparent;
   border: none;
 }
+
+.task-priority .select-options {
+  width: 170px;
+  z-index: 12;
+}
+
+.task-priority .select-button {
+
+}
+
