@@ -1,10 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useProjectStatusStore } from '../../../../../store/status'
-import { taskGetAll } from '../../../../../services/task'
-import { useParams } from 'next/navigation'
-import { messageError } from '@shared/ui'
 import { useTaskStore } from '../../../../../store/task'
 import StatusItem from '../../../../_components/StatusItem'
 import TaskCheckbox from '../../../../_components/TaskCheckbox'
@@ -14,27 +10,11 @@ import TaskDate from './TaskDate'
 import TaskPriorityCell from './TaskPriorityCell'
 import MemberAvatar from '../../../../_components/MemberAvatar'
 import ListCell from './ListCell'
+import TaskPoint from './TaskPoint'
 
 export default function ListMode() {
-  const { projectId } = useParams()
   const { statuses } = useProjectStatusStore()
-  const { tasks, addAllTasks } = useTaskStore()
-
-  useEffect(() => {
-    taskGetAll(projectId)
-      .then(res => {
-        const { data, status, error } = res.data
-        if (status !== 200) {
-          addAllTasks([])
-          messageError(error)
-          return
-        }
-        addAllTasks(data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, [])
+  const { tasks } = useTaskStore()
 
   return (
     <div className="pb-[100px]">
@@ -83,9 +63,7 @@ export default function ListMode() {
                           value={task.priority}
                         />
                       </ListCell>
-                      <ListCell width={50}>
-                        {task.taskPoint ? task.taskPoint : '-'}
-                      </ListCell>
+                      <ListCell width={50}><TaskPoint taskId={task.id} value={task.taskPoint} /></ListCell>
                       <ListCell width={110}>
                         <TaskDate
                           taskId={task.id}
