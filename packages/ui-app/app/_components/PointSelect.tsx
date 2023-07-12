@@ -60,9 +60,13 @@ export default function PointSelect({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          <div className="flex items-center gap-2">
-            <AiOutlineStar className="w-4 shrink-0" />
-            <span>{val.title ? val.title : ''}</span>
+          <div className="relative w-5">
+            <AiOutlineStar className="w-4 h-4 shrink-0" />
+            {val.title ? (
+              <span className="absolute -top-1.5 left-2.5 w-4 h-4 text-[10px] flex items-center justify-center rounded-full bg-orange-200">
+                {val.title ? val.title : ''}
+              </span>
+            ) : null}
           </div>
         </List.Button>
         <List.Options>
