@@ -19,10 +19,8 @@ export default function ListMode() {
   const { projectId } = useParams()
   const { statuses } = useProjectStatusStore()
   const { tasks, addAllTasks } = useTaskStore()
-  console.log('statuses:', statuses)
 
   useEffect(() => {
-    console.log('called')
     taskGetAll(projectId)
       .then(res => {
         const { data, status, error } = res.data
@@ -53,7 +51,7 @@ export default function ListMode() {
                 {stt.name}
               </div>
               <div className="flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
-                <ListCell width={100}>Assignee</ListCell>
+                <ListCell width={150}>Assignee</ListCell>
                 <ListCell width={75}>Priority</ListCell>
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
@@ -63,7 +61,6 @@ export default function ListMode() {
             <div className="divide-y">
               {tasks.map(task => {
                 if (task.taskStatusId !== stt.id) return null
-                const dueDate = task.dueDate ? new Date(task.dueDate) : null
                 return (
                   <div
                     className="px-3 py-2 text-sm flex items-center justify-between"
@@ -74,7 +71,7 @@ export default function ListMode() {
                       {task.title}
                     </div>
                     <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
-                      <ListCell width={100}>
+                      <ListCell width={150}>
                         <TaskAssignee
                           taskId={task.id}
                           uids={task.assigneeIds}

@@ -60,14 +60,14 @@ export default function MemberPicker({
       )
     }
 
-    const sm = selectedMember
+    const { name, photo } = selectedMember
     return (
       <div
-        key={sm.id}
+        title={name || ''}
         className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50 selected-member-item">
-        <Avatar name={sm.name || ''} size="md" src={sm.photo || ''} />{' '}
-        <span className="selected-member-name">
-          {sm && sm.name ? sm.name : 'None'}
+        <Avatar name={name || ''} size="md" src={photo || ''} />{' '}
+        <span className="selected-member-name truncate">
+          {name ? name : 'None'}
         </span>
       </div>
     )
