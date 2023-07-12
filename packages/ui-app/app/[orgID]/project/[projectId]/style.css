@@ -4,6 +4,7 @@
 
 .task-assignee .select-button, 
 .task-priority .select-button,
+.task-status .select-button,
 .task-point .select-button
 {
   border: none;
@@ -13,6 +14,7 @@
 
 .task-assignee .trailing-icon, 
 .task-point .trailing-icon, 
+.task-status .trailing-icon, 
 .task-priority .trailing-icon{
   display: none
 }
@@ -29,6 +31,11 @@
 
 .task-point .select-options {
   width: 100px;
+  z-index: 12;
+}
+
+.task-status .select-options {
+  width: 150px;
   z-index: 12;
 }
 

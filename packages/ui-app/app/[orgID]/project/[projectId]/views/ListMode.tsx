@@ -2,7 +2,6 @@
 
 import { useProjectStatusStore } from '../../../../../store/status'
 import { useTaskStore } from '../../../../../store/task'
-import StatusItem from '../../../../_components/StatusItem'
 import TaskCheckbox from '../../../../_components/TaskCheckbox'
 import TaskCheckAll from './TaskCheckAll'
 import TaskAssignee from './TaskAssignee'
@@ -11,6 +10,7 @@ import TaskPriorityCell from './TaskPriorityCell'
 import MemberAvatar from '../../../../_components/MemberAvatar'
 import ListCell from './ListCell'
 import TaskPoint from './TaskPoint'
+import TaskStatus from './TaskStatus'
 
 export default function ListMode() {
   const { statuses } = useProjectStatusStore()
@@ -47,7 +47,8 @@ export default function ListMode() {
                     key={task.id}>
                     <div className="flex items-center gap-2">
                       <TaskCheckbox id={stt.id} />
-                      <StatusItem id={stt.id} />
+                      {/* <StatusItem id={stt.id} /> */}
+                      <TaskStatus taskId={task.id} value={task.taskStatusId} />
                       {task.title}
                     </div>
                     <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
@@ -63,7 +64,9 @@ export default function ListMode() {
                           value={task.priority}
                         />
                       </ListCell>
-                      <ListCell width={50}><TaskPoint taskId={task.id} value={task.taskPoint} /></ListCell>
+                      <ListCell width={50}>
+                        <TaskPoint taskId={task.id} value={task.taskPoint} />
+                      </ListCell>
                       <ListCell width={110}>
                         <TaskDate
                           taskId={task.id}

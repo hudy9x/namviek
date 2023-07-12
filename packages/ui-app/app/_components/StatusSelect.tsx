@@ -1,11 +1,10 @@
 import { Form, ListItemValue } from '@shared/ui'
-import { useProjectPointStore } from 'packages/ui-app/store/point'
 import { useEffect, useState } from 'react'
-import { AiOutlineStar } from 'react-icons/ai'
+import { useProjectStatusStore } from '../../store/status'
 
 const List = Form.List
 
-interface IPointSelectProps {
+interface IStatusSelectProps {
   value?: string
   className?: string
   onChange?: (v: string) => void
@@ -18,35 +17,41 @@ const defaultOption: ListItemValue = {
   title: ''
 }
 
-export default function PointSelect({
+export default function StatusSelect({
   title,
   className,
   value,
   onChange,
   placeholder
-}: IPointSelectProps) {
+}: IStatusSelectProps) {
   // const selectOption = options.find(opt => opt.id === value);
-  const { points } = useProjectPointStore()
+  const { statuses } = useProjectStatusStore()
   const [options, setOptions] = useState<ListItemValue[]>([])
   const [val, setVal] = useState(defaultOption)
   const [updateCounter, setUpdateCounter] = useState(0)
-  // const [val, setVal] = useState(selectOption || options[2]);
-  //
-  //
 
   useEffect(() => {
-    if (points.length) {
-      setOptions(points.map(p => ({ id: p.point + '', title: p.point + '' })))
+    if (statuses.length) {
+      setOptions(statuses.map(p => ({ id: p.id + '', title: p.name + '' })))
     }
-  }, [points])
+  }, [statuses])
+
+  useEffect(() => {
+    if (statuses.length) {
+      const selectedStatus = statuses.find(opt => opt.id === value)
+      console.log('selected', selectedStatus)
+      selectedStatus &&
+        setVal({ id: selectedStatus.id, title: selectedStatus.name })
+    }
+  }, [statuses, value])
 
   useEffect(() => {
     if (updateCounter) {
       onChange && onChange(val.id)
     }
   }, [updateCounter, val])
-  //
-  // const selectedColor = colors.get(val.id);
+
+  const existingStatus = statuses.find(stt => stt.id === val.id)
 
   return (
     <div className={className}>
@@ -59,22 +64,22 @@ export default function PointSelect({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          <div className="relative w-5">
-            <AiOutlineStar className="w-4 h-4 shrink-0" />
-            {val.title ? (
-              <span className="absolute -top-1.5 left-2.5 w-4 h-4 text-[10px] flex items-center justify-center rounded-full bg-orange-200">
-                {val.title ? val.title : ''}
-              </span>
-            ) : null}
-          </div>
+          <div
+            className="w-4 h-4 rounded cursor-pointer"
+            style={{
+              backgroundColor: existingStatus?.color || '#e5e5e5'
+            }}></div>
         </List.Button>
         <List.Options>
           {options.map(option => {
+            const stt = statuses.find(st => st.id === option.id)
             return (
               <List.Item key={option.id} value={option}>
                 <div className="flex items-center gap-2">
-                  <AiOutlineStar />
-                  {option.title}
+                  <div
+                    className="w-4 h-4 rounded cursor-pointer"
+                    style={{ backgroundColor: stt?.color }}></div>
+                  <span>{option.title}</span>
                 </div>
               </List.Item>
             )
