@@ -12,7 +12,8 @@ import TaskCheckAll from './TaskCheckAll'
 import TaskAssignee from './TaskAssignee'
 import TaskDate from './TaskDate'
 import TaskPriorityCell from './TaskPriorityCell'
-import MemberAvatar from 'packages/ui-app/app/_components/MemberAvatar'
+import MemberAvatar from '../../../../_components/MemberAvatar'
+import ListCell from './ListCell'
 
 export default function ListMode() {
   const { projectId } = useParams()
@@ -52,11 +53,11 @@ export default function ListMode() {
                 {stt.name}
               </div>
               <div className="flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
-                <div>Assignee</div>
-                <div>Priority</div>
-                <div>Point</div>
-                <div>Duedate</div>
-                <div>Created by</div>
+                <ListCell width={100}>Assignee</ListCell>
+                <ListCell width={75}>Priority</ListCell>
+                <ListCell width={50}>Point</ListCell>
+                <ListCell width={110}>Duedate</ListCell>
+                <ListCell width={100}>Created by</ListCell>
               </div>
             </div>
             <div className="divide-y">
@@ -73,28 +74,30 @@ export default function ListMode() {
                       {task.title}
                     </div>
                     <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
-                      <div>
+                      <ListCell width={100}>
                         <TaskAssignee
                           taskId={task.id}
                           uids={task.assigneeIds}
                         />
-                      </div>
-                      <div>
+                      </ListCell>
+                      <ListCell width={75}>
                         <TaskPriorityCell
                           taskId={task.id}
                           value={task.priority}
                         />
-                      </div>
-                      <div>{task.taskPoint ? task.taskPoint : '-'}</div>
-                      <div>
+                      </ListCell>
+                      <ListCell width={50}>
+                        {task.taskPoint ? task.taskPoint : '-'}
+                      </ListCell>
+                      <ListCell width={110}>
                         <TaskDate
                           taskId={task.id}
                           date={task.dueDate ? new Date(task.dueDate) : null}
                         />
-                      </div>
-                      <div>
+                      </ListCell>
+                      <ListCell width={100}>
                         <MemberAvatar uid={task.createdBy} />
-                      </div>
+                      </ListCell>
                     </div>
                   </div>
                 )
