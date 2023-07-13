@@ -9,7 +9,7 @@ export default function ProjectTabContent() {
   const mode = searchParams.get('mode');
 
   return (
-    <div className="" style={{ height: 'calc(100vh - 83px)' }}>
+    <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
       {mode === 'task' && <TaskList />}
       {mode === 'setting' && <Settings />}
     </div>

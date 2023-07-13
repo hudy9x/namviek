@@ -2,15 +2,12 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": ["@nx"],
-  "rules": {
-    "semi": ["error", "never"]
-  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "@nx/enforce-module-boundaries": [
-          "off",
+          "error",
           {
             "enforceBuildableLibDependency": true,
             "allow": [],

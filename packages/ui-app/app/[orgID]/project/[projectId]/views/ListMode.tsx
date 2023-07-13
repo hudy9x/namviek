@@ -17,7 +17,7 @@ export default function ListMode() {
   const { tasks } = useTaskStore()
 
   return (
-    <div className="pb-[100px]">
+    <div className="pb-[300px]">
       {statuses.map(stt => {
         return (
           <div

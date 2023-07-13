@@ -1,7 +1,7 @@
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
 import { TaskPoint } from '@prisma/client'
 
-export const projectPointsGet = (projectId: string) => {
+export const projectPointGet = (projectId: string) => {
   return httpGet(`/api/project/point/${projectId}`)
 }
 

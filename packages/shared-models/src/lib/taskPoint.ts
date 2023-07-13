@@ -25,6 +25,9 @@ export const mdTaskPointGetByProjectId = async (projectId: string) => {
   return taskPointModel.findMany({
     where: {
       projectId
+    },
+    orderBy: {
+      point: 'desc'
     }
   })
 }
