@@ -1,3 +1,51 @@
 .project-nav {
   @apply relative;
 }
+
+.task-assignee .select-button, 
+.task-priority .select-button,
+.task-status .select-button,
+.task-point .select-button
+{
+  border: none;
+  padding: 0px;
+  box-shadow: none !important;
+}
+
+.task-assignee .trailing-icon, 
+.task-point .trailing-icon, 
+.task-status .trailing-icon, 
+.task-priority .trailing-icon{
+  display: none
+}
+
+.task-assignee .select-options {
+  width: 200px;
+  z-index: 12;
+}
+
+.task-priority .select-options {
+  width: 170px;
+  z-index: 12;
+}
+
+.task-point .select-options {
+  width: 100px;
+  z-index: 12;
+}
+
+.task-status .select-options {
+  width: 150px;
+  z-index: 12;
+}
+
+.task-assignee .selected-member-item{
+  padding: 0px;
+  background: transparent;
+  border: none;
+}
+
+.task-date .form-input {
+  padding: 0;
+}
+

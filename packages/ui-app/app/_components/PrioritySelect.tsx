@@ -21,12 +21,13 @@ const options: ListItemValue[] = [
 
 interface IPriorityProps {
   value?: TaskPriority;
+  className?: string;
   onChange?: (v: TaskPriority) => void;
   title?: string;
   placeholder?: string;
 }
 
-export default function PrioritySelect({ title, value, onChange, placeholder }: IPriorityProps) {
+export default function PrioritySelect({ title, className, value, onChange, placeholder }: IPriorityProps) {
   const selectOption = options.find(opt => opt.id === value);
 
   const [val, setVal] = useState(selectOption || options[2]);
@@ -41,33 +42,35 @@ export default function PrioritySelect({ title, value, onChange, placeholder }: 
   const selectedColor = colors.get(val.id);
 
   return (
-    <List
-      title={title}
-      placeholder={placeholder}
-      value={val}
-      onChange={val => {
-        setVal(val);
-        setUpdateCounter(updateCounter + 1);
-      }}>
-      <List.Button>
-        <div className="flex items-center gap-2">
-          <RiFlag2Fill className="text-gray-200" style={{ color: selectedColor }} />
-          <span>{val.title ? val.title : 'None'}</span>
-        </div>
-      </List.Button>
-      <List.Options>
-        {options.map(option => {
-          const c = colors.get(option.id);
-          return (
-            <List.Item key={option.id} value={option}>
-              <div className="flex items-center gap-2">
-                <RiFlag2Fill style={{ color: c }} />
-                {option.title}
-              </div>
-            </List.Item>
-          );
-        })}
-      </List.Options>
-    </List>
+    <div className={className}>
+      <List
+        title={title}
+        placeholder={placeholder}
+        value={val}
+        onChange={val => {
+          setVal(val);
+          setUpdateCounter(updateCounter + 1);
+        }}>
+        <List.Button>
+          <div className="flex items-center gap-2">
+            <RiFlag2Fill className="text-gray-200" style={{ color: selectedColor }} />
+            <span>{val.title ? val.title : 'None'}</span>
+          </div>
+        </List.Button>
+        <List.Options>
+          {options.map(option => {
+            const c = colors.get(option.id);
+            return (
+              <List.Item key={option.id} value={option}>
+                <div className="flex items-center gap-2">
+                  <RiFlag2Fill style={{ color: c }} />
+                  {option.title}
+                </div>
+              </List.Item>
+            );
+          })}
+        </List.Options>
+      </List>
+    </div>
   );
 }

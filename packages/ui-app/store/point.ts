@@ -1,11 +1,10 @@
 import { create } from 'zustand'
 import { TaskPoint } from '@prisma/client'
 import { produce } from 'immer'
-import { I18NProvider } from 'next/dist/server/future/helpers/i18n-provider'
 
 interface IProjectPointState {
   points: TaskPoint[]
-  setAllPoints: (data: TaskPoint[]) => void
+  addAllPoints: (data: TaskPoint[]) => void
   updatePoint: (oldPoint: TaskPoint, newPoint: TaskPoint) => void
   addPoint: (data: TaskPoint) => void
   deletePoint: (id: string) => void
@@ -13,7 +12,7 @@ interface IProjectPointState {
 
 export const useProjectPointStore = create<IProjectPointState>(set => ({
   points: [],
-  setAllPoints: (data: TaskPoint[]) =>
+  addAllPoints: (data: TaskPoint[]) =>
     set(
       produce((draftState: IProjectPointState) => {
         draftState.points = data
