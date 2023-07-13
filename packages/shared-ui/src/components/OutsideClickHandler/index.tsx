@@ -13,7 +13,6 @@ export const OutsideClickHandler = ({ onOutsideClick, children }: Props) => {
       if (!wrapperRef.current) {
         return
       }
-      console.log(wrapperRef.current)
       if (!wrapperRef.current.contains(event.target as HTMLElement)) {
         onOutsideClick();
       }

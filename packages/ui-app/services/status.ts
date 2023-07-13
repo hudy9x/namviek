@@ -9,7 +9,7 @@ export const projectStatusAdd = (data: TaskStatus) => {
   return httpPost(`/api/project/status/${data.projectId}`, data);
 };
 
-export const projectStatusEdit = (data: Partial<TaskStatus>) => {
+export const projectStatusUpdate = (data: Partial<TaskStatus>) => {
 	return httpPut('/api/project/status', data)
 }
 

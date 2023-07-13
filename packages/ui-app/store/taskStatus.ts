@@ -2,48 +2,34 @@ import { create } from "zustand";
 import { TaskStatus } from "@prisma/client";
 import { produce } from "immer";
 
-interface TaskStatusAll {
-  [projectId: string]: TaskStatus[];
-}
 interface TaskStatusState {
-	taskStatusAll: TaskStatusAll
-  projectStatusInitialStore: (projectId: string) => void
+	taskStatus: TaskStatus[]
 	projectStatusAddStore: (data: TaskStatus) => void
-  projectUpdateIdStatus: (oldId: string, newId: string, projectId: string) => void
-  projectStatusEditStore: (data: Partial<TaskStatus>, projectId: string) => void
-  projectStatusDelStore: (projectId: string, id: string) => void
+  projectUpdateStatusStore: (id: string ,newData: Partial<TaskStatus>) => void
+  projectStatusDelStore: (id: string) => void
+  projectUpdateAllStatus: (newData: TaskStatus[]) => void
 }
 
 export const useTaskStatusStore = create<TaskStatusState>((set) => ({
-  taskStatusAll: {},
+  taskStatus: [],
 
-  projectStatusInitialStore: (projectId) => set(produce((state: TaskStatusState) => {
-		state.taskStatusAll = {
-      [projectId]: []
-    } 
+  projectUpdateAllStatus: (newData) => set(produce((state: TaskStatusState) => {
+    state.taskStatus = newData
 	})),
-
-  projectUpdateIdStatus: (oldId, newId, projectId) => set(produce((state: TaskStatusState) => {
-    state.taskStatusAll[projectId].forEach((status, index) => {
-      if (oldId === status.id) {
-        state.taskStatusAll[projectId][index] = {...status, id: newId}
-      }
-    })
-  })),
 
   projectStatusAddStore: (data) => set(produce((state: TaskStatusState) => {
-		state.taskStatusAll[data.projectId].push(data)
+		state.taskStatus.push(data)
 	})),
 
-  projectStatusEditStore: (data, projectId) => set(produce((state: TaskStatusState) => {
-    state.taskStatusAll[projectId].forEach((status, index) => {
-      if (data.id === status.id) {
-        state.taskStatusAll[projectId][index] = {...status, ...data}
+  projectUpdateStatusStore: (id ,newData) => set(produce((state: TaskStatusState) => {
+    state.taskStatus.forEach((status, index) => {
+      if (id === status.id) {
+        state.taskStatus[index] = {...status, ...newData}
       }
     })
   })),
    
-  projectStatusDelStore: (projectId, id) => set(produce((state: TaskStatusState) => {
-    state.taskStatusAll[projectId] = state.taskStatusAll[projectId].filter((status) => status.id !== id);
+  projectStatusDelStore: (id) => set(produce((state: TaskStatusState) => {
+    state.taskStatus = state.taskStatus.filter((status) => status.id !== id);
   })),
 }))

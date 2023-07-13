@@ -48,6 +48,7 @@ router.put('/project/status', async (req: AuthRequest, res) => {
     });
 });
 
+
 router.delete('/project/status/:id', async (req: AuthRequest, res) => {
   const id = req.params.id;
   mdTaskStatusDel(id)
