@@ -9,8 +9,8 @@ router.get('/project/point/:projectId', async (req: AuthRequest, res) => {
 
   mdTaskPointGetByProjectId(projectId)
     .then(result => {
-      console.log(result);
-      res.json({ status: 200 });
+      console.log('done points')
+      res.json({ status: 200, data: result });
     })
     .catch(err => {
       console.log(err);

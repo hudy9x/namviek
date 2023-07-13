@@ -9,7 +9,7 @@ router.get('/project/tag/:projectId', async (req: AuthRequest, res) => {
 
   mdTagGetByProjectId(projectId)
     .then(result => {
-      console.log(result);
+      console.log('done tag')
       res.json({ status: 200 });
     })
     .catch(err => {

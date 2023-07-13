@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
 import { AuthRequest } from '../../types';
-import { mdTaskAdd } from '@shared/models';
+import { mdTaskAdd, mdTaskGetAll } from '@shared/models';
 import { Task } from '@prisma/client';
 
 const router = Router();
@@ -9,19 +9,26 @@ const router = Router();
 router.use([authMiddleware, beProjectMemberMiddleware]);
 
 // It means GET:/api/example
-router.get('/project/task', (req: AuthRequest, res) => {
-  res.json({ status: 200 });
+router.get('/project/task', async (req: AuthRequest, res) => {
+  console.log('called');
+  const projectId = req.query.projectId as string;
+  try {
+    console.log('projectId', projectId);
+    const tasks = await mdTaskGetAll({ projectId });
+    res.json({ status: 200, data: tasks });
+  } catch (error) {
+    res.json({ status: 500, error });
+  }
 });
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('auth user', req.authen);
-  console.log('body', req.body)
-  const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task
-  const { id } = req.authen
+  console.log('body', req.body);
+  const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task;
+  const { id } = req.authen;
 
   try {
-
     const result = await mdTaskAdd({
       title,
       startDate: null,
@@ -30,7 +37,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       desc,
       projectId,
       priority,
-      taskStatusIds: [],
+      taskStatusId: null,
       tagIds: [],
       parentTaskId: null,
       taskPoint: null,
@@ -38,12 +45,12 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       createdAt: new Date(),
       updatedAt: null,
       updatedBy: null
-    })
+    });
 
     res.json({ status: 200, data: result });
   } catch (error) {
-    console.log(error)
-    res.json({ status: 500, error })
+    console.log(error);
+    res.json({ status: 500, error });
   }
 });
 

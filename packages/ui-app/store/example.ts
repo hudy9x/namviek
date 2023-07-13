@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { MemberRole, User } from '@prisma/client';
 import { produce } from 'immer';
 
-export type UserMember = User & {
+type UserMember = User & {
   role: MemberRole;
 };
 

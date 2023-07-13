@@ -81,17 +81,17 @@ model OrganizationMembers {
 }
 
 model Task {
-  id            String        @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
-  desc          String?
-  dueDate       DateTime?
-  startDate     DateTime?
-  projectId     String        @db.ObjectId
-  priority      TaskPriority?
-  taskStatusIds String[]      @db.ObjectId
-  tagIds        String[]      @db.ObjectId
-  assigneeIds   String[]      @db.ObjectId
-  parentTaskId  String?       @db.ObjectId
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  desc         String?
+  dueDate      DateTime?
+  startDate    DateTime?
+  projectId    String        @db.ObjectId
+  priority     TaskPriority?
+  taskStatusId String?       @db.ObjectId
+  tagIds       String[]      @db.ObjectId
+  assigneeIds  String[]      @db.ObjectId
+  parentTaskId String?       @db.ObjectId
 
   // do not store `point` as objectID, cuz we just need to fill the point value
   taskPoint Int?
