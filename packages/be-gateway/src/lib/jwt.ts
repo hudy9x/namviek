@@ -9,10 +9,12 @@ export const decodeToken = (token: string) => {
 };
 
 export const generateToken = (payload: object) => {
+  console.log('TOKEN_EXPIRED', TOKEN_EXPIRED, typeof TOKEN_EXPIRED)
   return sign(payload, SECRET_KEY, { expiresIn: TOKEN_EXPIRED });
 };
 
 export const generateRefreshToken = (payload: object) => {
+  console.log('REFRESH_EXPIRED', REFRESH_EXPIRED, typeof REFRESH_EXPIRED)
   return sign(payload, REFRESH_KEY, { expiresIn: REFRESH_EXPIRED });
 };
 

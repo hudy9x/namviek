@@ -17,6 +17,9 @@ instance.interceptors.request.use(
     const authorization = getGoalieToken();
     const refreshToken = getGoalieRefreshToken();
 
+    console.log('auth toke', authorization)
+    console.log('refresh', refreshToken)
+
     config.headers.setAuthorization(authorization);
     config.headers.set('refreshtoken', refreshToken);
     return config;
@@ -32,9 +35,13 @@ instance.interceptors.response.use(
     const authorization = headers.authorization;
     const refreshtoken = headers.refreshtoken;
 
+    console.log('override token')
     if (authorization && refreshtoken) {
       saveGoalieToken(authorization);
       saveGoalieRefreshToken(refreshtoken);
+      console.log('override done')
+    } else {
+      console.log('override failed', authorization, refreshtoken)
     }
 
     return config;

@@ -51,7 +51,7 @@
 }
 
 .avatar-root.size-md .avatar-fallback {
-	@apply text-xs;
+	@apply text-[10px];
 }
 
 .avatar-root.size-sm .avatar-fallback {

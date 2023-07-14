@@ -1,0 +1,3 @@
+.setting-container {
+  @apply bg-white  rounded-lg shadow-lg shadow-indigo-100;
+}

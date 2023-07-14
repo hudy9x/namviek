@@ -6,14 +6,15 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import 'react-day-picker/dist/style.css';
 import './style.css';
 
-interface IDatePicker {
+export interface IDatePicker {
+  className?: string;
   title?: string;
   value?: Date;
   onChange?: (d: Date) => void;
   placeholder?: string;
 }
 
-export default function DatePicker({ title, value, onChange, placeholder }: IDatePicker) {
+export default function DatePicker({ title, className, value, onChange, placeholder }: IDatePicker) {
   const [selected, setSelected] = useState<Date>();
   const [visible, setVisible] = useState(false);
 
@@ -27,7 +28,7 @@ export default function DatePicker({ title, value, onChange, placeholder }: IDat
   };
 
   return (
-    <div className="form-control">
+    <div className={`form-control ${className}`}>
       {title ? <label>Due date</label> : null}
       <div className="form-control-wrapper relative">
         <Popover.Root open={visible} onOpenChange={setVisible}>

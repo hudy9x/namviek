@@ -1,3 +1,6 @@
+import ListMode from './views/ListMode';
+
 export default function TaskList() {
-  return <div>Task Listttt</div>;
+  return <ListMode />;
 }
+
