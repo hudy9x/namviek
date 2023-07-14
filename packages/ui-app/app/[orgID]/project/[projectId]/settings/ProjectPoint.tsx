@@ -1,17 +1,17 @@
 import { useParams } from 'next/navigation'
 import { TaskPoint } from '@prisma/client'
-import { AiOutlineStar } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineStar } from 'react-icons/ai'
 import { FiEdit2 } from 'react-icons/fi'
 
 import { IoIosClose } from 'react-icons/io'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useProjectPointStore } from 'packages/ui-app/store/point'
+import { useProjectPointStore } from '../../../../../store/point'
 import {
   projectPointCreate,
   projectPointDelete,
   projectPointUpdate
-} from 'packages/ui-app/services/point'
-import { messageError } from '@shared/ui'
+} from '../../../../../services/point'
+import { messageError, messageSuccess } from '@shared/ui'
 
 interface ITaskPointInput {
   initPoint: TaskPoint
@@ -38,17 +38,16 @@ const PointInput = ({
 
   return (
     <div className="relative flex items-center group">
-      <AiOutlineStar className="absolute left-2 text-gray-500 top-3.5" />
+      <AiOutlineStar className="absolute left-4 text-gray-400 top-3.5 group-hover:text-orange-400 transition-all" />
       <input
-        className="bg-transparent w-full pl-8 text-gray-500 text-sm pr-8 py-3 border-b outline-none"
+        className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 border-b outline-none"
         defaultValue={`${initPoint.point}`}
         onKeyDown={e => onSubmitKeyPressed(e)}
       />
       <div className="absolute right-2 gap-2 hidden group-hover:flex ">
-        <FiEdit2
-          className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-gray-200 rounded-md p-1 text-gray-500"
-          onClick={() => console.log('edit point')}
-        />
+        <div
+          className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500"
+        >Enter to update</div>
         <IoIosClose
           className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
           onClick={() => handleDelete(initPoint.id)}
@@ -106,9 +105,11 @@ export default function ProjectPoint() {
 
   const handleUpdatePoint = (oldData: TaskPoint, newData: TaskPoint) => {
     if (oldData.point === newData.point) return
+    messageSuccess('Point has been updated ! 🐸')
     updatePoint(oldData, newData)
     projectPointUpdate(newData).catch(err => {
       console.log(`Update point failed: ${err}\nRollback to old value`)
+      messageError('Point has been failed to sync ! 😥')
       updatePoint(newData, oldData)
     })
   }
@@ -146,11 +147,12 @@ export default function ProjectPoint() {
               handleDelete={handleDeletePoint}
             />
           ))}
-          <div className="relative flex items-center">
+          <div className="relative flex items-center bg-gray-50 rounded-b-lg">
+            <AiOutlinePlus className='absolute top-3.5 left-4 text-gray-500' />
             <input
               ref={inputAddRef}
-              className="bg-transparent w-full pl-8 text-gray-500 text-sm pr-8 py-3 outline-none"
-              placeholder="Insert new task point here..."
+              className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"
+              placeholder="Hit `Enter` to input a new point"
               onKeyDown={e => {
                 if (e.key !== 'Enter') {
                   return
