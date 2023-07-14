@@ -1,0 +1,72 @@
+import {
+  InvitationStatus,
+  Organization,
+  OrganizationMembers
+} from '@prisma/client'
+import { orgMemberModel, orgModel } from './_prisma'
+
+// export const mdOrgGetOne = async (projectId: string | string[]) => {
+//   return orgModel.findFirst({
+//     where: {
+//       id: {
+//         in: Array.isArray(projectId) ? projectId : [projectId]
+//       }
+//     }
+//   });
+// };
+
+export const mdOrgMemberSeach = async ({
+  orgId,
+  term
+}: {
+  orgId: string
+  term: string
+}) => {
+  return orgMemberModel.findRaw({})
+}
+
+export const mdOrgMemberGet = async (orgId: string | string[]) => {
+  return orgMemberModel.findMany({
+    where: {
+      organizationId: {
+        in: Array.isArray(orgId) ? orgId : [orgId]
+      },
+      status: InvitationStatus.ACCEPTED
+    },
+    include: {
+      users: true
+    }
+  })
+}
+
+export const mdOrgMemberAdd = async (data: Omit<OrganizationMembers, 'id'>) => {
+  return orgMemberModel.create({
+    data
+  })
+}
+
+// export const mdOrgAdd = async (data: Omit<Organization, 'id'>) => {
+//   return orgModel.create({
+//     data: data
+//   });
+// };
+//
+// export const mdOrgMemGetByUid = async (uid: string) => {
+//   return orgMemberModel.findMany({
+//     where: {
+//       uid
+//     }
+//   });
+// };
+//
+// export const mdOrgMemAdd = async (data: Omit<OrganizationMembers, 'id'>) => {
+//   return orgMemberModel.create({
+//     data
+//   });
+// };
+//
+// export const mdOrgMemAddMany = async (data: Omit<OrganizationMembers, 'id'>[]) => {
+//   return orgMemberModel.createMany({
+//     data: data
+//   });
+// };

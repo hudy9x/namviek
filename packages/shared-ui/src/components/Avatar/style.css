@@ -12,8 +12,12 @@
 	@apply w-9 h-9;
 }
 
-.avatar-root.size-lg {
+.avatar-root.size-xl {
 	@apply w-12 h-12;
+}
+
+.avatar-root.size-lg {
+	@apply w-8 h-8;
 }
 
 .avatar-root.size-md {
