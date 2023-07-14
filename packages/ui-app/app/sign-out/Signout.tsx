@@ -9,8 +9,11 @@ export default function Signout() {
 
   useEffect(() => {
     setTimeout(() => {
+      console.log('clear cache token')
       clearAllGoalieToken();
+      console.log('clear goalie user info')
       clearGoalieUser();
+      console.log('redirecting to /sign-in ...')
       push('/sign-in');
     }, 500);
   }, []);
