@@ -3,13 +3,13 @@
  * This is only a minimal backend to get started.
  */
 
-import express, { Application } from 'express';
+import express, { Application, Response, Request } from 'express';
 import cors from 'cors';
-// import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from '@shared/models';
-// import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
+import { mdProjectAdd, mdMemberAdd, mdMemberGetProject, mdProjectGetAllByIds, mdOrgAdd, mdOrgMemAdd } from '@shared/models';
+import { InvitationStatus, MemberRole, OrganizationRole } from '@prisma/client';
 import Routes from './routes';
 
-export const app: Application = express();
+const app: Application = express();
 
 app.use(cors({
   exposedHeaders: ['Authorization', 'RefreshToken']

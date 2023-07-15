@@ -3,6 +3,9 @@
 import { AiOutlineStar } from 'react-icons/ai'
 import ProjectPoint from './ProjectPoint'
 import { HiOutlineRectangleStack } from 'react-icons/hi2'
+import { ProjectStatus } from './status/index'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { HiOutlineLink, HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 
@@ -65,8 +68,13 @@ const Setting = () => {
           )
         })}
       </div>
-      <div className="w-[500px]">
+      {/* <div className="w-[500px]">
         <ProjectPoint />
+      </div> */}
+      <div className="w-[500px]">
+        <DndProvider backend={HTML5Backend}>
+          <ProjectStatus />
+        </DndProvider>
       </div>
     </div>
   )

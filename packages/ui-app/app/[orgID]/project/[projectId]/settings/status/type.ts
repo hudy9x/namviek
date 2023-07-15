@@ -9,7 +9,7 @@ export const colors = [
  'brown',
  'gray',
  'black',
- 'white',
+ 'whitesmoke',
  'cyan',
  'magenta',
  'lime',
@@ -17,12 +17,6 @@ export const colors = [
  'olive'
 ];
 
-export const DEFAULT_COLOR = 'white';
+export const DEFAULT_COLOR = 'whitesmoke';
 
-export interface IActionVisibility {
-  [key: string]: boolean;
-}
-
-export interface IEditStatus {
-  [key: string]: string;
-}
+export const KEY = 'TASK_STATUS'
