@@ -1,19 +1,9 @@
 import {
   InvitationStatus,
-  Organization,
   OrganizationMembers
 } from '@prisma/client'
-import { orgMemberModel, orgModel } from './_prisma'
+import { orgMemberModel, orgModel, userModel } from './_prisma'
 
-// export const mdOrgGetOne = async (projectId: string | string[]) => {
-//   return orgModel.findFirst({
-//     where: {
-//       id: {
-//         in: Array.isArray(projectId) ? projectId : [projectId]
-//       }
-//     }
-//   });
-// };
 
 export const mdOrgMemberSeach = async ({
   orgId,
@@ -22,7 +12,45 @@ export const mdOrgMemberSeach = async ({
   orgId: string
   term: string
 }) => {
-  return orgMemberModel.findRaw({})
+
+  const users = await orgMemberModel.findMany({
+    where: {
+      organizationId: orgId,
+      users: {
+        OR: [
+          {
+            name: {
+              contains: term
+            }
+          },
+          {
+            email: {
+              contains: term
+            }
+          }
+        ]
+      }
+    },
+    take: 10,
+    orderBy: {
+      users: {
+        email: 'desc'
+      }
+    },
+    include: {
+      users: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          photo: true
+        }
+      }
+    }
+  })
+
+  return users
+
 }
 
 export const mdOrgMemberGet = async (orgId: string | string[]) => {

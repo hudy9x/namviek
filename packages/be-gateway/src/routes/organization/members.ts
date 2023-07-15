@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { AuthRequest } from '../../types'
-import { mdOrgMemberGet } from '@shared/models'
+import { mdOrgMemberGet, mdOrgMemberSeach } from '@shared/models'
 
 const router = Router()
 
@@ -30,7 +30,21 @@ router.post('/org/member/search', (req: AuthRequest, res) => {
     term: string
   }
 
-  res.json({ status: 200 })
+  console.log('search query', projectId, orgId, term)
+
+  mdOrgMemberSeach({
+    orgId,
+    term
+  }).then(data => {
+    console.log('success')
+    console.log(data)
+    res.json({ status: 200, data })
+  }).catch(error => {
+    console.log(error)
+    res.json({ status: 500, error })
+  })
+
+
 })
 
 export default router

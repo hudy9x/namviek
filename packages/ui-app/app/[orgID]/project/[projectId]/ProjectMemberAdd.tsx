@@ -1,12 +1,38 @@
 import { Avatar, Button, Modal } from '@shared/ui'
 import { useOrgMemberStore } from '../../../../store/orgMember'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { HiOutlinePlus } from 'react-icons/hi'
+import { orgMemberSearch } from 'packages/ui-app/services/organizationMember'
+import { useParams } from 'next/navigation'
+import { useMemberStore } from 'packages/ui-app/store/example'
 
+let timeout = 0
 export default function ProjectMemberAdd() {
+  const { orgID, projectId } = useParams()
   const [visible, setVisible] = useState(false)
   const [term, setTerm] = useState('')
   const { orgMembers } = useOrgMemberStore()
+  const { members } = useMemberStore()
+
+  const onChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const target = ev.target
+    const value = target.value
+
+    if (!value) return
+
+    timeout && clearTimeout(timeout)
+
+    timeout = setTimeout(() => {
+      orgMemberSearch({
+        projectId,
+        orgId: orgID,
+        term: value
+      }).then(result => {
+        console.log(result)
+      })
+    }, 250) as unknown as number;
+
+  }
 
   return (
     <div className="mt-4 text-right">
@@ -28,12 +54,7 @@ export default function ProjectMemberAdd() {
             <input
               className='w-full bg-transparent px-4 py-3 border-b border-dashed rounded-t-lg'
               placeholder="Find your member"
-              onChange={ev => {
-                const target = ev.target
-                const value = target.value
-
-                if (!value) return
-              }}
+              onChange={onChange}
             />
 
             <div className="divide-y divide-dashed">
