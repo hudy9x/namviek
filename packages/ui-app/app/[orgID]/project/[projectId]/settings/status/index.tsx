@@ -3,8 +3,8 @@ import { useParams } from 'next/navigation'
 import {
   projectStatusAdd,
   projectStatusUpdate
-} from '../../../../../../services/status'
-import { useTaskStatusStore } from '../../../../../../store/taskStatus'
+} from 'packages/ui-app/services/status'
+import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { TaskStatus } from '@prisma/client'
 import { ItemStatus } from './ItemStatus'
@@ -15,11 +15,11 @@ export const ProjectStatus = () => {
   const params = useParams()
   const inputAddRef = useRef<HTMLInputElement>(null)
   const {
-    taskStatus,
-    addTaskStatus,
-    updateTaskStatus,
-    updateAllTaskStatus,
-  } = useTaskStatusStore()
+    statuses,
+    addStatus,
+    updateStatus,
+    addAllStatuses
+  } = useProjectStatusStore()
 
   const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key !== 'Enter') return
@@ -37,13 +37,13 @@ export const ProjectStatus = () => {
       return
     }
 
-    createNewTaskStatus(target)
+    createNewStatus(target)
   }
 
-  const createNewTaskStatus = (target: HTMLInputElement) => {
+  const createNewStatus = (target: HTMLInputElement) => {
     const projectId = params.projectId
     const fakeId = randomId()
-    const order = taskStatus.length || 0
+    const order = statuses.length
     const newTaskStatus: TaskStatus = {
       id: fakeId,
       name: target.value,
@@ -52,7 +52,7 @@ export const ProjectStatus = () => {
       projectId
     }
     target.value = ''
-    addTaskStatus(newTaskStatus)
+    addStatus(newTaskStatus)
 
     projectStatusAdd(newTaskStatus)
       .then(res => {
@@ -61,7 +61,7 @@ export const ProjectStatus = () => {
           return
         }
         messageSuccess('Create new status successfully')
-        updateTaskStatus(fakeId, data as TaskStatus)
+        updateStatus(fakeId, data as TaskStatus)
       })
       .catch(err => {
         console.log(`Create task status`, err)
@@ -69,7 +69,7 @@ export const ProjectStatus = () => {
   }
 
   const moveItem = async (dragIndex: number, hoverIndex: number) => {
-    let updateStatus = [...taskStatus]
+    let updateStatus = [...statuses]
     const draggedItem = updateStatus[dragIndex]; 
     updateStatus.splice(dragIndex, 1);
     updateStatus.splice(hoverIndex, 0, draggedItem);
@@ -84,7 +84,7 @@ export const ProjectStatus = () => {
       order: hoverIndex
     }
     
-    updateAllTaskStatus(updateStatus)
+    addAllStatuses(updateStatus)
     await projectStatusUpdate(dragTaskStatus)
     await projectStatusUpdate(hoverTaskStatus)
   }
@@ -94,7 +94,7 @@ export const ProjectStatus = () => {
   return (
     <div className="w-full ml-7">
       <div className="setting-container">
-        {taskStatus.map((status, index) => (
+        {statuses.map((status, index) => (
           <ItemStatus status={status} index={index} moveItem={moveItem} key={status.id} />
         ))}
         <div className="relative flex items-center bg-gray-50 rounded-b-lg">

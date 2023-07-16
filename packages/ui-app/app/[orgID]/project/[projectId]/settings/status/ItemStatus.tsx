@@ -1,11 +1,10 @@
 import { TaskStatus } from '@prisma/client'
-import { useEffect, useState } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import {
   projectStatusDel,
   projectStatusUpdate
 } from 'packages/ui-app/services/status'
-import { useTaskStatusStore } from 'packages/ui-app/store/taskStatus'
+import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { HiOutlineBars4 } from 'react-icons/hi2'
 import { Popover } from 'packages/shared-ui/src/components/Controls'
@@ -20,9 +19,10 @@ interface IItemStatus {
 }
 
 export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
-  const { updateTaskStatus, delTaskStatus } = useTaskStatusStore()
+  const { updateStatus, delStatus } = useProjectStatusStore()
   const inputRef = useRef<HTMLInputElement>(null)
   const ref = useRef<HTMLDivElement>(null)
+  const colorRef = useRef<HTMLDivElement>(null)
 
   const [{ handlerId }, drop] = useDrop({
     accept: KEY,
@@ -71,30 +71,49 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
   const handleDelete = async (status: TaskStatus) => {
     const { id } = status
 
-    delTaskStatus(id)
+    delStatus(id)
     await projectStatusDel(id)
     messageSuccess('Delete status successfully')
   }
 
-  const onUpdate = async (
+  const handleUpdateName = async (
     e: KeyboardEvent<HTMLDivElement>,
-    status: TaskStatus,
-    index: number
+    oldStatus: TaskStatus,
   ) => {
     if (e.key === 'Enter') {
-      const id = status.id
       const target = e.target as HTMLInputElement
-      const data = {
-        id,
-        name: target.value,
-        color: status.color,
-        order: index
+      const id = status.id
+      const newStatus = {
+        ...oldStatus,
+        name: target.value
       }
-      updateTaskStatus(data.id, data)
+      updateStatus(id, newStatus)
       inputRef?.current?.blur();
-      messageSuccess('Update status successfully')
-      await projectStatusUpdate(data)
+      messageSuccess('Update status successfully') 
+
+      await updateError(oldStatus, newStatus)
     }
+  }
+
+  const updateError = async (oldStatus: TaskStatus, newStatus: TaskStatus) => {
+    const id = status.id
+    await projectStatusUpdate(newStatus).catch((err) => {
+        console.log(`Update status failed: ${err}\nRollback to old value`)
+        messageError('Status has been failed to sync ! 😥')
+        updateStatus(id, oldStatus)
+      })
+  }
+
+  const handleUpdateColor = async (oldStatus: TaskStatus, color: string) => {
+    const id = status.id
+      const newStatus = {
+        ...oldStatus,
+        color,
+      }
+    updateStatus(id, newStatus)
+    messageSuccess('Update status successfully')
+
+    await updateError(oldStatus, newStatus)
   }
 
   drag(drop(ref))
@@ -103,7 +122,7 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
     <div
       data-handler-id={handlerId}
       ref={ref}
-      className="drag-button relative flex items-center group ml-3">
+      className="relative flex items-center group ml-3">
       <div className="flex items-center">
         <div className="text-xl text-gray-500 cursor-grabbing">
           <HiOutlineBars4 />
@@ -112,7 +131,7 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
           triggerBy={
             <div
               style={{ backgroundColor: status.color }}
-              className="w-[30px] h-[15px] mx-2 rounded-sm  text-violet11 focus:shadow-[0_0_0_2px] outline-none"></div>
+              className="w-[30px] h-[15px] mx-2 rounded-sm outline-none"></div>
           }
           content={
             <div className="grid p-1 mt-1 gap-1 xl:grid-cols-4 xl:grid-rows-2 rounded-sm bg-white border border-gray-30">
@@ -120,7 +139,7 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
                 <div
                   key={index}
                   style={{ backgroundColor: color }}
-                  onClick={() => updateTaskStatus(status.id, { ...status, color })}
+                  onClick={() => handleUpdateColor(status, color)}
                   className="w-[25px] h-[15px] rounded-sm"></div>
               ))}
             </div>
@@ -129,7 +148,7 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
         <input
           ref={inputRef}
           className="outline-none bg-transparent w-full text-gray-500 text-sm pr-8 py-3"
-          onKeyDown={e => onUpdate(e, status, index)}
+          onKeyDown={e => handleUpdateName(e, status)}
           defaultValue={status.name}
         />
       </div>

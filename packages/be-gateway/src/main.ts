@@ -16,7 +16,6 @@ app.use(cors({
 }));
 app.use(express.json());
 
-//export type RequestAuth = WithAuthProp<Request>
 app.use('/api', Routes);
 // app.post('/api/organization', async (req: RequestAuth, res: Response) => {
 // 	const { userId } = req.auth;
