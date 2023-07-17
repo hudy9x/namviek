@@ -71,9 +71,14 @@ router.post('/project/member', async (req: AuthRequest, res) => {
     })
 })
 
-router.put('/project/member/role', async (req: AuthRequest, res) => {
+router.delete('/project/member', async (req: AuthRequest, res) => {
+  const params = req.params
+  console.log('parmas', req.params)
+  console.log('query', req.query)
 
-  res.json({ status: 200 })
+  res.json({
+    status: 200
+  })
 })
 
 export default router

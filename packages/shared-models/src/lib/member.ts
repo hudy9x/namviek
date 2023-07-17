@@ -17,6 +17,15 @@ export const mdMemberAdd = async (data: Omit<Members, 'id'>) => {
   })
 }
 
+export const mdMemberDel = async (uid: string, projectId: string) => {
+  return memberModel.delete({
+    where: {
+      uid,
+      projectId
+    }
+  })
+}
+
 export const mdMemberAddMany = async (data: CustomMember[]) => {
   return memberModel.createMany({
     data

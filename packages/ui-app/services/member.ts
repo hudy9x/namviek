@@ -17,9 +17,10 @@ export const memAddNewToProject = (
   })
 }
 
-export const memDeleteFromProject = (uid: string) => {
+export const memDeleteFromProject = (projectId: string, uid: string) => {
   return httpDel('/api/project/member', {
     params: {
+      projectId,
       uid
     }
   })
