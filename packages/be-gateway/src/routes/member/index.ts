@@ -4,6 +4,7 @@ import { AuthRequest } from '../../types'
 import {
   mdMemberAdd,
   mdMemberAddMany,
+  mdMemberDel,
   mdMemberGetAllByProjectId,
   mdMemberGetProject,
   mdProjectAdd,
@@ -75,10 +76,15 @@ router.delete('/project/member', async (req: AuthRequest, res) => {
   const params = req.params
   console.log('parmas', req.params)
   console.log('query', req.query)
+  const { uid, projectId } = req.query as { uid: string; projectId: string }
 
-  res.json({
-    status: 200
-  })
+  mdMemberDel(uid, projectId)
+    .then(result => {
+      res.json({ status: 200, data: result })
+    })
+    .catch(error => {
+      res.json({ status: 500, error })
+    })
 })
 
 export default router
