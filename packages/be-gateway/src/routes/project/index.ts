@@ -33,6 +33,8 @@ router.get('/project', async (req: AuthRequest, res) => {
     const projects = await mdProjectGetAllByIds(projectIds);
 
     console.log('get project success');
+    console.log('token', req.headers.authorization)
+    console.log('refresh', req.headers.refreshtoken)
 
     res.json({
       status: 200,

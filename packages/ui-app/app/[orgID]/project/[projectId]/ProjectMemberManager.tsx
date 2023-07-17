@@ -1,8 +1,10 @@
 import { useOrgMemberGet } from '../../../../services/organizationMember'
 import { useMemberStore } from '../../../../store/member'
 import Avatar from 'packages/shared-ui/src/components/Avatar'
-import { HiOutlineSearch } from 'react-icons/hi'
+import { HiOutlineSearch, HiX } from 'react-icons/hi'
 import ProjectMemberAdd from './ProjectMemberAdd'
+import ProjectMemberPermission from './ProjectMemberPermission'
+import ProjectMemberDel from './ProjectMemberDel'
 
 export default function ProjectMemberManager() {
   const { members } = useMemberStore()
@@ -21,7 +23,7 @@ export default function ProjectMemberManager() {
         <div className="divide-y">
           {members.map(member => {
             return (
-              <div key={member.id} className="px-4 py-3">
+              <div key={member.id} className="relative px-4 py-3">
                 <div className="flex items-center gap-3">
                   <Avatar
                     src={member.photo || ''}
@@ -36,6 +38,10 @@ export default function ProjectMemberManager() {
                       {member.email}
                     </span>
                   </div>
+                </div>
+                <div className="absolute top-3 right-4 flex items-center gap-3">
+                  <ProjectMemberPermission uid={member.id} role={member.role} />
+                  <ProjectMemberDel uid={member.id} />
                 </div>
               </div>
             )

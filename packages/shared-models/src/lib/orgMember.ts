@@ -1,21 +1,21 @@
-import {
-  InvitationStatus,
-  OrganizationMembers
-} from '@prisma/client'
+import { InvitationStatus, OrganizationMembers } from '@prisma/client'
 import { orgMemberModel, orgModel, userModel } from './_prisma'
-
 
 export const mdOrgMemberSeach = async ({
   orgId,
-  term
+  term,
+  notUids
 }: {
   orgId: string
   term: string
+  notUids: string[]
 }) => {
-
   const users = await orgMemberModel.findMany({
     where: {
       organizationId: orgId,
+      uid: {
+        notIn: notUids
+      },
       users: {
         OR: [
           {
@@ -50,7 +50,6 @@ export const mdOrgMemberSeach = async ({
   })
 
   return users
-
 }
 
 export const mdOrgMemberGet = async (orgId: string | string[]) => {
