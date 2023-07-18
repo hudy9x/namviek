@@ -2,21 +2,20 @@
   @apply relative;
 }
 
-.task-assignee .select-button, 
+.task-assignee .select-button,
 .task-priority .select-button,
 .task-status .select-button,
-.task-point .select-button
-{
+.task-point .select-button {
   border: none;
   padding: 0px;
   box-shadow: none !important;
 }
 
-.task-assignee .trailing-icon, 
-.task-point .trailing-icon, 
-.task-status .trailing-icon, 
-.task-priority .trailing-icon{
-  display: none
+.task-assignee .trailing-icon,
+.task-point .trailing-icon,
+.task-status .trailing-icon,
+.task-priority .trailing-icon {
+  display: none;
 }
 
 .task-assignee .select-options {
@@ -39,7 +38,7 @@
   z-index: 12;
 }
 
-.task-assignee .selected-member-item{
+.task-assignee .selected-member-item {
   padding: 0px;
   background: transparent;
   border: none;
@@ -49,3 +48,18 @@
   padding: 0;
 }
 
+.project-member-permission {
+  @apply w-[100px];
+}
+
+.project-member-permission .select-button {
+  @apply text-xs px-2 py-1.5 text-gray-500 ;
+}
+
+.project-member-permission .select-clear-icon {
+  @apply hidden;
+}
+
+.project-member-permission .select-item {
+  @apply text-xs ;
+}

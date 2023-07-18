@@ -13,6 +13,9 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
       // console.log('token is valid');
       const { id, email, name, photo } = validToken as JWTPayload;
       req.authen = { id, email, name, photo };
+      // make sure that all tokens cleared
+      res.setHeader('Authorization', '');
+      res.setHeader('RefreshToken', '');
       return next();
     }
   } catch (err) {
