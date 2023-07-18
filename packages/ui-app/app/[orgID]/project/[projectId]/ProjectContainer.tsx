@@ -46,8 +46,6 @@ export default function ProjectContainer() {
           return
         }
 
-        console.log(data)
-
         addAllMember(data)
       })
       .catch(err => {

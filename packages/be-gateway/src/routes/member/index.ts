@@ -2,17 +2,12 @@ import { Router } from 'express'
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
-  mdMemberAdd,
   mdMemberAddMany,
   mdMemberDel,
   mdMemberGetAllByProjectId,
-  mdMemberGetProject,
-  mdMemberUpdateRole,
-  mdProjectAdd,
-  mdProjectGetAllByIds
+  mdMemberUpdateRole
 } from '@shared/models'
 import { MemberRole, User } from '@prisma/client'
-import { orgMemberModel } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
@@ -20,7 +15,6 @@ router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/project
 router.get('/project/member', async (req: AuthRequest, res) => {
-  const { id: userId } = req.authen
   const query = req.query
 
   try {
@@ -98,9 +92,6 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/member', async (req: AuthRequest, res) => {
-  const params = req.params
-  console.log('parmas', req.params)
-  console.log('query', req.query)
   const { uid, projectId } = req.query as { uid: string; projectId: string }
 
   mdMemberDel(uid, projectId)

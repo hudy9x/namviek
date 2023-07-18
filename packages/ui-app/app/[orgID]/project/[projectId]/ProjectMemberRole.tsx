@@ -1,8 +1,8 @@
 import { MemberRole } from '@prisma/client'
 import { Form, ListItemValue, messageError } from '@shared/ui'
 import { useParams } from 'next/navigation'
-import { memUpdateRole } from 'packages/ui-app/services/member'
-import { useMemberStore } from 'packages/ui-app/store/member'
+import { memUpdateRole } from '../../../../services/member'
+import { useMemberStore } from '../../../../store/member'
 import { useEffect, useState } from 'react'
 const List = Form.List
 
@@ -55,7 +55,6 @@ export default function ProjectMemberRole({
         value={value}
         onChange={val => {
           onUpdate(val as ListItemValue)
-          // setValue(val)
         }}>
         <List.Button>{value.title}</List.Button>
         <List.Options>

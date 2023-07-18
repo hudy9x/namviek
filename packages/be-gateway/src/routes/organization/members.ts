@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { AuthRequest } from '../../types'
 import {
   mdMemberGetAllByProjectId,
-  mdMemberGetProject,
   mdOrgMemberGet,
   mdOrgMemberSeach
 } from '@shared/models'

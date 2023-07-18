@@ -5,7 +5,6 @@ import ProjectPoint from './ProjectPoint'
 import { HiOutlineRectangleStack } from 'react-icons/hi2'
 import { HiOutlineLink, HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
-import { useState } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
 
@@ -14,8 +13,6 @@ const Setting = () => {
   const { orgID, projectId } = useParams()
   const searchParams = useSearchParams()
   const tab = searchParams.get('tab')
-
-  console.log('tab', tab)
 
   const settings = [
     {

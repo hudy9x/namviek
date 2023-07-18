@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { httpGet, httpPost } from './_req'
 import { messageError } from '@shared/ui'
 import { useParams } from 'next/navigation'
@@ -33,6 +33,11 @@ export const useOrgMemberGet = () => {
     orgMemberGet(projectId, orgID)
       .then(res => {
         const { data, status } = res.data
+
+        if (status !== 200) {
+          messageError('Fetch organization member error ')
+          return
+        }
 
         addAllOrgMember(data)
       })
