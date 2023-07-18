@@ -18,7 +18,11 @@ interface IItemStatus {
   moveItem: (dragIndex: number, hoverIndex: number) => void
 }
 
-export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
+export default function StatusItemDnD({
+  status,
+  index,
+  moveItem
+}: IItemStatus) {
   const { updateStatus, delStatus } = useProjectStatusStore()
   const inputRef = useRef<HTMLInputElement>(null)
   const ref = useRef<HTMLDivElement>(null)
@@ -70,8 +74,7 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
 
   const handleDelete = async (status: TaskStatus) => {
     confirmAlert({
-      message:
-        `All tasks with ${status.name} status will be moved to the backlog after this status is deleted. Are you sure you want to delete it?`,
+      message: `All tasks with ${status.name} status will be moved to the backlog after this status is deleted. Are you sure you want to delete it?`,
       yes: () => {
         const { id } = status
 

@@ -1,69 +1,106 @@
-import { Router } from 'express';
-import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
-import { AuthRequest } from '../../types';
-import { mdMemberAdd, mdMemberGetAllByProjectId, mdMemberGetProject, mdProjectAdd, mdProjectGetAllByIds } from '@shared/models';
-import { MemberRole } from '@prisma/client';
+import { Router } from 'express'
+import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
+import { AuthRequest } from '../../types'
+import {
+  mdMemberAddMany,
+  mdMemberDel,
+  mdMemberGetAllByProjectId,
+  mdMemberUpdateRole
+} from '@shared/models'
+import { MemberRole, User } from '@prisma/client'
 
-const router = Router();
+const router = Router()
 
-router.use([authMiddleware, beProjectMemberMiddleware]);
+router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/project
 router.get('/project/member', async (req: AuthRequest, res) => {
-  const { id: userId } = req.authen;
-  const query = req.query;
+  const query = req.query
 
   try {
-    const members = await mdMemberGetAllByProjectId(query.projectId as string);
-    const users = members.map(m => ({...m.users, role: m.role}))
+    const members = await mdMemberGetAllByProjectId(query.projectId as string)
+    const users = members.map(m => ({ ...m.users, role: m.role }))
 
     res.json({
       status: 200,
       data: users
-    });
+    })
   } catch (error) {
-    console.log('get project member error', error);
+    console.log('get project member error', error)
     res.json({
       status: 500,
       err: error,
       data: []
-    });
+    })
   }
-});
+})
 
 // It means POST:/api/project
 router.post('/project/member', async (req: AuthRequest, res) => {
-  const body = req.body as { name: string; desc: string; organizationId: string };
-  const { id: userId } = req.authen;
+  const { id: userId } = req.authen
+  const { projectId, members } = req.body as {
+    projectId: string
+    members: User[]
+  }
 
-  console.log('project data:', body);
+  console.log('projectId + members:', projectId, members)
 
-  // const result = await mdProjectAdd({
-  // 	cover: null,
-  // 	icon: null,
-  // 	name: body.name,
-  // 	desc: body.desc,
-  // 	createdBy: userId,
-  // 	createdAt: new Date(),
-  // 	organizationId: body.organizationId,
-  // 	updatedAt: null,
-  // 	updatedBy: null
-  // });
-  //
-  // await mdMemberAdd({
-  // 	uid: userId,
-  // 	projectId: result.id,
-  // 	role: MemberRole.MANAGER,
-  // 	createdAt: new Date(),
-  // 	createdBy: userId,
-  // 	updatedBy: null,
-  // 	updatedAt: null
-  // });
-  //
-  // res.json({
-  // 	status: 200,
-  // 	data: result
-  // });
-});
+  mdMemberAddMany(
+    members.map(m => {
+      return {
+        projectId,
+        role: MemberRole.MEMBER,
+        uid: m.id,
+        createdBy: userId,
+        createdAt: new Date(),
+        updatedBy: null,
+        updatedAt: null
+      }
+    })
+  )
+    .then(result => {
+      console.log('done')
+      res.json({ status: 200, data: result })
+    })
+    .catch(error => {
+      res.json({ status: 500, error })
+    })
+})
 
-export default router;
+router.put('/project/member/role', async (req: AuthRequest, res) => {
+  const { uid, role, projectId } = req.body as {
+    uid: string
+    role: MemberRole
+    projectId: string
+  }
+
+  console.log('uid', uid)
+  console.log('projectId', projectId)
+  console.log('role', role)
+
+  mdMemberUpdateRole({
+    uid,
+    projectId,
+    role
+  })
+    .then(result => {
+      res.json({ status: 200, data: result })
+    })
+    .catch(error => {
+      res.json({ status: 500, error })
+    })
+})
+
+router.delete('/project/member', async (req: AuthRequest, res) => {
+  const { uid, projectId } = req.query as { uid: string; projectId: string }
+
+  mdMemberDel(uid, projectId)
+    .then(result => {
+      res.json({ status: 200, data: result })
+    })
+    .catch(error => {
+      res.json({ status: 500, error })
+    })
+})
+
+export default router

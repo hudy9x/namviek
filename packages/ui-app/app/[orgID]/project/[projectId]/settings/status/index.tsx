@@ -3,8 +3,8 @@ import { useParams } from 'next/navigation'
 import {
   projectStatusAdd,
   projectStatusUpdate
-} from 'packages/ui-app/services/status'
-import { useProjectStatusStore } from 'packages/ui-app/store/status'
+} from '../../../../../../services/status'
+import { useProjectStatusStore } from '../../../../../../store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { TaskStatus } from '@prisma/client'
 import { ItemStatus } from './ItemStatus'
@@ -14,12 +14,8 @@ import { AiOutlinePlus } from 'react-icons/ai'
 export const ProjectStatus = () => {
   const params = useParams()
   const inputAddRef = useRef<HTMLInputElement>(null)
-  const {
-    statuses,
-    addStatus,
-    updateStatus,
-    addAllStatuses
-  } = useProjectStatusStore()
+  const { statuses, addStatus, updateStatus, addAllStatuses } =
+    useProjectStatusStore()
 
   const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key !== 'Enter') return
@@ -69,40 +65,47 @@ export const ProjectStatus = () => {
   }
 
   const moveItem = async (dragIndex: number, hoverIndex: number) => {
-    let updateStatus = [...statuses]
-    const draggedItem = updateStatus[dragIndex]; 
-    updateStatus.splice(dragIndex, 1);
-    updateStatus.splice(hoverIndex, 0, draggedItem);
-    
+    const updateStatus = [...statuses]
+    const draggedItem = updateStatus[dragIndex]
+    updateStatus.splice(dragIndex, 1)
+    updateStatus.splice(hoverIndex, 0, draggedItem)
+
     const dragTaskStatus: TaskStatus = {
       ...updateStatus[dragIndex],
       order: dragIndex
     }
-    
+
     const hoverTaskStatus: TaskStatus = {
       ...updateStatus[hoverIndex],
       order: hoverIndex
     }
-    
+
     addAllStatuses(updateStatus)
     await projectStatusUpdate(dragTaskStatus)
     await projectStatusUpdate(hoverTaskStatus)
   }
 
-
-
   return (
-    <div className="w-full ml-7">
-      <div className="setting-container">
-        {statuses.map((status, index) => (
-          <ItemStatus status={status} index={index} moveItem={moveItem} key={status.id} />
-        ))}
+    <div className="w-full">
+      <div className="setting-container border">
+        {statuses.length ? (
+          <div className="divide-y border-b">
+            {statuses.map((status, index) => (
+              <ItemStatus
+                status={status}
+                index={index}
+                moveItem={moveItem}
+                key={status.id}
+              />
+            ))}
+          </div>
+        ) : null}
         <div className="relative flex items-center bg-gray-50 rounded-b-lg">
           <AiOutlinePlus className="absolute top-3.5 left-4 text-gray-500" />
           <input
             ref={inputAddRef}
             className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"
-            placeholder="Create Status"
+            placeholder="Hit `Enter` to add a new status"
             onKeyDown={handleKeyPress}
           />
         </div>

@@ -35,15 +35,12 @@ instance.interceptors.response.use(
     const authorization = headers.authorization;
     const refreshtoken = headers.refreshtoken;
 
-    console.log('override token')
+    console.log('override token', authorization, refreshtoken)
     if (authorization && refreshtoken) {
       saveGoalieToken(authorization);
       saveGoalieRefreshToken(refreshtoken);
       console.log('override done')
-    } else {
-      console.log('override failed', authorization, refreshtoken)
-    }
-
+    } 
     return config;
   },
   function(error) {
@@ -60,7 +57,7 @@ instance.interceptors.response.use(
       // }
       // window.location.href = `/sign-in?redirectUrl=${window.location.pathname}`;
     }
-    console.log('ERRIRIRIR', response.status);
+    console.log('ERRIRIRIR', response, response.status);
     return Promise.reject(error);
   }
 );
