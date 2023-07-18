@@ -1,5 +1,12 @@
-import { Avatar, Button, Loading, Modal, messageError } from '@shared/ui'
-import { ChangeEvent, useState } from 'react'
+import {
+  Avatar,
+  Button,
+  Loading,
+  Modal,
+  messageError,
+  messageInfo
+} from '@shared/ui'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { HiOutlinePlus, HiX } from 'react-icons/hi'
 import { orgMemberSearch } from '../../../../services/organizationMember'
 import { useParams } from 'next/navigation'
@@ -11,6 +18,92 @@ let timeout = 0
 
 type OrgMemUser = OrganizationMembers & {
   users: User
+}
+
+const SelectedMembers = ({
+  selectedMember,
+  setSelectedMember
+}: {
+  selectedMember: User[]
+  setSelectedMember: Dispatch<SetStateAction<User[]>>
+}) => {
+  return (
+    <>
+      <h2 className="my-3 font-medium text-sm">Selected members:</h2>
+
+      <div className="bg-gray-50 rounded-lg border">
+        <div className="divide-y divide-dashed">
+          {!selectedMember.length ? (
+            <div className="px-4 py-3 text-sm text-gray-500">
+              No member selected
+            </div>
+          ) : null}
+          {selectedMember.map(member => {
+            return (
+              <div
+                key={member.id}
+                className="relative px-4 py-3 hover:bg-white cursor-pointer">
+                <MemberAvatarWithName
+                  name={member.name}
+                  photo={member.photo}
+                  email={member.email}
+                />
+                <div className="absolute top-4 right-3">
+                  <HiX
+                    onClick={() => {
+                      setSelectedMember(prev =>
+                        prev.filter(sm => sm.id !== member.id)
+                      )
+                    }}
+                    className="text-gray-500 w-7 h-7 rounded-md bg-white border p-1.5 hover:text-red-400"
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </>
+  )
+}
+
+const MemberAvatarWithName = ({
+  photo,
+  name,
+  email
+}: {
+  photo: string | null
+  name: string | null
+  email: string
+}) => {
+  return (
+    <div className="flex items-center gap-3">
+      <Avatar src={photo || ''} name={name || ''} size="lg" />
+      <div className="flex flex-col text-sm">
+        <span className="text-gray-700 font-medium">{name}</span>
+        <span className="text-gray-400 text-xs">{email}</span>
+      </div>
+    </div>
+  )
+}
+
+const SearchStatus = ({ status }: { status: boolean }) => {
+  return (
+    <>
+      {status ? (
+        <div className="px-6 py-3">
+          <div className="flex items-center gap-5">
+            <div className="w-4 h-4">
+              <Loading />
+            </div>
+            <div className="flex flex-col text-sm">
+              <span className="text-gray-700 font-medium">Searching ...</span>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  )
 }
 
 export default function ProjectMemberAdd() {
@@ -68,6 +161,13 @@ export default function ProjectMemberAdd() {
 
           const retData = data as OrgMemUser[]
 
+          if (!retData.length) {
+            messageInfo(
+              `No user matched with '${value}', type another keyword and try again`
+            )
+            return
+          }
+
           updateSearchResults(retData.map(d => d.users))
         })
         .finally(() => {
@@ -100,27 +200,13 @@ export default function ProjectMemberAdd() {
             <div className="bg-gray-50 rounded-lg border">
               <div className="relative">
                 <input
-                  className="w-full bg-transparent px-4 py-3 border-b border-dashed rounded-t-lg text-sm"
+                  className="w-full bg-white px-4 py-3 border-b border-dashed rounded-t-lg text-sm"
                   placeholder="Find your member"
                   onChange={onChange}
                 />
               </div>
-
+              <SearchStatus status={loading} />
               <div className="divide-y divide-dashed">
-                {loading ? (
-                  <div className="px-6 py-3">
-                    <div className="flex items-center gap-5">
-                      <div className="w-4 h-4">
-                        <Loading />
-                      </div>
-                      <div className="flex flex-col text-sm">
-                        <span className="text-gray-700 font-medium">
-                          Searching ...
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
                 {filteredSearchResults.map(member => {
                   return (
                     <div
@@ -131,71 +217,21 @@ export default function ProjectMemberAdd() {
                         })
                       }}
                       className="px-4 py-3 hover:bg-white cursor-pointer">
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src={member.photo || ''}
-                          name={member.name || ''}
-                          size="lg"
-                        />
-                        <div className="flex flex-col text-sm">
-                          <span className="text-gray-700 font-medium">
-                            {member.name}
-                          </span>
-                          <span className="text-gray-400 text-xs">
-                            {member.email}
-                          </span>
-                        </div>
-                      </div>
+                      <MemberAvatarWithName
+                        name={member.name}
+                        photo={member.photo}
+                        email={member.email}
+                      />
                     </div>
                   )
                 })}
               </div>
             </div>
 
-            <h2 className="my-3 font-medium text-sm">Selected members:</h2>
-
-            <div className="bg-gray-50 rounded-lg border">
-              <div className="divide-y divide-dashed">
-                {!selectedMember.length ? (
-                  <div className="px-4 py-3 text-sm text-gray-500">
-                    No member selected
-                  </div>
-                ) : null}
-                {selectedMember.map(member => {
-                  return (
-                    <div
-                      key={member.id}
-                      className="relative px-4 py-3 hover:bg-white cursor-pointer">
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src={member.photo || ''}
-                          name={member.name || ''}
-                          size="lg"
-                        />
-                        <div className="flex flex-col text-sm">
-                          <span className="text-gray-700 font-medium">
-                            {member.name}
-                          </span>
-                          <span className="text-gray-400 text-xs">
-                            {member.email}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="absolute top-4 right-3">
-                        <HiX
-                          onClick={() => {
-                            setSelectedMember(prev =>
-                              prev.filter(sm => sm.id !== member.id)
-                            )
-                          }}
-                          className="text-gray-500 w-7 h-7 rounded-md bg-white border p-1.5 hover:text-red-400"
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+            <SelectedMembers
+              selectedMember={selectedMember}
+              setSelectedMember={setSelectedMember}
+            />
 
             <div className="mt-3 text-right">
               <Button title="Add to project" primary onClick={addToProject} />

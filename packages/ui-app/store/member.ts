@@ -11,10 +11,25 @@ interface MemberState {
   addAllMember: (data: UserMember[]) => void
   addMember: (data: UserMember[]) => void
   delMember: (uid: string) => void
+  updateMemberRole: (uid: string, role: MemberRole) => void
 }
 
 export const useMemberStore = create<MemberState>(set => ({
   members: [],
+  updateMemberRole: (uid: string, role: MemberRole) =>
+    set(
+      produce((state: MemberState) => {
+        state.members.some((m, index) => {
+          const bool = m.id === uid
+
+          if (bool) {
+            state.members[index].role = role
+          }
+
+          return bool
+        })
+      })
+    ),
   delMember: (uid: string) =>
     set(
       produce((state: MemberState) => {

@@ -7,6 +7,7 @@ import {
   mdMemberDel,
   mdMemberGetAllByProjectId,
   mdMemberGetProject,
+  mdMemberUpdateRole,
   mdProjectAdd,
   mdProjectGetAllByIds
 } from '@shared/models'
@@ -65,6 +66,30 @@ router.post('/project/member', async (req: AuthRequest, res) => {
   )
     .then(result => {
       console.log('done')
+      res.json({ status: 200, data: result })
+    })
+    .catch(error => {
+      res.json({ status: 500, error })
+    })
+})
+
+router.put('/project/member/role', async (req: AuthRequest, res) => {
+  const { uid, role, projectId } = req.body as {
+    uid: string
+    role: MemberRole
+    projectId: string
+  }
+
+  console.log('uid', uid)
+  console.log('projectId', projectId)
+  console.log('role', role)
+
+  mdMemberUpdateRole({
+    uid,
+    projectId,
+    role
+  })
+    .then(result => {
       res.json({ status: 200, data: result })
     })
     .catch(error => {

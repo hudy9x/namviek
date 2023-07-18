@@ -1,4 +1,4 @@
-import { Members } from '@prisma/client'
+import { MemberRole, Members } from '@prisma/client'
 import { memberModel } from './_prisma'
 
 type CustomMember = Omit<Members, 'id'>
@@ -11,6 +11,35 @@ export const mdMemberGetProject = async (uid: string) => {
   })
 }
 
+export const mdMemberHasRole = async (uid: string, role: MemberRole) => {
+  return memberModel.findFirst({
+    where: {
+      uid,
+      role
+    }
+  })
+}
+
+export const mdMemberUpdateRole = async ({
+  uid,
+  projectId,
+  role
+}: {
+  uid: string
+  projectId: string
+  role: MemberRole
+}) => {
+  return memberModel.updateMany({
+    where: {
+      uid,
+      projectId
+    },
+    data: {
+      role
+    }
+  })
+}
+
 export const mdMemberAdd = async (data: Omit<Members, 'id'>) => {
   return memberModel.create({
     data: data
@@ -18,9 +47,10 @@ export const mdMemberAdd = async (data: Omit<Members, 'id'>) => {
 }
 
 export const mdMemberDel = async (uid: string, projectId: string) => {
-  return memberModel.delete({
+  return memberModel.deleteMany({
     where: {
-      uid
+      uid,
+      projectId
     }
   })
 }
