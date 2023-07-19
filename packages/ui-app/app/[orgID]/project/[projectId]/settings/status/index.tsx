@@ -1,23 +1,21 @@
 import { messageError, randomId, messageSuccess } from '@shared/ui'
 import { useParams } from 'next/navigation'
-import {
-  projectStatusAdd,
-  projectStatusUpdate
-} from '../../../../../../services/status'
+import { projectStatusAdd } from '../../../../../../services/status'
 import { useProjectStatusStore } from '../../../../../../store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { TaskStatus } from '@prisma/client'
-import { ItemStatus } from './ItemStatus'
 import { DEFAULT_COLOR } from './type'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { StatusDnDContainer } from './StatusDnDContainer'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 export const ProjectStatus = () => {
   const params = useParams()
   const inputAddRef = useRef<HTMLInputElement>(null)
-  const { statuses, addStatus, updateStatus, addAllStatuses } =
-    useProjectStatusStore()
+  const { statuses, addStatus, updateStatus } = useProjectStatusStore()
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
+  const onPressEnter = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key !== 'Enter') return
 
     if (!inputAddRef) return messageError('Input is undefined')
@@ -64,49 +62,19 @@ export const ProjectStatus = () => {
       })
   }
 
-  const moveItem = async (dragIndex: number, hoverIndex: number) => {
-    const updateStatus = [...statuses]
-    const draggedItem = updateStatus[dragIndex]
-    updateStatus.splice(dragIndex, 1)
-    updateStatus.splice(hoverIndex, 0, draggedItem)
-
-    const dragTaskStatus: TaskStatus = {
-      ...updateStatus[dragIndex],
-      order: dragIndex
-    }
-
-    const hoverTaskStatus: TaskStatus = {
-      ...updateStatus[hoverIndex],
-      order: hoverIndex
-    }
-
-    addAllStatuses(updateStatus)
-    await projectStatusUpdate(dragTaskStatus)
-    await projectStatusUpdate(hoverTaskStatus)
-  }
-
   return (
     <div className="w-full">
       <div className="setting-container border">
-        {statuses.length ? (
-          <div className="divide-y border-b">
-            {statuses.map((status, index) => (
-              <ItemStatus
-                status={status}
-                index={index}
-                moveItem={moveItem}
-                key={status.id}
-              />
-            ))}
-          </div>
-        ) : null}
+        <DndProvider backend={HTML5Backend}>
+          <StatusDnDContainer />
+        </DndProvider>
         <div className="relative flex items-center bg-gray-50 rounded-b-lg">
           <AiOutlinePlus className="absolute top-3.5 left-4 text-gray-500" />
           <input
             ref={inputAddRef}
             className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"
             placeholder="Hit `Enter` to add a new status"
-            onKeyDown={handleKeyPress}
+            onKeyDown={onPressEnter}
           />
         </div>
       </div>

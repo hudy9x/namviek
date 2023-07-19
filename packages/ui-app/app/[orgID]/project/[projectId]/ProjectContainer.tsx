@@ -17,11 +17,12 @@ import { messageError } from '@shared/ui'
 export default function ProjectContainer() {
   const { projectId } = useParams()
   const { addAllMember } = useMemberStore()
-  const { addAllStatuses } = useProjectStatusStore()
+  const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
   const { addAllPoints } = useProjectPointStore()
-  const { addAllTasks } = useTaskStore()
+  const { addAllTasks, setTaskLoading } = useTaskStore()
 
   useEffect(() => {
+    setTaskLoading(true)
     taskGetAll(projectId)
       .then(res => {
         const { data, status, error } = res.data
@@ -34,6 +35,9 @@ export default function ProjectContainer() {
       })
       .catch(err => {
         console.log(err)
+      })
+      .finally(() => {
+        setTaskLoading(false)
       })
   }, [])
 
@@ -52,7 +56,7 @@ export default function ProjectContainer() {
         console.log(err)
       })
 
-    console.log('called')
+    setStatusLoading(true)
     projectStatusGet(projectId)
       .then(res => {
         const { data, status } = res.data
@@ -69,6 +73,9 @@ export default function ProjectContainer() {
       })
       .catch(err => {
         console.log(err)
+      })
+      .finally(() => {
+        setStatusLoading(false)
       })
 
     projectPointGet(projectId)
