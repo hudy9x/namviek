@@ -66,7 +66,7 @@ export default function StatusItemDnD({
         return
       }
 
-      // moveItem(dragIndex, hoverIndex)
+      // swap status's order
       swapOrder(dragIndex, hoverIndex)
       item.index = hoverIndex
     }

@@ -4,8 +4,6 @@ import { AiOutlineStar } from 'react-icons/ai'
 import ProjectPoint from './ProjectPoint'
 import { HiOutlineRectangleStack } from 'react-icons/hi2'
 import { ProjectStatus } from './status/index'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import { HiOutlineLink, HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
@@ -35,11 +33,7 @@ const Setting = () => {
       title: 'Statuses',
       active: tab === 'statuses',
       href: `${orgID}/project/${projectId}?mode=setting&tab=statuses`,
-      content: (
-        <DndProvider backend={HTML5Backend}>
-          <ProjectStatus />
-        </DndProvider>
-      ),
+      content: <ProjectStatus />,
       desc: 'Project status refers to the level of progress it achieves in working toward an end goal.'
     },
     {

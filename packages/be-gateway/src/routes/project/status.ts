@@ -63,15 +63,7 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
   const { newOrders: newStatusOrders } = req.body as {
     newOrders: NewStatusOrder[]
   }
-  // mdTaskStatusUpdate(body)
-  //   .then(result => {
-  //     res.json({ status: 200, data: result })
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
-  //
-  console.log('neworder', newStatusOrders)
+
   if (!newStatusOrders.length) {
     return res.json({ status: 200 })
   }
@@ -79,7 +71,6 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
   const updatePromises = []
 
   newStatusOrders.forEach(status => {
-    console.log('call updatePromise')
     updatePromises.push(
       mdTaskStatusUpdate({
         id: status.id,

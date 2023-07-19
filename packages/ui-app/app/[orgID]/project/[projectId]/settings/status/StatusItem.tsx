@@ -19,7 +19,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
   const { updateStatus, delStatus } = useProjectStatusStore()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleDelete = async (status: TaskStatus) => {
+  const onDeleteHandler = async (status: TaskStatus) => {
     confirmAlert({
       message: `All tasks with ${status.name} status will be moved to the backlog after this status is deleted. Are you sure you want to delete it?`,
       yes: () => {
@@ -36,7 +36,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     })
   }
 
-  const handleUpdateName = async (
+  const onChangeNameHandler = async (
     e: KeyboardEvent<HTMLDivElement>,
     oldStatus: TaskStatus
   ) => {
@@ -52,10 +52,14 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     inputRef?.current?.blur()
     messageSuccess('Update status successfully')
 
-    await updateError(oldStatus, newStatus)
+    await updateNewStatus(oldStatus, newStatus)
   }
 
-  const updateError = async (oldStatus: TaskStatus, newStatus: TaskStatus) => {
+  // sync new status infor to server
+  const updateNewStatus = async (
+    oldStatus: TaskStatus,
+    newStatus: TaskStatus
+  ) => {
     const id = status.id
     await projectStatusUpdate(newStatus).catch(err => {
       console.log(`Update status failed: ${err}\nRollback to old value`)
@@ -64,7 +68,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     })
   }
 
-  const handleUpdateColor = async (oldStatus: TaskStatus, color: string) => {
+  const onColorChangeHandler = async (oldStatus: TaskStatus, color: string) => {
     const id = status.id
     const newStatus = {
       ...oldStatus,
@@ -73,7 +77,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
 
     try {
       updateStatus(id, newStatus)
-      await updateError(oldStatus, newStatus)
+      await updateNewStatus(oldStatus, newStatus)
     } catch (error) {
       messageError('Update color error')
     }
@@ -97,7 +101,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
                 <div
                   key={index}
                   style={{ backgroundColor: color }}
-                  onClick={() => handleUpdateColor(status, color)}
+                  onClick={() => onColorChangeHandler(status, color)}
                   className="w-4 h-4 cursor-pointer rounded"></div>
               ))}
             </div>
@@ -106,13 +110,13 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
         <input
           ref={inputRef}
           className="outline-none bg-transparent w-full text-gray-500 text-sm pr-8 py-3"
-          onKeyDown={e => handleUpdateName(e, status)}
+          onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
       </div>
       <div className="absolute right-3 gap-2 hidden group-hover:flex ">
         <IoIosClose
-          onClick={() => handleDelete(status)}
+          onClick={() => onDeleteHandler(status)}
           className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
         />
       </div>
