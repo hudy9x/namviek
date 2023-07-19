@@ -1,5 +1,4 @@
 import { TaskStatus } from '@prisma/client'
-import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import {
   projectStatusDel,
   projectStatusUpdate
@@ -8,70 +7,21 @@ import { useProjectStatusStore } from '../../../../../../store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { HiOutlineBars3 } from 'react-icons/hi2'
 import { Popover } from 'packages/shared-ui/src/components/Controls'
-import { KEY, colors } from './type'
+import { colors } from './type'
 import { IoIosClose } from 'react-icons/io'
 import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
 
-interface IItemStatus {
+interface IStatusItemProps {
   status: TaskStatus
-  index: number
-  moveItem: (dragIndex: number, hoverIndex: number) => void
 }
 
-export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
+export const StatusItem = ({ status }: IStatusItemProps) => {
   const { updateStatus, delStatus } = useProjectStatusStore()
   const inputRef = useRef<HTMLInputElement>(null)
-  const ref = useRef<HTMLDivElement>(null)
-  const colorRef = useRef<HTMLDivElement>(null)
-
-  const [{ handlerId }, drop] = useDrop({
-    accept: KEY,
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId()
-      }
-    },
-    hover(item: any, monitor: DropTargetMonitor) {
-      if (!ref.current) {
-        return
-      }
-      const dragIndex = item.index
-      const hoverIndex = index
-      if (dragIndex === hoverIndex) {
-        return
-      }
-      const hoverBoundingRect = ref.current.getBoundingClientRect()
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset!.y - hoverBoundingRect.top
-      if (dragIndex < hoverIndex && hoverClientY! < hoverMiddleY) {
-        return
-      }
-      if (dragIndex > hoverIndex && hoverClientY! > hoverMiddleY) {
-        return
-      }
-
-      moveItem(dragIndex, hoverIndex)
-      item.index = hoverIndex
-    }
-  })
-
-  const [{ isDragging }, drag] = useDrag({
-    type: KEY,
-    item: () => {
-      const id = status.id
-      return { id, index }
-    },
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
-  })
 
   const handleDelete = async (status: TaskStatus) => {
     confirmAlert({
-      message:
-        `All tasks with ${status.name} status will be moved to the backlog after this status is deleted. Are you sure you want to delete it?`,
+      message: `All tasks with ${status.name} status will be moved to the backlog after this status is deleted. Are you sure you want to delete it?`,
       yes: () => {
         const { id } = status
 
@@ -129,13 +79,8 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
     }
   }
 
-  drag(drop(ref))
-
   return (
-    <div
-      data-handler-id={handlerId}
-      ref={ref}
-      className="relative flex items-center group pl-3.5">
+    <>
       <div className="flex items-center gap-3">
         <div className="text-xl text-gray-500 cursor-grabbing">
           <HiOutlineBars3 className="text-gray-500" />
@@ -171,6 +116,6 @@ export const ItemStatus = ({ status, index, moveItem }: IItemStatus) => {
           className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
         />
       </div>
-    </div>
+    </>
   )
 }

@@ -1,21 +1,38 @@
-import { create } from 'zustand';
-import { TaskStatus } from '@prisma/client';
-import { produce } from 'immer';
+import { create } from 'zustand'
+import { TaskStatus } from '@prisma/client'
+import { produce } from 'immer'
 
 interface ProjectStatusState {
-  statuses: TaskStatus[];
-  addAllStatuses: (data: TaskStatus[]) => void;
+  statuses: TaskStatus[]
+  addAllStatuses: (data: TaskStatus[]) => void
   addStatus: (data: TaskStatus) => void
   updateStatus: (id: string, newData: Partial<TaskStatus>) => void
   delStatus: (id: string) => void
+  swapOrder: (oldIndex: number, newIndex: number) => void
 }
 
 export const useProjectStatusStore = create<ProjectStatusState>(set => ({
   statuses: [],
+  swapOrder: (oldIndex: number, newIndex: number) =>
+    set(
+      produce((state: ProjectStatusState) => {
+        const statuses = state.statuses
+
+        const updateStatus = [...statuses]
+        const draggedItem = updateStatus[oldIndex]
+        updateStatus.splice(oldIndex, 1)
+        updateStatus.splice(newIndex, 0, draggedItem)
+
+        updateStatus[oldIndex].order = oldIndex
+        updateStatus[newIndex].order = newIndex
+
+        state.statuses = updateStatus
+      })
+    ),
   addAllStatuses: (data: TaskStatus[]) =>
     set(
       produce((state: ProjectStatusState) => {
-        state.statuses = data;
+        state.statuses = data
       })
     ),
 
