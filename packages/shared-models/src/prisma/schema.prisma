@@ -83,8 +83,6 @@ model OrganizationMembers {
 model Task {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   title        String
-  isBug        Boolean
-  isComment    Boolean
   desc         String?
   dueDate      DateTime?
   startDate    DateTime?
