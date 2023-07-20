@@ -30,6 +30,25 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
     })
 })
 
+router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
+  const projectId = req.params.projectId;
+  const body = req.body as TaskStatus;
+  const data = {
+    projectId,
+    name: body.name,
+    color: body.color,
+    order: body.order
+  };
+  mdTaskStatusAdd(data)
+    .then(result => {
+      console.log(result);
+      res.json({ status: 200, data: result });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
   const projectId = req.params.projectId
 

@@ -53,7 +53,7 @@
 }
 
 .project-member-permission .select-button {
-  @apply text-xs px-2 py-1.5 text-gray-500 ;
+  @apply text-xs px-2 py-1.5 text-gray-500;
 }
 
 .project-member-permission .select-clear-icon {
@@ -61,5 +61,16 @@
 }
 
 .project-member-permission .select-item {
-  @apply text-xs ;
+  @apply text-xs;
+}
+
+.status-name.loading {
+  @apply relative text-transparent;
+}
+
+.status-name.loading:before {
+  @apply absolute top-0 left-0 bg-gray-100 rounded;
+  content: '';
+  width: 100%;
+  height: 100%;
 }
