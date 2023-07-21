@@ -30,8 +30,15 @@ router.get('/project/task', async (req: AuthRequest, res) => {
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('auth user', req.authen)
   console.log('body', req.body)
-  const { desc, assigneeIds, title, dueDate, projectId, priority } =
-    req.body as Task
+  const {
+    desc,
+    assigneeIds,
+    title,
+    dueDate,
+    projectId,
+    priority,
+    taskStatusId
+  } = req.body as Task
   const { id } = req.authen
 
   try {
@@ -43,7 +50,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       desc,
       projectId,
       priority,
-      taskStatusId: null,
+      taskStatusId: taskStatusId,
       tagIds: [],
       parentTaskId: null,
       taskPoint: null,

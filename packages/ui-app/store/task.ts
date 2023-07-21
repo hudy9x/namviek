@@ -6,13 +6,34 @@ interface TaskState {
   taskLoading: boolean
   setTaskLoading: (status: boolean) => void
   tasks: Task[]
+  addOneTask: (data: Partial<Task>) => void
   updateTask: (data: Partial<Task>) => void
+  syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
 }
 
 export const useTaskStore = create<TaskState>(set => ({
   tasks: [],
   taskLoading: false,
+  syncRemoteTaskById: (id: string, data: Task) =>
+    set(
+      produce((state: TaskState) => {
+        const taskIndex = state.tasks.findIndex(t => t.id === id)
+
+        if (!taskIndex) {
+          return
+        }
+
+        state.tasks[taskIndex] = data
+      })
+    ),
+  addOneTask: (data: Partial<Task>) =>
+    set(
+      produce((state: TaskState) => {
+        state.tasks.push(data as Task)
+        return state
+      })
+    ),
   updateTask: (data: Partial<Task>) =>
     set(
       produce((state: TaskState) => {
