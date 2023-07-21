@@ -13,6 +13,7 @@ interface NewStatusOrder {
   id: string
   order: number
 }
+
 export const projectStatusUpdateOrder = (newOrders: NewStatusOrder[]) => {
   return httpPut('/api/project/status/order', {
     newOrders
