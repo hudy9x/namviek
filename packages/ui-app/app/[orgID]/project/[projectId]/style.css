@@ -11,6 +11,10 @@
   box-shadow: none !important;
 }
 
+.task-status .status-title {
+  display: none;
+}
+
 .task-assignee .trailing-icon,
 .task-point .trailing-icon,
 .task-status .trailing-icon,
@@ -73,4 +77,10 @@
   content: '';
   width: 100%;
   height: 100%;
+}
+
+.task-form .member-picker .select-container.single .selected-member-item {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
