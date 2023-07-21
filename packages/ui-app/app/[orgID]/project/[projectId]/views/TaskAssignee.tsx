@@ -1,11 +1,30 @@
 import MemberPicker from '../../../../_components/MemberPicker'
+import { useTaskUpdate } from './useTaskUpdate'
 
 export default function TaskAssignee({
   taskId,
-  uids
+  uids,
+  className
 }: {
   taskId: string
   uids: string[]
+  className?: string
 }) {
-  return <MemberPicker className="task-assignee" value={uids[0]} />
+  const { updateTaskData } = useTaskUpdate()
+
+  const onUpdate = (assigneeId: string) => {
+    const assigneeIds = [assigneeId]
+    updateTaskData({
+      id: taskId,
+      assigneeIds
+    })
+  }
+
+  return (
+    <MemberPicker
+      className={`task-assignee ${className}`}
+      value={uids[0]}
+      onChange={onUpdate}
+    />
+  )
 }
