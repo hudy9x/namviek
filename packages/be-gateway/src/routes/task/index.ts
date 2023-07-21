@@ -98,6 +98,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.taskPoint = taskPoint
   }
 
+  if (dueDate) {
+    taskData.dueDate = dueDate
+  }
+
   taskData.updatedAt = new Date()
   taskData.updatedBy = userId
 

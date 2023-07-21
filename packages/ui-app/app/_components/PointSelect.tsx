@@ -33,6 +33,12 @@ export default function PointSelect({
   // const [val, setVal] = useState(selectOption || options[2]);
   //
   //
+  useEffect(() => {
+    if (value && options.length) {
+      const newOption = options.find(opt => opt.id === value)
+      newOption && setVal(newOption)
+    }
+  }, [value, options])
 
   useEffect(() => {
     if (points.length) {
