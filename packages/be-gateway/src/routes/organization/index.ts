@@ -29,6 +29,8 @@ router.get('/org', async (req: AuthRequest, res) => {
 
     console.log(orgs)
 
+    res.setHeader('Cache-Control', 'max-age=20, public')
+
     res.json({
       status: 200,
       data: orgs

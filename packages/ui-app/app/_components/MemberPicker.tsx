@@ -18,7 +18,7 @@ export default function MemberPicker({
   onChange,
   value,
   className,
-  multiple = true
+  multiple = false
 }: IMemberPicker) {
   const { members } = useMemberStore(state => state)
   const [options, setOptions] = useState<ListItemValue[]>([defaultAssignee])
@@ -74,7 +74,7 @@ export default function MemberPicker({
   }
 
   return (
-    <div className={className}>
+    <div className={`${className} member-picker`}>
       <List
         title={title}
         value={val}

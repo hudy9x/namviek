@@ -1,7 +1,6 @@
 import { useParams } from 'next/navigation'
 import { TaskPoint } from '@prisma/client'
 import { AiOutlinePlus, AiOutlineStar } from 'react-icons/ai'
-import { FiEdit2 } from 'react-icons/fi'
 
 import { IoIosClose } from 'react-icons/io'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -44,7 +43,7 @@ const PointInput = ({
         defaultValue={`${initPoint.point}`}
         onKeyDown={e => onSubmitKeyPressed(e)}
       />
-      <div className="absolute right-2 gap-2 hidden group-hover:flex ">
+      <div className="absolute right-3 gap-2 hidden group-hover:flex ">
         <div
           className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500"
         >Enter to update</div>
@@ -152,7 +151,7 @@ export default function ProjectPoint() {
             <input
               ref={inputAddRef}
               className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"
-              placeholder="Hit `Enter` to input a new point"
+              placeholder="Hit `Enter` to add a new point"
               onKeyDown={e => {
                 if (e.key !== 'Enter') {
                   return
