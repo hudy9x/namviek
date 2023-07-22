@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
-import { AuthRequest } from '../../types';
-import { mdTaskAdd, mdTaskGetAll } from '@shared/models';
-import { Task } from '@prisma/client';
+import { Router } from 'express'
+import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
+import { AuthRequest } from '../../types'
+import { mdTaskAdd, mdTaskAddMany, mdTaskGetAll } from '@shared/models'
+import { Task } from '@prisma/client'
 
 const router = Router();
 
@@ -45,13 +45,41 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       createdAt: new Date(),
       updatedAt: null,
       updatedBy: null
-    });
+    })
 
-    res.json({ status: 200, data: result });
+    res.json({ status: 200, data: result })
   } catch (error) {
-    console.log(error);
-    res.json({ status: 500, error });
+    console.log(error)
+    res.json({ status: 500, error })
   }
-});
+})
 
-export default router;
+router.post('/project/tasks', async (req: AuthRequest, res) => {
+  // console.log('body', req.body)
+  // const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task;
+
+  let { data: tasks }: { data: Task[] } = req.body
+  const { id } = req.authen
+  try {
+    tasks = tasks.map(task => ({
+      ...task,
+      startDate: null,
+      tagIds: [],
+      parentTaskId: null,
+      createdBy: id,
+      createdAt: new Date(),
+      updatedAt: null,
+      updatedBy: null
+    }))
+
+    const result = await mdTaskAddMany(tasks)
+
+    console.log('add task successfully')
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+export default router

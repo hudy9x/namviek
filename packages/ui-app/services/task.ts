@@ -10,3 +10,7 @@ export const taskGetAll = (projectId: string) => {
 export const taskAdd = (data: ITaskFields) => {
   return httpPost('/api/project/task', data);
 };
+
+export const taskAddMany = (data: { data: ITaskFields[], projectId: string }) => {
+  return httpPost('/api/project/tasks', data);
+};

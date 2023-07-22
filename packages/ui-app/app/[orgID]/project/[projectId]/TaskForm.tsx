@@ -26,7 +26,8 @@ export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
       console.log('loading', loading);
 
       setLoading(true);
-      const mergedValues = { ...values, projectId: params.projectId };
+      // BUG: mismatched field
+      const mergedValues = { ...values, assigneeIds: [values.assigneeIds], projectId: params.projectId };
       console.log(mergedValues);
 
       const { error, errorArr, data } = validateTask(mergedValues);
