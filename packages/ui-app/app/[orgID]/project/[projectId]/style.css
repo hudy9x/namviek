@@ -84,3 +84,7 @@
   border: none;
   padding: 0;
 }
+
+.task-import-modal {
+  max-width: 1200px !important;
+}
