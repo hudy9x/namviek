@@ -1,24 +1,14 @@
-
-import { useTaskStore } from '../../../../../store/task'
-import readXlsxFile, { Row } from 'read-excel-file'
+import { Row } from 'read-excel-file'
 import { useMemberStore } from '../../../../../store/member'
 import { useProjectStatusStore } from '../../../../../store/status'
-import { taskAddMany } from '../../../../../services/task'
-import { Button, Modal, messageError } from '@shared/ui'
-import { useParams } from 'next/navigation'
+import { messageError } from '@shared/ui'
 import { Task, TaskPriority } from '@prisma/client'
-import { useState } from 'react'
-import { AiOutlineCloudUpload } from 'react-icons/ai'
 
 type ITaskWithoutId = Omit<Task, 'id'>
 
-export default function TaskImportRun() {
-  const [visible, setVisible] = useState(false)
-  const { addTasks } = useTaskStore()
+export default function TaskImportPreview({ rows }: { rows: Row[] }) {
   const { members } = useMemberStore()
   const { statuses } = useProjectStatusStore()
-  const params = useParams()
-  const [records, setRecords] = useState<ITaskWithoutId[]>([])
 
   const _insertTask = (data: Row[]) => {
     const newTasks: ITaskWithoutId[] = []
@@ -96,7 +86,7 @@ export default function TaskImportRun() {
 
     if (!newTasks || !newTasks.length) return
 
-    setRecords(newTasks)
+    // setRecords(newTasks)
 
     // taskAddMany({ data: newTasks, projectId: params.projectId })
     //   .then(res => {
@@ -112,70 +102,20 @@ export default function TaskImportRun() {
     //   .catch(err => console.log({ err }))
   }
 
-  const uploadExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileTypes = ['xlsx']
-    const file = e.target.files?.[0]
-
-    if (!file) return
-    const filename = file.name
-    const extension = filename.split('.').pop()?.toLowerCase()
-    const isValidExtensions = extension && fileTypes.indexOf(extension) > -1
-
-    if (!isValidExtensions) return
-
-    readXlsxFile(file)
-      .then(rows => {
-        e.target.value = ''
-        console.log('datas', rows)
-        if (rows.length > 0) {
-          rows.shift()
-          _insertTask(rows)
-        }
-      })
-      .catch(error => error)
-  }
-
-  const listView = !records.length
-
   return (
-    <div>
-      <Modal
-        visible={visible}
-        onVisibleChange={setVisible}
-        title="Import new tasks"
-        className={records.length ? 'task-import-modal' : ''}
-        triggerBy={
-          <Button leadingIcon={<AiOutlineCloudUpload />} title="Import" />
-        }
-        content={
-          <div>
-
-            {records.length ? (
-              <table className="w-full border-spacing-2">
-                <tbody className="divide-y">
-                  {records.map((record, idx) => {
-                    const { title, taskPoint, assigneeIds } = record
-                    return (
-                      <tr key={idx} className="divide-x text-xs text-gray-500">
-                        <td>{title}</td>
-                        <td>{assigneeIds}</td>
-                        <td>{taskPoint}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            ) : null}
-
-            <div className="flex items-center justify-end mt-3">
-              <div className="space-x-3">
-                <Button title="Cancel" />
-                <Button title="Import" primary />
-              </div>
-            </div>
-          </div>
-        }
-      />
-    </div>
+    <table className="w-full border-spacing-2">
+      <tbody className="divide-y">
+        {rows.map((row, idx) => {
+          const [title, assignee, taskpoint] = row.map(r => r.toString())
+          return (
+            <tr key={idx} className="divide-x text-xs text-gray-500">
+              <td>{title}</td>
+              <td>{assignee}</td>
+              <td>{taskpoint}</td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }
