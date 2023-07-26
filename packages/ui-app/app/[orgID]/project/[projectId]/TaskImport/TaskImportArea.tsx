@@ -1,117 +1,9 @@
-import { useTaskStore } from '../../../../../store/task'
-import readXlsxFile, { Row } from 'read-excel-file'
-import { useMemberStore } from '../../../../../store/member'
-import { useProjectStatusStore } from '../../../../../store/status'
-import { taskAddMany } from '../../../../../services/task'
-import { Button, Modal, messageError } from '@shared/ui'
-import { useParams } from 'next/navigation'
-import { Task, TaskPriority } from '@prisma/client'
-import { useState } from 'react'
+import readXlsxFile from 'read-excel-file'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { useTaskImport } from './context'
 
-type ITaskWithoutId = Omit<Task, 'id'>
-
 export default function TaskImportArea() {
-  const [visible, setVisible] = useState(false)
-  const { addTasks } = useTaskStore()
-  const { members } = useMemberStore()
-  const { statuses } = useProjectStatusStore()
-  const params = useParams()
-  const [records, setRecords] = useState<ITaskWithoutId[]>([])
   const { setRows } = useTaskImport()
-
-  const _insertTask = (data: Row[]) => {
-    const newTasks: ITaskWithoutId[] = []
-    data.forEach(row => {
-      const [
-        _projectId,
-        _title,
-        _assigneeIds,
-        _dueDate,
-        _priority,
-        _taskPoint,
-        _taskStatusId,
-        ..._
-      ] = row.map(cell => (cell ? String(cell) : null))
-
-      const projectId = _projectId
-      const title = _title
-      const assigneeIds =
-        members
-          .filter(
-            member =>
-              member?.name &&
-              _assigneeIds
-                ?.split(',')
-                .map(s => s.trim())
-                .includes(member.name.trim())
-          )
-          .map(member => member.id) || null
-      const dueDate = _dueDate ? new Date(_dueDate) : null
-      const priority = (_priority &&
-        Object.keys(TaskPriority).includes(_priority.toUpperCase()) &&
-        _priority.toUpperCase()) as TaskPriority
-      const taskPoint = _taskPoint ? parseInt(_taskPoint) : null
-      const taskStatusId = _taskStatusId
-        ? statuses.filter(
-            status => status.name.trim() === _taskStatusId.trim()
-          )?.[0]?.id
-        : null
-
-      if (title === null) {
-        messageError('Task Name has to be string')
-        return
-      }
-      if (projectId === null) {
-        messageError('Project ID has to be string')
-        return
-      }
-
-      const newTask: ITaskWithoutId = {
-        title,
-        desc: null,
-        dueDate,
-        startDate: null,
-        projectId,
-        priority,
-        taskStatusId,
-        tagIds: [],
-        // member.name is not unique
-        assigneeIds,
-        parentTaskId: null,
-        taskPoint,
-        createdBy: null,
-        createdAt: null,
-        updatedBy: null,
-        updatedAt: null
-      }
-
-      newTasks.push(newTask)
-    })
-
-    if (newTasks.filter(task => !task).length > 0) {
-      messageError('Check the uploading data again!')
-      return
-    }
-
-    if (!newTasks || !newTasks.length) return
-
-    setRecords(newTasks)
-
-    // taskAddMany({ data: newTasks, projectId: params.projectId })
-    //   .then(res => {
-    //     const { data, status, error } = res.data
-    //     if (status !== 200) {
-    //       messageError(error)
-    //       return
-    //     }
-    //     addTasks(newTasks)
-    //     // addAllTasks(data)
-    //     console.log(data)
-    //   })
-    //   .catch(err => console.log({ err }))
-  }
 
   const uploadExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileTypes = ['xlsx']
@@ -127,12 +19,8 @@ export default function TaskImportArea() {
     readXlsxFile(file)
       .then(rows => {
         e.target.value = ''
-        console.log('datas', rows)
-        if (rows.length > 0) {
-          rows.shift()
-          setRows(rows)
-          // _insercTask(rows)
-        }
+        if (!rows.length) return
+        setRows(rows)
       })
       .catch(error => error)
   }
