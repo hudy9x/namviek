@@ -39,7 +39,6 @@ export default function StatusSelect({
   useEffect(() => {
     if (statuses.length) {
       const selectedStatus = statuses.find(opt => opt.id === value)
-      console.log('selected', selectedStatus)
       selectedStatus &&
         setVal({ id: selectedStatus.id, title: selectedStatus.name })
     }
@@ -70,7 +69,9 @@ export default function StatusSelect({
               style={{
                 backgroundColor: existingStatus?.color || '#e5e5e5'
               }}></div>
-            <span className="status-title">{existingStatus?.name ? existingStatus.name : 'None'}</span>
+            <span className="status-title">
+              {existingStatus?.name ? existingStatus.name : 'None'}
+            </span>
           </div>
         </List.Button>
         <List.Options>

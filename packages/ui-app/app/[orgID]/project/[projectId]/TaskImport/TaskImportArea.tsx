@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'
 import { Task, TaskPriority } from '@prisma/client'
 import { useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
+import { useTaskImport } from './context'
 
 type ITaskWithoutId = Omit<Task, 'id'>
 
@@ -18,6 +19,7 @@ export default function TaskImportArea() {
   const { statuses } = useProjectStatusStore()
   const params = useParams()
   const [records, setRecords] = useState<ITaskWithoutId[]>([])
+  const { setRows } = useTaskImport()
 
   const _insertTask = (data: Row[]) => {
     const newTasks: ITaskWithoutId[] = []
@@ -128,7 +130,8 @@ export default function TaskImportArea() {
         console.log('datas', rows)
         if (rows.length > 0) {
           rows.shift()
-          _insertTask(rows)
+          setRows(rows)
+          // _insercTask(rows)
         }
       })
       .catch(error => error)

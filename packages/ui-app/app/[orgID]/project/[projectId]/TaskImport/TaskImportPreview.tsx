@@ -1,121 +1,95 @@
-import { Row } from 'read-excel-file'
-import { useMemberStore } from '../../../../../store/member'
-import { useProjectStatusStore } from '../../../../../store/status'
-import { messageError } from '@shared/ui'
-import { Task, TaskPriority } from '@prisma/client'
+import { Button } from '@shared/ui'
+import { useTaskImport } from './context'
+import { useState } from 'react'
+import TaskImportAction from './TaskImportAction'
+import TaskImportStep from './TaskImportStep'
 
-type ITaskWithoutId = Omit<Task, 'id'>
+export default function TaskImportPreview() {
+  const { rows } = useTaskImport()
 
-export default function TaskImportPreview({ rows }: { rows: Row[] }) {
-  const { members } = useMemberStore()
-  const { statuses } = useProjectStatusStore()
+  const maxItem = 20
+  const totalPage = Math.ceil(rows.length / maxItem)
+  const [page, setPage] = useState(1)
 
-  const _insertTask = (data: Row[]) => {
-    const newTasks: ITaskWithoutId[] = []
-    data.forEach(row => {
-      const [
-        _projectId,
-        _title,
-        _assigneeIds,
-        _dueDate,
-        _priority,
-        _taskPoint,
-        _taskStatusId,
-        ..._
-      ] = row.map(cell => (cell ? String(cell) : null))
-
-      const projectId = _projectId
-      const title = _title
-      const assigneeIds =
-        members
-          .filter(
-            member =>
-              member?.name &&
-              _assigneeIds
-                ?.split(',')
-                .map(s => s.trim())
-                .includes(member.name.trim())
-          )
-          .map(member => member.id) || null
-      const dueDate = _dueDate ? new Date(_dueDate) : null
-      const priority = (_priority &&
-        Object.keys(TaskPriority).includes(_priority.toUpperCase()) &&
-        _priority.toUpperCase()) as TaskPriority
-      const taskPoint = _taskPoint ? parseInt(_taskPoint) : null
-      const taskStatusId = _taskStatusId
-        ? statuses.filter(
-            status => status.name.trim() === _taskStatusId.trim()
-          )?.[0]?.id
-        : null
-
-      if (title === null) {
-        messageError('Task Name has to be string')
-        return
-      }
-      if (projectId === null) {
-        messageError('Project ID has to be string')
-        return
-      }
-
-      const newTask: ITaskWithoutId = {
-        title,
-        desc: null,
-        dueDate,
-        startDate: null,
-        projectId,
-        priority,
-        taskStatusId,
-        tagIds: [],
-        // member.name is not unique
-        assigneeIds,
-        parentTaskId: null,
-        taskPoint,
-        createdBy: null,
-        createdAt: null,
-        updatedBy: null,
-        updatedAt: null
-      }
-
-      newTasks.push(newTask)
-    })
-
-    if (newTasks.filter(task => !task).length > 0) {
-      messageError('Check the uploading data again!')
-      return
-    }
-
-    if (!newTasks || !newTasks.length) return
-
-    // setRecords(newTasks)
-
-    // taskAddMany({ data: newTasks, projectId: params.projectId })
-    //   .then(res => {
-    //     const { data, status, error } = res.data
-    //     if (status !== 200) {
-    //       messageError(error)
-    //       return
-    //     }
-    //     addTasks(newTasks)
-    //     // addAllTasks(data)
-    //     console.log(data)
-    //   })
-    //   .catch(err => console.log({ err }))
-  }
+  const skip = page > 1 ? (page - 1) * maxItem : 0
+  const take = page > 1 ? maxItem * page : maxItem
+  const currentPageData = rows.slice(skip, take)
+  const startIndex = page > 1 ? (page - 1) * maxItem : 0
 
   return (
-    <table className="w-full border-spacing-2">
-      <tbody className="divide-y">
-        {rows.map((row, idx) => {
-          const [title, assignee, taskpoint] = row.map(r => r.toString())
-          return (
-            <tr key={idx} className="divide-x text-xs text-gray-500">
-              <td>{title}</td>
-              <td>{assignee}</td>
-              <td>{taskpoint}</td>
+    <>
+      <div className="relative">
+        <TaskImportStep />
+        <table className="w-full border">
+          <thead className="border-b text-sm">
+            <tr className="divide-x">
+              <th className="icell">#</th>
+              <th className="icell">Project</th>
+              <th className="icell">Task name</th>
+              <th className="icell">Assignee</th>
+              <th className="icell">Due date</th>
+              <th className="icell">Priority</th>
+              <th className="icell">Point</th>
+              <th className="icell">Status</th>
             </tr>
-          )
-        })}
-      </tbody>
-    </table>
+          </thead>
+          <tbody className="divide-y">
+            {currentPageData.map((row, idx) => {
+              const [
+                project,
+                title,
+                assignee,
+                duedate,
+                priority,
+                taskpoint,
+                status
+              ] = row.map(r => (r ? r.toString() : ''))
+              return (
+                <tr key={idx} className="irow divide-x text-xs text-gray-600">
+                  <td className="icell">{startIndex + idx + 1}</td>
+                  <td className="icell">{project}</td>
+                  <td className="icell">{title}</td>
+                  <td className="icell">{assignee}</td>
+                  <td className="icell">{duedate}</td>
+                  <td className="icell">{priority}</td>
+                  <td className="icell">{taskpoint}</td>
+                  <td className="icell">{status}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 mt-3">
+          <div className="space-x-2">
+            <Button
+              disabled={totalPage <= 1 || page <= 1}
+              title="Prev"
+              onClick={() => {
+                if (page > 1) {
+                  setPage(page - 1)
+                }
+              }}
+            />
+            <Button
+              title="Next"
+              disabled={totalPage <= 1 || page >= totalPage}
+              onClick={() => {
+                if (page <= totalPage) {
+                  console.log('111')
+                }
+                setPage(page + 1)
+              }}
+            />
+          </div>
+
+          <div className="text-xs">
+            Page {page}/{totalPage} in {rows.length} record(s)
+          </div>
+        </div>
+        <TaskImportAction />
+      </div>
+    </>
   )
 }

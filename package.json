@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "frontend": "nx serve ui-app",
+    "backend": "nx serve be-gateway",
     "prisma": "prisma",
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "postinstall": "prisma generate"

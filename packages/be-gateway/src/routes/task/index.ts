@@ -6,7 +6,8 @@ import {
   mdTaskGetAll,
   mdTaskGetOne,
   mdTaskUpdate,
-   mdTaskAddMany
+  mdTaskAddMany,
+  mdProjectGet
 } from '@shared/models'
 
 import { Task } from '@prisma/client'
@@ -22,6 +23,7 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   try {
     console.log('projectId', projectId)
     const tasks = await mdTaskGetAll({ projectId })
+    console.log('get all task from project', tasks)
     res.json({ status: 200, data: tasks })
   } catch (error) {
     res.json({ status: 500, error })
@@ -73,10 +75,22 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
   // console.log('body', req.body)
   // const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task;
 
-  let { data: tasks }: { data: Task[] } = req.body
+  const { data: tasks, projectId }: { data: Task[]; projectId: string } =
+    req.body
   const { id } = req.authen
   try {
-    tasks = tasks.map(task => ({
+    console.time('project-checking')
+    const existProject = await mdProjectGet(projectId)
+    console.timeEnd('project-checking')
+    if (!existProject) {
+      return res.json({
+        status: 400,
+        error: 'Project not exist'
+      })
+    }
+
+    console.time('reassign-task-data')
+    const newTasks = tasks.map(task => ({
       ...task,
       startDate: null,
       tagIds: [],
@@ -86,12 +100,15 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null
     }))
+    console.timeEnd('reassign-task-data')
 
-    const result = await mdTaskAddMany(tasks)
+    console.time('import')
+    const result = await mdTaskAddMany(newTasks)
+    console.timeEnd('import')
 
-    console.log('add task successfully')
+    console.log('import success')
     res.json({ status: 200, data: result })
-      } catch (error) {
+  } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
   }
