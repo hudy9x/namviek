@@ -32,9 +32,12 @@ export const mdTaskAdd = async (data: Omit<Task, 'id'>) => {
 }
 
 export const mdTaskAddMany = async (data: Omit<Task, 'id'>[]) => {
-  pmClient.$transaction(
-    data.map(task => taskModel.create({data: task}))
-  )
+  return taskModel.createMany({
+    data
+  })
+  // return pmClient.$transaction(
+  //   data.map(task => taskModel.create({ data: task }))
+  // )
 }
 
 export const mdTaskUpdate = async (data: Partial<Task>) => {

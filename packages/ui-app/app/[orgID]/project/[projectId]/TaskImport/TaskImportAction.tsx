@@ -31,7 +31,6 @@ export default function TaskImportAction() {
     if (!assigneeNames) return []
 
     const assigneeNameArr = assigneeNames?.split(',').map(s => s.trim())
-
     const assigneeIds: string[] = []
 
     members.forEach(m => {
@@ -118,8 +117,6 @@ export default function TaskImportAction() {
         updatedAt: null
       }
 
-      console.log(newTask.priority)
-
       newTasks.push(newTask)
     })
 
@@ -129,7 +126,6 @@ export default function TaskImportAction() {
   const nextStep = () => {
     setStep(step => step + 1)
   }
-
 
   const doImport = useCallback(() => {
     if (loading) {
@@ -157,15 +153,12 @@ export default function TaskImportAction() {
     console.log('start importing')
     taskAddMany({ data: tasks, projectId })
       .then(res => {
-        const { data, status, error } = res.data
+        const { status, error } = res.data
         if (status !== 200) {
           messageError(error)
           return false
         }
 
-        messageSuccess('Import successfully ✨')
-        console.log('import successfully')
-        console.log(data)
         return true
       })
       .then(needToFetch => {
@@ -187,10 +180,6 @@ export default function TaskImportAction() {
                 reject(0)
                 return
               }
-
-              messageSuccess(
-                'Try to fill data into task list. If nothing displayed, please reload the browser for a few times'
-              )
 
               addAllTasks(data)
               setVisible(false)
