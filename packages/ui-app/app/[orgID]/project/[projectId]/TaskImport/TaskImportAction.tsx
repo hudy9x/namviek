@@ -43,6 +43,28 @@ export default function TaskImportAction() {
     return assigneeIds
   }
 
+  const toValidPriority = (priority: string | null): TaskPriority | null => {
+    if (!priority) return null
+
+    priority = priority.toUpperCase()
+
+    if (priority && Object.keys(TaskPriority).includes(priority)) {
+      return priority as TaskPriority
+    }
+
+    return null
+  }
+
+  const toValidStatusId = (status: string | null) => {
+    if (!status) return null
+
+    const stt = statuses.find(s => s.name.trim() === status.trim())
+
+    if (!stt) return null
+
+    return stt.id
+  }
+
   const normalizeData = (data: Row[]) => {
     const newTasks: ITaskWithoutId[] = []
     data.forEach(row => {
@@ -61,15 +83,9 @@ export default function TaskImportAction() {
       const title = _title
       const assigneeIds = toAssigneeIds(_assigneeIds)
       const dueDate = _dueDate ? new Date(_dueDate) : null
-      const priority = (_priority &&
-        Object.keys(TaskPriority).includes(_priority.toUpperCase()) &&
-        _priority.toUpperCase()) as TaskPriority
-      const taskPoint = _taskPoint ? parseInt(_taskPoint) : null
-      const taskStatusId = _taskStatusId
-        ? statuses.filter(
-            status => status.name.trim() === _taskStatusId.trim()
-          )?.[0]?.id
-        : null
+      const priority = toValidPriority(_priority)
+      const taskPoint = _taskPoint ? parseInt(_taskPoint, 10) : null
+      const taskStatusId = toValidStatusId(_taskStatusId)
 
       if (title === null) {
         messageError('Task Name has to be string')
@@ -102,6 +118,8 @@ export default function TaskImportAction() {
         updatedAt: null
       }
 
+      console.log(newTask.priority)
+
       newTasks.push(newTask)
     })
 
@@ -112,7 +130,6 @@ export default function TaskImportAction() {
     setStep(step => step + 1)
   }
 
-  const clearStep = () => setStep(0)
 
   const doImport = useCallback(() => {
     if (loading) {

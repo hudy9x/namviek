@@ -35,7 +35,12 @@ export default function TaskImport() {
           title="Import new tasks"
           className={isPreview ? 'task-import-modal' : ''}
           triggerBy={
-            <Button leadingIcon={<AiOutlineCloudUpload />} title="Import" />
+            <Button
+              size="sm"
+              leadingIcon={
+                <AiOutlineCloudUpload style={{ width: 17, height: 17 }} />
+              }
+            />
           }
           content={
             <div>

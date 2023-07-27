@@ -31,7 +31,10 @@ export default function TaskImportArea() {
         <p className="text-sm text-gray-500">
           The maximum size of upload files are less than 5mb. If you do not have
           any template file,{' '}
-          <a className="text-indigo-500 hover:underline hover:cursor-pointer">
+          <a
+            href="/import-template.xlsx"
+            download={'Import-Template.xlsx'}
+            className="text-indigo-500 hover:underline hover:cursor-pointer">
             download
           </a>{' '}
           here.
