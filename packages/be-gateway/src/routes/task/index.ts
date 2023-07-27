@@ -5,8 +5,11 @@ import {
   mdTaskAdd,
   mdTaskGetAll,
   mdTaskGetOne,
-  mdTaskUpdate
+  mdTaskUpdate,
+  mdTaskAddMany,
+  mdProjectGet
 } from '@shared/models'
+
 import { Task } from '@prisma/client'
 
 const router = Router()
@@ -20,6 +23,7 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   try {
     console.log('projectId', projectId)
     const tasks = await mdTaskGetAll({ projectId })
+    console.log('get all task from project', tasks)
     res.json({ status: 200, data: tasks })
   } catch (error) {
     res.json({ status: 500, error })
@@ -60,6 +64,49 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedBy: null
     })
 
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.post('/project/tasks', async (req: AuthRequest, res) => {
+  // console.log('body', req.body)
+  // const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task;
+
+  const { data: tasks, projectId }: { data: Task[]; projectId: string } =
+    req.body
+  const { id } = req.authen
+  try {
+    console.time('project-checking')
+    const existProject = await mdProjectGet(projectId)
+    console.timeEnd('project-checking')
+    if (!existProject) {
+      return res.json({
+        status: 400,
+        error: 'Project not exist'
+      })
+    }
+
+    console.time('reassign-task-data')
+    const newTasks = tasks.map(task => ({
+      ...task,
+      startDate: null,
+      tagIds: [],
+      parentTaskId: null,
+      createdBy: id,
+      createdAt: new Date(),
+      updatedAt: null,
+      updatedBy: null
+    }))
+    console.timeEnd('reassign-task-data')
+
+    console.time('import')
+    const result = await mdTaskAddMany(newTasks)
+    console.timeEnd('import')
+
+    console.log('import success')
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
@@ -122,4 +169,5 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     res.json({ status: 500, error })
   }
 })
+
 export default router

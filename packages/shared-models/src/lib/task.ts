@@ -1,5 +1,5 @@
 import { Task, TaskPriority } from '@prisma/client'
-import { taskModel } from './_prisma'
+import { taskModel, pmClient } from './_prisma'
 
 interface ITaskQuery {
   term?: string
@@ -29,6 +29,15 @@ export const mdTaskAdd = async (data: Omit<Task, 'id'>) => {
   return taskModel.create({
     data
   })
+}
+
+export const mdTaskAddMany = async (data: Omit<Task, 'id'>[]) => {
+  return taskModel.createMany({
+    data
+  })
+  // return pmClient.$transaction(
+  //   data.map(task => taskModel.create({ data: task }))
+  // )
 }
 
 export const mdTaskUpdate = async (data: Partial<Task>) => {

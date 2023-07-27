@@ -15,7 +15,7 @@ type ButtonBaseAttrsFilter = Pick<
 >;
 
 interface IButtonProps {
-  title: string;
+  title?: string;
   primary?: boolean;
   danger?: boolean;
   warn?: boolean;
@@ -55,6 +55,7 @@ const Button = ({
     danger && "btn-danger",
     warn && "btn-warning",
     block && "block",
+    title ? "" : "notitle",
     size,
     className,
   ].filter(Boolean);
