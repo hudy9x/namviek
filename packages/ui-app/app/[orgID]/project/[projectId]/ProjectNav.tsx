@@ -1,32 +1,66 @@
-'use client';
+'use client'
 
-import { HiOutlineCog6Tooth, HiOutlineUserCircle, HiOutlineViewColumns, HiOutlineCalendar } from 'react-icons/hi2';
-import { useProjectStore } from '../../../../store/project';
-import { useSearchParams, useRouter, useParams } from 'next/navigation';
-import { useState } from 'react';
-import ProjectTabContent from './ProjectTabContent';
-import { HiOutlineMenuAlt1 } from 'react-icons/hi';
-import TaskCreate from './TaskCreate';
+import {
+  HiOutlineCog6Tooth,
+  HiOutlineUserCircle,
+  HiOutlineViewColumns,
+  HiOutlineCalendar
+} from 'react-icons/hi2'
+import { useProjectStore } from '../../../../store/project'
+import { useSearchParams, useRouter, useParams } from 'next/navigation'
+import { useState } from 'react'
+import ProjectTabContent from './ProjectTabContent'
+import { HiOutlineMenuAlt1 } from 'react-icons/hi'
+import TaskCreate from './TaskCreate'
 
 export default function ProjectNav() {
-  const searchParams = useSearchParams();
-  const { push } = useRouter();
-  const params = useParams();
-  const { selectedProject } = useProjectStore(state => state);
-  const mode = searchParams.get('mode');
+  const searchParams = useSearchParams()
+  const { push } = useRouter()
+  const params = useParams()
+  const { selectedProject } = useProjectStore(state => state)
+  const mode = searchParams.get('mode')
 
   const [tabs] = useState([
-    // { name: 'Overview', href: '#', icon: HiOutlineUserCircle, current: false },
-    { name: 'Task', href: '#', icon: HiOutlineMenuAlt1, current: false },
-    { name: 'Board', href: '#', icon: HiOutlineViewColumns, current: false },
-    { name: 'Calendar', href: '#', icon: HiOutlineCalendar, current: false },
-    { name: 'Setting', href: '#', icon: HiOutlineCog6Tooth, current: false }
-  ]);
+    {
+      title: 'Overview',
+      name: 'overview',
+      href: '#',
+      icon: HiOutlineUserCircle,
+      current: false
+    },
+    {
+      title: 'List',
+      name: 'task',
+      href: '#',
+      icon: HiOutlineMenuAlt1,
+      current: false
+    },
+    {
+      title: 'Board',
+      name: 'board',
+      href: '#',
+      icon: HiOutlineViewColumns,
+      current: false
+    },
+    {
+      title: 'Calendar',
+      name: 'calendar',
+      href: '#',
+      icon: HiOutlineCalendar,
+      current: false
+    },
+    {
+      title: 'Setting',
+      name: 'setting',
+      href: '#',
+      icon: HiOutlineCog6Tooth,
+      current: false
+    }
+  ])
 
   const onMoveTab = (name: string) => {
-    console.log(params);
-    push(`${params.orgID}/project/${params.projectId}?mode=${name.toLowerCase()}`);
-  };
+    push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
+  }
 
   return (
     <div className="project-nav">
@@ -34,14 +68,17 @@ export default function ProjectNav() {
         <h2 className="text-xl font-bold px-4 py-2">{selectedProject?.name}</h2>
         <div className="tab pl-1">
           {tabs.map((tab, index) => {
-            const Icon = tab.icon;
-            const active = tab.name.toLowerCase() === mode;
+            const Icon = tab.icon
+            const active = tab.name.toLowerCase() === mode
             return (
-              <div onClick={() => onMoveTab(tab.name)} className={`tab-item ${active ? 'active' : ''}`} key={index}>
+              <div
+                onClick={() => onMoveTab(tab.name)}
+                className={`tab-item ${active ? 'active' : ''}`}
+                key={index}>
                 <Icon />
-                <span>{tab.name}</span>
+                <span>{tab.title}</span>
               </div>
-            );
+            )
           })}
         </div>
       </div>
@@ -51,5 +88,5 @@ export default function ProjectNav() {
       </div>
       <TaskCreate />
     </div>
-  );
+  )
 }
