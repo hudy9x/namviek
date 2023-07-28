@@ -7,6 +7,21 @@ export const taskGetAll = (projectId: string) => {
   return httpGet(`/api/project/task?projectId=${projectId}`)
 }
 
+interface TaskQuery {
+  dueDate?: Date
+  overdue?: Date
+  assignees?: string[]
+  statusIds?: string[]
+}
+export const taskGetByCond = (projectId: string, query: TaskQuery) => {
+  return httpGet(`/api/project/task/query`, {
+    params: {
+      projectId,
+      query
+    }
+  })
+}
+
 export const taskAdd = (data: ITaskFields) => {
   return httpPost('/api/project/task', data)
 }

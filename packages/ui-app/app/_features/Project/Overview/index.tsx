@@ -1,26 +1,30 @@
+import OverviewWorkloadByStatus from './OverviewWorkloadByStatus'
+import OverviewDateRange from './OverviewDateRange'
+import './style.css'
+import OverviewMemberProgress from './OverviewMemberProgress'
+import OverviewTask from './OverviewTasks'
+import { useUser } from '@goalie/nextjs'
+import OverviewBurnoutChart from './OverviewBurnoutChart'
+
 export default function ProjectOverview() {
-  const reports = [
-    { title: 'Upcoming Tasks', total: 5, icon: '💡' },
-    { title: 'In progress Tasks', total: 3, icon: '🚀' },
-    { title: 'Complete Tasks', total: 8, icon: '🎄' }
-  ]
+  const { user } = useUser()
   return (
-    <div className="w-[1024px] mx-auto">
-      <div className="mx-3 mt-3 flex gap-3">
-        {reports.map((r, idx) => {
-          return (
-            <div
-              key={idx}
-              className="py-6 px-7 w-[250px] border rounded-xl bg-white shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex items-center justify-center text-sm w-7 h-7 p-1 border rounded-md bg-gray-50">{r.icon}</span>
-                <h2 className="text-sm  text-gray-600 font-bold">{r.title}</h2>
-              </div>
-              <div className="font-bold text-[35px] mt-2">{r.total}</div>
-            </div>
-          )
-        })}
-      </div>
+    <div id="overview" className="mx-auto w-[1130px]">
+      <header className="py-3 p-4 bg-white border rounded-md my-3">
+        <h2 className="text-gray-800 font-bold text-2xl">Hi, {user?.name}</h2>
+        <p className="text-gray-600 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
+      </header>
+      <main className="flex items-start gap-3">
+        <div className="left-section w-full">
+          <OverviewWorkloadByStatus />
+          <OverviewTask />
+          <OverviewBurnoutChart/>
+        </div>
+        <div className="right-section w-[310px] shrink-0">
+          <OverviewDateRange />
+          <OverviewMemberProgress />
+        </div>
+      </main>
 
       <div className="mt-3">
         <div></div>

@@ -30,6 +30,16 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   }
 })
 
+router.get('/project/task/query', async (req: AuthRequest, res) => {
+  try {
+    console.log(req.body, req.params, req.query)
+
+    res.json({ status: 200 })
+  } catch (error) {
+    res.json({ status: 500, error })
+  }
+})
+
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('auth user', req.authen)
