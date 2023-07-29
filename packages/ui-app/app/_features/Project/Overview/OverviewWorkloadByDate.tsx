@@ -1,16 +1,16 @@
 import { useOverviewContext } from './context'
 
-export default function OverviewWorkloadByStatus() {
+export default function OverviewWorkloadByDate() {
   const { tasks } = useOverviewContext()
 
   const reports = [
-    { title: 'Complete Tasks', total: 8, icon: '🎄', color: '#32e52f' },
-    { title: 'In progress Tasks', total: 3, icon: '🚀', color: '#7d9de5' },
-    { title: 'Upcoming Tasks', total: 5, icon: '🔮', color: '#ededed' }
+    { title: 'Today tasks', total: 8, icon: '🗂', color: '#32e52f' },
+    { title: 'Overdue tasks', total: 3, icon: '🌋', color: '#7d9de5' },
+    { title: 'Urgent tasks', total: 5, icon: '🚑', color: '#ededed' }
   ]
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-3 mt-3">
       {reports.map((r, idx) => {
         return (
           <div

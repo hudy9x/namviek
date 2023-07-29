@@ -1,15 +1,10 @@
-import { useState } from 'react'
-import { addDays, format } from 'date-fns'
-import { DateRange, DayPicker } from 'react-day-picker'
+import { DayPicker } from 'react-day-picker'
+import { useOverviewContext } from './context'
 
 const pastMonth = new Date()
 
 export default function OverviewDateRange() {
-  const defaultSelected: DateRange = {
-    from: pastMonth,
-    to: addDays(pastMonth, 4)
-  }
-  const [range, setRange] = useState<DateRange | undefined>(defaultSelected)
+  const { range, setRange } = useOverviewContext()
 
   return (
     <div className="bg-white border rounded-md p-3">

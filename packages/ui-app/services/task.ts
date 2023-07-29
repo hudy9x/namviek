@@ -1,4 +1,4 @@
-import { Task } from '@prisma/client'
+import { Task, TaskPriority } from '@prisma/client'
 import { httpGet, httpPost, httpPut } from './_req'
 
 type ITaskFields = Partial<Task>
@@ -7,18 +7,22 @@ export const taskGetAll = (projectId: string) => {
   return httpGet(`/api/project/task?projectId=${projectId}`)
 }
 
-interface TaskQuery {
-  dueDate?: Date
-  overdue?: Date
-  assignees?: string[]
+interface ITaskQuery {
+  projectId?: string
+  title?: string
+  dueDate?: [Date | undefined, Date | undefined]
+  assigneeIds?: string[]
   statusIds?: string[]
+  taskPoint?: number
+  priority?: TaskPriority
+  take?: number
+  skip?: number
+  orderBy?: [string, 'asc' | 'desc']
 }
-export const taskGetByCond = (projectId: string, query: TaskQuery) => {
-  return httpGet(`/api/project/task/query`, {
-    params: {
-      projectId,
-      query
-    }
+
+export const taskGetByCond = (query: ITaskQuery) => {
+  return httpGet(`/api/project/task-query`, {
+    params: query
   })
 }
 

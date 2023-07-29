@@ -3,9 +3,10 @@ import { useParams } from 'next/navigation'
 import TaskAssignee from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskAssignee'
 import TaskPriorityCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskPriorityCell'
 import TaskStatus from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskStatus'
-import MemberAvatar from 'packages/ui-app/app/_components/MemberAvatar'
-import { taskGetAll, taskGetByCond } from 'packages/ui-app/services/task'
+// import { taskGetAll } from 'packages/ui-app/services/task'
 import { useEffect, useState } from 'react'
+
+import { taskGetAll } from '@/services/task'
 
 export default function OverviewTask() {
   const { projectId } = useParams()
@@ -14,9 +15,6 @@ export default function OverviewTask() {
   const [selected, setSelected] = useState(0)
 
   useEffect(() => {
-    // taskGetByCond(projectId, {}).then(res => {
-    //   console.log(res)
-    // })
     taskGetAll(projectId).then(res => {
       console.log(res)
       const { status, data } = res.data
@@ -29,7 +27,7 @@ export default function OverviewTask() {
     })
   }, [])
   return (
-    <div className="rounded-md border shadow-sm bg-white mt-3">
+    <div className="rounded-md border shadow-sm bg-white mt-3 col-span-3">
       <div className="flex items-center border-b px-4 gap-2">
         {tabs.map((tab, idx) => {
           const active =
@@ -54,7 +52,7 @@ export default function OverviewTask() {
               key={id}
               className="flex items-center gap-2 text-sm text-gray-500 justify-between group cursor-pointer">
               <div className="group-hover:text-indigo-600">
-                <div className='flex items-center gap-2'>
+                <div className="flex items-center gap-2">
                   {taskStatusId ? (
                     <TaskStatus taskId={id} value={taskStatusId} />
                   ) : null}

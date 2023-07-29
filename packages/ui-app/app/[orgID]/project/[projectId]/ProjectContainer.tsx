@@ -26,6 +26,7 @@ export default function ProjectContainer() {
     taskGetAll(projectId)
       .then(res => {
         const { data, status, error } = res.data
+        console.log('taskget all', data, error)
         if (status !== 200) {
           addAllTasks([])
           messageError(error)

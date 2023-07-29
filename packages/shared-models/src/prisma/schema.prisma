@@ -103,11 +103,14 @@ model Task {
 }
 
 model TaskStatus {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   order     Int
-  projectId String @db.ObjectId
+  isClosed  Boolean? @default(false)
+  isOpen    Boolean? @default(false)
+  isBacklog Boolean? @default(false)
+  projectId String   @db.ObjectId
 }
 
 // Tag used for Projects and Tasks
@@ -142,8 +145,22 @@ model Members {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   projectId String     @db.ObjectId
   role      MemberRole
-  users     User?       @relation(fields: [uid], references: [id])
-  uid       String?     @db.ObjectId
+  users     User?      @relation(fields: [uid], references: [id])
+  uid       String?    @db.ObjectId
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
+model Dashboard {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String[] @db.ObjectId
+  title     String
+  settings  String
+  type      String
+  data      String
+
   createdBy String?
   createdAt DateTime?
   updatedBy String?

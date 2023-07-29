@@ -1,9 +1,14 @@
 import Chart from 'react-apexcharts'
-import { useEffect } from 'react'
 
 export default function OverviewBurnoutChart() {
   const settings = {
     options: {
+      title: {
+        text: 'Burndown chart',
+        style: {
+          fontWeight: 'normal'
+        }
+      },
       chart: {
         id: 'basic-bar'
       },
@@ -24,7 +29,7 @@ export default function OverviewBurnoutChart() {
   }
 
   return (
-    <div className="mt-3 bg-white border rounded-md shadow-sm pt-3 ">
+    <div className="col-span-2 mt-3 bg-white border rounded-md shadow-sm pt-3 ">
       <Chart
         options={settings.options}
         series={settings.series}

@@ -1,5 +1,4 @@
 import { Avatar } from '@shared/ui'
-import MemberAvatar from 'packages/ui-app/app/_components/MemberAvatar'
 import { useMemberStore } from 'packages/ui-app/store/member'
 
 export default function OverviewMemberProgress() {
@@ -45,17 +44,13 @@ export default function OverviewMemberProgress() {
           return (
             <div key={idx} className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Avatar
-                  
-                  name={user.name || ''}
-                  src={user.photo || ''}
-                />
-                <div className='text-gray-600 text-sm'>
+                <Avatar name={user.name || ''} src={user.photo || ''} />
+                <div className="text-gray-600 text-sm">
                   <span className="text-sm">{user.name}</span>
                   <div className="text-gray-400">{r.done} resolved</div>
                 </div>
               </div>
-              <div className='text-[20px]'>{metal}</div>
+              <div className="text-[20px]">{metal}</div>
             </div>
           )
         })}
