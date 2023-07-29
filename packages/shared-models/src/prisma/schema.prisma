@@ -37,6 +37,15 @@ enum TaskPriority {
   LOW
 }
 
+enum TaskStatusType {
+  CLOSED
+  OPEN
+  BACKLOG
+  PENDING
+  REVIEW
+  INPROGRESS
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -103,14 +112,12 @@ model Task {
 }
 
 model TaskStatus {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   order     Int
-  isClosed  Boolean? @default(false)
-  isOpen    Boolean? @default(false)
-  isBacklog Boolean? @default(false)
-  projectId String   @db.ObjectId
+  type      TaskStatusType?
+  projectId String          @db.ObjectId
 }
 
 // Tag used for Projects and Tasks
