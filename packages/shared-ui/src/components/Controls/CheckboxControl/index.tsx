@@ -33,7 +33,7 @@ const CheckboxControl = ({
   ].filter(Boolean);
 
   useEffect(() => {
-    console.log('diff check', isChecked, checked)
+    // console.log('diff check', isChecked, checked)
     if (isChecked !== checked) {
       console.log('checked', checked)
       setIsChecked(!!checked);
