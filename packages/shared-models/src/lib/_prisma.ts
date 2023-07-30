@@ -11,4 +11,4 @@ export const userModel = pmClient.user
 export const orgModel = pmClient.organization
 export const orgMemberModel = pmClient.organizationMembers
 export const dboardModel = pmClient.dashboard
-export const dboardDetailModel = pmClient.dashboardDetail
+export const dboardComponentModal = pmClient.dashboardComponent

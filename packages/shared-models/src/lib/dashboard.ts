@@ -1,5 +1,5 @@
-import { Dashboard, DashboardDetail } from '@prisma/client'
-import { dboardDetailModel, dboardModel } from './_prisma'
+import { Dashboard, DashboardComponent } from '@prisma/client'
+import { dboardComponentModal, dboardModel } from './_prisma'
 
 export const mdDBoardCreate = async (data: Omit<Dashboard, 'id'>) => {
   return dboardModel.create({
@@ -8,9 +8,9 @@ export const mdDBoardCreate = async (data: Omit<Dashboard, 'id'>) => {
 }
 
 export const mdDBoardAddComponent = async (
-  data: Omit<DashboardDetail, 'id'>
+  data: Omit<DashboardComponent, 'id'>
 ) => {
-  return dboardDetailModel.create({
+  return dboardComponentModal.create({
     data
   })
 }

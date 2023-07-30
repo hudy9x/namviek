@@ -37,15 +37,6 @@ enum TaskPriority {
   LOW
 }
 
-enum TaskStatusType {
-  CLOSED
-  OPEN
-  BACKLOG
-  PENDING
-  REVIEW
-  INPROGRESS
-}
-
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -112,12 +103,11 @@ model Task {
 }
 
 model TaskStatus {
-  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   order     Int
-  type      TaskStatusType?
-  projectId String          @db.ObjectId
+  projectId String @db.ObjectId
 }
 
 // Tag used for Projects and Tasks
@@ -160,7 +150,7 @@ model Members {
   updatedAt DateTime?
 }
 
-enum DashboardComponent {
+enum DashboardComponentType {
   LINE
   SUMMARY
   PIE
@@ -168,12 +158,12 @@ enum DashboardComponent {
   LIST
 }
 
-model DashboardDetail {
-  id          String              @id @default(auto()) @map("_id") @db.ObjectId
-  dashboard   Dashboard?          @relation(fields: [dashboardId], references: [id])
-  dashboardId String?             @db.ObjectId
+model DashboardComponent {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  dashboard   Dashboard?              @relation(fields: [dashboardId], references: [id])
+  dashboardId String?                 @db.ObjectId
   title       String?
-  type        DashboardComponent?
+  type        DashboardComponentType?
   config      Json?
 
   createdBy String?
@@ -183,8 +173,8 @@ model DashboardDetail {
 }
 
 model Dashboard {
-  id               String            @id @default(auto()) @map("_id") @db.ObjectId
-  dashboardDetails DashboardDetail[]
-  title            String?           @default("Untitled")
-  projectId        String?           @db.ObjectId
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  dashboardComponents DashboardComponent[]
+  title               String?              @default("Untitled")
+  projectId           String?              @db.ObjectId
 }
