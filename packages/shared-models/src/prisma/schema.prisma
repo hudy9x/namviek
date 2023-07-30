@@ -160,16 +160,31 @@ model Members {
   updatedAt DateTime?
 }
 
-model Dashboard {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  projectId String[] @db.ObjectId
-  title     String
-  settings  String
-  type      String
-  data      String
+enum DashboardComponent {
+  LINE
+  SUMMARY
+  PIE
+  LISTTAB
+  LIST
+}
+
+model DashboardDetail {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+  dashboard   Dashboard?          @relation(fields: [dashboardId], references: [id])
+  dashboardId String?             @db.ObjectId
+  title       String?
+  type        DashboardComponent?
+  config      Json?
 
   createdBy String?
   createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
+}
+
+model Dashboard {
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  dashboardDetails DashboardDetail[]
+  title            String?           @default("Untitled")
+  projectId        String?           @db.ObjectId
 }

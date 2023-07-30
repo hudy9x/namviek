@@ -4,7 +4,7 @@ export default function OverviewWorkloadByDate() {
   const { tasks } = useOverviewContext()
 
   const reports = [
-    { title: 'Today tasks', total: 8, icon: '🗂', color: '#32e52f' },
+    { title: 'Today tasks', total: 8, icon: '💼', color: '#32e52f' },
     { title: 'Overdue tasks', total: 3, icon: '🌋', color: '#7d9de5' },
     { title: 'Urgent tasks', total: 5, icon: '🚑', color: '#ededed' }
   ]

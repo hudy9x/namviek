@@ -4,6 +4,7 @@ import orgRouter from './organization';
 import projectRouter from './project';
 import projectMemberRouter from './member';
 import taskRouter from "./task";
+import dboardRouter from "./dashboard";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use(orgRouter);
 router.use(projectRouter);
 router.use(projectMemberRouter);
 router.use(taskRouter);
+router.use(dboardRouter);
 
 export default router;
