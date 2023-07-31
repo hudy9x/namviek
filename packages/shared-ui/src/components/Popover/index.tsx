@@ -1,18 +1,39 @@
-import * as Popover from '@radix-ui/react-popover';
-import './style.css';
-export default function PopoverContainer() {
+import * as Popover from '@radix-ui/react-popover'
+import './style.css'
+import { SetStateAction } from 'react'
+import { MdClose } from 'react-icons/md'
+
+interface PopoverProps {
+  triggerBy: React.ReactNode
+  title: string
+  desc?: string
+  visible?: boolean
+  onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
+  content: React.ReactNode
+  backdrop?: boolean
+}
+
+export default function PopoverContainer({
+  triggerBy,
+  title,
+  visible = false,
+  onVisibleChange,
+  content
+}: PopoverProps) {
   return (
-    <Popover.Root>
-      <Popover.Trigger asChild>
-        <button className="popover-icon" aria-label="Update dimensions">
-          X
-        </button>
-      </Popover.Trigger>
+    <Popover.Root open={visible} onOpenChange={onVisibleChange}>
+      <Popover.Trigger asChild>{triggerBy}</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content className="popover-content" sideOffset={5}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}></div>
+          {title ? <div className="popover-title">{title}</div> : null}
+          {content}
+          <Popover.Close asChild={false}>
+            <button className="popover-close" aria-label="Close">
+              <MdClose />
+            </button>
+          </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
-  );
+  )
 }

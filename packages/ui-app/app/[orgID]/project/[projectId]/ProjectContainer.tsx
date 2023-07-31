@@ -32,6 +32,7 @@ export default function ProjectContainer() {
           return
         }
         addAllTasks(data)
+        console.log({tasks: data})
       })
       .catch(err => {
         console.log(err)
@@ -66,7 +67,7 @@ export default function ProjectContainer() {
           return
         }
 
-        console.log('done')
+        // console.log('done')
         const statuses = data as TaskStatus[]
 
         addAllStatuses(statuses.sort((a, b) => a.order - b.order))
