@@ -11,10 +11,10 @@ const router = Router();
 // middlewares
 // router.use([])
 router.use(authRouter);
+router.use(dboardRouter);
 router.use(orgRouter);
 router.use(projectRouter);
 router.use(projectMemberRouter);
 router.use(taskRouter);
-router.use(dboardRouter);
 
 export default router;

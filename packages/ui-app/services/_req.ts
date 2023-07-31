@@ -57,7 +57,7 @@ instance.interceptors.response.use(
       // }
       // window.location.href = `/sign-in?redirectUrl=${window.location.pathname}`;
     }
-    console.log('ERRIRIRIR', response, response.status);
+    console.log('ERRIRIRIR', response);
     return Promise.reject(error);
   }
 );
