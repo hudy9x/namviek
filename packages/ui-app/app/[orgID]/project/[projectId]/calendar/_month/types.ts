@@ -12,4 +12,5 @@ export interface PseudoDateTask extends Task {
 export interface DragTransferData {
   taskId: string
   fromDateString: string
+  // durationDays: number
 }
