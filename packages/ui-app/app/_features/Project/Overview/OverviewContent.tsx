@@ -59,6 +59,20 @@ export default function OverviewContent() {
       type: DashboardComponentType.COLUMN,
       config: {
         fixed: true,
+        day: ['=', 'month'],
+        xAxis: {
+          assigneeIds: ['not_in', '649fe52105903222013888ad']
+        },
+        series: {
+          statusIds: [
+            'in',
+            '64a2742810848bf6cbdd6e7b',
+            '64a2742810848bf6cbdd6e7c',
+            '64a2742810848bf6cbdd6e7d',
+            '64a2742810848bf6cbdd6e7e',
+            '64a2742810848bf6cbdd6e7f'
+          ]
+        },
         // priority: ['in', TaskPriority.URGENT],
         // statusIds: [
         //   'not_in',
