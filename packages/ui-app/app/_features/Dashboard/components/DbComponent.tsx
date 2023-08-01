@@ -1,5 +1,6 @@
 import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 import DbCompSummary from './DbCompSummary'
+import DbCompColumn from './DbCompColumn'
 
 export default function DbComponent({
   component
@@ -9,10 +10,13 @@ export default function DbComponent({
   const { type, title, config } = component
   const configJson = config as unknown as { [key: string]: unknown }
   return (
-    <div>
+    <>
       {type === DashboardComponentType.SUMMARY ? (
         <DbCompSummary title={title || ''} config={configJson} />
       ) : null}
-    </div>
+      {type === DashboardComponentType.COLUMN ? (
+        <DbCompColumn title={title || ''} config={configJson} />
+      ) : null}
+    </>
   )
 }

@@ -29,6 +29,10 @@ export const dboardComponentCreate = (
   return httpPost('/api/dboard/component', data)
 }
 
+type DateOperation = '>' | '>=' | '=' | '<' | '<='
+type DateString = 'today' | 'week' | 'month'
+type DateWithOperation = [DateOperation, DateString]
+
 export interface IDBComponentConfig {
   title?: string
   icon?: string
@@ -40,6 +44,7 @@ export interface IDBComponentConfig {
   priority?: string[]
   startDate?: Date
   endDate?: Date
+  dateQuery?: DateWithOperation
 }
 
 export const dboardQuerySummary = (query: IDBComponentConfig) => {

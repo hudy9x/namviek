@@ -13,7 +13,11 @@ import {
   dboardGet
 } from '@/services/dashboard'
 import { useParams } from 'next/navigation'
-import { DashboardComponent, DashboardComponentType } from '@prisma/client'
+import {
+  DashboardComponent,
+  DashboardComponentType,
+  TaskPriority
+} from '@prisma/client'
 import { useEffect, useState } from 'react'
 import DbCompSummary from '../../Dashboard/components/DbCompSummary'
 import DbComponent from '../../Dashboard/components/DbComponent'
@@ -25,7 +29,6 @@ export default function OverviewContent() {
   const [components, setComponents] = useState<DashboardComponent[]>([])
 
   useEffect(() => {
-    console.log('start getting dashboard components')
     dboardGet(projectId)
       .then(res => {
         const { data, status } = res.data
@@ -34,8 +37,9 @@ export default function OverviewContent() {
           return
         }
 
+        console.log(data)
+
         setComponents(data)
-        console.log('components', data)
       })
       .catch(err => {
         console.log('get dboard error', err)
@@ -44,27 +48,35 @@ export default function OverviewContent() {
 
   const onCreateDashboard = () => {
     dboardCreate({ projectId, title: 'Unknown ' + Date.now() }).then(res => {
-      console.log('dboard create', res)
+      console.log('a')
     })
   }
 
   const onCreateComponent = () => {
     dboardComponentCreate({
       dashboardId: '64c63e9ca7952f78aec87814',
-      title: 'Today tasks',
-      type: DashboardComponentType.SUMMARY,
+      title: 'Task by Assignee',
+      type: DashboardComponentType.COLUMN,
       config: {
-        date: ['=', 'today']
+        fixed: true,
+        // priority: ['in', TaskPriority.URGENT],
+        // statusIds: [
+        //   'not_in',
+        //   '64a2742810848bf6cbdd6e7e',
+        //   '64a2742810848bf6cbdd6e7f'
+        // ],
 
-        // startDate: new Date(2023, 6, 22).toString(),
-        // endDate: new Date(2023, 6, 22).toString()
-
-        // statusIds: ['64a2742810848bf6cbdd6e7d'],
-        // projectIds: [projectId],
-        // icon: '🔬'
+        projectIds: ['in', projectId],
+        icon: '🥃'
       }
     }).then(res => {
-      console.log(res)
+      const { status, data } = res.data
+
+      if (status !== 200) {
+        return
+      }
+
+      setComponents(prev => [...prev, data])
     })
   }
 
@@ -77,7 +89,11 @@ export default function OverviewContent() {
       <div className="flex items-center justify-between">
         <div>
           {/* <Button title="Create dashboard" onClick={onCreateDashboard} /> */}
-          <Button title="Create component" size='sm' onClick={onCreateComponent} />
+          <Button
+            title="Create component"
+            size="sm"
+            onClick={onCreateComponent}
+          />
         </div>
         <div className="flex items-center gap-1">
           <Button title="Day" size="sm" />
@@ -95,6 +111,7 @@ export default function OverviewContent() {
       <main className="mt-3">
         <div className="grid grid-cols-4 gap-3">
           {components.map(component => {
+            // if (component.id !== '64c8af39eb0172646a4e91da') return null
             return <DbComponent component={component} key={component.id} />
           })}
         </div>

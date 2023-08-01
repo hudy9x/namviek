@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
+  IDBComponentConfig,
   mdDBoardAddComponent,
   mdDBoardCreate,
   mdDBoardGetComponents,
@@ -71,34 +72,21 @@ router.post('/dboard/component', async (req: AuthRequest, res) => {
   }
 })
 
-interface IDBComponentConfig {
-  title?: string
-  icon?: string
-  projectIds?: string[]
-  statusIds?: string[]
-  tagIds?: string[]
-  assigneeIds?: string[]
-  points?: number[]
-  priority?: string[]
-  startDate?: Date
-  endDate?: Date
-}
-
 router.post('/dboard/query-summary', async (req: AuthRequest, res) => {
   try {
-    const { projectIds, statusIds, startDate, endDate } =
+    const { projectIds, statusIds, startDate, endDate, priority, assigneeIds } =
       req.body as IDBComponentConfig
 
-    console.log('dboard query called -----')
-
+    console.log('--------------------------------------')
+    console.log('8')
     const result = await mdDBoardQuerySum({
       projectIds,
       statusIds,
       startDate,
+      priority,
+      assigneeIds,
       endDate
     })
-
-    console.log(projectIds, statusIds)
 
     res.json({ status: 200, data: result })
   } catch (error) {

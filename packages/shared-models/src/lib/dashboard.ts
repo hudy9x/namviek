@@ -28,7 +28,7 @@ export const mdDBoardAddComponent = async (
   })
 }
 
-interface IDBComponentConfig {
+export interface IDBComponentConfig {
   title?: string
   icon?: string
   projectIds?: string[]
@@ -61,21 +61,38 @@ export const mdDBoardQueryTask = async (
     [key: string]: unknown
   } = {}
 
+
   if (startDate || endDate) {
-    const start = startDate
-    const end = endDate
+    const start = startDate ? new Date(startDate) : null
+    const end = endDate ? new Date(endDate) : null
     // today tasks
-    if (start === end) {
-      where.dueDate = start
+    if (start && end && start.getTime() === end.getTime()) {
+      console.log('date:today')
+      const startAtZero = new Date(
+        start.getFullYear(),
+        start.getMonth(),
+        start.getDate()
+      )
+      const nextDay = new Date(
+        start.getFullYear(),
+        start.getMonth(),
+        start.getDate() + 1
+      )
+      where.AND = [
+        { dueDate: { gte: startAtZero } },
+        { dueDate: { lt: nextDay } }
+      ]
     }
 
     // task in date range
-    if (start && end) {
+    if (start && end && start.getTime() !== end.getTime()) {
+      console.log('date:range')
       where.AND = [{ dueDate: { gte: start } }, { dueDate: { lte: end } }]
     }
 
     // upcoming tasks
     if (start && !end) {
+      console.log('date:upcoming')
       where.dueDate = {
         gte: start
       }
@@ -83,6 +100,7 @@ export const mdDBoardQueryTask = async (
 
     // overdue tasks
     if (!start && end) {
+      console.log('date:overdue')
       where.dueDate = {
         lte: end
       }
@@ -90,32 +108,66 @@ export const mdDBoardQueryTask = async (
   }
 
   if (assigneeIds && assigneeIds.length) {
+    console.log('assignee', assigneeIds)
     where.assigneeIds = {
       hasSome: assigneeIds
     }
   }
 
   if (projectIds && projectIds.length) {
-    where.projectId = {
-      in: projectIds
+    const [operator, ...restProjectIds] = projectIds
+    console.log('project', operator, restProjectIds)
+    if (operator === 'not_in') {
+      where.projectId = {
+        notIn: restProjectIds
+      }
+    }
+
+    if (operator === 'in') {
+      where.projectId = {
+        in: restProjectIds
+      }
     }
   }
 
   if (statusIds && statusIds.length) {
-    where.taskStatusId = {
-      in: statusIds
+    const [operator, ...restStatusIds] = statusIds
+    console.log('status', operator, restStatusIds)
+
+    if (operator === 'not_in') {
+      where.taskStatusId = {
+        notIn: restStatusIds
+      }
+    }
+
+    if (operator === 'in') {
+      where.taskStatusId = {
+        in: restStatusIds
+      }
     }
   }
 
   if (points && points.length) {
+    console.log('points', points)
     where.taskPoint = {
       in: points
     }
   }
 
   if (priority && priority.length) {
-    where.priority = {
-      in: priority
+    const [operator, ...rest] = priority
+    console.log('priority', operator, rest)
+
+    if (operator === 'not_in') {
+      where.priority = {
+        notIn: rest
+      }
+    }
+
+    if (operator === 'in') {
+      where.priority = {
+        in: rest
+      }
     }
   }
 
