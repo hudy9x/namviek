@@ -84,3 +84,15 @@
   border: none;
   padding: 0;
 }
+
+.task-import-modal {
+  max-width: 1200px !important;
+}
+
+.irow {
+  @apply hover:bg-gray-100;
+}
+
+.icell {
+  @apply px-1.5 py-2;
+}

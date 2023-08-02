@@ -14,3 +14,10 @@ export const taskAdd = (data: ITaskFields) => {
 export const taskUpdate = (data: ITaskFields) => {
   return httpPut('/api/project/task', data)
 }
+
+export const taskAddMany = (data: {
+  data: ITaskFields[]
+  projectId: string
+}) => {
+  return httpPost('/api/project/tasks', data)
+}
