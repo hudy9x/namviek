@@ -53,26 +53,30 @@ export default function MonthTask({ task, date }: IMonthTask) {
 
   return (
     <div className=" mb-1 w-full h-6 ">
-      {differenceInCalendarDays(task.pseudoStartedDate, date) === 0 ||
-      date.getDay() === 0 ? (
-        <div
-          draggable
-          onDragStart={e => dragStartHandle(e, task)}
-          style={{
-            width: `${
-              (7 - date.getDay() < differenceInCalendarDays(task.dueDate, date)
-                ? 7 - date.getDay()
-                : differenceInCalendarDays(task.dueDate, date) + 1) * 100
-            }%`
-          }}
-          className={
-            'relative bg-slate-400 z-20 overflow-hidden whitespace-nowrap text-ellipsis '
-          }>
-          {task.title}
-        </div>
-      ) : (
-        <div className=" relative invisible box-border "></div>
-      )}
+      {
+        differenceInCalendarDays(task.pseudoStartedDate, date) === 0 ||
+        date.getDay() === 0 ? (
+          <div
+            draggable
+            onDragStart={e => dragStartHandle(e, task)}
+            style={{
+              width: `${
+                (7 - date.getDay() <
+                differenceInCalendarDays(task.dueDate, date)
+                  ? 7 - date.getDay()
+                  : differenceInCalendarDays(task.dueDate, date) + 1) * 100
+              }%`
+            }}
+            className={
+              'relative bg-slate-400 z-20 overflow-hidden whitespace-nowrap text-ellipsis '
+            }>
+            {task.title}
+          </div>
+        ) : null
+        // (
+        //   <div className=" relative invisible box-border "></div>
+        // )
+      }
     </div>
   )
 }

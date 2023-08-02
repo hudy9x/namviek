@@ -82,7 +82,7 @@ export function Body({ selectedDate }: BodyProps) {
   }, [])
 
   return (
-    <div className="overscroll-none overflow-y-auto absolute left-0 right-0 top-0 bottom-0 z-5">
+    <div className="overscroll-none overflow-y-auto absolute left-0 right-0 top-0 pt-6 bottom-0 z-5">
       {cellDates.length > 0 ? (
         // ? Array.from(Array(6).keys()).map(row => (
         <div className="relative grid grid-cols-7">

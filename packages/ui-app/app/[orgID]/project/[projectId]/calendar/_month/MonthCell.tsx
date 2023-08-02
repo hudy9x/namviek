@@ -1,29 +1,38 @@
-import { Task } from '@prisma/client'
-import TaskCreate from '../TaskCreatePopover'
 import { useCallback, useEffect, useState } from 'react'
-
 // highlight today's border
 import { DragTransferData, IDateProps, PseudoDateTask } from './types'
 import { useTaskStore } from 'packages/ui-app/store/task'
-import MonthTask from './MonthTask'
 import { taskUpdate } from 'packages/ui-app/services/task'
+import MonthCellFooter from './MonthCellFooter'
+import { MonthCellBody } from './MonthCellBody'
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 
+const defaultVisibleTaskNum = 5
 export default function MonthCell({ date, tasks }: IDateProps) {
   const [dateTasks, setDateTasks] = useState<PseudoDateTask[]>(
     (tasks?.sort() || []) as PseudoDateTask[]
   )
+  const [moreTaskShown, setMoreTaskShown] = useState<boolean>(true)
   const { updateTask, tasks: storeTasks } = useTaskStore()
 
   useEffect(() => {
     tasks &&
       // tasks?.length > 0 &&
       setDateTasks(
-        [...tasks].sort(
-          (a, b) =>
-            a.pseudoStartedDate.getTime() - b.pseudoStartedDate.getTime()
-        ) || []
+        [...tasks]
+          // (date.getDay() === 0
+          //   ? [...tasks]
+          //   : [...tasks].filter(
+          //       task =>
+          //         differenceInCalendarDays(task.pseudoStartedDate, date) === 0
+          //     )
+          // )
+          .sort(
+            (a, b) =>
+              a.pseudoStartedDate.getTime() - b.pseudoStartedDate.getTime()
+          ) || []
       )
-  }, [tasks])
+  }, [tasks, date])
 
   const dropHandle = useCallback(
     (e: React.DragEvent<HTMLDivElement>, toDate: Date) => {
@@ -84,26 +93,36 @@ export default function MonthCell({ date, tasks }: IDateProps) {
     e.dataTransfer.dropEffect = 'move'
   }, [])
 
+  const toggleShowHideHandle = useCallback(() => {
+    setMoreTaskShown(pre => !pre)
+  }, [])
+
   return (
     <div>
       {date ? (
         <div
-          className="relative flex flex-col w-full border border-black min-h-[140px] group items-center "
+          className="relative flex flex-col w-full border border-black h-full min-h-[140px] group justify-end"
           onDrop={e => dropHandle(e, date)}
           onDragOver={dragOverHandle}>
-          {dateTasks?.length
-            ? dateTasks.map((task, i) => (
-                <MonthTask key={i} task={task} date={date} />
-              ))
-            : null}
-          <TaskCreate
-            triggerButton={
-              <button className="absolute bottom-3 right-10 invisible group-hover:visible">
-                +
-              </button>
+          <MonthCellBody
+            dateTasks={
+              moreTaskShown
+                ? dateTasks.slice(0, defaultVisibleTaskNum)
+                : dateTasks
             }
+            date={date}
           />
-          <div className="absolute bottom-3 right-3">{date.getDate()}</div>
+          <MonthCellFooter
+            date={date}
+            moreTasksNum={
+              dateTasks.length - defaultVisibleTaskNum <= 0
+                ? 0
+                : moreTaskShown
+                ? -dateTasks.length + defaultVisibleTaskNum
+                : dateTasks.length - defaultVisibleTaskNum
+            }
+            onToggleShowHide={toggleShowHideHandle}
+          />
         </div>
       ) : null}
     </div>
