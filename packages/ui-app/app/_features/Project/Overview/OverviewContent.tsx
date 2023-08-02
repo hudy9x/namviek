@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react'
 import DbCompSummary from '../../Dashboard/components/DbCompSummary'
 import DbComponent from '../../Dashboard/components/DbComponent'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import DashboardComponentCreate from '../../Dashboard/DasboardComponentCreate'
 
 export default function OverviewContent() {
   const { user } = useUser()
@@ -110,24 +111,25 @@ export default function OverviewContent() {
       <div className="flex items-center justify-between">
         <div>
           {/* <Button title="Create dashboard" onClick={onCreateDashboard} /> */}
-          <Button
-            title="Create component"
-            size="sm"
-            onClick={onCreateComponent}
-          />
+          {/* <Button */}
+          {/*   title="Create component" */}
+          {/*   size="sm" */}
+          {/*   onClick={onCreateComponent} */}
+          {/* /> */}
+          <DashboardComponentCreate />
         </div>
-        <div className="flex items-center gap-1">
-          <Button title="Day" size="sm" />
-          <Button title="Week" size="sm" />
-          <Button title="Month" size="sm" />
-          <Button title="Prev" leadingIcon={<AiOutlineArrowLeft />} size="sm" />
-          <Button title="Today" size="sm" />
-          <Button
-            title="Next"
-            leadingIcon={<AiOutlineArrowRight />}
-            size="sm"
-          />
-        </div>
+        {/* <div className="flex items-center gap-1"> */}
+        {/*   <Button title="Day" size="sm" /> */}
+        {/*   <Button title="Week" size="sm" /> */}
+        {/*   <Button title="Month" size="sm" /> */}
+        {/*   <Button title="Prev" leadingIcon={<AiOutlineArrowLeft />} size="sm" /> */}
+        {/*   <Button title="Today" size="sm" /> */}
+        {/*   <Button */}
+        {/*     title="Next" */}
+        {/*     leadingIcon={<AiOutlineArrowRight />} */}
+        {/*     size="sm" */}
+        {/*   /> */}
+        {/* </div> */}
       </div>
       <main className="mt-3">
         <div className="grid grid-cols-4 gap-3">
