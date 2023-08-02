@@ -1,7 +1,16 @@
-import { IDBComponentConfig, dboardQuerySummary } from '@/services/dashboard'
+import {
+  IDBComponentConfig,
+  dboardQueryColumn,
+  dboardQuerySummary
+} from '@/services/dashboard'
 import { useEffect, useState } from 'react'
-import { AiOutlineLock } from 'react-icons/ai'
+import { AiOutlineLock, AiOutlineSync } from 'react-icons/ai'
 import { ICompConfig, IDbCompProps, refactorConfig } from '../type'
+import { Button } from '@shared/ui'
+import { useProjectStatusStore } from '@/store/status'
+import { useMemberStore } from '@/store/member'
+import MemberAvatar from '@/components/MemberAvatar'
+import './column.css'
 
 interface ICol {
   name: string
@@ -13,7 +22,29 @@ interface IColumns {
   data: ICol[]
 }
 
+interface ISerieItem {
+  name: string
+  id?: string
+  data: number[]
+}
+
+interface IChartColumnOption {
+  series: ISerieItem[]
+  xaxis: {
+    type: string
+    categories: string[]
+  }
+}
+
+interface IOption {
+  series: ISerieItem[]
+  xaxis: string[]
+}
+
 export default function DbCompColumn({ config, title }: IDbCompProps) {
+  const [updateCounter, setUpdateCounter] = useState(0)
+  const { statuses } = useProjectStatusStore()
+  const { members } = useMemberStore()
   const [data, setData] = useState({
     loading: true,
     title: title,
@@ -23,36 +54,33 @@ export default function DbCompColumn({ config, title }: IDbCompProps) {
     color: ''
   })
 
-  const options = {
+  const [opt, setOpt] = useState<IOption>({
     series: [
-      {
-        name: 'Todo',
-        data: [44, 55, 41, 67, 22, 43, 10]
-      },
-      {
-        name: 'Inprogress',
-        data: [13, 23, 20, 8, 13, 27, 5]
-      },
-      {
-        name: 'Review',
-        data: [11, 17, 15, 15, 21, 14, 2]
-      },
-      {
-        name: 'Closed',
-        data: [21, 7, 25, 13, 22, 8, 80]
-      }
+      // {
+      //   name: 'Todo',
+      //   data: [44, 55, 41, 67, 22, 43, 10]
+      // },
+      // {
+      //   name: 'Inprogress',
+      //   data: [13, 23, 20, 8, 13, 27, 5]
+      // },
+      // {
+      //   name: 'Review',
+      //   data: [11, 17, 15, 15, 21, 14, 2]
+      // },
+      // {
+      //   name: 'Closed',
+      //   data: [21, 7, 25, 13, 22, 8, 80]
+      // }
     ],
+    xaxis: []
+  })
+
+  const options: IChartColumnOption = {
+    series: opt.series,
     xaxis: {
       type: 'assignee',
-      categories: [
-        '649fe52105903222013888ad',
-        '64a28391ccd256857244313a',
-        '64a28391ccd256857244313b',
-        '64a28391ccd256857244313c',
-        '64a28391ccd256857244313d',
-        '64a28391ccd256857244313e',
-        '64a28391ccd256857244354d'
-      ]
+      categories: opt.xaxis
     }
   }
 
@@ -103,36 +131,79 @@ export default function DbCompColumn({ config, title }: IDbCompProps) {
   const columnXOffset = Math.floor(xAxisOffsetLeft / columnLen)
   const columnWidth = Math.floor(100 / columnLen)
 
-  console.log('------------------end', columns, max, yaxis)
+  const convertToSerie = (columns: {
+    [key: string]: { [key: string]: number }
+  }) => {
+    console.log('========')
+    const series: ISerieItem[] = []
+    const validSeries = Object.keys(columns[Object.keys(columns)[0]])
+
+    statuses.forEach(stt => {
+      if (!validSeries.includes(stt.id)) return
+
+      series.push({
+        name: stt.name,
+        id: stt.id,
+        data: []
+      })
+    })
+
+    series.forEach(s => {
+      const id = s.id
+      for (const x in columns) {
+        const columnData = columns[x]
+
+        for (const p in columnData) {
+          if (p === id) {
+            s.data.push(columnData[p])
+          }
+        }
+      }
+    })
+
+    return series
+  }
 
   useEffect(() => {
     const newConfig = refactorConfig(config)
-    dboardQuerySummary(newConfig as IDBComponentConfig).then(res => {
+    dboardQueryColumn(newConfig as IDBComponentConfig).then(res => {
       // console.log(res.data)
       const { status, data } = res.data
       if (status !== 200) {
         return
       }
 
-      setData(prev => {
-        return { ...prev, summary: data }
+      const series = convertToSerie(data.columns)
+      setOpt({
+        series,
+        xaxis: data.xAxis
       })
+      console.log('chartData', series, data.xAxis)
     })
-  }, [])
+  }, [updateCounter])
+
+  console.log(yaxis)
 
   return (
     <div className="col-span-2 py-4 px-5 w-[] border rounded-md bg-white shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
       <h2 className="text-sm text-gray-600 flex items-center gap-1 ">
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
+        <Button
+          onClick={() => setUpdateCounter(updateCounter + 1)}
+          leadingIcon={<AiOutlineSync />}
+          size="sm"
+        />
       </h2>
       <div>
-        <div className="w-full relative my-[30px]" style={{ height: chartHeight }}>
+        <div
+          className="w-full relative my-[30px]"
+          style={{ height: chartHeight }}>
           <div className="chart-column-yasix absolute bottom-0 left-0 h-full w-full">
-            {yaxis.map(y => {
+            {yaxis.map((y, yi) => {
               return (
                 <div
-                  key={y}
+                  key={yi}
                   style={{ height: heightPerRow }}
                   className="text-xs flex">
                   <div
@@ -161,8 +232,8 @@ export default function DbCompColumn({ config, title }: IDbCompProps) {
                     width: `calc(${columnWidth}% - ${columnGap}px - ${columnXOffset}px)`
                   }}
                   className="h-full hover:bg-gray-100 flex flex-col-reverse relative">
-                  <div className="absolute -bottom-[35px] left-[50%] -translate-x-[50%] text-xs py-1 px-2 rounded bg-gray-100">
-                    {col.xaxis.slice(0, 2)}
+                  <div className="chart-column-name absolute -bottom-[35px] left-[50%] -translate-x-[50%] text-xs rounded">
+                    <MemberAvatar uid={col.xaxis} />
                   </div>
                   {colDatas.map((cd, cdidx) => {
                     const val = cd.data

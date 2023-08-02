@@ -50,3 +50,7 @@ export interface IDBComponentConfig {
 export const dboardQuerySummary = (query: IDBComponentConfig) => {
   return httpPost('/api/dboard/query-summary', query)
 }
+
+export const dboardQueryColumn = (query: IDBComponentConfig) => {
+  return httpPost('/api/dboard/query-column', query)
+}

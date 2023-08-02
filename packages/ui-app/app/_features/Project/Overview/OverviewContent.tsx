@@ -61,7 +61,14 @@ export default function OverviewContent() {
         fixed: true,
         day: ['=', 'month'],
         xAxis: {
-          assigneeIds: ['not_in', '649fe52105903222013888ad']
+          assigneeIds: [
+            '64a28391ccd256857244313f',
+            '64a28391ccd256857244313a',
+            '64a28391ccd256857244313b',
+            '64a28391ccd256857244313d',
+            '64a28391ccd256857244313c',
+            '64a28391ccd256857244313e'
+          ]
         },
         series: {
           statusIds: [
@@ -125,7 +132,7 @@ export default function OverviewContent() {
       <main className="mt-3">
         <div className="grid grid-cols-4 gap-3">
           {components.map(component => {
-            // if (component.id !== '64c8af39eb0172646a4e91da') return null
+            if (component.id !== '64c8e95873337080d570675f') return null
             return <DbComponent component={component} key={component.id} />
           })}
         </div>

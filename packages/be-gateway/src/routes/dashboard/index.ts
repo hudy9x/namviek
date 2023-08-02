@@ -2,10 +2,12 @@ import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
+  IDBComponentColumnConfig,
   IDBComponentConfig,
   mdDBoardAddComponent,
   mdDBoardCreate,
   mdDBoardGetComponents,
+  mdDBoardQueryColumn,
   mdDBoardQuerySum
 } from '@shared/models'
 import { DashboardComponent } from '@prisma/client'
@@ -87,6 +89,20 @@ router.post('/dboard/query-summary', async (req: AuthRequest, res) => {
       assigneeIds,
       endDate
     })
+
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    res.json({ status: 500, error })
+  }
+})
+
+router.post('/dboard/query-column', async (req: AuthRequest, res) => {
+  try {
+    const config = req.body as IDBComponentColumnConfig
+
+    console.log('--------------------------------------')
+    console.log('27')
+    const result = await mdDBoardQueryColumn(config)
 
     res.json({ status: 200, data: result })
   } catch (error) {
