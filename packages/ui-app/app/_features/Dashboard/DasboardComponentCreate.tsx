@@ -1,6 +1,7 @@
 import { DashboardComponentType } from '@prisma/client'
 import { Button, Modal } from '@shared/ui'
 import { useState } from 'react'
+import DashboardComponentUpdateForm from './DashboardComponentUpdateForm'
 
 export default function DashboardComponentCreate() {
   const [visible, setVisible] = useState(false)
@@ -51,7 +52,6 @@ export default function DashboardComponentCreate() {
     // { type: DashboardComponentType.LINE, desc: '', icon: '' },
     // { type: DashboardComponentType.LIST, desc: '', icon: '' }
   ]
-  console.log(charts)
 
   return (
     <div>
@@ -88,6 +88,7 @@ export default function DashboardComponentCreate() {
                 )
               })}
             </div>
+            <DashboardComponentUpdateForm />
           </>
         }
       />
