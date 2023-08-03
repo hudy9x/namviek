@@ -1,37 +1,78 @@
 import { useCallback, useEffect, useState } from 'react'
 // highlight today's border
-import { DragTransferData, IDateProps, PseudoDateTask } from './types'
+import { DragTransferData, IMonthCell, PseudoTask } from './types'
 import { useTaskStore } from 'packages/ui-app/store/task'
 import { taskUpdate } from 'packages/ui-app/services/task'
 import MonthCellFooter from './MonthCellFooter'
 import { MonthCellBody } from './MonthCellBody'
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 
 const defaultVisibleTaskNum = 5
-export default function MonthCell({ date, tasks }: IDateProps) {
-  const [dateTasks, setDateTasks] = useState<PseudoDateTask[]>(
-    (tasks?.sort() || []) as PseudoDateTask[]
+export default function MonthCell({
+  date,
+  tasks,
+  moreTaskShown,
+  toggleShowHideHandle
+}: IMonthCell) {
+  const [dateTasks, setDateTasks] = useState<PseudoTask[]>(
+    (tasks?.sort() || []) as PseudoTask[]
   )
-  const [moreTaskShown, setMoreTaskShown] = useState<boolean>(true)
   const { updateTask, tasks: storeTasks } = useTaskStore()
+  const [overTaskNum, setOverTaskNum] = useState<number>(0)
+  useEffect(() => {
+    const overNum = dateTasks
+      .slice(defaultVisibleTaskNum, dateTasks.length)
+      .filter(task => !!task).length
+    setOverTaskNum(overNum)
+  }, [dateTasks])
 
   useEffect(() => {
     tasks &&
-      // tasks?.length > 0 &&
-      setDateTasks(
-        [...tasks]
-          // (date.getDay() === 0
-          //   ? [...tasks]
-          //   : [...tasks].filter(
-          //       task =>
-          //         differenceInCalendarDays(task.pseudoStartedDate, date) === 0
-          //     )
-          // )
-          .sort(
-            (a, b) =>
-              a.pseudoStartedDate.getTime() - b.pseudoStartedDate.getTime()
-          ) || []
-      )
+      setDateTasks(() => {
+        const withPreviousIndexTasks = [] as (PseudoTask & {
+          previousIndexPerRow: number
+        })[]
+        const withoutPreviousIndexTasks: PseudoTask[] = []
+
+        tasks.forEach(task => {
+          if (
+            task?.previousIndexPerRow !== undefined &&
+            task?.previousIndexPerRow !== null
+          )
+            withPreviousIndexTasks.push(task)
+          else withoutPreviousIndexTasks.push(task)
+        })
+
+        withPreviousIndexTasks.sort(
+          (a, b) => -a.previousIndexPerRow + b.previousIndexPerRow
+        )
+        const maxPreviousIndex =
+          withPreviousIndexTasks?.[0]?.previousIndexPerRow
+
+        const arrangedTasksLength = !maxPreviousIndex
+          ? tasks.length
+          : maxPreviousIndex > tasks.length
+          ? maxPreviousIndex + 1
+          : tasks.length
+
+        const arrangedTasks = Array(arrangedTasksLength).fill(
+          null
+        ) as PseudoTask[]
+        withPreviousIndexTasks.forEach(task => {
+          arrangedTasks[task.previousIndexPerRow] = task
+        })
+
+        withoutPreviousIndexTasks.reverse()
+
+        arrangedTasks.forEach((_, i, arrangedTasks) => {
+          if (arrangedTasks[i]) return
+
+          const task = withoutPreviousIndexTasks.pop()
+          if (!task) return
+          arrangedTasks[i] = task
+          arrangedTasks[i].previousIndexPerRow = i
+        })
+        return arrangedTasks
+      })
   }, [tasks, date])
 
   const dropHandle = useCallback(
@@ -93,10 +134,6 @@ export default function MonthCell({ date, tasks }: IDateProps) {
     e.dataTransfer.dropEffect = 'move'
   }, [])
 
-  const toggleShowHideHandle = useCallback(() => {
-    setMoreTaskShown(pre => !pre)
-  }, [])
-
   return (
     <div>
       {date ? (
@@ -114,13 +151,7 @@ export default function MonthCell({ date, tasks }: IDateProps) {
           />
           <MonthCellFooter
             date={date}
-            moreTasksNum={
-              dateTasks.length - defaultVisibleTaskNum <= 0
-                ? 0
-                : moreTaskShown
-                ? -dateTasks.length + defaultVisibleTaskNum
-                : dateTasks.length - defaultVisibleTaskNum
-            }
+            moreTasksNum={moreTaskShown ? -overTaskNum : overTaskNum}
             onToggleShowHide={toggleShowHideHandle}
           />
         </div>

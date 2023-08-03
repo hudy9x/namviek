@@ -4,8 +4,9 @@ import { firstWeekDayBeforeMonth } from '@shared/libs'
 import MonthCell from './MonthCell'
 import { useTaskStore } from 'packages/ui-app/store/task'
 import { Task, TaskPayload } from '@prisma/client'
-import { PseudoDateTask } from './types'
+import { PseudoTask } from './types'
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
+import BodyRow from './BodyRow'
 
 interface BodyProps {
   selectedDate: Date
@@ -13,7 +14,7 @@ interface BodyProps {
 
 export function Body({ selectedDate }: BodyProps) {
   const [cellDates, setCellDates] = useState<Date[]>([])
-  const [tasks, setTasks] = useState<PseudoDateTask[]>([])
+  const [tasks, setTasks] = useState<PseudoTask[]>([])
 
   const { tasks: storeTasks } = useTaskStore()
 
@@ -61,7 +62,7 @@ export function Body({ selectedDate }: BodyProps) {
           ...task,
           pseudoStartedDate:
             task.pseudoStartedDate && new Date(task.pseudoStartedDate)
-        })) as PseudoDateTask[]
+        })) as PseudoTask[]
 
       setTasks([...parsedDateTasks])
     } catch (err) {
@@ -69,33 +70,25 @@ export function Body({ selectedDate }: BodyProps) {
     }
   }, [storeTasks])
 
-  const isTaskOnDate = useCallback((task: PseudoDateTask, date: Date) => {
-    // const taskStartDate = task.startDate ?? task.createdAt
-    const taskStartDate = task.pseudoStartedDate
-    const taskDueDate = task.dueDate
-    if (!taskStartDate || !taskDueDate) return false
-
-    return (
-      differenceInCalendarDays(taskStartDate, date) <= 0 &&
-      differenceInCalendarDays(date, taskDueDate) <= 0
-    )
-  }, [])
-
   return (
     <div className="overscroll-none overflow-y-auto absolute left-0 right-0 top-0 pt-6 bottom-0 z-5">
-      {cellDates.length > 0 ? (
-        // ? Array.from(Array(6).keys()).map(row => (
-        <div className="relative grid grid-cols-7">
-          {cellDates.map((date, i) => (
-            <MonthCell
-              date={date}
-              key={i}
-              tasks={tasks.filter(task => isTaskOnDate(task, date))}
-            />
-          ))}
-        </div>
-      ) : // ))
-      null}
+      {cellDates.length > 0
+        ? Array.from(Array(Math.ceil(cellDates.length / 7)).keys()).map(row => {
+            const rowTasks = tasks.map(task => ({
+              ...task,
+              ...task,
+              previousIndexPerRow: undefined
+            }))
+            return (
+              <div key={row} className="relative ">
+                <BodyRow
+                  tasks={rowTasks}
+                  dates={cellDates.slice(row * 7, (row + 1) * 7)}
+                />
+              </div>
+            )
+          })
+        : null}
     </div>
   )
 }

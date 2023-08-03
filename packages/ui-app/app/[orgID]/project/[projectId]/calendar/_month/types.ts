@@ -1,16 +1,18 @@
 import { Task } from '@prisma/client'
 
-export interface IDateProps {
+export interface IMonthCell {
   date: Date
-  tasks?: PseudoDateTask[]
+  tasks?: PseudoTask[]
+  moreTaskShown: boolean
+  toggleShowHideHandle: () => void
 }
-export interface PseudoDateTask extends Task {
+export interface PseudoTask extends Task {
   pseudoStartedDate: Date
   dueDate: Date
+  previousIndexPerRow?: number
 }
 
 export interface DragTransferData {
   taskId: string
   fromDateString: string
-  // durationDays: number
 }

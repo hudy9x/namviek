@@ -1,18 +1,18 @@
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import startOfWeek from 'date-fns/startOfWeek'
 import endOfWeek from 'date-fns/endOfWeek'
-import { PseudoDateTask } from './types'
+import { PseudoTask } from './types'
 import { useCallback } from 'react'
 import { DragTransferData } from './types'
 
-interface IMonthTask {
-  task: PseudoDateTask
+interface IMonthCellTask {
+  task: PseudoTask
   date: Date
 }
 
-export default function MonthTask({ task, date }: IMonthTask) {
+export default function MonthCellTask({ task, date }: IMonthCellTask) {
   const dragStartHandle = useCallback(
-    (e: React.DragEvent<HTMLDivElement>, task: PseudoDateTask) => {
+    (e: React.DragEvent<HTMLDivElement>, task: PseudoTask) => {
       const { clientX } = e
       const { x, width } = (e.target as HTMLElement).getBoundingClientRect()
 
@@ -52,31 +52,28 @@ export default function MonthTask({ task, date }: IMonthTask) {
   )
 
   return (
-    <div className=" mb-1 w-full h-6 ">
-      {
-        differenceInCalendarDays(task.pseudoStartedDate, date) === 0 ||
-        date.getDay() === 0 ? (
-          <div
-            draggable
-            onDragStart={e => dragStartHandle(e, task)}
-            style={{
-              width: `${
-                (7 - date.getDay() <
-                differenceInCalendarDays(task.dueDate, date)
-                  ? 7 - date.getDay()
-                  : differenceInCalendarDays(task.dueDate, date) + 1) * 100
-              }%`
-            }}
-            className={
-              'relative bg-slate-400 z-20 overflow-hidden whitespace-nowrap text-ellipsis '
-            }>
-            {task.title}
-          </div>
-        ) : null
-        // (
-        //   <div className=" relative invisible box-border "></div>
-        // )
-      }
+    <div className=" mb-1 w-full h-8">
+      {task &&
+      (differenceInCalendarDays(task.pseudoStartedDate, date) === 0 ||
+        date.getDay() === 0) ? (
+        <div
+          draggable
+          onDragStart={e => dragStartHandle(e, task)}
+          style={{
+            width: `${
+              (7 - date.getDay() < differenceInCalendarDays(task.dueDate, date)
+                ? 7 - date.getDay()
+                : differenceInCalendarDays(task.dueDate, date) + 1) * 100
+            }%`
+          }}
+          className={
+            'relative bg-slate-400 z-20 h-full overflow-hidden whitespace-nowrap text-ellipsis flex justify-start items-center border-l-4 border-slate-800'
+          }>
+          {task.title}
+        </div>
+      ) : (
+        <div className="w-full h-full "></div>
+      )}
     </div>
   )
 }
