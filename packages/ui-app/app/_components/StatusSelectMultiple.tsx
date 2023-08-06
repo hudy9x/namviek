@@ -48,9 +48,6 @@ export default function StatusSelectMultiple({
         opt => value && value.some(v => v === opt.id)
       )
       setVal(selectedOption)
-      // const selectedStatus = statuses.find(opt => opt.id === value)
-      // selectedStatus &&
-      //   setVal({ id: selectedStatus.id, title: selectedStatus.name })
     }
   }, [options, value])
 
@@ -61,7 +58,6 @@ export default function StatusSelectMultiple({
     }
   }, [updateCounter])
 
-  console.log('selected', val)
   const selectedList = val
 
   return (
@@ -76,6 +72,7 @@ export default function StatusSelectMultiple({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
+          {!selectedList || !selectedList.length ? <span className='text-transparent'>Option</span>: null}
           <div className="flex items-center gap-2">
             {selectedList.map(item => {
               const stt = statuses.find(stt => stt.id === item.id)

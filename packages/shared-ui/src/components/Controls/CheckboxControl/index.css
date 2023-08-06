@@ -1,5 +1,5 @@
 .inp-checkbox {
-  @apply relative flex items-start
+  @apply relative flex items-center
 }
 
 .inp-checkbox input[type="checkbox"] {

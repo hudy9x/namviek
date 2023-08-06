@@ -1,0 +1,52 @@
+/*Buttons*/
+.form-group .btn:nth-child(n + 2):not(:last-child) {
+  border-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group .btn:first-child {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group .btn:last-child {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+/* Select */
+
+.form-group > :nth-child(n + 2):not(:last-child) .select-button {
+  border-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group > :first-child .select-button {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group > :last-child .select-button {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+/* Form input */
+
+.form-group > :nth-child(n + 2):not(:last-child) .form-input {
+  border-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group > :first-child .form-input {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: 0px;
+}
+
+.form-group > :last-child .form-input {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}

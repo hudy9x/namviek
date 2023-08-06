@@ -1,0 +1,4 @@
+.show-setting-component-form .modal-title {
+  @apply hidden;
+}
+

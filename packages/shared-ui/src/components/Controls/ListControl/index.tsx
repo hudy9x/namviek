@@ -7,6 +7,7 @@ import { useListContext } from './context'
 import { FormikFunc, ListItemValue } from './type'
 import './style.css'
 import ListSelectedItem from './ListSelectedItem'
+import { randomId } from '../../utils'
 
 interface ListControlProps {
   name?: string
@@ -29,6 +30,7 @@ interface ListContainerProps {
 }
 const ListContainer = ({ children }: ListContainerProps) => {
   const { setVisible } = useListContext()
+  const listId = randomId()
 
   // handle clicking outside dropdown list
   useEffect(() => {
@@ -36,7 +38,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
       const target = ev.target as HTMLElement
       ev.stopPropagation()
 
-      if (!target.closest('.select-wrapper')) {
+      if (!target.closest(`.select-wrapper.list-rid-${listId}`)) {
         setVisible(false)
       }
     }
@@ -57,7 +59,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
     }
   }, [setVisible])
 
-  return <div className="select-wrapper">{children}</div>
+  return <div className={`select-wrapper list-rid-${listId}`}>{children}</div>
 }
 
 export default function ListControl({
