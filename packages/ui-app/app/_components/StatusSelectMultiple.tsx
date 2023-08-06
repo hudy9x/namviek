@@ -73,7 +73,7 @@ export default function StatusSelectMultiple({
         }}>
         <List.Button>
           {!selectedList || !selectedList.length ? <span className='text-transparent'>Option</span>: null}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {selectedList.map(item => {
               const stt = statuses.find(stt => stt.id === item.id)
               return (
