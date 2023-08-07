@@ -40,22 +40,14 @@ export default function PrioritySelectMultiple({
     return value.some(v => v === opt.id)
   })
 
-  console.log('selectedoptions', options, value)
-
   const [val, setVal] = useState(selectedOptions || [options[3]])
   const [updateCounter, setUpdateCounter] = useState(0)
 
   useEffect(() => {
     if (updateCounter) {
-      console.log('1')
       onChange && onChange(val.map(v => v.id) as TaskPriority[])
     }
   }, [updateCounter, val])
-
-  // const selectedColor = colors.get(val.id)
-  //
-
-  console.log('priority', val)
 
   return (
     <div className={className}>
@@ -70,7 +62,9 @@ export default function PrioritySelectMultiple({
         }}>
         <List.Button>
           <div className="flex items-center gap-2">
-            {!val || !val.length ? <span className='text-transparent'>None</span> : null}
+            {!val || !val.length ? (
+              <span className="text-transparent">None</span>
+            ) : null}
             {val.map(p => {
               const color = colors.get(p.id)
               return (

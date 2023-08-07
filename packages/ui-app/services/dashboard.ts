@@ -1,9 +1,10 @@
 import { DashboardComponent } from '@prisma/client'
-import { httpGet, httpPost } from './_req'
+import { httpDel, httpGet, httpPost } from './_req'
 
 interface IDBoardProps {
   projectId: string
   title: string
+  isDefault: boolean
 }
 
 export const dboardCreate = ({ projectId, title }: IDBoardProps) => {
@@ -22,10 +23,26 @@ export const dboardGet = (projectId: string) => {
   })
 }
 
+export const dboardGetComponents = (dboardId: string) => {
+  return httpGet('/api/dboard/components', {
+    params: {
+      dboardId
+    }
+  })
+}
+
+export const dboardComponentDel = (componentId: string) => {
+  return httpDel('/api/dboard/component', {
+    data: {
+      componentId
+    }
+  })
+}
+
 export const dboardComponentCreate = (
   data: Partial<Omit<DashboardComponent, 'id'>>
 ) => {
-  console.log(data)
+  console.log('dboard component creaet', data)
   return httpPost('/api/dboard/component', data)
 }
 

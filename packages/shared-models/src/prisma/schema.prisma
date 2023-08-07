@@ -178,4 +178,5 @@ model Dashboard {
   dashboardComponents DashboardComponent[]
   title               String?              @default("Untitled")
   projectId           String?              @db.ObjectId
+  isDefault           Boolean?             @default(false)
 }

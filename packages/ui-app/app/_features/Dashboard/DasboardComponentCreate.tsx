@@ -112,6 +112,7 @@ export default function DashboardComponentCreate() {
             {showSettingForm ? (
               <DashboardComponentUpdateForm
                 {...type}
+                onCloseModal={() => setVisible(false)}
                 onBack={() => setType(null)}
               />
             ) : null}

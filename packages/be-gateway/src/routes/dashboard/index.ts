@@ -6,9 +6,11 @@ import {
   IDBComponentConfig,
   mdDBoardAddComponent,
   mdDBoardCreate,
+  mdDBoardDelComponent,
   mdDBoardGetComponents,
   mdDBoardQueryColumn,
-  mdDBoardQuerySum
+  mdDBoardQuerySum,
+  mdDboardGetDefault
 } from '@shared/models'
 import { DashboardComponent } from '@prisma/client'
 
@@ -20,7 +22,19 @@ router.get('/dboard', async (req: AuthRequest, res) => {
   try {
     const params = req.query as { projectId: string }
     console.log('dboard get', params)
-    const components = await mdDBoardGetComponents(params.projectId)
+    const dboard = await mdDboardGetDefault(params.projectId)
+
+    res.json({ status: 200, data: dboard })
+  } catch (error) {
+    res.json({ status: 500 })
+  }
+})
+
+router.get('/dboard/components', async (req: AuthRequest, res) => {
+  try {
+    const params = req.query as { dboardId: string }
+    console.log('dboard components', params)
+    const components = await mdDBoardGetComponents(params.dboardId)
 
     res.json({ status: 200, data: components })
   } catch (error) {
@@ -29,20 +43,33 @@ router.get('/dboard', async (req: AuthRequest, res) => {
 })
 
 router.post('/dboard', async (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-
   try {
-    const { projectId, title } = req.body as {
+    const { projectId, title, isDefault } = req.body as {
       projectId: string
       title: string
+      isDefault: boolean
     }
 
     const dboard = await mdDBoardCreate({
       projectId,
-      title
+      title,
+      isDefault: isDefault || false
     })
 
+    console.log('dashboard created')
+
     res.json({ status: 200, data: dboard })
+  } catch (error) {
+    res.json({ status: 500, error })
+  }
+})
+
+router.delete('/dboard/component', async (req: AuthRequest, res) => {
+  try {
+    const { componentId } = req.body as { componentId: string }
+    const result = await mdDBoardDelComponent(componentId)
+
+    res.json({ status: 200, data: result })
   } catch (error) {
     res.json({ status: 500, error })
   }

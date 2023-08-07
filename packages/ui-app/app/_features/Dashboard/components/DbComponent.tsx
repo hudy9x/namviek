@@ -7,15 +7,15 @@ export default function DbComponent({
 }: {
   component: DashboardComponent
 }) {
-  const { type, title, config } = component
+  const { type, title, config, id } = component
   const configJson = config as unknown as { [key: string]: unknown }
   return (
     <>
       {type === DashboardComponentType.SUMMARY ? (
-        <DbCompSummary title={title || ''} config={configJson} />
+        <DbCompSummary id={id} title={title || ''} config={configJson} />
       ) : null}
       {type === DashboardComponentType.COLUMN ? (
-        <DbCompColumn title={title || ''} config={configJson} />
+        <DbCompColumn id={id} title={title || ''} config={configJson} />
       ) : null}
     </>
   )

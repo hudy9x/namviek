@@ -1,18 +1,33 @@
-import { Task } from '@prisma/client'
+import { DashboardComponent, Task } from '@prisma/client'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 import { DateRange } from 'react-day-picker'
 
 interface IOverviewContext {
-  tasks: Task[]
-  range: DateRange | undefined
-  setRange: Dispatch<SetStateAction<DateRange | undefined>>
+  loading: boolean
+  dboardId: string
+  components: DashboardComponent[]
+
+  setLoading: Dispatch<SetStateAction<boolean>>
+  setDboardId: Dispatch<SetStateAction<string>>
+  setComponents: Dispatch<SetStateAction<DashboardComponent[]>>
+  delComponent: (id: string) => void
 }
 
 const OverviewContext = createContext<IOverviewContext>({
-  tasks: [],
-  range: undefined,
-  setRange: () => {
-    console.log(1)
+  loading: false,
+  dboardId: '',
+  components: [],
+  setDboardId: () => {
+    console.log('1')
+  },
+  setComponents: () => {
+    console.log('1')
+  },
+  setLoading: () => {
+    console.log('1')
+  },
+  delComponent: () => {
+    console.log('1')
   }
 })
 

@@ -1,6 +1,8 @@
 import { IDBComponentConfig, dboardQuerySummary } from '@/services/dashboard'
 import { useEffect, useState } from 'react'
 import { AiOutlineLock } from 'react-icons/ai'
+import DbCompDelete from './DbCompDelete'
+import { addDays, lastDayOfMonth, subDays } from 'date-fns'
 
 type DateOperation = '>' | '>=' | '=' | '<' | '<='
 type DateString = 'today' | 'week' | 'month'
@@ -10,12 +12,33 @@ interface ICompConfig {
   date?: DateWithOperation
   [key: string]: unknown
 }
+
 interface IDbCompSummaryProps {
+  id: string
   title: string
   config: ICompConfig
 }
 
-export default function DbCompSummary({ config, title }: IDbCompSummaryProps) {
+const getMondayNSaturdayInWeek = (d: Date) => {
+  const mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay())
+  const sat = new Date(
+    d.getFullYear(),
+    d.getMonth(),
+    d.getDate() + (5 - d.getDay() + 1)
+  )
+
+  return [mon, sat]
+}
+
+const getStartNEndDateOfMonth = (d: Date) => {
+  return [new Date(d.getFullYear(), d.getMonth(), 1), lastDayOfMonth(d)]
+}
+
+export default function DbCompSummary({
+  id,
+  config,
+  title
+}: IDbCompSummaryProps) {
   const [data, setData] = useState({
     loading: true,
     title: title,
@@ -28,29 +51,75 @@ export default function DbCompSummary({ config, title }: IDbCompSummaryProps) {
   const refactorConfig = (config: ICompConfig) => {
     if (config.date) {
       const [operator, dateStr] = config.date
+      const today = new Date()
+      today.setHours(0)
 
       if (dateStr === 'today') {
-        const today = new Date()
-
         if (operator === '=') {
           config.startDate = today
           config.endDate = today
         }
 
         if (operator === '<') {
+          // must -- date cuz the query on server side is <=
+          const yesterday = subDays(today, 1)
           config.startDate = null
-          config.endDate = today
+          config.endDate = yesterday
         }
 
         if (operator === '>') {
-          config.startDate = today
+          // must +1 date cuz the query on server side is >=
+          const tomorrow = addDays(today, 1)
+          console.log('tomorrow', tomorrow)
+          config.startDate = tomorrow
           config.endDate = null
         }
       }
 
-      delete config.date
+      if (dateStr === 'week') {
+        const [mon, sat] = getMondayNSaturdayInWeek(new Date())
 
-      console.log(config)
+        if (operator === '=') {
+          config.startDate = mon
+          config.endDate = sat
+        }
+
+        if (operator === '>') {
+          const nextMonday = addDays(sat, 2)
+          config.startDate = nextMonday
+          config.endDate = null
+        }
+
+        if (operator === '<') {
+          // must -- date cuz the query on server side is <=
+          const sun = subDays(mon, 1)
+          config.startDate = null
+          config.endDate = sun
+        }
+      }
+
+      if (dateStr === 'month') {
+        const [firstDate, lastDate] = getStartNEndDateOfMonth(new Date())
+
+        if (operator === '=') {
+          config.startDate = firstDate
+          config.endDate = lastDate
+        }
+
+        if (operator === '>') {
+          const nextMonth = addDays(lastDate, 1)
+          config.startDate = nextMonth
+          config.endDate = null
+        }
+
+        if (operator === '<') {
+          const prevMonth = subDays(firstDate, 1)
+          config.startDate = null
+          config.endDate = prevMonth
+        }
+      }
+
+      delete config.date
     }
     return config
   }
@@ -82,6 +151,7 @@ export default function DbCompSummary({ config, title }: IDbCompSummaryProps) {
       <div className="font-bold text-[40px] leading-none mt-1">
         {data.summary > 9 ? data.summary : `0${data.summary}`}
       </div>
+      <DbCompDelete id={id} />
     </div>
   )
 }

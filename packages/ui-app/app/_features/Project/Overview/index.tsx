@@ -3,42 +3,72 @@ import { OverviewProvider } from './context'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import OverviewContent from './OverviewContent'
-import { taskGetByCond } from '@/services/task'
+import { DashboardComponent } from '@prisma/client'
+import { dboardGet, dboardGetComponents } from '@/services/dashboard'
 import { useParams } from 'next/navigation'
-import { Task } from '@prisma/client'
 
 export default function ProjectOverview() {
   const { projectId } = useParams()
-  const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date()
-  })
 
-  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState(false)
+  const [dboardId, setDboardId] = useState('')
+  const [components, setComponents] = useState<DashboardComponent[]>([])
+
+  const delComponent = (id: string) => {
+    setComponents(prevComps => prevComps.filter(comp => comp.id !== id))
+  }
+
+  // get default dashboard overview
+  useEffect(() => {
+    if (projectId) {
+      setLoading(true)
+      dboardGet(projectId)
+        .then(res => {
+          const { status, data } = res.data
+          if (status !== 200) {
+            return
+          }
+
+          setDboardId(data ? data.id : null)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [projectId])
 
   useEffect(() => {
-    console.log('call overview query', range)
-    taskGetByCond({
-      projectId,
-      dueDate: [range?.from, range?.to]
-    }).then(res => {
-      const { status, data } = res.data
+    if (dboardId) {
+      console.log('get components')
+      dboardGetComponents(dboardId)
+        .then(res => {
+          const { data, status } = res.data
 
-      if (status !== 200) {
-        setTasks([])
-        return
-      }
+          if (status !== 200) {
+            return
+          }
 
-      setTasks(data)
-    })
-  }, [range])
+          setComponents(data)
+        })
+        .catch(err => {
+          console.log('get dboard error', err)
+        })
+        .finally(() => {
+          console.log('done')
+        })
+    }
+  }, [dboardId])
 
   return (
     <OverviewProvider
       value={{
-        tasks,
-        range,
-        setRange
+        loading,
+        dboardId,
+        components,
+        setLoading,
+        setDboardId,
+        setComponents,
+        delComponent
       }}>
       <OverviewContent />
     </OverviewProvider>

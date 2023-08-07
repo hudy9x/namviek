@@ -5,11 +5,26 @@ import {
 } from '@prisma/client'
 import { dboardComponentModal, dboardModel, taskModel } from './_prisma'
 
-export const mdDBoardGetComponents = async (projectId: string) => {
-  const dboard = await dboardModel.findFirst({ where: { projectId } })
+export const mdDBoardGetComponents = async (dboardId: string) => {
   return dboardComponentModal.findMany({
     where: {
-      dashboardId: dboard.id
+      dashboardId: dboardId
+    }
+  })
+}
+
+export const mdDBoardDelComponent = async (componentId: string) => {
+  return dboardComponentModal.delete({
+    where: {
+      id: componentId
+    }
+  })
+}
+
+export const mdDboardGetDefault = async (projectId: string) => {
+  return dboardModel.findFirst({
+    where: {
+      projectId
     }
   })
 }
@@ -115,7 +130,7 @@ const generateQueryCondition = ({
 
     // upcoming tasks
     if (start && !end) {
-      console.log('date:upcoming')
+      console.log('date:upcoming', start)
       where.dueDate = {
         gte: start
       }
@@ -325,6 +340,6 @@ export const mdDBoardQueryColumn = async ({
 
   return {
     xAxis: xAxises,
-    columns,
+    columns
   }
 }

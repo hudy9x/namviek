@@ -6,28 +6,57 @@ import PrioritySelectMultiple from '@/components/PrioritySelectMultiple'
 // import StatusSelect from '@/components/StatusSelect'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import { dboardComponentCreate } from '@/services/dashboard'
-import { DashboardComponentType } from '@prisma/client'
+import { DashboardComponentType, TaskPriority } from '@prisma/client'
 // import { TaskPriority } from '@prisma/client'
-import { Button, Form, FormGroup } from '@shared/ui'
+import {
+  Button,
+  Form,
+  FormGroup,
+  messageError,
+  messageWarning
+} from '@shared/ui'
 import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { useOverviewContext } from '../Project/Overview/context'
+import { useState } from 'react'
 
 interface IDashboardFormProps {
   title?: string
-  type?: string
+  type?: DashboardComponentType
   icon?: string
   onBack?: () => void
+  onCloseModal?: () => void
+}
+
+interface IDboardComponentFields {
+  icon?: string
+  title?: string
+  type: DashboardComponentType
+  assigneeIds: string[]
+  statusIds: string[]
+  priority: TaskPriority[]
+  projectIds: string[]
+  date: string[]
+  fixed: boolean
+}
+
+const addOperator = (arr: string[] | TaskPriority[], operator: string) => {
+  if (!arr.length) return arr
+  return [operator, ...arr]
 }
 
 export default function DashboardComponentUpdateForm({
-  type = '',
+  type = DashboardComponentType.SUMMARY,
   title,
   icon,
-  onBack
+  onBack,
+  onCloseModal
 }: IDashboardFormProps) {
+  const [sending, setSending] = useState(false)
+  const { dboardId, setComponents } = useOverviewContext()
   const { projectId } = useParams()
-  const formik = useFormik({
+  const formik = useFormik<IDboardComponentFields>({
     initialValues: {
       icon,
       title,
@@ -36,32 +65,76 @@ export default function DashboardComponentUpdateForm({
       statusIds: [],
       priority: [],
       projectIds: [],
-      date: '',
+
+      date: [],
       fixed: false
     },
     onSubmit: values => {
-      const mergedValues = { ...values, projectIds: [projectId] }
-      console.log(mergedValues)
-      const { title, icon, type, projectIds, statusIds, priority, fixed } =
-        values
-      const compType = type as DashboardComponentType
-
-      if (!type) {
+      if (sending) {
+        messageWarning('Processing ...')
         return
       }
 
+      if (!dboardId) {
+        messageError('You have to create an overview dashboard first')
+        return
+      }
+
+      const mergedValues = { ...values, projectIds: [projectId] }
+
+      if (!mergedValues.type) {
+        return
+      }
+
+      let { statusIds, projectIds, date, priority } = mergedValues
+
+      statusIds = addOperator(statusIds, 'in')
+      projectIds = addOperator(projectIds, 'in')
+      priority = addOperator(priority, 'in') as TaskPriority[]
+
+      if (date.length) {
+        const dateLen = date.filter(Boolean).length
+        if (dateLen < 2) {
+          messageError('Please input both operator and date')
+          return
+        }
+        if (date.length < 2) {
+          date = ['=', ...date]
+        }
+
+        if (!date[0]) {
+          date[0] = '='
+        }
+      }
+
+      setSending(true)
       dboardComponentCreate({
-        dashboardId: '64c63e9ca7952f78aec87814',
+        dashboardId: dboardId,
         type: type as DashboardComponentType,
         title,
         config: {
           projectIds,
           statusIds,
           priority,
-          icon,
-          fixed
+          icon: mergedValues.icon,
+          date,
+          fixed: mergedValues.fixed
         }
       })
+        .then(res => {
+          const { status, data } = res.data
+          if (status !== 200) {
+            setSending(false)
+            return
+          }
+
+          setComponents(prevComps => [...prevComps, data])
+          onCloseModal && onCloseModal()
+          setSending(false)
+        })
+        .catch(() => {
+          setSending(false)
+        })
     }
   })
 
@@ -97,9 +170,9 @@ export default function DashboardComponentUpdateForm({
         <ListPreset
           title="Chart type"
           className="w-full"
-          value={formik.values.date}
+          value={formik.values.type}
           onChange={val => {
-            formik.setFieldValue('date', val)
+            formik.setFieldValue('type', val)
           }}
           options={[
             { id: DashboardComponentType.SUMMARY, title: '➕ Summary' },
@@ -146,33 +219,37 @@ export default function DashboardComponentUpdateForm({
         />
         {/* </FormGroup> */}
 
-        {/* <FormGroup title="Date"> */}
-        {/* <ListPreset */}
-        {/*   className="w-[300px]" */}
-        {/*   options={[ */}
-        {/*     { id: '=', title: 'In (=)' }, */}
-        {/*     { id: '!=', title: 'Out of (!=)' }, */}
-        {/*     { id: '>=', title: 'Greater than (>=)' }, */}
-        {/*     { id: '>', title: 'Greater (>)' }, */}
-        {/*     { id: '<', title: 'Less (<)' }, */}
-        {/*     { id: '<=', title: 'Less than (<=)' } */}
-        {/*   ]} */}
-        {/* /> */}
+        <FormGroup title="Date">
+          <ListPreset
+            className="w-[300px]"
+            value={formik.values.date[0]}
+            onChange={val => {
+              const date = [...formik.values.date]
+              date[0] = val
+              formik.setFieldValue('date', date)
+            }}
+            options={[
+              { id: '=', title: 'In (=)' },
+              { id: '>', title: 'Greater than (>)' },
+              { id: '<', title: 'Less than (<)' }
+            ]}
+          />
 
-        <ListPreset
-          title="Date"
-          className="w-full"
-          value={formik.values.date}
-          onChange={val => {
-            formik.setFieldValue('date', val)
-          }}
-          options={[
-            { id: 'today', title: 'Today' },
-            { id: 'week', title: 'This week' },
-            { id: 'month', title: 'This month' }
-          ]}
-        />
-        {/* </FormGroup> */}
+          <ListPreset
+            className="w-full"
+            value={formik.values.date[1]}
+            onChange={val => {
+              const date = [...formik.values.date]
+              date[1] = val
+              formik.setFieldValue('date', date)
+            }}
+            options={[
+              { id: 'today', title: 'Today' },
+              { id: 'week', title: 'This week' },
+              { id: 'month', title: 'This month' }
+            ]}
+          />
+        </FormGroup>
 
         <Form.Checkbox
           checked={formik.values.fixed}
@@ -185,7 +262,7 @@ export default function DashboardComponentUpdateForm({
 
         <div className="flex items-center justify-end gap-3">
           <Button title="Cancel" onClick={onBack} />
-          <Button title="Submit" type="submit" primary />
+          <Button title="Submit" loading={sending} type="submit" primary />
         </div>
       </form>
     </div>

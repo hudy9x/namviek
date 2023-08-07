@@ -23,138 +23,74 @@ import DbCompSummary from '../../Dashboard/components/DbCompSummary'
 import DbComponent from '../../Dashboard/components/DbComponent'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import DashboardComponentCreate from '../../Dashboard/DasboardComponentCreate'
+import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
+import DboardComponentList from '../../Dashboard/DboardComponentList'
+import { useOverviewContext } from './context'
 
 export default function OverviewContent() {
   const { user } = useUser()
   const { projectId } = useParams()
-  const [components, setComponents] = useState<DashboardComponent[]>([])
 
-  useEffect(() => {
-    dboardGet(projectId)
+  const { loading, setLoading, dboardId, setDboardId } = useOverviewContext()
+
+  const onCreateDashboard = () => {
+    setLoading(true)
+    dboardCreate({
+      projectId,
+      title: 'Overview dashboard',
+      isDefault: true
+    })
       .then(res => {
-        const { data, status } = res.data
-
+        const { status, data } = res.data
         if (status !== 200) {
+          setLoading(false)
           return
         }
 
-        console.log(data)
-
-        setComponents(data)
+        setDboardId(data ? data.id : null)
       })
-      .catch(err => {
-        console.log('get dboard error', err)
+      .finally(() => {
+        setLoading(false)
       })
-  }, [])
-
-  const onCreateDashboard = () => {
-    dboardCreate({ projectId, title: 'Unknown ' + Date.now() }).then(res => {
-      console.log('a')
-    })
-  }
-
-  const onCreateComponent = () => {
-    dboardComponentCreate({
-      dashboardId: '64c63e9ca7952f78aec87814',
-      title: 'Task by Assignee',
-      type: DashboardComponentType.COLUMN,
-      config: {
-        fixed: true,
-        day: ['=', 'month'],
-        xAxis: {
-          assigneeIds: [
-            '64a28391ccd256857244313f',
-            '64a28391ccd256857244313a',
-            '64a28391ccd256857244313b',
-            '64a28391ccd256857244313d',
-            '64a28391ccd256857244313c',
-            '64a28391ccd256857244313e'
-          ]
-        },
-        series: {
-          statusIds: [
-            'in',
-            '64a2742810848bf6cbdd6e7b',
-            '64a2742810848bf6cbdd6e7c',
-            '64a2742810848bf6cbdd6e7d',
-            '64a2742810848bf6cbdd6e7e',
-            '64a2742810848bf6cbdd6e7f'
-          ]
-        },
-        // priority: ['in', TaskPriority.URGENT],
-        // statusIds: [
-        //   'not_in',
-        //   '64a2742810848bf6cbdd6e7e',
-        //   '64a2742810848bf6cbdd6e7f'
-        // ],
-
-        projectIds: ['in', projectId],
-        icon: '🥃'
-      }
-    }).then(res => {
-      const { status, data } = res.data
-
-      if (status !== 200) {
-        return
-      }
-
-      setComponents(prev => [...prev, data])
-    })
   }
 
   return (
-    <div id="overview" className="mx-auto w-[1130px]">
-      <header className="py-3 p-4 bg-white border rounded-md my-3">
-        <h2 className="text-gray-800 font-bold text-2xl">Hi, {user?.name}</h2>
-        <p className="text-gray-600 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
-      </header>
+    <div id="overview" className="mx-auto w-[1130px] relative pt-3">
+      {loading ? (
+        <div
+          className="absolute top-0 left-0 w-full z-20 flex items-center justify-center"
+          style={{ height: 'calc(100vh - 83px)' }}>
+          <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-md shadow-lg ">
+            <div className="w-4 h-4">
+              <LoadingSpinner />
+            </div>
+            <span>Loading ...</span>
+          </div>
+        </div>
+      ) : null}
+
+      {dboardId ? (
+        <header className="py-3 p-4 bg-white border rounded-md mb-3 ">
+          <h2 className="text-gray-800 font-bold text-2xl">Hi, {user?.name}</h2>
+          <p className="text-gray-600 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
+        </header>
+      ) : null}
       <div className="flex items-center justify-between">
         <div>
-          {/* <Button title="Create dashboard" onClick={onCreateDashboard} /> */}
-          {/* <Button */}
-          {/*   title="Create component" */}
-          {/*   size="sm" */}
-          {/*   onClick={onCreateComponent} */}
-          {/* /> */}
-          <DashboardComponentCreate />
+          {!loading && !dboardId ? (
+            <Button
+              title="Create dashboard"
+              size="sm"
+              onClick={onCreateDashboard}
+            />
+          ) : null}
+
+          {dboardId ? <DashboardComponentCreate /> : null}
         </div>
-        {/* <div className="flex items-center gap-1"> */}
-        {/*   <Button title="Day" size="sm" /> */}
-        {/*   <Button title="Week" size="sm" /> */}
-        {/*   <Button title="Month" size="sm" /> */}
-        {/*   <Button title="Prev" leadingIcon={<AiOutlineArrowLeft />} size="sm" /> */}
-        {/*   <Button title="Today" size="sm" /> */}
-        {/*   <Button */}
-        {/*     title="Next" */}
-        {/*     leadingIcon={<AiOutlineArrowRight />} */}
-        {/*     size="sm" */}
-        {/*   /> */}
-        {/* </div> */}
       </div>
       <main className="mt-3">
-        <div className="grid grid-cols-4 gap-3">
-          {components.map(component => {
-            if (component.id !== '64c8e95873337080d570675f') return null
-            return <DbComponent component={component} key={component.id} />
-          })}
-        </div>
-        <div className="left-section w-full">
-          {/* <OverviewWorkloadByStatus /> */}
-          {/* <OverviewWorkloadByDate /> */}
-          {/* <div className="grid grid-cols-5 gap-3"> */}
-          {/*   <OverviewTask /> */}
-          {/*   <OverviewBurnoutChart /> */}
-          {/* </div> */}
-        </div>
-        <div className="right-section w-[310px] shrink-0">
-          {/* <OverviewDateRange /> */}
-          {/* <OverviewMemberProgress /> */}
-        </div>
+        <DboardComponentList />
       </main>
-
-      <div className="mt-3">
-        <div></div>
-      </div>
     </div>
   )
 }

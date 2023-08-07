@@ -7,6 +7,7 @@ export interface ICompConfig {
   [key: string]: unknown
 }
 export interface IDbCompProps {
+  id: string
   title: string
   config: ICompConfig
 }
