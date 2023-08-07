@@ -34,6 +34,12 @@ const getStartNEndDateOfMonth = (d: Date) => {
   return [new Date(d.getFullYear(), d.getMonth(), 1), lastDayOfMonth(d)]
 }
 
+const to23h59m = (d: Date) => {
+  d.setHours(23)
+  d.setMinutes(59)
+  d.setSeconds(0)
+}
+
 export default function DbCompSummary({
   id,
   config,
@@ -53,6 +59,8 @@ export default function DbCompSummary({
       const [operator, dateStr] = config.date
       const today = new Date()
       today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
 
       if (dateStr === 'today') {
         if (operator === '=') {
@@ -69,9 +77,8 @@ export default function DbCompSummary({
 
         if (operator === '>') {
           // must +1 date cuz the query on server side is >=
-          const tomorrow = addDays(today, 1)
-          console.log('tomorrow', tomorrow)
-          config.startDate = tomorrow
+          to23h59m(today)
+          config.startDate = today
           config.endDate = null
         }
       }
@@ -85,8 +92,8 @@ export default function DbCompSummary({
         }
 
         if (operator === '>') {
-          const nextMonday = addDays(sat, 2)
-          config.startDate = nextMonday
+          to23h59m(sat)
+          config.startDate = sat
           config.endDate = null
         }
 
@@ -107,8 +114,8 @@ export default function DbCompSummary({
         }
 
         if (operator === '>') {
-          const nextMonth = addDays(lastDate, 1)
-          config.startDate = nextMonth
+          to23h59m(lastDate)
+          config.startDate = lastDate
           config.endDate = null
         }
 
