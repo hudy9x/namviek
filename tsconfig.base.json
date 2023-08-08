@@ -21,7 +21,10 @@
 			"@shared/models": ["packages/shared-models/src/index.ts"],
 			"@shared/ui": ["packages/shared-ui/src/index.ts"],
 			"@shared/ui/server": ["packages/shared-ui/src/server.ts"],
-			"@shared/validation": ["packages/shared-validation/src/index.ts"]
+			"@shared/validation": ["packages/shared-validation/src/index.ts"],
+			"@/services/*": ["packages/ui-app/services/*"],
+			"@/store/*": ["packages/ui-app/store/*"],
+			"@/components/*": ["packages/ui-app/app/_components/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

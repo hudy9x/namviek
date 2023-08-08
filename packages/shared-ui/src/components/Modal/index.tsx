@@ -7,6 +7,7 @@ interface ModalProps {
   triggerBy: React.ReactNode
   title: string
   desc?: string
+  size?: 'base' | 'lg' | 'xl'
   visible?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
   content: React.ReactNode
@@ -20,17 +21,22 @@ export default function Modal({
   onVisibleChange,
   title,
   desc,
+  size = 'base',
   content,
   backdrop = true,
   className
 }: ModalProps) {
+  const classes = [className]
+  size && classes.push(`modal-size-${size}`)
+
   return (
     <Dialog.Root open={visible} onOpenChange={onVisibleChange}>
       <Dialog.Trigger asChild>{triggerBy}</Dialog.Trigger>
       <Dialog.Portal>
         <div className="fixed top-0 left-0 w-screen h-screen z-20">
           <div className="relative w-full h-full flex items-center justify-center">
-            <Dialog.Content className={`modal-content ${className}`}>
+            <Dialog.Content
+              className={`modal-content ${classes.filter(Boolean).join(' ')}`}>
               {title ? (
                 <Dialog.Title className="modal-title">{title}</Dialog.Title>
               ) : null}

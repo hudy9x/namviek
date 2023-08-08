@@ -7,9 +7,11 @@ import { useListContext } from './context'
 import { FormikFunc, ListItemValue } from './type'
 import './style.css'
 import ListSelectedItem from './ListSelectedItem'
+import { randomId } from '../../utils'
 
 interface ListControlProps {
   name?: string
+  error?: string
   title?: string
   multiple?: boolean
   helper?: string
@@ -29,6 +31,7 @@ interface ListContainerProps {
 }
 const ListContainer = ({ children }: ListContainerProps) => {
   const { setVisible } = useListContext()
+  const listId = randomId()
 
   // handle clicking outside dropdown list
   useEffect(() => {
@@ -36,7 +39,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
       const target = ev.target as HTMLElement
       ev.stopPropagation()
 
-      if (!target.closest('.select-wrapper')) {
+      if (!target.closest(`.select-wrapper.list-rid-${listId}`)) {
         setVisible(false)
       }
     }
@@ -57,12 +60,13 @@ const ListContainer = ({ children }: ListContainerProps) => {
     }
   }, [setVisible])
 
-  return <div className="select-wrapper">{children}</div>
+  return <div className={`select-wrapper list-rid-${listId}`}>{children}</div>
 }
 
 export default function ListControl({
   title,
   name,
+  error,
   multiple,
   disabled,
   readOnly,
@@ -81,6 +85,7 @@ export default function ListControl({
   disabled && classes.push('disabled')
   readOnly && classes.push('readonly')
   required && classes.push('required')
+  error && classes.push('error')
   multiple ? classes.push('multiple') : classes.push('single')
 
   return (
@@ -104,7 +109,10 @@ export default function ListControl({
         }}>
         <ListContainer>{children}</ListContainer>
       </ListProvider>
-      {helper ? <p className="mt-2 text-sm text-gray-500">{helper}</p> : null}
+      {helper && !error ? (
+        <p className="mt-2 text-sm text-gray-500">{helper}</p>
+      ) : null}
+      {error ? <p className="mt-2 text-sm text-red-500">{error}</p> : null}
     </div>
   )
 }

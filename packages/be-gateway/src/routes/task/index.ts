@@ -7,7 +7,8 @@ import {
   mdTaskGetOne,
   mdTaskUpdate,
   mdTaskAddMany,
-  mdProjectGet
+  mdProjectGet,
+  ITaskQuery
 } from '@shared/models'
 
 import { Task } from '@prisma/client'
@@ -22,8 +23,21 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   const projectId = req.query.projectId as string
   try {
     console.log('projectId', projectId)
-    const tasks = await mdTaskGetAll({ projectId })
-    console.log('get all task from project', tasks)
+    const tasks = await mdTaskGetAll({ projectId, dueDate: [null, null] })
+    console.log('get all task from project')
+    res.json({ status: 200, data: tasks })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task-query', async (req: AuthRequest, res) => {
+  try {
+    console.log('=========== query')
+    console.log('params', req.query)
+    // const query = req.body as ITaskQuery
+    const tasks = await mdTaskGetAll(req.query)
     res.json({ status: 200, data: tasks })
   } catch (error) {
     res.json({ status: 500, error })

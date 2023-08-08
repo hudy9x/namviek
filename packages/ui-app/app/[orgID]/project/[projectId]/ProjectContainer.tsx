@@ -22,8 +22,9 @@ export default function ProjectContainer() {
   const { addAllTasks, setTaskLoading } = useTaskStore()
 
   useEffect(() => {
+    const controller = new AbortController()
     setTaskLoading(true)
-    taskGetAll(projectId)
+    taskGetAll(projectId, controller.signal)
       .then(res => {
         const { data, status, error } = res.data
         if (status !== 200) {
@@ -31,14 +32,20 @@ export default function ProjectContainer() {
           messageError(error)
           return
         }
+
         addAllTasks(data)
       })
-      .catch(err => {
-        console.log(err)
+      .catch(() => {
+        console.log('aborted')
       })
       .finally(() => {
         setTaskLoading(false)
       })
+
+    return () => {
+      console.log('unmount')
+      controller.abort()
+    }
   }, [])
 
   useEffect(() => {
@@ -66,7 +73,6 @@ export default function ProjectContainer() {
           return
         }
 
-        console.log('done')
         const statuses = data as TaskStatus[]
 
         addAllStatuses(statuses.sort((a, b) => a.order - b.order))

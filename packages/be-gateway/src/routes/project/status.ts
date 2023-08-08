@@ -5,7 +5,6 @@ import {
   mdTaskStatusGetByProjectId,
   mdTaskStatusUpdate,
   mdTaskStatusDel,
-  dbTrans
 } from '@shared/models'
 import { TaskStatus } from '@prisma/client'
 

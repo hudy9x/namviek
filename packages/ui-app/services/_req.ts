@@ -17,8 +17,8 @@ instance.interceptors.request.use(
     const authorization = getGoalieToken();
     const refreshToken = getGoalieRefreshToken();
 
-    console.log('auth toke', authorization)
-    console.log('refresh', refreshToken)
+    // console.log('auth toke', authorization)
+    // console.log('refresh', refreshToken)
 
     config.headers.setAuthorization(authorization);
     config.headers.set('refreshtoken', refreshToken);
@@ -35,11 +35,11 @@ instance.interceptors.response.use(
     const authorization = headers.authorization;
     const refreshtoken = headers.refreshtoken;
 
-    console.log('override token', authorization, refreshtoken)
+    // console.log('override token', authorization, refreshtoken)
     if (authorization && refreshtoken) {
       saveGoalieToken(authorization);
       saveGoalieRefreshToken(refreshtoken);
-      console.log('override done')
+      // console.log('override done')
     } 
     return config;
   },
@@ -57,7 +57,7 @@ instance.interceptors.response.use(
       // }
       // window.location.href = `/sign-in?redirectUrl=${window.location.pathname}`;
     }
-    console.log('ERRIRIRIR', response, response.status);
+    console.log('ERRIRIRIR', response);
     return Promise.reject(error);
   }
 );
