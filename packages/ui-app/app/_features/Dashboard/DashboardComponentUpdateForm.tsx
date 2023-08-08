@@ -1,25 +1,12 @@
 import ListPreset from '@/components/ListPreset'
 import MultiMemberPicker from '@/components/MultiMemberPicker'
-// import OperatorSelect from '@/components/OperatorSelect'
-// import PrioritySelect from '@/components/PrioritySelect'
 import PrioritySelectMultiple from '@/components/PrioritySelectMultiple'
-// import StatusSelect from '@/components/StatusSelect'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
-import { dboardComponentCreate } from '@/services/dashboard'
-import { DashboardComponentType, TaskPriority } from '@prisma/client'
-// import { TaskPriority } from '@prisma/client'
-import {
-  Button,
-  Form,
-  FormGroup,
-  messageError,
-  messageWarning
-} from '@shared/ui'
-import { useFormik } from 'formik'
-import { useParams } from 'next/navigation'
+import { DashboardComponentType } from '@prisma/client'
+import { Button, Form, FormGroup } from '@shared/ui'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-import { useOverviewContext } from '../Project/Overview/context'
-import { useState } from 'react'
+import DboardCompColumnUpdateForm from './DboardCompColumnUpdateForm'
+import { useDboardComponentSubmit } from './useDboardComponentSubmit'
 
 interface IDashboardFormProps {
   title?: string
@@ -29,23 +16,6 @@ interface IDashboardFormProps {
   onCloseModal?: () => void
 }
 
-interface IDboardComponentFields {
-  icon?: string
-  title?: string
-  type: DashboardComponentType
-  assigneeIds: string[]
-  statusIds: string[]
-  priority: TaskPriority[]
-  projectIds: string[]
-  date: string[]
-  fixed: boolean
-}
-
-const addOperator = (arr: string[] | TaskPriority[], operator: string) => {
-  if (!arr.length) return arr
-  return [operator, ...arr]
-}
-
 export default function DashboardComponentUpdateForm({
   type = DashboardComponentType.SUMMARY,
   title,
@@ -53,88 +23,12 @@ export default function DashboardComponentUpdateForm({
   onBack,
   onCloseModal
 }: IDashboardFormProps) {
-  const [sending, setSending] = useState(false)
-  const { dboardId, setComponents } = useOverviewContext()
-  const { projectId } = useParams()
-  const formik = useFormik<IDboardComponentFields>({
-    initialValues: {
-      icon,
-      title,
-      type,
-      assigneeIds: [],
-      statusIds: [],
-      priority: [],
-      projectIds: [],
-
-      date: [],
-      fixed: false
-    },
-    onSubmit: values => {
-      if (sending) {
-        messageWarning('Processing ...')
-        return
-      }
-
-      if (!dboardId) {
-        messageError('You have to create an overview dashboard first')
-        return
-      }
-
-      const mergedValues = { ...values, projectIds: [projectId] }
-
-      if (!mergedValues.type) {
-        return
-      }
-
-      let { statusIds, projectIds, date, priority } = mergedValues
-
-      statusIds = addOperator(statusIds, 'in')
-      projectIds = addOperator(projectIds, 'in')
-      priority = addOperator(priority, 'in') as TaskPriority[]
-
-      if (date.length) {
-        const dateLen = date.filter(Boolean).length
-        if (dateLen < 2) {
-          messageError('Please input both operator and date')
-          return
-        }
-        if (date.length < 2) {
-          date = ['=', ...date]
-        }
-
-        if (!date[0]) {
-          date[0] = '='
-        }
-      }
-
-      setSending(true)
-      dboardComponentCreate({
-        dashboardId: dboardId,
-        type: type as DashboardComponentType,
-        title,
-        config: {
-          projectIds,
-          statusIds,
-          priority,
-          icon: mergedValues.icon,
-          date,
-          fixed: mergedValues.fixed
-        }
-      })
-        .then(res => {
-          const { status, data } = res.data
-          if (status !== 200) {
-            setSending(false)
-            return
-          }
-
-          setComponents(prevComps => [...prevComps, data])
-          onCloseModal && onCloseModal()
-          setSending(false)
-        })
-        .catch(() => {
-          setSending(false)
-        })
+  const { formik, sending } = useDboardComponentSubmit({
+    title,
+    icon,
+    type,
+    onSuccess: () => {
+      onCloseModal && onCloseModal()
     }
   })
 
@@ -177,9 +71,14 @@ export default function DashboardComponentUpdateForm({
           options={[
             { id: DashboardComponentType.SUMMARY, title: '➕ Summary' },
             { id: DashboardComponentType.COLUMN, title: '📊 Column' },
-            { id: DashboardComponentType.PIE, title: '🍩 Pie' }
+            { id: DashboardComponentType.PIE, disabled: true, title: '🍩 Pie' }
           ]}
         />
+
+        {formik.values.type === DashboardComponentType.COLUMN ? (
+          <DboardCompColumnUpdateForm formik={formik} />
+        ) : null}
+
         <MultiMemberPicker
           title="Assignees"
           value={formik.values.assigneeIds}
@@ -192,8 +91,6 @@ export default function DashboardComponentUpdateForm({
           title="Status"
           value={formik.values.statusIds}
           onChange={val => {
-            console.log('user select status')
-            console.log(val)
             formik.setFieldValue('statusIds', val)
           }}
         />
@@ -219,8 +116,9 @@ export default function DashboardComponentUpdateForm({
         />
         {/* </FormGroup> */}
 
-        <FormGroup title="Date">
+        <FormGroup title="Date" helper='If one of them selected, the other must be selected'>
           <ListPreset
+            defaultOption={{id: '', title: '➗'}}
             className="w-[300px]"
             value={formik.values.date[0]}
             onChange={val => {
@@ -237,6 +135,7 @@ export default function DashboardComponentUpdateForm({
 
           <ListPreset
             className="w-full"
+            defaultOption={{id: '', title: '📆'}}
             value={formik.values.date[1]}
             onChange={val => {
               const date = [...formik.values.date]

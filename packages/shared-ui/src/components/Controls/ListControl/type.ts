@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface ListItemValue {
   id: string;
+  disabled?: boolean;
   title: string;
 }
 

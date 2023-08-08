@@ -38,6 +38,10 @@
   @apply px-3 py-2 text-sm cursor-pointer hover:bg-slate-50 relative;
 }
 
+.select-item.disabled {
+  @apply line-through opacity-50
+}
+
 .select-item .select-check-icon {
   @apply w-4 h-4 absolute right-2 top-2 text-transparent;
 }

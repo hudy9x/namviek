@@ -5,6 +5,7 @@ import { IDbCompProps, refactorConfig } from '../type'
 import { Button } from '@shared/ui'
 import { useProjectStatusStore } from '@/store/status'
 import ChartColumn, { ISerieItem } from '@/components/ChartColumn'
+import DbCompDelete from './DbCompDelete'
 
 interface IChartColumnOption {
   series: ISerieItem[]
@@ -19,7 +20,7 @@ interface IOption {
   xaxis: string[]
 }
 
-export default function DbCompColumn({ config, title }: IDbCompProps) {
+export default function DbCompColumn({ id, config, title }: IDbCompProps) {
   const [updateCounter, setUpdateCounter] = useState(0)
   const { statuses } = useProjectStatusStore()
   const [data, setData] = useState({
@@ -122,6 +123,7 @@ export default function DbCompColumn({ config, title }: IDbCompProps) {
           size="sm"
         />
       </h2>
+      <DbCompDelete id={id}/>
       <div className="bg-indigo-50/20 border border-indigo-50 rounded pb-5 mt-3">
         <ChartColumn options={options} />
       </div>

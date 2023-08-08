@@ -11,6 +11,7 @@ import { randomId } from '../../utils'
 
 interface ListControlProps {
   name?: string
+  error?: string
   title?: string
   multiple?: boolean
   helper?: string
@@ -65,6 +66,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
 export default function ListControl({
   title,
   name,
+  error,
   multiple,
   disabled,
   readOnly,
@@ -83,6 +85,7 @@ export default function ListControl({
   disabled && classes.push('disabled')
   readOnly && classes.push('readonly')
   required && classes.push('required')
+  error && classes.push('error')
   multiple ? classes.push('multiple') : classes.push('single')
 
   return (
@@ -106,7 +109,10 @@ export default function ListControl({
         }}>
         <ListContainer>{children}</ListContainer>
       </ListProvider>
-      {helper ? <p className="mt-2 text-sm text-gray-500">{helper}</p> : null}
+      {helper && !error ? (
+        <p className="mt-2 text-sm text-gray-500">{helper}</p>
+      ) : null}
+      {error ? <p className="mt-2 text-sm text-red-500">{error}</p> : null}
     </div>
   )
 }

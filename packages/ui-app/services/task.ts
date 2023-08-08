@@ -3,8 +3,12 @@ import { httpGet, httpPost, httpPut } from './_req'
 
 type ITaskFields = Partial<Task>
 
-export const taskGetAll = (projectId: string) => {
-  return httpGet(`/api/project/task?projectId=${projectId}`)
+export const taskGetAll = (projectId: string, signal?: AbortSignal) => {
+  const config: { [key: string]: unknown } = {}
+  if (signal) {
+    config.signal = signal
+  }
+  return httpGet(`/api/project/task?projectId=${projectId}`, config)
 }
 
 interface ITaskQuery {
