@@ -14,18 +14,21 @@
 }
 .btn.btn-primary svg,
 .btn.btn-warning svg,
-.btn.btn-danger svg
-{
+.btn.btn-danger svg {
   @apply text-white w-4 h-4;
 }
 
+.btn.notitle svg {
+  margin: 0px;
+}
+
 /* Button size */
-.btn.sm{
+.btn.sm {
   @apply px-2 py-1 text-xs;
 }
 
-.btn.sm svg{
-  @apply w-3 h-3
+.btn.sm svg {
+  @apply w-3 h-3;
 }
 
 .btn.lg {
@@ -62,12 +65,11 @@
 }
 
 .btn.btn-primary[disabled] {
-  @apply bg-indigo-600/70 border-indigo-400 opacity-90
+  @apply bg-indigo-600/70 border-indigo-400 opacity-90;
 }
 .btn.btn-warning[disabled] {
-  @apply bg-yellow-400/80 border-yellow-300 opacity-90
+  @apply bg-yellow-400/80 border-yellow-300 opacity-90;
 }
 .btn.btn-danger[disabled] {
-  @apply bg-red-400/70 border-red-300 opacity-90
+  @apply bg-red-400/70 border-red-300 opacity-90;
 }
-

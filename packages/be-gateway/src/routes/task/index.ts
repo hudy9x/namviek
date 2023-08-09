@@ -5,8 +5,12 @@ import {
   mdTaskAdd,
   mdTaskGetAll,
   mdTaskGetOne,
-  mdTaskUpdate
+  mdTaskUpdate,
+  mdTaskAddMany,
+  mdProjectGet,
+  ITaskQuery
 } from '@shared/models'
+
 import { Task } from '@prisma/client'
 
 const router = Router()
@@ -19,7 +23,21 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   const projectId = req.query.projectId as string
   try {
     console.log('projectId', projectId)
-    const tasks = await mdTaskGetAll({ projectId })
+    const tasks = await mdTaskGetAll({ projectId, dueDate: [null, null] })
+    console.log('get all task from project')
+    res.json({ status: 200, data: tasks })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task-query', async (req: AuthRequest, res) => {
+  try {
+    console.log('=========== query')
+    console.log('params', req.query)
+    // const query = req.body as ITaskQuery
+    const tasks = await mdTaskGetAll(req.query)
     res.json({ status: 200, data: tasks })
   } catch (error) {
     res.json({ status: 500, error })
@@ -30,8 +48,15 @@ router.get('/project/task', async (req: AuthRequest, res) => {
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('auth user', req.authen)
   console.log('body', req.body)
-  const { desc, assigneeIds, title, dueDate, projectId, priority } =
-    req.body as Task
+  const {
+    desc,
+    assigneeIds,
+    title,
+    dueDate,
+    projectId,
+    priority,
+    taskStatusId
+  } = req.body as Task
   const { id } = req.authen
 
   try {
@@ -43,7 +68,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       desc,
       projectId,
       priority,
-      taskStatusId: null,
+      taskStatusId: taskStatusId,
       tagIds: [],
       parentTaskId: null,
       taskPoint: null,
@@ -53,6 +78,49 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedBy: null
     })
 
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.post('/project/tasks', async (req: AuthRequest, res) => {
+  // console.log('body', req.body)
+  // const { desc, assigneeIds, title, dueDate, projectId, priority } = req.body as Task;
+
+  const { data: tasks, projectId }: { data: Task[]; projectId: string } =
+    req.body
+  const { id } = req.authen
+  try {
+    console.time('project-checking')
+    const existProject = await mdProjectGet(projectId)
+    console.timeEnd('project-checking')
+    if (!existProject) {
+      return res.json({
+        status: 400,
+        error: 'Project not exist'
+      })
+    }
+
+    console.time('reassign-task-data')
+    const newTasks = tasks.map(task => ({
+      ...task,
+      startDate: null,
+      tagIds: [],
+      parentTaskId: null,
+      createdBy: id,
+      createdAt: new Date(),
+      updatedAt: null,
+      updatedBy: null
+    }))
+    console.timeEnd('reassign-task-data')
+
+    console.time('import')
+    const result = await mdTaskAddMany(newTasks)
+    console.timeEnd('import')
+
+    console.log('import success')
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
@@ -115,4 +183,5 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     res.json({ status: 500, error })
   }
 })
+
 export default router

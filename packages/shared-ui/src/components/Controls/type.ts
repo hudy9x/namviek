@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react'
 
 interface InputBaseProps {
   title: string
+  className: string
   value: string
   name: string
   type: string

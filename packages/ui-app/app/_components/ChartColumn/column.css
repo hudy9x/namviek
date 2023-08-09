@@ -1,0 +1,7 @@
+.chart-colum-name > div {
+  @apply relative;
+}
+
+.chart-column-name .selected-member-name {
+  @apply absolute hidden hover:block top-10 left-1;
+}

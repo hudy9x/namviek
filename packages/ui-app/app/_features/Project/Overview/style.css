@@ -1,0 +1,31 @@
+#overview .rdp {
+ margin: 0px;
+}
+
+#overview .rdp-day{
+  @apply text-gray-500 text-sm;
+}
+
+#overview .rdp-day_selected {
+  @apply text-white text-sm;
+}
+
+#overview .rdp-day_selected.rdp-day_range_middle{
+  @apply rounded-none
+}
+
+#overview .rdp-day_selected.rdp-day_range_start{
+  @apply rounded-l-full
+}
+
+#overview .rdp-day_selected.rdp-day_range_end{
+  @apply rounded-r-full
+}
+
+#overview .rdp-head_row .rdp-head_cell {
+  @apply text-gray-600 text-xs
+}
+
+#overview .rdp-caption_label{
+  @apply text-gray-600 text-sm
+}

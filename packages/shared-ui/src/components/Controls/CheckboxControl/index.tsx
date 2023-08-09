@@ -1,66 +1,71 @@
-import { useState, ChangeEvent, useEffect } from "react";
-import { randomId } from "../../utils";
-import "./index.css";
+import { useState, ChangeEvent, useEffect } from 'react'
+import { randomId } from '../../utils'
+import './index.css'
 
 interface CheckboxProps {
-  checked?: boolean;
-  name?: string;
-  onChange?: (checked: boolean) => void;
-  desc?: string | React.ReactNode;
-  className?: string;
-  disabled?: boolean;
+  title?: string
+  checked?: boolean
+  name?: string
+  onChange?: (checked: boolean) => void
+  desc?: string | React.ReactNode
+  className?: string
+  disabled?: boolean
 }
 
 const CheckboxControl = ({
+  title,
   checked,
   onChange,
   name,
   desc,
   className,
-  disabled,
+  disabled
 }: CheckboxProps) => {
-  const [isChecked, setIsChecked] = useState<boolean>(!!checked);
-  const inputId = randomId();
+  const [isChecked, setIsChecked] = useState<boolean>(!!checked)
+  const inputId = randomId()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange && onChange(event.target.checked);
-  };
+    onChange && onChange(event.target.checked)
+  }
 
   const classNames = [
-    "inp-checkbox",
-    disabled ? "disabled" : null,
-    className,
-  ].filter(Boolean);
+    'inp-checkbox',
+    disabled ? 'disabled' : null,
+    className
+  ].filter(Boolean)
 
   useEffect(() => {
-    console.log('diff check', isChecked, checked)
     if (isChecked !== checked) {
-      console.log('checked', checked)
-      setIsChecked(!!checked);
-      onChange && onChange(!!checked);
+      setIsChecked(!!checked)
+      onChange && onChange(!!checked)
     }
     // eslint-disable-next-line
-  }, [checked, isChecked]);
+  }, [checked, isChecked])
 
   return (
-    <div className={classNames.join(" ")}>
-      <div className="flex h-6 items-center">
-        <input
-          id={inputId}
-          name={name}
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleChange}
-          disabled={disabled}
-        />
-      </div>
-      {desc ? (
-        <div className="pl-3 text-sm leading-6 text-gray-500">
-          <label htmlFor={inputId}>{desc}</label>{" "}
+    <div className={'form-control'}>
+      {title ? <label>{title}</label> : null}
+      <div className={classNames.join(' ')}>
+        <div className="flex h-6 items-center">
+          <input
+            id={inputId}
+            name={name}
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleChange}
+            disabled={disabled}
+          />
         </div>
-      ) : null}
+        {desc ? (
+          <div className="pl-3 text-sm leading-6 text-gray-500">
+            <label htmlFor={inputId} style={{ marginBottom: 0 }}>
+              {desc}
+            </label>{' '}
+          </div>
+        ) : null}
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default CheckboxControl;
+export default CheckboxControl

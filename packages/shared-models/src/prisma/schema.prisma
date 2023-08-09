@@ -142,10 +142,41 @@ model Members {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   projectId String     @db.ObjectId
   role      MemberRole
-  users     User?       @relation(fields: [uid], references: [id])
-  uid       String?     @db.ObjectId
+  users     User?      @relation(fields: [uid], references: [id])
+  uid       String?    @db.ObjectId
   createdBy String?
   createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
+}
+
+enum DashboardComponentType {
+  LINE
+  SUMMARY
+  PIE
+  LISTTAB
+  LIST
+  COLUMN
+}
+
+model DashboardComponent {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  dashboard   Dashboard?              @relation(fields: [dashboardId], references: [id])
+  dashboardId String?                 @db.ObjectId
+  title       String?
+  type        DashboardComponentType?
+  config      Json?
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
+model Dashboard {
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  dashboardComponents DashboardComponent[]
+  title               String?              @default("Untitled")
+  projectId           String?              @db.ObjectId
+  isDefault           Boolean?             @default(false)
 }

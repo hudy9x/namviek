@@ -24,7 +24,7 @@ export default function ListMode() {
           <div
             className="bg-white mb-4 rounded-md border mx-4 relative mt-4"
             key={stt.id}>
-            <div className="px-3 py-2 border-b sticky top-0 bg-white rounded-t-md flex items-center justify-between z-10">
+            <div className="px-3 py-2 border-b sticky top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
               <div
                 style={{ color: stt.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">

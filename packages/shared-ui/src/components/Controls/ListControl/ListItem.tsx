@@ -10,6 +10,7 @@ interface ListItemProps {
 export default function ListItem({ value, children }: ListItemProps) {
   const { value: selected, multiple, onChange, onMultiChange, setVisible, name, onFormikChange } = useListContext();
 
+  const disabled = value.disabled ? 'disabled' : ''
   let active = '';
 
   if (Array.isArray(selected)) {
@@ -20,6 +21,8 @@ export default function ListItem({ value, children }: ListItemProps) {
   }
 
   const onClick = () => {
+    if (value.disabled === true) return
+
     if (multiple && onMultiChange) {
       onMultiChange(prev => {
         if (Array.isArray(prev)) {
@@ -44,7 +47,7 @@ export default function ListItem({ value, children }: ListItemProps) {
     setVisible(false);
   };
   return (
-    <div className={`select-item ${active}`} onClick={onClick}>
+    <div className={`select-item ${active} ${disabled}`} onClick={onClick}>
       {children}
       <CheckIcon/>
     </div>

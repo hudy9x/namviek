@@ -1,6 +1,3 @@
-import { dbTransaction } from './_prisma'
-
-export const dbTrans = dbTransaction
 export * from './project'
 export * from './taskPoint'
 export * from './taskStatus'
@@ -10,3 +7,5 @@ export * from './member'
 export * from './user'
 export * from './organization'
 export * from './orgMember'
+export * from './dashboard'
+

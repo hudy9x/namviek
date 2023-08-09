@@ -39,7 +39,6 @@ export default function StatusSelect({
   useEffect(() => {
     if (statuses.length) {
       const selectedStatus = statuses.find(opt => opt.id === value)
-      console.log('selected', selectedStatus)
       selectedStatus &&
         setVal({ id: selectedStatus.id, title: selectedStatus.name })
     }
@@ -64,11 +63,16 @@ export default function StatusSelect({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          <div
-            className="w-4 h-4 rounded cursor-pointer"
-            style={{
-              backgroundColor: existingStatus?.color || '#e5e5e5'
-            }}></div>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-4 h-4 rounded cursor-pointer"
+              style={{
+                backgroundColor: existingStatus?.color || '#e5e5e5'
+              }}></div>
+            <span className="status-title">
+              {existingStatus?.name ? existingStatus.name : 'None'}
+            </span>
+          </div>
         </List.Button>
         <List.Options>
           {options.map(option => {
