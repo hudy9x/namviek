@@ -6,7 +6,7 @@ export const BoardContainer = ({ children }: {
   children: ReactNode
 }) => {
   return (
-    <div className="h-full overflow-auto pt-4 pl-9 flex" style={{ width: `calc(100vw - ${SIDEBAR_WIDTH}px)` }}>
+    <div className="h-full overflow-auto pt-4 px-9 flex whitespace-nowrap" style={{ width: `calc(100vw - ${SIDEBAR_WIDTH}px)` }}>
       {children}
     </div>
   )

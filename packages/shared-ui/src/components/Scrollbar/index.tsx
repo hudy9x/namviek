@@ -1,8 +1,6 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { CSSProperties, ReactNode } from 'react'
-const TAGS = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
+import './style.css'
 
 interface IScrollbarProps {
   className?: string
@@ -18,18 +16,18 @@ export default function Scrollbar({
   className && classes.push(className)
   return (
     <ScrollArea.Root className={classes.join(' ')} style={style}>
-      <ScrollArea.Viewport className="ScrollAreaViewport">
+      <ScrollArea.Viewport className="scroll-viewport">
         {children}
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar
-        className="ScrollAreaScrollbar"
+        className="scroll-scrollbar"
         orientation="vertical">
-        <ScrollArea.Thumb className="ScrollAreaThumb" />
+        <ScrollArea.Thumb className="scroll-thumb" />
       </ScrollArea.Scrollbar>
       {/* <ScrollArea.Scrollbar */}
-      {/*   className="ScrollAreaScrollbar" */}
+      {/*   className="scroll-scrollbar" */}
       {/*   orientation="horizontal"> */}
-      {/*   <ScrollArea.Thumb className="ScrollAreaThumb" /> */}
+      {/*   <ScrollArea.Thumb className="scroll-thumb" /> */}
       {/* </ScrollArea.Scrollbar> */}
       <ScrollArea.Corner className="ScrollAreaCorner" />
     </ScrollArea.Root>

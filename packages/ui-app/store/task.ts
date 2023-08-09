@@ -2,12 +2,14 @@ import { create } from 'zustand'
 import { Task } from '@prisma/client'
 import { produce } from 'immer'
 
+type PartialTask = Partial<Task>
+
 interface TaskState {
   taskLoading: boolean
   setTaskLoading: (status: boolean) => void
   tasks: Task[]
-  addOneTask: (data: Partial<Task>) => void
-  updateTask: (data: Partial<Task>) => void
+  addOneTask: (data: PartialTask) => void
+  updateTask: (data: PartialTask) => void
   syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
@@ -55,7 +57,9 @@ export const useTaskStore = create<TaskState>(set => ({
 
         const taskIndex = state.tasks.findIndex(t => t.id === id)
 
-        if (!taskIndex) return
+        console.log('taskindex', taskIndex)
+
+        if (taskIndex === -1) return
 
         const task = state.tasks[taskIndex]
 
