@@ -1,13 +1,18 @@
-import { BoardContent } from './BoardContent/BoardContent'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { useBoardAction } from './useBoardAction'
+import { BoardColumnList } from './BoardColumnList'
 import './style.css'
 export const SIDEBAR_WIDTH = 308
 
 export const Board = () => {
+  const { onDragEnd } = useBoardAction()
   return (
     <div
-      className="h-full bg-white overflow-auto pt-4 px-9 flex whitespace-nowrap"
+      className="board-wrapper"
       style={{ width: `calc(100vw - ${SIDEBAR_WIDTH}px)` }}>
-      <BoardContent />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <BoardColumnList />
+      </DragDropContext>
     </div>
   )
 }
