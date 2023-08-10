@@ -14,7 +14,11 @@ export const BoardBodyContent = ({ id }: { id: string }) => {
       {(provided, snapshot) => (
         <div
           style={{ height: 'calc(100vh - 83px - 38px - 100px)' }}
-          className={`pt-2 space-y-2 rounded-b-md ${snapshot.isDraggingOver ? 'bg-indigo-50' : ''}`}
+          className={`pt-2 space-y-2 rounded-md border-2 ${
+            snapshot.isDraggingOver
+              ? 'border-dashed bg-blue-50 border-blue-300'
+              : 'border-transparent'
+          }`}
           {...provided.droppableProps}
           ref={provided.innerRef}>
           {tasks.map((task, index) => {
@@ -29,7 +33,8 @@ export const BoardBodyContent = ({ id }: { id: string }) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         className="bg-white p-3 rounded-md shadow-sm border">
-                        <h2 className='text-sm text-gray-600'>{task.title}</h2>
+                        <h2 className="text-sm text-gray-600 whitespace-normal">{task.title}</h2>
+
                         {/* <BoardBodyTitle title={task.title || ''} /> */}
                         {/* <BoardActionAssignee */}
                         {/*   taskId={task.id} */}

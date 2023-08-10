@@ -17,6 +17,7 @@ export const BoardContent = () => {
             className="flex gap-2"
             {...provided.droppableProps}
             ref={provided.innerRef}>
+
             {statuses.map((status, statusIndex) => (
               <Draggable
                 key={status.id}
@@ -24,24 +25,28 @@ export const BoardContent = () => {
                 index={statusIndex}>
                 {provided => (
                   <div
-                    className="shrink-0 w-[250px]"
+                    className="shrink-0 w-[270px]"
                     {...provided.draggableProps}
                     ref={provided.innerRef}>
                     {/* <BoardHeaderContent status={status} /> */}
-                    <div className="bg-white rounded-md px-3 py-2 border shadow-lg shadow-gray-200">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-4 h-4 text-gray-400"
-                          {...provided.dragHandleProps}>
-                          <MdDragIndicator />
+                    <div className='bg-indigo-50/50 rounded-lg border border-gray-200 p-3'>
+                      <div className="py-2">
+                        <div className="flex border-2 border-transparent items-center gap-2">
+                          <div
+                            className="w-4 h-4 text-gray-400"
+                            {...provided.dragHandleProps}>
+                            <MdDragIndicator />
+                          </div>
+                          <div
+                            className="w-4 h-4 rounded"
+                            style={{ backgroundColor: status.color }}></div>
+                          <span className="text-sm text-gray-500">
+                            {status.name}
+                          </span>
                         </div>
-                        <div
-                          className="w-4 h-4 rounded"
-                          style={{ backgroundColor: status.color }}></div>
-                        <span className='text-sm text-gray-500'>{status.name}</span>
                       </div>
+                      <BoardBodyContent id={status.id} />
                     </div>
-                    <BoardBodyContent id={status.id} />
                   </div>
                 )}
               </Draggable>

@@ -68,6 +68,5 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
       produce((state: ProjectStatusState) => {
         state.statuses = state.statuses.filter(status => status.id !== id)
       })
-    ),
-
+    )
 }))
