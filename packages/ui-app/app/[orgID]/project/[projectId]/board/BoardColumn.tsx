@@ -12,7 +12,7 @@ export const BoardColumn = ({ status, statusIndex }: IBoardColumnProps) => {
     <Draggable draggableId={status.id} index={statusIndex}>
       {provided => (
         <div
-          className="shrink-0 w-[270px]"
+          className="board-column-wrapper"
           {...provided.draggableProps}
           ref={provided.innerRef}>
           <div className="board-column">

@@ -2,7 +2,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import { Task } from '@prisma/client'
 import TaskAssignee from '../views/TaskAssignee'
 import TaskDate from '../views/TaskDate'
-import { format } from 'date-fns'
+// import TaskPriorityCell from '../views/TaskPriorityCell'
 
 interface IBoardTaskItem {
   data: Task
@@ -10,12 +10,6 @@ interface IBoardTaskItem {
 }
 
 export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
-  try {
-    data.dueDate && format(data.dueDate, 'PP')
-  } catch (error) {
-    console.log(data.dueDate)
-    console.log(error)
-  }
   return (
     <Draggable draggableId={data.id} index={index}>
       {(provided, snapshot) => {
@@ -27,18 +21,15 @@ export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
             className="board-task-item">
             <h2 className="text-sm text-gray-600 whitespace-normal">
               {data.title}
+              {/* <TaskPriorityCell taskId={data.id} value={data.priority} /> */}
             </h2>
 
-            <div>
-              {/* <TaskDate date={data.dueDate} taskId={data.id} /> */}
+            <div className="board-item-action">
+              {data.dueDate ? (
+                <TaskDate date={new Date(data.dueDate)} taskId={data.id} />
+              ) : null}
               <TaskAssignee taskId={data.id} uids={data.assigneeIds} />
             </div>
-
-            {/* <BoardBodyTitle title={task.title || ''} /> */}
-            {/* <BoardActionAssignee */}
-            {/*   taskId={task.id} */}
-            {/*   uids={task.assigneeIds} */}
-            {/* /> */}
           </div>
         )
       }}
