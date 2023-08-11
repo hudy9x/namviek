@@ -8,6 +8,7 @@ import useFormHook from './hooks/useForm';
 import AvatarContainer from './components/Avatar';
 import DatePickerContainer from './components/DatePicker';
 import BorderlessDatePickerContainer from "./components/DatePicker/Borderless";
+import ScrollbarContainer from "./components/Scrollbar";
 import FormGroupContainer from "./components/FormGroup";
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from './components/Message';
@@ -20,6 +21,7 @@ export const Loading = LoadingSpinner;
 export const Avatar = AvatarContainer;
 export const DatePicker = DatePickerContainer;
 export const DatePickerBorderless = BorderlessDatePickerContainer;
+export const Scrollbar = ScrollbarContainer
 export const FormGroup = FormGroupContainer
 export * from './components/Confirmbox'
 

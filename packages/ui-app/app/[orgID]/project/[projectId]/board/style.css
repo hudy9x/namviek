@@ -1,0 +1,27 @@
+.board-wrapper {
+  @apply h-full overflow-auto flex whitespace-nowrap;
+}
+
+.board-column {
+  @apply px-2 py-3;
+}
+
+.board-column-wrapper {
+  @apply shrink-0 w-[270px];
+}
+
+.board-task-item {
+  @apply bg-white p-3 rounded-md shadow-sm border;
+}
+
+.board-task-item .selected-member-name {
+  @apply hidden;
+}
+
+.board-item-action {
+  @apply flex items-center justify-between text-gray-500 mt-3;
+}
+
+.board-item-action .task-date .form-input {
+  @apply text-xs;
+}

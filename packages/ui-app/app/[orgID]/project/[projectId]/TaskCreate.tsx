@@ -2,9 +2,16 @@ import { Button, Modal } from '@shared/ui';
 import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import TaskForm from './TaskForm';
+import { useSearchParams } from 'next/navigation';
 
 export default function TaskCreate() {
+  const sp = useSearchParams()
+  const mode = sp.get('mode')
   const [visible, setVisible] = useState(false);
+
+  if (mode !== 'task') {
+    return null
+  }
 
   return (
     <div>

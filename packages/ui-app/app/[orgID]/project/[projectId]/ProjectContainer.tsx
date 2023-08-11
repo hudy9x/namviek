@@ -75,6 +75,8 @@ export default function ProjectContainer() {
 
         const statuses = data as TaskStatus[]
 
+        // order must be ascending
+        // unless re-ordering feature in setting/status and view/board will be error
         addAllStatuses(statuses.sort((a, b) => a.order - b.order))
       })
       .catch(err => {

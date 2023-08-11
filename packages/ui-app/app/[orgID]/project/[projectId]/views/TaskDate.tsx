@@ -8,8 +8,8 @@ export default function TaskDate({
   className
 }: {
   date: Date | null
-  taskId: string,
-    className?: string
+  taskId: string
+  className?: string
 }) {
   const [value, setValue] = useState(date)
   const { updateTaskData } = useTaskUpdate()
