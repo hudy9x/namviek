@@ -1,9 +1,10 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation';
-import TaskList from './TaskList';
-import Settings from './settings';
-import { Board } from './board';
+import { useSearchParams } from 'next/navigation'
+import TaskList from './TaskList'
+import Settings from './settings'
+import { Board } from './board'
+import Calendar from './calendar'
 import ProjectOverview from 'packages/ui-app/app/_features/Project/Overview'
 
 export default function ProjectTabContent() {
@@ -12,10 +13,11 @@ export default function ProjectTabContent() {
 
   return (
     <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
-      {mode === 'board' && <Board/>}
+      {mode === 'board' && <Board />}
       {mode === 'task' && <TaskList />}
       {mode === 'setting' && <Settings />}
       {mode === 'overview' ? <ProjectOverview /> : null}
+      {mode === 'calendar' ? <Calendar /> : null}
     </div>
   )
 }

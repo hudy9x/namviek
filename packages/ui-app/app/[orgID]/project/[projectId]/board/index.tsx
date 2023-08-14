@@ -1,4 +1,4 @@
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { useBoardAction } from './useBoardAction'
 import { BoardColumnList } from './BoardColumnList'
 import './style.css'
