@@ -19,7 +19,7 @@ import { useTaskStore } from '../../../../store/task'
 import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 
-const defaultFormikValues = {
+let defaultFormikValues = {
   title: '',
   assigneeIds: [],
   taskStatusId: '',
@@ -28,12 +28,23 @@ const defaultFormikValues = {
   desc: '<p>Tell me what this task about 🤡</p>'
 }
 
-export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
+interface ITaskFormProps {
+  dueDate?: Date
+  onSuccess: () => void
+}
+
+export default function TaskForm({ dueDate, onSuccess }: ITaskFormProps) {
   const { user } = useUser()
   const [loading, setLoading] = useState(false)
   const { addOneTask, syncRemoteTaskById } = useTaskStore()
   const params = useParams()
   const { statuses } = useProjectStatusStore()
+
+  if (dueDate) {
+    console.log('aaaaaaa', dueDate)
+    defaultFormikValues = { ...defaultFormikValues, dueDate }
+  }
+
   const formik = useFormik({
     initialValues: defaultFormikValues,
     onSubmit: values => {
@@ -118,7 +129,7 @@ export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
       className="task-form flex flex-col gap-6">
       <Form.Input
         title="Task name"
-        name='title'
+        name="title"
         value={formik.values.title}
         onChange={formik.handleChange}
         placeholder="Enter your task name here !"

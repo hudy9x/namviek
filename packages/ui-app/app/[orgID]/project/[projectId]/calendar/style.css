@@ -7,14 +7,17 @@
 }
 
 .calendar-day.today .day-display {
-  @apply bg-indigo-500 text-white;
+  @apply text-indigo-500 font-bold;
+}
+
+.calendar-month-tasks {
+  @apply pt-8 pb-3 flex flex-col gap-2;
 }
 
 .calendar-task-item {
-  @apply mx-1 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
+  @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
 }
 
-.calendar-task-item .no-name .selected-member-name{
-  @apply hidden
+.calendar-task-item .no-name .selected-member-name {
+  @apply hidden;
 }
-

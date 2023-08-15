@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { Droppable } from 'react-beautiful-dnd'
 import CalMonthTaskList from './CalMonthTaskList'
+import CalendarTaskCreate from './CalendarTaskCreate'
 
 interface ICalMonthDay {
   day: Date
@@ -25,8 +26,10 @@ export default function CalMonthDay({ day }: ICalMonthDay) {
           className={classes.join(' ')}
           {...provided.droppableProps}
           ref={provided.innerRef}>
-          <span className='day-display'>{format(day, 'dd')}</span>
+          <span className="day-display">{format(day, 'dd')}</span>
           <CalMonthTaskList day={day} />
+          {provided.placeholder}
+          <CalendarTaskCreate dueDate={day} />
         </div>
       )}
     </Droppable>

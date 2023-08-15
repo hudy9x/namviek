@@ -15,12 +15,14 @@ export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className="calendar-task-item">
-          <span>{task.title}</span>
-          <TaskAssignee
-            noName={true}
-            taskId={task.id}
-            uids={task.assigneeIds}
-          />
+          <div className="flex items-center gap-1">
+            <span>{task.title}</span>
+            <TaskAssignee
+              noName={true}
+              taskId={task.id}
+              uids={task.assigneeIds}
+            />
+          </div>
         </div>
       )}
     </Draggable>

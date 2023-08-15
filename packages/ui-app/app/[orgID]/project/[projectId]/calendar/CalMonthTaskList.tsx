@@ -7,7 +7,7 @@ let index = 0
 export default function CalMonthTaskList({ day }: { day: Date }) {
   const { tasks } = useTaskStore()
   return (
-    <div className="calendar-month-tasks pt-8 pb-3 flex flex-col gap-1">
+    <div className="calendar-month-tasks ">
       {tasks.map(task => {
         if (!task.dueDate) return null
         const dueDate = new Date(task.dueDate)
