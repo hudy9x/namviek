@@ -29,7 +29,7 @@ export const BoardTaskList = ({ groupId }: IBoardTaskListProps) => {
                 ++counter
                 return <BoardTaskItem index={counter} data={task} key={index} />
               })}
-              <BoardActionCreateTask />
+              <BoardActionCreateTask groupId={groupId} />
             </div>
           </Scrollbar>
           {provided.placeholder}

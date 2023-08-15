@@ -29,11 +29,16 @@ let defaultFormikValues = {
 }
 
 interface ITaskFormProps {
+  taskStatusId?: string
   dueDate?: Date
   onSuccess: () => void
 }
 
-export default function TaskForm({ dueDate, onSuccess }: ITaskFormProps) {
+export default function TaskForm({
+  dueDate,
+  taskStatusId,
+  onSuccess
+}: ITaskFormProps) {
   const { user } = useUser()
   const [loading, setLoading] = useState(false)
   const { addOneTask, syncRemoteTaskById } = useTaskStore()
@@ -41,8 +46,11 @@ export default function TaskForm({ dueDate, onSuccess }: ITaskFormProps) {
   const { statuses } = useProjectStatusStore()
 
   if (dueDate) {
-    console.log('aaaaaaa', dueDate)
     defaultFormikValues = { ...defaultFormikValues, dueDate }
+  }
+
+  if (taskStatusId) {
+    defaultFormikValues = { ...defaultFormikValues, taskStatusId }
   }
 
   const formik = useFormik({
@@ -102,8 +110,9 @@ export default function TaskForm({ dueDate, onSuccess }: ITaskFormProps) {
     }
   })
 
+  // select a default status if empty
   useEffect(() => {
-    if (statuses.length) {
+    if (statuses.length && !formik.values.taskStatusId) {
       let min: TaskStatus | null = null
       statuses.forEach(stt => {
         if (!min) {

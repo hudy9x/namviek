@@ -3,7 +3,11 @@ import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskForm from '../TaskForm'
 
-export const BoardActionCreateTaskWithIcon = () => {
+export const BoardActionCreateTaskWithIcon = ({
+  groupId
+}: {
+  groupId: string
+}) => {
   const [visible, setVisible] = useState(false)
   return (
     <Modal
@@ -14,6 +18,7 @@ export const BoardActionCreateTaskWithIcon = () => {
       content={
         <>
           <TaskForm
+            taskStatusId={groupId}
             onSuccess={() => {
               setVisible(false)
             }}
@@ -24,7 +29,7 @@ export const BoardActionCreateTaskWithIcon = () => {
   )
 }
 
-export const BoardActionCreateTask = () => {
+export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
   const [visible, setVisible] = useState(false)
   return (
     <Modal
@@ -39,6 +44,7 @@ export const BoardActionCreateTask = () => {
       content={
         <>
           <TaskForm
+            taskStatusId={groupId}
             onSuccess={() => {
               setVisible(false)
             }}

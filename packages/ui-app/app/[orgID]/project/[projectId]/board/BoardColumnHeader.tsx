@@ -23,7 +23,7 @@ export default function BoardColumHeader({
         <span className="text-sm text-gray-500">{status.name}</span>
       </div>
       <div>
-        <BoardActionCreateTaskWithIcon />
+        <BoardActionCreateTaskWithIcon groupId={status.id} />
       </div>
     </div>
   )
