@@ -1,0 +1,23 @@
+.calendar-day {
+  @apply relative text-gray-400 text-sm;
+}
+
+.calendar-day .day-display {
+  @apply absolute top-1 left-1 w-7 h-7 rounded-full p-1 text-center;
+}
+
+.calendar-day.today .day-display {
+  @apply text-indigo-500 font-bold;
+}
+
+.calendar-month-tasks {
+  @apply pt-8 pb-3 flex flex-col gap-2;
+}
+
+.calendar-task-item {
+  @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
+}
+
+.calendar-task-item .no-name .selected-member-name {
+  @apply hidden;
+}

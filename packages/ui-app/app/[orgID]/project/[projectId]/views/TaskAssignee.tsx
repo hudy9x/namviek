@@ -4,11 +4,13 @@ import { useTaskUpdate } from './useTaskUpdate'
 export default function TaskAssignee({
   taskId,
   uids,
-  className
+  className,
+  noName = false
 }: {
   taskId: string
   uids: string[]
   className?: string
+  noName?: boolean
 }) {
   const { updateTaskData } = useTaskUpdate()
 
@@ -20,9 +22,14 @@ export default function TaskAssignee({
     })
   }
 
+  const classes = ['task-assignee']
+
+  className && classes.push(className)
+  noName && classes.push('no-name')
+
   return (
     <MemberPicker
-      className={`task-assignee ${className}`}
+      className={classes.join(' ')}
       value={uids[0]}
       onChange={onUpdate}
     />
