@@ -7,6 +7,7 @@ interface ICalMonthTaskProps {
   index: number
 }
 export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
+  const { title, id, assigneeIds } = task
   return (
     <Draggable draggableId={task.id} index={index}>
       {provided => (
@@ -15,13 +16,9 @@ export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className="calendar-task-item">
-          <div className="flex items-center gap-1">
-            <span>{task.title}</span>
-            <TaskAssignee
-              noName={true}
-              taskId={task.id}
-              uids={task.assigneeIds}
-            />
+          <div className="flex items-center gap-1" title={title}>
+            <span className="truncate">{title}</span>
+            <TaskAssignee noName={true} taskId={id} uids={assigneeIds} />
           </div>
         </div>
       )}
