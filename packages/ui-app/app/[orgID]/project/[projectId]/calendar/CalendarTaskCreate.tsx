@@ -14,7 +14,7 @@ export default function CalendarTaskCreate({ dueDate }: { dueDate: Date }) {
         title="Add a new task"
         triggerBy={
           <div>
-            <AiOutlinePlus className="absolute cursor-pointer hover:text-gray-600 w-6 h-6 p-1 rounded-md hover:bg-gray-200 text-center bottom-1 right-1" />
+            <AiOutlinePlus className="calendar-create-task " />
           </div>
         }
         content={

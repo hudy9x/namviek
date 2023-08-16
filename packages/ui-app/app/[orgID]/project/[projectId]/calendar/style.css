@@ -6,6 +6,14 @@
   @apply absolute top-1 left-1 w-7 h-7 rounded-full p-1 text-center;
 }
 
+.calendar-create-task {
+  @apply absolute cursor-pointer hover:text-gray-600 w-6 h-6 p-1 rounded-md hover:bg-gray-200 text-center bottom-1 right-1 opacity-0 transition-all;
+}
+
+.calendar-day:hover .calendar-create-task {
+  @apply opacity-100;
+}
+
 .calendar-day.today .day-display {
   @apply text-indigo-500 font-bold;
 }
