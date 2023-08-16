@@ -30,7 +30,7 @@ export default function TaskAssignee({
   return (
     <MemberPicker
       className={classes.join(' ')}
-      value={uids[0]}
+      value={uids ? uids[0] : ''}
       onChange={onUpdate}
     />
   )

@@ -24,7 +24,8 @@
 			"@shared/validation": ["packages/shared-validation/src/index.ts"],
 			"@/services/*": ["packages/ui-app/services/*"],
 			"@/store/*": ["packages/ui-app/store/*"],
-			"@/components/*": ["packages/ui-app/app/_components/*"]
+			"@/components/*": ["packages/ui-app/app/_components/*"],
+			"@/hooks/*": ["packages/ui-app/app/_hooks/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

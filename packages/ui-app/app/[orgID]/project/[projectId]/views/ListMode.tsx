@@ -12,6 +12,7 @@ import ListCell from './ListCell'
 import TaskPoint from './TaskPoint'
 import TaskStatus from './TaskStatus'
 import { Loading } from '@shared/ui'
+import ListCreateTask from './ListCreateTask'
 
 export default function ListMode() {
   const { statuses, statusLoading } = useProjectStatusStore()
@@ -97,6 +98,7 @@ export default function ListMode() {
                     </div>
                   )
                 })}
+              <ListCreateTask type="status" groupId={stt.id} />
             </div>
           </div>
         )
