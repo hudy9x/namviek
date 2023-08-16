@@ -1,8 +1,13 @@
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
 import { TaskPoint } from '@prisma/client'
 
-export const projectPointGet = (projectId: string) => {
-  return httpGet(`/api/project/point/${projectId}`)
+export const projectPointGet = (
+  projectId: string,
+  abortSignal?: AbortSignal
+) => {
+  return httpGet(`/api/project/point/${projectId}`, {
+    signal: abortSignal
+  })
 }
 
 export const projectPointCreate = (data: Omit<TaskPoint, 'id'>) => {

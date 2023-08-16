@@ -2,9 +2,13 @@ import { MemberRole } from '@prisma/client'
 import { UserMember } from '../store/member'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
-export const getProjectMember = (projectId: string) => {
+export const getProjectMember = (
+  projectId: string,
+  abortSignal?: AbortSignal
+) => {
   return httpGet('/api/project/member', {
-    params: { projectId }
+    params: { projectId },
+    signal: abortSignal
   })
 }
 

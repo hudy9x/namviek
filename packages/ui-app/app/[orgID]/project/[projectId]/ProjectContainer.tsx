@@ -35,21 +35,18 @@ export default function ProjectContainer() {
 
         addAllTasks(data)
       })
-      .catch(() => {
-        console.log('aborted')
-      })
       .finally(() => {
         setTaskLoading(false)
       })
 
     return () => {
-      console.log('unmount')
       controller.abort()
     }
   }, [])
 
   useEffect(() => {
-    getProjectMember(projectId)
+    const memberController = new AbortController()
+    getProjectMember(projectId, memberController.signal)
       .then(res => {
         const { data, status } = res.data
         if (status !== 200) {
@@ -63,8 +60,9 @@ export default function ProjectContainer() {
         console.log(err)
       })
 
+    const statusController = new AbortController()
     setStatusLoading(true)
-    projectStatusGet(projectId)
+    projectStatusGet(projectId, statusController.signal)
       .then(res => {
         const { data, status } = res.data
 
@@ -86,7 +84,8 @@ export default function ProjectContainer() {
         setStatusLoading(false)
       })
 
-    projectPointGet(projectId)
+    const pointController = new AbortController()
+    projectPointGet(projectId, pointController.signal)
       .then(res => {
         const { data, status } = res.data
         if (status !== 200) {
@@ -99,6 +98,12 @@ export default function ProjectContainer() {
       .catch(err => {
         console.log(err)
       })
+
+    return () => {
+      memberController.abort()
+      statusController.abort()
+      pointController.abort()
+    }
   }, [projectId])
   return <ProjectNav />
 }

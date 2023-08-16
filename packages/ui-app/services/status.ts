@@ -1,8 +1,13 @@
 import { TaskStatus } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
-export const projectStatusGet = (projectId: string) => {
-  return httpGet(`/api/project/status/${projectId}`)
+export const projectStatusGet = (
+  projectId: string,
+  abortSignal?: AbortSignal
+) => {
+  return httpGet(`/api/project/status/${projectId}`, {
+    signal: abortSignal
+  })
 }
 
 export const projectStatusAdd = (data: TaskStatus) => {
