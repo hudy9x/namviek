@@ -12,8 +12,6 @@ export const beProjectMemberMiddleware = async (
   const projectId = query.projectId || body.projectId || params.projectId
 
   if (!projectId) {
-    console.log(params, query, body)
-    console.log('ERR: you must provide projectID')
     return res.json({
       status: 400,
       error: `You must provide 'projectId' in request: ${req.url}`
@@ -21,7 +19,6 @@ export const beProjectMemberMiddleware = async (
   }
 
   if (projectId === 'all') {
-    console.log('ignored')
     next()
     return
   }

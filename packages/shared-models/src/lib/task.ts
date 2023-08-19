@@ -81,8 +81,6 @@ export const mdTaskGetAll = ({
 
     // task in date range
     if (start && end) {
-      console.log('start', start)
-      console.log('end', end)
       where.AND = [{ dueDate: { gte: start } }, { dueDate: { lte: end } }]
     }
 
