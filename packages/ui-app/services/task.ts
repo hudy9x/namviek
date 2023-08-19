@@ -11,10 +11,10 @@ export const taskGetAll = (projectId: string, signal?: AbortSignal) => {
   return httpGet(`/api/project/task?projectId=${projectId}`, config)
 }
 
-interface ITaskQuery {
+export interface ITaskQuery {
   projectId?: string
   title?: string
-  dueDate?: [Date | undefined, Date | undefined]
+  dueDate?: [Date | string, Date | string]
   assigneeIds?: string[]
   statusIds?: string[]
   taskPoint?: number
@@ -22,11 +22,13 @@ interface ITaskQuery {
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']
+  counter?: boolean
 }
 
-export const taskGetByCond = (query: ITaskQuery) => {
+export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
   return httpGet(`/api/project/task-query`, {
-    params: query
+    params: query,
+    signal: signal
   })
 }
 

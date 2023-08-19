@@ -58,7 +58,7 @@ export default function ProjectAdd() {
         onVisibleChange={setVisible}
         title="Create new project"
         triggerBy={
-          <div>
+          <div className='absolute right-2'>
             <HiOutlinePlusSm className="section-icon" />
           </div>
         }

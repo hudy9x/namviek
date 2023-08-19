@@ -1,0 +1,16 @@
+.mw-task {
+  @apply px-3 py-2 bg-white border rounded-md text-sm flex items-center justify-between;
+  @apply hover:border-indigo-400 transition-all cursor-pointer;
+}
+
+.mw-card-title {
+  @apply font-medium flex items-center justify-between gap-2 pb-2;
+}
+
+.mw-card-reload {
+  @apply cursor-pointer w-7 h-7 rounded-md bg-white border p-1 text-gray-400 hover:text-gray-500 hover:bg-gray-50;
+}
+
+.mw-project-item {
+  @apply flex items-center justify-between gap-2 bg-white first:rounded-t-md last:rounded-b-md text-sm px-3 py-2 hover:bg-gray-50 cursor-pointer;
+}
