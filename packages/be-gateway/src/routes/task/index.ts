@@ -35,11 +35,19 @@ router.get('/project/task', async (req: AuthRequest, res) => {
 router.get('/project/task-query', async (req: AuthRequest, res) => {
   try {
     console.log('=========== query')
-    console.log('params', req.query)
+    console.log('params: 16', req.query)
     // const query = req.body as ITaskQuery
-    const tasks = await mdTaskGetAll(req.query)
+    const { counter, ...rest } = req.query
+
+    const tasks = await mdTaskGetAll(rest)
+    if (counter) {
+      const total = await mdTaskGetAll(req.query)
+      return res.json({ status: 200, data: tasks, total })
+    }
+
     res.json({ status: 200, data: tasks })
   } catch (error) {
+    console.log(error)
     res.json({ status: 500, error })
   }
 })

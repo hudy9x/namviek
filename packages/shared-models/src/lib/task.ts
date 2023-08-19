@@ -4,7 +4,7 @@ import { taskModel, pmClient } from './_prisma'
 export interface ITaskQuery {
   projectId?: string
   title?: string
-  dueDate?: [Date | null, Date | null]
+  dueDate?: [Date | string, Date | string]
   assigneeIds?: string[]
   statusIds?: string[]
   taskPoint?: number
@@ -12,6 +12,7 @@ export interface ITaskQuery {
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']
+  counter?: boolean
 }
 
 export const mdTaskGetAll = ({
@@ -24,13 +25,14 @@ export const mdTaskGetAll = ({
   dueDate,
   assigneeIds,
   statusIds,
-  taskPoint
+  taskPoint,
+  counter
 }: ITaskQuery) => {
   const where: {
     [key: string]: unknown
   } = {}
 
-  console.log('AAAAAA', dueDate)
+  take = take ? parseInt(take as unknown as string, 10) : undefined
 
   if (title) {
     where.title = {
@@ -43,7 +45,7 @@ export const mdTaskGetAll = ({
     where.taskPoint = taskPoint
   }
 
-  if (projectId) {
+  if (projectId && projectId !== 'all') {
     where.projectId = projectId
   }
 
@@ -53,8 +55,25 @@ export const mdTaskGetAll = ({
     }
   }
 
-  if ((dueDate && dueDate[0]) || dueDate[1]) {
-    const [start, end] = dueDate
+  if (dueDate && dueDate[0] === 'undefined') {
+    dueDate[0] = null
+  }
+
+  if (dueDate && dueDate[1] === 'undefined') {
+    dueDate[1] = null
+  }
+
+  if (dueDate && (dueDate[0] || dueDate[1])) {
+    let [start, end] = dueDate
+
+    if (start) {
+      start = new Date(start)
+    }
+
+    if (end) {
+      end = new Date(end)
+    }
+
     // today tasks
     if (start === end) {
       where.dueDate = start
@@ -90,7 +109,11 @@ export const mdTaskGetAll = ({
     where.priority = priority
   }
 
-  console.log('query all', where)
+  console.log('where', where)
+
+  if (counter) {
+    return taskModel.count({ where })
+  }
 
   return taskModel.findMany({
     skip,

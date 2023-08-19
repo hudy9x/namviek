@@ -30,17 +30,13 @@ export default function StatusSelect({
   const [val, setVal] = useState(defaultOption)
   const [updateCounter, setUpdateCounter] = useState(0)
 
-  console.log('value', value)
-
   useEffect(() => {
-    console.log('1')
     if (statuses.length) {
       setOptions(statuses.map(p => ({ id: p.id + '', title: p.name + '' })))
     }
   }, [statuses])
 
   useEffect(() => {
-    console.log('status', value)
     if (statuses.length) {
       const selectedStatus = statuses.find(opt => opt.id === value)
       selectedStatus &&
@@ -50,7 +46,6 @@ export default function StatusSelect({
 
   useEffect(() => {
     if (updateCounter) {
-      console.log('update counter')
       onChange && onChange(val.id)
     }
   }, [updateCounter, val])

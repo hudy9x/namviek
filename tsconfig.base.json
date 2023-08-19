@@ -25,7 +25,8 @@
 			"@/services/*": ["packages/ui-app/services/*"],
 			"@/store/*": ["packages/ui-app/store/*"],
 			"@/components/*": ["packages/ui-app/app/_components/*"],
-			"@/hooks/*": ["packages/ui-app/app/_hooks/*"]
+			"@/hooks/*": ["packages/ui-app/app/_hooks/*"],
+			"@/features/*": ["packages/ui-app/app/_features/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

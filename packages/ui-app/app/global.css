@@ -37,14 +37,19 @@
 }
 
 .side-nav {
-  @apply border-t py-4;
+  @apply border-t;
   @apply w-[250px] shrink-0;
 }
 
 .side-nav h2,
 .side-nav .side-title {
-  @apply uppercase text-xs font-medium text-gray-500 px-3 pb-3;
+  @apply uppercase text-xs font-medium text-gray-500 px-3 py-3;
   @apply flex justify-between items-center;
+  @apply hover:text-indigo-500;
+}
+
+.side-nav .side-title.active{
+  @apply bg-gray-100 hover:text-gray-500
 }
 
 .side-nav .section-icon {
