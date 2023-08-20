@@ -83,7 +83,7 @@ export default function MultiMemberPicker({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>{getSelectedMember(val)}</List.Button>
-        <List.Options>
+        <List.Options width={200}>
           {options.map(option => {
             const user = members.find(m => m.id === option.id)
             return (

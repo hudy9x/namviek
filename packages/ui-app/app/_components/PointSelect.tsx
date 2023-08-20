@@ -74,11 +74,11 @@ export default function PointSelect({
             ) : null}
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={90}>
           {options.map(option => {
             return (
               <List.Item key={option.id} value={option}>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-gray-500">
                   <AiOutlineStar />
                   {option.title}
                 </div>

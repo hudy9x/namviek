@@ -34,7 +34,7 @@ export default function DatePicker({ title, className, value, onChange, placehol
         <Popover.Root open={visible} onOpenChange={setVisible}>
           <Popover.Trigger asChild>
             <div>
-              <div className="form-input cursor-pointer" tabIndex={-1}>
+              <div className="form-input cursor-pointer whitespace-nowrap pr-8" tabIndex={-1}>
                 {selected ? (
                   format(selected, 'PP')
                 ) : placeholder ? (

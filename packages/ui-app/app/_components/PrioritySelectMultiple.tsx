@@ -76,7 +76,7 @@ export default function PrioritySelectMultiple({
             })}
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={120}>
           {options.map(option => {
             const c = colors.get(option.id)
             return (

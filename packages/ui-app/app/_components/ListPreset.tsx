@@ -5,6 +5,7 @@ const List = Form.List
 interface IListPresetProps {
   className?: string
   title?: string
+  width?: number
   error?: string
   value?: string
   defaultOption?: ListItemValue
@@ -16,6 +17,7 @@ const defaultValue = { id: 'NONE', title: 'Option' }
 
 export default function ListPreset({
   title,
+  width,
   error,
   className,
   value,
@@ -46,8 +48,9 @@ export default function ListPreset({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>{selectedVal.title}</List.Button>
-        <List.Options>
+        <List.Options width={width}>
           {options.map(opt => {
+            console.log('opt', opt.title)
             return (
               <List.Item key={opt.id} value={opt}>
                 {opt.title}
