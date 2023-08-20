@@ -5,13 +5,13 @@ import {
 } from '@shared/ui'
 import { useTaskImport } from './context'
 import { Task, TaskPriority } from '@prisma/client'
-import { useMemberStore } from '../../../../../store/member'
-import { useProjectStatusStore } from '../../../../../store/status'
+import { useMemberStore } from '@/store/member'
+import { useProjectStatusStore } from '@/store/status'
 import { Row } from 'read-excel-file'
 import { useCallback, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { taskAddMany, taskGetAll } from '../../../../../services/task'
-import { useTaskStore } from '../../../../../store/task'
+import { taskAddMany, taskGetAll } from '@/services/task'
+import { useTaskStore } from '@/store/task'
 
 type ITaskWithoutId = Omit<Task, 'id'>
 
