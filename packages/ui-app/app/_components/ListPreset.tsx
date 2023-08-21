@@ -37,6 +37,8 @@ export default function ListPreset({
 
   const selectedVal = val.id ? val : defaultOption || defaultValue
 
+  console.log('123123')
+
   return (
     <div className={className}>
       <List
@@ -47,10 +49,9 @@ export default function ListPreset({
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>
-        <List.Button>{selectedVal.title}</List.Button>
+        <List.Button><span className='whitespace-nowrap'>{selectedVal.title}</span></List.Button>
         <List.Options width={width}>
           {options.map(opt => {
-            console.log('opt', opt.title)
             return (
               <List.Item key={opt.id} value={opt}>
                 {opt.title}

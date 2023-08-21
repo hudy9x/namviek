@@ -1,10 +1,12 @@
 import { useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
+import { BsThreeDots } from 'react-icons/bs'
 import { useEffect, useState } from 'react'
 const List = Form.List
 
 interface IMemberPicker {
   className?: string
+  compact?: boolean
   title?: string
   value?: string[]
   onChange?: (val: string[]) => void
@@ -14,6 +16,7 @@ const defaultAssignee = { id: 'NONE', title: 'No assignee' }
 
 export default function MultiMemberPicker({
   title,
+  compact = false,
   onChange,
   value,
   className
@@ -54,22 +57,41 @@ export default function MultiMemberPicker({
     )
     if (!selectedMembers.length) {
       return (
-        <div className="flex gap-2 items-center shrink-0">
+        <div className="flex gap-2 items-center shrink-0 selected-member">
           <Avatar name={'None'} size="sm" src={''} /> No one
         </div>
       )
     }
 
-    return selectedMembers.map(sm => {
+    const reverseMembers = selectedMembers.reverse().slice(0, 3)
+    const TheFirstThreeItem = reverseMembers.map(sm => {
       return (
         <div
           key={sm.id}
-          className="flex gap-2 items-center shrink-0">
+          className="flex gap-2 items-center shrink-0 selected-member">
           <Avatar name={sm.name || ''} size="sm" src={sm.photo || ''} />{' '}
-          {sm && sm.name ? sm.name : 'None'}
+          {compact ? null : (
+            <span className="name">{sm && sm.name ? sm.name : 'None'}</span>
+          )}
         </div>
       )
     })
+
+    const n = selectedMembers.length - reverseMembers.length
+    const Rest = (
+      <div
+        title={`and ${n} more`}
+        className="flex gap-2 items-center justify-center shrink-0 selected-member w-6 h-6 bg-gray-100 rounded-full">
+        +{n}
+      </div>
+    )
+
+    return (
+      <>
+        {TheFirstThreeItem}{' '}
+        {reverseMembers.length < selectedMembers.length ? Rest : null}
+      </>
+    )
   }
 
   return (

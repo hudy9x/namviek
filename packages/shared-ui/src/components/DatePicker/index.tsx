@@ -8,13 +8,14 @@ import './style.css';
 
 export interface IDatePicker {
   className?: string;
+  disabled?: boolean;
   title?: string;
   value?: Date;
   onChange?: (d: Date) => void;
   placeholder?: string;
 }
 
-export default function DatePicker({ title, className, value, onChange, placeholder }: IDatePicker) {
+export default function DatePicker({ title, className, disabled, value, onChange, placeholder }: IDatePicker) {
   const [selected, setSelected] = useState<Date>();
   const [visible, setVisible] = useState(false);
 
@@ -43,7 +44,7 @@ export default function DatePicker({ title, className, value, onChange, placehol
                   <span className="text-transparent">Empty</span>
                 )}
               </div>
-              <AiOutlineCalendar className="absolute top-2.5 right-2.5 text-gray-400" />
+              <AiOutlineCalendar className="absolute top-1/2 -translate-y-1/2 right-2.5 text-gray-400" />
             </div>
           </Popover.Trigger>
           <Popover.Portal>
