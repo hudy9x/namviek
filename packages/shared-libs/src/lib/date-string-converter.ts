@@ -1,4 +1,4 @@
-import { lastDayOfMonth, subDays } from 'date-fns'
+import { addDays, lastDayOfMonth, setHours, subDays } from 'date-fns'
 
 const getMondayNSaturdayInWeek = (d: Date) => {
   const mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay())
@@ -32,10 +32,42 @@ export const fromDateStringToDateObject = (
   const today = new Date()
   to00h00m(today)
 
+  console.log('operator', operator)
+
+  if (dateStr === 'yesterday') {
+    if (operator === '=') {
+      const yesterday = subDays(new Date(), 1)
+      const morningYesterday = setHours(yesterday, -1)
+      const lastNight = setHours(yesterday, 23)
+
+      config.startDate = morningYesterday
+      config.endDate = lastNight
+      // config.startDate = new Date(2023, 7, 21, 0, 0, 0)
+      // config.endDate = new Date(2023, 7, 21, 23, 59, 0)
+    }
+  }
+
+  if (dateStr === 'tomorrow') {
+    if (operator === '=') {
+      const yesterday = addDays(new Date(), 1)
+      const morningYesterday = setHours(yesterday, -1)
+      const lastNight = setHours(yesterday, 23)
+
+      config.startDate = morningYesterday
+      config.endDate = lastNight
+      // config.startDate = new Date(2023, 7, 21, 0, 0, 0)
+      // config.endDate = new Date(2023, 7, 21, 23, 59, 0)
+    }
+  }
+
   if (dateStr === 'today') {
     if (operator === '=') {
+      const endDay = new Date()
+      to23h59m(endDay)
       config.startDate = today
-      config.endDate = today
+      config.endDate = endDay
+
+      console.log('endday', endDay)
     }
 
     if (operator === '<') {
@@ -53,7 +85,7 @@ export const fromDateStringToDateObject = (
     }
   }
 
-  if (dateStr === 'week') {
+  if (['week', 'this-week'].includes(dateStr)) {
     const [mon, sat] = getMondayNSaturdayInWeek(new Date())
 
     if (operator === '=') {

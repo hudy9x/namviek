@@ -38,21 +38,21 @@ export default function TaskFilter() {
 
       <div className="task-filter-actions">
         <FormGroup>
-          {!isDateRange && (
-            <ListPreset
-              value={dateOperator}
-              onChange={val => {
-                setFilterValue('dateOperator', val)
-              }}
-              className="w-[70px]"
-              width={70}
-              options={[
-                { id: '=', title: '=' },
-                { id: '>', title: '>' },
-                { id: '<', title: '<' }
-              ]}
-            />
-          )}
+          {/* {!isDateRange && ( */}
+          {/*   <ListPreset */}
+          {/*     value={dateOperator} */}
+          {/*     onChange={val => { */}
+          {/*       setFilterValue('dateOperator', val) */}
+          {/*     }} */}
+          {/*     className="w-[70px]" */}
+          {/*     width={70} */}
+          {/*     options={[ */}
+          {/*       { id: '=', title: '=' }, */}
+          {/*       { id: '>', title: '>' }, */}
+          {/*       { id: '<', title: '<' } */}
+          {/*     ]} */}
+          {/*   /> */}
+          {/* )} */}
           <ListPreset
             className="w-[150px]"
             value={date}
