@@ -10,9 +10,11 @@ import { projectPointGet } from '../../../../services/point'
 import { useProjectStatusStore } from '../../../../store/status'
 import { useProjectPointStore } from '../../../../store/point'
 import { TaskStatus } from '@prisma/client'
-import { taskGetAll } from '../../../../services/task'
+import { taskGetAll, taskGetByCond } from '../../../../services/task'
 import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
+import { useTaskFilter } from '@/features/TaskFilter/context'
+import { fromDateStringToDateObject } from '@shared/libs'
 
 export default function ProjectContainer() {
   const { projectId } = useParams()
@@ -20,11 +22,26 @@ export default function ProjectContainer() {
   const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
   const { addAllPoints } = useProjectPointStore()
   const { addAllTasks, setTaskLoading } = useTaskStore()
+  const { filter } = useTaskFilter()
 
   useEffect(() => {
     const controller = new AbortController()
+
     setTaskLoading(true)
-    taskGetAll(projectId, controller.signal)
+    const { startDate, endDate } = fromDateStringToDateObject(
+      filter.dateOperator,
+      filter.date
+    )
+
+    console.log(filter.date, startDate, endDate)
+
+    taskGetByCond(
+      {
+        projectId,
+        dueDate: [startDate || 'null', endDate || 'null']
+      },
+      controller.signal
+    )
       .then(res => {
         const { data, status, error } = res.data
         if (status !== 200) {
@@ -39,10 +56,25 @@ export default function ProjectContainer() {
         setTaskLoading(false)
       })
 
+    // taskGetAll(projectId, controller.signal)
+    //   .then(res => {
+    //     const { data, status, error } = res.data
+    //     if (status !== 200) {
+    //       addAllTasks([])
+    //       messageError(error)
+    //       return
+    //     }
+    //
+    //     addAllTasks(data)
+    //   })
+    //   .finally(() => {
+    //     setTaskLoading(false)
+    //   })
+
     return () => {
       controller.abort()
     }
-  }, [])
+  }, [filter])
 
   useEffect(() => {
     const memberController = new AbortController()

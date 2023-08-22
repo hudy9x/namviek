@@ -17,7 +17,7 @@ export default function MemberAvatar({ uid }: { uid: string | null }) {
 
   if (!user) {
     return (
-      <div className="flex gap-2 items-center shrink-0 px-2 py-1.5">
+      <div className="flex gap-2 items-center shrink-0 px-2">
         <Avatar name={'None'} size="md" src={''} />{' '}
         <span className="selected-member-name">{'None'}</span>
       </div>
