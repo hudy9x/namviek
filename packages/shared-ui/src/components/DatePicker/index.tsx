@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import * as Popover from '@radix-ui/react-popover';
 import { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -36,7 +36,7 @@ export default function DatePicker({ title, className, disabled, value, onChange
           <Popover.Trigger asChild>
             <div>
               <div className="form-input cursor-pointer whitespace-nowrap pr-8" tabIndex={-1}>
-                {selected ? (
+                {selected && isValid(selected) ? (
                   format(selected, 'PP')
                 ) : placeholder ? (
                   <span className="text-gray-400">{placeholder}</span>

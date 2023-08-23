@@ -61,13 +61,13 @@ export default function TaskFilter() {
             }}
             width={150}
             options={[
-              { id: 'today', title: 'Today' },
-              { id: 'yesterday', title: 'Yesterday' },
-              { id: 'tomorrow', title: 'Tomorrow' },
-              { id: 'this-week', title: 'This week' },
-              { id: 'this-month', title: 'This month' },
-              { id: 'not-set', title: 'Not set' },
-              { id: 'date-range', title: 'Date range' }
+              { id: 'today', title: '📆 Today' },
+              { id: 'yesterday', title: '📆 Yesterday' },
+              { id: 'tomorrow', title: '📆 Tomorrow' },
+              { id: 'this-week', title: '📆 This week' },
+              { id: 'this-month', title: '📆 This month' },
+              { id: 'not-set', title: '📆 Not set' },
+              { id: 'date-range', title: '📆 Date range' }
             ]}
           />
           {isDateRange ? (
