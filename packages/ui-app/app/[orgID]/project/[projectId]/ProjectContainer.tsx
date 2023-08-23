@@ -14,7 +14,7 @@ import { taskGetAll, taskGetByCond } from '../../../../services/task'
 import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
-import { fromDateStringToDateObject } from '@shared/libs'
+import { fromDateStringToDateObject, to00h00m, to23h59m } from '@shared/libs'
 
 export default function ProjectContainer() {
   const { projectId } = useParams()
@@ -24,19 +24,74 @@ export default function ProjectContainer() {
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { filter } = useTaskFilter()
 
-  useEffect(() => {
-    const controller = new AbortController()
+  const getAssigneeIds = (assigneeIds: string[]) => {
+    if (assigneeIds.includes('ALL')) return undefined
 
-    setTaskLoading(true)
+    if (!assigneeIds.length) return ['null']
+
+    return assigneeIds.filter(a => a !== 'ALL')
+  }
+
+  const getDueDate = ({
+    dateOperator,
+    date,
+    start,
+    end
+  }: {
+    dateOperator: string
+    date: string
+    start: Date | undefined
+    end: Date | undefined
+  }) => {
+    if (date === 'date-range') {
+      start && (start.setHours(0))
+      end && to23h59m(end)
+
+      return { startDate: start, endDate: end }
+    }
+
+    if (date === 'not-set') {
+      return { startDate: 'not-set', endDate: 'not-set' }
+    }
+
     const { startDate, endDate } = fromDateStringToDateObject(
-      filter.dateOperator,
-      filter.date
+      dateOperator,
+      date
     )
 
-    console.log(filter.date, startDate, endDate)
+    return {
+      startDate,
+      endDate
+    }
+  }
 
+  useEffect(() => {
+    const controller = new AbortController()
+    const {
+      date,
+      startDate: start,
+      endDate: end,
+      dateOperator,
+      assigneeIds,
+      priority,
+      point
+    } = filter
+
+    const { startDate, endDate } = getDueDate({
+      dateOperator,
+      date,
+      start,
+      end
+    })
+
+    console.log('date range', startDate, endDate)
+
+    setTaskLoading(true)
     taskGetByCond(
       {
+        taskPoint: +point === -1 ? undefined : +point,
+        priority: priority === 'ALL' ? undefined : priority,
+        assigneeIds: getAssigneeIds(assigneeIds),
         projectId,
         dueDate: [startDate || 'null', endDate || 'null']
       },

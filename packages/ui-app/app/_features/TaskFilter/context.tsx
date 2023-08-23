@@ -1,6 +1,7 @@
 'use client'
 import { useMemberStore } from '@/store/member'
 import { TaskPriority } from '@prisma/client'
+import { getLastDateOfMonth } from '@shared/libs'
 import {
   createContext,
   useContext,
@@ -43,24 +44,20 @@ const TaskFilterContext = createContext<ITaskFilterContextProps>({
 })
 
 export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
-  const { members } = useMemberStore()
+  const d = new Date()
+  const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
+  const lastDate = getLastDateOfMonth(new Date())
+  console.log('firstDate', firstDate)
   const [filter, setFilter] = useState<ITaskFilterFields>({
     term: '',
     dateOperator: '=',
     date: 'this-month',
-    startDate: new Date(),
-    endDate: new Date(),
-    point: 'INFINITE',
+    startDate: firstDate,
+    endDate: lastDate,
+    point: '-1',
     priority: 'ALL',
-    assigneeIds: []
+    assigneeIds: ['ALL']
   })
-
-  useEffect(() => {
-    if (members.length) {
-      const memberIds = members.map(m => m.id)
-      setFilter(filter => ({ ...filter, assigneeIds: memberIds }))
-    }
-  }, [members])
 
   return (
     <TaskFilterContext.Provider value={{ filter, setFilter }}>

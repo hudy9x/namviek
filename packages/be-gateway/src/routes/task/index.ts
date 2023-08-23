@@ -35,7 +35,7 @@ router.get('/project/task', async (req: AuthRequest, res) => {
 router.get('/project/task-query', async (req: AuthRequest, res) => {
   try {
     console.log('=========== query')
-    console.log('params: 16', req.query)
+    console.log('params: 28', req.query)
     // const query = req.body as ITaskQuery
     const { counter, ...rest } = req.query
 
@@ -71,7 +71,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     const result = await mdTaskAdd({
       title,
       startDate: null,
-      dueDate,
+      dueDate: dueDate || null,
       assigneeIds,
       desc,
       projectId,

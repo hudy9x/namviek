@@ -13,6 +13,7 @@ import TaskPoint from './TaskPoint'
 import TaskStatus from './TaskStatus'
 import { Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
+import List from "react-virtualized/dist/commonjs/List";
 
 export default function ListMode() {
   const { statuses, statusLoading } = useProjectStatusStore()

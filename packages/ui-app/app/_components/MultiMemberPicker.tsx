@@ -2,10 +2,12 @@ import { useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
 import { BsThreeDots } from 'react-icons/bs'
 import { useEffect, useState } from 'react'
+import { all } from 'axios'
 const List = Form.List
 
 interface IMemberPicker {
   className?: string
+  all?: boolean
   compact?: boolean
   title?: string
   value?: string[]
@@ -16,6 +18,7 @@ const defaultAssignee = { id: 'NONE', title: 'No assignee' }
 
 export default function MultiMemberPicker({
   title,
+  all = false,
   compact = false,
   onChange,
   value,
@@ -34,6 +37,8 @@ export default function MultiMemberPicker({
   // update project member into list
   useEffect(() => {
     const listMembers = members.map(mem => ({ id: mem.id, title: mem.name }))
+    all && listMembers.push({ id: 'ALL', title: 'All member' })
+
     setOptions(listMembers as ListItemValue[])
   }, [members])
 
@@ -55,6 +60,16 @@ export default function MultiMemberPicker({
     const selectedMembers = members.filter(m =>
       selected.some(s => s.id === m.id)
     )
+
+    if (selected.find(s => s.id === 'ALL')) {
+      return (
+        <div className="flex gap-2 items-center shrink-0 selected-member">
+          <Avatar name={'ALL'} size="sm" src={''} /> All
+        </div>
+      )
+    }
+
+
     if (!selectedMembers.length) {
       return (
         <div className="flex gap-2 items-center shrink-0 selected-member">
@@ -109,7 +124,7 @@ export default function MultiMemberPicker({
           {options.map(option => {
             const user = members.find(m => m.id === option.id)
             return (
-              <List.Item key={option.id} value={option}>
+              <List.Item keepMeOnly={option.id === 'ALL'} key={option.id} value={option}>
                 <div className="flex gap-2.5 items-center">
                   <Avatar
                     src={user?.photo || ''}

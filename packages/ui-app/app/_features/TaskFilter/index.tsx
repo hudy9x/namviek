@@ -97,12 +97,14 @@ export default function TaskFilter() {
         />
         <PrioritySelect
           all={true}
+          width={130}
           value={priority}
           onChange={val => {
             setFilterValue('priority', val)
           }}
         />
         <MultiMemberPicker
+          all={true}
           value={assigneeIds}
           onChange={val => {
             setFilterValue('assigneeIds', val)

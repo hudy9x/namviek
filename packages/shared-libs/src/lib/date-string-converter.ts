@@ -15,12 +15,12 @@ const getStartNEndDateOfMonth = (d: Date) => {
   return [new Date(d.getFullYear(), d.getMonth(), 1), lastDayOfMonth(d)]
 }
 
-const to23h59m = (d: Date) => {
+export const to23h59m = (d: Date) => {
   d.setHours(23)
   d.setMinutes(59)
   d.setSeconds(0)
 }
-const to00h00m = (d: Date) => {
+export const to00h00m = (d: Date) => {
   d.setHours(-1)
 }
 

@@ -42,6 +42,11 @@ export const mdTaskGetAll = ({
   }
 
   if (taskPoint) {
+    taskPoint = +taskPoint
+    if (taskPoint === 0) {
+      taskPoint = null
+    }
+
     where.taskPoint = taskPoint
   }
 
@@ -63,7 +68,13 @@ export const mdTaskGetAll = ({
     dueDate[1] = null
   }
 
-  if (dueDate && (dueDate[0] || dueDate[1])) {
+  const dueDateNotSet = dueDate.includes('not-set')
+
+  if (dueDateNotSet) {
+    where.dueDate = null
+  }
+
+  if (!dueDateNotSet && dueDate && (dueDate[0] || dueDate[1])) {
     let [start, end] = dueDate
 
     if (start) {
@@ -100,8 +111,14 @@ export const mdTaskGetAll = ({
   }
 
   if (assigneeIds && assigneeIds.length) {
-    where.assigneeIds = {
-      hasSome: assigneeIds
+    if (assigneeIds.includes('null')) {
+      where.assigneeIds = {
+        isEmpty: true
+      }
+    } else {
+      where.assigneeIds = {
+        hasSome: assigneeIds
+      }
     }
   }
 

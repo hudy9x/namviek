@@ -50,8 +50,8 @@ export default function PointSelect({
         id: p.point + '',
         title: p.point + ''
       }))
-      zero && newPoints.push({ id: 'ZERO', title: '0' })
-      infinite && newPoints.push({ id: 'INFINITE', title: '∞' })
+      zero && newPoints.push({ id: '0', title: '∅' })
+      infinite && newPoints.push({ id: '-1', title: '∞' })
       setOptions(newPoints)
     }
   }, [points])
@@ -84,7 +84,7 @@ export default function PointSelect({
             ) : null}
           </div>
         </List.Button>
-        <List.Options width={90}>
+        <List.Options width={100}>
           {options.map(option => {
             return (
               <List.Item key={option.id} value={option}>

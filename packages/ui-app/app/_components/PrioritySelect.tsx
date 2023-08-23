@@ -24,6 +24,7 @@ const options: ListItemValue[] = [
 interface IPriorityProps {
   all?: boolean
   value?: TaskPriority | 'ALL'
+  width?: number
   className?: string
   onChange?: (v: TaskPriority) => void
   title?: string
@@ -32,6 +33,7 @@ interface IPriorityProps {
 
 export default function PrioritySelect({
   title,
+  width,
   all = false,
   className,
   value,
@@ -70,7 +72,7 @@ export default function PrioritySelect({
             <span>{val.title ? val.title : 'None'}</span>
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={width}>
           {options.map(option => {
             if (!all && option.id === 'ALL') return <></>
             const c = colors.get(option.id)
