@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "5.2.0",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
@@ -94,7 +94,7 @@
     "nx-cloud": "latest",
     "postcss": "8.4.21",
     "prettier": "^2.6.2",
-    "prisma": "^4.15.0",
+    "prisma": "5.2.0",
     "tailwindcss": "3.2.7",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",

@@ -2456,22 +2456,22 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/client@^4.15.0":
-  version "4.16.2"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-4.16.2.tgz"
-  integrity sha512-qCoEyxv1ZrQ4bKy39GnylE8Zq31IRmm8bNhNbZx7bF2cU5aiCCnSa93J2imF88MBjn7J9eUQneNxUQVJdl/rPQ==
+"@prisma/client@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.2.0.tgz#cbfdd440614b38736563a7999f39922fcde0ed50"
+  integrity sha512-AiTjJwR4J5Rh6Z/9ZKrBBLel3/5DzUNntMohOy7yObVnVoTNVFi2kvpLZlFuKO50d7yDspOtW6XBpiAd0BVXbQ==
   dependencies:
-    "@prisma/engines-version" "4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81"
+    "@prisma/engines-version" "5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f"
 
-"@prisma/engines-version@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81":
-  version "4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81.tgz"
-  integrity sha512-q617EUWfRIDTriWADZ4YiWRZXCa/WuhNgLTVd+HqWLffjMSPzyM5uOWoauX91wvQClSKZU4pzI4JJLQ9Kl62Qg==
+"@prisma/engines-version@5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f":
+  version "5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f.tgz#11366e7ff031c908debf4983248d40046016de37"
+  integrity sha512-jsnKT5JIDIE01lAeCj2ghY9IwxkedhKNvxQeoyLs6dr4ZXynetD0vTy7u6wMJt8vVPv8I5DPy/I4CFaoXAgbtg==
 
-"@prisma/engines@4.16.2":
-  version "4.16.2"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-4.16.2.tgz"
-  integrity sha512-vx1nxVvN4QeT/cepQce68deh/Turxy5Mr+4L4zClFuK1GlxN3+ivxfuv+ej/gvidWn1cE1uAhW7ALLNlYbRUAw==
+"@prisma/engines@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-5.2.0.tgz#e5dff48eb324c8137393933292d44ea5c3bc2ce7"
+  integrity sha512-dT7FOLUCdZmq+AunLqB1Iz+ZH/IIS1Fz2THmKZQ6aFONrQD/BQ5ecJ7g2wGS2OgyUFf4OaLam6/bxmgdOBDqig==
 
 "@radix-ui/number@1.0.1":
   version "1.0.1"
@@ -9898,12 +9898,12 @@ pretty-format@^29.0.0, pretty-format@^29.6.0:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-prisma@^4.15.0:
-  version "4.16.2"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-4.16.2.tgz"
-  integrity sha512-SYCsBvDf0/7XSJyf2cHTLjLeTLVXYfqp7pG5eEVafFLeT0u/hLFz/9W196nDRGUOo1JfPatAEb+uEnTQImQC1g==
+prisma@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.2.0.tgz#a302dc2635cdec1d22d552ece837fb29a03563b9"
+  integrity sha512-FfFlpjVCkZwrqxDnP4smlNYSH1so+CbfjgdpioFzGGqlQAEm6VHAYSzV7jJgC3ebtY9dNOhDMS2+4/1DDSM7bQ==
   dependencies:
-    "@prisma/engines" "4.16.2"
+    "@prisma/engines" "5.2.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
