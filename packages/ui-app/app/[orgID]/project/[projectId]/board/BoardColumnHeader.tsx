@@ -12,7 +12,7 @@ export default function BoardColumHeader({
   provided
 }: IBoardColumnHeaderProps) {
   return (
-    <div className="py-1 flex items-center justify-between">
+    <div className="py-1 px-3 flex items-center justify-between">
       <div className="flex border-1 border-transparent items-center gap-2">
         <div className="w-3 h-4 text-gray-400" {...provided.dragHandleProps}>
           <MdDragIndicator />

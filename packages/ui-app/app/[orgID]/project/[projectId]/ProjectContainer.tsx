@@ -44,7 +44,7 @@ export default function ProjectContainer() {
     end: Date | undefined
   }) => {
     if (date === 'date-range') {
-      start && (start.setHours(0))
+      start && start.setHours(0)
       end && to23h59m(end)
 
       return { startDate: start, endDate: end }
@@ -68,6 +68,7 @@ export default function ProjectContainer() {
   useEffect(() => {
     const controller = new AbortController()
     const {
+      term,
       date,
       startDate: start,
       endDate: end,
@@ -84,11 +85,10 @@ export default function ProjectContainer() {
       end
     })
 
-    console.log('date range', startDate, endDate)
-
     setTaskLoading(true)
     taskGetByCond(
       {
+        title: term || undefined,
         taskPoint: +point === -1 ? undefined : +point,
         priority: priority === 'ALL' ? undefined : priority,
         assigneeIds: getAssigneeIds(assigneeIds),
@@ -111,25 +111,10 @@ export default function ProjectContainer() {
         setTaskLoading(false)
       })
 
-    // taskGetAll(projectId, controller.signal)
-    //   .then(res => {
-    //     const { data, status, error } = res.data
-    //     if (status !== 200) {
-    //       addAllTasks([])
-    //       messageError(error)
-    //       return
-    //     }
-    //
-    //     addAllTasks(data)
-    //   })
-    //   .finally(() => {
-    //     setTaskLoading(false)
-    //   })
-
     return () => {
       controller.abort()
     }
-  }, [filter])
+  }, [JSON.stringify(filter)])
 
   useEffect(() => {
     const memberController = new AbortController()

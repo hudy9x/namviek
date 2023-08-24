@@ -7,8 +7,12 @@ import './style.css'
 import PrioritySelect from '@/components/PrioritySelect'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useTaskFilter } from './context'
+import { useEffect, useState } from 'react'
+import { AiOutlineSearch } from 'react-icons/ai'
 
+let timeout = 0
 export default function TaskFilter() {
+  const [txt, setTxt] = useState('')
   const { filter, setFilterValue } = useTaskFilter()
   const {
     term,
@@ -23,14 +27,26 @@ export default function TaskFilter() {
 
   const isDateRange = date === 'date-range'
 
+  useEffect(() => {
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+
+    timeout = setTimeout(() => {
+      console.log('update search term')
+      setFilterValue('term', txt)
+    }, 250) as unknown as number
+  }, [txt])
+
   return (
     <div className="task-filter">
-      <div>
+      <div className="flex items-center gap-2">
+        <AiOutlineSearch className="text-gray-400" />
         <input
           className="text-sm outline-none"
-          value={term}
+          value={txt}
           onChange={ev => {
-            setFilterValue('term', ev.target.value)
+            setTxt(ev.target.value)
           }}
           placeholder="Search ..."
         />
@@ -59,7 +75,7 @@ export default function TaskFilter() {
             onChange={val => {
               setFilterValue('date', val)
             }}
-            width={150}
+            width={180}
             options={[
               { id: 'today', title: '📆 Today' },
               { id: 'yesterday', title: '📆 Yesterday' },
