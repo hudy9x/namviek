@@ -22,8 +22,8 @@ export const BoardTaskList = ({ groupId }: IBoardTaskListProps) => {
           }`}
           {...provided.droppableProps}
           ref={provided.innerRef}>
-          <Scrollbar style={{ height: 'calc(100vh - 83px - 38px - 45px)' }}>
-            <div className="space-y-3 pb-[30px]">
+          <Scrollbar style={{ height: 'calc(100vh - 83px - 38px - 85px)' }}>
+            <div className="space-y-3 px-3 pb-[30px]">
               {tasks.map((task, index) => {
                 if (task.taskStatusId !== groupId) return null
                 ++counter

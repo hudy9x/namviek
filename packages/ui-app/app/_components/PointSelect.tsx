@@ -6,6 +6,8 @@ import { AiOutlineStar } from 'react-icons/ai'
 const List = Form.List
 
 interface IPointSelectProps {
+  zero?: boolean
+  infinite?: boolean
   value?: string
   className?: string
   onChange?: (v: string) => void
@@ -19,6 +21,8 @@ const defaultOption: ListItemValue = {
 }
 
 export default function PointSelect({
+  zero = false,
+  infinite = false,
   title,
   className,
   value,
@@ -42,7 +46,13 @@ export default function PointSelect({
 
   useEffect(() => {
     if (points.length) {
-      setOptions(points.map(p => ({ id: p.point + '', title: p.point + '' })))
+      const newPoints = points.map(p => ({
+        id: p.point + '',
+        title: p.point + ''
+      }))
+      zero && newPoints.push({ id: '0', title: '∅' })
+      infinite && newPoints.push({ id: '-1', title: '∞' })
+      setOptions(newPoints)
     }
   }, [points])
 
@@ -66,7 +76,7 @@ export default function PointSelect({
         }}>
         <List.Button>
           <div className="relative w-5">
-            <AiOutlineStar className="w-4 h-4 shrink-0" />
+            <AiOutlineStar className="w-4 text-gray-500 h-4 shrink-0" />
             {val.title ? (
               <span className="absolute -top-1.5 left-2.5 w-4 h-4 text-[10px] flex items-center justify-center rounded-full bg-orange-200">
                 {val.title ? val.title : ''}
@@ -74,11 +84,11 @@ export default function PointSelect({
             ) : null}
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={100}>
           {options.map(option => {
             return (
               <List.Item key={option.id} value={option}>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-gray-500">
                   <AiOutlineStar />
                   {option.title}
                 </div>

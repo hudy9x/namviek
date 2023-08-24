@@ -1,10 +1,11 @@
 import { Form, ListItemValue } from '@shared/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
 const List = Form.List
 interface IListPresetProps {
   className?: string
   title?: string
+  width?: number
   error?: string
   value?: string
   defaultOption?: ListItemValue
@@ -14,8 +15,9 @@ interface IListPresetProps {
 
 const defaultValue = { id: 'NONE', title: 'Option' }
 
-export default function ListPreset({
+function ListPreset({
   title,
+  width,
   error,
   className,
   value,
@@ -24,7 +26,9 @@ export default function ListPreset({
   options
 }: IListPresetProps) {
   const selectedOption = options.find(opt => opt.id === value)
-  const [val, setVal] = useState<ListItemValue>(selectedOption || defaultOption || defaultValue)
+  const [val, setVal] = useState<ListItemValue>(
+    selectedOption || defaultOption || defaultValue
+  )
   const [updateCounter, setUpdateCounter] = useState(0)
 
   useEffect(() => {
@@ -45,8 +49,10 @@ export default function ListPreset({
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>
-        <List.Button>{selectedVal.title}</List.Button>
-        <List.Options>
+        <List.Button>
+          <span className="whitespace-nowrap">{selectedVal.title}</span>
+        </List.Button>
+        <List.Options width={width}>
           {options.map(opt => {
             return (
               <List.Item key={opt.id} value={opt}>
@@ -59,3 +65,5 @@ export default function ListPreset({
     </div>
   )
 }
+
+export default memo(ListPreset)

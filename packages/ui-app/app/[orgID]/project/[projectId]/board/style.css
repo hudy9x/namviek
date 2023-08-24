@@ -3,7 +3,7 @@
 }
 
 .board-column {
-  @apply px-2 py-3;
+  @apply py-3;
 }
 
 .board-column-wrapper {

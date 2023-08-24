@@ -49,6 +49,8 @@ export default function PrioritySelectMultiple({
     }
   }, [updateCounter, val])
 
+  console.log('val', val)
+
   return (
     <div className={className}>
       <List
@@ -63,7 +65,10 @@ export default function PrioritySelectMultiple({
         <List.Button>
           <div className="flex items-center gap-2">
             {!val || !val.length ? (
-              <span className="text-transparent">None</span>
+              <div className="flex items-center gap-2">
+                <RiFlag2Fill style={{color: 'rgb(223 223 223)'}} />
+                None
+              </div>
             ) : null}
             {val.map(p => {
               const color = colors.get(p.id)
@@ -76,7 +81,7 @@ export default function PrioritySelectMultiple({
             })}
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={120}>
           {options.map(option => {
             const c = colors.get(option.id)
             return (

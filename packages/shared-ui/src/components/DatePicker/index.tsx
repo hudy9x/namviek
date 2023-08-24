@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import * as Popover from '@radix-ui/react-popover';
 import { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -8,13 +8,14 @@ import './style.css';
 
 export interface IDatePicker {
   className?: string;
+  disabled?: boolean;
   title?: string;
   value?: Date;
   onChange?: (d: Date) => void;
   placeholder?: string;
 }
 
-export default function DatePicker({ title, className, value, onChange, placeholder }: IDatePicker) {
+export default function DatePicker({ title, className, disabled, value, onChange, placeholder }: IDatePicker) {
   const [selected, setSelected] = useState<Date>();
   const [visible, setVisible] = useState(false);
 
@@ -34,8 +35,8 @@ export default function DatePicker({ title, className, value, onChange, placehol
         <Popover.Root open={visible} onOpenChange={setVisible}>
           <Popover.Trigger asChild>
             <div>
-              <div className="form-input cursor-pointer" tabIndex={-1}>
-                {selected ? (
+              <div className="form-input cursor-pointer whitespace-nowrap pr-8" tabIndex={-1}>
+                {selected && isValid(selected) ? (
                   format(selected, 'PP')
                 ) : placeholder ? (
                   <span className="text-gray-400">{placeholder}</span>
@@ -43,7 +44,7 @@ export default function DatePicker({ title, className, value, onChange, placehol
                   <span className="text-transparent">Empty</span>
                 )}
               </div>
-              <AiOutlineCalendar className="absolute top-2.5 right-2.5 text-gray-400" />
+              <AiOutlineCalendar className="absolute top-1/2 -translate-y-1/2 right-2.5 text-gray-400" />
             </div>
           </Popover.Trigger>
           <Popover.Portal>

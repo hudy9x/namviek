@@ -18,9 +18,9 @@ export default function TaskDate({
     setValue(date)
   }, [date])
 
-  if (!value) {
-    return <div>-</div>
-  }
+  // if (!value) {
+  //   return <div>-</div>
+  // }
 
   const onUpdate = (date: Date) => {
     const dueDate = date
@@ -32,7 +32,7 @@ export default function TaskDate({
 
   return (
     <div className={`task-date ${className}`}>
-      <DatePickerBorderless value={value} onChange={onUpdate} />
+      <DatePickerBorderless value={value || undefined} placeholder='--/--/--' onChange={onUpdate} />
     </div>
   )
 }

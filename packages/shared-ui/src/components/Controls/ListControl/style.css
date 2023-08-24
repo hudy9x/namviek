@@ -12,6 +12,7 @@
 
 .select-button {
   @apply cursor-pointer relative;
+  padding-right: 49px;
 }
 
 .select-clear-icon {
