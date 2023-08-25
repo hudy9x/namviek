@@ -19,11 +19,20 @@ router.use([authMiddleware])
 
 router.use([StatusRouter, TagRouter, PointRouter])
 
+const cachedProjects = {}
+
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
 
   try {
+    if (userId in cachedProjects) {
+      console.log('return cached project')
+      return res.json({
+        status: 200,
+        data: cachedProjects[userId]
+      })
+    }
     const invitedProjects = await mdMemberGetProject(userId)
 
     if (!invitedProjects) {
@@ -37,9 +46,11 @@ router.get('/project', async (req: AuthRequest, res) => {
     const projectIds = invitedProjects.map(p => p.projectId)
     const projects = await mdProjectGetAllByIds(projectIds)
 
+    cachedProjects[userId] = projects
+
     console.log('get project success')
 
-    res.setHeader('Cache-Control', 'max-age=20, public')
+    // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
       status: 200,
       data: projects
