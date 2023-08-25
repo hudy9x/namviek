@@ -68,7 +68,11 @@ export const mdTaskGetAll = ({
     dueDate[1] = null
   }
 
-  const dueDateNotSet = dueDate.includes('not-set')
+  let dueDateNotSet = false
+
+  if (dueDate) {
+    dueDateNotSet = dueDate.includes('not-set')
+  }
 
   if (dueDateNotSet) {
     where.dueDate = null
