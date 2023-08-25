@@ -31,3 +31,13 @@ export const setJSONCache = (
 ) => {
   redis.set(key, JSON.stringify(value))
 }
+
+export const getJSONCache = async (key: string) => {
+  if (!connected) {
+    return null
+  }
+
+  const value = await redis.get(key)
+
+  return JSON.parse(value)
+}
