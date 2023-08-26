@@ -12,6 +12,7 @@ import { MemberRole } from '@prisma/client'
 import StatusRouter from './status'
 import TagRouter from './tag'
 import PointRouter from './point'
+import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 
@@ -22,8 +23,17 @@ router.use([StatusRouter, TagRouter, PointRouter])
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
+  const key = [CKEY.USER_PROJECT, userId]
 
   try {
+    const cached = await getJSONCache(key)
+    if (cached) {
+      console.log('return cached project')
+      return res.json({
+        status: 200,
+        data: cached
+      })
+    }
     const invitedProjects = await mdMemberGetProject(userId)
 
     if (!invitedProjects) {
@@ -37,9 +47,11 @@ router.get('/project', async (req: AuthRequest, res) => {
     const projectIds = invitedProjects.map(p => p.projectId)
     const projects = await mdProjectGetAllByIds(projectIds)
 
+    setJSONCache(key, projects)
+
     console.log('get project success')
 
-    res.setHeader('Cache-Control', 'max-age=20, public')
+    // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
       status: 200,
       data: projects
@@ -86,6 +98,8 @@ router.post('/project', async (req: AuthRequest, res) => {
     updatedBy: null,
     updatedAt: null
   })
+
+  delCache([CKEY.USER_PROJECT, userId])
 
   res.json({
     status: 200,

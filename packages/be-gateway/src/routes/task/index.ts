@@ -7,11 +7,16 @@ import {
   mdTaskGetOne,
   mdTaskUpdate,
   mdTaskAddMany,
-  mdProjectGet,
-  ITaskQuery
+  mdProjectGet
 } from '@shared/models'
 
 import { Task } from '@prisma/client'
+import {
+  CKEY,
+  genKeyFromSource,
+  getJSONCache,
+  setJSONCache
+} from '../../lib/redis'
 
 const router = Router()
 
@@ -34,15 +39,42 @@ router.get('/project/task', async (req: AuthRequest, res) => {
 
 router.get('/project/task-query', async (req: AuthRequest, res) => {
   try {
-    console.log('=========== query')
-    console.log('params: 2', req.query)
     // const query = req.body as ITaskQuery
     const { counter, ...rest } = req.query
+
+    let ableToCache = false
+    const queryKeys = Object.keys(req.query)
+    const key = [CKEY.TASK_QUERY, genKeyFromSource(req.query)]
+
+    if (
+      queryKeys.length === 2 &&
+      queryKeys.includes('projectId') &&
+      queryKeys.includes('dueDate')
+    ) {
+      ableToCache = true
+
+      const cached = await getJSONCache(key)
+      if (cached) {
+        console.log('return cached tasks')
+        return res.json({
+          status: 200,
+          data: cached.data,
+          total: cached.total
+        })
+      }
+    }
 
     const tasks = await mdTaskGetAll(rest)
     if (counter) {
       const total = await mdTaskGetAll(req.query)
+      if (ableToCache) {
+        setJSONCache(key, { data: tasks, total })
+      }
       return res.json({ status: 200, data: tasks, total })
+    }
+
+    if (ableToCache) {
+      setJSONCache(key, { data: tasks, total: 0 })
     }
 
     res.json({ status: 200, data: tasks })

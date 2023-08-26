@@ -130,7 +130,7 @@ export const mdTaskGetAll = ({
     where.priority = priority
   }
 
-  console.log('where', where)
+  // console.log('where', where)
 
   if (counter) {
     return taskModel.count({ where })

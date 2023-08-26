@@ -4,15 +4,17 @@ import {
   mdTaskStatusAdd,
   mdTaskStatusGetByProjectId,
   mdTaskStatusUpdate,
-  mdTaskStatusDel,
+  mdTaskStatusDel
 } from '@shared/models'
 import { TaskStatus } from '@prisma/client'
+import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 
 router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
   const projectId = req.params.projectId
   const body = req.body as TaskStatus
+  const key = [CKEY.PROJECT_STATUS, projectId]
   const data = {
     projectId,
     name: body.name,
@@ -22,6 +24,7 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
   mdTaskStatusAdd(data)
     .then(result => {
       console.log(result)
+      delCache(key)
       res.json({ status: 200, data: result })
     })
     .catch(err => {
@@ -29,31 +32,42 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
     })
 })
 
-router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
-  const projectId = req.params.projectId;
-  const body = req.body as TaskStatus;
-  const data = {
-    projectId,
-    name: body.name,
-    color: body.color,
-    order: body.order
-  };
-  mdTaskStatusAdd(data)
-    .then(result => {
-      console.log(result);
-      res.json({ status: 200, data: result });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
+// router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
+//   const projectId = req.params.projectId;
+//   const body = req.body as TaskStatus;
+//   const data = {
+//     projectId,
+//     name: body.name,
+//     color: body.color,
+//     order: body.order
+//   };
+//   mdTaskStatusAdd(data)
+//     .then(result => {
+//       console.log(result);
+//       res.json({ status: 200, data: result });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// });
 
 router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
   const projectId = req.params.projectId
+  const key = [CKEY.PROJECT_STATUS, projectId]
+
+  const cached = await getJSONCache(key)
+
+  if (cached) {
+    console.log('return status cached 2')
+    return res.json({
+      status: 200,
+      data: cached
+    })
+  }
 
   mdTaskStatusGetByProjectId(projectId)
     .then(result => {
-      console.log(result)
+      setJSONCache(key, result)
       res.json({ status: 200, data: result })
     })
     .catch(err => {
@@ -63,8 +77,10 @@ router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
 
 router.put('/project/status', async (req: AuthRequest, res) => {
   const body = req.body as Partial<TaskStatus>
+  const key = [CKEY.PROJECT_STATUS, body.projectId]
   mdTaskStatusUpdate(body)
     .then(result => {
+      delCache(key)
       res.json({ status: 200, data: result })
     })
     .catch(err => {
@@ -109,7 +125,10 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
 
   Promise.all(updatePromises)
     .then(result => {
-      console.log('updated', result)
+      if (result[0] && result[0].projectId) {
+        const key = [CKEY.PROJECT_POINT, result[0].projectId]
+        delCache(key)
+      }
       res.json({ status: 200, data: result })
     })
     .catch(error => {
@@ -120,9 +139,11 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
 
 router.delete('/project/status/:id', async (req: AuthRequest, res) => {
   const id = req.params.id
+
   mdTaskStatusDel(id)
     .then(result => {
-      console.log(result)
+      const key = [CKEY.PROJECT_POINT, result.projectId]
+      delCache(key)
       res.json({ status: 200, data: result })
     })
     .catch(err => {
