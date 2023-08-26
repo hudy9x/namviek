@@ -8,6 +8,7 @@ import {
   mdMemberUpdateRole
 } from '@shared/models'
 import { MemberRole, User } from '@prisma/client'
+import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 
@@ -15,11 +16,22 @@ router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/project
 router.get('/project/member', async (req: AuthRequest, res) => {
-  const query = req.query
+  const { projectId } = req.query as { projectId: string }
+  const key = [CKEY.PROJECT_MEMBER, projectId]
 
   try {
-    const members = await mdMemberGetAllByProjectId(query.projectId as string)
+    const cached = await getJSONCache(key)
+    if (cached) {
+      return res.json({
+        status: 200,
+        data: cached
+      })
+    }
+
+    const members = await mdMemberGetAllByProjectId(projectId)
     const users = members.map(m => ({ ...m.users, role: m.role }))
+
+    setJSONCache(key, users)
 
     res.json({
       status: 200,
@@ -42,6 +54,7 @@ router.post('/project/member', async (req: AuthRequest, res) => {
     projectId: string
     members: User[]
   }
+  const key = [CKEY.PROJECT_MEMBER, projectId]
 
   console.log('projectId + members:', projectId, members)
 
@@ -59,6 +72,7 @@ router.post('/project/member', async (req: AuthRequest, res) => {
     })
   )
     .then(result => {
+      delCache(key)
       console.log('done')
       res.json({ status: 200, data: result })
     })
@@ -73,6 +87,7 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
     role: MemberRole
     projectId: string
   }
+  const key = [CKEY.PROJECT_MEMBER, projectId]
 
   console.log('uid', uid)
   console.log('projectId', projectId)
@@ -84,6 +99,7 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
     role
   })
     .then(result => {
+      delCache(key)
       res.json({ status: 200, data: result })
     })
     .catch(error => {
@@ -93,9 +109,11 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
 
 router.delete('/project/member', async (req: AuthRequest, res) => {
   const { uid, projectId } = req.query as { uid: string; projectId: string }
+  const key = [CKEY.PROJECT_MEMBER, projectId]
 
   mdMemberDel(uid, projectId)
     .then(result => {
+      delCache(key)
       res.json({ status: 200, data: result })
     })
     .catch(error => {

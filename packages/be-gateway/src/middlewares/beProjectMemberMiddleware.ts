@@ -32,12 +32,5 @@ export const beProjectMemberMiddleware = async (
     })
   }
 
-  console.log('Passed !, you are project member')
-
-  // console.log('==================');
-  // console.log('uid: ', id);
-  // console.log('projectId:', projectId);
-  // console.log('is belong to project', result);
-
   next()
 }

@@ -13,6 +13,7 @@ import {
   mdOrgMemGetByUid
 } from '@shared/models'
 import orgMembers from './members'
+import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 
@@ -24,10 +25,20 @@ router.get('/org', async (req: AuthRequest, res) => {
   try {
     const { id } = req.authen
 
+    const key = [CKEY.USER_ORGS, id]
+    const cached = await getJSONCache(key)
+    if (cached) {
+      console.log('return cached org list')
+      return res.json({
+        status: 200,
+        data: cached
+      })
+    }
+
     const orgIds = await mdOrgMemGetByUid(id)
     const orgs = await mdOrgGet(orgIds.map(org => org.organizationId))
 
-    console.log(orgs)
+    setJSONCache(key, orgs)
 
     res.setHeader('Cache-Control', 'max-age=20, public')
 
@@ -47,6 +58,7 @@ router.post('/org', async (req: AuthRequest, res) => {
   try {
     const body = req.body as Pick<Organization, 'name' | 'desc'>
     const { id } = req.authen
+    const key = [CKEY.USER_ORGS, id]
 
     console.log('called organization')
     console.log(body)
@@ -62,6 +74,8 @@ router.post('/org', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null
     })
+
+    delCache(key)
 
     console.log('created', result)
 

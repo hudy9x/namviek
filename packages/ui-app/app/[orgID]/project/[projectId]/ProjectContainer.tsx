@@ -137,6 +137,7 @@ export default function ProjectContainer() {
     projectStatusGet(projectId, statusController.signal)
       .then(res => {
         const { data, status } = res.data
+        console.log('data statues', data, status)
 
         if (status !== 200) {
           addAllStatuses([])
