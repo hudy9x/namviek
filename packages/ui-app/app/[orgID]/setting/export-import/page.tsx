@@ -1,10 +1,13 @@
 import SettingExport from '@/features/SettingExport'
-import { TaskFilterProvider } from '@/features/TaskFilter/context'
+import { SettingFilterProvider } from '@/features/SettingExport/context'
 
 export default function ExportImportPage() {
   return (
-    <TaskFilterProvider>
-      <SettingExport />
-    </TaskFilterProvider>
+    <>
+      <title>{`Setting > Export`}</title>
+      <SettingFilterProvider>
+        <SettingExport />
+      </SettingFilterProvider>
+    </>
   )
 }

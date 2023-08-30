@@ -3,6 +3,7 @@ import { taskModel, pmClient } from './_prisma'
 
 export interface ITaskQuery {
   projectId?: string
+  projectIds?: string[]
   title?: string
   dueDate?: [Date | string, Date | string]
   assigneeIds?: string[]
@@ -15,12 +16,13 @@ export interface ITaskQuery {
   counter?: boolean
 }
 
-export const mdTaskGetAll = ({
+const generateConditions = ({
   take,
   skip,
   orderBy,
   priority,
   projectId,
+  projectIds,
   title,
   dueDate,
   assigneeIds,
@@ -52,6 +54,15 @@ export const mdTaskGetAll = ({
 
   if (projectId && projectId !== 'all') {
     where.projectId = projectId
+  }
+
+  if (projectIds && projectIds.length) {
+    if (!projectIds.includes('ALL')) {
+      // where.projectId = null
+      where.projectId = {
+        in: projectIds
+      }
+    }
   }
 
   if (statusIds) {
@@ -131,6 +142,32 @@ export const mdTaskGetAll = ({
   }
 
   // console.log('where', where)
+
+  return where
+}
+
+export const mdTaskGetAll = (query: ITaskQuery) => {
+  const { counter, skip, take } = query
+  const where: {
+    [key: string]: unknown
+  } = generateConditions(query)
+
+  if (counter) {
+    return taskModel.count({ where })
+  }
+
+  return taskModel.findMany({
+    skip,
+    take,
+    where
+  })
+}
+
+export const mdTaskExport = (query: ITaskQuery) => {
+  const { counter, skip, take } = query
+  const where: {
+    [key: string]: unknown
+  } = generateConditions(query)
 
   if (counter) {
     return taskModel.count({ where })
