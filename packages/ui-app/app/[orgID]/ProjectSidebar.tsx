@@ -52,7 +52,7 @@ export default function ProjectSidebar() {
       title: 'Settings',
       href: `/${orgID}/setting`,
       icon: HiOutlineCog6Tooth,
-      active: false
+      active: pathname.includes(`${orgID}/setting`)
     }
   ]
 
