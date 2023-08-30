@@ -147,10 +147,13 @@ const generateConditions = ({
 }
 
 export const mdTaskGetAll = (query: ITaskQuery) => {
-  const { counter, skip, take } = query
+  let take = query.take
+  const { counter, skip } = query
   const where: {
     [key: string]: unknown
   } = generateConditions(query)
+
+  take = take ? parseInt(take as unknown as string, 10) : undefined
 
   if (counter) {
     return taskModel.count({ where })
@@ -164,10 +167,12 @@ export const mdTaskGetAll = (query: ITaskQuery) => {
 }
 
 export const mdTaskExport = (query: ITaskQuery) => {
-  const { counter, skip, take } = query
+  const { counter, skip } = query
   const where: {
     [key: string]: unknown
   } = generateConditions(query)
+  let take = query.take
+  take = take ? parseInt(take as unknown as string, 10) : undefined
 
   if (counter) {
     return taskModel.count({ where })

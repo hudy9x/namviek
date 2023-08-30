@@ -150,7 +150,12 @@ export default function SettingExport() {
                   <td className="text-center">{index + 1}</td>
                   {columns.map(col => {
                     const key = col.name as keyof ITaskExport
-                    return <td key={col.name}>{task[key]}</td>
+                    const align = col.name === 'title' ? '' : 'text-center'
+                    return (
+                      <td className={`${align}`} key={col.name}>
+                        {task[key]}
+                      </td>
+                    )
                   })}
                 </tr>
               )

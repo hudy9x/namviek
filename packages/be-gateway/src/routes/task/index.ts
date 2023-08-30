@@ -27,10 +27,8 @@ router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/example
 router.get('/project/task', async (req: AuthRequest, res) => {
-  console.log('called')
   const projectId = req.query.projectId as string
   try {
-    console.log('projectId', projectId)
     const tasks = await mdTaskGetAll({ projectId, dueDate: [null, null] })
     console.log('get all task from project')
     res.json({ status: 200, data: tasks })

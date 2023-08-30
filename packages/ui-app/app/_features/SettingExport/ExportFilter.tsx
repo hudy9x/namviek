@@ -66,6 +66,7 @@ export default function ExportFilter() {
       </div>
       <div>
         <Button
+          size='sm'
           onClick={() => {
             console.log('a')
           }}
