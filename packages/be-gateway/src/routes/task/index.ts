@@ -7,10 +7,13 @@ import {
   mdTaskGetOne,
   mdTaskUpdate,
   mdTaskAddMany,
-  mdProjectGet
+  mdProjectGet,
+  mdTaskExport,
+  mdTaskStatusQuery,
+  mdMemberGetProject
 } from '@shared/models'
 
-import { Task } from '@prisma/client'
+import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   genKeyFromSource,
@@ -24,10 +27,8 @@ router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/example
 router.get('/project/task', async (req: AuthRequest, res) => {
-  console.log('called')
   const projectId = req.query.projectId as string
   try {
-    console.log('projectId', projectId)
     const tasks = await mdTaskGetAll({ projectId, dueDate: [null, null] })
     console.log('get all task from project')
     res.json({ status: 200, data: tasks })
@@ -37,7 +38,7 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   }
 })
 
-router.get('/project/task-query', async (req: AuthRequest, res) => {
+router.get('/project/task/query', async (req: AuthRequest, res) => {
   try {
     // const query = req.body as ITaskQuery
     const { counter, ...rest } = req.query
@@ -81,6 +82,60 @@ router.get('/project/task-query', async (req: AuthRequest, res) => {
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task/export', async (req: AuthRequest, res) => {
+  try {
+    // const query = req.body as ITaskQuery
+    const { counter, ...rest } = req.query
+    const { id: userId } = req.authen
+    console.log('test 4')
+
+    const sentProjectIds = rest.projectIds as string[]
+    let projectIds = sentProjectIds
+    if (projectIds && projectIds.length && projectIds.includes('ALL')) {
+      const myProjectIds = await mdMemberGetProject(userId)
+      projectIds = myProjectIds.map(p => p.projectId)
+    }
+
+    const promiseRequests = [
+      mdTaskStatusQuery({
+        projectIds
+      }),
+      mdTaskExport(rest)
+    ]
+
+    const result = await Promise.all(promiseRequests)
+    const statuses = result[0] as TaskStatus[]
+    const tasks = result[1] as Task[]
+
+    const refactorStatuses = {}
+    statuses.map((stt: TaskStatus) => {
+      refactorStatuses[stt.id] = stt
+    })
+
+    const newTasks = []
+    tasks.map(task => {
+      const stt = refactorStatuses[task.taskStatusId]
+      const taskStatusName = stt ? stt.name : null
+      newTasks.push({
+        ...task,
+        ...{
+          taskStatusName
+        }
+      })
+    })
+
+    if (counter) {
+      const total = await mdTaskExport(req.query)
+      return res.json({ status: 200, data: newTasks, total })
+    }
+
+    res.json({ status: 200, data: newTasks })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ status: 500, error })
   }
 })
 

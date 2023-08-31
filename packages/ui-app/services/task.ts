@@ -26,7 +26,21 @@ export interface ITaskQuery {
 }
 
 export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
-  return httpGet(`/api/project/task-query`, {
+  return httpGet(`/api/project/task/query`, {
+    params: query,
+    signal: signal
+  })
+}
+
+type ITaskExportQuery = Omit<ITaskQuery, 'projectId'> & {
+  projectIds?: string[]
+}
+
+export const taskExportByCond = (
+  query: ITaskExportQuery,
+  signal?: AbortSignal
+) => {
+  return httpGet(`/api/project/task/export`, {
     params: query,
     signal: signal
   })

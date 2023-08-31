@@ -48,8 +48,8 @@
   @apply hover:text-indigo-500;
 }
 
-.side-nav .side-title.active{
-  @apply bg-gray-100 hover:text-gray-500
+.side-nav .side-title.active {
+  @apply bg-gray-100 hover:text-gray-500;
 }
 
 .side-nav .section-icon {
@@ -96,4 +96,24 @@
 
 .droppable * {
   @apply pointer-events-none;
+}
+
+.table {
+  @apply text-sm rounded-md border text-gray-500 w-full bg-white;
+}
+
+.table td,.table th {
+  @apply whitespace-nowrap px-1.5 py-2;
+}
+
+.table thead tr {
+  @apply divide-x;
+}
+
+.table tbody {
+  @apply divide-y border-t;
+}
+
+.table tbody tr {
+  @apply divide-x;
 }

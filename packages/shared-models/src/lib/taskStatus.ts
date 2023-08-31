@@ -9,6 +9,23 @@ export const mdTaskStatusGetByProjectId = async (projectId: string) => {
   })
 }
 
+interface ITaskStatusQuery {
+  projectIds: string[]
+}
+
+export const mdTaskStatusQuery = async ({ projectIds }: ITaskStatusQuery) => {
+  const where: { [k: string]: unknown } = {}
+  if (projectIds && projectIds.length && !projectIds.includes('ALL')) {
+    where.projectId = {
+      in: projectIds
+    }
+  }
+
+  return taskStatusModel.findMany({
+    where
+  })
+}
+
 export const mdTaskStatusAdd = async (data: Omit<TaskStatus, 'id'>) => {
   return taskStatusModel.create({
     data: { ...data }

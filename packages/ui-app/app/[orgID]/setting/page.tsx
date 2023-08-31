@@ -1,3 +1,4 @@
+
 export default function Page() {
-  return <div>Page detail</div>
+ return <div>hehe</div>
 }

@@ -1,0 +1,11 @@
+.export-filter {
+  @apply sticky top-0 left-0 z-20 px-4 border-b bg-white flex items-center justify-between;
+}
+
+.export-filter .filter-actions {
+  @apply flex items-center gap-3;
+}
+
+.export-filter .filter-actions .form-input {
+  @apply border-none shadow-none text-xs;
+}
