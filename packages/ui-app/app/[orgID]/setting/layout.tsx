@@ -54,9 +54,6 @@ export default function SettingLayout({
     }
   ]
 
-  const onMoveTab = (name: string) => {
-    // push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
-  }
   return (
     <div className="project-nav">
       <div className="bg-white border-b border-gray-200">

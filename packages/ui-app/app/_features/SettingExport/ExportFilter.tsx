@@ -7,11 +7,47 @@ import {
   AiOutlineFilter
 } from 'react-icons/ai'
 import MultiProjectPicker from '@/components/ProjectSelectMultiple'
+import { ITaskExport, columns } from '.'
+import { format } from 'date-fns'
 
-export default function ExportFilter() {
+export default function ExportFilter({ data }: { data: ITaskExport[] }) {
   const { filter, setFilterValue } = useExportFilter()
   const { date, startDate, endDate, projectIds } = filter
   const isDateRange = date === 'date-range'
+
+  const onExport = () => {
+    const exportDatas = []
+
+    const headings: string[] = ['#']
+    columns.map(col => {
+      headings.push(col.title)
+    })
+
+    exportDatas.push(headings.join(','))
+
+    data.forEach((dt, index) => {
+      const row: (string | number)[] = [++index]
+      columns.map(col => {
+        let val = dt[col.name as keyof ITaskExport]
+        if (typeof val === 'string') {
+          val = val.replace(/,/g, ';')
+        }
+
+        row.push(val ? val : '-')
+      })
+
+      exportDatas.push(row.join(','))
+    })
+
+    const csvContent = exportDatas.join('\n')
+    const a = document.createElement('a')
+    const date = new Date()
+    a.textContent = 'download'
+    a.download = `Export-Data-${format(date, 'yyyyMMddhhmmss')}.csv`
+    a.href =
+      'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csvContent)
+    a.click()
+  }
 
   return (
     <div className="export-filter">
@@ -66,10 +102,8 @@ export default function ExportFilter() {
       </div>
       <div>
         <Button
-          size='sm'
-          onClick={() => {
-            console.log('a')
-          }}
+          size="sm"
+          onClick={onExport}
           title="Export"
           leadingIcon={<AiOutlineCloudDownload />}
           primary
