@@ -1,11 +1,8 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
-import { HiOutlineMenuAlt1, HiOutlineUserCircle } from 'react-icons/hi'
-import {
-  HiOutlineCalendar,
-  HiOutlineCog6Tooth,
-  HiOutlineViewColumns
-} from 'react-icons/hi2'
+import { AiOutlineAppstoreAdd, AiOutlineCloudDownload } from 'react-icons/ai'
+import { HiOutlineInformationCircle, HiOutlineUserCircle } from 'react-icons/hi'
+import { HiOutlineServerStack } from 'react-icons/hi2'
 
 export default function SettingLayout({
   params,
@@ -14,42 +11,40 @@ export default function SettingLayout({
   params: { orgID: string }
   children: ReactNode
 }) {
-  console.log(params)
-
   const tabs = [
     {
       title: 'About',
       name: 'about',
       href: '#',
-      icon: HiOutlineUserCircle,
+      icon: HiOutlineInformationCircle,
       current: false
     },
     {
       title: 'People',
       name: 'people',
       href: '#',
-      icon: HiOutlineMenuAlt1,
+      icon: HiOutlineUserCircle,
       current: false
     },
     {
       title: 'Projects',
       name: 'projects',
       href: '#',
-      icon: HiOutlineCalendar,
+      icon: HiOutlineServerStack,
       current: false
     },
     {
       title: 'Apps',
       name: 'apps',
       href: '#',
-      icon: HiOutlineCog6Tooth,
+      icon: AiOutlineAppstoreAdd,
       current: false
     },
     {
       title: 'Export/import',
       name: 'export-import',
       href: '#',
-      icon: HiOutlineViewColumns,
+      icon: AiOutlineCloudDownload,
       current: false
     }
   ]
