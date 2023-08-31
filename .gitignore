@@ -41,3 +41,5 @@ Thumbs.db
 # Next.js
 .next
 .env.local
+.env
+:qa

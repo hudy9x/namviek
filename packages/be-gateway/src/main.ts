@@ -2,13 +2,17 @@
  * This is not a production server yet!
  * This is only a minimal backend to get started.
  */
-
+import 'dotenv/config'
 import express, { Application } from 'express'
 import cors from 'cors'
 import './lib/redis'
 import Routes from './routes'
 
 const app: Application = express()
+
+app.get('/check-health', (req, res) => {
+  res.send(`Site available ${new Date()} `)
+})
 
 app.use(
   cors({
