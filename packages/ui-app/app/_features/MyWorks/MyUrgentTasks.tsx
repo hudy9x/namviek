@@ -2,6 +2,7 @@
 
 import { TaskPriority } from '@prisma/client'
 import MyworkCard from './MyworkCard'
+import { ITaskQuery } from '@/services/task'
 
 export default function MyUrgentTasks() {
   const morning = new Date()
@@ -10,7 +11,7 @@ export default function MyUrgentTasks() {
   evening.setHours(23)
   evening.setMinutes(59)
 
-  const query = {
+  const query:ITaskQuery = {
     projectId: 'all',
     priority: TaskPriority.URGENT,
     take: 5,

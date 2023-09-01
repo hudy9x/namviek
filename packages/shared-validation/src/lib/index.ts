@@ -14,13 +14,15 @@ export function safeParse(schema: Schema, inputData: object): ParseResult {
 		const result = schema.parse(inputData);
 		data = result;
 	} catch (e) {
-		error = e
+		error = e as {[key: string]: unknown}
 
+    // eslint-disable-next-line
 		const issues = (error as any).issues
 		issues.forEach((iss: { path: string[], message: string }) => {
 			errorArr[iss.path[0]] = iss.message
 		})
 	}
 
+  // eslint-disable-next-line
 	return { data, error, errorArr }
 }

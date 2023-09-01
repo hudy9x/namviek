@@ -1,7 +1,6 @@
 import ListPreset from '@/components/ListPreset'
-import { DashboardComponentType, TaskPriority } from '@prisma/client'
 import { FormikProps } from 'formik'
-import { IDboardComponentFields } from './DashboardComponentUpdateForm'
+import { IDboardComponentFields } from './useDboardComponentSubmit'
 
 export default function DboardCompColumnUpdateForm({
   formik

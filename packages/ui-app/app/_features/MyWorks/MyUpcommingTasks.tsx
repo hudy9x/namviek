@@ -1,5 +1,6 @@
 'use client'
 
+import { ITaskQuery } from '@/services/task'
 import MyworkCard from './MyworkCard'
 
 export default function MyUpcomingTasks() {
@@ -7,7 +8,7 @@ export default function MyUpcomingTasks() {
   evening.setHours(23)
   evening.setMinutes(59)
 
-  const query = {
+  const query:ITaskQuery = {
     projectId: 'all',
     dueDate: [evening, 'undefined'],
     take: 5,

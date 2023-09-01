@@ -1,12 +1,13 @@
 'use client'
 
+import { ITaskQuery } from '@/services/task'
 import MyworkCard from './MyworkCard'
 
 export default function MyOvedueTasks() {
   const today = new Date()
   today.setHours(1)
 
-  const query = {
+  const query: ITaskQuery = {
     projectId: 'all',
     dueDate: ['undefined', today],
     take: 5,

@@ -24,11 +24,15 @@ export const to00h00m = (d: Date) => {
   d.setHours(-1)
 }
 
+type DateStringResult = {
+  startDate: Date | null
+  endDate: Date | null
+}
 export const fromDateStringToDateObject = (
   operator: string,
   dateStr: string
-): { startDate: Date | null; endDate: Date | null } => {
-  const config = { startDate: null, endDate: null }
+): DateStringResult => {
+  const config: DateStringResult = { startDate: null, endDate: null }
   const today = new Date()
   to00h00m(today)
 
