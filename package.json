@@ -7,6 +7,7 @@
     "backend": "nx serve be-gateway",
     "prisma": "prisma",
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
+    "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
     "postinstall": "prisma generate"
   },
   "private": true,
