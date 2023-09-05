@@ -5,6 +5,8 @@
   "scripts": {
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",
+    "prod:frontend": "next start ./dist/packages/ui-app/",
+    "prod:backend": "node ./dist/packages/be-gateway/main.js",
     "prisma": "prisma",
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
