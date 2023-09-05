@@ -5,6 +5,8 @@
   "scripts": {
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",
+    "build:frontend": "nx build ui-app --prod",
+    "build:backend": "nx build be-gateway --prod",
     "prod:frontend": "next start ./dist/packages/ui-app/",
     "prod:backend": "node ./dist/packages/be-gateway/main.js",
     "prisma": "prisma",
