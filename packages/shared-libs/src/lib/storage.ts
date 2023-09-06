@@ -20,7 +20,7 @@ const storage = {
   getFilesInFolder: async (folder: string) => {
     let urls: string[] = []
     s3.listObjectsV2({ Bucket: bucket, Prefix: folder }, (err, data) => {
-      if (err || data.Contents) {
+      if (err || !data.Contents) {
         return
       }
 
