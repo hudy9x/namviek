@@ -12,10 +12,12 @@
     "prisma": "prisma",
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "studio": "prisma studio --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma"
   },
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.245.0",
     "@prisma/client": "5.2.0",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",

@@ -43,3 +43,4 @@ Thumbs.db
 .env.local
 .env
 :qa
+.env.example
