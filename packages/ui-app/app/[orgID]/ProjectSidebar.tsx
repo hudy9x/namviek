@@ -37,7 +37,7 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Projects',
-      href: `/${orgID}`,
+      href: `/${orgID}/project`,
       icon: HiOutlineServerStack,
       active: pathname.includes('/project/'),
       children: ProjectList

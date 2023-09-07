@@ -65,7 +65,7 @@ export default function ProjectNav() {
   return (
     <div className="project-nav">
       <div className="bg-white border-b border-gray-200">
-        <h2 className="text-xl font-bold px-4 py-2">
+        <h2 className="text-xl font-bold px-4 pt-2">
           {
             selectedProject?.name ||
             <span className="text-transparent animate-pulse bg-gray-100 rounded-md">
