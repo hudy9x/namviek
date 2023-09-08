@@ -76,7 +76,7 @@ export default function ProjectSidebar() {
                     </div>
                   </div>
                 </Link>
-                {Child && <Child />}
+                {/* {Child && <Child />} */}
               </div>
             )
           })}

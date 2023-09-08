@@ -1,0 +1,5 @@
+.project-item {
+  @apply border bg-white rounded-md p-4 shadow-sm flex items-start gap-3;
+  @apply transition-all cursor-pointer;
+  @apply hover:shadow-xl hover:shadow-indigo-100;
+}
