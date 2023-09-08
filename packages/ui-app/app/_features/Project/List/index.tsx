@@ -7,6 +7,8 @@ import { Project } from '@prisma/client'
 import './style.css'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { AiOutlinePlus } from 'react-icons/ai'
+import ProjectAddModal from '../Add/ProjectAddModal'
 
 export default function ProjectList() {
   const { projects, addAllProject, selectProject } = useProjectStore(
@@ -50,7 +52,19 @@ export default function ProjectList() {
       </div>
       <div style={{ height: `calc(100vh - 73px)` }}>
         <div className="w-[1120px] mx-auto pt-8">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
+            <ProjectAddModal
+              triggerComponent={
+                <div className="project-item bg-indigo-50 border-dashed">
+                  <div className="border rounded-md p-2">
+                    <AiOutlinePlus className="text-gray-500 text-2xl" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-medium">Create project</h2>
+                  </div>
+                </div>
+              }
+            />
             {projects.map(project => {
               return (
                 <Link
@@ -62,11 +76,7 @@ export default function ProjectList() {
                   <div className="project-item">
                     <div className="border rounded-md p-2">🎨</div>
                     <div>
-                      <h2 className="text-xl font-medium">{project.name}</h2>
-                      <p className="text-gray-400 text-xs leading-5">
-                        Lorem ipsum dolor sit amet, qui minim labore adipisicing
-                        minim sint cillum sint consectetur cupidatat.
-                      </p>
+                      <h2 className="text-lg font-medium">{project.name}</h2>
                     </div>
                   </div>
                 </Link>
