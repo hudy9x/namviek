@@ -1,14 +1,13 @@
 'use client'
 
-import { Form, Modal, Button, messageError } from '@shared/ui'
+import { Form, Button, messageError } from '@shared/ui'
 import { useFormik } from 'formik'
-import { useState, ReactNode, Dispatch, SetStateAction } from 'react'
-import { HiOutlinePlusSm } from 'react-icons/hi'
+import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
 import { validateQuickAddProject } from '@shared/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
-import EmojiInput from '@/components/EmojiPicker'
+import EmojiInput from '@/components/EmojiInput'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 
 export default function ProjectAddForm({
@@ -21,7 +20,7 @@ export default function ProjectAddForm({
 
   const formik = useFormik({
     initialValues: {
-      icon: '😍',
+      icon: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f375.png',
       name: '',
       desc: ''
     },

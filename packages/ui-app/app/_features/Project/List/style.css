@@ -3,3 +3,7 @@
   @apply transition-all cursor-pointer;
   @apply hover:shadow-lg hover:shadow-indigo-100;
 }
+
+.project-item .form-emoji .form-input {
+  @apply p-1 border-transparent shadow-transparent;
+}

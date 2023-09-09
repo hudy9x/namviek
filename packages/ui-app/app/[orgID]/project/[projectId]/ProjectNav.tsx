@@ -73,6 +73,9 @@ export default function ProjectNav() {
             className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50">
             <AiOutlineArrowLeft />
           </Link>
+          {selectedProject?.icon ? (
+            <img src={selectedProject?.icon || ''} className="w-6 h-6" />
+          ) : null}
           {selectedProject?.name || (
             <span className="text-transparent animate-pulse bg-gray-100 rounded-md">
               Project

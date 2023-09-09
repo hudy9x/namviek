@@ -5,38 +5,31 @@ import { projectGet } from '@/services/project'
 import { useEffect } from 'react'
 import { Project } from '@prisma/client'
 import './style.css'
-import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '../Add/ProjectAddModal'
+import EmojiInput from '@/components/EmojiInput'
+import { useRouter } from 'next/navigation'
+import ProjectIconPicker from '@/components/ProjectIconPicker'
 
 export default function ProjectList() {
   const { projects, addAllProject, selectProject } = useProjectStore(
     state => state
   )
   const { orgID } = useParams()
+  const { push } = useRouter()
 
   const onSelectProject = (id: string) => {
     selectProject(id)
   }
 
   useEffect(() => {
-    console.log('get all projects')
     projectGet().then(result => {
       const { data, status } = result.data
-      const projects = data as Project[]
-
-      console.log('return data', projects)
-
+      // const projects = data as Project[]
       if (status !== 200) return
 
       addAllProject(data)
-      // projects.some(p => {
-      //   if (p.id === params.projectId) {
-      //     onSelectProject(p.id)
-      //     return true
-      //   }
-      // })
     })
   }, [])
   return (
@@ -60,28 +53,39 @@ export default function ProjectList() {
                     <AiOutlinePlus className="text-gray-500 text-lg" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-medium">Create project</h2>
+                    <h2 className="text-lg text-gray-600">Create project</h2>
                   </div>
                 </div>
               }
             />
             {projects.map(project => {
               return (
-                <Link
+                <div
                   key={project.id}
                   onClick={() => {
                     onSelectProject(project.id)
-                  }}
-                  href={`${orgID}/project/${project.id}?mode=task`}>
-                  <div className="project-item">
-                    <div className="border rounded-md p-2">
-                      <img src={project.icon || ''} />
-                    </div>
+                    const url = `${orgID}/project/${project.id}?mode=task`
+                    push(url)
+                  }}>
+                  <div className="project-item group">
+                    <ProjectIconPicker
+                      icon={project.icon || ''}
+                      projectId={project.id}
+                    />
+                    {/* <EmojiInput */}
+                    {/*   size="lg" */}
+                    {/*   value={project.icon || ''} */}
+                    {/*   onChange={val => { */}
+                    {/*     console.log(val) */}
+                    {/*   }} */}
+                    {/* /> */}
                     <div>
-                      <h2 className="text-lg font-medium">{project.name}</h2>
+                      <h2 className="text-lg text-gray-500 group-hover:text-gray-600">
+                        {project.name}
+                      </h2>
                     </div>
                   </div>
-                </Link>
+                </div>
               )
             })}
           </div>

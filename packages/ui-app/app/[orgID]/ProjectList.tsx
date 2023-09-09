@@ -55,7 +55,7 @@ export default function ProjectList() {
               setStatusLoading(true)
             }}
             href={`${params.orgID}/project/${project.id}?mode=task`}>
-            <span className="nav-icon">👕</span>
+            <img className="w-5 h-5" src={project.icon || ''} />
             <span>{project.name}</span>
           </Link>
         )

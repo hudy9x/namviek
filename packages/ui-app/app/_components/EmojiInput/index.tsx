@@ -1,14 +1,20 @@
 import useOutsideClick from '@/hooks/useOutsideClick'
-import { Modal } from '@shared/ui'
 import EmojiPicker, { EmojiStyle, Categories } from 'emoji-picker-react'
-import { EmojiProperties } from 'emoji-picker-react/dist/dataUtils/DataTypes'
 import { useEffect, useRef, useState } from 'react'
+import './style.css'
 
-interface IEmojiInputProps {
+export interface IEmojiInputProps {
+  className?: string
+  size?: 'sm' | 'base' | 'lg'
   value?: string
   onChange?: (val: string) => void
 }
-export default function EmojiInput({ value, onChange }: IEmojiInputProps) {
+export default function EmojiInput({
+  className,
+  size,
+  value,
+  onChange
+}: IEmojiInputProps) {
   const [selected, setSelected] = useState(value || '')
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLDivElement | null>(null)
@@ -30,25 +36,38 @@ export default function EmojiInput({ value, onChange }: IEmojiInputProps) {
     { name: 'Face', category: Categories.SMILEYS_PEOPLE }
   ]
 
+  let iconSize = 'w-5 h-5'
+
+  size === 'sm' && (iconSize = 'w-4 h-4')
+  size === 'lg' && (iconSize = 'w-7 h-7')
+
+  const iconUrl = selected
+    ? selected
+    : 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f98d.png'
+
   return (
-    <div className="form-control shrink-0">
+    <div
+      className="form-control shrink-0 form-emoji"
+      onClick={ev => {
+        ev.stopPropagation()
+      }}>
       {/* <label>Project icon</label> */}
       <div className="relative" ref={ref}>
         <div
-          className="form-input cursor-pointer "
+          className="form-input cursor-pointer hover:bg-gray-50 "
           onClick={() => setVisible(true)}>
-          {!selected ? '😍' : null}
-          {selected ? <img src={selected} className="w-5 h-5" /> : null}
+          <img src={iconUrl} className={iconSize} />
         </div>
         {visible ? (
           <div className={`absolute z-10 top-11 ${visible ? '' : 'hidden'}`}>
             <EmojiPicker
+              skinTonesDisabled={true}
               lazyLoadEmojis={true}
               categories={categories}
               emojiStyle={EmojiStyle.TWITTER}
               onEmojiClick={emoji => {
                 const emojiUrl = emoji.getImageUrl(EmojiStyle.TWITTER)
-                const emojiNative = emoji.emoji
+                // const emojiNative = emoji.emoji
                 setSelected(emojiUrl)
                 onChange && onChange(emojiUrl)
               }}
