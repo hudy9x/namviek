@@ -57,7 +57,7 @@ export default function ProjectList() {
               triggerComponent={
                 <div className="project-item bg-indigo-50 border-dashed">
                   <div className="border rounded-md p-2">
-                    <AiOutlinePlus className="text-gray-500 text-2xl" />
+                    <AiOutlinePlus className="text-gray-500 text-lg" />
                   </div>
                   <div>
                     <h2 className="text-lg font-medium">Create project</h2>
@@ -74,7 +74,9 @@ export default function ProjectList() {
                   }}
                   href={`${orgID}/project/${project.id}?mode=task`}>
                   <div className="project-item">
-                    <div className="border rounded-md p-2">🎨</div>
+                    <div className="border rounded-md p-2">
+                      <img src={project.icon || ''} />
+                    </div>
                     <div>
                       <h2 className="text-lg font-medium">{project.name}</h2>
                     </div>

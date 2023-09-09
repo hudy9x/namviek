@@ -8,6 +8,8 @@ import { useParams } from 'next/navigation'
 import { validateQuickAddProject } from '@shared/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
+import EmojiInput from '@/components/EmojiPicker'
+import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 
 export default function ProjectAddForm({
   setVisible
@@ -19,6 +21,7 @@ export default function ProjectAddForm({
 
   const formik = useFormik({
     initialValues: {
+      icon: '😍',
       name: '',
       desc: ''
     },
@@ -57,14 +60,24 @@ export default function ProjectAddForm({
   return (
     <>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-        <Form.Input
-          title="Project name"
-          required
-          name="name"
-          error={formik.errors.name}
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
+        <FormGroup title="Project name">
+          <EmojiInput
+            value={formik.values.icon}
+            onChange={val => {
+              console.log(val)
+              formik.setFieldValue('icon', val)
+            }}
+          />
+          <Form.Input
+            // title="Name"
+            required
+            className="w-full"
+            name="name"
+            error={formik.errors.name}
+            onChange={formik.handleChange}
+            value={formik.values.name}
+          />
+        </FormGroup>
 
         <Form.Textarea
           title="Desciption"

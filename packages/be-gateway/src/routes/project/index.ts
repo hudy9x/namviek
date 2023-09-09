@@ -69,6 +69,7 @@ router.get('/project', async (req: AuthRequest, res) => {
 // It means POST:/api/project
 router.post('/project', async (req: AuthRequest, res) => {
   const body = req.body as {
+    icon: string
     name: string
     desc: string
     organizationId: string
@@ -79,7 +80,7 @@ router.post('/project', async (req: AuthRequest, res) => {
 
   const result = await mdProjectAdd({
     cover: null,
-    icon: null,
+    icon: body.icon || '',
     name: body.name,
     desc: body.desc,
     createdBy: userId,
