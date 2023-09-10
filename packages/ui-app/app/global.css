@@ -17,6 +17,10 @@
   @apply flex;
 }
 
+/* .root-container * { */
+/*   @apply transition-all duration-150; */
+/* } */
+
 .root-sidebar {
   @apply h-screen border-r dark:bg-gray-900 dark:border-r-gray-800;
   @apply flex items-start;
