@@ -5,14 +5,17 @@ import { produce } from 'immer'
 interface ProjectState {
   selectedProject: Project | null
   priorities: TaskPriority[]
+  loading: boolean
   projects: Project[]
   addProject: (data: Project) => void
   updateProject: (data: Partial<Project>) => void
   addAllProject: (datas: Project[]) => void
   selectProject: (id: string) => void
+  setLoading: (stt: boolean) => void
 }
 
 export const useProjectStore = create<ProjectState>(set => ({
+  loading: false,
   priorities: [
     TaskPriority.LOW,
     TaskPriority.HIGH,
@@ -21,6 +24,13 @@ export const useProjectStore = create<ProjectState>(set => ({
   ],
   selectedProject: null,
   projects: [],
+
+  setLoading: (status: boolean) =>
+    set(
+      produce((state: ProjectState) => {
+        state.loading = status
+      })
+    ),
 
   addProject: (data: Project) =>
     set(

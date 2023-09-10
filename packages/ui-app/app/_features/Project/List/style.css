@@ -5,5 +5,6 @@
 }
 
 .project-item .form-emoji .form-input {
-  @apply p-1 border-transparent shadow-transparent;
+  @apply p-1 border-transparent shadow-transparent transition-all;
+  @apply hover:scale-110 hover:bg-indigo-50;
 }

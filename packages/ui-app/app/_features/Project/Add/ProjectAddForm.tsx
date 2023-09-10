@@ -26,6 +26,7 @@ export default function ProjectAddForm({
     },
     onSubmit: values => {
       const { error, errorArr, data } = validateQuickAddProject(values)
+      console.log(values)
 
       if (!params.orgID) {
         return messageError('Organization ID is not exist')
