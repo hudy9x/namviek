@@ -16,7 +16,9 @@ export default function CalMonthDay({ day }: ICalMonthDay) {
   const isToday = day.getDate() === today.getDate() && month === dMonth
   const classes = ['calendar-day']
 
-  !notInMonth ? classes.push('bg-white') : classes.push('not-in-month')
+  !notInMonth
+    ? classes.push('bg-white dark:bg-gray-800')
+    : classes.push('not-in-month')
   isToday && classes.push('today')
 
   return (

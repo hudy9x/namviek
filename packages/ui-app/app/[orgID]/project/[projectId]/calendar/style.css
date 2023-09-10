@@ -24,6 +24,7 @@
 
 .calendar-task-item {
   @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }
 
 .calendar-task-item .no-name .selected-member-name {

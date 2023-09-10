@@ -13,6 +13,7 @@
   padding: 2px;
   @apply bg-gray-50/50 transition-all flex touch-none select-none;
   @apply hover:bg-gray-100;
+  @apply dark:bg-gray-800;
 }
 
 .scroll-scrollbar[data-orientation='vertical'] {
