@@ -93,14 +93,13 @@ export default function ProjectSidebar() {
             const MenuBadge = menu.badge
             const active = menu.active
             return (
-              <div
-                key={mindex}
-                className="cursor-pointer"
-                onClick={() => {
-                  push(menu.href)
-                }}>
+              <div key={mindex} className="cursor-pointer">
                 {/* <Link href={menu.href}> */}
-                <div className={`side-title ${active ? 'active' : ''}`}>
+                <div
+                  onClick={() => {
+                    push(menu.href)
+                  }}
+                  className={`side-title ${active ? 'active' : ''}`}>
                   <div className="flex items-center gap-2">
                     <Icon className="w-5 h-5" />
                     <span>{menu.title}</span>
