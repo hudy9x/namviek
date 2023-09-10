@@ -10,7 +10,8 @@ import {
   mdProjectGet,
   mdTaskExport,
   mdTaskStatusQuery,
-  mdMemberGetProject
+  mdMemberGetProject,
+  mdTaskUpdateByStatusId
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -273,6 +274,20 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const result = mdTaskUpdate(taskData)
     res.json({ status: 200, data: result })
     // res.json({ status: 200 })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.put('/project/tasks', async (req: AuthRequest, res) => {
+  const { taskStatusId } = req.query as { taskStatusId: string }
+  const data: Task = req.body
+
+  console.log('/project/tasks/body', req.body, taskStatusId)
+  try {
+    const result = mdTaskUpdateByStatusId(taskStatusId, data)
+    res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })

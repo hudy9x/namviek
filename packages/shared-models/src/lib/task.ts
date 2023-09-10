@@ -217,3 +217,15 @@ export const mdTaskUpdate = async (data: Partial<Task>) => {
     data: rest
   })
 }
+
+export const mdTaskUpdateByStatusId = async (
+  taskStatusId: string,
+  data: Partial<Task>
+) => {
+  return taskModel.updateMany({
+    where: {
+      taskStatusId
+    },
+    data
+  })
+}

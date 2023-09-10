@@ -13,6 +13,7 @@ interface TaskState {
   syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
+  updateTasksByStatus: (taskStatusId: string, data: Task) => void
 }
 
 export const useTaskStore = create<TaskState>(set => ({
@@ -111,6 +112,17 @@ export const useTaskStore = create<TaskState>(set => ({
     set(
       produce((state: TaskState) => {
         state.tasks = [...state.tasks, ...data]
+      })
+    ),
+  updateTasksByStatus: (taskStatusId: string, data: Task) =>
+    set(
+      produce((state: TaskState) => {
+        console.log({ data })
+        state.tasks
+          .filter(task => task.taskStatusId === taskStatusId)
+          .forEach(task => {
+            Object.assign(task, data)
+          })
       })
     )
 }))
