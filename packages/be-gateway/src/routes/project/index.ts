@@ -5,9 +5,10 @@ import {
   mdMemberAdd,
   mdMemberGetProject,
   mdProjectAdd,
-  mdProjectGetAllByIds
+  mdProjectGetAllByIds,
+  mdProjectUpdate
 } from '@shared/models'
-import { MemberRole } from '@prisma/client'
+import { MemberRole, Project } from '@prisma/client'
 
 import StatusRouter from './status'
 import TagRouter from './tag'
@@ -69,6 +70,7 @@ router.get('/project', async (req: AuthRequest, res) => {
 // It means POST:/api/project
 router.post('/project', async (req: AuthRequest, res) => {
   const body = req.body as {
+    icon: string
     name: string
     desc: string
     organizationId: string
@@ -79,7 +81,7 @@ router.post('/project', async (req: AuthRequest, res) => {
 
   const result = await mdProjectAdd({
     cover: null,
-    icon: null,
+    icon: body.icon || '',
     name: body.name,
     desc: body.desc,
     createdBy: userId,
@@ -98,6 +100,52 @@ router.post('/project', async (req: AuthRequest, res) => {
     updatedBy: null,
     updatedAt: null
   })
+
+  delCache([CKEY.USER_PROJECT, userId])
+
+  res.json({
+    status: 200,
+    data: result
+  })
+})
+
+router.put('/project', async (req: AuthRequest, res) => {
+  const { id, icon, name, desc, organizationId } = req.body as {
+    id: string
+    icon: string
+    name: string
+    desc: string
+    organizationId: string
+  }
+  const { id: userId } = req.authen
+
+  if (!id) {
+    return res.status(400).json({ error: 'Missing project id' })
+  }
+
+  const updateData: Partial<Project> = {
+    id,
+    updatedAt: new Date(),
+    updatedBy: userId
+  }
+
+  if (name) {
+    updateData.name = name
+  }
+
+  if (desc) {
+    updateData.desc = desc
+  }
+
+  if (icon) {
+    updateData.icon = icon
+  }
+
+  if (organizationId) {
+    updateData.organizationId = organizationId
+  }
+
+  const result = await mdProjectUpdate(updateData)
 
   delCache([CKEY.USER_PROJECT, userId])
 

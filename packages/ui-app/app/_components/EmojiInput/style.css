@@ -1,0 +1,4 @@
+.form-emoji .epr-category-nav {
+  padding: 5px 0px !important;
+  @apply border-y;
+}

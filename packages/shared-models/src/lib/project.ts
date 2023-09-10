@@ -9,6 +9,16 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
   })
 }
 
+export const mdProjectUpdate = async (data: Partial<Project>) => {
+  const { id, ...rest } = data
+  return projectModel.update({
+    where: {
+      id
+    },
+    data: rest
+  })
+}
+
 export const mdProjectGetAllByIds = async (ids: string[]) => {
   return projectModel.findMany({
     where: {

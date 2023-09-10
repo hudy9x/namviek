@@ -37,19 +37,19 @@
 }
 
 .side-nav {
-  @apply border-t;
+  @apply border-t pt-3;
   @apply w-[250px] shrink-0;
 }
 
 .side-nav h2,
 .side-nav .side-title {
-  @apply uppercase text-xs font-medium text-gray-500 px-3 py-3;
-  @apply flex justify-between items-center;
+  @apply uppercase text-xs font-medium text-gray-500 px-3 py-2 mx-1.5;
+  @apply flex justify-between items-center rounded-md;
   @apply hover:text-indigo-500;
 }
 
 .side-nav .side-title.active {
-  @apply bg-gray-100 hover:text-gray-500;
+  @apply bg-indigo-50/70 text-indigo-500;
 }
 
 .side-nav .section-icon {
@@ -68,8 +68,12 @@
   @apply hover:bg-gray-100;
 }
 
+.nav .nav-item:hover img {
+  @apply transition-all scale-110;
+}
+
 .nav .nav-item.active {
-  @apply bg-indigo-50 text-indigo-900;
+  @apply bg-indigo-50 text-indigo-600;
 }
 
 .tab {
@@ -102,7 +106,8 @@
   @apply text-sm rounded-md border text-gray-500 w-full bg-white;
 }
 
-.table td,.table th {
+.table td,
+.table th {
   @apply whitespace-nowrap px-1.5 py-2;
 }
 

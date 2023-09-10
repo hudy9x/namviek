@@ -5,7 +5,7 @@ export default function UserSection() {
   const { user } = useUser();
 
   return (
-    <section className="flex gap-2 items-center py-3 px-3">
+    <section className="flex gap-2 items-center py-[19px] px-3">
       <Avatar src={user?.photo || ''} name={user?.name || ''} />
       <div className="flex flex-col text-sm">
         <span>{user?.name}</span>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams, usePathname } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import UserSection from '../../layouts/UserSection'
 import RootSidebar from '../../layouts/RootSidebar'
 import ProjectAdd from './ProjectAdd'
@@ -13,10 +13,34 @@ import {
   HiOutlineCog6Tooth,
   HiOutlineStar
 } from 'react-icons/hi2'
+import { Button } from '@shared/ui'
+import { AiOutlinePlus } from 'react-icons/ai'
+import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
+
+function ViewAllBtn() {
+  return (
+    <div
+      onClick={ev => {
+        // ev.preventDefault()
+        ev.stopPropagation()
+      }}>
+      <ProjectAddModal
+        triggerComponent={
+          <Button
+            leadingIcon={<AiOutlinePlus />}
+            className="uppercase text-xs"
+            size="sm"
+          />
+        }
+      />
+    </div>
+  )
+}
 
 export default function ProjectSidebar() {
   const { orgID } = useParams()
   const pathname = usePathname()
+  const { push } = useRouter()
 
   if (pathname.includes('/sign-in') || pathname.includes('/sign-up')) {
     return null
@@ -37,9 +61,10 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Projects',
-      href: `/${orgID}`,
+      href: `/${orgID}/project`,
+      badge: ViewAllBtn,
       icon: HiOutlineServerStack,
-      active: pathname.includes('/project/'),
+      active: pathname.includes('/project/') || pathname.includes('/project'),
       children: ProjectList
     },
     {
@@ -65,17 +90,24 @@ export default function ProjectSidebar() {
           {menus.map((menu, mindex) => {
             const Icon = menu.icon
             const Child = menu.children
+            const MenuBadge = menu.badge
             const active = menu.active
             return (
-              <div key={mindex}>
-                <Link href={menu.href}>
-                  <div className={`side-title ${active ? 'active' : ''}`}>
-                    <div className="flex items-center gap-2">
-                      <Icon className="w-5 h-5" />
-                      <span>{menu.title}</span>
-                    </div>
+              <div
+                key={mindex}
+                className="cursor-pointer"
+                onClick={() => {
+                  push(menu.href)
+                }}>
+                {/* <Link href={menu.href}> */}
+                <div className={`side-title ${active ? 'active' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-5 h-5" />
+                    <span>{menu.title}</span>
                   </div>
-                </Link>
+                  {MenuBadge ? <MenuBadge /> : null}
+                </div>
+                {/* </Link> */}
                 {Child && <Child />}
               </div>
             )
