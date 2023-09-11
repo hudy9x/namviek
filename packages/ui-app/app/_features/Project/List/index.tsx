@@ -60,7 +60,9 @@ export default function ProjectList() {
                     <AiOutlinePlus className="text-gray-500 text-sm" />
                   </div>
                   <div>
-                    <h2 className="text-lg text-gray-600">Create new</h2>
+                    <h2 className="text-lg text-gray-600 dark:text-gray-400">
+                      Create new
+                    </h2>
                   </div>
                 </div>
               }

@@ -1,4 +1,4 @@
-import { Modal } from '@shared/ui'
+import { Button, Modal } from '@shared/ui'
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskForm from '../TaskForm'
@@ -37,8 +37,8 @@ export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
       onVisibleChange={setVisible}
       title="Add a new task"
       triggerBy={
-        <div className="px-3 py-2 flex justify-center rounded-md bg-white hover:bg-gray-50  text-gray-500 shadow shadow-gray-200 hover:cursor-pointer border">
-          <AiOutlinePlus />
+        <div>
+          <Button block={true} leadingIcon={<AiOutlinePlus />} />
         </div>
       }
       content={

@@ -70,7 +70,7 @@ export default function ProjectNav() {
         <h2 className="text-xl dark:text-gray-200 font-bold px-4 pt-2 flex items-center gap-2">
           <Link
             href={`${params.orgID}/project`}
-            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50">
+            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:hover:bg-slate-800">
             <AiOutlineArrowLeft />
           </Link>
           {selectedProject?.icon ? (

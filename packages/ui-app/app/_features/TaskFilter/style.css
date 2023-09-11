@@ -24,3 +24,7 @@
   gap: 0px;
   @apply -space-x-2 pr-1;
 }
+
+.task-filter-member-picker .selected-member {
+  @apply dark:rounded-full;
+}

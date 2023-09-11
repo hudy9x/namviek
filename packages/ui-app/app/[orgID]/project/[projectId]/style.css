@@ -95,7 +95,7 @@
 }
 
 .irow {
-  @apply hover:bg-gray-100;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
 }
 
 .icell {

@@ -71,12 +71,16 @@
 }
 
 .nav .nav-item {
-  @apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
-  @apply hover:bg-gray-100 dark:hover:bg-gray-800/30;
+  @apply flex transition-all items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800/30 dark:text-gray-500;
 }
 
 .nav .nav-item:hover img {
   @apply transition-all scale-110;
+}
+
+.nav .nav-item:hover {
+  @apply text-gray-400;
 }
 
 .nav .nav-item.active {
@@ -113,6 +117,7 @@
 
 .table {
   @apply text-sm rounded-md border text-gray-500 w-full bg-white;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400;
 }
 
 .table td,
@@ -121,21 +126,13 @@
 }
 
 .table thead tr {
-  @apply divide-x;
+  @apply divide-x dark:divide-gray-700;
 }
 
 .table tbody {
-  @apply divide-y border-t;
+  @apply divide-y border-t dark:divide-gray-700 dark:border-gray-700;
 }
 
 .table tbody tr {
-  @apply divide-x;
-}
-
-.dark .select-container .select-button {
-  @apply bg-gray-900;
-}
-
-.form-control .form-input {
-  @apply dark:bg-gray-900;
+  @apply divide-x dark:divide-gray-700;
 }
