@@ -65,18 +65,18 @@ const Setting = () => {
       <div className="w-[350px] space-y-6">
         {settings.map(setting => {
           const activeClass = setting.active
-            ? 'bg-white border-gray-200 rounded-lg shadow-lg shadow-indigo-100'
+            ? 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-lg shadow-lg shadow-indigo-100 dark:shadow-gray-900'
             : ''
           const hover =
-            'hover:bg-white hover:rounded-lg hover:shadow-lg hover:shadow-indigo-100'
+            'hover:bg-white dark:hover:bg-gray-900/70 hover:rounded-lg hover:shadow-lg hover:shadow-indigo-100 dark:hover:shadow-gray-900'
           return (
             <div
               onClick={() => {
                 push(setting.href)
               }}
               key={setting.title}
-              className={`px-4 py-3 cursor-pointer border border-transparent ${hover} ${activeClass}`}>
-              <div className="flex gap-2 items-center ">
+              className={`transition-all px-4 py-3 cursor-pointer border border-transparent ${hover} ${activeClass}`}>
+              <div className="flex gap-2 items-center dark:text-gray-400 ">
                 {setting.icon}
                 <span>{setting.title}</span>
               </div>

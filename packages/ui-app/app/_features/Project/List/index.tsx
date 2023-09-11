@@ -38,11 +38,13 @@ export default function ProjectList() {
     }
   }, [JSON.stringify(projects)])
   return (
-    <div className="bg-indigo-50/50">
-      <div className="bg-white py-3 border-b">
+    <div className="bg-indigo-50/50 dark:bg-[#182031]">
+      <div className="bg-white py-3 border-b dark:bg-gray-900 dark:border-gray-700">
         <div className="w-[1120px] mx-auto">
-          <h2 className="text-gray-600 font-bold text-xl">Your projects</h2>
-          <p className="text-gray-500 text-sm">
+          <h2 className="text-gray-600 dark:text-gray-300 font-bold text-xl">
+            Your projects
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             Display the entire list of projects that you are currently a member
             of.
           </p>
@@ -54,11 +56,13 @@ export default function ProjectList() {
             <ProjectAddModal
               triggerComponent={
                 <div className="project-item bg-indigo-50 border-dashed">
-                  <div className="border rounded-md p-2">
+                  <div className="border dark:border-gray-700 rounded-md p-2">
                     <AiOutlinePlus className="text-gray-500 text-sm" />
                   </div>
                   <div>
-                    <h2 className="text-lg text-gray-600">Create new</h2>
+                    <h2 className="text-lg text-gray-600 dark:text-gray-400">
+                      Create new
+                    </h2>
                   </div>
                 </div>
               }
@@ -85,10 +89,10 @@ export default function ProjectList() {
                       projectId={project.id}
                     />
                     <div>
-                      <h2 className="text-lg text-gray-500 group-hover:text-gray-600">
+                      <h2 className="text-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">
                         {project.name}
                       </h2>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-400 dark:text-gray-500">
                         <span
                           title={createdAtString}
                           className="flex items-center gap-1">

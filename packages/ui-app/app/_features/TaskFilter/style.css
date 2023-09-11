@@ -1,5 +1,6 @@
 .task-filter {
   @apply sticky top-0 left-0 z-20 px-4 border-b bg-white flex items-center justify-between;
+  @apply dark:bg-gray-900 dark:text-gray-300 dark:border-b-gray-800;
 }
 
 .task-filter-actions {
@@ -7,7 +8,8 @@
 }
 
 .task-filter-actions .form-input {
-  @apply border-none shadow-none text-xs
+  @apply border-none shadow-none text-xs;
+  @apply dark:bg-gray-900;
 }
 
 /* .task-filter-member-picker .selected-member span.name{ */
@@ -19,8 +21,10 @@
 }
 
 .task-filter-member-picker .selected-item-container {
-  gap:0px;
+  gap: 0px;
   @apply -space-x-2 pr-1;
 }
 
-
+.task-filter-member-picker .selected-member {
+  @apply dark:rounded-full;
+}

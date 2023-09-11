@@ -66,11 +66,11 @@ export default function ProjectNav() {
 
   return (
     <div className="project-nav">
-      <div className="bg-white border-b border-gray-200">
-        <h2 className="text-xl font-bold px-4 pt-2 flex items-center gap-2">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+        <h2 className="text-xl dark:text-gray-200 font-bold px-4 pt-2 flex items-center gap-2">
           <Link
             href={`${params.orgID}/project`}
-            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50">
+            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:hover:bg-slate-800">
             <AiOutlineArrowLeft />
           </Link>
           {selectedProject?.icon ? (
@@ -99,7 +99,7 @@ export default function ProjectNav() {
         </div>
       </div>
 
-      <div className="task bg-indigo-50/50 w-full">
+      <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
         <ProjectTabContent />
       </div>
       <TaskCreate />

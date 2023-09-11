@@ -8,6 +8,7 @@
 
 .calendar-create-task {
   @apply absolute cursor-pointer hover:text-gray-600 w-6 h-6 p-1 rounded-md hover:bg-gray-200 text-center bottom-1 right-1 opacity-0 transition-all;
+  @apply dark:hover:bg-gray-900 dark:text-gray-400;
 }
 
 .calendar-day:hover .calendar-create-task {
@@ -24,6 +25,7 @@
 
 .calendar-task-item {
   @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }
 
 .calendar-task-item .no-name .selected-member-name {

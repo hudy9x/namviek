@@ -44,7 +44,7 @@ export default function TaskImportArea() {
   return (
     <>
       <div className="mb-3">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           The maximum size of upload files are less than 5mb. If you do not have
           any template file,{' '}
           <a
@@ -58,9 +58,9 @@ export default function TaskImportArea() {
       </div>
       <DropFileZone
         onChange={onDropChange}
-        className="w-full h-[180px] bg-indigo-50/50 border-dashed border-2 flex items-center justify-center rounded-md">
+        className="w-full h-[180px] bg-indigo-50/50 dark:bg-slate-800 dark:border-gray-700 border-dashed border-2 flex items-center justify-center rounded-md">
         <div className="text-center text-sm text-gray-400 space-y-2.5">
-          <AiOutlineCloudUpload className="inline-flex w-9 h-9 bg-white rounded-md border p-1.5 shadow-sm " />
+          <AiOutlineCloudUpload className="inline-flex w-9 h-9 bg-white dark:bg-gray-900 dark:border-gray-700 rounded-md border p-1.5 shadow-sm " />
           <p>
             Drag & drop or{' '}
             <label

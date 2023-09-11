@@ -17,27 +17,33 @@
   @apply flex;
 }
 
+/* .root-container * { */
+/*   @apply transition-all duration-150; */
+/* } */
+
 .root-sidebar {
-  @apply h-screen border-r;
+  @apply h-screen border-r dark:bg-gray-900 dark:border-r-gray-800;
   @apply flex items-start;
 }
 
 .primary-sidebar {
-  @apply flex flex-col justify-between h-screen border-r;
+  @apply flex flex-col justify-between h-screen border-r dark:border-r-gray-800;
 }
 
 .root-sidebar .main-nav-icon {
-  @apply m-2 p-3 w-10 h-10 text-gray-400 rounded-lg;
-  @apply cursor-pointer hover:text-gray-600 hover:bg-gray-100;
+  @apply m-2 p-3 w-10 h-10 text-gray-400 rounded-lg cursor-pointer;
+  @apply hover:text-gray-600 hover:bg-gray-100;
+  @apply dark:hover:text-indigo-100 dark:hover:bg-gray-900/50;
 }
 
-.main-nav-icon.active {
-  @apply text-indigo-500 bg-indigo-50;
+.root-sidebar .main-nav-icon.active {
+  @apply text-indigo-500 bg-indigo-50 dark:bg-indigo-50/10;
   @apply hover:text-indigo-600 hover:bg-indigo-50;
+  @apply dark:hover:text-indigo-400 dark:hover:bg-indigo-50/20;
 }
 
 .side-nav {
-  @apply border-t pt-3;
+  @apply border-t dark:border-t-gray-800 pt-3;
   @apply w-[250px] shrink-0;
 }
 
@@ -50,6 +56,7 @@
 
 .side-nav .side-title.active {
   @apply bg-indigo-50/70 text-indigo-500;
+  @apply dark:bg-indigo-50/10 text-indigo-400;
 }
 
 .side-nav .section-icon {
@@ -64,16 +71,21 @@
 }
 
 .nav .nav-item {
-  @apply flex items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
-  @apply hover:bg-gray-100;
+  @apply flex transition-all items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800/30 dark:text-gray-500;
 }
 
 .nav .nav-item:hover img {
   @apply transition-all scale-110;
 }
 
+.nav .nav-item:hover {
+  @apply text-gray-400;
+}
+
 .nav .nav-item.active {
   @apply bg-indigo-50 text-indigo-600;
+  @apply dark:bg-indigo-50/10 dark:text-indigo-400;
 }
 
 .tab {
@@ -81,12 +93,13 @@
 }
 
 .tab-item {
-  @apply flex items-center gap-2 text-sm text-gray-600;
+  @apply flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
   @apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
 }
 
 .tab-item.active {
   @apply border-indigo-400 text-indigo-700;
+  @apply dark:border-indigo-300 text-indigo-400;
 }
 
 .sign-page {
@@ -104,6 +117,7 @@
 
 .table {
   @apply text-sm rounded-md border text-gray-500 w-full bg-white;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400;
 }
 
 .table td,
@@ -112,13 +126,13 @@
 }
 
 .table thead tr {
-  @apply divide-x;
+  @apply divide-x dark:divide-gray-700;
 }
 
 .table tbody {
-  @apply divide-y border-t;
+  @apply divide-y border-t dark:divide-gray-700 dark:border-gray-700;
 }
 
 .table tbody tr {
-  @apply divide-x;
+  @apply divide-x dark:divide-gray-700;
 }

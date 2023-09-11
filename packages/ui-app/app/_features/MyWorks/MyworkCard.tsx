@@ -70,10 +70,7 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
     <div className="mw-card py-4">
       <h2 className="mw-card-title">
         <div>
-          {title}{' '}
-          <span className="text-xs w-6 h-6 p-1 rounded-md bg-white border inline-flex justify-center text-gray-500">
-            {total}
-          </span>
+          {title} <span className="mw-card-total">{total}</span>
         </div>
         <MdOutlineRefresh
           onClick={() => setUpdate(u => u + 1)}
@@ -95,13 +92,11 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
             )
           })}
         {!loading && tasks.length < total && (
-          <div className="bg-white py-1 text-center text-xs border rounded-md">
-            And {total} more
-          </div>
+          <div className="mw-card-more">And {total} more</div>
         )}
 
         {!loading && !tasks.length && (
-          <div className="task-empty text-sm bg-red-200 rounded-md border border-red-200 shadow-sm shadow-red-300 p-3">
+          <div className="task-empty text-sm bg-red-200 dark:bg-red-300 rounded-md border border-red-200 dark:border-red-400 shadow-sm shadow-red-300 dark:shadow-red-700 p-3 text-red-800">
             {`🎃😎🥶 No tasks found! You're so lucky buddy !!`}
           </div>
         )}

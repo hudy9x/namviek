@@ -40,9 +40,9 @@ export default function ListMode() {
       {statuses.map(stt => {
         return (
           <div
-            className="bg-white mb-4 rounded-md border mx-4 relative mt-4"
+            className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
             key={stt.id}>
-            <div className="px-3 py-2 border-b sticky top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
+            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[45px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
               <div
                 style={{ color: stt.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">
@@ -60,7 +60,7 @@ export default function ListMode() {
                 <ListCell width={100}>Created by</ListCell>
               </div>
             </div>
-            <div className="divide-y">
+            <div className="divide-y dark:divide-gray-800">
               {taskLoading ? (
                 <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
                   <span className="w-4 h-4">
@@ -77,7 +77,7 @@ export default function ListMode() {
                     <div
                       className="px-3 py-2 text-sm flex items-center justify-between"
                       key={task.id}>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 dark:text-gray-300">
                         <TaskCheckbox id={stt.id} />
                         {/* <StatusItem id={stt.id} /> */}
                         <TaskStatus
@@ -86,7 +86,7 @@ export default function ListMode() {
                         />
                         {task.title}
                       </div>
-                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
+                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
                         <ListCell width={150}>
                           <TaskAssignee
                             taskId={task.id}

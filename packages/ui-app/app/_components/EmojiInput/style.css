@@ -1,4 +1,25 @@
 .form-emoji .epr-category-nav {
   padding: 5px 0px !important;
-  @apply border-y;
+  @apply border-y dark:border-gray-700;
+}
+
+.dark .EmojiPickerReact {
+  @apply bg-gray-900;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity)) !important;
+}
+
+.EmojiPickerReact .epr-search-container input.epr-search {
+  @apply dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300;
+}
+
+.EmojiPickerReact .epr-search-container input.epr-search:focus {
+  @apply dark:bg-gray-800;
+}
+
+.EmojiPickerReact li.epr-emoji-category > .epr-emoji-category-label {
+  @apply dark:bg-gray-800 dark:text-gray-300;
+}
+
+.EmojiPickerReact .epr-preview {
+  @apply dark:border-gray-700;
 }
