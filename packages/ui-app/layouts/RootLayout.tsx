@@ -8,7 +8,7 @@ export default function RootLayoutComp({
   children: React.ReactNode
 }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark">
+    <ThemeProvider attribute="class" defaultTheme="light">
       <div className="root-container">{children}</div>
     </ThemeProvider>
   )
