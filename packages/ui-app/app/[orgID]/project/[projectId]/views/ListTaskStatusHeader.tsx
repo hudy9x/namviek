@@ -15,6 +15,8 @@ import TaskPoint from './TaskPoint'
 import PointSelect from '@/components/PointSelect'
 import { tasksUpdateByStatus } from '@/services/task'
 import { useTaskStore } from '@/store/task'
+import StatusSelect from '@/components/StatusSelect'
+// import TaskStatus from './TaskStatus'
 
 export default function ListTaskStatusHeader({
   status,
@@ -26,8 +28,9 @@ export default function ListTaskStatusHeader({
   const { name: statusName, id: statusId } = status
   const { updateTasksByStatus } = useTaskStore()
   const { statusLoading } = useProjectStatusStore()
-  const [editing, setEditing] = useState(false)
+  const [isEditing, setEditing] = useState(false)
   const [item, setItem] = useState({} as Task)
+  const { statuses } = useProjectStatusStore()
 
   const handleCheckedChange = useCallback(
     (v: boolean) => {
@@ -54,27 +57,41 @@ export default function ListTaskStatusHeader({
         console.log(error)
         messageError('update error')
       })
+    handleCheckedChange(false)
     setItem({} as Task)
   }
 
   const updateField = (name: keyof Task) => (value: any) =>
     setItem(prev => ({ ...prev, [name]: value }))
 
-  return (
-    <div className="px-3 py-2 border-b top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
+  const render = () => (
+    <>
       <div className="flex gap-2 items-center text-xs uppercase font-bold">
-        <TaskCheckAll onChange={handleCheckedChange} />
-        <div className={`status-name ${statusLoading ? 'loading' : ''}`}>
-          {statusName}
-        </div>
+        <TaskCheckAll onChange={handleCheckedChange} value={isEditing} />
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <StatusSelect
+              className={`task-status`}
+              value={item.taskStatusId || undefined}
+              onChange={updateField('taskStatusId')}
+            />
+            {statuses.find(opt => opt.id === item.taskStatusId)?.name ||
+              'Select status...'}
+          </div>
+        ) : (
+          <div className={`status-name ${statusLoading ? 'loading' : ''}`}>
+            {statusName}
+          </div>
+        )}
       </div>
-      {editing ? (
+      {isEditing ? (
         <div className="flex relative items-center gap-3 text-xs uppercase font-medium text-gray-500">
           {/* <ListCell width={150}>{renderInput('assignee', true)}</ListCell> */}
           <ListCell width={150}>
             <MemberPicker
               onChange={v => updateField('assigneeIds')([v])}
               className="task-assignee"
+              value={item.assigneeIds?.[0]}
             />
           </ListCell>
           <ListCell width={75}>
@@ -86,6 +103,7 @@ export default function ListTaskStatusHeader({
           </ListCell>
           <ListCell width={50}>
             <PointSelect
+              value={item.taskPoint?.toString()}
               onChange={updateField('taskPoint')}
               className="task-point"
             />
@@ -117,6 +135,12 @@ export default function ListTaskStatusHeader({
           <ListCell width={100}>Created by</ListCell>
         </div>
       )}
+    </>
+  )
+
+  return (
+    <div className="px-3 py-2 border-b top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
+      {render()}
     </div>
   )
 }

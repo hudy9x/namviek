@@ -121,7 +121,10 @@ export const useTaskStore = create<TaskState>(set => ({
         state.tasks
           .filter(task => task.taskStatusId === taskStatusId)
           .forEach(task => {
-            Object.assign(task, data)
+            // Object.assign(task, data)
+            for (const [key, value] of Object.entries(data)) {
+              if (value) task[key.toString()] = value
+            }
           })
       })
     )
