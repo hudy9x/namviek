@@ -15,11 +15,11 @@ export const ProjectStatus = () => {
 
   return (
     <div className="w-full">
-      <div className="setting-container border">
+      <div className="setting-container border dark:border-gray-700">
         <DndProvider backend={HTML5Backend}>
           <StatusDnDContainer />
         </DndProvider>
-        <div className="relative flex items-center bg-gray-50 rounded-b-lg">
+        <div className="relative flex items-center bg-gray-50 dark:bg-gray-800 rounded-b-lg">
           <AiOutlinePlus className="absolute top-3.5 left-4 text-gray-500" />
           <input
             ref={inputAddRef}

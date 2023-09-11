@@ -17,11 +17,13 @@ export function ListTaskStatus({ stt }: { stt: TaskStatusMd }) {
   const { tasks, taskLoading } = useTaskStore()
   const [checkedAll, setCheckedAll] = useState(false)
   return (
-    <div className="bg-white mb-4 rounded-md border mx-4 mt-4" key={stt.id}>
+    <div
+      className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
+      key={stt.id}>
       <div style={{ color: stt.color }}>
         <ListTaskStatusHeader status={stt} onCheckedChange={setCheckedAll} />
       </div>
-      <div className="divide-y">
+      <div className="divide-y dark:divide-gray-800">
         {taskLoading ? (
           <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
             <span className="w-4 h-4">
@@ -37,15 +39,15 @@ export function ListTaskStatus({ stt }: { stt: TaskStatusMd }) {
               if (task.taskStatusId !== stt.id) return null
               return (
                 <div
-                  key={task.id}
-                  className="px-3 py-2 text-sm flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  className="px-3 py-2 text-sm flex items-center justify-between"
+                  key={task.id}>
+                  <div className="flex items-center gap-2 dark:text-gray-300">
                     <TaskCheckbox id={stt.id} value={checkedAll} />
                     {/* <StatusItem id={stt.id} /> */}
                     <TaskStatus taskId={task.id} value={task.taskStatusId} />
                     {task.title}
                   </div>
-                  <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
+                  <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
                     <ListCell width={150}>
                       <TaskAssignee taskId={task.id} uids={task.assigneeIds} />
                     </ListCell>

@@ -51,7 +51,7 @@ export default function SettingLayout({
 
   return (
     <div className="project-nav">
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <h2 className="text-xl font-bold px-4 py-2">Settings</h2>
         <div className="tab pl-1">
           {tabs.map((tab, index) => {
@@ -71,7 +71,7 @@ export default function SettingLayout({
       </div>
 
       <div
-        className="task bg-indigo-50/50 w-full"
+        className="task bg-indigo-50/50 dark:bg-[#182031] w-full"
         style={{ height: `calc(100vh - 83px)` }}>
         {children}
       </div>

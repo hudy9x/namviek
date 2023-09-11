@@ -26,7 +26,7 @@ export default function MyWorkMembers() {
         <span>🚴‍♀️ Members</span>
         {/* <MdOutlineRefresh className="cursor-pointer w-7 h-7 rounded-md bg-white border p-1 text-gray-400 hover:text-gray-500 hover:bg-gray-50" /> */}
       </h2>
-      <div className="bg-white rounded-md border divide-y divide-dashed">
+      <div className="mw-members">
         {orgMembers.map(member => {
           const { name, id, photo } = member
           const isSelected = !!assigneeIds.find(uid => uid === id)
@@ -35,7 +35,7 @@ export default function MyWorkMembers() {
             <div
               key={id}
               onClick={() => setSelect(id)}
-              className="flex items-center justify-between gap-2 bg-white first:rounded-t-md last:rounded-b-md  px-3 py-2 hover:bg-gray-50 cursor-pointer">
+              className="mw-member-item">
               <div className="flex items-center gap-2">
                 <Avatar size="md" name={name || ''} src={photo || ''} />
                 <span className="text-gray-500 text-sm">{name}</span>

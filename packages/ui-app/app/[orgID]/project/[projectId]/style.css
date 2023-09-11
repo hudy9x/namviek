@@ -58,6 +58,11 @@
 
 .project-member-permission .select-button {
   @apply text-xs px-2 py-1.5 text-gray-500;
+  @apply dark:border-gray-800;
+}
+
+.project-member-permission .select-options {
+  @apply dark:bg-gray-900 dark:border-gray-800 dark:text-gray-500;
 }
 
 .project-member-permission .select-clear-icon {
@@ -90,7 +95,7 @@
 }
 
 .irow {
-  @apply hover:bg-gray-100;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
 }
 
 .icell {

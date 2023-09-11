@@ -1,16 +1,45 @@
 .mw-task {
   @apply px-3 py-2 bg-white border rounded-md text-sm flex items-center justify-between;
   @apply hover:border-indigo-400 transition-all cursor-pointer;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:border-indigo-400;
 }
 
 .mw-card-title {
   @apply font-medium flex items-center justify-between gap-2 pb-2;
+  @apply dark:text-gray-400;
+}
+
+.mw-card-total {
+  @apply text-xs w-6 h-6 p-1 rounded-md bg-white border inline-flex justify-center text-gray-500;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300;
 }
 
 .mw-card-reload {
   @apply cursor-pointer w-7 h-7 rounded-md bg-white border p-1 text-gray-400 hover:text-gray-500 hover:bg-gray-50;
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.mw-card-more {
+  @apply bg-white py-1 text-center text-xs border rounded-md;
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.mw-projects {
+  @apply bg-white rounded-md border divide-y divide-dashed;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }
 
 .mw-project-item {
   @apply flex items-center justify-between gap-2 bg-white first:rounded-t-md last:rounded-b-md text-sm px-3 py-2 hover:bg-gray-50 cursor-pointer;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-800;
+}
+
+.mw-members {
+  @apply bg-white rounded-md border divide-y divide-dashed;
+  @apply dark:border-gray-700 dark:bg-gray-900;
+}
+
+.mw-member-item {
+  @apply flex items-center justify-between gap-2 bg-white first:rounded-t-md last:rounded-b-md  px-3 py-2 hover:bg-gray-50 cursor-pointer;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-800;
 }

@@ -1,0 +1,90 @@
+/* Dark mode */
+
+.dark .select-container .select-button {
+  @apply bg-gray-900;
+}
+
+.form-control .form-input {
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300;
+  @apply dark:ring-indigo-300 dark:focus:ring-indigo-400;
+}
+
+.form-control label {
+  @apply dark:text-gray-400;
+}
+
+.modal-content {
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:border;
+}
+
+/* Select input */
+.select-clear-icon {
+  @apply dark:bg-gray-700 dark:text-gray-400;
+}
+
+.selected-member {
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.selected-project {
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.select-options {
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.select-item:hover {
+  @apply dark:bg-gray-800;
+}
+
+/* Modal */
+.popover-content {
+  @apply dark:bg-gray-900 dark:border-gray-700;
+}
+
+.modal-close {
+  @apply dark:border-gray-700 dark:hover:bg-gray-800;
+}
+
+/* Datepicker  */
+
+.rdp-weeknumber,
+.rdp-day {
+  @apply dark:text-gray-400;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  @apply dark:bg-indigo-600 dark:text-gray-200;
+}
+
+.rdp-caption,
+.rdp-caption_label {
+  @apply dark:text-gray-400;
+}
+
+.rdp-nav_button {
+  @apply dark:border-gray-700;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  @apply dark:bg-gray-800;
+}
+
+/* Button */
+
+.btn {
+  @apply dark:bg-slate-900 dark:border-gray-700;
+  @apply dark:shadow-gray-900 dark:hover:bg-slate-800;
+  @apply dark:text-gray-400;
+}
+
+.btn[disabled] {
+  @apply dark:bg-slate-800;
+}
+
+.btn svg {
+  @apply dark:text-gray-400;
+}

@@ -13,7 +13,7 @@ export default function MyWorkProject() {
       <h2 className="font-medium flex items-center justify-between gap-2 pb-2">
         <span>🚴‍♀️ Projects</span>
       </h2>
-      <div className="bg-white rounded-md border divide-y divide-dashed">
+      <div className="mw-projects">
         <div className="mw-project-item" onClick={() => selectProject('all')}>
           All
           {projectId === 'all' && (

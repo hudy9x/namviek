@@ -8,7 +8,7 @@ export const StatusDnDContainer = () => {
   return (
     <>
       {statuses.length ? (
-        <div className="divide-y border-b">
+        <div className="divide-y border-b dark:border-gray-700 dark:divide-gray-800">
           {statuses.map((status, index) => (
             <StatusItemDnD status={status} index={index} key={status.id}>
               <StatusItem status={status} />

@@ -43,7 +43,7 @@ export default function TaskFilter() {
       <div className="flex items-center gap-2">
         <AiOutlineSearch className="text-gray-400" />
         <input
-          className="text-sm outline-none"
+          className="text-sm outline-none dark:bg-gray-900"
           value={txt}
           onChange={ev => {
             setTxt(ev.target.value)

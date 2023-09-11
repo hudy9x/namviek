@@ -12,6 +12,7 @@
 
 .board-task-item {
   @apply bg-white p-3 rounded-md shadow-sm border;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }
 
 .board-task-item .selected-member-name {
