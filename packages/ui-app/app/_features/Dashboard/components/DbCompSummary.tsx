@@ -49,11 +49,11 @@ export default function DbCompSummary({
   }, [])
 
   return (
-    <div className="py-4 px-5 w-[] border rounded-md bg-white shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
+    <div className="py-4 px-5 w-[] border rounded-md bg-white dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900 shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
       <span className="absolute -bottom-10 right-4 text-[70px] opacity-30 group-hover:-bottom-6 transition-all group-hover:opacity-100">
         {data.icon}
       </span>
-      <h2 className="text-sm text-gray-600 flex items-center gap-1 ">
+      <h2 className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 ">
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
       </h2>
