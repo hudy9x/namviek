@@ -4,12 +4,13 @@ import './styles.css'
 import { SetStateAction, useEffect, useState } from 'react'
 
 interface ModalProps {
-  triggerBy: React.ReactNode
+  triggerBy?: React.ReactNode
   title: string
   desc?: string
   size?: 'base' | 'lg' | 'xl'
   visible?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
+  onClose?: () => void
   content: React.ReactNode
   backdrop?: boolean
   className?: string
@@ -19,6 +20,7 @@ export default function Modal({
   triggerBy,
   visible = false,
   onVisibleChange,
+  onClose,
   title,
   desc,
   size = 'base',
@@ -48,7 +50,7 @@ export default function Modal({
 
               {content}
 
-              <Dialog.Close asChild>
+              <Dialog.Close asChild onClick={onClose}>
                 <button className="modal-close" aria-label="Close">
                   <MdClose />
                 </button>

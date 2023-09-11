@@ -3,6 +3,8 @@ import { Droppable } from 'react-beautiful-dnd'
 import { BoardTaskItem } from './BoardTaskItem'
 import Scrollbar from 'packages/shared-ui/src/components/Scrollbar'
 import { BoardActionCreateTask } from './BoardActionCreateTask'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 let counter = 0
 interface IBoardTaskListProps {
@@ -10,6 +12,7 @@ interface IBoardTaskListProps {
 }
 export const BoardTaskList = ({ groupId }: IBoardTaskListProps) => {
   const { tasks } = useTaskStore()
+  const { orgID, projectId } = useParams()
 
   return (
     <Droppable droppableId={groupId} type="task">
@@ -27,7 +30,11 @@ export const BoardTaskList = ({ groupId }: IBoardTaskListProps) => {
               {tasks.map((task, index) => {
                 if (task.taskStatusId !== groupId) return null
                 ++counter
-                return <BoardTaskItem index={counter} data={task} key={index} />
+                return (
+                  <Link href={`${orgID}/project/${projectId}?mode=board&taskId=${task.id}`}>
+                    <BoardTaskItem index={counter} data={task} key={index} />
+                  </Link>
+                )
               })}
               <BoardActionCreateTask groupId={groupId} />
             </div>

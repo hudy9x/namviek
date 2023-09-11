@@ -12,6 +12,7 @@ import { useState } from 'react'
 import ProjectTabContent from './ProjectTabContent'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import TaskCreate from './TaskCreate'
+import { TaskUpdate } from './TaskUpdate'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -94,6 +95,7 @@ export default function ProjectNav() {
         <ProjectTabContent />
       </div>
       <TaskCreate />
+      <TaskUpdate />
     </div>
   )
 }

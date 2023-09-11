@@ -1,11 +1,15 @@
 import { useTaskStore } from '@/store/task'
 import CalMonthTask from './CalMonthTask'
 import { isEqual } from 'date-fns'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 let index = 0
 
 export default function CalMonthTaskList({ day }: { day: Date }) {
   const { tasks } = useTaskStore()
+  const { orgID, projectId } = useParams()
+
   return (
     <div className="calendar-month-tasks ">
       {tasks.map(task => {
@@ -23,7 +27,11 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
           return null
         }
 
-        return <CalMonthTask key={task.id} index={++index} task={task} />
+        return (
+          <Link href={`${orgID}/project/${projectId}?mode=calendar&taskId=${task.id}`}>
+            <CalMonthTask key={task.id} index={++index} task={task} />
+          </Link>
+        )
       })}
     </div>
   )
