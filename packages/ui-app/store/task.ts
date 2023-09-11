@@ -23,7 +23,7 @@ export const useTaskStore = create<TaskState>(set => ({
       produce((state: TaskState) => {
         const taskIndex = state.tasks.findIndex(t => t.id === id)
 
-        if (!taskIndex) {
+        if (taskIndex === -1) {
           return
         }
 

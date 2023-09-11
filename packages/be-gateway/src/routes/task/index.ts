@@ -55,28 +55,28 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
       ableToCache = true
 
       const cached = await getJSONCache(key)
-      if (cached) {
-        console.log('return cached tasks')
-        return res.json({
-          status: 200,
-          data: cached.data,
-          total: cached.total
-        })
-      }
+      // if (cached) {
+      //   console.log('return cached tasks')
+      //   return res.json({
+      //     status: 200,
+      //     data: cached.data,
+      //     total: cached.total
+      //   })
+      // }
     }
 
     const tasks = await mdTaskGetAll(rest)
     if (counter) {
       const total = await mdTaskGetAll(req.query)
-      if (ableToCache) {
-        setJSONCache(key, { data: tasks, total })
-      }
+      // if (ableToCache) {
+      //   setJSONCache(key, { data: tasks, total })
+      // }
       return res.json({ status: 200, data: tasks, total })
     }
 
-    if (ableToCache) {
-      setJSONCache(key, { data: tasks, total: 0 })
-    }
+    // if (ableToCache) {
+    //   setJSONCache(key, { data: tasks, total: 0 })
+    // }
 
     res.json({ status: 200, data: tasks })
   } catch (error) {

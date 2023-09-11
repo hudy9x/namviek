@@ -2,7 +2,7 @@ import { useParams } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
 import { useTaskStore } from '../../../../../store/task'
 import { taskUpdate } from '../../../../../services/task'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess, messageWarning } from '@shared/ui'
 import { Task } from '@prisma/client'
 
 export const useTaskUpdate = () => {
@@ -11,6 +11,11 @@ export const useTaskUpdate = () => {
   const { updateTask } = useTaskStore()
 
   const updateTaskData = (taskData: Partial<Task>) => {
+    if (taskData.id?.includes('TASK-ID-RAND')) {
+      messageWarning('Wait! this task still syncing data from server')
+      return
+    }
+
     updateTask({
       updatedBy: user?.id,
       ...taskData
