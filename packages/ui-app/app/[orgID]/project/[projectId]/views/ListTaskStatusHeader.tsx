@@ -66,7 +66,7 @@ export default function ListTaskStatusHeader({
 
   const render = () => (
     <>
-      <div className="px-3 py-2 border-b dark:border-b-gray-800 top-[45px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
+      <div className="px-3 py-2 gap-2 border-b dark:border-b-gray-800 top-[45px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
         <TaskCheckAll onChange={handleCheckedChange} value={isEditing} />
         {isEditing ? (
           <div className="flex items-center gap-2">
