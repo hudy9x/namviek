@@ -3,9 +3,7 @@
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import UserSection from '../../layouts/UserSection'
 import RootSidebar from '../../layouts/RootSidebar'
-import ProjectAdd from './ProjectAdd'
 import ProjectList from './ProjectList'
-import Link from 'next/link'
 import {
   HiOutlineBriefcase,
   HiOutlineChartPie,
