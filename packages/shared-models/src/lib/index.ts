@@ -8,4 +8,4 @@ export * from './user'
 export * from './organization'
 export * from './orgMember'
 export * from './dashboard'
-
+export * from './storage'

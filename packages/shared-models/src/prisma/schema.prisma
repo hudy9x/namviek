@@ -37,6 +37,10 @@ enum TaskPriority {
   LOW
 }
 
+enum StorageType {
+  AWS_S3
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -179,4 +183,15 @@ model Dashboard {
   title               String?              @default("Untitled")
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
+}
+
+model Storage {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  type           StorageType
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now())
+  createdBy      String
+  organizationId String      @unique
+  updatedBy      String?
+  config         Json        @default("{}")
 }
