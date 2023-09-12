@@ -1,6 +1,7 @@
 import { Modal } from "@shared/ui";
 import { useSearchParams, useRouter, useParams } from "next/navigation"
 import { useEffect, useState } from "react";
+import { TaskUpdateForm } from "./TaskUpdateForm";
 
 export const TaskUpdate = () => {
  const [visible, setVisible] = useState(false);
@@ -8,28 +9,34 @@ export const TaskUpdate = () => {
  const { orgID, projectId } = useParams()
  const router = useRouter()
  const taskId = sp.get('taskId')
-
- const handleClose = () => {
-  const mode = sp.get('mode')
-  router.replace(`${orgID}/project/${projectId}?mode=${mode}`);
- }
-
+ 
  useEffect(() => {
   if (!taskId) return
-
+  
   setVisible(true)
  }, [taskId])
+
+ useEffect(() => {
+  if (visible) return
+  
+  const mode = sp.get('mode')
+  router.replace(`${orgID}/project/${projectId}?mode=${mode}`);
+ }, [visible])
 
  return (
   <div>
    <Modal
     visible={visible}
     onVisibleChange={setVisible}
-    title="Add a new task"
-    onClose={handleClose}
+    title="Update a new task"
     content={
      <>
-      <div>123123</div>
+      <TaskUpdateForm
+       taskId={taskId || ''}
+       onSuccess={() => {
+        setVisible(false);
+       }}
+      />
      </>
     }
    />

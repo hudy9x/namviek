@@ -19,7 +19,7 @@ import { useTaskStore } from '../../../../store/task'
 import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 
-let defaultFormikValues = {
+export let defaultFormikValues = {
   title: '',
   assigneeIds: [],
   taskStatusId: '',
