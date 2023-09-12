@@ -33,6 +33,7 @@ const CalendarFilter = () => {
   useEffect(() => {
     if (isCalendarMode) setMonth(new Date().getMonth())
   }, [isCalendarMode])
+
   return (
     <div className="flex justify-center items-center gap-2 mr-10">
       <HiChevronLeft

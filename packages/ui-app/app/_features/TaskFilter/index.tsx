@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
-import CalendarFilter from './CalendarFilter'
+import CalendarModeFilter from './CalendarModeFilter'
 import { useTaskFilter } from './context'
 import './style.css'
 
@@ -62,7 +62,7 @@ export default function TaskFilter() {
       <div className="task-filter-actions">
         <FormGroup>
           {isCalendarMode ? (
-            <CalendarFilter />
+            <CalendarModeFilter />
           ) : (
             <>
               {date && showOperator.includes(date) && (
