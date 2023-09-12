@@ -5,11 +5,15 @@ let connected = false
 let error = false
 
 export enum CKEY {
+  // save the list of organization that user is owner or a member of
   USER_ORGS = 'USER_ORGS',
+  // save the list of project that user manages it or be a member
   USER_PROJECT = 'USER_PROJECT',
+  // project status
   PROJECT_STATUS = 'PROJECT_STATUS',
   PROJECT_MEMBER = 'PROJECT_MEMBER',
   PROJECT_POINT = 'PROJECT_POINT',
+  // save the query condition
   TASK_QUERY = 'TASK_QUERY'
 }
 
