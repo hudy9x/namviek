@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
+import CalendarFilter from './CalendarFilter'
 import { useTaskFilter } from './context'
 import './style.css'
 
@@ -32,30 +32,7 @@ export default function TaskFilter() {
 
   const isDateRange = date === 'date-range'
   const isCalendarMode = mode === 'calendar'
-  const months =
-    'January, February, March, April, May, June, July, August, September, October, November, December'.split(
-      ','
-    )
-
   const showOperator = ['this-month', 'this-week', 'today']
-
-  const [month, setMonth] = useState(new Date().getMonth())
-
-  const onChangeMonthCalendar = (month: string) => {
-    const today = new Date()
-    const lastDayOfMonth = new Date(today.getFullYear(), +month + 1, 0)
-
-    const startDayOfMonth = new Date(today.getFullYear(), +month, 1)
-
-    if (date !== 'date-range') setFilterValue('date', 'date-range')
-    setFilterValue('startDate', startDayOfMonth)
-    setFilterValue('endDate', lastDayOfMonth)
-    setMonth(+month)
-  }
-
-  useEffect(() => {
-    if (isCalendarMode) setMonth(new Date().getMonth())
-  }, [isCalendarMode])
 
   useEffect(() => {
     if (timeout) {
@@ -85,26 +62,7 @@ export default function TaskFilter() {
       <div className="task-filter-actions">
         <FormGroup>
           {isCalendarMode ? (
-            <div className="flex justify-center items-center gap-2 mr-10">
-              <HiChevronLeft
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => onChangeMonthCalendar(String(month - 1))}
-              />
-              <ListPreset
-                className="w-[150px]"
-                value={String(month)}
-                onChange={val => onChangeMonthCalendar(val)}
-                width={180}
-                options={months.map((month, idx) => ({
-                  id: String(idx),
-                  title: month
-                }))}
-              />
-              <HiChevronRight
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => onChangeMonthCalendar(String(month + 1))}
-              />
-            </div>
+            <CalendarFilter />
           ) : (
             <>
               {date && showOperator.includes(date) && (
