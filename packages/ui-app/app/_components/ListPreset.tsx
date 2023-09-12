@@ -37,6 +37,11 @@ function ListPreset({
     }
   }, [updateCounter])
 
+  useEffect(() => {
+    const selected = options.find(opt => opt.id === value)
+    if (selected && selected.id !== val.id) setVal(selected)
+  }, [value])
+
   const selectedVal = val.id ? val : defaultOption || defaultValue
 
   return (

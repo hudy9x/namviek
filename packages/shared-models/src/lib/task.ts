@@ -92,13 +92,13 @@ const generateConditions = ({
   if (!dueDateNotSet && dueDate && (dueDate[0] || dueDate[1])) {
     let [start, end] = dueDate
 
-    if (start) {
+    if (start && start !== 'null') {
       start = new Date(start)
-    }
+    } else start = null
 
-    if (end) {
+    if (end && end !== 'null') {
       end = new Date(end)
-    }
+    } else end = null
 
     // today tasks
     if (start === end) {
@@ -140,8 +140,6 @@ const generateConditions = ({
   if (priority) {
     where.priority = priority
   }
-
-  // console.log('where', where)
 
   return where
 }
