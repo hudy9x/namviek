@@ -103,3 +103,35 @@ export const delCache = async (key: CACHE_KEY) => {
     console.log(`delete redis key {${key}} error`)
   }
 }
+
+export const delMultiCache = async (keys: CACHE_KEY[]) => {
+  const pipeline = redis.pipeline()
+
+  keys.forEach(k => {
+    pipeline.del(genKey(k))
+  })
+
+  await pipeline.exec()
+}
+
+export const findCache = async (key: CACHE_KEY) => {
+  const newKey = genKey(key)
+
+  console.log('new key', newKey)
+  const results = await redis.keys(newKey + '*')
+  console.log('result', results)
+  return results
+}
+
+export const findNDelCaches = async (key: CACHE_KEY) => {
+  const keys = await findCache(key)
+  if (!keys.length) return
+
+  const pipeline = redis.pipeline()
+
+  keys.forEach(k => {
+    pipeline.del(k)
+  })
+
+  await pipeline.exec()
+}
