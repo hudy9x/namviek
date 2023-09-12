@@ -6,8 +6,6 @@ export class StorageBase {
     switch (storageData.type) {
       case 'AWS_S3':
         return new AwsS3(storageData)
-      default:
-        return new AwsS3(storageData)
     }
   }
 
