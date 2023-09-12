@@ -45,7 +45,10 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
     let ableToCache = false
     const queryKeys = Object.keys(req.query)
-    const key = [CKEY.TASK_QUERY, genKeyFromSource(req.query)]
+    const projectId = req.query.projectId
+    const key = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
+
+    console.log('queryKeys', queryKeys)
 
     if (
       queryKeys.length === 2 &&
@@ -153,6 +156,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     taskStatusId
   } = req.body as Task
   const { id } = req.authen
+
+  const key = [CKEY.TASK_QUERY, projectId]
 
   try {
     const result = await mdTaskAdd({
