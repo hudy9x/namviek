@@ -1,7 +1,7 @@
 import { Modal } from "@shared/ui";
 import { useSearchParams, useRouter, useParams } from "next/navigation"
 import { useEffect, useState } from "react";
-import { TaskUpdateForm } from "./TaskUpdateForm";
+import TaskForm, { TASK_MODE } from './TaskForm';
 
 export const TaskUpdate = () => {
  const [visible, setVisible] = useState(false);
@@ -31,7 +31,8 @@ export const TaskUpdate = () => {
     title="Update a new task"
     content={
      <>
-      <TaskUpdateForm
+      <TaskForm
+       mode={TASK_MODE.UPDATE}
        taskId={taskId || ''}
        onSuccess={() => {
         setVisible(false);

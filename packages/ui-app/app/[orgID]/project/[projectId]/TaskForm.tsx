@@ -4,7 +4,6 @@ import {
   Form,
   messageError,
   messageSuccess,
-  randomId
 } from '@shared/ui'
 import MemberPicker from '../../../_components/MemberPicker'
 import PrioritySelect from '../../../_components/PrioritySelect'
@@ -13,13 +12,13 @@ import { Task, TaskPriority, TaskStatus } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
-import { taskAdd } from '../../../../services/task'
+import { taskAdd, taskUpdate } from '../../../../services/task'
 import { useEffect, useState } from 'react'
 import { useTaskStore } from '../../../../store/task'
 import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 
-export let defaultFormikValues = {
+export let defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
   taskStatusId: '',
@@ -28,8 +27,23 @@ export let defaultFormikValues = {
   desc: '<p>Tell me what this task about 🤡</p>'
 }
 
+export enum TASK_MODE {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE'
+}
+
+interface ITaskDefaultValues {
+  title: string;
+  assigneeIds: string[];
+  taskStatusId: string;
+  priority: TaskPriority;
+  dueDate: Date;
+  desc: string;
+}
 interface ITaskFormProps {
   taskStatusId?: string
+  taskId?: string,
+  mode: TASK_MODE,
   dueDate?: Date
   onSuccess: () => void
 }
@@ -37,11 +51,13 @@ interface ITaskFormProps {
 export default function TaskForm({
   dueDate,
   taskStatusId,
+  taskId,
+  mode,
   onSuccess
 }: ITaskFormProps) {
   const { user } = useUser()
   const [loading, setLoading] = useState(false)
-  const { addOneTask, syncRemoteTaskById } = useTaskStore()
+  const { addOneTask, syncRemoteTaskById, updateTask, tasks } = useTaskStore()
   const params = useParams()
   const { statuses } = useProjectStatusStore()
 
@@ -53,28 +69,24 @@ export default function TaskForm({
     defaultFormikValues = { ...defaultFormikValues, taskStatusId }
   }
 
-  const formik = useFormik({
-    initialValues: defaultFormikValues,
-    onSubmit: values => {
-      if (loading) return
-      console.log('loading', loading)
+  let currentTask: Task | undefined
+  if (taskId) {
+    currentTask = tasks.find((task) => task.id === taskId)
 
-      setLoading(true)
-      const mergedValues = { ...values, projectId: params.projectId }
-      if (!Array.isArray(mergedValues.assigneeIds)) {
-        mergedValues.assigneeIds = [mergedValues.assigneeIds]
+    if (currentTask) {
+      defaultFormikValues = {
+        title: currentTask?.title || defaultFormikValues.title,
+        taskStatusId: currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
+        priority: currentTask.priority ? currentTask.priority : defaultFormikValues.priority,
+        dueDate: currentTask.dueDate ? new Date(currentTask.dueDate) : defaultFormikValues.dueDate,
+        assigneeIds: currentTask.assigneeIds ? currentTask.assigneeIds : defaultFormikValues.assigneeIds,
+        desc: currentTask.desc ? currentTask.desc : defaultFormikValues.desc
       }
-      console.log(mergedValues)
+    }
+  }
 
-      const { error, errorArr } = validateTask(mergedValues)
-      // console.log(values)
-      // console.log(errorArr, data);
-      if (error) {
-        setLoading(false)
-        console.error(errorArr)
-        return
-      }
-
+  const handleTask = (mergedValues: ITaskDefaultValues) => {
+    if (mode === TASK_MODE.CREATE) {
       const randomId = `TASK-ID-RAND-${Date.now()}`
 
       addOneTask({
@@ -85,8 +97,6 @@ export default function TaskForm({
           id: randomId
         }
       })
-
-      // addOneTask(values)
 
       taskAdd(mergedValues)
         .then(res => {
@@ -103,7 +113,54 @@ export default function TaskForm({
         .finally(() => {
           // setLoading(false)
         })
+    } else {
+      updateTask({
+        ...mergedValues,
+        id: taskId,
+        updatedBy: user?.id,
+        updatedAt: new Date(),
+      })
 
+      taskUpdate(mergedValues).then((res) => {
+        const { data, status } = res.data
+        if (status !== 200) return
+
+        syncRemoteTaskById(data.id, data as Task)
+        messageSuccess('Synced success !')
+      }).catch((err) => {
+        messageError('Update new task error')
+
+        if (!currentTask) return
+        syncRemoteTaskById(currentTask?.id, currentTask)
+        console.log(err)
+      })
+    }
+  }
+
+  const formik = useFormik({
+    initialValues: defaultFormikValues,
+    onSubmit: values => {
+      if (loading) return
+      console.log('loading', loading)
+
+      setLoading(true)
+      const mergedValues = { ...values, projectId: params.projectId }
+      if (!Array.isArray(mergedValues.assigneeIds)) {
+        mergedValues.assigneeIds = [mergedValues.assigneeIds]
+      }
+      console.log(values, ' --> value')
+      console.log(mergedValues)
+
+      const { error, errorArr } = validateTask(mergedValues)
+      // console.log(values)
+      // console.log(errorArr, data);
+      if (error) {
+        setLoading(false)
+        console.error(errorArr)
+        return
+      }
+
+      handleTask(mergedValues)
       onSuccess()
       formik.resetForm()
       setLoading(false)
@@ -112,6 +169,8 @@ export default function TaskForm({
 
   // select a default status if empty
   useEffect(() => {
+    if (mode !== TASK_MODE.CREATE) return
+
     if (statuses.length && !formik.values.taskStatusId) {
       let min: TaskStatus | null = null
       statuses.forEach(stt => {
@@ -186,7 +245,7 @@ export default function TaskForm({
       <Button
         type="submit"
         loading={loading}
-        title="Create new task"
+        title={mode === TASK_MODE.CREATE ? "Create new task" : "Update new task"}
         primary
         block
       />
