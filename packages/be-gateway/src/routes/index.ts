@@ -5,15 +5,9 @@ import projectRouter from './project'
 import projectMemberRouter from './member'
 import taskRouter from './task'
 import dboardRouter from './dashboard'
-import { CKEY, findNDelCaches } from '../lib/redis'
 
 const router = Router()
 
-router.get('/cache/test', async (req, res, next) => {
-  // await findCache([CKEY.TASK_QUERY, '649fe51e6c99940db7d13e36'])
-  await findNDelCaches([CKEY.TASK_QUERY])
-  res.send('done')
-})
 // middlewares
 // router.use([])
 router.use(authRouter)
