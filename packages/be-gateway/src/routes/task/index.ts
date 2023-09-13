@@ -239,6 +239,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskStatusId,
     tagIds,
     parentTaskId,
+    progress,
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
@@ -263,6 +264,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
   if (dueDate) {
     taskData.dueDate = dueDate
+  }
+
+  if (progress) {
+    taskData.progress = progress
   }
 
   taskData.updatedAt = new Date()

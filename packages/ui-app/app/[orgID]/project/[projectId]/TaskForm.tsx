@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { useTaskStore } from '../../../../store/task'
 import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
+import RangerSlider from 'packages/shared-ui/src/components/RangerSlider'
 
 export let defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -24,6 +25,7 @@ export let defaultFormikValues: ITaskDefaultValues = {
   taskStatusId: '',
   priority: TaskPriority.LOW,
   dueDate: new Date(),
+  progress: 0,
   desc: '<p>Tell me what this task about 🤡</p>'
 }
 
@@ -39,6 +41,7 @@ interface ITaskDefaultValues {
   priority: TaskPriority;
   dueDate: Date;
   desc: string;
+  progress: number;
 }
 interface ITaskFormProps {
   taskStatusId?: string
@@ -80,7 +83,8 @@ export default function TaskForm({
         priority: currentTask.priority ? currentTask.priority : defaultFormikValues.priority,
         dueDate: currentTask.dueDate ? new Date(currentTask.dueDate) : defaultFormikValues.dueDate,
         assigneeIds: currentTask.assigneeIds ? currentTask.assigneeIds : defaultFormikValues.assigneeIds,
-        desc: currentTask.desc ? currentTask.desc : defaultFormikValues.desc
+        desc: currentTask.desc ? currentTask.desc : defaultFormikValues.desc,
+        progress: currentTask.progress ? currentTask.progress : defaultFormikValues.progress
       }
     }
   }
@@ -141,15 +145,12 @@ export default function TaskForm({
     initialValues: defaultFormikValues,
     onSubmit: values => {
       if (loading) return
-      console.log('loading', loading)
 
       setLoading(true)
       const mergedValues = { ...values, projectId: params.projectId }
       if (!Array.isArray(mergedValues.assigneeIds)) {
         mergedValues.assigneeIds = [mergedValues.assigneeIds]
       }
-      console.log(values, ' --> value')
-      console.log(mergedValues)
 
       const { error, errorArr } = validateTask(mergedValues)
       // console.log(values)
@@ -239,6 +240,13 @@ export default function TaskForm({
         value={formik.values.desc}
         onChange={v => {
           formik.setFieldValue('desc', v)
+        }}
+      />
+      <RangerSlider
+        title="Progress"
+        value={formik.values.progress}
+        onChange={v => {
+          formik.setFieldValue('progress', v)
         }}
       />
 
