@@ -7,7 +7,7 @@
     "backend": "nx serve be-gateway",
     "build:fe": "nx build ui-app --prod --skip-nx-cache",
     "build:be": "nx build be-gateway --prod --skip-nx-cache",
-    "build:all": "yarn build:frontend && yarn build:backend",
+    "build:all": "yarn build:fe && yarn build:be",
     "prod:fe": "next start ./dist/packages/ui-app/",
     "prod:be": "node ./dist/packages/be-gateway/main.js",
     "prisma": "prisma",
