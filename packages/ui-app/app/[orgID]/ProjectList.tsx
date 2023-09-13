@@ -4,18 +4,16 @@ import Link from 'next/link'
 import { useProjectStore } from '../../store/project'
 import { useEffect } from 'react'
 import { projectGet } from '../../services/project'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Project } from '@prisma/client'
-import { useTaskStore } from '../../store/task'
-import { useProjectStatusStore } from '../../store/status'
+import FavoriteAdd from '@/features/Favorites/FavoriteAdd'
 
 export default function ProjectList() {
   const { projects, addAllProject, selectProject } = useProjectStore(
     state => state
   )
-  const { setTaskLoading } = useTaskStore()
-  const { setStatusLoading } = useProjectStatusStore()
   const params = useParams()
+  const { push } = useRouter()
 
   const onSelectProject = (id: string) => {
     selectProject(id)
@@ -44,18 +42,21 @@ export default function ProjectList() {
   return (
     <nav className="nav">
       {projects.map(project => {
-        const active = params.projectId === project.id
+        const { id, name, icon } = project
+        const active = params.projectId === id
+        const href = `${params.orgID}/project/${id}?mode=task`
         return (
-          <Link
+          <div
             key={project.id}
             className={`${active ? 'active' : ''} nav-item`}
             onClick={() => {
               onSelectProject(project.id)
-            }}
-            href={`${params.orgID}/project/${project.id}?mode=task`}>
-            <img className="w-5 h-5" src={project.icon || ''} />
-            <span>{project.name}</span>
-          </Link>
+              push(href)
+            }}>
+            <img className="w-5 h-5" src={icon || ''} />
+            <span>{name}</span>
+            <FavoriteAdd name={name} icon={icon || ''} link={href} />
+          </div>
         )
       })}
     </nav>
