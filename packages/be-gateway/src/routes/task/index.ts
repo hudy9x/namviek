@@ -144,7 +144,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
   console.log('body', req.body)
   const {
     desc,
