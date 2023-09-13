@@ -10,7 +10,8 @@ import {
   mdProjectGet,
   mdTaskExport,
   mdTaskStatusQuery,
-  mdMemberGetProject
+  mdMemberGetProject,
+  mdTaskDelete
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -226,6 +227,24 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
+  }
+})
+
+router.delete('/project/task', async (req: AuthRequest, res) => {
+  const { id, projectId } = req.query as { id: string; projectId: string }
+
+  try {
+    const result = await mdTaskDelete(id)
+    const key = [CKEY.TASK_QUERY, projectId]
+    await findNDelCaches(key)
+    console.log('deleted task', id)
+    res.json({
+      status: 200,
+      data: result
+    })
+  } catch (error) {
+    console.log('error delete', error)
+    res.status(500)
   }
 })
 

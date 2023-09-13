@@ -13,6 +13,7 @@ import TaskPoint from './TaskPoint'
 import TaskStatus from './TaskStatus'
 import { Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
+import TaskActions from '@/features/TaskActions'
 // import List from 'react-virtualized/dist/commonjs/List'
 //
 // const list = new Array(10).fill(1).map((r, ind) => `title ${ind + 1}`)
@@ -75,7 +76,7 @@ export default function ListMode() {
                   if (task.taskStatusId !== stt.id) return null
                   return (
                     <div
-                      className="px-3 py-2 text-sm flex items-center justify-between"
+                      className="px-3 py-2 text-sm flex items-center justify-between group"
                       key={task.id}>
                       <div className="flex items-center gap-2 dark:text-gray-300">
                         <TaskCheckbox id={stt.id} />
@@ -85,6 +86,10 @@ export default function ListMode() {
                           value={task.taskStatusId}
                         />
                         {task.title}
+                        <TaskActions
+                          className="opacity-0 group-hover:opacity-100 transition-all duration-100"
+                          taskId={task.id}
+                        />
                       </div>
                       <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
                         <ListCell width={150}>
