@@ -86,7 +86,10 @@ export default function ListMode() {
                           value={task.taskStatusId}
                         />
                         {task.title}
-                        <TaskActions className="" taskId={task.id} />
+                        <TaskActions
+                          className="opacity-0 group-hover:opacity-100 transition-all duration-100"
+                          taskId={task.id}
+                        />
                       </div>
                       <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
                         <ListCell width={150}>

@@ -1,0 +1,7 @@
+.task-actions {
+  @apply flex items-center gap-1;
+}
+
+.task-actions .btn {
+  @apply px-1 py-1;
+}

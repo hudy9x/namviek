@@ -233,12 +233,11 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
 router.delete('/project/task', async (req: AuthRequest, res) => {
   const { id, projectId } = req.query as { id: string; projectId: string }
 
-  console.log('delete tas', id, projectId)
-
   try {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
     await findNDelCaches(key)
+    console.log('deleted task', id)
     res.json({
       status: 200,
       data: result
