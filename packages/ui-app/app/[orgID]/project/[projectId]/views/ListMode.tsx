@@ -14,6 +14,9 @@ import TaskStatus from './TaskStatus'
 import { Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
 import TaskActions from '@/features/TaskActions'
+import { TaskSelectProvider } from './TaskSelectContext'
+import { ListModeGroupProvider } from './ListModeGroupContext'
+import ListModeHeader from './ListModeHeader'
 // import List from 'react-virtualized/dist/commonjs/List'
 //
 // const list = new Array(10).fill(1).map((r, ind) => `title ${ind + 1}`)
@@ -38,6 +41,11 @@ export default function ListMode() {
       {/*   rowHeight={20} */}
       {/*   rowRenderer={rowRenderer} */}
       {/* /> */}
+      <TaskSelectProvider>
+        <ListModeGroupProvider>
+          <ListModeHeader />
+        </ListModeGroupProvider>
+      </TaskSelectProvider>
       {statuses.map(stt => {
         return (
           <div

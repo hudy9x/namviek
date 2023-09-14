@@ -10,6 +10,7 @@ interface TaskState {
   tasks: Task[]
   addOneTask: (data: PartialTask) => void
   updateTask: (data: PartialTask) => void
+  updateTasks: (data: PartialTask[]) => void
   syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
@@ -120,6 +121,21 @@ export const useTaskStore = create<TaskState>(set => ({
     set(
       produce((state: TaskState) => {
         state.tasks = [...state.tasks, ...data]
+      })
+    ),
+  updateTasks: (data: PartialTask[]) =>
+    set(
+      produce((state: TaskState) => {
+        state.tasks.forEach(oldTask => {
+          data.forEach(newTask => {
+            if (oldTask.id !== newTask.id) return
+            for (const [key, value] of Object.entries(newTask)) {
+              if (value) {
+                oldTask[key] = value
+              }
+            }
+          })
+        })
       })
     )
 }))
