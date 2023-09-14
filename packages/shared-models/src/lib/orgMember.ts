@@ -1,6 +1,21 @@
 import { InvitationStatus, OrganizationMembers } from '@prisma/client'
 import { orgMemberModel } from './_prisma'
 
+export const mdOrgMemberExist = async ({
+  orgId,
+  uid
+}: {
+  orgId: string
+  uid: string
+}) => {
+  return orgMemberModel.findFirst({
+    where: {
+      organizationId: orgId,
+      uid
+    }
+  })
+}
+
 export const mdOrgMemberSeach = async ({
   orgId,
   term,
@@ -71,4 +86,3 @@ export const mdOrgMemberAdd = async (data: Omit<OrganizationMembers, 'id'>) => {
     data
   })
 }
-
