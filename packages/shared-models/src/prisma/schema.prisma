@@ -61,6 +61,7 @@ model Favorites {
   icon      String
   link      String
   uid       String    @db.ObjectId
+  orgId     String    @db.ObjectId
   type      String
   createdAt DateTime?
   createdBy String?

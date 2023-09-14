@@ -1,22 +1,30 @@
 'use client'
 
 import { favGet } from '@/services/favorite'
-import { Favorites } from '@prisma/client'
-import { useEffect, useState } from 'react'
+import { useFavStore } from '@/store/favorite'
+import { useEffect } from 'react'
+import FavoriteItem from './FavoriteItem'
+import { useParams } from 'next/navigation'
 
-export default function Favorites() {
-  const [links, setLinks] = useState<Favorites[]>([])
+export default function FavoritesList() {
+  const { orgID } = useParams()
+  const { favorites, addAllFavorites } = useFavStore()
 
   useEffect(() => {
-    favGet()
+    favGet(orgID)
       .then(res => {
         const { data } = res.data
-        console.log(data)
-        setLinks(data)
+        addAllFavorites(data)
       })
       .catch(err => {
         console.log(err)
       })
   }, [])
-  return <div></div>
+  return (
+    <div className="nav">
+      {favorites.map(fav => {
+        return <FavoriteItem key={fav.id} data={fav} />
+      })}
+    </div>
+  )
 }

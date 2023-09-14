@@ -7,12 +7,13 @@ interface ModalProps {
   triggerBy: React.ReactNode
   title: string
   desc?: string
-  size?: 'base' | 'lg' | 'xl'
+  size?: 'sm' | 'base' | 'lg' | 'xl'
   visible?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
   content: React.ReactNode
   backdrop?: boolean
   className?: string
+  closeBtn?: boolean
 }
 
 export default function Modal({
@@ -24,6 +25,7 @@ export default function Modal({
   size = 'base',
   content,
   backdrop = true,
+  closeBtn = true,
   className
 }: ModalProps) {
   const classes = [className]
@@ -48,11 +50,13 @@ export default function Modal({
 
               {content}
 
-              <Dialog.Close asChild>
-                <button className="modal-close" aria-label="Close">
-                  <MdClose />
-                </button>
-              </Dialog.Close>
+              {closeBtn ? (
+                <Dialog.Close asChild>
+                  <button className="modal-close" aria-label="Close">
+                    <MdClose />
+                  </button>
+                </Dialog.Close>
+              ) : null}
             </Dialog.Content>
             {backdrop ? <Dialog.Overlay className="modal-overlay" /> : null}
           </div>

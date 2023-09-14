@@ -7,10 +7,11 @@ export const mdFavAdd = (data: Omit<Favorites, 'id'>) => {
   })
 }
 
-export const mdFavGet = (uid: string) => {
+export const mdFavGet = (uid: string, orgId: string) => {
   return favModel.findMany({
     where: {
-      uid
+      uid,
+      orgId
     }
   })
 }
