@@ -51,6 +51,12 @@ export default function PrioritySelect({
     }
   }, [updateCounter, val])
 
+  useEffect(() => {
+    if(selectOption) {
+      setVal(selectOption)
+    }
+  }, [selectOption])
+
   const selectedColor = colors.get(val.id)
 
   return (

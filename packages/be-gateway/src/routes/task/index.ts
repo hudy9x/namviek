@@ -55,6 +55,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
       ableToCache = true
 
       const cached = await getJSONCache(key)
+      console.log(cached, '----> cached')
       if (cached) {
         console.log('return cached tasks')
         return res.json({
@@ -77,7 +78,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
     if (ableToCache) {
       setJSONCache(key, { data: tasks, total: 0 })
     }
-
+    console.log(tasks, '---> tasks')
     res.json({ status: 200, data: tasks })
   } catch (error) {
     console.log(error)
@@ -170,7 +171,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       createdBy: id,
       createdAt: new Date(),
       updatedAt: null,
-      updatedBy: null
+      updatedBy: null,
+      progress: null,
     })
 
     res.json({ status: 200, data: result })
@@ -246,6 +248,14 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
   const taskData = await mdTaskGetOne(id)
 
+  if (title) {
+    taskData.title = title
+  }
+
+  if (desc) {
+    taskData.desc = desc
+  }
+
   if (taskStatusId) {
     taskData.taskStatusId = taskStatusId
   }
@@ -275,7 +285,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
   try {
     console.log('taskdata', taskData)
-    const result = mdTaskUpdate(taskData)
+    const result = await mdTaskUpdate(taskData)
     res.json({ status: 200, data: result })
     // res.json({ status: 200 })
   } catch (error) {

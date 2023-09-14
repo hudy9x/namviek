@@ -3,7 +3,7 @@
 import { useProjectStatusStore } from '../../../../../store/status'
 import { useTaskStore } from '../../../../../store/task'
 import TaskCheckbox from '../../../../_components/TaskCheckbox'
-
+import { useEffect } from 'react'
 import TaskCheckAll from './TaskCheckAll'
 import TaskAssignee from './TaskAssignee'
 import TaskDate from './TaskDate'
@@ -32,6 +32,10 @@ export default function ListMode() {
   const { tasks, taskLoading } = useTaskStore()
   const params = useParams()
 
+  useEffect(() => {
+    console.log(tasks, '---> tasks')
+  }, [tasks])
+
   return (
     <div className="pb-[300px]">
       {/* <List */}
@@ -41,11 +45,11 @@ export default function ListMode() {
       {/*   rowHeight={20} */}
       {/*   rowRenderer={rowRenderer} */}
       {/* /> */}
-      {statuses.map(stt => {
+      {statuses.map((stt, index) => {
         return (
           <div
             className="bg-white mb-4 rounded-md border mx-4 relative mt-4"
-            key={stt.id}>
+            key={index}>
             <div className="px-3 py-2 border-b sticky top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
               <div
                 style={{ color: stt.color }}
@@ -77,49 +81,53 @@ export default function ListMode() {
               {!taskLoading &&
                 tasks.map(task => {
                   if (task.taskStatusId !== stt.id) return null
+                  console.log(task.assigneeIds, 'tasl assigneeIds')
 
                   return (
-                    <Link key={task.taskStatusId} href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
-                      <div
-                        className="px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50"
-                        key={task.id}>
-                        <div className="flex items-center gap-2">
-                          <TaskCheckbox id={stt.id} />
-                          {/* <StatusItem id={stt.id} /> */}
-                          <TaskStatus
-                            taskId={task.id}
-                            value={task.taskStatusId}
-                          />
-                          {task.title}
-                        </div>
-                        <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
-                          <ListCell width={150}>
-                            <TaskAssignee
-                              taskId={task.id}
-                              uids={task.assigneeIds}
-                            />
-                          </ListCell>
-                          <ListCell width={75}>
-                            <TaskPriorityCell
-                              taskId={task.id}
-                              value={task.priority}
-                            />
-                          </ListCell>
-                          <ListCell width={50}>
-                            <TaskPoint taskId={task.id} value={task.taskPoint} />
-                          </ListCell>
-                          <ListCell width={110}>
-                            <TaskDate
-                              taskId={task.id}
-                              date={task.dueDate ? new Date(task.dueDate) : null}
-                            />
-                          </ListCell>
-                          <ListCell width={100}>
-                            <MemberAvatar uid={task.createdBy} />
-                          </ListCell>
-                        </div>
+                    <div
+                      className="px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50"
+                      key={task.id}
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <TaskCheckbox id={stt.id} />
+                        {/* <StatusItem id={stt.id} /> */}
+                        <TaskStatus
+                          taskId={task.id}
+                          value={task.taskStatusId}
+                        />
+                        <Link key={task.id} href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
+                          <div className='w-full'>
+                            {task.title}
+                          </div>
+                        </Link>
                       </div>
-                    </Link>
+                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
+                        <ListCell width={150}>
+                          <TaskAssignee
+                            taskId={task.id}
+                            uids={task.assigneeIds}
+                          />
+                        </ListCell>
+                        <ListCell width={75}>
+                          <TaskPriorityCell
+                            taskId={task.id}
+                            value={task.priority}
+                          />
+                        </ListCell>
+                        <ListCell width={50}>
+                          <TaskPoint taskId={task.id} value={task.taskPoint} />
+                        </ListCell>
+                        <ListCell width={110}>
+                          <TaskDate
+                            taskId={task.id}
+                            date={task.dueDate ? new Date(task.dueDate) : null}
+                          />
+                        </ListCell>
+                        <ListCell width={100}>
+                          <MemberAvatar uid={task.createdBy} />
+                        </ListCell>
+                      </div>
+                    </div>
                   )
                 })}
               <ListCreateTask type="status" groupId={stt.id} />

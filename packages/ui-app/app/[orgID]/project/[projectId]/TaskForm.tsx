@@ -13,7 +13,7 @@ import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
 import { taskAdd, taskUpdate } from '../../../../services/task'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useTaskStore } from '../../../../store/task'
 import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
@@ -63,13 +63,14 @@ export default function TaskForm({
   const { addOneTask, syncRemoteTaskById, updateTask, tasks } = useTaskStore()
   const params = useParams()
   const { statuses } = useProjectStatusStore()
+  const refDefaultValue = useRef<ITaskDefaultValues>(defaultFormikValues)
 
   if (dueDate) {
-    defaultFormikValues = { ...defaultFormikValues, dueDate }
+    refDefaultValue.current = { ...refDefaultValue.current, dueDate }
   }
 
   if (taskStatusId) {
-    defaultFormikValues = { ...defaultFormikValues, taskStatusId }
+    refDefaultValue.current = { ...refDefaultValue.current, taskStatusId }
   }
 
   let currentTask: Task | undefined
@@ -77,7 +78,7 @@ export default function TaskForm({
     currentTask = tasks.find((task) => task.id === taskId)
 
     if (currentTask) {
-      defaultFormikValues = {
+      refDefaultValue.current = {
         title: currentTask?.title || defaultFormikValues.title,
         taskStatusId: currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
         priority: currentTask.priority ? currentTask.priority : defaultFormikValues.priority,
@@ -118,17 +119,17 @@ export default function TaskForm({
           // setLoading(false)
         })
     } else {
-      updateTask({
+      const dataUpdate = {
         ...mergedValues,
         id: taskId,
         updatedBy: user?.id,
         updatedAt: new Date(),
-      })
-
-      taskUpdate(mergedValues).then((res) => {
+      }
+      updateTask(dataUpdate)
+      taskUpdate(dataUpdate).then((res) => {
         const { data, status } = res.data
         if (status !== 200) return
-
+        console.log(data ,'---> data')
         syncRemoteTaskById(data.id, data as Task)
         messageSuccess('Synced success !')
       }).catch((err) => {
@@ -142,7 +143,7 @@ export default function TaskForm({
   }
 
   const formik = useFormik({
-    initialValues: defaultFormikValues,
+    initialValues: refDefaultValue.current,
     onSubmit: values => {
       if (loading) return
 
