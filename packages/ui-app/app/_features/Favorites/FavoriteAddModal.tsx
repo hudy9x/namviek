@@ -10,7 +10,6 @@ export default function FavoriteAddModal() {
     <div>
       <Modal
         className="fav-add-modal"
-        closeBtn={false}
         size="sm"
         visible={visible}
         onVisibleChange={setVisible}

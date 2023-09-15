@@ -3,7 +3,7 @@
 }
 
 .fav-add-modal .form-emoji .form-input {
-  @apply w-14 h-14 mx-auto flex items-center bg-indigo-50 border-indigo-200;
+  @apply w-14 h-14 mx-auto flex items-center bg-indigo-50 border-indigo-200 dark:bg-gray-800 dark:border-gray-700;
 }
 
 .fav-add-modal .form-emoji .form-input img {
@@ -12,4 +12,8 @@
 
 .fav-add-modal .modal-title {
   @apply hidden;
+}
+
+.fav-add-modal .modal-close {
+  @apply -top-3 -right-2 bg-white dark:bg-gray-900 rounded-full p-1 w-6 h-6;
 }

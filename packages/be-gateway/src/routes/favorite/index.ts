@@ -49,7 +49,7 @@ router.delete('/favorite', async (req: AuthRequest, res) => {
     await mdFavDel(id, uid)
     await delCache(key)
     console.log('removed ', id)
-    res.status(200)
+    res.json({ status: 200 })
   } catch (error) {
     console.log(error)
     res.status(500).json({ error })

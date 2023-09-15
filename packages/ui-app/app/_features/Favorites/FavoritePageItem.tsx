@@ -1,7 +1,9 @@
 import {
   HiChevronRight,
+  HiHashtag,
   HiOutlineDocument,
-  HiOutlineDocumentText
+  HiOutlineDocumentText,
+  HiOutlineGlobeAlt
 } from 'react-icons/hi2'
 import FavoriteRemove from './FavoriteRemove'
 import { Favorites } from '@prisma/client'
@@ -19,8 +21,8 @@ export default function FavoritePageItem({ data }: { data: Favorites }) {
       <div className="left">
         <HiChevronRight className="text-gray-400" />
         <div className="relative">
-          <img src={icon} className="w-4 h-4 absolute -top-2 -right-1" />
-          <HiOutlineDocumentText className="w-5 h-5 text-gray-400" />
+          <img src={icon} className="w-4 h-4 absolute -top-1.5 -right-1.5" />
+          <HiOutlineGlobeAlt className="w-5 h-5 text-gray-400" />
         </div>
         <span className="whitespace-nowrap">{name}</span>
       </div>

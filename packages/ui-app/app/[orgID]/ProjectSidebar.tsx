@@ -54,7 +54,7 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Favorites',
-      href: `/${orgID}/favorites`,
+      // href: `/${orgID}/favorites`,
       icon: HiOutlineStar,
       active: pathname.includes('/favorites'),
       children: Favorites
