@@ -1,0 +1,15 @@
+.fav-add-content {
+  @apply flex flex-col justify-center text-center gap-4;
+}
+
+.fav-add-modal .form-emoji .form-input {
+  @apply w-14 h-14 mx-auto flex items-center bg-indigo-50 border-indigo-200;
+}
+
+.fav-add-modal .form-emoji .form-input img {
+  @apply w-14 h-auto;
+}
+
+.fav-add-modal .modal-title {
+  @apply hidden;
+}
