@@ -5,11 +5,7 @@ import { projectGet } from '@/services/project'
 import { useEffect } from 'react'
 import './style.css'
 import { useParams } from 'next/navigation'
-import {
-  AiOutlineCalendar,
-  AiOutlineClockCircle,
-  AiOutlinePlus
-} from 'react-icons/ai'
+import { AiOutlineClockCircle, AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '../Add/ProjectAddModal'
 import { useRouter } from 'next/navigation'
 import ProjectIconPicker from '@/components/ProjectIconPicker'

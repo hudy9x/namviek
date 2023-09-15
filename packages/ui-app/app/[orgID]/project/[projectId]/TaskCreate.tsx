@@ -25,7 +25,7 @@ export default function TaskCreate() {
               primary
               leadingIcon={<AiOutlinePlus />}
               title="Create task"
-              className="fixed-craete-btn absolute bottom-10 right-10 z-[11] "
+              className="fixed-craete-btn"
             />
           </div>
         }

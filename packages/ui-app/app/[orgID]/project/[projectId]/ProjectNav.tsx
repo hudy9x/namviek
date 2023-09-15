@@ -15,6 +15,7 @@ import TaskCreate from './TaskCreate'
 import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -103,8 +104,13 @@ export default function ProjectNav() {
       <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
         <ProjectTabContent />
       </div>
-      <TaskCreate />
-      <TaskUpdate />
+      <div className="absolute bottom-10 right-10 z-[11] ">
+        <div className="flex items-center gap-2 ">
+          <FavoriteAddModal />
+          <TaskCreate />
+          <TaskUpdate />
+        </div>
+      </div>
     </div>
   )
 }

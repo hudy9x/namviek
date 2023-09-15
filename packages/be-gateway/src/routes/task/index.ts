@@ -81,7 +81,8 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
     if (ableToCache) {
       setJSONCache(key, { data: tasks, total: 0 })
-    };
+    }
+
     res.json({ status: 200, data: tasks })
   } catch (error) {
     console.log(error)

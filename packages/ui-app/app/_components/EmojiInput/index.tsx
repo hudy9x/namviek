@@ -47,7 +47,7 @@ export default function EmojiInput({
 
   return (
     <div
-      className="form-control shrink-0 form-emoji"
+      className={`form-control shrink-0 form-emoji ${className}`}
       onClick={ev => {
         ev.stopPropagation()
       }}>
@@ -55,7 +55,7 @@ export default function EmojiInput({
       <div className="relative" ref={ref}>
         <div
           className="form-input cursor-pointer hover:bg-gray-50 "
-          onClick={() => setVisible(true)}>
+          onClick={() => setVisible(!visible)}>
           <img src={iconUrl} className={iconSize} />
         </div>
         {visible ? (
