@@ -132,5 +132,28 @@ export const fromDateStringToDateObject = (
     }
   }
 
+  if (['prev-month'].includes(dateStr)) {
+    const date = new Date()
+    const lastDateOfPrevMonth = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      1,
+      0,
+      0,
+      0
+    )
+    lastDateOfPrevMonth.setDate(lastDateOfPrevMonth.getDate() - 1)
+
+    config.startDate = new Date(
+      date.getFullYear(),
+      date.getMonth() - 1,
+      1,
+      0,
+      0,
+      0
+    )
+    config.endDate = lastDateOfPrevMonth
+  }
+
   return config
 }

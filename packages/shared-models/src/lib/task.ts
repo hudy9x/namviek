@@ -146,6 +146,14 @@ const generateConditions = ({
   return where
 }
 
+export const mdTaskDelete = (id: string) => {
+  return taskModel.delete({
+    where: {
+      id
+    }
+  })
+}
+
 export const mdTaskGetAll = (query: ITaskQuery) => {
   let take = query.take
   const { counter, skip } = query

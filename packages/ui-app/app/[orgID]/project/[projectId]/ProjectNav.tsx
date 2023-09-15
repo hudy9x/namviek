@@ -13,6 +13,8 @@ import ProjectTabContent from './ProjectTabContent'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import TaskCreate from './TaskCreate'
 import { TaskUpdate } from './TaskUpdate'
+import Link from 'next/link'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -65,14 +67,21 @@ export default function ProjectNav() {
 
   return (
     <div className="project-nav">
-      <div className="bg-white border-b border-gray-200">
-        <h2 className="text-xl font-bold px-4 py-2">
-          {
-            selectedProject?.name ||
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+        <h2 className="text-xl dark:text-gray-200 font-bold px-4 pt-2 flex items-center gap-2">
+          <Link
+            href={`${params.orgID}/project`}
+            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:hover:bg-slate-800">
+            <AiOutlineArrowLeft />
+          </Link>
+          {selectedProject?.icon ? (
+            <img src={selectedProject?.icon || ''} className="w-6 h-6" />
+          ) : null}
+          {selectedProject?.name || (
             <span className="text-transparent animate-pulse bg-gray-100 rounded-md">
               Project
             </span>
-          }
+          )}
         </h2>
         <div className="tab pl-1">
           {tabs.map((tab, index) => {
@@ -91,7 +100,7 @@ export default function ProjectNav() {
         </div>
       </div>
 
-      <div className="task bg-indigo-50/50 w-full">
+      <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
         <ProjectTabContent />
       </div>
       <TaskCreate />

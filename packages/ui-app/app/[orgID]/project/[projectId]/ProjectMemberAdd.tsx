@@ -31,7 +31,7 @@ const SelectedMembers = ({
     <>
       <h2 className="my-3 font-medium text-sm">Selected members:</h2>
 
-      <div className="bg-gray-50 rounded-lg border">
+      <div className="bg-gray-50 dark:bg-gray-900 dark:border-gray-700 rounded-lg border">
         <div className="divide-y divide-dashed">
           {!selectedMember.length ? (
             <div className="px-4 py-3 text-sm text-gray-500">
@@ -42,7 +42,7 @@ const SelectedMembers = ({
             return (
               <div
                 key={member.id}
-                className="relative px-4 py-3 hover:bg-white cursor-pointer">
+                className="relative px-4 py-3 hover:bg-white dark:hover:bg-slate-800 rounded-lg cursor-pointer">
                 <MemberAvatarWithName
                   name={member.name}
                   photo={member.photo}
@@ -55,7 +55,7 @@ const SelectedMembers = ({
                         prev.filter(sm => sm.id !== member.id)
                       )
                     }}
-                    className="text-gray-500 w-7 h-7 rounded-md bg-white border p-1.5 hover:text-red-400"
+                    className="text-gray-500 w-7 h-7 rounded-md bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-red-400 border p-1.5 hover:text-red-400"
                   />
                 </div>
               </div>
@@ -197,10 +197,10 @@ export default function ProjectMemberAdd() {
         }
         content={
           <div className="">
-            <div className="bg-gray-50 rounded-lg border">
+            <div className="bg-gray-50 dark:border-gray-700 dark:bg-gray-900 rounded-lg border">
               <div className="relative">
                 <input
-                  className="w-full bg-white px-4 py-3 border-b border-dashed rounded-t-lg text-sm"
+                  className="w-full bg-white dark:bg-gray-900 dark:border-gray-700 px-4 py-3 border-b border-dashed rounded-t-lg text-sm"
                   placeholder="Find your member"
                   onChange={onChange}
                 />

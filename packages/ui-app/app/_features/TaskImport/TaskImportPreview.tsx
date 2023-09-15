@@ -20,9 +20,9 @@ export default function TaskImportPreview() {
     <>
       <div className="relative">
         <TaskImportStep />
-        <table className="w-full border">
-          <thead className="border-b text-sm">
-            <tr className="divide-x">
+        <table className="w-full border dark:border-gray-700">
+          <thead className="border-b dark:border-gray-700 text-sm">
+            <tr className="divide-x dark:divide-gray-700 dark:text-gray-400">
               <th className="icell">#</th>
               <th className="icell">Project</th>
               <th className="icell">Task name</th>
@@ -33,7 +33,7 @@ export default function TaskImportPreview() {
               <th className="icell">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y dark:divide-gray-700">
             {currentPageData.map((row, idx) => {
               const [
                 project,
@@ -45,7 +45,9 @@ export default function TaskImportPreview() {
                 status
               ] = row.map(r => (r ? r.toString() : ''))
               return (
-                <tr key={idx} className="irow divide-x text-xs text-gray-600">
+                <tr
+                  key={idx}
+                  className="irow divide-x dark:divide-gray-700 text-xs text-gray-600 dark:text-gray-400">
                   <td className="icell">{startIndex + idx + 1}</td>
                   <td className="icell">{project}</td>
                   <td className="icell">{title}</td>

@@ -4,12 +4,12 @@ import { AiOutlinePlus, AiOutlineStar } from 'react-icons/ai'
 
 import { IoIosClose } from 'react-icons/io'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useProjectPointStore } from '../../../../../store/point'
+import { useProjectPointStore } from '@/store/point'
 import {
   projectPointCreate,
   projectPointDelete,
   projectPointUpdate
-} from '../../../../../services/point'
+} from '@/services/point'
 import { messageError, messageSuccess } from '@shared/ui'
 
 interface ITaskPointInput {
@@ -39,14 +39,14 @@ const PointInput = ({
     <div className="relative flex items-center group">
       <AiOutlineStar className="absolute left-4 text-gray-400 top-3.5 group-hover:text-orange-400 transition-all" />
       <input
-        className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 border-b outline-none"
+        className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 border-b dark:border-gray-800 outline-none"
         defaultValue={`${initPoint.point}`}
         onKeyDown={e => onSubmitKeyPressed(e)}
       />
       <div className="absolute right-3 gap-2 hidden group-hover:flex ">
-        <div
-          className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500"
-        >Enter to update</div>
+        <div className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500">
+          Enter to update
+        </div>
         <IoIosClose
           className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
           onClick={() => handleDelete(initPoint.id)}
@@ -134,7 +134,7 @@ export default function ProjectPoint() {
 
   return (
     <div className="setting-container">
-      <div className="rounded-lg border">
+      <div className="rounded-lg border dark:border-gray-700">
         <form>
           {taskPointList.map((point, i) => (
             <PointInput
@@ -146,8 +146,8 @@ export default function ProjectPoint() {
               handleDelete={handleDeletePoint}
             />
           ))}
-          <div className="relative flex items-center bg-gray-50 rounded-b-lg">
-            <AiOutlinePlus className='absolute top-3.5 left-4 text-gray-500' />
+          <div className="relative flex items-center bg-gray-50 dark:bg-gray-800 rounded-b-lg">
+            <AiOutlinePlus className="absolute top-3.5 left-4 text-gray-500" />
             <input
               ref={inputAddRef}
               className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"

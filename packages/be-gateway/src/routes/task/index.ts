@@ -10,12 +10,14 @@ import {
   mdProjectGet,
   mdTaskExport,
   mdTaskStatusQuery,
-  mdMemberGetProject
+  mdMemberGetProject,
+  mdTaskDelete
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
+  findNDelCaches,
   genKeyFromSource,
   getJSONCache,
   setJSONCache
@@ -45,7 +47,10 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
     let ableToCache = false
     const queryKeys = Object.keys(req.query)
-    const key = [CKEY.TASK_QUERY, genKeyFromSource(req.query)]
+    const projectId = req.query.projectId as string
+    const key = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
+
+    console.log('queryKeys', queryKeys)
 
     if (
       queryKeys.length === 2 &&
@@ -55,7 +60,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
       ableToCache = true
 
       const cached = await getJSONCache(key)
-      console.log(cached, '----> cached')
       if (cached) {
         console.log('return cached tasks')
         return res.json({
@@ -77,8 +81,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
     if (ableToCache) {
       setJSONCache(key, { data: tasks, total: 0 })
-    }
-    console.log(tasks, '---> tasks')
+    };
     res.json({ status: 200, data: tasks })
   } catch (error) {
     console.log(error)
@@ -91,7 +94,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
     // const query = req.body as ITaskQuery
     const { counter, ...rest } = req.query
     const { id: userId } = req.authen
-    console.log('test 4')
 
     const sentProjectIds = rest.projectIds as string[]
     let projectIds = sentProjectIds
@@ -142,7 +144,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
   console.log('body', req.body)
   const {
     desc,
@@ -154,6 +155,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     taskStatusId
   } = req.body as Task
   const { id } = req.authen
+
+  const key = [CKEY.TASK_QUERY, projectId]
 
   try {
     const result = await mdTaskAdd({
@@ -174,6 +177,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedBy: null,
       progress: null,
     })
+
+    await findNDelCaches(key)
 
     res.json({ status: 200, data: result })
   } catch (error) {
@@ -225,6 +230,24 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
   }
 })
 
+router.delete('/project/task', async (req: AuthRequest, res) => {
+  const { id, projectId } = req.query as { id: string; projectId: string }
+
+  try {
+    const result = await mdTaskDelete(id)
+    const key = [CKEY.TASK_QUERY, projectId]
+    await findNDelCaches(key)
+    console.log('deleted task', id)
+    res.json({
+      status: 200,
+      data: result
+    })
+  } catch (error) {
+    console.log('error delete', error)
+    res.status(500)
+  }
+})
+
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
   console.log('auth user', req.authen)
@@ -236,7 +259,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     dueDate,
     assigneeIds,
     desc,
-    // projectId,
+    projectId,
     priority,
     taskStatusId,
     tagIds,
@@ -247,6 +270,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
 
   const taskData = await mdTaskGetOne(id)
+  const key = [CKEY.TASK_QUERY, taskData.projectId]
 
   if (title) {
     taskData.title = title
@@ -286,6 +310,8 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     console.log('taskdata', taskData)
     const result = await mdTaskUpdate(taskData)
+    
+    await findNDelCaches(key)
     res.json({ status: 200, data: result })
     // res.json({ status: 200 })
   } catch (error) {

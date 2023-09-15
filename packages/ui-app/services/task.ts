@@ -1,5 +1,5 @@
 import { Task, TaskPriority } from '@prisma/client'
-import { httpGet, httpPost, httpPut } from './_req'
+import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 type ITaskFields = Partial<Task>
 
@@ -52,6 +52,12 @@ export const taskAdd = (data: ITaskFields) => {
 
 export const taskUpdate = (data: ITaskFields) => {
   return httpPut('/api/project/task', data)
+}
+
+export const taskDelete = (data: { projectId: string; id: string }) => {
+  return httpDel('/api/project/task', {
+    params: data
+  })
 }
 
 export const taskAddMany = (data: {

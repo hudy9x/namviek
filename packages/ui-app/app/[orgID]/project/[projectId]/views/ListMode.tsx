@@ -16,6 +16,7 @@ import { Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import TaskActions from '@/features/TaskActions'
 // import List from 'react-virtualized/dist/commonjs/List'
 //
 // const list = new Array(10).fill(1).map((r, ind) => `title ${ind + 1}`)
@@ -32,10 +33,6 @@ export default function ListMode() {
   const { tasks, taskLoading } = useTaskStore()
   const params = useParams()
 
-  useEffect(() => {
-    console.log(tasks, '---> tasks')
-  }, [tasks])
-
   return (
     <div className="pb-[300px]">
       {/* <List */}
@@ -45,12 +42,12 @@ export default function ListMode() {
       {/*   rowHeight={20} */}
       {/*   rowRenderer={rowRenderer} */}
       {/* /> */}
-      {statuses.map((stt, index) => {
+      {statuses.map((stt) => {
         return (
           <div
-            className="bg-white mb-4 rounded-md border mx-4 relative mt-4"
-            key={index}>
-            <div className="px-3 py-2 border-b sticky top-[45px] bg-white rounded-t-md flex items-center justify-between z-10">
+            className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
+            key={stt.id}>
+            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[45px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
               <div
                 style={{ color: stt.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">
@@ -65,10 +62,11 @@ export default function ListMode() {
                 <ListCell width={75}>Priority</ListCell>
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
+                <ListCell width={110}>Progress</ListCell>
                 <ListCell width={100}>Created by</ListCell>
               </div>
             </div>
-            <div className="divide-y">
+            <div className="divide-y dark:divide-gray-800">
               {taskLoading ? (
                 <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
                   <span className="w-4 h-4">
@@ -81,14 +79,12 @@ export default function ListMode() {
               {!taskLoading &&
                 tasks.map(task => {
                   if (task.taskStatusId !== stt.id) return null
-                  console.log(task.assigneeIds, 'tasl assigneeIds')
 
                   return (
                     <div
-                      className="px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50"
-                      key={task.id}
-                    >
-                      <div className="flex items-center gap-2 w-full">
+                      className="px-3 py-2 text-sm flex items-center justify-between group"
+                      key={task.id}>
+                      <div className="flex items-center gap-2 dark:text-gray-300">
                         <TaskCheckbox id={stt.id} />
                         {/* <StatusItem id={stt.id} /> */}
                         <TaskStatus
@@ -100,8 +96,12 @@ export default function ListMode() {
                             {task.title}
                           </div>
                         </Link>
+                        <TaskActions
+                          className="opacity-0 group-hover:opacity-100 transition-all duration-100"
+                          taskId={task.id}
+                        />
                       </div>
-                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500">
+                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
                         <ListCell width={150}>
                           <TaskAssignee
                             taskId={task.id}
@@ -122,6 +122,9 @@ export default function ListMode() {
                             taskId={task.id}
                             date={task.dueDate ? new Date(task.dueDate) : null}
                           />
+                        </ListCell>
+                        <ListCell width={110}>
+                          {task.progress}
                         </ListCell>
                         <ListCell width={100}>
                           <MemberAvatar uid={task.createdBy} />

@@ -50,6 +50,7 @@ export default function ListCreateTask({
     const value = target.value
 
     taskCreateOne({
+      dueDate: new Date(),
       title: value,
       taskStatusId: groupId,
       projectId
@@ -64,7 +65,7 @@ export default function ListCreateTask({
         setVisible(true)
       }}
       className={`cursor-pointer group px-3 py-2 text-sm rounded-b-md flex items-center justify-between ${
-        visible ? 'bg-gray-50' : ''
+        visible ? 'bg-gray-50 dark:bg-gray-800' : ''
       }`}>
       <div className="flex items-center gap-2 w-full">
         <AiOutlinePlus

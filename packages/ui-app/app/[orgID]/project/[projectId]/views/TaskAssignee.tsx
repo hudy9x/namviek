@@ -26,7 +26,7 @@ export default function TaskAssignee({
 
   className && classes.push(className)
   noName && classes.push('no-name')
-  console.log(uids, ' ---> uids')
+
   return (
     <MemberPicker
       className={classes.join(' ')}

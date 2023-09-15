@@ -27,7 +27,7 @@ export default function ProjectMemberDel({ uid }: { uid: string }) {
   return (
     <HiX
       onClick={onDelete}
-      className="w-7 h-7 p-1.5 cursor-pointer rounded-md border text-gray-500 hover:text-red-400"
+      className="w-7 h-7 p-1.5 dark:border-gray-800 cursor-pointer rounded-md border text-gray-500 hover:text-red-400"
     />
   )
 }

@@ -2,9 +2,13 @@ import { Router } from 'express'
 import { AuthRequest } from '../../types'
 import {
   mdMemberGetAllByProjectId,
+  mdOrgMemberAdd,
+  mdOrgMemberExist,
   mdOrgMemberGet,
-  mdOrgMemberSeach
+  mdOrgMemberSeach,
+  mdUserFindEmail
 } from '@shared/models'
+import { InvitationStatus, OrganizationRole } from '@prisma/client'
 
 const router = Router()
 
@@ -25,6 +29,45 @@ router.get('/org/members/:orgId', (req: AuthRequest, res) => {
       console.log('err', error)
       res.json({ status: 500, error })
     })
+})
+
+router.post('/org/member/invite', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
+  const { orgId, email } = req.body as {
+    orgId: string
+    email: string
+  }
+
+  try {
+    const foundUser = await mdUserFindEmail(email)
+    if (!foundUser) {
+      return res.status(400).json({ error: 'EMAIL_NOT_FOUND' })
+    }
+
+    const isAlreadyExist = await mdOrgMemberExist({
+      orgId,
+      uid: foundUser.id
+    })
+
+    if (isAlreadyExist) return res.status(400).json({ error: 'ALREADY_EXIST' })
+
+    console.log('founded', foundUser)
+
+    await mdOrgMemberAdd({
+      organizationId: orgId,
+      uid: foundUser.id,
+      status: InvitationStatus.ACCEPTED,
+      role: OrganizationRole.MEMBER,
+      createdAt: new Date(),
+      createdBy: uid,
+      updatedAt: null,
+      updatedBy: null
+    })
+
+    res.status(200).json({ data: foundUser })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
 })
 
 router.post('/org/member/search', async (req: AuthRequest, res) => {

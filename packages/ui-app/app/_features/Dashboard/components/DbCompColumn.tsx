@@ -113,8 +113,8 @@ export default function DbCompColumn({ id, config, title }: IDbCompProps) {
   }, [updateCounter, config])
 
   return (
-    <div className="col-span-2 py-4 px-5 w-[] border rounded-md bg-white shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
-      <h2 className="text-sm text-gray-600 flex items-center gap-1 ">
+    <div className="col-span-2 py-4 px-5 w-[] dark:border-gray-700 dark:bg-gray-900 dark:shadow-gray-900 border rounded-md bg-white shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
+      <h2 className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 ">
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
         <Button
@@ -123,8 +123,8 @@ export default function DbCompColumn({ id, config, title }: IDbCompProps) {
           size="sm"
         />
       </h2>
-      <DbCompDelete id={id}/>
-      <div className="bg-indigo-50/20 border border-indigo-50 rounded pb-5 mt-3">
+      <DbCompDelete id={id} />
+      <div className="bg-indigo-50/20 dark:bg-[#182031] dark:border-gray-700 border border-indigo-50 rounded pb-5 mt-3">
         <ChartColumn options={options} />
       </div>
     </div>

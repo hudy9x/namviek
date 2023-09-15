@@ -31,16 +31,21 @@ export default function MemberPicker({
     const listMembers = members.map(mem => ({ id: mem.id, title: mem.name }))
     setOptions(listMembers as ListItemValue[])
   }, [members])
+  
+  useEffect(() => {
+    if (selectedOption) {
+      setVal(selectedOption)
+    }
+  }, [value])
 
   useEffect(() => {
     const selectedMember = options.find(m => value === m.id)
-
     if (selectedMember) {
       setVal(selectedMember)
     } else {
       setVal(defaultAssignee)
     }
-  }, [options, value])
+  }, [options])
 
   // call onChange everytime user select an other assignee
   useEffect(() => {

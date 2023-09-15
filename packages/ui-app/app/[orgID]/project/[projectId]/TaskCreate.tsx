@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 export default function TaskCreate() {
   const sp = useSearchParams()
   const mode = sp.get('mode')
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   if (mode !== 'task') {
     return null
@@ -34,7 +34,7 @@ export default function TaskCreate() {
             <TaskForm
               mode={TASK_MODE.CREATE}
               onSuccess={() => {
-                setVisible(false)
+                setVisible(false);
               }}
             />
           </>

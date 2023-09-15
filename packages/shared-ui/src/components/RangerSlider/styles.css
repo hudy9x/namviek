@@ -7,7 +7,7 @@
   align-items: center;
   user-select: none;
   touch-action: none;
-  width: 200px;
+  width: 100%;
   height: 20px;
 }
 
@@ -21,7 +21,7 @@
 
 .SliderRange {
   position: absolute;
-  background-color: white;
+  background-color: #f0d8d8;
   border-radius: 9999px;
   height: 100%;
 }

@@ -19,7 +19,7 @@ import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import RangerSlider from 'packages/shared-ui/src/components/RangerSlider'
 
-export let defaultFormikValues: ITaskDefaultValues = {
+export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
   taskStatusId: '',
@@ -129,7 +129,7 @@ export default function TaskForm({
       taskUpdate(dataUpdate).then((res) => {
         const { data, status } = res.data
         if (status !== 200) return
-        console.log(data ,'---> data')
+
         syncRemoteTaskById(data.id, data as Task)
         messageSuccess('Synced success !')
       }).catch((err) => {
@@ -154,8 +154,6 @@ export default function TaskForm({
       }
 
       const { error, errorArr } = validateTask(mergedValues)
-      // console.log(values)
-      // console.log(errorArr, data);
       if (error) {
         setLoading(false)
         console.error(errorArr)
@@ -247,7 +245,7 @@ export default function TaskForm({
         title="Progress"
         value={formik.values.progress}
         onChange={v => {
-          formik.setFieldValue('progress', v)
+          formik.setFieldValue('progress', v[0])
         }}
       />
 

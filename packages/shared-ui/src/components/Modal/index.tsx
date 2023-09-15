@@ -10,7 +10,6 @@ interface ModalProps {
   size?: 'base' | 'lg' | 'xl'
   visible?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
-  onClose?: () => void
   content: React.ReactNode
   backdrop?: boolean
   className?: string
@@ -20,7 +19,6 @@ export default function Modal({
   triggerBy,
   visible = false,
   onVisibleChange,
-  onClose,
   title,
   desc,
   size = 'base',
@@ -50,7 +48,7 @@ export default function Modal({
 
               {content}
 
-              <Dialog.Close asChild onClick={onClose}>
+              <Dialog.Close asChild>
                 <button className="modal-close" aria-label="Close">
                   <MdClose />
                 </button>

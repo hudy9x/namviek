@@ -14,11 +14,11 @@ export default function ProjectMemberManager() {
 
   return (
     <>
-      <div className="setting-container border">
-        <div className="rounded-t-lg bg-gray-50 relative">
+      <div className="setting-container border dark:border-gray-700">
+        <div className="rounded-t-lg bg-gray-50 dark:bg-gray-800 relative">
           <HiOutlineSearch className="absolute top-3.5 left-6 text-gray-500" />
           <input
-            className="text-sm bg-transparent pl-14 w-full py-3 border-b "
+            className="text-sm bg-transparent pl-14 w-full py-3 border-b dark:border-gray-800 "
             placeholder="Search by name or email"
             onChange={ev => {
               const value = ev.target.value
@@ -26,7 +26,7 @@ export default function ProjectMemberManager() {
             }}
           />
         </div>
-        <div className="divide-y">
+        <div className="divide-y dark:divide-gray-800">
           {members.map(member => {
             if (!member.email.includes(term) && !member.name?.includes(term))
               return null

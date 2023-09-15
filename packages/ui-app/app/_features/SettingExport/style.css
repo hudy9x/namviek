@@ -1,5 +1,6 @@
 .export-filter {
   @apply sticky top-0 left-0 z-20 px-4 border-b bg-white flex items-center justify-between;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }
 
 .export-filter .filter-actions {

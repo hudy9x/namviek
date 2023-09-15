@@ -1,19 +1,20 @@
 .confirm-container {
   @apply fixed top-0 left-0 w-full h-screen flex items-center justify-center;
-  @apply bg-black/30;
+  @apply bg-black/30 z-40;
 }
 
 .confirmbox {
   @apply max-w-[300px] bg-white rounded-md shadow-lg;
-  @apply py-5 px-6 flex flex-col items-center text-center text-gray-600 text-sm;
+  @apply py-5 px-6 flex flex-col border border-transparent items-center text-center text-gray-600 text-sm;
+  @apply dark:bg-gray-900 dark:border-gray-800 dark:text-gray-300;
 }
 
 .confirm-actions {
-  @apply mt-4
+  @apply mt-4;
 }
 
 .confirmbox svg {
-  @apply h-11 w-11 mb-4 mt-1 rounded-full p-2.5
+  @apply h-11 w-11 mb-4 mt-1 rounded-full p-2.5;
 }
 
 .confirmbox.warning svg {
@@ -21,14 +22,13 @@
 }
 
 .confirmbox.alert svg {
-  @apply text-red-400 bg-red-400 bg-opacity-30
+  @apply text-red-400 bg-red-400 bg-opacity-30;
 }
 
 .confirmbox.hidden {
   display: none !important;
 }
 
-
 .confirm-actions .btn {
-  @apply justify-center
+  @apply justify-center;
 }

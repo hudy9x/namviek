@@ -1,33 +1,40 @@
-import { useEffect, useState } from 'react';
-import * as Slider from '@radix-ui/react-slider';
-import './styles.css';
+import { useEffect, useState } from 'react'
+import * as Slider from '@radix-ui/react-slider'
+import './styles.css'
 
 export interface IRangerSlider {
-  title?: string,
-  value: number,
-  onChange?: (v: number[]) => void;
+  title?: string
+  value: number
+  onChange?: (v: number[]) => void
+  defaultValue?: number[]
+  maxValue?: number
+  step?: number
 }
 
 export default function RangerSlider({
   onChange,
   value,
   title,
+  defaultValue = [50],
+  maxValue = 100,
+  step = 10
 }: IRangerSlider) {
-  const [val, setVal] = useState<number[]>([50])
-
-  useEffect(() => {
-    setVal([value])
-  }, [value])
-
   const onRangerSliderChange = (value: number[]) => {
     onChange && onChange(value)
   }
 
   return (
-    <div>
+    <div className={'form-control'}>
       {title ? <label>{title}</label> : null}
-      <div>
-        <Slider.Root className="SliderRoot" defaultValue={[50]} value={val} max={100} step={1} onValueChange={value => onRangerSliderChange(value)}>
+      <div className='flex'>
+        <div className='pr-2' >{value}</div>
+        <Slider.Root
+          className="SliderRoot"
+          defaultValue={defaultValue}
+          value={[value]}
+          max={maxValue}
+          step={step}
+          onValueChange={value => onRangerSliderChange(value)}>
           <Slider.Track className="SliderTrack">
             <Slider.Range className="SliderRange" />
           </Slider.Track>

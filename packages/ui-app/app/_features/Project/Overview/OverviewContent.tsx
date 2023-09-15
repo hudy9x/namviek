@@ -42,7 +42,7 @@ export default function OverviewContent() {
         <div
           className="absolute top-0 left-0 w-full z-20 flex items-center justify-center"
           style={{ height: 'calc(100vh - 83px)' }}>
-          <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-md shadow-lg ">
+          <div className="flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-3 rounded-md shadow-lg dark:shadow-gray-900 ">
             <div className="w-4 h-4">
               <LoadingSpinner />
             </div>
@@ -52,14 +52,16 @@ export default function OverviewContent() {
       ) : null}
 
       {dboardId ? (
-        <header className="py-3 p-4 bg-white border rounded-md mb-3 ">
-          <h2 className="text-gray-800 font-bold text-2xl">Hi, {user?.name}</h2>
-          <p className="text-gray-600 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
+        <header className="py-3 p-4 bg-white dark:bg-gray-900 dark:border-gray-700 border rounded-md mb-3 ">
+          <h2 className="text-gray-800 dark:text-gray-300 font-bold text-2xl">
+            Hi, {user?.name}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
         </header>
       ) : null}
       <div className="w-full group">
         {!loading && !dboardId ? (
-          <div className="flex items-center gap-2 w-[720px] text-gray-500 justify-center m-auto mt-[175px] bg-white px-10 py-6 rounded-lg shadow-xl shadow-indigo-100 border-4 border-gray-200 hover:border-indigo-400 transition-all">
+          <div className="flex items-center gap-2 w-[720px] text-gray-500 justify-center m-auto mt-[175px] bg-white dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900 dark:text-gray-400 px-10 py-6 rounded-lg shadow-xl shadow-indigo-100 border-4 border-gray-200 hover:border-indigo-400 transition-all">
             <div className="space-y-3">
               <h2 className="text-2xl font-bold whitespace-nowrap">
                 Oops! Now dashboard found 🎃.

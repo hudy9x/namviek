@@ -29,10 +29,12 @@ export default function MyworkContainer() {
         setProjectId
       }}>
       <div id="my-work">
-        <div className="py-3 bg-white border-b">
+        <div className="py-3 bg-white dark:bg-gray-900 border-b dark:border-gray-800">
           <div className="w-[1120px] mx-auto">
-            <h2 className="text-gray-600 font-bold text-xl">My works board</h2>
-            <p className="text-gray-500 text-sm">
+            <h2 className="text-gray-600 dark:text-gray-300 font-bold text-xl">
+              My works board
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
               Where to control your overdue, inprogress and upcoming tasks in
               all projects with ease
             </p>
@@ -40,7 +42,7 @@ export default function MyworkContainer() {
         </div>
 
         <div
-          className="bg-indigo-50/50"
+          className="bg-indigo-50/50 dark:bg-[#182031]"
           style={{ height: 'calc(100vh - 73px)' }}>
           <div className="w-[1120px] mx-auto pt-10 grid grid-cols-4 gap-6">
             <div className="grid grid-cols-2 col-span-3 gap-6">
