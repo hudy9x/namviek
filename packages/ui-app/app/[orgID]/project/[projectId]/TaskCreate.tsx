@@ -1,16 +1,52 @@
-import { Button, Modal } from '@shared/ui';
+import { Button, Modal, messageError, messageSuccess } from '@shared/ui';
 import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import TaskForm, { TASK_MODE } from './TaskForm';
+import TaskForm, { ITaskDefaultValues } from './TaskForm';
 import { useSearchParams } from 'next/navigation';
+import { useUser } from '@goalie/nextjs';
+import { taskAdd } from '../../../../services/task'
+import { useTaskStore } from '@/store/task';
+import { Task } from '@prisma/client'
 
 export default function TaskCreate() {
   const sp = useSearchParams()
   const mode = sp.get('mode')
+  const { user } = useUser()
+  const { addOneTask, syncRemoteTaskById } = useTaskStore()
   const [visible, setVisible] = useState(false);
 
   if (mode !== 'task') {
     return null
+  }
+
+  const handleSubmit = (v: ITaskDefaultValues) => {
+    const randomId = `TASK-ID-RAND-${Date.now()}`
+
+      setVisible(false)
+      addOneTask({
+        ...v,
+        ...{
+          createdAt: new Date(),
+          createdBy: user?.id,
+          id: randomId
+        }
+      })
+
+      taskAdd(v)
+        .then(res => {
+          const { data, status } = res.data
+          if (status !== 200) return
+
+          syncRemoteTaskById(randomId, data as Task)
+          messageSuccess('Synced success !')
+        })
+        .catch(err => {
+          messageError('Create new task error')
+          console.log(err)
+        })
+        .finally(() => {
+          // setLoading(false)
+        })
   }
 
   return (
@@ -32,10 +68,7 @@ export default function TaskCreate() {
         content={
           <>
             <TaskForm
-              mode={TASK_MODE.CREATE}
-              onSuccess={() => {
-                setVisible(false);
-              }}
+              onSubmit={v => handleSubmit(v)}
             />
           </>
         }

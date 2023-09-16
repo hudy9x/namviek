@@ -42,7 +42,7 @@ export default function ListMode() {
       {/*   rowHeight={20} */}
       {/*   rowRenderer={rowRenderer} */}
       {/* /> */}
-      {statuses.map((stt) => {
+      {statuses.map(stt => {
         return (
           <div
             className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"

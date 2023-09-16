@@ -1,37 +1,38 @@
-import { useEffect, useState } from 'react'
 import * as Slider from '@radix-ui/react-slider'
 import './styles.css'
-
-export interface IRangerSlider {
-  title?: string
-  value: number
-  onChange?: (v: number[]) => void
-  defaultValue?: number[]
-  maxValue?: number
-  step?: number
-}
+import { RangerSlider } from '../type'
 
 export default function RangerSlider({
   onChange,
   value,
   title,
-  defaultValue = [50],
+  helper,
+  error,
+  disabled,
+  required,
+  readOnly,
   maxValue = 100,
   step = 10
-}: IRangerSlider) {
+}: RangerSlider) {
+  const classes = ['form-control']
+
   const onRangerSliderChange = (value: number[]) => {
     onChange && onChange(value)
   }
 
+  disabled && classes.push('disabled')
+  required && classes.push('required')
+  readOnly && classes.push('readonly')
+  error && classes.push('error')
+
   return (
-    <div className={'form-control'}>
+    <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
-      <div className='flex'>
-        <div className='pr-2' >{value}</div>
+      <div className="flex">
+        <div className="pr-2">{value}</div>
         <Slider.Root
           className="SliderRoot"
-          defaultValue={defaultValue}
-          value={[value]}
+          value={value ? [Number(value)] : [0]}
           max={maxValue}
           step={step}
           onValueChange={value => onRangerSliderChange(value)}>
@@ -41,6 +42,10 @@ export default function RangerSlider({
           <Slider.Thumb className="SliderThumb" aria-label="Volume" />
         </Slider.Root>
       </div>
+      {helper && !error ? (
+        <p className="mt-2 text-sm text-gray-500">{helper}</p>
+      ) : null}
+      {error ? <p className="mt-2 text-sm text-red-500">{error}</p> : null}
     </div>
   )
 }

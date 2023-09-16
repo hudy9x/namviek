@@ -2,22 +2,17 @@ import {
   Button,
   DatePicker,
   Form,
-  messageError,
-  messageSuccess,
 } from '@shared/ui'
 import MemberPicker from '../../../_components/MemberPicker'
 import PrioritySelect from '../../../_components/PrioritySelect'
 import StatusSelect from '../../../_components/StatusSelect'
-import { Task, TaskPriority, TaskStatus } from '@prisma/client'
+import { TaskPriority, TaskStatus } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
-import { taskAdd, taskUpdate } from '../../../../services/task'
 import { useEffect, useState, useRef } from 'react'
-import { useTaskStore } from '../../../../store/task'
-import { useUser } from '@goalie/nextjs'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
-import RangerSlider from 'packages/shared-ui/src/components/RangerSlider'
+
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -29,12 +24,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
   desc: '<p>Tell me what this task about 🤡</p>'
 }
 
-export enum TASK_MODE {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE'
-}
-
-interface ITaskDefaultValues {
+export interface ITaskDefaultValues {
   title: string;
   assigneeIds: string[];
   taskStatusId: string;
@@ -45,25 +35,21 @@ interface ITaskDefaultValues {
 }
 interface ITaskFormProps {
   taskStatusId?: string
-  taskId?: string,
-  mode: TASK_MODE,
-  dueDate?: Date
-  onSuccess: () => void
+  dueDate?: Date,
+  defaultValue?: ITaskDefaultValues,
+  onSubmit: (v: ITaskDefaultValues) => void
 }
 
 export default function TaskForm({
   dueDate,
   taskStatusId,
-  taskId,
-  mode,
-  onSuccess
+  onSubmit,
+  defaultValue = defaultFormikValues
 }: ITaskFormProps) {
-  const { user } = useUser()
   const [loading, setLoading] = useState(false)
-  const { addOneTask, syncRemoteTaskById, updateTask, tasks } = useTaskStore()
   const params = useParams()
   const { statuses } = useProjectStatusStore()
-  const refDefaultValue = useRef<ITaskDefaultValues>(defaultFormikValues)
+  const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
@@ -71,75 +57,6 @@ export default function TaskForm({
 
   if (taskStatusId) {
     refDefaultValue.current = { ...refDefaultValue.current, taskStatusId }
-  }
-
-  let currentTask: Task | undefined
-  if (taskId) {
-    currentTask = tasks.find((task) => task.id === taskId)
-
-    if (currentTask) {
-      refDefaultValue.current = {
-        title: currentTask?.title || defaultFormikValues.title,
-        taskStatusId: currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
-        priority: currentTask.priority ? currentTask.priority : defaultFormikValues.priority,
-        dueDate: currentTask.dueDate ? new Date(currentTask.dueDate) : defaultFormikValues.dueDate,
-        assigneeIds: currentTask.assigneeIds ? currentTask.assigneeIds : defaultFormikValues.assigneeIds,
-        desc: currentTask.desc ? currentTask.desc : defaultFormikValues.desc,
-        progress: currentTask.progress ? currentTask.progress : defaultFormikValues.progress
-      }
-    }
-  }
-
-  const handleTask = (mergedValues: ITaskDefaultValues) => {
-    if (mode === TASK_MODE.CREATE) {
-      const randomId = `TASK-ID-RAND-${Date.now()}`
-
-      addOneTask({
-        ...mergedValues,
-        ...{
-          createdAt: new Date(),
-          createdBy: user?.id,
-          id: randomId
-        }
-      })
-
-      taskAdd(mergedValues)
-        .then(res => {
-          const { data, status } = res.data
-          if (status !== 200) return
-
-          syncRemoteTaskById(randomId, data as Task)
-          messageSuccess('Synced success !')
-        })
-        .catch(err => {
-          messageError('Create new task error')
-          console.log(err)
-        })
-        .finally(() => {
-          // setLoading(false)
-        })
-    } else {
-      const dataUpdate = {
-        ...mergedValues,
-        id: taskId,
-        updatedBy: user?.id,
-        updatedAt: new Date(),
-      }
-      updateTask(dataUpdate)
-      taskUpdate(dataUpdate).then((res) => {
-        const { data, status } = res.data
-        if (status !== 200) return
-
-        syncRemoteTaskById(data.id, data as Task)
-        messageSuccess('Synced success !')
-      }).catch((err) => {
-        messageError('Update new task error')
-
-        if (!currentTask) return
-        syncRemoteTaskById(currentTask?.id, currentTask)
-        console.log(err)
-      })
-    }
   }
 
   const formik = useFormik({
@@ -160,8 +77,8 @@ export default function TaskForm({
         return
       }
 
-      handleTask(mergedValues)
-      onSuccess()
+      onSubmit(mergedValues)
+
       formik.resetForm()
       setLoading(false)
     }
@@ -169,7 +86,6 @@ export default function TaskForm({
 
   // select a default status if empty
   useEffect(() => {
-    if (mode !== TASK_MODE.CREATE) return
 
     if (statuses.length && !formik.values.taskStatusId) {
       let min: TaskStatus | null = null
@@ -241,7 +157,7 @@ export default function TaskForm({
           formik.setFieldValue('desc', v)
         }}
       />
-      <RangerSlider
+      <Form.RangerSlider
         title="Progress"
         value={formik.values.progress}
         onChange={v => {
@@ -252,7 +168,7 @@ export default function TaskForm({
       <Button
         type="submit"
         loading={loading}
-        title={mode === TASK_MODE.CREATE ? "Create new task" : "Update new task"}
+        title="Submit"
         primary
         block
       />

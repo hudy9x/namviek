@@ -10,7 +10,6 @@ import DatePickerContainer from './components/DatePicker';
 import BorderlessDatePickerContainer from "./components/DatePicker/Borderless";
 import ScrollbarContainer from "./components/Scrollbar";
 import FormGroupContainer from "./components/FormGroup";
-import RangerSliderContainer from "./components/RangerSlider"
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from './components/Message';
 
@@ -24,7 +23,6 @@ export const DatePicker = DatePickerContainer;
 export const DatePickerBorderless = BorderlessDatePickerContainer;
 export const Scrollbar = ScrollbarContainer
 export const FormGroup = FormGroupContainer
-export const RangerSlider = RangerSliderContainer
 export * from './components/Confirmbox'
 
 export * from './components/Controls/ListControl/type';
