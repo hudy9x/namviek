@@ -11,7 +11,8 @@ import {
   mdTaskExport,
   mdTaskStatusQuery,
   mdMemberGetProject,
-  mdTaskDelete
+  mdTaskDelete,
+  mdTaskUpdateMany
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -22,6 +23,7 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
+import { boolean } from 'zod'
 
 const router = Router()
 
@@ -300,6 +302,19 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     await findNDelCaches(key)
     res.json({ status: 200, data: result })
     // res.json({ status: 200 })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.put('/project/tasks', async (req: AuthRequest, res) => {
+  const { taskIds, data } = req.body
+  const nonNullEntries = Object.entries(data).filter(entry => !!entry[1])
+  const nonNullFields = Object.fromEntries(nonNullEntries)
+  try {
+    const result = await mdTaskUpdateMany(taskIds, nonNullFields)
+    res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })

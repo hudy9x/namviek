@@ -1,17 +1,20 @@
+import { useCallback } from 'react'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState, KeyboardEvent } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { TGroupType } from './ListModeGroupContext'
+import { Task } from '@prisma/client'
 
 interface IListCreateTaskProps {
-  type: string
-  groupId: string
+  groupType: TGroupType
+  groupExpr: any
 }
 
 export default function ListCreateTask({
-  type,
-  groupId
+  groupType,
+  groupExpr
 }: IListCreateTaskProps) {
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
@@ -35,6 +38,29 @@ export default function ListCreateTask({
     }
   }, [visible])
 
+  const createNewTask = useCallback(
+    (title: string): Partial<Task> | undefined => {
+      const newTask = {
+        dueDate: new Date(),
+        title,
+        projectId
+      }
+      switch (groupType) {
+        case 'status':
+          return { ...newTask, taskStatusId: groupExpr }
+        case 'assignee':
+          return { ...newTask, assigneeIds: [groupExpr] }
+        case 'duedate':
+          return { ...newTask, dueDate: groupExpr }
+        case 'priority':
+          return { ...newTask, priority: groupExpr }
+        default:
+          break
+      }
+    },
+    [groupExpr, projectId, groupType]
+  )
+
   const onKeyup = (ev: KeyboardEvent<HTMLInputElement>) => {
     const key = ev.key
     const target = ev.target as HTMLInputElement
@@ -49,12 +75,14 @@ export default function ListCreateTask({
 
     const value = target.value
 
-    taskCreateOne({
-      dueDate: new Date(),
-      title: value,
-      taskStatusId: groupId,
-      projectId
-    })
+    const newTask = createNewTask(value)
+    if (newTask) taskCreateOne(newTask)
+    // taskCreateOne({
+    //   dueDate: new Date(),
+    //   title: value,
+    //   taskStatusId: groupExpr,
+    //   projectId
+    // })
 
     target.value = ''
   }

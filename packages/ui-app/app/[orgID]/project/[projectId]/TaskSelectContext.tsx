@@ -6,6 +6,7 @@ interface ITaskSelectContext {
   toggleTaskSelect: (task: Task) => void
   selectTasks: (ids: Task[]) => void
   unselectTasks: (ids: Task[]) => void
+  clearSelectedTasks: () => void
 }
 
 const TaskSelectContext = createContext<ITaskSelectContext>(
@@ -47,7 +48,10 @@ export function TaskSelectProvider({ children }: React.PropsWithChildren) {
         selectedTasks,
         toggleTaskSelect,
         selectTasks,
-        unselectTasks
+        unselectTasks,
+        clearSelectedTasks: () => {
+          setSelectedTasks([])
+        }
       }}>
       {children}
     </TaskSelectContext.Provider>

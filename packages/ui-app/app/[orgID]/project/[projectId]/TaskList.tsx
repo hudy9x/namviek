@@ -4,7 +4,7 @@ import TaskFilter from '@/features/TaskFilter'
 export default function TaskList() {
   return (
     <div className="relative">
-      <TaskFilter />
+      {/* <TaskFilter /> */}
       <ListMode />
     </div>
   )

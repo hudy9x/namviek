@@ -35,13 +35,13 @@ export default function ListModeHeader() {
   return (
     <Select.Root onValueChange={setGroupType}>
       <Select.Trigger className="SelectTrigger" aria-label="Food">
-        <Select.Value placeholder="Select a fruit…" />
+        <Select.Value placeholder="Select group type..." />
         <Select.Icon className="SelectIcon">
           <GiHamburgerMenu />
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Content className="SelectContent">
+        <Select.Content className="SelectContent" side="bottom">
           <Select.ScrollUpButton className="SelectScrollButton">
             <MdOutlineKeyboardArrowUp />
           </Select.ScrollUpButton>

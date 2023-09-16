@@ -14,6 +14,7 @@ import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import TaskCreate from './TaskCreate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { TaskSelectProvider } from './TaskSelectContext'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -100,7 +101,9 @@ export default function ProjectNav() {
       </div>
 
       <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
-        <ProjectTabContent />
+        <TaskSelectProvider>
+          <ProjectTabContent />
+        </TaskSelectProvider>
       </div>
       <TaskCreate />
     </div>

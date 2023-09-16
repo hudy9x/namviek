@@ -40,7 +40,7 @@ export default function MemberPicker({
     } else {
       setVal(defaultAssignee)
     }
-  }, [options])
+  }, [options, value])
 
   // call onChange everytime user select an other assignee
   useEffect(() => {

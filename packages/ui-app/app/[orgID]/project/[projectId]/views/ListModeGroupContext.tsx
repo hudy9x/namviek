@@ -10,16 +10,18 @@ import { useProjectStatusStore } from '@/store/status'
 import { useMemberStore } from '@/store/member'
 import { useTaskStore } from '@/store/task'
 import { isSameDay } from 'date-fns'
-import { useTaskSelectContext } from './TaskSelectContext'
+import { useTaskSelectContext } from '../TaskSelectContext'
 
-type TGroupType = 'status' | 'assignee' | 'priority' | 'duedate'
+export type TGroupType = 'status' | 'assignee' | 'priority' | 'duedate'
 
-interface IListGroupProps {
+export interface IListGroupProps {
   title: string
-  onEdit?: (v: string) => void
+  style?: React.CSSProperties
+  // onEdit?: (v: string) => void
   onCheckAllToggle: () => void
   // onGroupItemToggle: () => void
   isTaskOnGroup: (task: Task) => boolean
+  expression: any
   // checked: boolean
 }
 
@@ -42,13 +44,7 @@ export const ListModeGroupProvider = ({
   const { members } = useMemberStore()
   const [groupType, setGroupType] = useState<TGroupType>('status')
   const [groups, setGroups] = useState<IListGroupProps[]>(
-    statuses.map(status => {
-      // const title = status.name;
-      const { id, name: title } = status
-      const onEdit = (v: string) => updateStatus(id, { ...status, name: v })
-      const isTaskOnGroup = (task: Task) => task.taskStatusId === id
-      return { title, onEdit, isTaskOnGroup } as IListGroupProps
-    })
+    [] as IListGroupProps[]
   )
 
   const handleCheckAllToggleWrapper = useCallback(
@@ -74,81 +70,79 @@ export const ListModeGroupProvider = ({
 
   const onGroupTypeChange = useCallback(
     (v: TGroupType) => {
-      setGroupType(prev => {
-        if (prev !== v) {
-          let newGroups = [] as IListGroupProps[]
-          if (v === 'duedate') {
-            const listDuedate = Array.from(
-              new Set(tasks.map(task => task.dueDate))
-            )
-            newGroups = listDuedate.map(duedate => {
-              const isTaskOnGroup = (task: Task) =>
-                !!duedate && !!task.dueDate && isSameDay(task.dueDate, duedate)
-              const onCheckAllToggle =
-                handleCheckAllToggleWrapper(isTaskOnGroup)
-              return {
-                isTaskOnGroup,
-                title: duedate ? duedate?.toString() : 'unset',
-                onCheckAllToggle
-              }
-            })
+      setGroupType(v)
+      let newGroups = [] as IListGroupProps[]
+      if (v === 'duedate') {
+        const listDuedate = Array.from(new Set(tasks.map(task => task.dueDate)))
+        newGroups = listDuedate.map(duedate => {
+          const isTaskOnGroup = (task: Task) =>
+            !!duedate && !!task.dueDate && isSameDay(task.dueDate, duedate)
+          const onCheckAllToggle = handleCheckAllToggleWrapper(isTaskOnGroup)
+          return {
+            isTaskOnGroup,
+            title: duedate ? duedate?.toString() : 'unset',
+            onCheckAllToggle,
+            expression: duedate
           }
-          if (v === 'priority') {
-            const priorities = Object.values(TaskPriority).filter(v =>
-              isNaN(Number(v))
-            )
-            newGroups = priorities.map(priority => {
-              const isTaskOnGroup = (task: Task) => task.priority === priority
+        })
+      }
+      if (v === 'priority') {
+        const priorities = Object.values(TaskPriority).filter(v =>
+          isNaN(Number(v))
+        )
+        newGroups = priorities.map(priority => {
+          const isTaskOnGroup = (task: Task) => task.priority === priority
 
-              const groupTasks = tasks.filter(
-                task => task.priority === priority
-              )
-              const onEdit = (v: TaskPriority) =>
-                updateTasks(groupTasks.map(task => ({ ...task, priority: v })))
-              const onCheckAllToggle =
-                handleCheckAllToggleWrapper(isTaskOnGroup)
-              return {
-                title: priority.toString(),
-                isTaskOnGroup,
-                onEdit,
-                onCheckAllToggle
-              }
-            })
+          // const groupTasks = tasks.filter(task => task.priority === priority)
+          // const onEdit = (v: TaskPriority) =>
+          //   updateTasks(groupTasks.map(task => ({ ...task, priority: v })))
+          const onCheckAllToggle = handleCheckAllToggleWrapper(isTaskOnGroup)
+          return {
+            title: priority.toString(),
+            isTaskOnGroup,
+            // onEdit,
+            onCheckAllToggle,
+            expression: priority
           }
-          if (v === 'status') {
-            newGroups = [
-              ...statuses.map(status => {
-                // const title = status.name;
-                const { id, name: title } = status
-                const onEdit = (v: string) =>
-                  updateStatus(id, { ...status, name: v })
-                const isTaskOnGroup = (task: Task) => task.taskStatusId === id
-                const onCheckAllToggle =
-                  handleCheckAllToggleWrapper(isTaskOnGroup)
-                return { title, onEdit, isTaskOnGroup, onCheckAllToggle }
-              })
-            ]
-          }
-          if (v === 'assignee') {
-            newGroups = [
-              ...members.map(member => {
-                const { id, name } = member
-                const isTaskOnGroup = (task: Task) =>
-                  task.assigneeIds.includes(id)
-                const onCheckAllToggle =
-                  handleCheckAllToggleWrapper(isTaskOnGroup)
-                return {
-                  title: name || 'unassigned',
-                  isTaskOnGroup,
-                  onCheckAllToggle
-                }
-              })
-            ]
-          }
-          setGroups(newGroups)
-        }
-        return prev
-      })
+        })
+      }
+      if (v === 'status') {
+        newGroups = [
+          ...statuses.map(status => {
+            // const title = status.name;
+            const { id, name: title, color } = status
+            // const onEdit = (v: string) =>
+            //   updateStatus(id, { ...status, name: v })
+            const isTaskOnGroup = (task: Task) => task.taskStatusId === id
+            const onCheckAllToggle = handleCheckAllToggleWrapper(isTaskOnGroup)
+            return {
+              title,
+              // onEdit,
+              isTaskOnGroup,
+              onCheckAllToggle,
+              style: { color },
+              expression: id
+            }
+          })
+        ]
+      }
+      if (v === 'assignee') {
+        newGroups = [
+          ...members.map(member => {
+            const { id, name } = member
+            const isTaskOnGroup = (task: Task) => task.assigneeIds.includes(id)
+            const onCheckAllToggle = handleCheckAllToggleWrapper(isTaskOnGroup)
+            return {
+              title: name || 'unassigned',
+              isTaskOnGroup,
+              onCheckAllToggle,
+              expression: id
+            }
+          })
+        ]
+      }
+      console.log({ newGroups })
+      setGroups(newGroups)
     },
     [
       handleCheckAllToggleWrapper,
@@ -160,9 +154,9 @@ export const ListModeGroupProvider = ({
     ]
   )
 
-  // useEffect(() => {
-  //   onGroupTypeChange()
-  // }, [])
+  useEffect(() => {
+    onGroupTypeChange('status')
+  }, [onGroupTypeChange])
 
   return (
     <ListModeGroupContext.Provider

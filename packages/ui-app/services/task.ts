@@ -66,3 +66,7 @@ export const taskAddMany = (data: {
 }) => {
   return httpPost('/api/project/tasks', data)
 }
+
+export const taskUpdateMany = (taskIds: string[], data: ITaskFields) => {
+  return httpPut('/api/project/tasks', { taskIds, data })
+}

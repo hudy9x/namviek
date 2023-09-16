@@ -134,6 +134,7 @@ export const useTaskStore = create<TaskState>(set => ({
                 oldTask[key] = value
               }
             }
+            oldTask.updatedAt = new Date()
           })
         })
       })
