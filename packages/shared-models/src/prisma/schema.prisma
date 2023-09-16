@@ -55,6 +55,20 @@ model User {
   updatedBy           String?
 }
 
+model Favorites {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  icon      String
+  link      String
+  uid       String    @db.ObjectId
+  orgId     String    @db.ObjectId
+  type      String
+  createdAt DateTime?
+  createdBy String?
+  updatedAt DateTime?
+  updatedBy String?
+}
+
 model Organization {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String    @unique

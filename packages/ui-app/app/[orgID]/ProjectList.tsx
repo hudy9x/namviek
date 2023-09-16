@@ -1,33 +1,32 @@
 'use client'
 
-import Link from 'next/link'
 import { useProjectStore } from '../../store/project'
 import { useEffect } from 'react'
 import { projectGet } from '../../services/project'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Project } from '@prisma/client'
-import { useTaskStore } from '../../store/task'
-import { useProjectStatusStore } from '../../store/status'
+import FavoriteAdd from '@/features/Favorites/FavoriteAdd'
+import { HiChevronRight } from 'react-icons/hi2'
+import { useFavStore } from '@/store/favorite'
 
 export default function ProjectList() {
+  const { favorites } = useFavStore()
   const { projects, addAllProject, selectProject } = useProjectStore(
     state => state
   )
-  const { setTaskLoading } = useTaskStore()
-  const { setStatusLoading } = useProjectStatusStore()
   const params = useParams()
+  const { push } = useRouter()
+
+  const favProjects = favorites.filter(f => f.type === 'PROJECT')
 
   const onSelectProject = (id: string) => {
     selectProject(id)
   }
 
   useEffect(() => {
-    console.log('get all projects')
     projectGet().then(result => {
       const { data, status } = result.data
       const projects = data as Project[]
-
-      console.log('return data', projects)
 
       if (status !== 200) return
 
@@ -44,18 +43,34 @@ export default function ProjectList() {
   return (
     <nav className="nav">
       {projects.map(project => {
-        const active = params.projectId === project.id
+        const { id, name, icon } = project
+        const active = params.projectId === id
+        const href = `${params.orgID}/project/${id}?mode=task`
+        if (favProjects.find(f => f.name === name)) {
+          return null
+        }
+
         return (
-          <Link
+          <div
             key={project.id}
-            className={`${active ? 'active' : ''} nav-item`}
+            className={`${active ? 'active' : ''} nav-item group`}
             onClick={() => {
               onSelectProject(project.id)
-            }}
-            href={`${params.orgID}/project/${project.id}?mode=task`}>
-            <img className="w-5 h-5" src={project.icon || ''} />
-            <span>{project.name}</span>
-          </Link>
+              push(href)
+            }}>
+            <div className="left">
+              <HiChevronRight className="text-gray-400" />
+              <img className="w-5 h-5" src={icon || ''} />
+              <span className="whitespace-nowrap">{name}</span>
+            </div>
+            <FavoriteAdd
+              className="opacity-0 group-hover:opacity-100"
+              name={name}
+              icon={icon || ''}
+              link={href}
+              type="PROJECT"
+            />
+          </div>
         )
       })}
     </nav>

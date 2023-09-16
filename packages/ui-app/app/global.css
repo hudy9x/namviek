@@ -71,8 +71,12 @@
 }
 
 .nav .nav-item {
-  @apply flex transition-all items-center gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
+  @apply flex transition-all items-center justify-between gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
   @apply hover:bg-gray-100 dark:hover:bg-gray-800/30 dark:text-gray-500;
+}
+
+.nav .nav-item .left {
+  @apply flex items-center gap-2;
 }
 
 .nav .nav-item:hover img {

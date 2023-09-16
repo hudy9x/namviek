@@ -15,6 +15,7 @@ import TaskCreate from './TaskCreate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { TaskSelectProvider } from './TaskSelectContext'
+import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -105,7 +106,12 @@ export default function ProjectNav() {
           <ProjectTabContent />
         </TaskSelectProvider>
       </div>
-      <TaskCreate />
+      <div className="absolute bottom-10 right-10 z-[11] ">
+        <div className="flex items-center gap-2 ">
+          <FavoriteAddModal />
+          <TaskCreate />
+        </div>
+      </div>
     </div>
   )
 }
