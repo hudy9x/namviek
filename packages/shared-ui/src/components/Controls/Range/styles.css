@@ -1,0 +1,45 @@
+.slider-value {
+  /* @apply absolute top-0 text-sm; */
+  @apply text-sm px-1 py-0.5 ml-1 border rounded-md dark:border-gray-700;
+}
+
+.slider-root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 100%;
+  height: 20px;
+}
+
+.slider-track {
+  @apply bg-gray-800 dark:bg-gray-700;
+  position: relative;
+  flex-grow: 1;
+  border-radius: 9999px;
+  height: 3px;
+}
+
+.slider-range {
+  position: absolute;
+  background-color: #f0d8d8;
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.slider-thumb {
+  @apply shadow;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+.slider-thumb:hover {
+  /* @apply bg-gray-800; */
+}
+.slider-thumb:focus {
+  outline: none;
+  @apply shadow shadow-gray-800/80;
+}

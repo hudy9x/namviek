@@ -59,7 +59,8 @@ export const useTaskStore = create<TaskState>(set => ({
           priority,
           taskPoint,
           dueDate,
-          updatedBy
+          updatedBy,
+          progress,
         } = data
 
         if (!id) return
@@ -98,6 +99,10 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (updatedBy) {
           task.updatedBy = updatedBy
+        }
+
+        if (progress) {
+          task.progress = progress
         }
 
         task.updatedAt = new Date()

@@ -106,7 +106,7 @@ model Task {
   tagIds       String[]      @db.ObjectId
   assigneeIds  String[]      @db.ObjectId
   parentTaskId String?       @db.ObjectId
-
+  progress     Int?        
   // do not store `point` as objectID, cuz we just need to fill the point value
   taskPoint Int?
 

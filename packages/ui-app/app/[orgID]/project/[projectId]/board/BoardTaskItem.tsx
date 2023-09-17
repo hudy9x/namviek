@@ -2,6 +2,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import { Task } from '@prisma/client'
 import TaskAssignee from '../views/TaskAssignee'
 import TaskDate from '../views/TaskDate'
+import { useParams, useRouter } from 'next/navigation'
 // import TaskPriorityCell from '../views/TaskPriorityCell'
 
 interface IBoardTaskItem {
@@ -10,6 +11,10 @@ interface IBoardTaskItem {
 }
 
 export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
+
+  const { orgID, projectId } = useParams()
+  const { replace } = useRouter()
+
   return (
     <Draggable draggableId={data.id} index={index}>
       {(provided, snapshot) => {
@@ -18,6 +23,7 @@ export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            onClick={() => replace(`${orgID}/project/${projectId}?mode=board&taskId=${data.id}`)}
             className="board-task-item">
             <h2 className="text-sm text-gray-600 whitespace-normal">
               {data.title}

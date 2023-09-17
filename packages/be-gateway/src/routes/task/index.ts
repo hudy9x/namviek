@@ -153,7 +153,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     dueDate,
     projectId,
     priority,
-    taskStatusId
+    taskStatusId,
+    progress
   } = req.body as Task
   const { id } = req.authen
 
@@ -175,7 +176,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       createdBy: id,
       createdAt: new Date(),
       updatedAt: null,
-      updatedBy: null
+      updatedBy: null,
+      progress
     })
 
     await findNDelCaches(key)
@@ -264,12 +266,21 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskStatusId,
     tagIds,
     parentTaskId,
+    progress,
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
 
   const taskData = await mdTaskGetOne(id)
   const key = [CKEY.TASK_QUERY, taskData.projectId]
+
+  if (title) {
+    taskData.title = title
+  }
+
+  if (desc) {
+    taskData.desc = desc
+  }
 
   if (taskStatusId) {
     taskData.taskStatusId = taskStatusId
@@ -291,12 +302,17 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.dueDate = dueDate
   }
 
+  if (progress) {
+    taskData.progress = progress
+  }
+
   taskData.updatedAt = new Date()
   taskData.updatedBy = userId
 
   try {
     console.log('taskdata', taskData)
     const result = await mdTaskUpdate(taskData)
+
     await findNDelCaches(key)
     res.json({ status: 200, data: result })
     // res.json({ status: 200 })

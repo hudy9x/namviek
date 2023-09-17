@@ -2,13 +2,15 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { MdClose } from 'react-icons/md'
 import './styles.css'
 import { SetStateAction, useEffect, useState } from 'react'
+import { Loading } from '@shared/ui'
 
 interface ModalProps {
-  triggerBy: React.ReactNode
+  triggerBy?: React.ReactNode
   title: string
   desc?: string
   size?: 'sm' | 'base' | 'lg' | 'xl'
   visible?: boolean
+  loading?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
   content: React.ReactNode
   backdrop?: boolean
@@ -24,6 +26,7 @@ export default function Modal({
   desc,
   size = 'base',
   content,
+  loading = false,
   backdrop = true,
   closeBtn = true,
   className
@@ -48,7 +51,16 @@ export default function Modal({
                 </Dialog.Description>
               ) : null}
 
-              {content}
+              {!loading ? (
+                content
+              ) : (
+                <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
+                  <span className="w-4 h-4">
+                    <Loading />
+                  </span>
+                  <span>Loading ...</span>
+                </div>
+              )}
 
               {closeBtn ? (
                 <Dialog.Close asChild>

@@ -3,6 +3,7 @@
 import { useProjectStatusStore } from '../../../../../store/status'
 import { useTaskStore } from '../../../../../store/task'
 import TaskCheckbox from '../../../../_components/TaskCheckbox'
+import { useEffect } from 'react'
 import TaskCheckAll from './TaskCheckAll'
 import TaskAssignee from './TaskAssignee'
 import TaskDate from './TaskDate'
@@ -13,7 +14,10 @@ import TaskPoint from './TaskPoint'
 import TaskStatus from './TaskStatus'
 import { Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import TaskActions from '@/features/TaskActions'
+import ProgressBar from '@/components/ProgressBar'
 // import List from 'react-virtualized/dist/commonjs/List'
 //
 // const list = new Array(10).fill(1).map((r, ind) => `title ${ind + 1}`)
@@ -28,6 +32,7 @@ import TaskActions from '@/features/TaskActions'
 export default function ListMode() {
   const { statuses, statusLoading } = useProjectStatusStore()
   const { tasks, taskLoading } = useTaskStore()
+  const params = useParams()
 
   return (
     <div className="pb-[300px]">
@@ -58,6 +63,7 @@ export default function ListMode() {
                 <ListCell width={75}>Priority</ListCell>
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
+                <ListCell width={110}>Progress</ListCell>
                 <ListCell width={100}>Created by</ListCell>
               </div>
             </div>
@@ -74,6 +80,7 @@ export default function ListMode() {
               {!taskLoading &&
                 tasks.map(task => {
                   if (task.taskStatusId !== stt.id) return null
+
                   return (
                     <div
                       className="px-3 py-2 text-sm flex items-center justify-between group"
@@ -85,7 +92,11 @@ export default function ListMode() {
                           taskId={task.id}
                           value={task.taskStatusId}
                         />
-                        {task.title}
+                        <Link
+                          key={task.id}
+                          href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
+                          <div className="w-full">{task.title}</div>
+                        </Link>
                         <TaskActions
                           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
                           taskId={task.id}
@@ -111,6 +122,12 @@ export default function ListMode() {
                           <TaskDate
                             taskId={task.id}
                             date={task.dueDate ? new Date(task.dueDate) : null}
+                          />
+                        </ListCell>
+                        <ListCell width={110}>
+                          <ProgressBar
+                            color="green"
+                            progress={task.progress || 0}
                           />
                         </ListCell>
                         <ListCell width={100}>

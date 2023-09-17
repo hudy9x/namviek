@@ -12,6 +12,7 @@ import { useState } from 'react'
 import ProjectTabContent from './ProjectTabContent'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import TaskCreate from './TaskCreate'
+import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
@@ -109,6 +110,7 @@ export default function ProjectNav() {
           <TaskCreate />
         </div>
       </div>
+      <TaskUpdate />
     </div>
   )
 }
