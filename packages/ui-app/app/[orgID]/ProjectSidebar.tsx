@@ -14,6 +14,7 @@ import {
 import { Button } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
+import Favorites from '@/features/Favorites'
 
 function ViewAllBtn() {
   return (
@@ -53,9 +54,10 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Favorites',
-      href: `/${orgID}/favorites`,
+      // href: `/${orgID}/favorites`,
       icon: HiOutlineStar,
-      active: pathname.includes('/favorites')
+      active: pathname.includes('/favorites'),
+      children: Favorites
     },
     {
       title: 'Projects',
@@ -95,7 +97,7 @@ export default function ProjectSidebar() {
                 {/* <Link href={menu.href}> */}
                 <div
                   onClick={() => {
-                    push(menu.href)
+                    menu.href && push(menu.href)
                   }}
                   className={`side-title ${active ? 'active' : ''}`}>
                   <div className="flex items-center gap-2">

@@ -14,7 +14,10 @@ export enum CKEY {
   PROJECT_MEMBER = 'PROJECT_MEMBER',
   PROJECT_POINT = 'PROJECT_POINT',
   // save the query condition
-  TASK_QUERY = 'TASK_QUERY'
+  TASK_QUERY = 'TASK_QUERY',
+
+  // save user's favorite links
+  FAV_QUERY = 'FAV_QUERY'
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]

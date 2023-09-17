@@ -3,7 +3,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { StatusDnDContainer } from './StatusDnDContainer'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { useStatus } from 'packages/ui-app/app/_hook/status'
+import { useStatus } from '@/hooks/status'
 
 export const ProjectStatus = () => {
   const inputAddRef = useRef<HTMLInputElement>(null)

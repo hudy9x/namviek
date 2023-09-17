@@ -24,6 +24,10 @@ export const orgMemberSearch = ({
   })
 }
 
+export const orgMemberAdd = (datas: { orgId: string; email: string }) => {
+  return httpPost('/api/org/member/invite', datas)
+}
+
 export const useOrgMemberGet = () => {
   const { projectId, orgID } = useParams()
 
