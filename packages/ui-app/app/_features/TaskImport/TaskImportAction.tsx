@@ -1,8 +1,4 @@
-import {
-  Button,
-  messageError,
-  messageWarning
-} from '@shared/ui'
+import { Button, messageError, messageWarning } from '@shared/ui'
 import { useTaskImport } from './context'
 import { Task, TaskPriority } from '@prisma/client'
 import { useMemberStore } from '@/store/member'
@@ -109,6 +105,7 @@ export default function TaskImportAction() {
         tagIds: [],
         // member.name is not unique
         assigneeIds,
+        progress: null,
         parentTaskId: null,
         taskPoint,
         createdBy: null,
