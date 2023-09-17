@@ -25,6 +25,10 @@
   max-width: 700px;
 }
 
+.modal-content.modal-size-sm {
+  max-width: 350px;
+}
+
 .modal-content:focus {
   outline: none;
 }

@@ -50,6 +50,7 @@ export default function ListCreateTask({
     const value = target.value
 
     taskCreateOne({
+      dueDate: new Date(),
       title: value,
       taskStatusId: groupId,
       projectId

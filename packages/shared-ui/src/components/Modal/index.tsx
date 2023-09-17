@@ -2,17 +2,20 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { MdClose } from 'react-icons/md'
 import './styles.css'
 import { SetStateAction, useEffect, useState } from 'react'
+import { Loading } from '@shared/ui'
 
 interface ModalProps {
-  triggerBy: React.ReactNode
+  triggerBy?: React.ReactNode
   title: string
   desc?: string
-  size?: 'base' | 'lg' | 'xl'
+  size?: 'sm' | 'base' | 'lg' | 'xl'
   visible?: boolean
+  loading?: boolean
   onVisibleChange?: React.Dispatch<SetStateAction<boolean>>
   content: React.ReactNode
   backdrop?: boolean
   className?: string
+  closeBtn?: boolean
 }
 
 export default function Modal({
@@ -23,7 +26,9 @@ export default function Modal({
   desc,
   size = 'base',
   content,
+  loading = false,
   backdrop = true,
+  closeBtn = true,
   className
 }: ModalProps) {
   const classes = [className]
@@ -46,13 +51,24 @@ export default function Modal({
                 </Dialog.Description>
               ) : null}
 
-              {content}
+              {!loading ? (
+                content
+              ) : (
+                <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
+                  <span className="w-4 h-4">
+                    <Loading />
+                  </span>
+                  <span>Loading ...</span>
+                </div>
+              )}
 
-              <Dialog.Close asChild>
-                <button className="modal-close" aria-label="Close">
-                  <MdClose />
-                </button>
-              </Dialog.Close>
+              {closeBtn ? (
+                <Dialog.Close asChild>
+                  <button className="modal-close" aria-label="Close">
+                    <MdClose />
+                  </button>
+                </Dialog.Close>
+              ) : null}
             </Dialog.Content>
             {backdrop ? <Dialog.Overlay className="modal-overlay" /> : null}
           </div>

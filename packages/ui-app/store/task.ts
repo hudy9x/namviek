@@ -13,6 +13,7 @@ interface TaskState {
   syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
+  delTask: (id: string) => void
 }
 
 export const useTaskStore = create<TaskState>(set => ({
@@ -28,6 +29,14 @@ export const useTaskStore = create<TaskState>(set => ({
         }
 
         state.tasks[taskIndex] = data
+      })
+    ),
+  delTask: (id: string) =>
+    set(
+      produce((state: TaskState) => {
+        state.tasks = state.tasks.filter(t => {
+          return t.id !== id
+        })
       })
     ),
   addOneTask: (data: Partial<Task>) =>
@@ -50,7 +59,8 @@ export const useTaskStore = create<TaskState>(set => ({
           priority,
           taskPoint,
           dueDate,
-          updatedBy
+          updatedBy,
+          progress,
         } = data
 
         if (!id) return
@@ -89,6 +99,10 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (updatedBy) {
           task.updatedBy = updatedBy
+        }
+
+        if (progress) {
+          task.progress = progress
         }
 
         task.updatedAt = new Date()

@@ -27,7 +27,9 @@ export const BoardTaskList = ({ groupId }: IBoardTaskListProps) => {
               {tasks.map((task, index) => {
                 if (task.taskStatusId !== groupId) return null
                 ++counter
-                return <BoardTaskItem index={counter} data={task} key={index} />
+                return (
+                  <BoardTaskItem index={counter} data={task} key={index} />
+                )
               })}
               <BoardActionCreateTask groupId={groupId} />
             </div>

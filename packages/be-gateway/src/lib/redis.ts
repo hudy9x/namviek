@@ -5,12 +5,19 @@ let connected = false
 let error = false
 
 export enum CKEY {
+  // save the list of organization that user is owner or a member of
   USER_ORGS = 'USER_ORGS',
+  // save the list of project that user manages it or be a member
   USER_PROJECT = 'USER_PROJECT',
+  // project status
   PROJECT_STATUS = 'PROJECT_STATUS',
   PROJECT_MEMBER = 'PROJECT_MEMBER',
   PROJECT_POINT = 'PROJECT_POINT',
-  TASK_QUERY = 'TASK_QUERY'
+  // save the query condition
+  TASK_QUERY = 'TASK_QUERY',
+
+  // save user's favorite links
+  FAV_QUERY = 'FAV_QUERY'
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
@@ -104,5 +111,42 @@ export const delCache = async (key: CACHE_KEY) => {
     redis.del(genKey(key))
   } catch (error) {
     console.log(`delete redis key {${key}} error`)
+  }
+}
+
+export const delMultiCache = async (keys: CACHE_KEY[]) => {
+  const pipeline = redis.pipeline()
+
+  keys.forEach(k => {
+    pipeline.del(genKey(k))
+  })
+
+  await pipeline.exec()
+}
+
+export const findCache = async (key: CACHE_KEY) => {
+  try {
+    const newKey = genKey(key)
+    const results = await redis.keys(newKey + '*')
+    return results
+  } catch (error) {
+    console.log('find cache key error', error)
+  }
+}
+
+export const findNDelCaches = async (key: CACHE_KEY) => {
+  try {
+    const keys = await findCache(key)
+    if (!keys.length) return
+
+    const pipeline = redis.pipeline()
+
+    keys.forEach(k => {
+      pipeline.del(k)
+    })
+
+    await pipeline.exec()
+  } catch (error) {
+    console.log('findNDelCAche error', error)
   }
 }

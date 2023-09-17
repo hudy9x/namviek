@@ -8,7 +8,13 @@ import {
   mdMemberUpdateRole
 } from '@shared/models'
 import { MemberRole, User } from '@prisma/client'
-import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
+import {
+  CKEY,
+  delCache,
+  delMultiCache,
+  getJSONCache,
+  setJSONCache
+} from '../../lib/redis'
 
 const router = Router()
 
@@ -55,11 +61,11 @@ router.post('/project/member', async (req: AuthRequest, res) => {
     members: User[]
   }
   const key = [CKEY.PROJECT_MEMBER, projectId]
-
-  console.log('projectId + members:', projectId, members)
+  const userProjectKeys = []
 
   mdMemberAddMany(
     members.map(m => {
+      userProjectKeys.push([CKEY.USER_PROJECT, m.id])
       return {
         projectId,
         role: MemberRole.MEMBER,
@@ -72,8 +78,9 @@ router.post('/project/member', async (req: AuthRequest, res) => {
     })
   )
     .then(result => {
-      delCache(key)
-      console.log('done')
+      // delCache(key)
+      userProjectKeys.push(key)
+      delMultiCache(userProjectKeys)
       res.json({ status: 200, data: result })
     })
     .catch(error => {
@@ -110,10 +117,12 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
 router.delete('/project/member', async (req: AuthRequest, res) => {
   const { uid, projectId } = req.query as { uid: string; projectId: string }
   const key = [CKEY.PROJECT_MEMBER, projectId]
+  const userProjectKey = [CKEY.USER_PROJECT, uid]
 
   mdMemberDel(uid, projectId)
     .then(result => {
-      delCache(key)
+      // delCache(key)
+      delMultiCache([key, userProjectKey])
       res.json({ status: 200, data: result })
     })
     .catch(error => {

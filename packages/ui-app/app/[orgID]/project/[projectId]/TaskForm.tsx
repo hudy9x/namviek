@@ -1,112 +1,81 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  messageError,
-  messageSuccess,
-  randomId
-} from '@shared/ui'
+import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
 import MemberPicker from '../../../_components/MemberPicker'
 import PrioritySelect from '../../../_components/PrioritySelect'
 import StatusSelect from '../../../_components/StatusSelect'
-import { Task, TaskPriority, TaskStatus } from '@prisma/client'
+import { TaskPriority, TaskStatus } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
-import { taskAdd } from '../../../../services/task'
-import { useEffect, useState } from 'react'
-import { useTaskStore } from '../../../../store/task'
-import { useUser } from '@goalie/nextjs'
+import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 
-let defaultFormikValues = {
+export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
   dueDate: new Date(),
+  progress: 0,
   desc: '<p>Tell me what this task about 🤡</p>'
 }
 
+export interface ITaskDefaultValues {
+  title: string
+  assigneeIds: string[]
+  taskStatusId: string
+  priority: TaskPriority
+  dueDate: Date
+  desc: string
+  progress: number
+}
 interface ITaskFormProps {
   taskStatusId?: string
   dueDate?: Date
-  onSuccess: () => void
+  defaultValue?: ITaskDefaultValues
+  onSubmit: (v: ITaskDefaultValues) => void
 }
 
 export default function TaskForm({
   dueDate,
   taskStatusId,
-  onSuccess
+  onSubmit,
+  defaultValue = defaultFormikValues
 }: ITaskFormProps) {
-  const { user } = useUser()
   const [loading, setLoading] = useState(false)
-  const { addOneTask, syncRemoteTaskById } = useTaskStore()
   const params = useParams()
   const { statuses } = useProjectStatusStore()
+  const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
 
   if (dueDate) {
-    defaultFormikValues = { ...defaultFormikValues, dueDate }
+    refDefaultValue.current = { ...refDefaultValue.current, dueDate }
   }
 
   if (taskStatusId) {
-    defaultFormikValues = { ...defaultFormikValues, taskStatusId }
+    refDefaultValue.current = { ...refDefaultValue.current, taskStatusId }
   }
 
   const formik = useFormik({
-    initialValues: defaultFormikValues,
+    initialValues: refDefaultValue.current,
     onSubmit: values => {
-      if (loading) return
-      console.log('loading', loading)
+      if (loading) {
+        messageWarning('Server is processing')
+        return
+      }
 
       setLoading(true)
       const mergedValues = { ...values, projectId: params.projectId }
       if (!Array.isArray(mergedValues.assigneeIds)) {
         mergedValues.assigneeIds = [mergedValues.assigneeIds]
       }
-      console.log(mergedValues)
 
       const { error, errorArr } = validateTask(mergedValues)
-      // console.log(values)
-      // console.log(errorArr, data);
       if (error) {
         setLoading(false)
         console.error(errorArr)
         return
       }
 
-      const randomId = `TASK-ID-RAND-${Date.now()}`
-
-      addOneTask({
-        ...mergedValues,
-        ...{
-          createdAt: new Date(),
-          createdBy: user?.id,
-          id: randomId
-        }
-      })
-
-      // addOneTask(values)
-
-      taskAdd(mergedValues)
-        .then(res => {
-          const { data, status } = res.data
-          if (status !== 200) return
-
-          syncRemoteTaskById(randomId, data as Task)
-          messageSuccess('Synced success !')
-        })
-        .catch(err => {
-          messageError('Create new task error')
-          console.log(err)
-        })
-        .finally(() => {
-          // setLoading(false)
-        })
-
-      onSuccess()
-      formik.resetForm()
-      setLoading(false)
+      onSubmit(mergedValues)
     }
   })
 
@@ -182,14 +151,16 @@ export default function TaskForm({
           formik.setFieldValue('desc', v)
         }}
       />
-
-      <Button
-        type="submit"
-        loading={loading}
-        title="Create new task"
-        primary
-        block
+      <Form.Range
+        title="Progress"
+        step={5}
+        value={formik.values.progress}
+        onChange={v => {
+          formik.setFieldValue('progress', v)
+        }}
       />
+
+      <Button type="submit" loading={loading} title="Submit" primary block />
     </form>
   )
 }
