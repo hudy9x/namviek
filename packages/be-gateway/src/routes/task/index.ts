@@ -314,6 +314,9 @@ router.put('/project/tasks', async (req: AuthRequest, res) => {
   const nonNullFields = Object.fromEntries(nonNullEntries)
   try {
     const result = await mdTaskUpdateMany(taskIds, nonNullFields)
+    // TODO: refresh redis
+    // const key = [CKEY.TASK_QUERY, projectId]
+    // await findNDelCaches(key)
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)

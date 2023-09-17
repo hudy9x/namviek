@@ -86,6 +86,7 @@ export const ListModeGroupProvider = ({
           }
         })
       }
+      // TODO: compare to Enum
       if (v === 'priority') {
         const priorities = Object.values(TaskPriority).filter(v =>
           isNaN(Number(v))

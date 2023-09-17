@@ -9,6 +9,8 @@ import { Task } from '@prisma/client'
 import { useTaskStore } from '@/store/task'
 import { taskUpdateMany } from '@/services/task'
 
+// TODO: rename -> TaskMultiUpdateBar
+// move to `components`
 export default function TaskSelectControl() {
   const { selectedTasks, clearSelectedTasks } = useTaskSelectContext()
   const selectedTaskNum = selectedTasks?.length || 0
