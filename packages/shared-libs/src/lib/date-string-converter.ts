@@ -36,7 +36,7 @@ export const fromDateStringToDateObject = (
   const today = new Date()
   to00h00m(today)
 
-  if (!operator) operator = '='
+  operator = operator || '='
 
   if (dateStr === 'yesterday') {
     if (operator === '=') {
