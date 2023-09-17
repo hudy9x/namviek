@@ -1,8 +1,4 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-} from '@shared/ui'
+import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
 import MemberPicker from '../../../_components/MemberPicker'
 import PrioritySelect from '../../../_components/PrioritySelect'
 import StatusSelect from '../../../_components/StatusSelect'
@@ -12,7 +8,6 @@ import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
-
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -25,18 +20,18 @@ export const defaultFormikValues: ITaskDefaultValues = {
 }
 
 export interface ITaskDefaultValues {
-  title: string;
-  assigneeIds: string[];
-  taskStatusId: string;
-  priority: TaskPriority;
-  dueDate: Date;
-  desc: string;
-  progress: number;
+  title: string
+  assigneeIds: string[]
+  taskStatusId: string
+  priority: TaskPriority
+  dueDate: Date
+  desc: string
+  progress: number
 }
 interface ITaskFormProps {
   taskStatusId?: string
-  dueDate?: Date,
-  defaultValue?: ITaskDefaultValues,
+  dueDate?: Date
+  defaultValue?: ITaskDefaultValues
   onSubmit: (v: ITaskDefaultValues) => void
 }
 
@@ -62,7 +57,10 @@ export default function TaskForm({
   const formik = useFormik({
     initialValues: refDefaultValue.current,
     onSubmit: values => {
-      if (loading) return
+      if (loading) {
+        messageWarning('Server is processing')
+        return
+      }
 
       setLoading(true)
       const mergedValues = { ...values, projectId: params.projectId }
@@ -78,15 +76,11 @@ export default function TaskForm({
       }
 
       onSubmit(mergedValues)
-
-      formik.resetForm()
-      setLoading(false)
     }
   })
 
   // select a default status if empty
   useEffect(() => {
-
     if (statuses.length && !formik.values.taskStatusId) {
       let min: TaskStatus | null = null
       statuses.forEach(stt => {
@@ -157,21 +151,16 @@ export default function TaskForm({
           formik.setFieldValue('desc', v)
         }}
       />
-      <Form.RangerSlider
+      <Form.Range
         title="Progress"
+        step={5}
         value={formik.values.progress}
         onChange={v => {
-          formik.setFieldValue('progress', v[0])
+          formik.setFieldValue('progress', v)
         }}
       />
 
-      <Button
-        type="submit"
-        loading={loading}
-        title="Submit"
-        primary
-        block
-      />
+      <Button type="submit" loading={loading} title="Submit" primary block />
     </form>
   )
 }

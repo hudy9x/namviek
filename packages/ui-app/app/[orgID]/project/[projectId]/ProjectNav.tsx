@@ -108,9 +108,9 @@ export default function ProjectNav() {
         <div className="flex items-center gap-2 ">
           <FavoriteAddModal />
           <TaskCreate />
-          <TaskUpdate />
         </div>
       </div>
+      <TaskUpdate />
     </div>
   )
 }

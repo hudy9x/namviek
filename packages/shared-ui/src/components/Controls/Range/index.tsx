@@ -14,10 +14,10 @@ export default function RangerSlider({
   maxValue = 100,
   step = 10
 }: RangerSlider) {
-  const classes = ['form-control']
+  const classes = ['form-control input-range']
 
   const onRangerSliderChange = (value: number[]) => {
-    onChange && onChange(value)
+    onChange && onChange(value[0])
   }
 
   disabled && classes.push('disabled')
@@ -28,19 +28,21 @@ export default function RangerSlider({
   return (
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
-      <div className="flex">
-        <div className="pr-2">{value}</div>
+      <div className="flex relative">
         <Slider.Root
-          className="SliderRoot"
+          className="slider-root"
           value={value ? [Number(value)] : [0]}
           max={maxValue}
           step={step}
           onValueChange={value => onRangerSliderChange(value)}>
-          <Slider.Track className="SliderTrack">
-            <Slider.Range className="SliderRange" />
+          <Slider.Track className="slider-track">
+            <Slider.Range className="slider-range" />
           </Slider.Track>
-          <Slider.Thumb className="SliderThumb" aria-label="Volume" />
+          <Slider.Thumb className="slider-thumb" aria-label="Volume" />
         </Slider.Root>
+        <div className="slider-value" style={{ left: `${value}%` }}>
+          {value}
+        </div>
       </div>
       {helper && !error ? (
         <p className="mt-2 text-sm text-gray-500">{helper}</p>

@@ -1,7 +1,12 @@
 @import '@radix-ui/colors/black-alpha.css';
 @import '@radix-ui/colors/violet.css';
 
-.SliderRoot {
+.slider-value {
+  /* @apply absolute top-0 text-sm; */
+  @apply text-sm px-1 py-0.5 ml-1 border rounded-md dark:border-gray-700;
+}
+
+.slider-root {
   position: relative;
   display: flex;
   align-items: center;
@@ -11,22 +16,22 @@
   height: 20px;
 }
 
-.SliderTrack {
-  background-color: var(--black-a10);
+.slider-track {
+  @apply bg-gray-800 dark:bg-gray-700;
   position: relative;
   flex-grow: 1;
   border-radius: 9999px;
   height: 3px;
 }
 
-.SliderRange {
+.slider-range {
   position: absolute;
   background-color: #f0d8d8;
   border-radius: 9999px;
   height: 100%;
 }
 
-.SliderThumb {
+.slider-thumb {
   display: block;
   width: 20px;
   height: 20px;
@@ -34,10 +39,10 @@
   box-shadow: 0 2px 10px var(--black-a7);
   border-radius: 10px;
 }
-.SliderThumb:hover {
+.slider-thumb:hover {
   background-color: var(--violet-3);
 }
-.SliderThumb:focus {
+.slider-thumb:focus {
   outline: none;
   box-shadow: 0 0 0 5px var(--black-a8);
 }
