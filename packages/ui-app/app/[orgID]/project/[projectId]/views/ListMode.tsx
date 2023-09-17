@@ -17,6 +17,7 @@ import ListCreateTask from './ListCreateTask'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import TaskActions from '@/features/TaskActions'
+import ProgressBar from '@/components/ProgressBar'
 // import List from 'react-virtualized/dist/commonjs/List'
 //
 // const list = new Array(10).fill(1).map((r, ind) => `title ${ind + 1}`)
@@ -91,10 +92,10 @@ export default function ListMode() {
                           taskId={task.id}
                           value={task.taskStatusId}
                         />
-                        <Link key={task.id} href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
-                          <div className='w-full'>
-                            {task.title}
-                          </div>
+                        <Link
+                          key={task.id}
+                          href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
+                          <div className="w-full">{task.title}</div>
                         </Link>
                         <TaskActions
                           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
@@ -124,7 +125,10 @@ export default function ListMode() {
                           />
                         </ListCell>
                         <ListCell width={110}>
-                          {task.progress}
+                          <ProgressBar
+                            color="green"
+                            progress={task.progress || 0}
+                          />
                         </ListCell>
                         <ListCell width={100}>
                           <MemberAvatar uid={task.createdBy} />
