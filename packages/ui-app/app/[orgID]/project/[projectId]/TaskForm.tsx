@@ -16,9 +16,8 @@ export const defaultFormikValues: ITaskDefaultValues = {
   priority: TaskPriority.LOW,
   dueDate: new Date(),
   progress: 0,
-  desc: '<p>Tell me what this task about 🤡</p>'
+  desc: ''
 }
-
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
@@ -150,6 +149,7 @@ export default function TaskForm({
         onChange={v => {
           formik.setFieldValue('desc', v)
         }}
+        placeholder='Tell me what this task about 🤡'
       />
       <Form.Range
         title="Progress"
