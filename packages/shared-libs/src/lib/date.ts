@@ -14,6 +14,12 @@ export function getLastDateOfMonth(d: Date) {
   return date
 }
 
+export function getMonthList() {
+  return 'January, February, March, April, May, June, July, August, September, October, November, December'.split(
+    ','
+  )
+}
+
 export function getFirstDateOfMonth(d: Date) {
   d.setDate(1)
   return d

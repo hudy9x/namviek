@@ -53,7 +53,6 @@ type RedisJSONValue = {
 //   }
 //   redis.set(key, value)
 // }
-//const e
 const genKey = (key: CACHE_KEY) => {
   let cacheKey = ''
   if (Array.isArray(key)) {

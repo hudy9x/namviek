@@ -36,7 +36,7 @@ export const fromDateStringToDateObject = (
   const today = new Date()
   to00h00m(today)
 
-  console.log('operator', operator)
+  operator = operator || '='
 
   if (dateStr === 'yesterday') {
     if (operator === '=') {
@@ -70,8 +70,6 @@ export const fromDateStringToDateObject = (
       to23h59m(endDay)
       config.startDate = today
       config.endDate = endDay
-
-      console.log('endday', endDay)
     }
 
     if (operator === '<') {
