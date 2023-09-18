@@ -1,0 +1,14 @@
+.automation-container {
+  @apply grid grid-cols-2 divide-x relative;
+}
+
+.automation-container .when {
+  @apply pr-[70px];
+}
+.automation-container .then {
+  @apply pl-[70px];
+}
+
+.automation-container .when-select .select-button {
+  @apply p-0 border-none shadow-none text-xs lowercase;
+}

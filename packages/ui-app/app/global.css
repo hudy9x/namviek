@@ -8,6 +8,16 @@
     @apply transition-all hover:shadow-lg;
   }
 
+  .box-connector {
+    @apply relative mt-7;
+  }
+
+  .box-connector:after {
+    content: '';
+    @apply absolute -top-7 left-1/2;
+    @apply w-[2px] h-7 bg-gray-200;
+  }
+
   .box-lg {
     @apply p-6 rounded-lg;
   }
