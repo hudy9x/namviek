@@ -9,11 +9,7 @@ interface ICalMonthDay {
 }
 export default function CalMonthDay({ day }: ICalMonthDay) {
   const { month } = useCalendarContext()
-
   const today = new Date()
-  // const month = today.getMonth()
-  // console.log(readMonth, month)
-
   const dMonth = day.getMonth()
 
   const notInMonth = month !== dMonth
