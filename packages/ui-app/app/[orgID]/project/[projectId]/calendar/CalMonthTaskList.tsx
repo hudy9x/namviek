@@ -28,7 +28,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
         }
 
         return (
-          <Link href={`${orgID}/project/${projectId}?mode=calendar&taskId=${task.id}`}>
+          <Link key={task.id} href={`${orgID}/project/${projectId}?mode=calendar&taskId=${task.id}`}>
             <CalMonthTask key={task.id} index={++index} task={task} />
           </Link>
         )

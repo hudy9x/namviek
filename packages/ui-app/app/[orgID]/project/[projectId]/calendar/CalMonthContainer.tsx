@@ -20,8 +20,8 @@ export default function CalMonthContainer({ date }: ICalMonthContainerProps) {
         className="flex flex-col justify-between divide-y dark:divide-gray-700 relative"
         style={{ height: 'calc(100vh - 124px)' }}>
         {taskLoading ? (
-          <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-gray-50/50 backdrop-blur-sm">
-            <div className="shadow-lg border px-5 py-3 bg-white rounded-md text-sm text-gray-500 flex items-center gap-3">
+          <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm">
+            <div className="shadow-lg border px-5 py-3 bg-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 rounded-md text-sm text-gray-500 flex items-center gap-3">
               <span className="w-4 h-4">
                 <Loading />
               </span>

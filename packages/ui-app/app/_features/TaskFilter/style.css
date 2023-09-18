@@ -28,3 +28,16 @@
 .task-filter-member-picker .selected-member {
   @apply dark:rounded-full;
 }
+
+.calendar-filter .select-container .trailing-icon {
+  @apply hidden;
+}
+
+.calendar-filter .select-button {
+  @apply pr-3;
+}
+
+.calendar-filter .cal-btn {
+  @apply w-6 h-6 cursor-pointer text-gray-500 dark:text-gray-400 border rounded-md px-1 py-0.5;
+  @apply dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer;
+}

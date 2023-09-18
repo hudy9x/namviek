@@ -2,13 +2,17 @@ import { format } from 'date-fns'
 import { Droppable } from 'react-beautiful-dnd'
 import CalMonthTaskList from './CalMonthTaskList'
 import CalendarTaskCreate from './CalendarTaskCreate'
+import { useCalendarContext } from './context'
 
 interface ICalMonthDay {
   day: Date
 }
 export default function CalMonthDay({ day }: ICalMonthDay) {
+  const { month } = useCalendarContext()
+
   const today = new Date()
-  const month = today.getMonth()
+  // const month = today.getMonth()
+  // console.log(readMonth, month)
 
   const dMonth = day.getMonth()
 
