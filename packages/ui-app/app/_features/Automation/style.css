@@ -1,5 +1,5 @@
 .automation-container {
-  @apply grid grid-cols-2 divide-x relative;
+  @apply grid grid-cols-2 divide-x dark:divide-gray-700 relative;
 }
 
 .automation-container .when {

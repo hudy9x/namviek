@@ -109,7 +109,11 @@ export default function ProjectNav() {
           <div className="flex items-center gap-2">
             <div className="tab">
               <div
-                className={`tab-item ${mode === 'automation' ? 'active' : ''}`}
+                className={`tab-item ${
+                  ['automation', 'automation-create'].includes(mode || '')
+                    ? 'active'
+                    : ''
+                }`}
                 onClick={() => onMoveTab('automation')}>
                 <HiOutlineCpuChip />
                 <span>Automation</span>

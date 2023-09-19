@@ -7,6 +7,7 @@ import { Board } from './board'
 import Calendar from './calendar'
 import ProjectOverview from 'packages/ui-app/app/_features/Project/Overview'
 import Automation from '@/features/Automation'
+import AutomateList from '@/features/Automation/AutomateList'
 
 export default function ProjectTabContent() {
   const searchParams = useSearchParams()
@@ -19,7 +20,8 @@ export default function ProjectTabContent() {
       {mode === 'setting' && <Settings />}
       {mode === 'overview' ? <ProjectOverview /> : null}
       {mode === 'calendar' ? <Calendar /> : null}
-      {mode === 'automation' ? <Automation /> : null}
+      {mode === 'automation-create' ? <Automation /> : null}
+      {mode === 'automation' ? <AutomateList /> : null}
     </div>
   )
 }
