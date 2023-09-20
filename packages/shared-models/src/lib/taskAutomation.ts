@@ -1,10 +1,13 @@
 import { TaskAutomation } from '@prisma/client'
-import { pmClient, taskAutomation } from './_prisma'
+import { taskAutomation } from './_prisma'
 
 export const mdAutomationGet = async (projectId: string) => {
   return taskAutomation.findMany({
     where: {
       projectId
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   })
 }

@@ -32,7 +32,7 @@ router.post('/automation', async (req: AuthRequest, res) => {
     const { id: uid } = req.authen
     const { organizationId, projectId, when, then } = req.body as TaskAutomation
 
-    console.log('=========== 7')
+    console.log('=========== 8')
     const data = {
       projectId,
       organizationId,

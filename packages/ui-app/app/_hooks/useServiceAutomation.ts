@@ -54,7 +54,10 @@ export const useServiceAutomation = () => {
     })
 
     automationAdd({
-      then,
+      then: {
+        value: then.value || '',
+        change: then.change || ''
+      },
       when: {
         happens: when.happens || '',
         is: when.is || '',

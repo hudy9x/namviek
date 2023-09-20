@@ -32,14 +32,22 @@ export default function AutomateList() {
       <div className="mt-5 space-y-3">
         {automations.map(automate => {
           const { when, then } = automate
+          const isUpdating = automate.id.includes('AUTOMATE_RAND_ID')
+            ? 'animate-pulse'
+            : ''
           return (
-            <div className="box" key={automate.id}>
+            <div className={`box ${isUpdating}`} key={automate.id}>
               {automate.id}
               <p>
-                When {when.is} happens on {when.happens} {'=>'} then do{' '}
-                {then.change} to {then.value || 'any'}
+                When {when.is} to {when.valueTo} happens on {when.happens}{' '}
+                {'=>'} then do {then.change} to {then.value || 'any'}
               </p>
-              <HiOutlineTrash onClick={() => onDelete(automate.id)} />
+              <HiOutlineTrash
+                onClick={() => {
+                  if (isUpdating) return
+                  onDelete(automate.id)
+                }}
+              />
             </div>
           )
         })}
