@@ -1,22 +1,16 @@
-import { Button, randomId } from '@shared/ui'
+import { Button } from '@shared/ui'
 import { useAutomateContext } from './context'
 import { useParams, useRouter } from 'next/navigation'
-import { useAutomationStore } from '@/store/automation'
+import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 
 export default function AutomateCreate() {
   const { push } = useRouter()
   const { orgID, projectId } = useParams()
   const { when, then } = useAutomateContext()
-  const { addNewAutomation } = useAutomationStore()
+  const { addAutomation } = useServiceAutomation()
+
   const onCreate = () => {
-    const id = 'AUTOMATE_RAND_ID_' + randomId()
-    addNewAutomation({
-      id,
-      then,
-      when,
-      organizationId: orgID,
-      projectId
-    })
+    addAutomation({ when, then, projectId, organizationId: orgID })
     push(`/${orgID}/project/${projectId}?mode=automation`)
   }
 

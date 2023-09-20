@@ -156,8 +156,8 @@ model TaskAutomation {
   id             String               @id @default(auto()) @map("_id") @db.ObjectId
   organizationId String               @db.ObjectId
   projectId      String               @db.ObjectId
-  when           taskAutomateWhenType
-  then           taskAutomateThenType
+  when           Json
+  then           Json
   createdBy      String?
   createdAt      DateTime?
   updatedBy      String?

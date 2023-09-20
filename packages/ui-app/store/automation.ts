@@ -33,6 +33,8 @@ type IAutomationItem = Omit<
 interface AutomationState {
   automations: IAutomationItem[]
   addNewAutomation: (data: IAutomationItem) => void
+  updateAutomation: (id: string, data: IAutomationItem) => void
+  deleteAutomation: (id: string) => void
   addAllAutomation: (data: IAutomationItem[]) => void
 }
 
@@ -42,6 +44,24 @@ export const useAutomationStore = create<AutomationState>(set => ({
     set(
       produce((state: AutomationState) => {
         state.automations.push(data)
+      })
+    ),
+  deleteAutomation: (id: string) =>
+    set(
+      produce((state: AutomationState) => {
+        state.automations = state.automations.filter(auto => auto.id !== id)
+      })
+    ),
+  updateAutomation: (id: string, data: IAutomationItem) =>
+    set(
+      produce((state: AutomationState) => {
+        const automationIndex = state.automations.findIndex(
+          auto => auto.id === id
+        )
+
+        if (automationIndex === -1) return
+
+        state.automations[automationIndex] = data
       })
     ),
   addAllAutomation: (data: IAutomationItem[]) =>

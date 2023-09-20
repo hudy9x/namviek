@@ -6,11 +6,15 @@ import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
+import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
   const sp = useSearchParams()
   const { syncRemoteTaskById, tasks, taskLoading } = useTaskStore()
+
+  const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
+
   const [currentTask, setCurrentTask] =
     useState<ITaskDefaultValues>(defaultFormikValues)
   const refCurrentTask = useRef<Task>()
@@ -38,6 +42,8 @@ export const TaskUpdate = () => {
 
     // setVisible(false)
     // updateTask(dataUpdate)
+    refactorTaskFieldByAutomationConfig('task', dataUpdate)
+
     taskUpdate(dataUpdate)
       .then(res => {
         const { data, status } = res.data
