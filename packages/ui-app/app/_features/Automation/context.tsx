@@ -55,19 +55,6 @@ export const dueDateOptions = [
   { id: 'next-30-days', title: 'Next 30 days' }
 ]
 
-// export interface IAutomateWhenProps {
-//   happens: string
-//   is: string
-//   valueFrom?: string
-//   valueTo?: string
-//   equal?: string
-// }
-
-// export interface IAutomateThenProps {
-//   change: string
-//   value: string
-// }
-
 interface IAutomateContextProps {
   when: IAutomateWhenProps
   setWhen: Dispatch<SetStateAction<IAutomateWhenProps>>

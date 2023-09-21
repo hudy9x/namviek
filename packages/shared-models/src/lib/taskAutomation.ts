@@ -12,17 +12,10 @@ export const mdAutomationGet = async (projectId: string) => {
   })
 }
 
-// export const mdAutomationPost = async (data: TaskAutomation) => {
 export const mdAutomationPost = async (data: Omit<TaskAutomation, 'id'>) => {
-  console.log(data)
   return taskAutomation.create({
     data
   })
-
-  // return pmClient.$runCommandRaw({
-  //   insert: 'TaskAutomation',
-  //   documents: [data]
-  // })
 }
 
 export const mdAutomationDel = async (id: string) => {
