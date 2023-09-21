@@ -27,22 +27,30 @@ export const whenOptions = [
   { id: WHEN.STATUS_CHANGED, title: 'Status changes' },
   { id: WHEN.PROGRESS_CHANGED, title: 'Progress changes' },
   { id: WHEN.PRIORITY_CHANGED, title: 'Priority changes' },
-  { id: WHEN.DUEDATE_CHANGED, title: 'Due date changes' },
-  { id: WHEN.ASSIGNEE_ADDED, title: 'Assignee added' },
-  { id: WHEN.ASSIGNEE_REMOVED, title: 'Assignee removed' },
-  { id: WHEN.DUEDATE_ARRIVES, title: 'Due date arrives' },
-  { id: WHEN.STARTDATE_ARRIVES, title: 'Start date arrives' }
+  { id: WHEN.DUEDATE_CHANGED, title: 'Due date changes' }
+  // { id: WHEN.ASSIGNEE_ADDED, title: 'Assignee added' },
+  // { id: WHEN.ASSIGNEE_REMOVED, title: 'Assignee removed' },
+  // { id: WHEN.DUEDATE_ARRIVES, title: 'Due date arrives' },
+  // { id: WHEN.STARTDATE_ARRIVES, title: 'Start date arrives' }
 ]
 
 export const thenOptions = [
-  { id: THEN.CHANGE_ASSIGNEE, title: 'Change assignees' },
-  { id: THEN.CREATE_TASK, title: 'Create a task' },
-  { id: THEN.CREATE_SUB_TASK, title: 'Create a subtask' },
+  // { id: THEN.CHANGE_ASSIGNEE, title: 'Change assignees' },
+  // { id: THEN.CREATE_TASK, title: 'Create a task' },
+  // { id: THEN.CREATE_SUB_TASK, title: 'Create a subtask' },
   { id: THEN.CHANGE_STATUS, title: 'Change status' },
-  { id: THEN.CHANGE_PRIORITY, title: 'Change priority' },
-  { id: THEN.CHANGE_DUEDATE, title: 'Change due date' },
-  { id: THEN.DO_COMMENT, title: 'Do comment' },
-  { id: THEN.DUPLICATE, title: 'Duplicate' }
+  // { id: THEN.CHANGE_PRIORITY, title: 'Change priority' },
+  { id: THEN.CHANGE_DUEDATE, title: 'Change due date' }
+  // { id: THEN.DO_COMMENT, title: 'Do comment' },
+  // { id: THEN.DUPLICATE, title: 'Duplicate' }
+]
+
+export const dueDateOptions = [
+  { id: 'present-day', title: 'Present day' },
+  // { id: 'last-week', title: 'Last week' },
+  // { id: 'last-month', title: 'Last month' },
+  { id: 'next-7-days', title: 'Next 7 days' },
+  { id: 'next-30-days', title: 'Next 30 days' }
 ]
 
 // export interface IAutomateWhenProps {

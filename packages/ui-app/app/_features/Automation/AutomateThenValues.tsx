@@ -1,8 +1,9 @@
 import dynamic from 'next/dynamic'
-import { THEN, useAutomateContext } from './context'
+import { THEN, dueDateOptions, useAutomateContext } from './context'
 import StatusSelect from '@/components/StatusSelect'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
+import ListPreset from '@/components/ListPreset'
 // import TaskForm from '../../[orgID]/project/[projectId]/TaskForm'
 
 const DynamicTaskForm = dynamic(
@@ -18,6 +19,7 @@ export default function AutomateThenValues() {
   const isChangeAssignee = then.change === THEN.CHANGE_ASSIGNEE
   const isChangePriority = then.change === THEN.CHANGE_PRIORITY
   const isCreateSubtask = then.change === THEN.CREATE_SUB_TASK
+  const isChangeDueDate = then.change === THEN.CHANGE_DUEDATE
 
   return (
     <div className="mt-2">
@@ -55,6 +57,17 @@ export default function AutomateThenValues() {
       {/*     }} */}
       {/*   /> */}
       {/* ) : null} */}
+
+      {isChangeDueDate ? (
+        <ListPreset
+          title="To"
+          value=""
+          onChange={val => {
+            setThenField('value', val)
+          }}
+          options={dueDateOptions}
+        />
+      ) : null}
     </div>
   )
 }

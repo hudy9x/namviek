@@ -8,7 +8,7 @@ import {
   IAutomateWhenProps,
   useAutomationStore
 } from '@/store/automation'
-import { randomId } from '@shared/ui'
+import { messageSuccess, randomId } from '@shared/ui'
 
 export const useServiceAutomation = () => {
   const {
@@ -26,9 +26,10 @@ export const useServiceAutomation = () => {
   }
 
   const delAutomation = (id: string) => {
+    deleteAutomation(id)
     automationDel(id).then(res => {
-      console.log('delete')
-      deleteAutomation(id)
+      messageSuccess('Delete automation successfully')
+      // deleteAutomation(id)
     })
   }
 

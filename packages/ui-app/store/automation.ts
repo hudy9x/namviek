@@ -22,7 +22,7 @@ export interface IAutomateThenProps {
 //   projectId: string
 // }
 
-type IAutomationItem = Omit<
+export type IAutomationItem = Omit<
   TaskAutomation,
   'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'when' | 'then'
 > & {
@@ -43,7 +43,8 @@ export const useAutomationStore = create<AutomationState>(set => ({
   addNewAutomation: (data: IAutomationItem) =>
     set(
       produce((state: AutomationState) => {
-        state.automations.push(data)
+        // state.automations.push(data)
+        state.automations.unshift(data)
       })
     ),
   deleteAutomation: (id: string) =>

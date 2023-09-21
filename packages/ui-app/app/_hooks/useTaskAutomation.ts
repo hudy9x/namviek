@@ -1,6 +1,7 @@
 import { useAutomationStore } from '@/store/automation'
 import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
 import { THEN, WHEN } from '@/features/Automation/context'
+import { fromDateStringToDate } from '@shared/libs'
 
 export const useTaskAutomation = () => {
   const { automations } = useAutomationStore()
@@ -22,6 +23,13 @@ export const useTaskAutomation = () => {
       if (is === WHEN.PROGRESS_CHANGED && data.progress === +(valueTo || '0')) {
         if (change === THEN.CHANGE_STATUS && data.taskStatusId !== value) {
           data.taskStatusId = value
+        }
+      }
+
+      if (is === WHEN.STATUS_CHANGED && data.taskStatusId === valueTo) {
+        if (change === THEN.CHANGE_DUEDATE) {
+          const toDueDate = fromDateStringToDate(value)
+          data.dueDate = toDueDate
         }
       }
 

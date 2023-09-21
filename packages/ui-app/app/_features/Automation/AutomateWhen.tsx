@@ -3,7 +3,7 @@ import { useAutomateContext, whenOptions } from './context'
 import AutomateWhenValues from './AutomateWhenValues'
 
 export default function AutomateWhen() {
-  const { when, setWhenField } = useAutomateContext()
+  const { when, setWhenField, setWhen } = useAutomateContext()
 
   return (
     <div className="when">
@@ -40,7 +40,13 @@ export default function AutomateWhen() {
           className="w-full"
           value={when.is}
           onChange={val => {
-            setWhenField('is', val)
+            setWhen(prev => ({
+              ...prev,
+              is: val,
+              valueTo: '',
+              valueFrom: '',
+              equal: ''
+            }))
           }}
           width={180}
           options={whenOptions}

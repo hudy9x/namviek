@@ -26,7 +26,7 @@
 }
 
 .slider-thumb {
-  @apply bg-white rounded-full dark:bg-gray-700 dark:border-gray-600 shadow shadow-gray-100 border cursor-pointer hover:opacity-95;
+  @apply bg-white rounded-full dark:bg-gray-700 dark:border-gray-600 shadow shadow-gray-100 dark:shadow-gray-900 border cursor-pointer hover:opacity-95;
   display: block;
   width: 20px;
   height: 20px;

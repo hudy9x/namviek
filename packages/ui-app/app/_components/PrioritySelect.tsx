@@ -21,6 +21,9 @@ const options: ListItemValue[] = [
   { id: 'ALL', title: 'All' }
 ]
 
+export const priorityColors = colors
+export const priorityOptions = options
+
 interface IPriorityProps {
   all?: boolean
   value?: TaskPriority | 'ALL'
