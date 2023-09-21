@@ -26,7 +26,9 @@ export const mdTaskStatusQuery = async ({ projectIds }: ITaskStatusQuery) => {
   })
 }
 
-export const mdTaskStatusAdd = async (data: Omit<TaskStatus, 'id'>) => {
+export const mdTaskStatusAdd = async (
+  data: Omit<TaskStatus, 'id' | 'type'>
+) => {
   return taskStatusModel.create({
     data: { ...data }
   })

@@ -59,6 +59,13 @@ export default function ProjectNav() {
       href: '#',
       icon: HiOutlineCog6Tooth,
       current: false
+    },
+    {
+      title: 'Team',
+      name: 'team',
+      href: '#',
+      icon: HiOutlineCog6Tooth,
+      current: false
     }
   ])
 

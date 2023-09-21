@@ -37,6 +37,13 @@ enum TaskPriority {
   LOW
 }
 
+enum StatusType {
+  DONE
+  INPROCESS
+  TODO
+  DEFAULT
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -106,9 +113,9 @@ model Task {
   tagIds       String[]      @db.ObjectId
   assigneeIds  String[]      @db.ObjectId
   parentTaskId String?       @db.ObjectId
-  progress     Int?        
+  progress     Int?
   // do not store `point` as objectID, cuz we just need to fill the point value
-  taskPoint Int?
+  taskPoint    Int?
 
   createdBy String?
   createdAt DateTime?
@@ -117,11 +124,12 @@ model Task {
 }
 
 model TaskStatus {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   order     Int
-  projectId String @db.ObjectId
+  projectId String     @db.ObjectId
+  type      StatusType @default(DEFAULT)
 }
 
 // Tag used for Projects and Tasks
