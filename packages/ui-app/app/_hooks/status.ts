@@ -10,9 +10,7 @@ interface Props {
   currentColor?: string
 }
 
-export const useStatus = ({
-  currentColor
-}: Props) => {
+export const useStatus = ({ currentColor }: Props) => {
   const { statuses, updateStatus, addStatus } = useProjectStatusStore()
   const params = useParams()
 
@@ -58,7 +56,8 @@ export const useStatus = ({
       name: target.value,
       color: currentColor || DEFAULT_COLOR,
       order,
-      projectId
+      projectId,
+      type: 'DEFAULT'
     }
     target.value = ''
     addStatus(newTaskStatus)

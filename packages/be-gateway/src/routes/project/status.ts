@@ -6,7 +6,7 @@ import {
   mdTaskStatusUpdate,
   mdTaskStatusDel
 } from '@shared/models'
-import { TaskStatus } from '@prisma/client'
+import { StatusType, TaskStatus } from '@prisma/client'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
@@ -19,7 +19,8 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
     projectId,
     name: body.name,
     color: body.color,
-    order: body.order
+    order: body.order,
+    type: StatusType.DEFAULT
   }
   mdTaskStatusAdd(data)
     .then(result => {

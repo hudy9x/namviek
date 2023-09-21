@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import TeamMemberProcess from './TeamMemberProcess'
 import TeamMemberStatus from './TeamMemberStatus'
 import { Group } from './useGroupBy'
+import TeamMemberInfo from './TeamMemberInfo'
 
 export type TStatusTask = {
   name: string
@@ -45,12 +46,7 @@ const TeamMember = ({ item }: { item: Group }) => {
 
   return (
     <div className="border shadow-sm bg-white rounded-xl p-4 w-[300px] flex flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <Avatar src={user?.photo || ''} name={user?.name || ''} size="lg" />
-        <div className="flex flex-col text-sm">
-          <span className="text-gray-700 font-medium">{user?.name || ''}</span>
-        </div>
-      </div>
+      <TeamMemberInfo name={user.name} photo={user.photo} />
       <TeamMemberProcess statusTasks={statusTaskByMember} tasks={tasks} />
 
       <TeamMemberStatus statusTasks={statusTaskByMember} tasks={tasks} />

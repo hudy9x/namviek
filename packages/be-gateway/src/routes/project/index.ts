@@ -6,7 +6,8 @@ import {
   mdMemberGetProject,
   mdProjectAdd,
   mdProjectGetAllByIds,
-  mdProjectUpdate
+  mdProjectUpdate,
+  mdTaskStatusAdd
 } from '@shared/models'
 import { MemberRole, Project } from '@prisma/client'
 
@@ -100,6 +101,26 @@ router.post('/project', async (req: AuthRequest, res) => {
     updatedBy: null,
     updatedAt: null
   })
+
+  // init status task
+  const promise = [
+    mdTaskStatusAdd({
+      color: '',
+      name: 'TO DO',
+      order: 0,
+      projectId: result.id,
+      type: 'TODO'
+    }),
+    mdTaskStatusAdd({
+      color: '',
+      name: 'Close',
+      order: 1,
+      projectId: result.id,
+      type: 'DONE'
+    })
+  ]
+
+  await Promise.all(promise)
 
   delCache([CKEY.USER_PROJECT, userId])
 
