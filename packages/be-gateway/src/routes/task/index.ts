@@ -165,6 +165,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       title,
       startDate: null,
       dueDate: dueDate || null,
+      plannedDueDate: dueDate || null,
       assigneeIds,
       desc,
       projectId,
@@ -264,6 +265,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     projectId,
     priority,
     taskStatusId,
+    plannedDueDate,
     tagIds,
     parentTaskId,
     progress,
@@ -284,6 +286,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
   if (taskStatusId) {
     taskData.taskStatusId = taskStatusId
+  }
+
+  if (plannedDueDate) {
+    taskData.plannedDueDate = plannedDueDate
   }
 
   if (assigneeIds) {

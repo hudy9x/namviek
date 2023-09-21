@@ -1,7 +1,7 @@
 import { Button, Modal, messageError, messageSuccess } from '@shared/ui'
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import TaskForm, { ITaskDefaultValues } from './TaskForm'
+import TaskForm, { FORM_MODE, ITaskDefaultValues } from './TaskForm'
 import { useSearchParams } from 'next/navigation'
 import { taskAdd } from '../../../../services/task'
 import { useTaskStore } from '@/store/task'
@@ -63,7 +63,7 @@ export default function TaskCreate() {
         }
         content={
           <>
-            <TaskForm onSubmit={v => handleSubmit(v)} />
+            <TaskForm mode={FORM_MODE.CREATE} onSubmit={v => handleSubmit(v)} />
           </>
         }
       />

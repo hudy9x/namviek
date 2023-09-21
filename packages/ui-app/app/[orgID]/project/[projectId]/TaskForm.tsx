@@ -15,8 +15,14 @@ export const defaultFormikValues: ITaskDefaultValues = {
   taskStatusId: '',
   priority: TaskPriority.LOW,
   dueDate: new Date(),
+  plannedDueDate: new Date(),
   progress: 0,
   desc: '<p>Tell me what this task about 🤡</p>'
+}
+
+export enum FORM_MODE {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE'
 }
 
 export interface ITaskDefaultValues {
@@ -25,18 +31,21 @@ export interface ITaskDefaultValues {
   taskStatusId: string
   priority: TaskPriority
   dueDate: Date
+  plannedDueDate: Date
   desc: string
   progress: number
 }
 interface ITaskFormProps {
   taskStatusId?: string
   dueDate?: Date
+  mode: FORM_MODE
   defaultValue?: ITaskDefaultValues
   onSubmit: (v: ITaskDefaultValues) => void
 }
 
 export default function TaskForm({
   dueDate,
+  mode,
   taskStatusId,
   onSubmit,
   defaultValue = defaultFormikValues
@@ -144,6 +153,13 @@ export default function TaskForm({
           formik.setFieldValue('dueDate', d)
         }}
       />
+      {mode === FORM_MODE.UPDATE && <DatePicker
+        title="Due date"
+        value={formik.values.plannedDueDate}
+        onChange={d => {
+          formik.setFieldValue('plannedDueDate', d)
+        }}
+      />}
       <Form.TextEditor
         title="Description"
         value={formik.values.desc}

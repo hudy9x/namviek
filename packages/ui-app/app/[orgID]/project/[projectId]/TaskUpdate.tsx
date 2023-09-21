@@ -1,7 +1,7 @@
 import { Modal, messageError, messageSuccess } from '@shared/ui'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import TaskForm, { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
+import TaskForm, { FORM_MODE, ITaskDefaultValues, defaultFormikValues } from './TaskForm'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
@@ -79,6 +79,9 @@ export const TaskUpdate = () => {
         dueDate: currentTask.dueDate
           ? new Date(currentTask.dueDate)
           : defaultFormikValues.dueDate,
+        plannedDueDate: currentTask.plannedDueDate
+          ? new Date(currentTask.plannedDueDate)
+          : defaultFormikValues.plannedDueDate, 
         assigneeIds: currentTask.assigneeIds
           ? currentTask.assigneeIds
           : defaultFormikValues.assigneeIds,
@@ -104,6 +107,7 @@ export const TaskUpdate = () => {
           content={
             <>
               <TaskForm
+                mode={FORM_MODE.UPDATE}
                 defaultValue={currentTask}
                 onSubmit={v => handleSubmit(v)}
               />
