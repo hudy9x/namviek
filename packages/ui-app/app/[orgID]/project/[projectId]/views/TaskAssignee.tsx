@@ -1,5 +1,5 @@
 import MemberPicker from '../../../../_components/MemberPicker'
-import { useTaskUpdate } from './useTaskUpdate'
+import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 
 export default function TaskAssignee({
   taskId,
@@ -12,7 +12,7 @@ export default function TaskAssignee({
   className?: string
   noName?: boolean
 }) {
-  const { updateTaskData } = useTaskUpdate()
+  const { updateTaskData } = useServiceTaskUpdate()
 
   const onUpdate = (assigneeId: string) => {
     const assigneeIds = [assigneeId]

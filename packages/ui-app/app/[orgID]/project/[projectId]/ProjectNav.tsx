@@ -4,7 +4,8 @@ import {
   HiOutlineCog6Tooth,
   HiOutlineUserCircle,
   HiOutlineViewColumns,
-  HiOutlineCalendar
+  HiOutlineCalendar,
+  HiOutlineCpuChip
 } from 'react-icons/hi2'
 import { useProjectStore } from '../../../../store/project'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
@@ -52,14 +53,14 @@ export default function ProjectNav() {
       href: '#',
       icon: HiOutlineCalendar,
       current: false
-    },
-    {
-      title: 'Setting',
-      name: 'setting',
-      href: '#',
-      icon: HiOutlineCog6Tooth,
-      current: false
     }
+    // {
+    //   title: 'Setting',
+    //   name: 'setting',
+    //   href: '#',
+    //   icon: HiOutlineCog6Tooth,
+    //   current: false
+    // }
   ])
 
   const onMoveTab = (name: string) => {
@@ -76,7 +77,11 @@ export default function ProjectNav() {
             <AiOutlineArrowLeft />
           </Link>
           {selectedProject?.icon ? (
-            <img src={selectedProject?.icon || ''} className="w-6 h-6" />
+            <img
+              alt={selectedProject.icon}
+              src={selectedProject?.icon || ''}
+              className="w-6 h-6"
+            />
           ) : null}
           {selectedProject?.name || (
             <span className="text-transparent animate-pulse bg-gray-100 rounded-md">
@@ -84,20 +89,43 @@ export default function ProjectNav() {
             </span>
           )}
         </h2>
-        <div className="tab pl-1">
-          {tabs.map((tab, index) => {
-            const Icon = tab.icon
-            const active = tab.name.toLowerCase() === mode
-            return (
+
+        <div className="flex items-center justify-between">
+          <div className="tab pl-1">
+            {tabs.map((tab, index) => {
+              const Icon = tab.icon
+              const active = tab.name.toLowerCase() === mode
+              return (
+                <div
+                  onClick={() => onMoveTab(tab.name)}
+                  className={`tab-item ${active ? 'active' : ''}`}
+                  key={index}>
+                  <Icon />
+                  <span>{tab.title}</span>
+                </div>
+              )
+            })}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="tab">
               <div
-                onClick={() => onMoveTab(tab.name)}
-                className={`tab-item ${active ? 'active' : ''}`}
-                key={index}>
-                <Icon />
-                <span>{tab.title}</span>
+                className={`tab-item ${
+                  ['automation', 'automation-create'].includes(mode || '')
+                    ? 'active'
+                    : ''
+                }`}
+                onClick={() => onMoveTab('automation')}>
+                <HiOutlineCpuChip />
+                <span>Automation</span>
               </div>
-            )
-          })}
+              <div
+                className={`tab-item ${mode === 'setting' ? 'active' : ''}`}
+                onClick={() => onMoveTab('setting')}>
+                <HiOutlineCog6Tooth />
+                <span>Settings</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

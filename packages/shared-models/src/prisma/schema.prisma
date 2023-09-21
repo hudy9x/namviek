@@ -106,9 +106,9 @@ model Task {
   tagIds       String[]      @db.ObjectId
   assigneeIds  String[]      @db.ObjectId
   parentTaskId String?       @db.ObjectId
-  progress     Int?        
+  progress     Int?
   // do not store `point` as objectID, cuz we just need to fill the point value
-  taskPoint Int?
+  taskPoint    Int?
 
   createdBy String?
   createdAt DateTime?
@@ -137,6 +137,31 @@ model TaskPoint {
   point     Int
   projectId String  @db.ObjectId
   icon      String?
+}
+
+type taskAutomateThenType {
+  change String
+  value  String
+}
+
+type taskAutomateWhenType {
+  happens   String
+  is        String
+  valueFrom String?
+  valueTo   String?
+  equal     String?
+}
+
+model TaskAutomation {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String               @db.ObjectId
+  projectId      String               @db.ObjectId
+  when           Json
+  then           Json
+  createdBy      String?
+  createdAt      DateTime?
+  updatedBy      String?
+  updatedAt      DateTime?
 }
 
 model Project {

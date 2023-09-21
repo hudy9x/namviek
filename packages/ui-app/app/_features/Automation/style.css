@@ -1,0 +1,24 @@
+.automation-container {
+  @apply grid grid-cols-2 divide-x dark:divide-gray-700 relative;
+}
+
+.automation-container .when {
+  @apply pr-[70px];
+}
+.automation-container .then {
+  @apply pl-[70px];
+}
+
+.automation-container .when-select .select-button {
+  @apply p-0 border-none shadow-none text-xs lowercase;
+}
+
+.automation-value {
+  @apply border rounded-md px-1;
+  @apply dark:border-gray-700;
+}
+
+.automation-del {
+  @apply p-1 w-6 h-6 rounded-md border text-gray-500 dark:border-gray-700;
+  @apply cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800;
+}

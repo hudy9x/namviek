@@ -15,6 +15,7 @@ import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { fromDateStringToDateObject, to00h00m, to23h59m } from '@shared/libs'
+import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 
 export default function ProjectContainer() {
   const { projectId } = useParams()
@@ -22,6 +23,8 @@ export default function ProjectContainer() {
   const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
   const { addAllPoints } = useProjectPointStore()
   const { addAllTasks, setTaskLoading } = useTaskStore()
+  const { getAutomationByProject } = useServiceAutomation()
+
   const { filter } = useTaskFilter()
 
   const getAssigneeIds = (assigneeIds: string[]) => {
@@ -117,6 +120,12 @@ export default function ProjectContainer() {
   }, [JSON.stringify(filter)])
 
   useEffect(() => {
+    if (projectId) {
+      getAutomationByProject(projectId)
+    }
+  }, [projectId])
+
+  useEffect(() => {
     const memberController = new AbortController()
     getProjectMember(projectId, memberController.signal)
       .then(res => {
@@ -137,7 +146,6 @@ export default function ProjectContainer() {
     projectStatusGet(projectId, statusController.signal)
       .then(res => {
         const { data, status } = res.data
-        console.log('data statues', data, status)
 
         if (status !== 200) {
           addAllStatuses([])
