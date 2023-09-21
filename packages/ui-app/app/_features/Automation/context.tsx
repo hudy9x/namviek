@@ -8,6 +8,7 @@ export enum THEN {
   CHANGE_STATUS = 'CHANGE_STATUS',
   CHANGE_PRIORITY = 'CHANGE_PRIORITY',
   CHANGE_DUEDATE = 'CHANGE_DUEDATE',
+  CHANGE_PROGRESS = 'CHANGE_PROGRESS',
   DO_COMMENT = 'DO_COMMENT',
   DUPLICATE = 'DUPLICATE'
 }
@@ -40,7 +41,8 @@ export const thenOptions = [
   // { id: THEN.CREATE_SUB_TASK, title: 'Create a subtask' },
   { id: THEN.CHANGE_STATUS, title: 'Change status' },
   // { id: THEN.CHANGE_PRIORITY, title: 'Change priority' },
-  { id: THEN.CHANGE_DUEDATE, title: 'Change due date' }
+  { id: THEN.CHANGE_DUEDATE, title: 'Change due date' },
+  { id: THEN.CHANGE_PROGRESS, title: 'Change progress' }
   // { id: THEN.DO_COMMENT, title: 'Do comment' },
   // { id: THEN.DUPLICATE, title: 'Duplicate' }
 ]

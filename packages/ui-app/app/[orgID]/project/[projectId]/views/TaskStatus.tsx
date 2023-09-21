@@ -1,5 +1,5 @@
 import StatusSelect from '../../../../_components/StatusSelect'
-import { useTaskUpdate } from './useTaskUpdate'
+import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 
 export default function TaskStatus({
   taskId,
@@ -10,7 +10,7 @@ export default function TaskStatus({
   value: string
   className?: string
 }) {
-  const { updateTaskData } = useTaskUpdate()
+  const { updateTaskData } = useServiceTaskUpdate()
 
   const onUpdateStatus = (statusId: string) => {
     updateTaskData({

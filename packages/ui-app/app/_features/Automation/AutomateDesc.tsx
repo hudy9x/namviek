@@ -74,6 +74,7 @@ export const AutomateThenPart = ({ then }: { then: IAutomateThenProps }) => {
   const option = thenOptions.find(opt => opt.id === then.change)
   const isChangeDuedate = then.change === THEN.CHANGE_DUEDATE
   const isChangeStatus = then.change === THEN.CHANGE_STATUS
+  const isChangeProgress = then.change === THEN.CHANGE_PROGRESS
   const { statuses } = useProjectStatusStore()
 
   const getStatusTitle = (sttId: string) => {
@@ -104,6 +105,7 @@ export const AutomateThenPart = ({ then }: { then: IAutomateThenProps }) => {
         {isChangeStatus && then.value ? (
           <>to {getStatusTitle(then.value || '')}</>
         ) : null}
+        {isChangeProgress ? then.value : null}
         {isChangeDuedate ? <>to {getDuedateTitle(then.value)}</> : null}
       </span>
     </div>

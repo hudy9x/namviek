@@ -3,7 +3,6 @@ import { useTheme } from 'next-themes'
 
 export default function ThemeSelection() {
   const { setTheme, theme } = useTheme()
-  console.log(theme)
   return (
     <section className="relative">
       {theme === 'dark' ? (

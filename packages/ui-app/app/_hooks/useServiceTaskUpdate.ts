@@ -19,7 +19,7 @@ export const useServiceTaskUpdate = () => {
       return
     }
 
-    // refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
+    refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
 
     updateTask({
       updatedBy: user?.id,
@@ -36,8 +36,6 @@ export const useServiceTaskUpdate = () => {
           return
         }
         messageSuccess('update success')
-        console.log()
-        console.log(result)
       })
       .catch(error => {
         console.log(error)

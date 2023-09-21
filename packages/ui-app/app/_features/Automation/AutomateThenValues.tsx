@@ -4,6 +4,7 @@ import StatusSelect from '@/components/StatusSelect'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
 import ListPreset from '@/components/ListPreset'
+import { Form } from '@shared/ui'
 // import TaskForm from '../../[orgID]/project/[projectId]/TaskForm'
 
 const DynamicTaskForm = dynamic(
@@ -20,6 +21,7 @@ export default function AutomateThenValues() {
   const isChangePriority = then.change === THEN.CHANGE_PRIORITY
   const isCreateSubtask = then.change === THEN.CREATE_SUB_TASK
   const isChangeDueDate = then.change === THEN.CHANGE_DUEDATE
+  const isChangeProgress = then.change === THEN.CHANGE_PROGRESS
 
   return (
     <div className="mt-2">
@@ -37,6 +39,18 @@ export default function AutomateThenValues() {
           title="To another people"
           onChange={val => {
             setThenField('value', val)
+          }}
+        />
+      ) : null}
+
+      {isChangeProgress ? (
+        <Form.Range
+          title={`To value`}
+          maxValue={100}
+          step={5}
+          value={parseInt(then.value + '' || '0')}
+          onChange={val => {
+            setThenField('value', val + '')
           }}
         />
       ) : null}
