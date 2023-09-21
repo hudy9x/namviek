@@ -46,7 +46,7 @@ const TeamMember = ({ item }: { item: Group }) => {
 
   return (
     <div className="border shadow-sm bg-white rounded-xl p-4 w-[300px] flex flex-col gap-4">
-      <TeamMemberInfo name={user.name} photo={user.photo} />
+      <TeamMemberInfo name={user?.name} photo={user?.photo} />
       <TeamMemberProcess statusTasks={statusTaskByMember} tasks={tasks} />
 
       <TeamMemberStatus statusTasks={statusTaskByMember} tasks={tasks} />
