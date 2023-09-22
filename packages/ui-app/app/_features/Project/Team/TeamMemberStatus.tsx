@@ -1,14 +1,15 @@
-import { StatusType, Task } from '@prisma/client'
-import { IStatusTask } from './TeamMember'
+import { Task, TaskStatus } from '@prisma/client'
+
 import TeamMemberStatusTask from './TeamMemberStatusTask'
 
+export interface IStatusTask extends TaskStatus {
+  tasks: Task[]
+}
+
 const TeamMemberStatus = ({ statusTasks }: { statusTasks: IStatusTask[] }) => {
-  const statusTaskExcludeDone = statusTasks.filter(
-    item => item.type !== StatusType.DONE
-  )
   return (
     <>
-      {statusTaskExcludeDone.map(item => (
+      {statusTasks.map(item => (
         <TeamMemberStatusTask
           color={item.color}
           name={item.name}

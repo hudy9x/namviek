@@ -128,7 +128,7 @@ model TaskStatus {
   color     String
   order     Int
   projectId String     @db.ObjectId
-  type      StatusType @default(INPROCESS)
+  type      StatusType @default(TODO)
 }
 
 // Tag used for Projects and Tasks

@@ -1,26 +1,16 @@
-import { UserMember } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
-import { useTaskStore } from '@/store/task'
-import { StatusType, Task } from '@prisma/client'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { ITasksMember } from '.'
 import TeamMemberInfo from './TeamMemberInfo'
 import TeamMemberProcess from './TeamMemberProcess'
 import TeamMemberStatus from './TeamMemberStatus'
-import { TaskStatus } from '@prisma/client'
 
-export interface IStatusTask extends TaskStatus {
-  tasks: Task[]
-}
-
-const TeamMember = ({ user }: { user: UserMember }) => {
-  const { tasks } = useTaskStore()
+const TeamMember = ({ tasksMember }: { tasksMember: ITasksMember }) => {
   const { statuses } = useProjectStatusStore()
-
-  const [tasksMember, setTasksMember] = useState<Task[]>([])
 
   const statusTaskByMember = useMemo(() => {
     return statuses.map(status => {
-      const groupTaskStatus = tasksMember.filter(
+      const groupTaskStatus = tasksMember.tasks.filter(
         task => task.taskStatusId === status.id
       )
 
@@ -29,20 +19,16 @@ const TeamMember = ({ user }: { user: UserMember }) => {
         tasks: groupTaskStatus
       }
     })
-  }, [statuses, tasks, tasksMember])
-
-  useEffect(() => {
-    const matchedTasks = tasks.filter(item =>
-      item.assigneeIds.includes(user.id)
-    )
-    if (matchedTasks.length) setTasksMember(matchedTasks)
-  }, [tasks, user])
+  }, [statuses, tasksMember])
 
   return (
     <div className="border shadow-sm bg-white rounded-xl p-4 w-[260px] flex flex-col gap-4">
-      <TeamMemberInfo name={user?.name} photo={user?.photo} />
+      <TeamMemberInfo
+        name={tasksMember?.name || ''}
+        photo={tasksMember?.photo || ''}
+      />
       <TeamMemberProcess
-        total={tasksMember.length}
+        total={tasksMember.tasks.length}
         statusTasks={statusTaskByMember}
       />
       <TeamMemberStatus statusTasks={statusTaskByMember} />

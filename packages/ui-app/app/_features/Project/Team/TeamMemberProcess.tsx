@@ -1,7 +1,8 @@
 import { StatusType, Task } from '@prisma/client'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
-import { IStatusTask } from './TeamMember'
+import { IStatusTask } from './TeamMemberStatus'
+
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const TeamMemberProcess = ({
@@ -76,13 +77,9 @@ const TeamMemberLineStatus = ({
   statusTasks: IStatusTask[]
   total: number
 }) => {
-  const statusTaskExcludeDone = statusTasks.filter(
-    item => item.type !== StatusType.DONE
-  )
-
   return (
     <div className="flex rounded w-full h-2 overflow-hidden bg-gray-300 mt-4">
-      {statusTaskExcludeDone.map(item => (
+      {statusTasks.map(item => (
         <span
           style={{
             backgroundColor: item.color,
