@@ -1,4 +1,4 @@
-import { Task } from '@prisma/client'
+import { StatusType, Task } from '@prisma/client'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { IStatusTask } from './TeamMember'
@@ -6,16 +6,17 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const TeamMemberProcess = ({
   statusTasks,
-  tasks
+  total
 }: {
   statusTasks: IStatusTask[]
-  tasks: Task[]
+  total: number
 }) => {
-  const doneTasks = statusTasks.find(item => item.type === 'DONE')?.tasks || []
+  const doneTasks =
+    statusTasks.find(item => item.type === StatusType.DONE)?.tasks || []
 
   const series = useMemo(() => {
-    if (!tasks.length || !doneTasks.length) return [0]
-    return [(doneTasks.length / tasks.length) * 100]
+    if (!total || !doneTasks.length) return [0]
+    return [(doneTasks.length / total) * 100]
   }, [statusTasks])
 
   const options: ApexCharts.ApexOptions = useMemo(() => {
@@ -41,13 +42,13 @@ const TeamMemberProcess = ({
       colors: ['#4caf50'],
       labels: ['']
     }
-  }, [statusTasks, tasks])
+  }, [statusTasks, total])
 
   return (
     <div className="">
       <div className="grid grid-cols-3 items-center">
         <div className="flex flex-col">
-          <span>{tasks.length - doneTasks.length}</span>
+          <span>{total - doneTasks.length}</span>
           <span className="text-gray-400">Not done</span>
         </div>
         <div className="flex flex-col">
@@ -63,19 +64,21 @@ const TeamMemberProcess = ({
           />
         </div>
       </div>
-      <TeamMemberLineStatus statusTasks={statusTasks} tasks={tasks} />
+      <TeamMemberLineStatus statusTasks={statusTasks} total={total} />
     </div>
   )
 }
 
 const TeamMemberLineStatus = ({
   statusTasks,
-  tasks
+  total
 }: {
   statusTasks: IStatusTask[]
-  tasks: Task[]
+  total: number
 }) => {
-  const statusTaskExcludeDone = statusTasks.filter(item => item.type !== 'DONE')
+  const statusTaskExcludeDone = statusTasks.filter(
+    item => item.type !== StatusType.DONE
+  )
 
   return (
     <div className="flex rounded w-full h-2 overflow-hidden bg-gray-300 mt-4">
@@ -83,7 +86,7 @@ const TeamMemberLineStatus = ({
         <span
           style={{
             backgroundColor: item.color,
-            width: `${(item.tasks.length / tasks.length) * 100}%`
+            width: `${(item.tasks.length / total) * 100}%`
           }}
           key={item.id}
           className="h-full"></span>

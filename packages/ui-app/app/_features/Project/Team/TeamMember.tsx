@@ -41,8 +41,11 @@ const TeamMember = ({ user }: { user: UserMember }) => {
   return (
     <div className="border shadow-sm bg-white rounded-xl p-4 w-[260px] flex flex-col gap-4">
       <TeamMemberInfo name={user?.name} photo={user?.photo} />
-      <TeamMemberProcess tasks={tasksMember} statusTasks={statusTaskByMember} />
-      <TeamMemberStatus tasks={tasksMember} statusTasks={statusTaskByMember} />
+      <TeamMemberProcess
+        total={tasksMember.length}
+        statusTasks={statusTaskByMember}
+      />
+      <TeamMemberStatus statusTasks={statusTaskByMember} />
     </div>
   )
 }

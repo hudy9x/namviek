@@ -1,15 +1,11 @@
-import { Task } from '@prisma/client'
+import { StatusType, Task } from '@prisma/client'
 import { IStatusTask } from './TeamMember'
 import TeamMemberStatusTask from './TeamMemberStatusTask'
 
-const TeamMemberStatus = ({
-  statusTasks,
-  tasks
-}: {
-  statusTasks: IStatusTask[]
-  tasks: Task[]
-}) => {
-  const statusTaskExcludeDone = statusTasks.filter(item => item.type !== 'DONE')
+const TeamMemberStatus = ({ statusTasks }: { statusTasks: IStatusTask[] }) => {
+  const statusTaskExcludeDone = statusTasks.filter(
+    item => item.type !== StatusType.DONE
+  )
   return (
     <>
       {statusTaskExcludeDone.map(item => (

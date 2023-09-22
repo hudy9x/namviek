@@ -9,7 +9,7 @@ import {
   mdProjectUpdate,
   mdTaskStatusAdd
 } from '@shared/models'
-import { MemberRole, Project } from '@prisma/client'
+import { MemberRole, Project, StatusType } from '@prisma/client'
 
 import StatusRouter from './status'
 import TagRouter from './tag'
@@ -105,18 +105,25 @@ router.post('/project', async (req: AuthRequest, res) => {
   // init status task
   const promise = [
     mdTaskStatusAdd({
-      color: '',
-      name: 'To Do',
+      color: '#d9d9d9',
+      name: 'TODO',
       order: 0,
       projectId: result.id,
-      type: 'TODO'
+      type: StatusType.TODO
     }),
     mdTaskStatusAdd({
-      color: '',
-      name: 'Close',
+      color: '#4286f4',
+      name: 'INPROGRESS',
+      order: 0,
+      projectId: result.id,
+      type: StatusType.INPROCESS
+    }),
+    mdTaskStatusAdd({
+      color: '#4caf50',
+      name: 'CLOSED',
       order: 1,
       projectId: result.id,
-      type: 'DONE'
+      type: StatusType.DONE
     })
   ]
 
