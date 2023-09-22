@@ -41,7 +41,6 @@ enum StatusType {
   DONE
   INPROCESS
   TODO
-  DEFAULT
 }
 
 model User {
@@ -129,7 +128,7 @@ model TaskStatus {
   color     String
   order     Int
   projectId String     @db.ObjectId
-  type      StatusType @default(DEFAULT)
+  type      StatusType @default(INPROCESS)
 }
 
 // Tag used for Projects and Tasks

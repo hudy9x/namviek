@@ -1,14 +1,14 @@
 import { Task } from '@prisma/client'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
-import { TStatusTask } from './TeamMember'
+import { IStatusTask } from './TeamMember'
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const TeamMemberProcess = ({
   statusTasks,
   tasks
 }: {
-  statusTasks: TStatusTask[]
+  statusTasks: IStatusTask[]
   tasks: Task[]
 }) => {
   const doneTasks = statusTasks.find(item => item.type === 'DONE')?.tasks || []
@@ -28,13 +28,20 @@ const TeamMemberProcess = ({
         radialBar: {
           hollow: {
             size: '50%'
+          },
+          dataLabels: {
+            value: {
+              offsetY: -10,
+              fontSize: '16px'
+            }
           }
         }
       },
+
       colors: ['#4caf50'],
-      labels: ['Done']
+      labels: ['']
     }
-  }, [statusTasks])
+  }, [statusTasks, tasks])
 
   return (
     <div className="">
@@ -65,7 +72,7 @@ const TeamMemberLineStatus = ({
   statusTasks,
   tasks
 }: {
-  statusTasks: TStatusTask[]
+  statusTasks: IStatusTask[]
   tasks: Task[]
 }) => {
   const statusTaskExcludeDone = statusTasks.filter(item => item.type !== 'DONE')

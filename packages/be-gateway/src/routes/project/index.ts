@@ -106,7 +106,7 @@ router.post('/project', async (req: AuthRequest, res) => {
   const promise = [
     mdTaskStatusAdd({
       color: '',
-      name: 'TO DO',
+      name: 'To Do',
       order: 0,
       projectId: result.id,
       type: 'TODO'

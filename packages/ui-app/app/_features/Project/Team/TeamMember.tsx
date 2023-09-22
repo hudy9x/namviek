@@ -1,55 +1,48 @@
+import { UserMember } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
+import { useTaskStore } from '@/store/task'
 import { StatusType, Task } from '@prisma/client'
-import { Avatar } from '@shared/ui'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import TeamMemberInfo from './TeamMemberInfo'
 import TeamMemberProcess from './TeamMemberProcess'
 import TeamMemberStatus from './TeamMemberStatus'
-import { Group } from './useGroupBy'
-import TeamMemberInfo from './TeamMemberInfo'
+import { TaskStatus } from '@prisma/client'
 
-export type TStatusTask = {
-  name: string
+export interface IStatusTask extends TaskStatus {
   tasks: Task[]
-  color: string
-  type: StatusType
-  id: string
 }
 
-const TeamMember = ({ item }: { item: Group }) => {
-  const { tasks } = item
-  const user = item.header.user[0]
+const TeamMember = ({ user }: { user: UserMember }) => {
+  const { tasks } = useTaskStore()
   const { statuses } = useProjectStatusStore()
 
+  const [tasksMember, setTasksMember] = useState<Task[]>([])
+
   const statusTaskByMember = useMemo(() => {
-    const status = statuses.reduce((prev: TStatusTask[], status) => {
-      const exits = prev.find(item => item.id === status.id)
-      const idx = tasks.findIndex(item => item.taskStatusId === status.id)
-      if (idx === -1) return prev
+    return statuses.map(status => {
+      const groupTaskStatus = tasksMember.filter(
+        task => task.taskStatusId === status.id
+      )
 
-      if (exits) {
-        exits.tasks.push(tasks[idx])
-      } else {
-        prev.push({
-          color: status.color,
-          id: status.id,
-          name: status.name,
-          type: status.type,
-          tasks: [tasks[idx]]
-        })
+      return {
+        ...status,
+        tasks: groupTaskStatus
       }
+    })
+  }, [statuses, tasks, tasksMember])
 
-      return prev
-    }, [])
-
-    return status
-  }, [statuses, tasks])
+  useEffect(() => {
+    const matchedTasks = tasks.filter(item =>
+      item.assigneeIds.includes(user.id)
+    )
+    if (matchedTasks.length) setTasksMember(matchedTasks)
+  }, [tasks, user])
 
   return (
-    <div className="border shadow-sm bg-white rounded-xl p-4 w-[300px] flex flex-col gap-4">
+    <div className="border shadow-sm bg-white rounded-xl p-4 w-[260px] flex flex-col gap-4">
       <TeamMemberInfo name={user?.name} photo={user?.photo} />
-      <TeamMemberProcess statusTasks={statusTaskByMember} tasks={tasks} />
-
-      <TeamMemberStatus statusTasks={statusTaskByMember} tasks={tasks} />
+      <TeamMemberProcess tasks={tasksMember} statusTasks={statusTaskByMember} />
+      <TeamMemberStatus tasks={tasksMember} statusTasks={statusTaskByMember} />
     </div>
   )
 }
