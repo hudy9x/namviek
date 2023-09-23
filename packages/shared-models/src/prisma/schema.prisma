@@ -37,6 +37,12 @@ enum TaskPriority {
   LOW
 }
 
+enum StatusType {
+  DONE
+  INPROCESS
+  TODO
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -117,11 +123,12 @@ model Task {
 }
 
 model TaskStatus {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   order     Int
-  projectId String @db.ObjectId
+  projectId String     @db.ObjectId
+  type      StatusType @default(TODO)
 }
 
 // Tag used for Projects and Tasks

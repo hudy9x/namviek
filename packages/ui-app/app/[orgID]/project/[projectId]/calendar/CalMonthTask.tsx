@@ -17,7 +17,7 @@ export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
           ref={provided.innerRef}
           className="calendar-task-item">
           <div className="flex items-center gap-1" title={title}>
-            <span className="truncate">{title}</span>
+            <span className="truncate dark:text-gray-400">{title}</span>
             <TaskAssignee noName={true} taskId={id} uids={assigneeIds} />
           </div>
         </div>

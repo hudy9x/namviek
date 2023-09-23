@@ -1,13 +1,35 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 import TaskList from './TaskList'
-import Settings from './settings'
-import { Board } from './board'
-import Calendar from './calendar'
-import ProjectOverview from 'packages/ui-app/app/_features/Project/Overview'
-import Automation from '@/features/Automation'
-import AutomateList from '@/features/Automation/AutomateList'
+import ProjectOverview from '@/features/Project/Overview'
+import ProjectContentLoading from './ProjectContentLoading'
+
+const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
+  loading: () => <ProjectContentLoading />
+})
+const Calendar = dynamic(() => import('./calendar'), {
+  loading: () => <ProjectContentLoading />
+})
+const Board = dynamic(() => import('./board'), {
+  loading: () => <ProjectContentLoading />
+})
+
+const Settings = dynamic(() => import('./settings'), {
+  loading: () => <ProjectContentLoading />
+})
+
+const Automation = dynamic(() => import('@/features/Automation'), {
+  loading: () => <ProjectContentLoading />
+})
+
+const AutomateList = dynamic(
+  () => import('@/features/Automation/AutomateList'),
+  {
+    loading: () => <ProjectContentLoading />
+  }
+)
 
 export default function ProjectTabContent() {
   const searchParams = useSearchParams()
@@ -20,6 +42,7 @@ export default function ProjectTabContent() {
       {mode === 'setting' && <Settings />}
       {mode === 'overview' ? <ProjectOverview /> : null}
       {mode === 'calendar' ? <Calendar /> : null}
+      {mode === 'team' ? <DynamicTeamView /> : null}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateList /> : null}
     </div>

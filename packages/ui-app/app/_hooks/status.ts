@@ -5,14 +5,13 @@ import { projectStatusAdd } from 'packages/ui-app/services/status'
 import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import { DEFAULT_COLOR } from '../[orgID]/project/[projectId]/settings/status/type'
+import { StatusType } from '@prisma/client'
 
 interface Props {
   currentColor?: string
 }
 
-export const useStatus = ({
-  currentColor
-}: Props) => {
+export const useStatus = ({ currentColor }: Props) => {
   const { statuses, updateStatus, addStatus } = useProjectStatusStore()
   const params = useParams()
 
@@ -58,7 +57,8 @@ export const useStatus = ({
       name: target.value,
       color: currentColor || DEFAULT_COLOR,
       order,
-      projectId
+      projectId,
+      type: StatusType.TODO
     }
     target.value = ''
     addStatus(newTaskStatus)
