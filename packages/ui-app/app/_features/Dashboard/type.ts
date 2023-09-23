@@ -69,12 +69,7 @@ export const refactorConfig = (config: ICompConfig) => {
 
     if (dateStr === 'week') {
       const [mon, sat] = getMondayNSaturdayInWeek(new Date())
-
-      if (operator === '=') {
-        config.startDate = mon
-        config.endDate = sat
-      }
-
+      
       if (operator === '>') {
         to23h59m(sat)
         config.startDate = sat
@@ -87,6 +82,9 @@ export const refactorConfig = (config: ICompConfig) => {
         config.startDate = null
         config.endDate = mon
       }
+
+      config.startDate = mon
+      config.endDate = sat
     }
 
     if (dateStr === 'month') {
@@ -94,10 +92,6 @@ export const refactorConfig = (config: ICompConfig) => {
 
       to00h00m(firstDate)
       to23h59m(lastDate)
-      if (operator === '=') {
-        config.startDate = firstDate
-        config.endDate = lastDate
-      }
 
       if (operator === '>') {
         config.startDate = lastDate
@@ -108,9 +102,10 @@ export const refactorConfig = (config: ICompConfig) => {
         config.startDate = null
         config.endDate = firstDate
       }
-    }
 
-    delete config.date
+      config.startDate = firstDate
+      config.endDate = lastDate
+    }
   }
   return config
 }

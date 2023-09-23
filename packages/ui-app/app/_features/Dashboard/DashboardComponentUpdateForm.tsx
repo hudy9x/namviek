@@ -85,24 +85,22 @@ export default function DashboardComponentUpdateForm({
           <DboardCompColumnUpdateForm formik={formik} />
         ) : null}
 
-        {formik.values.type !== DashboardComponentType.LINE ? (
-          <>
-            <MultiMemberPicker
-              title="Assignees"
-              value={formik.values.assigneeIds}
-              onChange={val => {
-                formik.setFieldValue('assigneeIds', val)
-              }}
-            />
-            <StatusSelectMultiple
-              title="Status"
-              value={formik.values.statusIds}
-              onChange={val => {
-                formik.setFieldValue('statusIds', val)
-              }}
-            />
-          </>
-        ) : null}
+        {formik.values.type === DashboardComponentType.LINE ? null : <>
+          <MultiMemberPicker
+            title="Assignees"
+            value={formik.values.assigneeIds}
+            onChange={val => {
+              formik.setFieldValue('assigneeIds', val)
+            }}
+          />
+          <StatusSelectMultiple
+            title="Status"
+            value={formik.values.statusIds}
+            onChange={val => {
+              formik.setFieldValue('statusIds', val)
+            }}
+          />
+        </>}
 
         {/* <FormGroup title="Priority"> */}
         {/* <ListPreset */}
@@ -124,7 +122,6 @@ export default function DashboardComponentUpdateForm({
               formik.setFieldValue('date', date)
             }}
             options={[
-              { id: 'today', title: 'Today' },
               { id: 'week', title: 'This week' },
               { id: 'month', title: 'This month' }
             ]}
@@ -144,7 +141,7 @@ export default function DashboardComponentUpdateForm({
 
         {/* </FormGroup> */}
 
-        {formik.values.type !== DashboardComponentType.LINE ? (
+        {formik.values.type === DashboardComponentType.LINE ? null : <>
           <>
             <FormGroup
               title="Date"
@@ -191,7 +188,7 @@ export default function DashboardComponentUpdateForm({
               desc="Make this chart not be affected by input"
             />
           </>
-        ) : null}
+        </>}
 
         <div className="flex items-center justify-end gap-3">
           <Button title="Cancel" onClick={onBack} />

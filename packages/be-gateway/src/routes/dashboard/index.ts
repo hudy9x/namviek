@@ -4,11 +4,13 @@ import { AuthRequest } from '../../types'
 import {
   IDBComponentColumnConfig,
   IDBComponentConfig,
+  IDBComponentLineConfig,
   mdDBoardAddComponent,
   mdDBoardCreate,
   mdDBoardDelComponent,
   mdDBoardGetComponents,
   mdDBoardQueryColumn,
+  mdDBoardQueryLine,
   mdDBoardQuerySum,
   mdDboardGetDefault
 } from '@shared/models'
@@ -131,6 +133,17 @@ router.post('/dboard/query-column', async (req: AuthRequest, res) => {
     console.log('28')
     const result = await mdDBoardQueryColumn(config)
 
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.post('/dboard/query-line', async (req: AuthRequest, res) => {
+  try {
+    const config = req.body as IDBComponentLineConfig
+    const result = await mdDBoardQueryLine(config)
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)

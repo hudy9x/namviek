@@ -56,7 +56,7 @@ const charts: IChartType[] = [
   },
   {
     type: DashboardComponentType.LINE,
-    title: 'Analyze work progress',
+    title: 'Burndown Chart',
     desc: 'Utilize the Burndown Chart to analyze the progress of tasks.',
     icon: '🚦'
   }
