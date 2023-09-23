@@ -11,21 +11,25 @@ interface IBoardTaskItem {
 }
 
 export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
-
   const { orgID, projectId } = useParams()
   const { replace } = useRouter()
 
   return (
     <Draggable draggableId={data.id} index={index}>
-      {(provided, snapshot) => {
+      {provided => {
         return (
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            onClick={() => replace(`${orgID}/project/${projectId}?mode=board&taskId=${data.id}`)}
             className="board-task-item">
-            <h2 className="text-sm text-gray-600 whitespace-normal">
+            <h2
+              onClick={() =>
+                replace(
+                  `${orgID}/project/${projectId}?mode=board&taskId=${data.id}`
+                )
+              }
+              className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal hover:underline cursor-pointer">
               {data.title}
               {/* <TaskPriorityCell taskId={data.id} value={data.priority} /> */}
             </h2>
