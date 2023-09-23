@@ -1,6 +1,3 @@
-import { useProjectStatusStore } from '@/store/status'
-import { useMemo } from 'react'
-import { ITasksMember } from '.'
 import TeamMemberInfo from './TeamMemberInfo'
 import TeamMemberProcess from './TeamMemberProcess'
 import TeamMemberStatus from './TeamMemberStatus'
@@ -12,19 +9,6 @@ interface ITeamMemberInsightProps {
   photo: string
 }
 const TeamMemberInsight = ({ datas, name, photo }: ITeamMemberInsightProps) => {
-  // const statusTaskByMember = useMemo(() => {
-  //   return statuses.map(status => {
-  //     const groupTaskStatus = tasksMember.tasks.filter(
-  //       task => task.taskStatusId === status.id
-  //     )
-  //
-  //     return {
-  //       ...status,
-  //       tasks: groupTaskStatus
-  //     }
-  //   })
-  // }, [statuses, tasksMember])
-
   return (
     <div className="border shadow-sm bg-gray-50 dark:bg-gray-800 rounded-md dark:border-gray-700">
       <div className="px-4 pt-4 bg-white dark:bg-gray-900 rounded-t-md">

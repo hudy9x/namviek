@@ -1,5 +1,4 @@
 import { Task, TaskStatus } from '@prisma/client'
-
 import TeamMemberStatusTask from './TeamMemberStatusTask'
 import { useProjectStatusStore } from '@/store/status'
 
