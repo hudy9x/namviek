@@ -4,8 +4,19 @@
 
 @layer components {
   .box {
-    @apply bg-white p-4 shadow-sm shadow-gray-300 rounded-md;
-    @apply transition-all hover:shadow-lg;
+    @apply bg-white dark:bg-gray-900 p-4 shadow-sm shadow-gray-200 dark:shadow-gray-900 rounded-md;
+    @apply transition-all hover:shadow-lg hover:shadow-gray-200 dark:hover:shadow-gray-800;
+    @apply border dark:border-gray-700;
+  }
+
+  .box-connector {
+    @apply relative mt-7;
+  }
+
+  .box-connector:after {
+    content: '';
+    @apply absolute -top-7 left-1/2;
+    @apply w-[2px] h-7 bg-gray-200 dark:bg-gray-700;
   }
 
   .box-lg {

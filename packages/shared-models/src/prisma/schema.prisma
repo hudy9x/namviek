@@ -146,6 +146,31 @@ model TaskPoint {
   icon      String?
 }
 
+type taskAutomateThenType {
+  change String
+  value  String
+}
+
+type taskAutomateWhenType {
+  happens   String
+  is        String
+  valueFrom String?
+  valueTo   String?
+  equal     String?
+}
+
+model TaskAutomation {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String               @db.ObjectId
+  projectId      String               @db.ObjectId
+  when           Json
+  then           Json
+  createdBy      String?
+  createdAt      DateTime?
+  updatedBy      String?
+  updatedAt      DateTime?
+}
+
 model Project {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String

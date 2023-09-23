@@ -47,7 +47,6 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
   const d = new Date()
   const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
   const lastDate = getLastDateOfMonth(new Date())
-  console.log('firstDate', firstDate)
   const [filter, setFilter] = useState<ITaskFilterFields>({
     term: '',
     dateOperator: '=',

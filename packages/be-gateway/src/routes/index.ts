@@ -6,6 +6,7 @@ import projectMemberRouter from './member'
 import taskRouter from './task'
 import dboardRouter from './dashboard'
 import favRouter from './favorite'
+import automationRouter from './automation'
 
 const router = Router()
 
@@ -13,6 +14,7 @@ const router = Router()
 // router.use([])
 router.use(authRouter)
 router.use(favRouter)
+router.use(automationRouter)
 router.use(dboardRouter)
 router.use(orgRouter)
 router.use(projectRouter)

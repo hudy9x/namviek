@@ -24,6 +24,20 @@ export const to00h00m = (d: Date) => {
   d.setHours(-1)
 }
 
+export const fromDateStringToDate = (date: string) => {
+  switch (date) {
+    case 'next-7-days':
+      return addDays(new Date(), 7)
+
+    case 'next-30-days':
+      return addDays(new Date(), 30)
+
+    // present day
+    default:
+      return new Date()
+  }
+}
+
 type DateStringResult = {
   startDate: Date | null
   endDate: Date | null
