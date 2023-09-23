@@ -1,8 +1,9 @@
 import { create } from 'zustand'
-import { TaskStatus } from '@prisma/client'
+import { StatusType, TaskStatus } from '@prisma/client'
 import { produce } from 'immer'
 
 interface ProjectStatusState {
+  statusDoneId: string
   statusLoading: boolean
   setStatusLoading: (stt: boolean) => void
   statuses: TaskStatus[]
@@ -14,6 +15,7 @@ interface ProjectStatusState {
 }
 
 export const useProjectStatusStore = create<ProjectStatusState>(set => ({
+  statusDoneId: '',
   statuses: [],
   statusLoading: false,
   setStatusLoading: (stt: boolean) =>
@@ -42,6 +44,12 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
     set(
       produce((state: ProjectStatusState) => {
         state.statuses = data
+
+        // update status that marks as DONE
+        const doneStt = data.find(dt => dt.type === StatusType.DONE)
+        if (doneStt) {
+          state.statusDoneId = doneStt.id
+        }
       })
     ),
 
@@ -49,6 +57,12 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
     set(
       produce((state: ProjectStatusState) => {
         state.statuses.push(data)
+
+        // update status that marks as DONE
+        const doneStt = state.statuses.find(dt => dt.type === StatusType.DONE)
+        if (doneStt) {
+          state.statusDoneId = doneStt.id
+        }
       })
     ),
 
@@ -59,6 +73,11 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
           if (id === status.id) {
             state.statuses[index] = { ...status, ...newData }
           }
+
+          // update status that marks as DONE
+          if (status.type === StatusType.DONE) {
+            state.statusDoneId = status.id
+          }
         })
       })
     ),
@@ -67,6 +86,11 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
     set(
       produce((state: ProjectStatusState) => {
         state.statuses = state.statuses.filter(status => status.id !== id)
+        // update status that marks as DONE
+        const doneStt = state.statuses.find(dt => dt.type === StatusType.DONE)
+        if (doneStt) {
+          state.statusDoneId = doneStt.id
+        }
       })
     )
 }))

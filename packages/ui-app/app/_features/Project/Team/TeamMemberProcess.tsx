@@ -1,29 +1,31 @@
-import { StatusType, Task } from '@prisma/client'
+import { Task } from '@prisma/client'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
-import { IStatusTask } from './TeamMemberStatus'
+import { useProjectStatusStore } from '@/store/status'
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-const TeamMemberProcess = ({
-  statusTasks,
-  total
-}: {
-  statusTasks: IStatusTask[]
-  total: number
-}) => {
-  const doneTasks =
-    statusTasks.find(item => item.type === StatusType.DONE)?.tasks || []
+const TeamMemberProcess = ({ datas }: { datas: Task[] }) => {
+  const { statusDoneId } = useProjectStatusStore()
 
-  const series = useMemo(() => {
-    if (!total || !doneTasks.length) return [0]
-    return [(doneTasks.length / total) * 100]
-  }, [statusTasks])
+  let done = 0
+  let notDone = 0
+  let total = 0
+
+  datas.forEach(dt => {
+    total += 1
+    if (dt.taskStatusId === statusDoneId) {
+      done += 1
+    } else {
+      notDone += 1
+    }
+  })
+
+  const percent = !total ? 0 : (done / total) * 100
 
   const options: ApexCharts.ApexOptions = useMemo(() => {
     return {
       chart: {
-        height: 120,
         type: 'radialBar'
       },
       plotOptions: {
@@ -43,51 +45,37 @@ const TeamMemberProcess = ({
       colors: ['#4caf50'],
       labels: ['']
     }
-  }, [statusTasks, total])
+  }, [])
+
+  const startWZero = (n: number) => (n > 9 || n === 0 ? n + '' : `0${n}`)
 
   return (
     <div className="">
-      <div className="grid grid-cols-3 items-center">
-        <div className="flex flex-col">
-          <span>{total - doneTasks.length}</span>
-          <span className="text-gray-400">Not done</span>
+      <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 gap-4 text-gray-400 dark:text-gray-500 text-sm">
+          <div className="">
+            <span className="text-lg text-gray-600 dark:text-gray-400 font-medium">
+              {startWZero(notDone)}
+            </span>
+            <div className="">Not done</div>
+          </div>
+          <div className="">
+            <span className="text-lg text-gray-600 dark:text-gray-400 font-medium">
+              {startWZero(done)}
+            </span>
+            <div className=""> Done</div>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <span>{doneTasks.length}</span>
-          <span className="text-gray-400"> Done</span>
-        </div>
-        <div className="">
+
+        <div className="team-insight-chart w-[90px] h-[80px] flex items-center justify-center grow-0 dark:text-gray-400">
           <ApexCharts
-            options={options}
-            series={series}
-            type="radialBar"
             height={120}
+            options={options}
+            series={[percent]}
+            type="radialBar"
           />
         </div>
       </div>
-      <TeamMemberLineStatus statusTasks={statusTasks} total={total} />
-    </div>
-  )
-}
-
-const TeamMemberLineStatus = ({
-  statusTasks,
-  total
-}: {
-  statusTasks: IStatusTask[]
-  total: number
-}) => {
-  return (
-    <div className="flex rounded w-full h-2 overflow-hidden bg-gray-300 mt-4">
-      {statusTasks.map(item => (
-        <span
-          style={{
-            backgroundColor: item.color,
-            width: `${(item.tasks.length / total) * 100}%`
-          }}
-          key={item.id}
-          className="h-full"></span>
-      ))}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import TaskFilter from '@/features/TaskFilter'
 import { UserMember, useMemberStore } from '@/store/member'
-import TeamMember from './TeamMember'
-import { useEffect, useState } from 'react'
+import TeamMemberInsight from './TeamMemberInsight'
 import { useTaskStore } from '@/store/task'
 import { Task } from '@prisma/client'
+import './style.css'
 
 export interface ITasksMember extends UserMember {
   tasks: Task[]
@@ -12,24 +12,66 @@ export interface ITasksMember extends UserMember {
 const TeamView = () => {
   const { members } = useMemberStore(state => state)
   const { tasks } = useTaskStore()
-  const [tasksMember, setTasksMember] = useState<ITasksMember[]>([])
 
-  useEffect(() => {
-    members.map(user => {
-      const matchedTasks = tasks.filter(item =>
-        item.assigneeIds.includes(user.id)
-      )
+  // grouping task by assignees before rendering insights
+  const taskGroupedByMembers = {} as {
+    [key: string]: Task[]
+  }
 
-      setTasksMember(prev => [...prev, { ...user, tasks: matchedTasks }])
+  tasks.forEach(task => {
+    const keys = task.assigneeIds
+    keys.forEach(key => {
+      if (!taskGroupedByMembers[key]) {
+        taskGroupedByMembers[key] = [task]
+        return
+      }
+
+      taskGroupedByMembers[key].push(task)
     })
-  }, [tasks])
+  })
+
+  // display all members in columns not in rows
+  const columnLen = 4
+  const columns: UserMember[][] = []
+
+  let startCol = 0
+  const addToCol = (index: number, m: UserMember) => {
+    if (!columns[index]) {
+      columns[index] = [m]
+    } else {
+      columns[index].push(m)
+    }
+  }
+
+  members.forEach(m => {
+    addToCol(startCol, m)
+
+    if (startCol === columnLen - 1) {
+      startCol = 0
+      return
+    }
+    startCol++
+  })
 
   return (
     <>
       <TaskFilter />
-      <div className="grid grid-cols-4 gap-6  m-4">
-        {tasksMember.map((item, index) => {
-          return <TeamMember tasksMember={item} key={item.id} />
+      <div className="grid grid-cols-4 gap-4 w-[1200px] mx-auto mt-4">
+        {columns.map((column, index) => {
+          return (
+            <div key={index} className="space-y-4">
+              {column.map(mem => {
+                return (
+                  <TeamMemberInsight
+                    name={mem.name || ''}
+                    datas={taskGroupedByMembers[mem.id] || []}
+                    photo={mem.photo || ''}
+                    key={mem.id}
+                  />
+                )
+              })}
+            </div>
+          )
         })}
       </div>
     </>

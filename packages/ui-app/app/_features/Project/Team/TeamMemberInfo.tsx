@@ -6,7 +6,9 @@ const TeamMemberInfo = ({ name, photo }: { name: string; photo: string }) => {
     <div className="flex items-center gap-3">
       <Avatar src={photo} name={name} size="lg" />
       <div className="flex flex-col text-sm">
-        <span className="text-gray-700 font-medium">{name}</span>
+        <span className="text-gray-700 dark:text-gray-500 font-medium">
+          {name}
+        </span>
       </div>
     </div>
   )
