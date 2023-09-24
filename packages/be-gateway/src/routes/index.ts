@@ -7,6 +7,7 @@ import taskRouter from './task'
 import dboardRouter from './dashboard'
 import favRouter from './favorite'
 import automationRouter from './automation'
+import counterRouter from './counter'
 
 const router = Router()
 
@@ -20,5 +21,6 @@ router.use(orgRouter)
 router.use(projectRouter)
 router.use(projectMemberRouter)
 router.use(taskRouter)
+router.use(counterRouter)
 
 export default router
