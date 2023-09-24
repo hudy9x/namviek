@@ -45,7 +45,7 @@ const ListContainer = ({ children }: ListContainerProps) => {
     }
 
     const handleKeypress = (ev: KeyboardEvent) => {
-      const key = ev.key.toLowerCase()
+      const key = ev.key?.toLowerCase()
       if (key !== 'escape') return
 
       setVisible(false)
@@ -90,8 +90,9 @@ export default function ListControl({
 
   return (
     <div
-      className={`${visible && !disabled && !readOnly ? '' : 'select-none'
-        } ${classes.join(' ')}`}>
+      className={`${
+        visible && !disabled && !readOnly ? '' : 'select-none'
+      } ${classes.join(' ')}`}>
       {title ? <label>{title}</label> : null}
       <ListProvider
         value={{

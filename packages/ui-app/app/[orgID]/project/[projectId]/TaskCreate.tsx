@@ -6,11 +6,14 @@ import { useSearchParams } from 'next/navigation'
 import { taskAdd } from '../../../../services/task'
 import { useTaskStore } from '@/store/task'
 import { Task } from '@prisma/client'
+import { nanoid } from 'nanoid'
+import { mdCounterGetOne } from '@shared/models'
+import { counterGet, counterUpdate } from '@/services/counter'
 
 export default function TaskCreate() {
   const sp = useSearchParams()
   const mode = sp.get('mode')
-  const { addOneTask, syncRemoteTaskById } = useTaskStore()
+  const { addOneTask, syncRemoteTaskById, tasks } = useTaskStore()
   const [visible, setVisible] = useState(false)
 
   if (mode !== 'task') {
@@ -28,7 +31,29 @@ export default function TaskCreate() {
       }
     })
 
-    taskAdd(v)
+    console.log('current task list:', tasks)
+
+    let customId: string
+    const taskCounterId = 'task-id'
+    // eslint-disable-next-line no-debugger
+    debugger
+    counterGet(taskCounterId)
+      .then(res => {
+        const { data, status } = res.data
+        if (status !== 200) return
+        console.log('task-id:', data)
+        customId = data.value.toString()
+        return counterUpdate({ id: taskCounterId, value: data.value + 1 })
+      })
+      .then(res => {
+        const { data, status } = res.data
+        if (status !== 200) return
+        return taskAdd({
+          ...v,
+          shortId: customId,
+          taskStatusId: '650fe046d4d2efecc7082f48'
+        })
+      })
       .then(res => {
         const { data, status } = res.data
         if (status !== 200) return
@@ -43,6 +68,26 @@ export default function TaskCreate() {
       .finally(() => {
         // setLoading(false)
       })
+
+    // taskAdd({
+    //   ...v,
+    //   shortId: customId,
+    //   taskStatusId: '650fe046d4d2efecc7082f48'
+    // })
+    //   .then(res => {
+    //     const { data, status } = res.data
+    //     if (status !== 200) return
+
+    //     syncRemoteTaskById(randomId, data as Task)
+    //     messageSuccess('Synced success !')
+    //   })
+    //   .catch(err => {
+    //     messageError('Create new task error')
+    //     console.log(err)
+    //   })
+    //   .finally(() => {
+    //     // setLoading(false)
+    //   })
   }
 
   return (

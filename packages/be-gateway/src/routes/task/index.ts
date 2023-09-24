@@ -147,6 +147,7 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('body', req.body)
   const {
+    shortId,
     desc,
     assigneeIds,
     title,
@@ -163,6 +164,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
   try {
     const result = await mdTaskAdd({
       title,
+      shortId,
       startDate: null,
       dueDate: dueDate || null,
       assigneeIds,
