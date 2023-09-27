@@ -1,14 +1,13 @@
-import { Button, Modal, messageError, messageSuccess } from '@shared/ui'
-import { useState } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
-import TaskForm, { ITaskDefaultValues } from './TaskForm'
-import { useSearchParams } from 'next/navigation'
-import { taskAdd } from '../../../../services/task'
+/* eslint-disable @nx/enforce-module-boundaries */
+import { counterGet, counterUpdate } from '@/services/counter'
 import { useTaskStore } from '@/store/task'
 import { Task } from '@prisma/client'
-import { nanoid } from 'nanoid'
-import { mdCounterGetOne } from '@shared/models'
-import { counterGet, counterUpdate } from '@/services/counter'
+import { Button, Modal, messageError, messageSuccess } from '@shared/ui'
+import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
+import { AiOutlinePlus } from 'react-icons/ai'
+import { taskAdd } from '../../../../services/task'
+import TaskForm, { ITaskDefaultValues } from './TaskForm'
 
 export default function TaskCreate() {
   const sp = useSearchParams()
@@ -35,8 +34,7 @@ export default function TaskCreate() {
 
     let customId: string
     const taskCounterId = 'task-id'
-    // eslint-disable-next-line no-debugger
-    debugger
+  
     counterGet(taskCounterId)
       .then(res => {
         const { data, status } = res.data
@@ -46,15 +44,20 @@ export default function TaskCreate() {
         return counterUpdate({ id: taskCounterId, value: data.value + 1 })
       })
       .then(res => {
-        const { data, status } = res.data
+        if (!res) {
+          throw new Error('Response is undefined')
+        }
+        const { status } = res.data
         if (status !== 200) return
         return taskAdd({
           ...v,
-          shortId: customId,
-          taskStatusId: '650fe046d4d2efecc7082f48'
+          shortId: customId
         })
       })
       .then(res => {
+        if (!res) {
+          throw new Error('Response is undefined')
+        }
         const { data, status } = res.data
         if (status !== 200) return
 

@@ -1,19 +1,30 @@
-import { Router } from 'express'
-import { AuthRequest } from '../../types'
-import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
+import { Counter, PrismaClient } from '@prisma/client'
 import { mdCounterAdd, mdCounterGetOne, mdCounterUpdate } from '@shared/models'
-import { Counter } from '@prisma/client'
+import { Router } from 'express'
+import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
+import { AuthRequest } from '../../types'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
 router.use([authMiddleware, beProjectMemberMiddleware])
 
+
 router.get('/counter', async (req: AuthRequest, res) => {
+
   try {
     const { id } = req.query as { id: string }
-    const result = await mdCounterGetOne(id)
+    const sessionResult = await pmClient.$transaction(async () => {
+      console.log('start new transaction')
 
-    res.json({ status: 200, data: result })
+      const customId = await mdCounterGetOne(id)
+
+      const newCustomId = await mdCounterUpdate({ id: id, value: customId + 1 })
+      console.log('finished transaction with newCustomId:', newCustomId)
+      return newCustomId;
+    });
+
+    res.json({ status: 200, data: sessionResult })
   } catch (error) {
     console.log(error)
     res.status(500).json({ status: 500, error })
