@@ -5,7 +5,8 @@ import {
   HiOutlineUserCircle,
   HiOutlineViewColumns,
   HiOutlineCalendar,
-  HiOutlineCpuChip
+  HiOutlineCpuChip,
+  HiOutlineSquares2X2
 } from 'react-icons/hi2'
 import { useProjectStore } from '../../../../store/project'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
@@ -52,6 +53,13 @@ export default function ProjectNav() {
       name: 'calendar',
       href: '#',
       icon: HiOutlineCalendar,
+      current: false
+    },
+    {
+      title: 'Team',
+      name: 'team',
+      href: '#',
+      icon: HiOutlineSquares2X2,
       current: false
     }
     // {
