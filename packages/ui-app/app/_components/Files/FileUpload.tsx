@@ -1,14 +1,11 @@
-import {
-  storageCreatePresignedUrl,
-  storagePutFile
-} from '@/services/storage'
+import { storageCreatePresignedUrl, storagePutFile } from '@/services/storage'
 import { useState } from 'react'
 
 export default function FileUpload() {
   const [url, setUrl] = useState('')
+
   const onUpload = async (files: FileList) => {
     const len = files.length
-
     const promises = []
 
     for (let i = 0; i < len; i++) {
