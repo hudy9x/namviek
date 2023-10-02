@@ -8,6 +8,7 @@ import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
+import FileUpload from '@/components/Files/FileUpload'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -105,6 +106,7 @@ export default function TaskForm({
     <form
       onSubmit={formik.handleSubmit}
       className="task-form flex flex-col gap-6">
+      <FileUpload />
       <Form.Input
         title="Task name"
         name="title"
