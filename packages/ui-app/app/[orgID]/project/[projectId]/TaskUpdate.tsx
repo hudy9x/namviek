@@ -100,6 +100,7 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
+          size="xl"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)
@@ -110,6 +111,7 @@ export const TaskUpdate = () => {
           content={
             <>
               <TaskForm
+                isUpdate={true}
                 defaultValue={currentTask}
                 onSubmit={v => handleSubmit(v)}
               />
