@@ -13,6 +13,7 @@ import FileUpload from '@/components/Files/FileUpload'
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
+  fileIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
   dueDate: new Date(),
@@ -23,6 +24,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
+  fileIds: string[]
   taskStatusId: string
   priority: TaskPriority
   dueDate: Date

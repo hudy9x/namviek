@@ -188,6 +188,7 @@ model FileStorage {
   organizationId String         @db.ObjectId
   projectId      String         @db.ObjectId
   name           String
+  keyName        String
   type           FileType
   url            String?
   size           Float?

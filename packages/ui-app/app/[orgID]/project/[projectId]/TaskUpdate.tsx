@@ -77,6 +77,7 @@ export const TaskUpdate = () => {
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
+        fileIds: currentTask.fileIds || [],
         taskStatusId:
           currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
         priority: currentTask.priority
@@ -100,7 +101,7 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
-          size="xl"
+          size="lg"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)

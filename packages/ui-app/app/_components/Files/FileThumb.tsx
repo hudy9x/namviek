@@ -6,20 +6,19 @@ const isImage = (mimeType: string) => {
 
 export default function FileThumb({
   extension,
-  data,
-  type
+  url,
+  type,
+  name
 }: {
   extension: string
-  data: File
+  url: string
   type: string
+  name: string
 }) {
   if (isImage(type)) {
     return (
-      <div className="bg-gray-100 border-b rounded-t-md h-[100px]">
-        <img
-          className="h-full rounded-t-md"
-          src={window.URL.createObjectURL(data)}
-        />
+      <div className="bg-gray-100 border-r rounded-l-md max-h-[150px] w-[200px]">
+        <img alt={name} className="h-auto w-auto rounded-l-md" src={url} />
       </div>
     )
   }

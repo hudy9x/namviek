@@ -167,6 +167,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       dueDate: dueDate || null,
       assigneeIds,
       desc,
+      fileIds: [],
       projectId,
       priority,
       taskStatusId: taskStatusId,
@@ -260,6 +261,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     startDate,
     dueDate,
     assigneeIds,
+    fileIds,
     desc,
     projectId,
     priority,
@@ -304,6 +306,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
   if (progress) {
     taskData.progress = progress
+  }
+
+  if (fileIds && fileIds.length) {
+    taskData.fileIds = fileIds
   }
 
   taskData.updatedAt = new Date()

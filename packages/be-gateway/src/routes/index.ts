@@ -7,14 +7,16 @@ import taskRouter from './task'
 import dboardRouter from './dashboard'
 import favRouter from './favorite'
 import automationRouter from './automation'
-import { storageRouter } from '@be/storage'
+// import { storageRouter } from '@be/storage'
+import { storageRouter } from './storage'
+import { authMiddleware } from '../middlewares'
 
 const router = Router()
 
 // middlewares
 // router.use([])
-console.log('13')
-router.use('/storage', storageRouter)
+// console.log('14')
+router.use('/storage', [authMiddleware, storageRouter])
 router.use(authRouter)
 router.use(favRouter)
 router.use(automationRouter)

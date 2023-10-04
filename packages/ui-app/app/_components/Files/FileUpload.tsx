@@ -5,39 +5,33 @@ import { DragEvent, useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import './style.css'
 import FileItem from './FileItem'
-
-export type IFileItem = {
-  name: string
-  size: number
-  ext: string
-  keyName?: string
-  mimeType: string
-  data: File
-}
+import useFileUpload, { IFileItem } from './useFileUpload'
 
 export default function FileUpload() {
   const [isDragging, setDragging] = useState(false)
+  const { uploadFileToS3 } = useFileUpload()
   const idRef = useRef(randomId())
   const [files, setFiles] = useState<IFileItem[]>([])
 
-  const onFileHandler = (files: FileList) => {
-    const fileItems: IFileItem[] = []
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      const sliceName = file.name.split('.')
+  const onFileHandler = async (files: FileList) => {
+    const results = await uploadFileToS3(files)
 
-      fileItems.push({
-        name: file.name,
-        ext: sliceName[sliceName.length - 1],
-        size: file.size,
-        mimeType: file.type,
-        data: file
-      })
-    }
+    setFiles(prev => [...results, ...prev])
 
-    setFiles(prev => [...prev, ...fileItems])
-
-    console.log('fileItems:', fileItems)
+    // for (let i = 0; i < files.length; i++) {
+    //   const file = files[i]
+    //   const sliceName = file.name.split('.')
+    //
+    //   fileItems.push({
+    //     name: file.name,
+    //     ext: sliceName[sliceName.length - 1],
+    //     size: file.size,
+    //     mimeType: file.type,
+    //     data: file
+    //   })
+    // }
+    //
+    // setFiles(prev => [...fileItems, ...prev])
   }
 
   const onDropFileChange = async (ev: DragEvent<HTMLDivElement>) => {
@@ -50,9 +44,6 @@ export default function FileUpload() {
   }
 
   const onInputChange = async (files: FileList) => {
-    const len = files.length
-    const promises = []
-
     onFileHandler(files)
     // for (let i = 0; i < len; i++) {
     //   const file = files[i]
@@ -102,6 +93,7 @@ export default function FileUpload() {
 
   return (
     <div
+      className="form-control"
       onDrop={onDropFileChange}
       onDragOver={ev => {
         ev.preventDefault()
@@ -119,6 +111,7 @@ export default function FileUpload() {
         // ev.preventDefault()
         // console.log(ev)
       }}>
+      <label>Attachments</label>
       <div
         className={`file-upload-wrapper ${
           isDragging ? 'border-indigo-400' : ''
@@ -126,18 +119,12 @@ export default function FileUpload() {
         {files.length ? (
           <>
             <Scrollbar style={{ height: 300 }}>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-2">
                 {files.map((file, id) => {
                   return <FileItem key={id} data={file} />
                 })}
               </div>
             </Scrollbar>
-
-            <label
-              className="btn btn-sm mt-3 cursor-pointer"
-              htmlFor={idRef.current}>
-              Upload new file
-            </label>
           </>
         ) : (
           <div className="flex items-center flex-col text-sm gap-2 text-gray-400">

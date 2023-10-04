@@ -5,9 +5,10 @@ import {
   getObject,
   getObjectURL,
   randomObjectKeyName
-} from './lib/storage'
+} from '@be/storage'
 import { mdStorageAdd } from '@shared/models'
 import { FileStorage } from '@prisma/client'
+import { AuthRequest } from '../../types'
 
 const router = Router()
 
@@ -31,29 +32,45 @@ router.post('/create-presigned-url', async (req, res, next) => {
   })
 })
 
-// router.post('/save-to-drive', async (req: , res, next) => {
-//
-//   const {id} = req.auth
-//   const {organizationId, projectId, name, type, url, size, mimeType, parentId } = req.body as FileStorage
-//   mdStorageAdd({
-//     organizationId,
-//     projectId,
-//     name,
-//     type,
-//     url,
-//     size,
-//     mimeType,
-//     parentId,
-//     owner,
-//     ownerType,
-//     createdAt: new Date(),
-//     createdBy:
-//
-//   })
-//   res.status(200).json({
-//     data: []
-//   })
-// })
+router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
+  const { id: uid } = req.authen
+  const {
+    organizationId,
+    owner,
+    ownerType,
+    projectId,
+    name,
+    keyName,
+    type,
+    url,
+    size,
+    mimeType,
+    parentId
+  } = req.body as FileStorage
+
+  const result = await mdStorageAdd({
+    organizationId,
+    projectId,
+    name,
+    keyName,
+    type,
+    url,
+    size,
+    mimeType,
+    parentId: parentId || null,
+    isDeleted: false,
+    owner,
+    ownerType,
+    createdAt: new Date(),
+    createdBy: uid,
+    deletedAt: null,
+    deletedBy: null
+  })
+
+  res.status(200).json({
+    data: result
+  })
+})
 
 router.get('/get-object-url', async (req, res, next) => {
   try {
