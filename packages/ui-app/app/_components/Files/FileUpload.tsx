@@ -15,23 +15,7 @@ export default function FileUpload() {
 
   const onFileHandler = async (files: FileList) => {
     const results = await uploadFileToS3(files)
-
     setFiles(prev => [...results, ...prev])
-
-    // for (let i = 0; i < files.length; i++) {
-    //   const file = files[i]
-    //   const sliceName = file.name.split('.')
-    //
-    //   fileItems.push({
-    //     name: file.name,
-    //     ext: sliceName[sliceName.length - 1],
-    //     size: file.size,
-    //     mimeType: file.type,
-    //     data: file
-    //   })
-    // }
-    //
-    // setFiles(prev => [...fileItems, ...prev])
   }
 
   const onDropFileChange = async (ev: DragEvent<HTMLDivElement>) => {
@@ -45,34 +29,6 @@ export default function FileUpload() {
 
   const onInputChange = async (files: FileList) => {
     onFileHandler(files)
-    // for (let i = 0; i < len; i++) {
-    //   const file = files[i]
-    //   console.log('file', file)
-    //
-    //   promises.push(
-    //     storageCreatePresignedUrl({
-    //       name: file.name,
-    //       type: file.type
-    //     }).then(res => {
-    //       const { data } = res.data
-    //       const { url, presignedUrl } = data
-    //
-    //       storagePutFile(presignedUrl, file)
-    //         .then(res => {
-    //           console.log('upload ok', url)
-    //           setUrl(url)
-    //         })
-    //         .catch(err => {
-    //           console.log(err)
-    //         })
-    //       return [file, data]
-    //     })
-    //   )
-    // }
-
-    // await Promise.all(promises).then(results => {
-    //   console.log(results)
-    // })
   }
 
   const onPaste = async (e: ClipboardEvent) => {
