@@ -1,4 +1,4 @@
-import { FileStorage } from '@prisma/client'
+import { FileOwnerType, FileStorage } from '@prisma/client'
 import { fileStorageModel } from './_prisma'
 
 export const mdStorageAdd = async (data: Omit<FileStorage, 'id'>) => {
@@ -11,6 +11,26 @@ export const mdStorageGet = async (ids: string[]) => {
   return fileStorageModel.findMany({
     where: {
       id: { in: ids }
+    }
+  })
+}
+
+export const mdStorageDel = async (id: string) => {
+  return fileStorageModel.delete({
+    where: {
+      id
+    }
+  })
+}
+
+export const mdStorageGetByOwner = async (
+  ownerId: string,
+  ownerType: FileOwnerType
+) => {
+  return fileStorageModel.findMany({
+    where: {
+      owner: ownerId,
+      ownerType
     }
   })
 }

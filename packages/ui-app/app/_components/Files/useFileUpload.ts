@@ -9,6 +9,8 @@ import { useParams, useSearchParams } from 'next/navigation'
 
 export type IFileItem = {
   id?: string
+  randId?: string
+  uploading: boolean
   name: string
   size: number
   ext: string
@@ -17,6 +19,12 @@ export type IFileItem = {
   data?: File
   url: string
 }
+
+export type IFileUploadItem = {
+  randId: string
+  data: File
+}
+
 export default function useFileUpload() {
   const { orgID, projectId } = useParams()
   const sp = useSearchParams()
@@ -24,8 +32,9 @@ export default function useFileUpload() {
 
   const { updateTaskData } = useServiceTaskUpdate()
 
-  const doUpload = async (file: File): Promise<IFileItem | null> => {
+  const doUpload = async (f: IFileUploadItem): Promise<IFileItem | null> => {
     try {
+      const { data: file, randId } = f
       const sliceName = file.name.split('.')
 
       const res = await storageCreatePresignedUrl({
@@ -60,6 +69,8 @@ export default function useFileUpload() {
 
       return {
         id: fileData.id,
+        uploading: false,
+        randId,
         name: file.name,
         ext: sliceName[sliceName.length - 1],
         size: file.size,
@@ -72,12 +83,15 @@ export default function useFileUpload() {
     }
   }
 
-  const uploadFileToS3 = async (files: FileList): Promise<IFileItem[]> => {
+  const uploadFileToS3 = async (
+    files: IFileUploadItem[]
+  ): Promise<IFileItem[]> => {
     const promises = []
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      promises.push(doUpload(file))
+      const fileData = files[i]
+
+      promises.push(doUpload(fileData))
     }
 
     const values = await Promise.all(promises)
@@ -104,6 +118,7 @@ export default function useFileUpload() {
   }
 
   return {
-    uploadFileToS3
+    uploadFileToS3,
+    doUpload
   }
 }

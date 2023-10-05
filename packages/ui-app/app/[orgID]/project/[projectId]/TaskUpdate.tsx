@@ -30,6 +30,11 @@ export const TaskUpdate = () => {
     setVisible(true)
   }, [taskId])
 
+  const onClose = () => {
+    setVisible(false)
+    router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+  }
+
   const handleSubmit = (v: ITaskDefaultValues) => {
     if (!taskId) return
 
@@ -43,6 +48,10 @@ export const TaskUpdate = () => {
     // setVisible(false)
     // updateTask(dataUpdate)
     refactorTaskFieldByAutomationConfig('task', dataUpdate)
+
+    // clear fileIds cuz we've updated fileIds already
+    // see <FileUpload /> component
+    dataUpdate.fileIds = []
 
     taskUpdate(dataUpdate)
       .then(res => {
@@ -114,6 +123,7 @@ export const TaskUpdate = () => {
               <TaskForm
                 isUpdate={true}
                 defaultValue={currentTask}
+                onClose={onClose}
                 onSubmit={v => handleSubmit(v)}
               />
             </>

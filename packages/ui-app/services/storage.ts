@@ -22,6 +22,14 @@ export const storageCreatePresignedUrl = ({
   })
 }
 
+export const storageGetFiles = (ids: string[]) => {
+  return httpGet('/api/storage/get-files', {
+    params: {
+      ids
+    }
+  })
+}
+
 export const storagePutFile = (presignedUrl: string, data: File) => {
   return axios.put(presignedUrl, data)
 }

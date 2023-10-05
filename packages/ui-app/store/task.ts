@@ -54,13 +54,14 @@ export const useTaskStore = create<TaskState>(set => ({
         const {
           id,
           title,
+          fileIds,
           taskStatusId,
           assigneeIds,
           priority,
           taskPoint,
           dueDate,
           updatedBy,
-          progress,
+          progress
         } = data
 
         if (!id) return
@@ -103,6 +104,11 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (progress) {
           task.progress = progress
+        }
+
+        if (fileIds) {
+          const oldFileIds = task.fileIds
+          task.fileIds = [...fileIds, ...oldFileIds]
         }
 
         task.updatedAt = new Date()

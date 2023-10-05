@@ -6,8 +6,8 @@ import {
   getObjectURL,
   randomObjectKeyName
 } from '@be/storage'
-import { mdStorageAdd } from '@shared/models'
-import { FileStorage } from '@prisma/client'
+import { mdStorageAdd, mdStorageGet, mdStorageGetByOwner } from '@shared/models'
+import { FileOwnerType, FileStorage } from '@prisma/client'
 import { AuthRequest } from '../../types'
 
 const router = Router()
@@ -29,6 +29,41 @@ router.post('/create-presigned-url', async (req, res, next) => {
       presignedUrl,
       url: getObjectURL(randName)
     }
+  })
+})
+
+router.get('/get-files', async (req: AuthRequest, res) => {
+  const { ids } = req.query as { ids: string[] }
+  console.log(ids)
+
+  try {
+    const results = await mdStorageGet(ids)
+    res.json({ status: 200, data: results })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+router.get('/get-files-by-owner', async (req: AuthRequest, res) => {
+  try {
+    const { ownerId, ownerType } = req.query as {
+      ownerId: string
+      ownerType: FileOwnerType
+    }
+
+    const result = await mdStorageGetByOwner(ownerId, ownerType)
+
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+router.delete('/del-file', async (req: AuthRequest, res) => {
+  const { id } = req.query as { id: string }
+
+  res.json({
+    status: 200
   })
 })
 

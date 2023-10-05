@@ -37,6 +37,7 @@ interface ITaskFormProps {
   dueDate?: Date
   defaultValue?: ITaskDefaultValues
   onSubmit: (v: ITaskDefaultValues) => void
+  onClose: () => void
 }
 
 export default function TaskForm({
@@ -44,12 +45,14 @@ export default function TaskForm({
   isUpdate = false,
   taskStatusId,
   onSubmit,
+  onClose,
   defaultValue = defaultFormikValues
 }: ITaskFormProps) {
-  const [loading, setLoading] = useState(false)
   const params = useParams()
+  const [loading, setLoading] = useState(false)
   const { statuses } = useProjectStatusStore()
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
+  const submitTimeout = useRef(0)
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
@@ -74,6 +77,7 @@ export default function TaskForm({
       }
 
       const { error, errorArr } = validateTask(mergedValues)
+
       if (error) {
         setLoading(false)
         console.error(errorArr)
@@ -83,6 +87,25 @@ export default function TaskForm({
       onSubmit(mergedValues)
     }
   })
+
+  // useEffect(() => {
+  //   const submitTimeoutId = submitTimeout.current
+  //
+  //   if (submitTimeoutId) {
+  //     clearTimeout(submitTimeoutId)
+  //   }
+  //
+  //   submitTimeout.current = setTimeout(() => {
+  //     const formikValueStr = JSON.stringify(formik.values)
+  //     const defaultValueStr = JSON.stringify(refDefaultValue.current)
+  //
+  //     if (formikValueStr !== defaultValueStr) {
+  //       formik.submitForm().then(res => {
+  //         console.log(res)
+  //       })
+  //     }
+  //   }, 500) as unknown as number
+  // }, [formik.values])
 
   // select a default status if empty
   useEffect(() => {
@@ -107,7 +130,9 @@ export default function TaskForm({
   }, [statuses])
 
   return (
-    <form onSubmit={formik.handleSubmit} className="task-form space-y-3 gap-6">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="task-form space-y-3 gap-6 relative">
       <div className="flex items-start gap-3">
         <div className="task-form-detail space-y-3 w-full">
           <Form.Input
@@ -124,7 +149,9 @@ export default function TaskForm({
               formik.setFieldValue('desc', v)
             }}
           />
-          {isUpdate ? <FileUpload /> : null}
+          {isUpdate ? (
+            <FileUpload attachedFileIds={refDefaultValue.current.fileIds} />
+          ) : null}
         </div>
         <div className="task-form-right-actions space-y-3 w-[200px] shrink-0">
           <MemberPicker
@@ -169,8 +196,10 @@ export default function TaskForm({
           />
         </div>
       </div>
-
-      {/* <Button type="submit" loading={loading} title="Submit" primary block /> */}
+      <div className="sticky bottom-0 left-0 space-x-3 text-right">
+        {/* <Button title="Close" onClick={onClose} /> */}
+        <Button type="submit" loading={loading} title="Submit" primary />
+      </div>
     </form>
   )
 }

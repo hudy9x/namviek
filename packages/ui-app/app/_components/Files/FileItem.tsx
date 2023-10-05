@@ -1,6 +1,7 @@
 import { Button } from '@shared/ui'
 import FileThumb from './FileThumb'
 import { IFileItem } from './useFileUpload'
+import AbsoluteLoading from '../AbsoluateLoading'
 
 const generateSizeStr = (size: number) => {
   const n = size / 1024
@@ -20,14 +21,11 @@ const generateSizeStr = (size: number) => {
 }
 
 export default function FileItem({ data }: { data: IFileItem }) {
+  const { name, url, ext, mimeType, uploading } = data
   return (
-    <div className="border bg-white rounded-md text-sm flex">
-      <FileThumb
-        extension={data.ext}
-        name={data.name}
-        url={data.url}
-        type={data.mimeType}
-      />
+    <div className="border bg-white rounded-md text-sm flex relative">
+      <AbsoluteLoading title="Uploading ..." enabled={uploading} />
+      <FileThumb {...{ name, src: url, ext, type: mimeType }} />
 
       <div className="px-3 py-1">
         <h2 className="text-gray-600 text-sm">{data.name}</h2>

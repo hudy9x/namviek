@@ -1,21 +1,75 @@
-import { storageCreatePresignedUrl, storagePutFile } from '@/services/storage'
+import { storageGetFiles } from '@/services/storage'
 import { FileStorage } from '@prisma/client'
-import { Scrollbar, messageSuccess, randomId } from '@shared/ui'
+import { Scrollbar, messageSuccess, messageWarning, randomId } from '@shared/ui'
 import { DragEvent, useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import './style.css'
 import FileItem from './FileItem'
-import useFileUpload, { IFileItem } from './useFileUpload'
+import useFileUpload, { IFileItem, IFileUploadItem } from './useFileUpload'
+import FilePreview from './FilePreview'
+import AbsoluteLoading from '../AbsoluateLoading'
 
-export default function FileUpload() {
+export default function FileUpload({
+  attachedFileIds
+}: {
+  attachedFileIds: string[]
+}) {
+  const [loading, setLoading] = useState(true)
+  const [uploading, setUploading] = useState(false)
   const [isDragging, setDragging] = useState(false)
   const { uploadFileToS3 } = useFileUpload()
   const idRef = useRef(randomId())
-  const [files, setFiles] = useState<IFileItem[]>([])
+  const [previewFiles, setPreviewFiles] = useState<IFileItem[]>([])
 
   const onFileHandler = async (files: FileList) => {
-    const results = await uploadFileToS3(files)
-    setFiles(prev => [...results, ...prev])
+    if (uploading) {
+      messageWarning('Wait a sec, upload is running')
+      return
+    }
+
+    const previewFiles: IFileItem[] = []
+    const uploadFileData: IFileUploadItem[] = []
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const randId = randomId()
+
+      const sliceName = file.name.split('.')
+      previewFiles.push({
+        randId,
+        name: file.name,
+        uploading: true,
+        ext: sliceName[sliceName.length - 1],
+        size: file.size,
+        mimeType: file.type,
+        keyName: '',
+        url: window.URL.createObjectURL(file)
+      })
+
+      uploadFileData.push({
+        randId,
+        data: file
+      })
+    }
+
+    setUploading(true)
+    // displays images first
+    setPreviewFiles(prev => [...previewFiles, ...prev])
+
+    uploadFileToS3(uploadFileData).then(result => {
+      setPreviewFiles(prev =>
+        prev.map(f => {
+          if (!f.randId) return f
+
+          const found = result.find(r => r.randId === f.randId)
+          if (found) {
+            return { ...f, ...found }
+          }
+          return f
+        })
+      )
+
+      setUploading(false)
+    })
   }
 
   const onDropFileChange = async (ev: DragEvent<HTMLDivElement>) => {
@@ -41,6 +95,37 @@ export default function FileUpload() {
   }
 
   useEffect(() => {
+    if (attachedFileIds.length) {
+      storageGetFiles(attachedFileIds)
+        .then(res => {
+          const files = res.data.data as FileStorage[]
+          const attachedFiles: IFileItem[] = []
+
+          files.map(f => {
+            const sliceName = f.name.split('.')
+
+            attachedFiles.push({
+              id: f.id,
+              uploading: false,
+              name: f.name,
+              size: f.size || 0,
+              ext: sliceName[sliceName.length - 1],
+              mimeType: f.mimeType || '',
+              url: f.url || ''
+            })
+          })
+          setPreviewFiles(attachedFiles)
+          setTimeout(() => {
+            setLoading(false)
+          }, 1000)
+        })
+        .catch(err => {
+          setLoading(false)
+        })
+    }
+  }, [attachedFileIds])
+
+  useEffect(() => {
     document.addEventListener('paste', onPaste)
     return () => {
       document.removeEventListener('paste', onPaste)
@@ -49,7 +134,7 @@ export default function FileUpload() {
 
   return (
     <div
-      className="form-control"
+      className="form-control relative"
       onDrop={onDropFileChange}
       onDragOver={ev => {
         ev.preventDefault()
@@ -67,21 +152,17 @@ export default function FileUpload() {
         // ev.preventDefault()
         // console.log(ev)
       }}>
-      <label>Attachments</label>
+      <AbsoluteLoading enabled={loading} />
+      <label>
+        Attachments{' '}
+        {previewFiles.length ? `(${previewFiles.length} files)` : null}
+      </label>
       <div
         className={`file-upload-wrapper ${
           isDragging ? 'border-indigo-400' : ''
         }`}>
-        {files.length ? (
-          <>
-            <Scrollbar style={{ height: 300 }}>
-              <div className="space-y-2">
-                {files.map((file, id) => {
-                  return <FileItem key={id} data={file} />
-                })}
-              </div>
-            </Scrollbar>
-          </>
+        {previewFiles.length ? (
+          <FilePreview files={previewFiles} />
         ) : (
           <div className="flex items-center flex-col text-sm gap-2 text-gray-400">
             <AiOutlineCloudUpload className="w-8 h-8 shadow-sm border rounded-md bg-white p-1.5 text-gray-500" />
