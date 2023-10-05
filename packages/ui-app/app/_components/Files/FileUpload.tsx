@@ -96,6 +96,7 @@ export default function FileUpload({
 
   useEffect(() => {
     if (attachedFileIds.length) {
+      console.log('attachedFileIds', attachedFileIds)
       storageGetFiles(attachedFileIds)
         .then(res => {
           const files = res.data.data as FileStorage[]
@@ -122,6 +123,8 @@ export default function FileUpload({
         .catch(err => {
           setLoading(false)
         })
+    } else {
+      setLoading(false)
     }
   }, [attachedFileIds])
 
@@ -157,10 +160,7 @@ export default function FileUpload({
         Attachments{' '}
         {previewFiles.length ? `(${previewFiles.length} files)` : null}
       </label>
-      <div
-        className={`file-upload-wrapper ${
-          isDragging ? 'border-indigo-400' : ''
-        }`}>
+      <div className={`file-upload-wrapper ${isDragging ? 'is-dragging' : ''}`}>
         {previewFiles.length ? (
           <FilePreview files={previewFiles} />
         ) : (

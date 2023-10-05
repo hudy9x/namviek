@@ -34,7 +34,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
 
 router.get('/get-files', async (req: AuthRequest, res) => {
   const { ids } = req.query as { ids: string[] }
-  console.log(ids)
+  console.log('get files', ids)
 
   try {
     const results = await mdStorageGet(ids)

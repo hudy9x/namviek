@@ -15,7 +15,6 @@ const router = Router()
 
 // middlewares
 // router.use([])
-// console.log('14')
 router.use('/storage', [authMiddleware, storageRouter])
 router.use(authRouter)
 router.use(favRouter)

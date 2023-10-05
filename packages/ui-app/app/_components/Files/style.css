@@ -1,3 +1,13 @@
 .file-upload-wrapper {
   @apply border-2 border-dashed p-3 rounded-md bg-indigo-50/50  hover:border-indigo-400 transition-all;
+  @apply dark:bg-gray-800 dark:border-gray-700 dark:hover:border-gray-500;
+}
+
+.file-upload-wrapper.is-dragging {
+  @apply border-indigo-400 dark:border-gray-500;
+}
+
+.file-item {
+  @apply border bg-white rounded-md text-sm flex relative;
+  @apply dark:bg-gray-900 dark:border-gray-700;
 }

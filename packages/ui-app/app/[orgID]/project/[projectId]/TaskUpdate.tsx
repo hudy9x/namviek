@@ -106,6 +106,8 @@ export const TaskUpdate = () => {
     }
   }, [taskId, tasks])
 
+  console.log('currentTask', currentTask.fileIds)
+
   return (
     <>
       <div>
