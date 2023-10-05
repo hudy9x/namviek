@@ -196,7 +196,7 @@ export default function TaskForm({
           />
         </div>
       </div>
-      <div className="sticky bottom-0 left-0 space-x-3 text-right">
+      <div className="text-right">
         {/* <Button title="Close" onClick={onClose} /> */}
         <Button type="submit" loading={loading} title="Submit" primary />
       </div>
