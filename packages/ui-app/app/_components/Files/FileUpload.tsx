@@ -198,8 +198,8 @@ export default function FileUpload({
             }}
           />
         </div>
-        <FileCarousel />
       </div>
+      <FileCarousel />
     </FileStorageProvider>
   )
 }

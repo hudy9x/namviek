@@ -54,6 +54,7 @@ export default function FileCarousel() {
       if (ev.key.toLowerCase() !== 'escape') return
 
       setSelected(-1)
+      window.stopEscapeKeyCloseModal = false
     }
     document.addEventListener('keyup', keyboarHandler)
 

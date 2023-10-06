@@ -3,7 +3,6 @@ import FileThumb from './FileThumb'
 import { IFileItem } from './useFileUpload'
 import AbsoluteLoading from '../AbsoluateLoading'
 import FileDelete from './FileDelete'
-import { HiOutlineCloudDownload } from 'react-icons/hi'
 
 const generateSizeStr = (size: number) => {
   const n = size / 1024
@@ -30,7 +29,7 @@ export default function FileItem({ data }: { data: IFileItem }) {
       <AbsoluteLoading title="Uploading ..." enabled={uploading} />
       <FileThumb {...{ name, src: url, ext, type: mimeType, id: id || '' }} />
 
-      <div className="px-3 py-1">
+      <div className="px-3 py-2">
         <h2 className="text-gray-600 dark:text-gray-400 text-sm">
           {data.name}
         </h2>

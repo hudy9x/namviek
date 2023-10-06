@@ -9,5 +9,6 @@
 
 .file-item {
   @apply border bg-white rounded-md text-sm flex relative;
-  @apply dark:bg-gray-900 dark:border-gray-700;
+  @apply hover:border-indigo-500;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:hover:border-gray-500;
 }

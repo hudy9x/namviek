@@ -11,7 +11,7 @@ import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
   const sp = useSearchParams()
-  const { syncRemoteTaskById, tasks, taskLoading } = useTaskStore()
+  const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
 
   const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
 
@@ -45,8 +45,8 @@ export const TaskUpdate = () => {
       updatedAt: new Date()
     }
 
-    // setVisible(false)
-    // updateTask(dataUpdate)
+    updateTask(dataUpdate)
+    onClose()
     refactorTaskFieldByAutomationConfig('task', dataUpdate)
 
     // clear fileIds cuz we've updated fileIds already
@@ -69,8 +69,8 @@ export const TaskUpdate = () => {
         console.log(err)
       })
       .finally(() => {
-        setVisible(false)
-        router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+        // setVisible(false)
+        // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
       })
   }
 
