@@ -15,6 +15,14 @@ export const mdStorageGet = async (ids: string[]) => {
   })
 }
 
+export const mdStorageGetOne = async (id: string) => {
+  return fileStorageModel.findFirst({
+    where: {
+      id
+    }
+  })
+}
+
 export const mdStorageDel = async (id: string) => {
   return fileStorageModel.delete({
     where: {

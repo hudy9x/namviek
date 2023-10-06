@@ -83,6 +83,7 @@ export const TaskUpdate = () => {
     if (!taskId || !tasks || !tasks.length) return
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
+
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
@@ -106,8 +107,6 @@ export const TaskUpdate = () => {
     }
   }, [taskId, tasks])
 
-  console.log('currentTask', currentTask.fileIds)
-
   return (
     <>
       <div>
@@ -125,7 +124,6 @@ export const TaskUpdate = () => {
               <TaskForm
                 isUpdate={true}
                 defaultValue={currentTask}
-                onClose={onClose}
                 onSubmit={v => handleSubmit(v)}
               />
             </>

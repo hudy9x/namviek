@@ -37,7 +37,6 @@ interface ITaskFormProps {
   dueDate?: Date
   defaultValue?: ITaskDefaultValues
   onSubmit: (v: ITaskDefaultValues) => void
-  onClose: () => void
 }
 
 export default function TaskForm({
@@ -45,14 +44,13 @@ export default function TaskForm({
   isUpdate = false,
   taskStatusId,
   onSubmit,
-  onClose,
   defaultValue = defaultFormikValues
 }: ITaskFormProps) {
   const params = useParams()
   const [loading, setLoading] = useState(false)
   const { statuses } = useProjectStatusStore()
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
-  const submitTimeout = useRef(0)
+  // const submitTimeout = useRef(0)
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
@@ -129,11 +127,13 @@ export default function TaskForm({
     }
   }, [statuses])
 
+  const isCreate = !isUpdate
+
   return (
     <form
       onSubmit={formik.handleSubmit}
       className="task-form space-y-3 gap-6 relative">
-      <div className="flex items-start gap-3">
+      <div className={`flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
         <div className="task-form-detail space-y-3 w-full">
           <Form.Input
             title="Task name"
@@ -153,7 +153,9 @@ export default function TaskForm({
             <FileUpload attachedFileIds={refDefaultValue.current.fileIds} />
           ) : null}
         </div>
-        <div className="task-form-right-actions space-y-3 w-[200px] shrink-0">
+        <div
+          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'w-[200px]'
+            }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}

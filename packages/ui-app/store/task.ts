@@ -49,8 +49,6 @@ export const useTaskStore = create<TaskState>(set => ({
   updateTask: (data: Partial<Task>) =>
     set(
       produce((state: TaskState) => {
-        console.log(data)
-
         const {
           id,
           title,

@@ -1,7 +1,9 @@
+'use client'
+
 import * as Dialog from '@radix-ui/react-dialog'
 import { MdClose } from 'react-icons/md'
 import './styles.css'
-import { SetStateAction, useEffect, useState } from 'react'
+import { SetStateAction } from 'react'
 import { Loading } from '@shared/ui'
 
 interface ModalProps {
@@ -17,6 +19,13 @@ interface ModalProps {
   className?: string
   closeBtn?: boolean
 }
+
+declare global {
+  interface Window {
+    stopEscapeKeyCloseModal: boolean
+  }
+}
+
 
 export default function Modal({
   triggerBy,
@@ -38,8 +47,17 @@ export default function Modal({
     <Dialog.Root open={visible} onOpenChange={onVisibleChange}>
       <Dialog.Trigger asChild>{triggerBy}</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className='modal-overlay'>
+        <Dialog.Overlay className="modal-overlay">
           <Dialog.Content
+            onEscapeKeyDown={ev => {
+              console.log(
+                'stopEscapeKeyCloseModal',
+                window.stopEscapeKeyCloseModal
+              )
+              if (window.stopEscapeKeyCloseModal) {
+                ev.preventDefault()
+              }
+            }}
             className={`modal-content ${classes.filter(Boolean).join(' ')}`}>
             {title ? (
               <Dialog.Title className="modal-title">{title}</Dialog.Title>

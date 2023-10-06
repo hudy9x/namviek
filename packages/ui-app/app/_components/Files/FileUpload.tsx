@@ -8,12 +8,15 @@ import FileItem from './FileItem'
 import useFileUpload, { IFileItem, IFileUploadItem } from './useFileUpload'
 import FilePreview from './FilePreview'
 import AbsoluteLoading from '../AbsoluateLoading'
+import { FileStorageProvider } from './context'
+import FileCarousel from './FileCarousel'
 
 export default function FileUpload({
   attachedFileIds
 }: {
   attachedFileIds: string[]
 }) {
+  const [selected, setSelected] = useState(-1)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [isDragging, setDragging] = useState(false)
@@ -96,7 +99,6 @@ export default function FileUpload({
 
   useEffect(() => {
     if (attachedFileIds.length) {
-      console.log('attachedFileIds', attachedFileIds)
       storageGetFiles(attachedFileIds)
         .then(res => {
           const files = res.data.data as FileStorage[]
@@ -136,58 +138,68 @@ export default function FileUpload({
   }, [])
 
   return (
-    <div
-      className="form-control relative"
-      onDrop={onDropFileChange}
-      onDragOver={ev => {
-        ev.preventDefault()
-        setDragging(true)
-        // console.log('drag over', ev)
-      }}
-      onDragLeave={() => {
-        setDragging(false)
-      }}
-      onDragEnd={() => {
-        setDragging(false)
-      }}
-      onDragEnter={ev => {
-        setDragging(true)
-        // ev.preventDefault()
-        // console.log(ev)
+    <FileStorageProvider
+      value={{
+        selected,
+        setSelected,
+        previewFiles: previewFiles,
+        setPreviewFiles: setPreviewFiles
       }}>
-      <AbsoluteLoading enabled={loading} />
-      <label>
-        Attachments{' '}
-        {previewFiles.length ? `(${previewFiles.length} files)` : null}
-      </label>
-      <div className={`file-upload-wrapper ${isDragging ? 'is-dragging' : ''}`}>
-        {previewFiles.length ? (
-          <FilePreview files={previewFiles} />
-        ) : (
-          <div className="flex items-center flex-col text-sm gap-2 text-gray-400">
-            <AiOutlineCloudUpload className="w-8 h-8 shadow-sm border rounded-md bg-white p-1.5 text-gray-500" />
-            <p className="text-center">
-              <label
-                className="underline cursor-pointer hover:text-gray-600"
-                htmlFor={idRef.current}>
-                Browse file to upload
-              </label>
-              , drag n drop{' '}
-              <span className="block">Or paste your image here</span>
-            </p>
-          </div>
-        )}
-        <input
-          id={idRef.current}
-          multiple
-          className="hidden"
-          type="file"
-          onChange={ev => {
-            const files = ev.target.files
-            files && onInputChange(files)
-          }}
-        />
+      <div
+        className="form-control relative"
+        onDrop={onDropFileChange}
+        onDragOver={ev => {
+          ev.preventDefault()
+          setDragging(true)
+          // console.log('drag over', ev)
+        }}
+        onDragLeave={() => {
+          setDragging(false)
+        }}
+        onDragEnd={() => {
+          setDragging(false)
+        }}
+        onDragEnter={ev => {
+          setDragging(true)
+          // ev.preventDefault()
+          // console.log(ev)
+        }}>
+        <AbsoluteLoading enabled={loading} />
+        <label>
+          Attachments{' '}
+          {previewFiles.length ? `(${previewFiles.length} files)` : null}
+        </label>
+        <div
+          className={`file-upload-wrapper ${isDragging ? 'is-dragging' : ''}`}>
+          {previewFiles.length ? (
+            <FilePreview files={previewFiles} />
+          ) : (
+            <div className="flex items-center flex-col text-sm gap-2 text-gray-400">
+              <AiOutlineCloudUpload className="w-8 h-8 shadow-sm border rounded-md bg-white p-1.5 text-gray-500" />
+              <p className="text-center">
+                <label
+                  className="underline cursor-pointer hover:text-gray-600"
+                  htmlFor={idRef.current}>
+                  Browse file to upload
+                </label>
+                , drag n drop{' '}
+                <span className="block">Or paste your image here</span>
+              </p>
+            </div>
+          )}
+          <input
+            id={idRef.current}
+            multiple
+            className="hidden"
+            type="file"
+            onChange={ev => {
+              const files = ev.target.files
+              files && onInputChange(files)
+            }}
+          />
+        </div>
+        <FileCarousel />
       </div>
-    </div>
+    </FileStorageProvider>
   )
 }

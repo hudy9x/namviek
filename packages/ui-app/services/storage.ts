@@ -29,6 +29,11 @@ export const storageGetFiles = (ids: string[]) => {
     }
   })
 }
+export const storageDelFile = (id: string, projectId: string) => {
+  return httpDel('/api/storage/del-file', {
+    params: { id, projectId }
+  })
+}
 
 export const storagePutFile = (presignedUrl: string, data: File) => {
   return axios.put(presignedUrl, data)

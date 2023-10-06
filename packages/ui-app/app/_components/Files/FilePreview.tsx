@@ -1,4 +1,4 @@
-import { Button, Scrollbar } from '@shared/ui'
+import { Button } from '@shared/ui'
 import FileItem from './FileItem'
 import { IFileItem } from './useFileUpload'
 import { useState } from 'react'
@@ -18,8 +18,8 @@ export default function FilePreview({ files }: { files: IFileItem[] }) {
 
       {viewMore
         ? sliced.map(file => {
-            return <FileItem key={file.id || file.randId} data={file} />
-          })
+          return <FileItem key={file.id || file.randId} data={file} />
+        })
         : null}
 
       {sliced.length ? (
