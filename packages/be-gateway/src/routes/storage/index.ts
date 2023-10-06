@@ -45,7 +45,6 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
   pmClient
     .$transaction(async tx => {
-      console.log('get file storage')
       const result = await tx.fileStorage.findFirst({
         where: {
           id
@@ -53,10 +52,8 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
       })
 
       const { id: fileId, owner, ownerType, keyName } = result
-      console.log('result', fileId)
 
       if (ownerType === FileOwnerType.TASK) {
-        console.log('is owner by', ownerType)
         const task = await tx.task.findFirst({
           where: {
             id: owner
@@ -66,7 +63,6 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
         const { fileIds } = task
 
         if (!fileIds.includes(fileId)) {
-          console.log('file not exist')
           // return 'FILE_NOT_EXIST_IN_TASK'
           throw new Error('FILE_NOT_EXIST_IN_TASK')
         }
@@ -117,7 +113,6 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
 router.get('/get-files', async (req: AuthRequest, res) => {
   const { ids } = req.query as { ids: string[] }
-  console.log('get files', ids)
 
   try {
     const results = await mdStorageGet(ids)
