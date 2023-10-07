@@ -61,7 +61,7 @@ export default function DashboardComponentUpdateForm({
           />
         </FormGroup>
 
-        {formik.values.type !== DashboardComponentType.LINE ? (
+        {formik.values.type !== DashboardComponentType.BURNDOWN ? (
           <ListPreset
             title="Chart type"
             className="w-full"
@@ -85,7 +85,7 @@ export default function DashboardComponentUpdateForm({
           <DboardCompColumnUpdateForm formik={formik} />
         ) : null}
 
-        {formik.values.type === DashboardComponentType.LINE ? null : <>
+        {formik.values.type === DashboardComponentType.BURNDOWN ? null : <>
           <MultiMemberPicker
             title="Assignees"
             value={formik.values.assigneeIds}
@@ -111,7 +111,7 @@ export default function DashboardComponentUpdateForm({
         {/*   ]} */}
         {/* /> */}
 
-        {formik.values.type === DashboardComponentType.LINE ? (
+        {formik.values.type === DashboardComponentType.BURNDOWN ? (
           <ListPreset
             className="w-full"
             defaultOption={{ id: '', title: '📆' }}
@@ -141,7 +141,7 @@ export default function DashboardComponentUpdateForm({
 
         {/* </FormGroup> */}
 
-        {formik.values.type === DashboardComponentType.LINE ? null : <>
+        {formik.values.type === DashboardComponentType.BURNDOWN ? null : <>
           <>
             <FormGroup
               title="Date"

@@ -2,7 +2,7 @@ import Chart from 'react-apexcharts'
 import { IDbCompProps, refactorConfig } from '../type'
 import DbCompDelete from './DbCompDelete'
 import { useEffect, useState } from 'react'
-import { IDBComponentConfig, dboardQueryLine } from '@/services/dashboard'
+import { IDBComponentConfig, dboardQueryBurndown } from '@/services/dashboard'
 import { ApexOptions } from "apexcharts";
 
 interface ISetting {
@@ -46,7 +46,7 @@ export const DbCompBurnDownChart = ({ id, config, title }: IDbCompProps) => {
   useEffect(() => {
     const newConfig = refactorConfig(config)
 
-    dboardQueryLine(newConfig as IDBComponentConfig).then(res => {
+    dboardQueryBurndown(newConfig as IDBComponentConfig).then(res => {
       const { status, data } = res.data
       if (status !== 200) {
         return

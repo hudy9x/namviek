@@ -61,7 +61,7 @@ const charts: IChartType[] = [
     icon: '🚦'
   }
   // { type: DashboardComponentType.PIE, desc: '', icon: '' },
-  // { type: DashboardComponentType.LINE, desc: '', icon: '' },
+  // { type: DashboardComponentType.BURNDOWN, desc: '', icon: '' },
   // { type: DashboardComponentType.LIST, desc: '', icon: '' }
 ]
 

@@ -18,7 +18,7 @@ export default function DbComponent({
       {type === DashboardComponentType.COLUMN ? (
         <DbCompColumn id={id} title={title || ''} config={configJson} />
       ) : null}
-      {type === DashboardComponentType.LINE ? (
+      {type === DashboardComponentType.BURNDOWN ? (
         <DbCompBurnDownChart id={id} title={title || ''} config={configJson} />
       ) : null}
     </>

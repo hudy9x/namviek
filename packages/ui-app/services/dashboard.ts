@@ -72,6 +72,6 @@ export const dboardQueryColumn = (query: IDBComponentConfig) => {
   return httpPost('/api/dboard/query-column', query)
 }
 
-export const dboardQueryLine = (query: IDBComponentConfig) => {
+export const dboardQueryBurndown = (query: IDBComponentConfig) => {
   return httpPost('/api/dboard/query-line', query)
 }

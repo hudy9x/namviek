@@ -1,11 +1,9 @@
-/* eslint-disable no-prototype-builtins */
 import {
   Dashboard,
   DashboardComponent,
   DashboardComponentType
 } from '@prisma/client'
 import { dboardComponentModal, dboardModel, taskModel } from './_prisma'
-import { count } from 'console'
 
 export const mdDBoardGetComponents = async (dboardId: string) => {
   return dboardComponentModal.findMany({
@@ -68,19 +66,6 @@ type IDBComponentColumnFilter = {
   }
 }
 
-type IDBComponentLineFilter = {
-  startDate?: Date
-  endDate?: Date
-  projectIds?: string[]
-  xAxis?: {
-    dates?: string[]
-  }
-  series?: {
-    ideal?: string[]
-    actual?: string[]
-  }
-}
-
 type IDBComponentBase = {
   title?: string
   icon?: string
@@ -99,10 +84,6 @@ export type IDBComponentConfig = IDBComponentBase & IDBComponentFilter
 
 export type IDBComponentColumnConfig = IDBComponentBase &
   IDBComponentColumnFilter
-
-export type IDBComponentLineConfig = IDBComponentBase &
-IDBComponentLineFilter
-  
 
 // export interface IDBComponentConfig extends IDBcomponentBase {
 //   title?: string
@@ -426,15 +407,12 @@ const convertDate = (date, dates) => {
   })
 }
 
-export const mdDBoardQueryLine = async ({
+export const mdDBoardQueryBurnDown = async ({
   startDate,
   endDate,
   projectIds
-}: IDBComponentLineConfig) => {
-  const config: IDBComponentFilter = {
-    assigneeIds: [],
-    statusIds: []
-  }
+}: IDBComponentConfig) => {
+  const config: IDBComponentConfig = {}
 
   config.startDate = startDate
   config.endDate = endDate

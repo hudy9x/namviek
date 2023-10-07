@@ -125,7 +125,7 @@ export const useDboardComponentSubmit = ({
     }
 
     // operator and datestring must required if one of them is selected
-    if (date.length && type !== DashboardComponentType.LINE) {
+    if (date.length && type !== DashboardComponentType.BURNDOWN) {
       const dateLen = date.filter(Boolean).length
       if (dateLen < 2) {
         messageError('Please input both operator and date')
@@ -187,7 +187,7 @@ export const useDboardComponentSubmit = ({
       })
     }
 
-    if (type === DashboardComponentType.LINE) {
+    if (type === DashboardComponentType.BURNDOWN) {
 
       createComponent({
         dashboardId: dboardId,

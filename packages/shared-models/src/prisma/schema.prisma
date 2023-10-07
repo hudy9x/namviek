@@ -204,6 +204,7 @@ enum DashboardComponentType {
   LISTTAB
   LIST
   COLUMN
+  BURNDOWN
 }
 
 model DashboardComponent {
