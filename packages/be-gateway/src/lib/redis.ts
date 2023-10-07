@@ -76,6 +76,9 @@ export const setJSONCache = (
   key: CACHE_KEY,
   value: RedisJSONValue | RedisJSONValue[]
 ) => {
+  if (!connected) {
+    return null
+  }
   try {
     redis.set(genKey(key), JSON.stringify(value))
   } catch (error) {
@@ -104,6 +107,9 @@ export const getJSONCache = async (key: CACHE_KEY) => {
 
 export const delCache = async (key: CACHE_KEY) => {
   try {
+    if (!connected) {
+      return null
+    }
     redis.del(genKey(key))
   } catch (error) {
     console.log(`delete redis key {${key}} error`)

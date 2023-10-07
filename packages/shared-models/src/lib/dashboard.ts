@@ -330,7 +330,7 @@ const handleDates = (tasks: Task[]): TDateChart => {
     planedMinArr,
     planedDateArr,
     planedMaxArr,
-    dates: [...planedMinArr, ...planedDateArr, ...planedMaxArr]
+    dates: [0, ...planedMinArr, ...planedDateArr, ...planedMaxArr]
   }
 }
 
@@ -338,15 +338,17 @@ const handleIdeal = (date: TDateChart, tasks: Task[]) => {
   const { planedMinArr, planedDateArr } = date
 
   const totalTask = tasks.length
+  let remainingTask = totalTask
+  
   const minIdealArr = Array(planedMinArr.length).fill(totalTask)
   const idealArr = []
-  let remainingTask = totalTask
 
   for (const planedDate of planedDateArr) {
     const existPlanedDate = tasks.some((task) => new Date(task.plannedDueDate).getDate() === planedDate)
     if (existPlanedDate) {
       const countTask = tasks.filter((task) => new Date(task.plannedDueDate).getDate() === planedDate).length
       remainingTask = remainingTask - countTask
+
       idealArr.push(remainingTask)
     } else {
       idealArr.push(remainingTask)
@@ -413,9 +415,13 @@ const generateColumn = ({
 }
 
 const convertDate = (date, dates) => {
-  return dates.map((day) => {
-    const month = new Date(`${date}`).getMonth() + 1
+  if (!Array.isArray(dates) || typeof date !== 'string') {
+    throw new Error('Invalid input data');
+  }
 
+  return dates.map((day, index) => {
+    if (day === 0 && index === 0 ) return 'Day'
+    const month = new Date(`${date}`).getMonth() + 1
     return `${day}/${month}`
   })
 }
@@ -453,7 +459,7 @@ export const mdDBoardQueryLine = async ({
   
   const formatDate = convertDate(endDate, dates.dates)
   return {
-    dates: [0, ...formatDate],
+    dates: formatDate,
     ideal,
     actual
   }

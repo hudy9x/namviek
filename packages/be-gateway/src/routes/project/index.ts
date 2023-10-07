@@ -1,19 +1,20 @@
-import { Router } from 'express'
-import { authMiddleware } from '../../middlewares'
-import { AuthRequest } from '../../types'
+import { MemberRole, Project, StatusType } from '@prisma/client'
 import {
   mdMemberAdd,
   mdMemberGetProject,
   mdProjectAdd,
   mdProjectGetAllByIds,
-  mdProjectUpdate
+  mdProjectUpdate,
+  mdTaskStatusAddMany
 } from '@shared/models'
-import { MemberRole, Project } from '@prisma/client'
+import { Router } from 'express'
+import { authMiddleware } from '../../middlewares'
+import { AuthRequest } from '../../types'
 
+import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
+import PointRouter from './point'
 import StatusRouter from './status'
 import TagRouter from './tag'
-import PointRouter from './point'
-import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 
@@ -91,15 +92,45 @@ router.post('/project', async (req: AuthRequest, res) => {
     updatedBy: null
   })
 
-  await mdMemberAdd({
-    uid: userId,
-    projectId: result.id,
-    role: MemberRole.MANAGER,
-    createdAt: new Date(),
-    createdBy: userId,
-    updatedBy: null,
-    updatedAt: null
-  })
+  // init status task
+  const initialStatusData = [
+    {
+      color: '#d9d9d9',
+      name: 'TODO',
+      order: 0,
+      projectId: result.id,
+      type: StatusType.TODO
+    },
+    {
+      color: '#4286f4',
+      name: 'INPROGRESS',
+      order: 1,
+      projectId: result.id,
+      type: StatusType.INPROCESS
+    },
+    {
+      color: '#4caf50',
+      name: 'CLOSED',
+      order: 2,
+      projectId: result.id,
+      type: StatusType.DONE
+    }
+  ]
+
+  const promise = [
+    mdTaskStatusAddMany(initialStatusData),
+    mdMemberAdd({
+      uid: userId,
+      projectId: result.id,
+      role: MemberRole.MANAGER,
+      createdAt: new Date(),
+      createdBy: userId,
+      updatedBy: null,
+      updatedAt: null
+    })
+  ]
+
+  await Promise.all(promise)
 
   delCache([CKEY.USER_PROJECT, userId])
 

@@ -28,7 +28,7 @@ export default function RangerSlider({
   return (
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
-      <div className="flex relative">
+      <div className="flex relative items-center">
         <Slider.Root
           className="slider-root"
           value={value ? [Number(value)] : [0]}

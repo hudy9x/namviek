@@ -1,6 +1,8 @@
-import { useMemberStore } from '../../store/member'
+import { useMemberStore } from '@/store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState } from 'react'
+import './style.css'
+
 const List = Form.List
 
 interface IMemberPicker {
@@ -31,7 +33,7 @@ export default function MemberPicker({
     const listMembers = members.map(mem => ({ id: mem.id, title: mem.name }))
     setOptions(listMembers as ListItemValue[])
   }, [members])
-  
+
   useEffect(() => {
     if (selectedOption) {
       setVal(selectedOption)

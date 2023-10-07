@@ -155,7 +155,7 @@ export default function TaskForm({
       />
       {mode === FORM_MODE.UPDATE && 
       <DatePicker
-        title="Planned Due ate"
+        title="Planned Due date"
         value={formik.values.plannedDueDate}
         onChange={d => {
           formik.setFieldValue('plannedDueDate', d)

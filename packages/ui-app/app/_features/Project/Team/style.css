@@ -1,0 +1,3 @@
+.team-insight-chart .apexcharts-text.apexcharts-datalabel-value {
+  @apply dark:fill-gray-400 font-bold;
+}
