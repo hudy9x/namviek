@@ -256,14 +256,14 @@ type TDateChart = {
 }
 
 const handleDates = (tasks: Task[]): TDateChart => {
-  
+
   let planeDateMin = Infinity
   let planeDateMax = -Infinity
   let dueDateMin = Infinity
   let dueDateMax = -Infinity
-  
-  for(const task of tasks) {
-    if(task.plannedDueDate) {
+
+  for (const task of tasks) {
+    if (task.plannedDueDate) {
       const datePlaned = new Date(task.plannedDueDate).getDate()
       if (datePlaned > planeDateMax) {
         planeDateMax = datePlaned
@@ -273,17 +273,17 @@ const handleDates = (tasks: Task[]): TDateChart => {
       }
     }
 
-    if(task.dueDate) {
-      const datePlaned = new Date(task.dueDate).getDate()
-      if (datePlaned > dueDateMax) {
-        dueDateMax = datePlaned
+    if (task.dueDate) {
+      const dueDate = new Date(task.dueDate).getDate()
+      if (dueDate > dueDateMax) {
+        dueDateMax = dueDate
       }
-      if (datePlaned < dueDateMin) {
-        dueDateMin = datePlaned
+      if (dueDate < dueDateMin) {
+        dueDateMin = dueDate
       }
     }
   }
-  
+
   const planedDateArr = []
   for (let i = planeDateMin; i <= planeDateMax; i++) {
     planedDateArr.push(i)
@@ -291,13 +291,13 @@ const handleDates = (tasks: Task[]): TDateChart => {
 
   const planedMinArr = []
   const planedMaxArr = []
-  for(const task of tasks) {
+  for (const task of tasks) {
     const dueDate = new Date(task.dueDate).getDate()
-    if(dueDate < planeDateMin) {
+    if (dueDate < planeDateMin) {
       planedMinArr.push(dueDate)
-    } 
+    }
 
-    if(dueDate > planeDateMax) {
+    if (dueDate > planeDateMax) {
       planedMaxArr.push(dueDate)
     }
   }
@@ -315,58 +315,75 @@ const handleDates = (tasks: Task[]): TDateChart => {
   }
 }
 
-const handleIdeal = (date: TDateChart, tasks: Task[]) => {
+const handleIdeal = (date: TDateChart, tasks: Task[], type: DashboardComponentType) => {
   const { planedMinArr, planedDateArr } = date
 
   const totalTask = tasks.length
-  let remainingTask = totalTask
-  
   const minIdealArr = Array(planedMinArr.length).fill(totalTask)
   const idealArr = []
-
+  let decremental = totalTask
+  let incremental = 0
+  
   for (const planedDate of planedDateArr) {
     const existPlanedDate = tasks.some((task) => new Date(task.plannedDueDate).getDate() === planedDate)
-    if (existPlanedDate) {
-      const countTask = tasks.filter((task) => new Date(task.plannedDueDate).getDate() === planedDate).length
-      remainingTask = remainingTask - countTask
 
-      idealArr.push(remainingTask)
+    if (!existPlanedDate) {
+      type === DashboardComponentType.BURNDOWN ? idealArr.push(decremental) : idealArr.push(incremental)
+      continue
+    }
+
+    const countTask = tasks.filter((task) => new Date(task.plannedDueDate).getDate() === planedDate).length
+    if (type === DashboardComponentType.BURNDOWN) {
+      decremental -= countTask
+      idealArr.push(decremental)
     } else {
-      idealArr.push(remainingTask)
+      incremental += countTask
+      idealArr.push(incremental)
     }
   }
-
-  return [totalTask ,...minIdealArr, ...idealArr]
+  
+  return type === DashboardComponentType.BURNDOWN ? [totalTask, ...minIdealArr, ...idealArr] : [0, ...minIdealArr, ...idealArr]
 }
 
-const handleActual = (date: TDateChart, tasks: Task[]) => {
+const handleActual = (date: TDateChart, tasks: Task[], type: DashboardComponentType) => {
   const { dates, dueDateMin, dueDateMax } = date
 
   const actual = []
   const index = dates.indexOf(dueDateMax)
+  let decremental = tasks.length
+  let incremental = 0
+
+  /**
+   * In case the actual time dueDate the schedule
+   */
   const dateActualArr = dates.slice(0, index + 1);
 
   for (const dateActual of dateActualArr) {
+    if (dateActual < dueDateMin) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(tasks.length) : actual.push(0)
+      continue
+    }
+    if (dateActual >= dueDateMax) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(0) : actual.push(incremental)
+      continue
+    }
 
     const existDueDate = tasks.some((task) => new Date(task.dueDate).getDate() === dateActual)
-    if (existDueDate) {
-      let countTask = tasks.filter((task) => new Date(task.dueDate).getDate() === dateActual).length
-      if (dateActual === dueDateMax) {
-        countTask = 0
-      }
-
-      actual.push(countTask)
-    } else {
-      let countTask = tasks.filter((task) => new Date(task.dueDate).getDate() < dateActual).length
-      if (dateActual < dueDateMin) {
-        countTask = tasks.length
-      }
-
-      if (dateActual > dueDateMax) {
-        countTask = 0
-      }
-      actual.push(countTask)
+    if (!existDueDate) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(decremental) : actual.push(incremental)
+      continue
     }
+    
+    const countTask = tasks.filter((task) => new Date(task.dueDate).getDate() === dateActual).length
+
+    if (type === DashboardComponentType.BURNDOWN) {
+      decremental -= countTask
+      actual.push(decremental)
+    } else {
+      incremental += countTask
+      actual.push(incremental)
+    }
+  
   }
 
   return actual
@@ -401,40 +418,51 @@ const convertDate = (date, dates) => {
   }
 
   return dates.map((day, index) => {
-    if (day === 0 && index === 0 ) return 'Day'
+    if (day === 0 && index === 0) return 'Day'
     const month = new Date(`${date}`).getMonth() + 1
     return `${day}/${month}`
   })
 }
 
-export const mdDBoardQueryBurnDown = async ({
-  startDate,
-  endDate,
-  projectIds
-}: IDBComponentConfig) => {
-  const config: IDBComponentConfig = {}
+export const mdDBoardQueryBurnChart = async (config: IDBComponentConfig , type: DashboardComponentType) => {
+  const { startDate, endDate, assigneeIds, projectIds} = config
+  const newConfig: IDBComponentConfig = {}
 
-  config.startDate = startDate
-  config.endDate = endDate
+  newConfig.startDate = startDate
+  newConfig.endDate = endDate
 
-  if (projectIds) {
-    config.projectIds = projectIds
+  if (assigneeIds) {
+    newConfig.assigneeIds = assigneeIds
   }
 
-  const where = generateQueryCondition(config)
+  if (projectIds) {
+    newConfig.projectIds = projectIds
+  }
+
+  const where = generateQueryCondition(newConfig)
+  
   const tasks = await taskModel.findMany({
     where,
     select: {
       id: true,
       dueDate: true,
+      assigneeIds: true,
       plannedDueDate: true,
     },
+  }).catch((err) => {
+    console.log('ERR QUERY TASK', err)
   });
-  
+
+  if (!tasks) {
+    throw new Error('ERR QUERY TASK');
+  }
+
+  console.log(tasks, '---> tasks')
+
   const dates = handleDates(tasks)
-  const ideal = handleIdeal(dates, tasks)
-  const actual = handleActual(dates, tasks)
-  
+  const ideal = handleIdeal(dates, tasks, type)
+  const actual = handleActual(dates, tasks, type)
+
   const formatDate = convertDate(endDate, dates.dates)
   return {
     dates: formatDate,

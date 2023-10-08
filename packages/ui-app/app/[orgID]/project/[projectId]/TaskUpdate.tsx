@@ -88,6 +88,9 @@ export const TaskUpdate = () => {
         plannedDueDate: currentTask.plannedDueDate
           ? new Date(currentTask.plannedDueDate)
           : defaultFormikValues.plannedDueDate, 
+        planedStartDate: currentTask.plannedStartDate
+          ? new Date(currentTask.plannedStartDate)
+          : defaultFormikValues.planedStartDate,
         assigneeIds: currentTask.assigneeIds
           ? currentTask.assigneeIds
           : defaultFormikValues.assigneeIds,

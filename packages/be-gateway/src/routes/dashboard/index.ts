@@ -9,11 +9,11 @@ import {
   mdDBoardDelComponent,
   mdDBoardGetComponents,
   mdDBoardQueryColumn,
-  mdDBoardQueryBurnDown,
+  mdDBoardQueryBurnChart,
   mdDBoardQuerySum,
   mdDboardGetDefault
 } from '@shared/models'
-import { DashboardComponent } from '@prisma/client'
+import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 
 const router = Router()
 
@@ -139,10 +139,11 @@ router.post('/dboard/query-column', async (req: AuthRequest, res) => {
   }
 })
 
-router.post('/dboard/query-burndown', async (req: AuthRequest, res) => {
+router.post('/dboard/query-burnchart/:type', async (req: AuthRequest, res) => {
   try {
+    const type = req.params.type as DashboardComponentType
     const config = req.body as IDBComponentConfig
-    const result = await mdDBoardQueryBurnDown(config)
+    const result = await mdDBoardQueryBurnChart(config, type)
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)

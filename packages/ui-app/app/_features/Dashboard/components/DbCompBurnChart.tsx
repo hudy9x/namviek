@@ -2,8 +2,9 @@ import Chart from 'react-apexcharts'
 import { IDbCompProps, refactorConfig } from '../type'
 import DbCompDelete from './DbCompDelete'
 import { useEffect, useState } from 'react'
-import { IDBComponentConfig, dboardQueryBurndown } from '@/services/dashboard'
+import { IDBComponentConfig, dboardQueryBurnChart } from '@/services/dashboard'
 import { ApexOptions } from "apexcharts";
+import { DashboardComponentType } from '@prisma/client'
 
 interface ISetting {
   options: ApexOptions
@@ -27,6 +28,9 @@ const defaultSetting: ISetting = {
     xaxis: {
       categories: [],
     },
+    stroke: {
+      curve: 'smooth'
+    }
   },
   series: [{
     name: "Actual",
@@ -39,24 +43,29 @@ const defaultSetting: ISetting = {
   ]
 }
 
-export const DbCompBurnDownChart = ({ id, config, title }: IDbCompProps) => {
+export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
 
   const [setting, setSetting] = useState(defaultSetting)
 
   useEffect(() => {
     const newConfig = refactorConfig(config)
 
-    dboardQueryBurndown(newConfig as IDBComponentConfig).then(res => {
+    dboardQueryBurnChart(newConfig as IDBComponentConfig, type as DashboardComponentType ).then(res => {
       const { status, data } = res.data
       if (status !== 200) {
         return
       }
 
-      const updateSetting = {
+      const updateSetting: ISetting = {
         options: {
           ...defaultSetting.options,
           xaxis: {
             categories: data.dates,
+          },
+          title: {
+            ...defaultSetting.options.title,
+            text: title
+
           }
         },
         series: [{
@@ -73,10 +82,9 @@ export const DbCompBurnDownChart = ({ id, config, title }: IDbCompProps) => {
     }).catch((err) => {
       console.log(err)
     })
-  }, [config])
+  }, [config, type])
 
   return (
-
     <div className="col-span-2 mt-3 bg-white border rounded-md shadow-sm pt-3 relative">
       <DbCompDelete id={id} />
       <Chart

@@ -1,3 +1,4 @@
+import { DashboardComponentType } from '@prisma/client'
 import { lastDayOfMonth, subDays } from 'date-fns'
 
 type DateOperation = '>' | '>=' | '=' | '<' | '<='
@@ -11,6 +12,7 @@ export interface ICompConfig {
 export interface IDbCompProps {
   id: string
   title: string
+  type?: DashboardComponentType
   config: ICompConfig
 }
 

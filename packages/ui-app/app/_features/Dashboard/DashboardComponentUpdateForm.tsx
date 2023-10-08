@@ -32,6 +32,10 @@ export default function DashboardComponentUpdateForm({
     }
   })
 
+  const isBurnChart =
+    formik.values.type === DashboardComponentType.BURNDOWN ||
+    formik.values.type === DashboardComponentType.BURNUP
+  console.log(isBurnChart, '----> isBurnChart')
   return (
     <div>
       <div className="flex items-center gap-2 mb-2 -mt-[3px]">
@@ -61,7 +65,7 @@ export default function DashboardComponentUpdateForm({
           />
         </FormGroup>
 
-        {formik.values.type !== DashboardComponentType.BURNDOWN ? (
+        {isBurnChart ? null : (
           <ListPreset
             title="Chart type"
             className="w-full"
@@ -79,28 +83,31 @@ export default function DashboardComponentUpdateForm({
               }
             ]}
           />
-        ) : null}
+        )}
 
         {formik.values.type === DashboardComponentType.COLUMN ? (
           <DboardCompColumnUpdateForm formik={formik} />
         ) : null}
 
-        {formik.values.type === DashboardComponentType.BURNDOWN ? null : <>
-          <MultiMemberPicker
-            title="Assignees"
-            value={formik.values.assigneeIds}
-            onChange={val => {
-              formik.setFieldValue('assigneeIds', val)
-            }}
-          />
-          <StatusSelectMultiple
-            title="Status"
-            value={formik.values.statusIds}
-            onChange={val => {
-              formik.setFieldValue('statusIds', val)
-            }}
-          />
-        </>}
+        <MultiMemberPicker
+          title="Assignees"
+          value={formik.values.assigneeIds}
+          onChange={val => {
+            formik.setFieldValue('assigneeIds', val)
+          }}
+        />
+
+        {isBurnChart ? null : (
+          <>
+            <StatusSelectMultiple
+              title="Status"
+              value={formik.values.statusIds}
+              onChange={val => {
+                formik.setFieldValue('statusIds', val)
+              }}
+            />
+          </>
+        )}
 
         {/* <FormGroup title="Priority"> */}
         {/* <ListPreset */}
@@ -111,8 +118,9 @@ export default function DashboardComponentUpdateForm({
         {/*   ]} */}
         {/* /> */}
 
-        {formik.values.type === DashboardComponentType.BURNDOWN ? (
+        {isBurnChart ? (
           <ListPreset
+            title="Date"
             className="w-full"
             defaultOption={{ id: '', title: '📆' }}
             value={formik.values.date[1]}
@@ -141,54 +149,56 @@ export default function DashboardComponentUpdateForm({
 
         {/* </FormGroup> */}
 
-        {formik.values.type === DashboardComponentType.BURNDOWN ? null : <>
+        {isBurnChart ? null : (
           <>
-            <FormGroup
-              title="Date"
-              helper="If one of them selected, the other must be selected">
-              <ListPreset
-                defaultOption={{ id: '', title: '➗' }}
-                className="w-[300px]"
-                value={formik.values.date[0]}
-                onChange={val => {
-                  const date = [...formik.values.date]
-                  date[0] = val
-                  formik.setFieldValue('date', date)
-                }}
-                options={[
-                  { id: '=', title: 'In (=)' },
-                  { id: '>', title: 'Greater than (>)' },
-                  { id: '<', title: 'Less than (<)' }
-                ]}
-              />
+            <>
+              <FormGroup
+                title="Date"
+                helper="If one of them selected, the other must be selected">
+                <ListPreset
+                  defaultOption={{ id: '', title: '➗' }}
+                  className="w-[300px]"
+                  value={formik.values.date[0]}
+                  onChange={val => {
+                    const date = [...formik.values.date]
+                    date[0] = val
+                    formik.setFieldValue('date', date)
+                  }}
+                  options={[
+                    { id: '=', title: 'In (=)' },
+                    { id: '>', title: 'Greater than (>)' },
+                    { id: '<', title: 'Less than (<)' }
+                  ]}
+                />
 
-              <ListPreset
-                className="w-full"
-                defaultOption={{ id: '', title: '📆' }}
-                value={formik.values.date[1]}
-                onChange={val => {
-                  const date = [...formik.values.date]
-                  date[1] = val
-                  formik.setFieldValue('date', date)
-                }}
-                options={[
-                  { id: 'today', title: 'Today' },
-                  { id: 'week', title: 'This week' },
-                  { id: 'month', title: 'This month' }
-                ]}
-              />
-            </FormGroup>
+                <ListPreset
+                  className="w-full"
+                  defaultOption={{ id: '', title: '📆' }}
+                  value={formik.values.date[1]}
+                  onChange={val => {
+                    const date = [...formik.values.date]
+                    date[1] = val
+                    formik.setFieldValue('date', date)
+                  }}
+                  options={[
+                    { id: 'today', title: 'Today' },
+                    { id: 'week', title: 'This week' },
+                    { id: 'month', title: 'This month' }
+                  ]}
+                />
+              </FormGroup>
 
-            <Form.Checkbox
-              checked={formik.values.fixed}
-              onChange={val => {
-                formik.setFieldValue('fixed', val)
-              }}
-              name="fixed"
-              desc="Make this chart not be affected by input"
-            />
+              <Form.Checkbox
+                checked={formik.values.fixed}
+                onChange={val => {
+                  formik.setFieldValue('fixed', val)
+                }}
+                name="fixed"
+                desc="Make this chart not be affected by input"
+              />
+            </>
           </>
-        </>}
+        )}
 
         <div className="flex items-center justify-end gap-3">
           <Button title="Cancel" onClick={onBack} />

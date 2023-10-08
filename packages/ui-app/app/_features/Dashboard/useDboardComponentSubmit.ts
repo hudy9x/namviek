@@ -125,7 +125,7 @@ export const useDboardComponentSubmit = ({
     }
 
     // operator and datestring must required if one of them is selected
-    if (date.length && type !== DashboardComponentType.BURNDOWN) {
+    if (date.length && (type !== DashboardComponentType.BURNDOWN && type !== DashboardComponentType.BURNUP)) {
       const dateLen = date.filter(Boolean).length
       if (dateLen < 2) {
         messageError('Please input both operator and date')
@@ -187,7 +187,11 @@ export const useDboardComponentSubmit = ({
       })
     }
 
-    if (type === DashboardComponentType.BURNDOWN) {
+    if (type === DashboardComponentType.BURNUP || type === DashboardComponentType.BURNDOWN) {
+      let assigneeIds: string[] = []
+      if (xaxis === 'ASSIGNEE') {
+        assigneeIds = mergedValues.assigneeIds
+      }
 
       createComponent({
         dashboardId: dboardId,
@@ -196,6 +200,7 @@ export const useDboardComponentSubmit = ({
         config: {
           projectIds,
           date,
+          assigneeIds,
         }
       })
     }
