@@ -9,7 +9,8 @@ import {
   HiOutlineChartPie,
   HiOutlineServerStack,
   HiOutlineCog6Tooth,
-  HiOutlineStar
+  HiOutlineStar,
+  HiOutlineEye
 } from 'react-icons/hi2'
 import { Button } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -27,7 +28,7 @@ function ViewAllBtn() {
         triggerComponent={
           <Button
             leadingIcon={<AiOutlinePlus />}
-            className="uppercase text-xs"
+            className="text-xs uppercase"
             size="sm"
           />
         }
@@ -66,6 +67,13 @@ export default function ProjectSidebar() {
       icon: HiOutlineServerStack,
       active: pathname.includes('/project/') || pathname.includes('/project'),
       children: ProjectList
+    },
+    {
+      title: 'Vision',
+      href: `/${orgID}/vision`,
+      // badge: ViewAllBtn,
+      icon: HiOutlineEye,
+      active: pathname.includes('/vision'),
     },
     {
       title: 'Reports',

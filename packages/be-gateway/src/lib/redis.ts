@@ -76,33 +76,35 @@ export const setJSONCache = (
   key: CACHE_KEY,
   value: RedisJSONValue | RedisJSONValue[]
 ) => {
-  if (!connected) {
-    return null
-  }
-  try {
-    redis.set(genKey(key), JSON.stringify(value))
-  } catch (error) {
-    console.log('set redis cache error')
-  }
+  // if (!connected) {
+  //   return null
+  // }
+  // try {
+  //   redis.set(genKey(key), JSON.stringify(value))
+  // } catch (error) {
+  //   console.log('set redis cache error')
+  // }
+  return null;
 }
 
 export const getJSONCache = async (key: CACHE_KEY) => {
-  if (!connected) {
-    return null
-  }
+  // if (!connected) {
+  //   return null
+  // }
 
-  try {
-    const value = await redis.get(genKey(key))
-    const parseValue = JSON.parse(value)
+  // try {
+  //   const value = await redis.get(genKey(key))
+  //   const parseValue = JSON.parse(value)
 
-    if (Object.keys(parseValue).length) {
-      return parseValue
-    }
+  //   if (Object.keys(parseValue).length) {
+  //     return parseValue
+  //   }
 
-    return null
-  } catch (error) {
-    return null
-  }
+  //   return null
+  // } catch (error) {
+  //   return null
+  // }
+  return null;
 }
 
 export const delCache = async (key: CACHE_KEY) => {
