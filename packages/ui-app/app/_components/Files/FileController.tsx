@@ -25,56 +25,6 @@ export default function FileUpload({
   const idRef = useRef(randomId())
   const [previewFiles, setPreviewFiles] = useState<IFileItem[]>([])
 
-  const onFileHandler = async (files: FileList) => {
-    if (uploading) {
-      messageWarning('Wait a sec, upload is running')
-      return
-    }
-
-    const previewFiles: IFileItem[] = []
-    const uploadFileData: IFileUploadItem[] = []
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      const randId = randomId()
-
-      const sliceName = file.name.split('.')
-      previewFiles.push({
-        randId,
-        name: file.name,
-        uploading: true,
-        ext: sliceName[sliceName.length - 1],
-        size: file.size,
-        mimeType: file.type,
-        keyName: '',
-        url: window.URL.createObjectURL(file)
-      })
-
-      uploadFileData.push({
-        randId,
-        data: file
-      })
-    }
-
-    setUploading(true)
-    // displays images first
-    setPreviewFiles(prev => [...previewFiles, ...prev])
-
-    uploadFileToS3(uploadFileData).then(result => {
-      setPreviewFiles(prev =>
-        prev.map(f => {
-          if (!f.randId) return f
-
-          const found = result.find(r => r.randId === f.randId)
-          if (found) {
-            return { ...f, ...found }
-          }
-          return f
-        })
-      )
-
-      setUploading(false)
-    })
-  }
 
   const onDropFileChange = async (ev: DragEvent<HTMLDivElement>) => {
     ev.preventDefault()

@@ -1,9 +1,4 @@
-import { useEffect } from 'react'
-import {
-  HiOutlineCamera,
-  HiOutlineDocument,
-  HiOutlineDocumentText
-} from 'react-icons/hi2'
+import { HiOutlineCamera } from 'react-icons/hi2'
 import { useFileStorageContext } from './context'
 
 const isImage = (mimeType: string) => {
@@ -69,7 +64,7 @@ export default function FileThumb({
         onClick={onView}
         className="bg-gray-100 group cursor-pointer relative dark:bg-gray-900 border-r dark:border-gray-700 rounded-l-md max-h-[150px] w-[200px] shrink-0">
         <img alt={name} className="h-auto w-auto rounded-l-md" src={src} />
-        <HiOutlineCamera className="absolute left-2 bottom-2 group-hover:opacity-100 opacity-0 w-7 h-7 p-1.5 rounded-md bg-black/50" />
+        <HiOutlineCamera className="absolute left-2 bottom-2 text-gray-200 group-hover:opacity-100 opacity-0 w-7 h-7 p-1.5 rounded-md bg-black/50" />
       </div>
     )
   }
@@ -83,10 +78,6 @@ export default function FileThumb({
           src={getIconUrl(ext)}
           className="w-[50px] px-1 py-1.5 bg-white border rounded-md"
         />
-        {/* <HiOutlineDocumentText className="w-14 h-14 p-1 border rounded-md bg-white text-gray-500" /> */}
-        {/* <span className="absolute bottom-2 left-1/2 uppercase text-[10px] border rounded-md bg-white px-2 py-0.5"> */}
-        {/*   .{ext} */}
-        {/* </span> */}
       </div>
     </div>
   )

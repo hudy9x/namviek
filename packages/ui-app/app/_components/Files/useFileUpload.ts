@@ -4,7 +4,7 @@ import {
   storagePutFile,
   storageSaveToDrive
 } from '@/services/storage'
-import { FileOwnerType, FileType } from '@prisma/client'
+import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useSearchParams } from 'next/navigation'
 
 export type IFileItem = {
@@ -18,6 +18,7 @@ export type IFileItem = {
   mimeType: string
   data?: File
   url: string
+  createdAt?: Date
 }
 
 export type IFileUploadItem = {
@@ -48,8 +49,6 @@ export default function useFileUpload() {
       const keyName = name as string
       await storagePutFile(presignedUrl, file)
 
-      console.time('save-to-drive')
-
       const result = await storageSaveToDrive({
         organizationId: orgID,
         projectId,
@@ -63,9 +62,7 @@ export default function useFileUpload() {
         ownerType: FileOwnerType.TASK
       })
 
-      console.timeEnd('save-to-drive')
-
-      const fileData = result.data.data
+      const fileData = result.data.data as FileStorage
 
       return {
         id: fileData.id,
@@ -76,6 +73,7 @@ export default function useFileUpload() {
         size: file.size,
         mimeType: file.type,
         keyName: name,
+        createdAt: fileData.createdAt || undefined,
         url
       }
     } catch (error) {

@@ -113,6 +113,7 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
 router.get('/get-files', async (req: AuthRequest, res) => {
   const { ids } = req.query as { ids: string[] }
+  console.log('get files')
 
   try {
     const results = await mdStorageGet(ids)

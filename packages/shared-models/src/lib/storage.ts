@@ -11,7 +11,8 @@ export const mdStorageGet = async (ids: string[]) => {
   return fileStorageModel.findMany({
     where: {
       id: { in: ids }
-    }
+    },
+    orderBy: { createdAt: 'desc' }
   })
 }
 

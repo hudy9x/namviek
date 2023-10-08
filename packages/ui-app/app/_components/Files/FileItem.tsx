@@ -3,6 +3,7 @@ import FileThumb from './FileThumb'
 import { IFileItem } from './useFileUpload'
 import AbsoluteLoading from '../AbsoluateLoading'
 import FileDelete from './FileDelete'
+import { format, formatDistanceToNow } from 'date-fns'
 
 const generateSizeStr = (size: number) => {
   const n = size / 1024
@@ -22,7 +23,12 @@ const generateSizeStr = (size: number) => {
 }
 
 export default function FileItem({ data }: { data: IFileItem }) {
-  const { name, url, ext, mimeType, uploading, id } = data
+  const { name, url, ext, mimeType, uploading, id, createdAt } = data
+
+  const createdDate = createdAt
+    ? formatDistanceToNow(new Date(createdAt))
+    : null
+  const createdTime = createdAt ? format(new Date(createdAt), 'HH:mm') : null
 
   return (
     <div className="file-item">
@@ -30,12 +36,20 @@ export default function FileItem({ data }: { data: IFileItem }) {
       <FileThumb {...{ name, src: url, ext, type: mimeType, id: id || '' }} />
 
       <div className="px-3 py-2">
-        <h2 className="text-gray-600 dark:text-gray-400 text-sm">
+        <h2
+          className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2"
+          title={data.name}>
           {data.name}
         </h2>
         <span className="text-gray-400 dark:text-gray-500 text-xs">
-          {generateSizeStr(data.size)}
+          {/* {generateSizeStr(data.size)} */}
         </span>
+        <div className="space-x-2">
+          <span className="text-gray-400 dark:text-gray-500 text-xs">
+            Added {createdDate} at {createdTime}
+          </span>
+        </div>
+
         <div className="mt-1.5 space-x-1.5">
           {data.id ? (
             <FileDelete id={data.id} />
