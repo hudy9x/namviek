@@ -1,14 +1,14 @@
 import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
-import MemberPicker from '../../../_components/MemberPicker'
-import PrioritySelect from '../../../_components/PrioritySelect'
-import StatusSelect from '../../../_components/StatusSelect'
+import MemberPicker from '@/components/MemberPicker'
+import PrioritySelect from '@/components/PrioritySelect'
+import StatusSelect from '@/components/StatusSelect'
 import { TaskPriority, TaskStatus } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
-import FileUpload from '@/components/Files/FileUpload'
+import FileControl from '@/components/FileKits/FileControl'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -149,13 +149,15 @@ export default function TaskForm({
               formik.setFieldValue('desc', v)
             }}
           />
-          {isUpdate ? (
-            <FileUpload attachedFileIds={refDefaultValue.current.fileIds} />
-          ) : null}
+          {/* {isUpdate ? ( */}
+          {/*   <FileUpload attachedFileIds={refDefaultValue.current.fileIds} /> */}
+          {/* ) : null} */}
+          {isUpdate ? <FileControl /> : null}
         </div>
         <div
-          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'w-[200px]'
-            }  shrink-0`}>
+          className={`task-form-right-actions space-y-3 ${
+            isCreate ? 'w-full' : 'w-[200px]'
+          }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}

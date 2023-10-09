@@ -11,6 +11,7 @@ export type IFileItem = {
   mimeType: string
   data?: File
   url: string
+  createdAt?: Date
 }
 
 export type IFileUploadItem = {
@@ -18,16 +19,28 @@ export type IFileUploadItem = {
   data: File
 }
 
-interface IFileStorageContextProps {
+interface IFileKitContextProps {
+  uploading: boolean
+  setUploading: Dispatch<SetStateAction<boolean>>
+  loading: boolean
+  setLoading: Dispatch<SetStateAction<boolean>>
   previewFiles: IFileItem[]
   selected: number
   setPreviewFiles: Dispatch<SetStateAction<IFileItem[]>>
   setSelected: Dispatch<SetStateAction<number>>
 }
 
-const FileStorageContext = createContext<IFileStorageContextProps>({
+const FileKitContext = createContext<IFileKitContextProps>({
+  loading: false,
+  uploading: false,
   previewFiles: [],
   selected: -1,
+  setUploading: () => {
+    console.log(1)
+  },
+  setLoading: () => {
+    console.log(1)
+  },
   setSelected: () => {
     console.log(1)
   },
@@ -36,10 +49,10 @@ const FileStorageContext = createContext<IFileStorageContextProps>({
   }
 })
 
-export const FileStorageProvider = FileStorageContext.Provider
+export const FileKitProvider = FileKitContext.Provider
 
-export const useFileStorageContext = () => {
-  const context = useContext(FileStorageContext)
+export const useFileKitContext = () => {
+  const context = useContext(FileKitContext)
   return context
 }
 

@@ -1,38 +1,5 @@
 import { HiOutlineCamera } from 'react-icons/hi2'
-import { useFileStorageContext } from './context'
-
-const isImage = (mimeType: string) => {
-  return mimeType.startsWith('image/')
-}
-
-const iconNames = {
-  xlsx: 'xlsx.png',
-  xls: 'xlsx.png',
-  doc: 'doc.png',
-  docx: 'doc.png',
-  pptx: 'ppt.png',
-  ppt: 'ppt.png',
-  zip: 'zip.png',
-  rar: 'rar.png',
-  js: 'js.png',
-  ts: 'js.png',
-  txt: 'txt.png',
-  pdf: 'pdf.png',
-  exe: 'exe.png',
-  css: 'css.png',
-  psd: 'psd.png',
-  xml: 'xml.png',
-  json: 'json.png',
-  csv: 'csv.png',
-  mp3: 'mp3.png'
-}
-
-const getIconUrl = (ext: string) => {
-  if (ext in iconNames)
-    return `/filepacks/${iconNames[ext as keyof typeof iconNames]}`
-
-  return `/filepacks/file.png`
-}
+import { useFileKitContext, isImage, getIconUrl } from './context'
 
 export default function FileThumb({
   name,
@@ -47,7 +14,7 @@ export default function FileThumb({
   type: string
   id: string
 }) {
-  const { setSelected, previewFiles } = useFileStorageContext()
+  const { setSelected, previewFiles } = useFileKitContext()
   const onView = () => {
     console.log('asdf', id)
     if (!id) return

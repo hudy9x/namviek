@@ -1,6 +1,6 @@
 import { Button } from '@shared/ui'
 import FileThumb from './FileThumb'
-import { IFileItem } from './useFileUpload'
+import { IFileItem } from './context'
 import AbsoluteLoading from '../AbsoluateLoading'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'

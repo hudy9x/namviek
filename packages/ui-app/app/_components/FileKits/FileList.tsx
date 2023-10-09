@@ -1,9 +1,9 @@
 import { Button } from '@shared/ui'
 import FileItem from './FileItem'
-import { IFileItem } from './useFileUpload'
+import { IFileItem } from './context'
 import { useState } from 'react'
 
-export default function FilePreview({ files }: { files: IFileItem[] }) {
+export default function FileList({ files }: { files: IFileItem[] }) {
   const [viewMore, setViewMore] = useState(false)
   const n = 3
   const sliced = files.slice(n)
@@ -18,8 +18,8 @@ export default function FilePreview({ files }: { files: IFileItem[] }) {
 
       {viewMore
         ? sliced.map(file => {
-          return <FileItem key={file.id || file.randId} data={file} />
-        })
+            return <FileItem key={file.id || file.randId} data={file} />
+          })
         : null}
 
       {sliced.length ? (

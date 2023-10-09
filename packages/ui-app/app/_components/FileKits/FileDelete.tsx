@@ -1,13 +1,12 @@
-import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import { storageDelFile } from '@/services/storage'
 import { Button, confirmAlert, messageError, messageSuccess } from '@shared/ui'
 import { useParams, useSearchParams } from 'next/navigation'
-import { IFileItem, useFileStorageContext } from './context'
+import { IFileItem, useFileKitContext } from './context'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 
 export default function FileDelete({ id }: { id: string }) {
-  const { previewFiles, setPreviewFiles } = useFileStorageContext()
+  const { previewFiles, setPreviewFiles } = useFileKitContext()
 
   const { user } = useUser()
   const { updateTask } = useTaskStore()

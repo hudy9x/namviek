@@ -6,27 +6,11 @@ import {
 } from '@/services/storage'
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useSearchParams } from 'next/navigation'
-
-export type IFileItem = {
-  id?: string
-  randId?: string
-  uploading: boolean
-  name: string
-  size: number
-  ext: string
-  keyName?: string
-  mimeType: string
-  data?: File
-  url: string
-  createdAt?: Date
-}
-
-export type IFileUploadItem = {
-  randId: string
-  data: File
-}
+import { IFileItem, IFileUploadItem, useFileKitContext } from './context'
+import { messageWarning, randomId } from '@shared/ui'
 
 export default function useFileUpload() {
+  const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
   const { orgID, projectId } = useParams()
   const sp = useSearchParams()
   const taskId = sp.get('taskId')
@@ -115,8 +99,60 @@ export default function useFileUpload() {
     return fileItems
   }
 
+  const onFileHandler = async (files: FileList) => {
+    if (uploading) {
+      messageWarning('Wait a sec, upload is running')
+      return
+    }
+
+    const previewFiles: IFileItem[] = []
+    const uploadFileData: IFileUploadItem[] = []
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const randId = randomId()
+
+      const sliceName = file.name.split('.')
+      previewFiles.push({
+        randId,
+        name: file.name,
+        uploading: true,
+        ext: sliceName[sliceName.length - 1],
+        size: file.size,
+        mimeType: file.type,
+        keyName: '',
+        url: window.URL.createObjectURL(file)
+      })
+
+      uploadFileData.push({
+        randId,
+        data: file
+      })
+    }
+
+    setUploading(true)
+    // displays images first
+    setPreviewFiles(prev => [...previewFiles, ...prev])
+
+    uploadFileToS3(uploadFileData).then(result => {
+      setPreviewFiles(prev =>
+        prev.map(f => {
+          if (!f.randId) return f
+
+          const found = result.find(r => r.randId === f.randId)
+          if (found) {
+            return { ...f, ...found }
+          }
+          return f
+        })
+      )
+
+      setUploading(false)
+    })
+  }
+
   return {
     uploadFileToS3,
-    doUpload
+    doUpload,
+    onFileHandler
   }
 }

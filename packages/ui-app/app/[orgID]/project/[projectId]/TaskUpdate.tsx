@@ -7,6 +7,7 @@ import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
+import FileKitContainer from '@/components/FileKits'
 
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
@@ -121,11 +122,13 @@ export const TaskUpdate = () => {
           title="Update task"
           content={
             <>
-              <TaskForm
-                isUpdate={true}
-                defaultValue={currentTask}
-                onSubmit={v => handleSubmit(v)}
-              />
+              <FileKitContainer fileIds={currentTask.fileIds}>
+                <TaskForm
+                  isUpdate={true}
+                  defaultValue={currentTask}
+                  onSubmit={v => handleSubmit(v)}
+                />
+              </FileKitContainer>
             </>
           }
         />
