@@ -7,7 +7,7 @@ import {
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, IFileUploadItem, useFileKitContext } from './context'
-import { messageWarning, randomId } from '@shared/ui'
+import { messageError, messageWarning, randomId } from '@shared/ui'
 
 export default function useFileUpload() {
   const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
@@ -104,14 +104,21 @@ export default function useFileUpload() {
       messageWarning('Wait a sec, upload is running')
       return
     }
+    const maxSizeNum = 5
+    const maxSize = maxSizeNum * 1024 * 1024 // Mb
 
     const previewFiles: IFileItem[] = []
     const uploadFileData: IFileUploadItem[] = []
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
       const randId = randomId()
-
       const sliceName = file.name.split('.')
+
+      if (file.size > maxSize) {
+        messageError(`File: ${file.name} exceeds ${maxSizeNum} Mb`)
+        return
+      }
+
       previewFiles.push({
         randId,
         name: file.name,
