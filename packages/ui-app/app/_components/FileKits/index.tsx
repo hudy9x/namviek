@@ -4,6 +4,7 @@ import './style.css'
 import FileDrop from './FileDrop'
 import FileGet from './FileGet'
 import FilePaste from './FilePaste'
+import FileCarousel from './FileCarousel'
 
 export default function FileKitContainer({
   fileIds,
@@ -32,6 +33,7 @@ export default function FileKitContainer({
       <FileGet fileIds={fileIds} />
       <FilePaste />
       <FileDrop>{children}</FileDrop>
+      <FileCarousel />
     </FileKitProvider>
   )
 }

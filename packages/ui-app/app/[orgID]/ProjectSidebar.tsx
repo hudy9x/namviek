@@ -64,8 +64,8 @@ export default function ProjectSidebar() {
       href: `/${orgID}/project`,
       badge: ViewAllBtn,
       icon: HiOutlineServerStack,
-      active: pathname.includes('/project/') || pathname.includes('/project'),
-      children: ProjectList
+      active: pathname.includes('/project/') || pathname.includes('/project')
+      // children: ProjectList
     },
     {
       title: 'Reports',

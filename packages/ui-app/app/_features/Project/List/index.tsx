@@ -10,6 +10,7 @@ import ProjectAddModal from '../Add/ProjectAddModal'
 import { useRouter } from 'next/navigation'
 import ProjectIconPicker from '@/components/ProjectIconPicker'
 import { format, formatDistanceToNow } from 'date-fns'
+import FavoriteAdd from '@/features/Favorites/FavoriteAdd'
 
 export default function ProjectList() {
   const { projects, addAllProject, selectProject } = useProjectStore(
@@ -71,15 +72,15 @@ export default function ProjectList() {
               const createdAtString = createdAt
                 ? format(new Date(createdAt), 'PP')
                 : ''
+              const url = `${orgID}/project/${project.id}?mode=task`
               return (
                 <div
                   key={project.id}
                   onClick={() => {
                     onSelectProject(project.id)
-                    const url = `${orgID}/project/${project.id}?mode=task`
                     push(url)
                   }}>
-                  <div className="project-item group">
+                  <div className="project-item group relative">
                     <ProjectIconPicker
                       icon={project.icon || ''}
                       projectId={project.id}
@@ -88,6 +89,13 @@ export default function ProjectList() {
                       <h2 className="text-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">
                         {project.name}
                       </h2>
+                      <FavoriteAdd
+                        className="absolute top-5 right-3 opacity-0 group-hover:opacity-100"
+                        name={project.name}
+                        icon={project.icon || ''}
+                        link={url}
+                        type="PROJECT"
+                      />
                       <p className="text-xs text-gray-400 dark:text-gray-500">
                         <span
                           title={createdAtString}
