@@ -8,6 +8,7 @@ import ProgressBar from '@/components/ProgressBar'
 import TaskDate from '../project/[projectId]/views/TaskDate'
 import { taskList } from './dummy'
 import TaskProject from '../project/[projectId]/views/TaskProject'
+import VisionCreate from './VisionCreate'
 
 export default function Page() {
   const { visions } = useVisionStore()
@@ -84,6 +85,9 @@ export default function Page() {
                 </div>
               )
             })}
+          </div>
+          <div className="absolute bottom-10 right-10 z-[11] ">
+            <VisionCreate />
           </div>
         </div>
       </div>
