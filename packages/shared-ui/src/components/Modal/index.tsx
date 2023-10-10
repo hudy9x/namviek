@@ -26,7 +26,6 @@ declare global {
   }
 }
 
-
 export default function Modal({
   triggerBy,
   visible = false,
@@ -88,11 +87,6 @@ export default function Modal({
             ) : null}
           </Dialog.Content>
         </Dialog.Overlay>
-        {/* <div className="fixed top-0 left-0 w-screen h-screen z-20"> */}
-        {/*   <div className="relative w-full h-full flex items-center justify-center"> */}
-        {/*     {backdrop ? <Dialog.Overlay className="modal-overlay" /> : null} */}
-        {/*   </div> */}
-        {/* </div> */}
       </Dialog.Portal>
     </Dialog.Root>
   )

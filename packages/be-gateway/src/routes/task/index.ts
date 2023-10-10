@@ -340,18 +340,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   } catch (error) {
     res.status(500).send(error)
   }
-
-  // try {
-  //   console.log('taskdata', taskData)
-  //   const result = await mdTaskUpdate(taskData)
-  //
-  //   await findNDelCaches(key)
-  //   res.json({ status: 200, data: result })
-  //   // res.json({ status: 200 })
-  // } catch (error) {
-  //   console.log(error)
-  //   res.json({ status: 500, error })
-  // }
 })
 
 export default router

@@ -86,25 +86,6 @@ export default function TaskForm({
     }
   })
 
-  // useEffect(() => {
-  //   const submitTimeoutId = submitTimeout.current
-  //
-  //   if (submitTimeoutId) {
-  //     clearTimeout(submitTimeoutId)
-  //   }
-  //
-  //   submitTimeout.current = setTimeout(() => {
-  //     const formikValueStr = JSON.stringify(formik.values)
-  //     const defaultValueStr = JSON.stringify(refDefaultValue.current)
-  //
-  //     if (formikValueStr !== defaultValueStr) {
-  //       formik.submitForm().then(res => {
-  //         console.log(res)
-  //       })
-  //     }
-  //   }, 500) as unknown as number
-  // }, [formik.values])
-
   // select a default status if empty
   useEffect(() => {
     if (statuses.length && !formik.values.taskStatusId) {
@@ -149,15 +130,11 @@ export default function TaskForm({
               formik.setFieldValue('desc', v)
             }}
           />
-          {/* {isUpdate ? ( */}
-          {/*   <FileUpload attachedFileIds={refDefaultValue.current.fileIds} /> */}
-          {/* ) : null} */}
           {isUpdate ? <FileControl /> : null}
         </div>
         <div
-          className={`task-form-right-actions space-y-3 ${
-            isCreate ? 'w-full' : 'w-[200px]'
-          }  shrink-0`}>
+          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'w-[200px]'
+            }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}
