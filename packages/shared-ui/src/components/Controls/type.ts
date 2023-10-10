@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, FocusEvent } from 'react'
 
 interface InputBaseProps {
   title: string
@@ -7,6 +7,7 @@ interface InputBaseProps {
   name: string
   type: string
   onChange: (ev: ChangeEvent<HTMLInputElement>) => void
+  onBlur: (ev: FocusEvent<HTMLInputElement>) => void
   placeholder: string
   helper: string
   error: string
@@ -17,7 +18,7 @@ interface InputBaseProps {
   addon: string
 }
 
-type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value'> & {
+type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value' | 'onBlur'> & {
   onChange: (v: number) => void
   value: number
   maxValue: number
@@ -25,6 +26,7 @@ type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value'> & {
 }
 type TextareaBaseProps = Omit<InputBaseProps, 'onChange'> & {
   onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
+  onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
   rows: number
   cols: number
 }

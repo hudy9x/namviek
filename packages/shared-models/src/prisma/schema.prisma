@@ -111,6 +111,7 @@ model Task {
   taskStatusId String?       @db.ObjectId
   tagIds       String[]      @db.ObjectId
   assigneeIds  String[]      @db.ObjectId
+  fileIds      String[]      @db.ObjectId
   parentTaskId String?       @db.ObjectId
   progress     Int?
   // do not store `point` as objectID, cuz we just need to fill the point value
@@ -160,15 +161,46 @@ type taskAutomateWhenType {
 }
 
 model TaskAutomation {
-  id             String               @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String               @db.ObjectId
-  projectId      String               @db.ObjectId
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String    @db.ObjectId
+  projectId      String    @db.ObjectId
   when           Json
   then           Json
   createdBy      String?
   createdAt      DateTime?
   updatedBy      String?
   updatedAt      DateTime?
+}
+
+enum FileType {
+  FILE
+  FOLDER
+}
+
+enum FileOwnerType {
+  TASK
+  DISCUSSION
+  DOCUMENT
+}
+
+model FileStorage {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String         @db.ObjectId
+  projectId      String         @db.ObjectId
+  name           String
+  keyName        String
+  type           FileType
+  url            String?
+  size           Float?
+  mimeType       String?
+  parentId       String?
+  owner          String?        @db.ObjectId
+  ownerType      FileOwnerType?
+  isDeleted      Boolean?       @default(false)
+  createdBy      String?
+  createdAt      DateTime?
+  deletedAt      DateTime?
+  deletedBy      String?
 }
 
 model Project {

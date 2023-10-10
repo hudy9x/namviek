@@ -1,17 +1,19 @@
 import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
-import MemberPicker from '../../../_components/MemberPicker'
-import PrioritySelect from '../../../_components/PrioritySelect'
-import StatusSelect from '../../../_components/StatusSelect'
+import MemberPicker from '@/components/MemberPicker'
+import PrioritySelect from '@/components/PrioritySelect'
+import StatusSelect from '@/components/StatusSelect'
 import { TaskPriority, TaskStatus } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
+import FileControl from '@/components/FileKits/FileControl'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
+  fileIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
   dueDate: new Date(),
@@ -22,6 +24,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
+  fileIds: string[]
   taskStatusId: string
   priority: TaskPriority
   dueDate: Date
@@ -29,6 +32,7 @@ export interface ITaskDefaultValues {
   progress: number
 }
 interface ITaskFormProps {
+  isUpdate?: boolean
   taskStatusId?: string
   dueDate?: Date
   defaultValue?: ITaskDefaultValues
@@ -37,14 +41,16 @@ interface ITaskFormProps {
 
 export default function TaskForm({
   dueDate,
+  isUpdate = false,
   taskStatusId,
   onSubmit,
   defaultValue = defaultFormikValues
 }: ITaskFormProps) {
-  const [loading, setLoading] = useState(false)
   const params = useParams()
+  const [loading, setLoading] = useState(false)
   const { statuses } = useProjectStatusStore()
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
+  // const submitTimeout = useRef(0)
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
@@ -69,6 +75,7 @@ export default function TaskForm({
       }
 
       const { error, errorArr } = validateTask(mergedValues)
+
       if (error) {
         setLoading(false)
         console.error(errorArr)
@@ -101,66 +108,79 @@ export default function TaskForm({
     }
   }, [statuses])
 
+  const isCreate = !isUpdate
+
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="task-form flex flex-col gap-6">
-      <Form.Input
-        title="Task name"
-        name="title"
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        placeholder="Enter your task name here !"
-      />
-      <MemberPicker
-        title="Assignees"
-        value={formik.values.assigneeIds[0]}
-        onChange={val => {
-          console.log('assignee:', val)
-          formik.setFieldValue('assigneeIds', val)
-        }}
-      />
-      <StatusSelect
-        title="Status"
-        value={formik.values.taskStatusId}
-        onChange={val => {
-          formik.setFieldValue('taskStatusId', val)
-          console.log('status', val)
-        }}
-      />
+      className="task-form space-y-3 gap-6 relative">
+      <div className={`flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
+        <div className="task-form-detail space-y-3 w-full">
+          <Form.Input
+            title="Task name"
+            name="title"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            placeholder="Enter your task name here !"
+          />
+          <Form.TextEditor
+            title="Description"
+            value={formik.values.desc}
+            onChange={v => {
+              formik.setFieldValue('desc', v)
+            }}
+          />
+          {isUpdate ? <FileControl /> : null}
+        </div>
+        <div
+          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'w-[200px]'
+            }  shrink-0`}>
+          <MemberPicker
+            title="Assignees"
+            value={formik.values.assigneeIds[0]}
+            onChange={val => {
+              console.log('assignee:', val)
+              formik.setFieldValue('assigneeIds', val)
+            }}
+          />
+          <StatusSelect
+            title="Status"
+            value={formik.values.taskStatusId}
+            onChange={val => {
+              formik.setFieldValue('taskStatusId', val)
+              console.log('status', val)
+            }}
+          />
 
-      <PrioritySelect
-        title="Priority"
-        value={formik.values.priority}
-        onChange={val => {
-          formik.setFieldValue('priority', val)
-          console.log('alo', val)
-        }}
-      />
-      <DatePicker
-        title="Due date"
-        value={formik.values.dueDate}
-        onChange={d => {
-          formik.setFieldValue('dueDate', d)
-        }}
-      />
-      <Form.TextEditor
-        title="Description"
-        value={formik.values.desc}
-        onChange={v => {
-          formik.setFieldValue('desc', v)
-        }}
-      />
-      <Form.Range
-        title="Progress"
-        step={5}
-        value={formik.values.progress}
-        onChange={v => {
-          formik.setFieldValue('progress', v)
-        }}
-      />
-
-      <Button type="submit" loading={loading} title="Submit" primary block />
+          <PrioritySelect
+            title="Priority"
+            value={formik.values.priority}
+            onChange={val => {
+              formik.setFieldValue('priority', val)
+              console.log('alo', val)
+            }}
+          />
+          <DatePicker
+            title="Due date"
+            value={formik.values.dueDate}
+            onChange={d => {
+              formik.setFieldValue('dueDate', d)
+            }}
+          />
+          <Form.Range
+            title="Progress"
+            step={5}
+            value={formik.values.progress}
+            onChange={v => {
+              formik.setFieldValue('progress', v)
+            }}
+          />
+        </div>
+      </div>
+      <div className="text-right">
+        {/* <Button title="Close" onClick={onClose} /> */}
+        <Button type="submit" loading={loading} title="Submit" primary />
+      </div>
     </form>
   )
 }

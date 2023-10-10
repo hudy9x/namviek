@@ -7,11 +7,12 @@ import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
+import FileKitContainer from '@/components/FileKits'
 
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
   const sp = useSearchParams()
-  const { syncRemoteTaskById, tasks, taskLoading } = useTaskStore()
+  const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
 
   const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
 
@@ -30,6 +31,11 @@ export const TaskUpdate = () => {
     setVisible(true)
   }, [taskId])
 
+  const onClose = () => {
+    setVisible(false)
+    router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+  }
+
   const handleSubmit = (v: ITaskDefaultValues) => {
     if (!taskId) return
 
@@ -40,9 +46,13 @@ export const TaskUpdate = () => {
       updatedAt: new Date()
     }
 
-    // setVisible(false)
-    // updateTask(dataUpdate)
+    updateTask(dataUpdate)
+    onClose()
     refactorTaskFieldByAutomationConfig('task', dataUpdate)
+
+    // clear fileIds cuz we've updated fileIds already
+    // see <FileUpload /> component
+    dataUpdate.fileIds = []
 
     taskUpdate(dataUpdate)
       .then(res => {
@@ -60,8 +70,8 @@ export const TaskUpdate = () => {
         console.log(err)
       })
       .finally(() => {
-        setVisible(false)
-        router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+        // setVisible(false)
+        // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
       })
   }
 
@@ -74,9 +84,11 @@ export const TaskUpdate = () => {
     if (!taskId || !tasks || !tasks.length) return
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
+
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
+        fileIds: currentTask.fileIds || [],
         taskStatusId:
           currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
         priority: currentTask.priority
@@ -100,6 +112,7 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
+          size="lg"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)
@@ -109,10 +122,13 @@ export const TaskUpdate = () => {
           title="Update task"
           content={
             <>
-              <TaskForm
-                defaultValue={currentTask}
-                onSubmit={v => handleSubmit(v)}
-              />
+              <FileKitContainer fileIds={currentTask.fileIds}>
+                <TaskForm
+                  isUpdate={true}
+                  defaultValue={currentTask}
+                  onSubmit={v => handleSubmit(v)}
+                />
+              </FileKitContainer>
             </>
           }
         />

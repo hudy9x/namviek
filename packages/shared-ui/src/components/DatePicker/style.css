@@ -3,7 +3,7 @@
 }
 
 [data-radix-popper-content-wrapper] {
-  z-index: 20 !important;
+  z-index: 80 !important;
 }
 
 .popover-arrow {

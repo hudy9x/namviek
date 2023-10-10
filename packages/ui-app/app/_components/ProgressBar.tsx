@@ -22,14 +22,15 @@ export default function ProgressBar({
       title={`${progress || 0}%`}
       className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
       <div
-        className={`${c[0]} text-[10px] font-medium ${c[1]} text-center ${
-          progress > 0 ? 'p-0.5' : 'py-0.5'
-        } leading-none rounded-full`}
+        className={`${c[0]} text-[10px] font-medium ${c[1]} text-center ${progress > 0 ? 'p-0.5' : 'py-0.5'
+          } leading-none rounded-full`}
         style={{ width: `${progress || 0}%` }}>
         {progress >= 20 ? (
           <>{progress + '%'}</>
         ) : (
-          <span className="pl-4 text-gray-600">{progress}%</span>
+          <span className="pl-4 text-gray-600 dark:text-gray-200">
+            {progress}%
+          </span>
         )}
       </div>
     </div>
