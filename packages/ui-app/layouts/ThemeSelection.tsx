@@ -10,13 +10,12 @@ export default function ThemeSelection() {
           className="w-6 h-6 p-0.5 hover:scale-110 border border-yellow-800 bg-yellow-400/10 cursor-pointer rounded-md text-yellow-400"
           onClick={() => setTheme('light')}
         />
-      ) : null}
-      {theme === 'light' ? (
+      ) : (
         <HiOutlineMoon
           className="w-6 h-6 p-1 hover:scale-110 border cursor-pointer rounded-md text-indigo-600 bg-gray-50"
           onClick={() => setTheme('dark')}
         />
-      ) : null}
+      )}
     </section>
   )
 }
