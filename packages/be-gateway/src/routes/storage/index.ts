@@ -138,14 +138,6 @@ router.get('/get-files-by-owner', async (req: AuthRequest, res) => {
   }
 })
 
-router.delete('/del-file', async (req: AuthRequest, res) => {
-  const { id } = req.query as { id: string }
-
-  res.json({
-    status: 200
-  })
-})
-
 router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
   const { id: uid } = req.authen
   const {
