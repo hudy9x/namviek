@@ -47,6 +47,12 @@ export default function ProjectSidebar() {
 
   const menus = [
     {
+      title: 'My widget',
+      href: `/${orgID}/my-widget`,
+      icon: HiOutlineBriefcase,
+      active: pathname.includes('/my-widget')
+    },
+    {
       title: 'My works',
       href: `/${orgID}/my-works`,
       icon: HiOutlineBriefcase,
