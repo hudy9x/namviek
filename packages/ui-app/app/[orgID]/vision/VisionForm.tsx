@@ -8,6 +8,7 @@ import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import MemberPicker from '@/components/MemberPicker'
 import StatusSelect from '@/components/StatusSelect'
 import PrioritySelect from '@/components/PrioritySelect'
+import OrganizationSelect from '@/components/OrganizationSelect'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -120,9 +121,9 @@ export default function VisionForm({
           formik.setFieldValue('assigneeIds', val)
         }}
       />
-      <StatusSelect
-        title="Status"
-        value={formik.values.taskStatusId}
+      <OrganizationSelect
+        title="Organization"
+        value={formik.values.orgId}
         onChange={val => {
           formik.setFieldValue('taskStatusId', val)
           console.log('status', val)

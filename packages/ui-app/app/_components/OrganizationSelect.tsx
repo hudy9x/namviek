@@ -1,6 +1,7 @@
 import { Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { useProjectStatusStore } from '../../store/status'
+import { useServiceOrgList } from '@/hooks/useServiceOrgList'
 
 const List = Form.List
 
@@ -25,31 +26,24 @@ export default function OrganizationSelect({
   placeholder
 }: IStatusSelectProps) {
   const { statuses } = useProjectStatusStore()
-  const [options, setOptions] = useState<ListItemValue[]>([])
-  const [val, setVal] = useState(defaultOption)
+  // const [options, setOptions] = useState<ListItemValue[]>([])
+  const [val, setVal] = useState<ListItemValue>(defaultOption)
   const [updateCounter, setUpdateCounter] = useState(0)
 
-  useEffect(() => {
-    if (statuses.length) {
-      setOptions(statuses.map(p => ({ id: p.id + '', title: p.name + '' })))
-    }
-  }, [statuses])
+  const options = useServiceOrgList()
 
   useEffect(() => {
-    if (statuses.length) {
-      const selectedStatus = statuses.find(opt => opt.id === value)
-      selectedStatus &&
-        setVal({ id: selectedStatus.id, title: selectedStatus.name })
+    if (options.length) {
+      const selectedOrg = options.find(opt => opt.id === value)
+      selectedOrg && setVal(selectedOrg)
     }
-  }, [statuses, value])
+  }, [options, value])
 
   useEffect(() => {
     if (updateCounter) {
       onChange && onChange(val.id)
     }
   }, [updateCounter, val])
-
-  const existingStatus = statuses.find(stt => stt.id === val.id)
 
   return (
     <div className={className}>
@@ -61,18 +55,7 @@ export default function OrganizationSelect({
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>
-        <List.Button>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-4 h-4 rounded cursor-pointer"
-              style={{
-                backgroundColor: existingStatus?.color || '#e5e5e5'
-              }}></div>
-            <span className="status-title">
-              {existingStatus?.name ? existingStatus.name : 'None'}
-            </span>
-          </div>
-        </List.Button>
+        <List.Button>Test</List.Button>
         <List.Options>
           {options.map(option => {
             const stt = statuses.find(st => st.id === option.id)
