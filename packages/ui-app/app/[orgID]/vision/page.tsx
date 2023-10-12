@@ -18,7 +18,7 @@ export default function Page() {
       </div>
       <div
         className="task bg-indigo-50/50 dark:bg-[#182031] w-full"
-        style={{ height: `calc(100vh - 53px)` }}>
+        style={{ height: `calc(100vh - 45px)` }}>
         <div className="relative">
           <div className="pb-[300px] pt-4">
             {visions.map(vs => {
@@ -82,12 +82,11 @@ export default function Page() {
               )
             })}
           </div>
-          <div className="absolute bottom-10 right-10 z-[11] ">
-            <VisionCreate />
-          </div>
+        </div>
+        <div className="absolute bottom-10 right-10 z-[11] ">
+          <VisionCreate />
         </div>
       </div>
     </>
   )
 }
-   
