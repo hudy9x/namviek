@@ -260,8 +260,6 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-  console.log('body', req.body)
   const {
     id,
     title,
@@ -301,7 +299,11 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       if (taskStatusId) {
         const doneStatus = await mdTaskStatusWithDoneType(projectId)
         taskData.taskStatusId = taskStatusId
-        taskData.done = doneStatus && doneStatus.id === taskStatusId
+        if (doneStatus && doneStatus.id === taskStatusId) {
+          taskData.done = true
+        }
+      } else {
+        taskData.done = false
       }
 
       if (assigneeIds) {
@@ -346,6 +348,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       res.json({ status: 200, data: result })
     })
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 })

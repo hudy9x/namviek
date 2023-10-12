@@ -1,0 +1,3 @@
+.report-box {
+  @apply border bg-white shadow-sm rounded-md flex justify-center items-center;
+}

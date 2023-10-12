@@ -3,7 +3,6 @@
 import AbsoluteLoading from '@/components/AbsoluateLoading'
 import { useReportContext } from './context'
 import ReactApexChart from 'react-apexcharts'
-import { ApexOptions } from 'apexcharts'
 import { useEffect, useState } from 'react'
 
 export default function ReportWorkProgressChart() {
@@ -11,7 +10,6 @@ export default function ReportWorkProgressChart() {
   const [series, setSeries] = useState([0, 100])
 
   useEffect(() => {
-    console.log('update task', tasks)
     if (tasks.length) {
       let done = 0
       let notDone = 0
@@ -38,7 +36,9 @@ export default function ReportWorkProgressChart() {
             labels: ['Done', 'Not done'],
             colors: ['#210F54', '#2C55FB'],
             legend: {
-              show: false
+              position: 'top',
+              horizontalAlign: 'left',
+              offsetX: 40
             }
           }}
           series={series}
