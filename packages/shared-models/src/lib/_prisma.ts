@@ -14,3 +14,4 @@ export const orgMemberModel = pmClient.organizationMembers
 export const dboardModel = pmClient.dashboard
 export const dboardComponentModal = pmClient.dashboardComponent
 export const taskAutomation = pmClient.taskAutomation
+export const fileStorageModel = pmClient.fileStorage

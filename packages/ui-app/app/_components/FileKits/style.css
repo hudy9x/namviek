@@ -1,0 +1,29 @@
+.file-upload-wrapper {
+  @apply border-2 border-dashed p-3 rounded-md bg-indigo-50/50  hover:border-indigo-400 transition-all;
+  @apply dark:bg-gray-800 dark:border-gray-700 dark:hover:border-gray-500;
+}
+
+.file-upload-wrapper.is-dragging {
+  @apply border-indigo-400 dark:border-gray-500;
+}
+
+.file-item {
+  @apply border bg-white rounded-md text-sm flex relative;
+  @apply hover:border-indigo-500;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:hover:border-gray-500;
+}
+.file-thumb {
+}
+
+.file-area-desc {
+  @apply flex items-center flex-col text-sm gap-2 text-gray-400;
+  @apply border-2 border-dashed rounded-md py-4;
+}
+
+.file-drop-label {
+  @apply absolute z-10 top-0 left-0 w-full h-full rounded-md bg-white/70 backdrop-blur-sm flex items-center justify-center pointer-events-none;
+}
+
+.file-drop-label + * {
+  @apply pointer-events-none;
+}

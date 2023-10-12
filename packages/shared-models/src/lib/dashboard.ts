@@ -73,12 +73,11 @@ type IDBComponentBase = {
   skip?: number
 }
 
-type Task = {
+type TaskChart = {
   id: string
   dueDate: Date | null
   plannedDueDate: Date | null
 }
-
 
 export type IDBComponentConfig = IDBComponentBase & IDBComponentFilter
 
@@ -255,7 +254,7 @@ type TDateChart = {
   dates: number[]
 }
 
-const handleDates = (tasks: Task[]): TDateChart => {
+const handleDates = (tasks: TaskChart[]): TDateChart => {
 
   let planeDateMin = Infinity
   let planeDateMax = -Infinity
@@ -315,7 +314,7 @@ const handleDates = (tasks: Task[]): TDateChart => {
   }
 }
 
-const handleIdeal = (date: TDateChart, tasks: Task[], type: DashboardComponentType) => {
+const handleIdeal = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
   const { planedMinArr, planedDateArr } = date
 
   const totalTask = tasks.length
@@ -345,7 +344,7 @@ const handleIdeal = (date: TDateChart, tasks: Task[], type: DashboardComponentTy
   return type === DashboardComponentType.BURNDOWN ? [totalTask, ...minIdealArr, ...idealArr] : [0, ...minIdealArr, ...idealArr]
 }
 
-const handleActual = (date: TDateChart, tasks: Task[], type: DashboardComponentType) => {
+const handleActual = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
   const { dates, dueDateMin, dueDateMax } = date
 
   const actual = []

@@ -1,43 +1,44 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Organization } from '@prisma/client';
-import Link from 'next/link';
-import { AiOutlinePlus } from 'react-icons/ai';
-import { orgGet } from '../services/organization';
+'use client'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Organization } from '@prisma/client'
+import Link from 'next/link'
+import { AiOutlinePlus } from 'react-icons/ai'
+import { orgGet } from '../services/organization'
 
 export default function RootPage() {
-  const { push } = useRouter();
-  const [orgs, setOrgs] = useState<Organization[]>([]);
-  console.log('root page');
+  const { push } = useRouter()
+  const [orgs, setOrgs] = useState<Organization[]>([])
+  console.log('root page')
   useEffect(() => {
     orgGet().then(res => {
-      const { data, status } = res.data;
+      const { data, status } = res.data
       if (status !== 200) {
-        return;
+        return
       }
 
-      console.log(data);
+      console.log(data)
 
       // if use have no organization
       if (!data || !data.length) {
-        push('/organization/create');
-        return;
+        push('/organization/create')
+        return
       }
 
-      setOrgs(data);
+      setOrgs(data)
 
-      console.log(data);
-    });
-  }, []);
+      console.log(data)
+    })
+  }, [])
 
   return (
     <div className="w-screen h-screen bg-white">
-      <div className='w-full h-[200px] bg-indigo-500'></div>
+      <div className="w-full h-[200px] bg-indigo-500"></div>
       <div className="w-[900px] m-auto -mt-[140px]">
         <h2 className="font-bold text-2xl text-white">Your organizations</h2>
         <p className="text-indigo-200 text-sm mt-2">
-          Select one for work. Next time, we will redirect you to the last selected organization.
+          Select one for work. Next time, we will redirect you to the last
+          selected organization.
         </p>
 
         <div className="grid grid-cols-3 gap-4 mt-6">
@@ -58,10 +59,10 @@ export default function RootPage() {
                   <h2>{org.name}</h2>
                 </div>
               </Link>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
+  )
 }

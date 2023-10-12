@@ -92,7 +92,7 @@ export default function ProjectNav() {
             />
           ) : null}
           {selectedProject?.name || (
-            <span className="text-transparent animate-pulse bg-gray-100 rounded-md">
+            <span className="text-transparent animate-pulse bg-gray-100 dark:bg-gray-700 rounded-md">
               Project
             </span>
           )}

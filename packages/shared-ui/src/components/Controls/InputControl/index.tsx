@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, useEffect, ChangeEvent, FocusEvent } from 'react'
 import Addon from './Addon'
 import InputIcon from './InputIcon'
 import './style.css'
@@ -8,6 +8,7 @@ export default function InputControl({
   title,
   value,
   onChange,
+  onBlur,
   type = 'text',
   name,
   placeholder,
@@ -25,6 +26,10 @@ export default function InputControl({
 
   const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(ev)
+  }
+
+  const onInputBlur = (ev: FocusEvent<HTMLInputElement>) => {
+    onBlur && onBlur(ev)
   }
 
   // useEffect(() => {
@@ -58,6 +63,7 @@ export default function InputControl({
           disabled={disabled}
           readOnly={readOnly}
           onChange={onInputChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           className="form-input"
         />

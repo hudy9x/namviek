@@ -1,5 +1,5 @@
 .btn {
-  @apply border border-gray-300 rounded px-3 py-2 bg-white;
+  @apply border border-gray-200 rounded px-3 py-2 bg-white;
   @apply hover:bg-gray-50 active:bg-gray-100 text-sm;
   @apply inline-flex items-center;
 }

@@ -11,10 +11,11 @@ import {
   mdTaskExport,
   mdTaskStatusQuery,
   mdMemberGetProject,
-  mdTaskDelete
+  mdTaskDelete,
+  mdTaskStatusWithDoneType
 } from '@shared/models'
 
-import { Task, TaskStatus } from '@prisma/client'
+import { Prisma, Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -22,6 +23,7 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
@@ -160,6 +162,10 @@ router.post('/project/task', async (req: AuthRequest, res) => {
 
   const key = [CKEY.TASK_QUERY, projectId]
 
+  const doneStatus = await mdTaskStatusWithDoneType(projectId)
+
+  const done = doneStatus && doneStatus.id === taskStatusId
+
   try {
     const result = await mdTaskAdd({
       title,
@@ -168,6 +174,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       plannedDueDate: dueDate || null,
       assigneeIds,
       desc,
+      done,
+      fileIds: [],
       projectId,
       priority,
       taskStatusId: taskStatusId,
@@ -261,6 +269,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     startDate,
     dueDate,
     assigneeIds,
+    fileIds,
     desc,
     projectId,
     priority,
@@ -272,59 +281,78 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
-
-  const taskData = await mdTaskGetOne(id)
-  const key = [CKEY.TASK_QUERY, taskData.projectId]
-
-  if (title) {
-    taskData.title = title
-  }
-
-  if (desc) {
-    taskData.desc = desc
-  }
-
-  if (taskStatusId) {
-    taskData.taskStatusId = taskStatusId
-  }
-
-  if (plannedDueDate) {
-    taskData.plannedDueDate = plannedDueDate
-  }
-
-  if (assigneeIds) {
-    taskData.assigneeIds = assigneeIds
-  }
-
-  if (priority) {
-    taskData.priority = priority
-  }
-
-  if (taskPoint) {
-    taskData.taskPoint = taskPoint
-  }
-
-  if (dueDate) {
-    taskData.dueDate = dueDate
-  }
-
-  if (progress) {
-    taskData.progress = progress
-  }
-
-  taskData.updatedAt = new Date()
-  taskData.updatedBy = userId
-
+  
   try {
-    console.log('taskdata', taskData)
-    const result = await mdTaskUpdate(taskData)
+    await pmClient.$transaction(async tx => {
+      // const taskData = await mdTaskGetOne(id)
+      const taskData = await tx.task.findFirst({
+        where: {
+          id
+        }
+      })
+      const key = [CKEY.TASK_QUERY, taskData.projectId]
 
-    await findNDelCaches(key)
-    res.json({ status: 200, data: result })
-    // res.json({ status: 200 })
+      if (title) {
+        taskData.title = title
+      }
+
+      if (desc) {
+        taskData.desc = desc
+      }
+
+      if (taskStatusId) {
+        const doneStatus = await mdTaskStatusWithDoneType(projectId)
+        taskData.taskStatusId = taskStatusId
+        taskData.done = doneStatus && doneStatus.id === taskStatusId
+      }
+
+      if (plannedDueDate) {
+        taskData.plannedDueDate = plannedDueDate
+      }
+
+      if (assigneeIds) {
+        taskData.assigneeIds = assigneeIds
+      }
+
+      if (priority) {
+        taskData.priority = priority
+      }
+
+      if (taskPoint) {
+        taskData.taskPoint = taskPoint
+      }
+
+      if (dueDate) {
+        taskData.dueDate = dueDate
+      }
+
+      if (progress) {
+        taskData.progress = progress
+      }
+
+      if (fileIds && fileIds.length) {
+        const oldFileIds = taskData.fileIds || []
+        taskData.fileIds = [...fileIds, ...oldFileIds]
+      }
+
+      taskData.updatedAt = new Date()
+      taskData.updatedBy = userId
+
+      delete taskData.id
+
+      // const result = await mdTaskUpdate(taskData)
+      const result = await tx.task.update({
+        where: {
+          id
+        },
+        data: taskData
+      })
+
+      await findNDelCaches(key)
+      res.json({ status: 200, data: result })
+    })
   } catch (error) {
-    console.log(error)
-    res.json({ status: 500, error })
+    res.status(500).send(error)
   }
 })
 
