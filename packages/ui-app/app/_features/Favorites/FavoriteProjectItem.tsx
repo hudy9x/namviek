@@ -6,13 +6,20 @@ import { useUrl } from '@/hooks/useUrl'
 import { useProjectStore } from '@/store/project'
 import { useEffect } from 'react'
 
-export default function FavoriteProjectItem({ data }: { data: Favorites }) {
+export default function FavoriteProjectItem({
+  data,
+  active
+}: {
+  data: Favorites
+  active: boolean
+}) {
   const { push } = useRouter()
   const { projectId } = useParams()
   const { selectProject } = useProjectStore()
   const { url } = useUrl()
   const { link, id, icon, name } = data
-  const activeClass = url.includes(link) ? 'active' : ''
+  // const activeClass = url.includes(link) ? 'active' : ''
+  const activeClass = active ? 'active' : ''
 
   useEffect(() => {
     selectProject(projectId)

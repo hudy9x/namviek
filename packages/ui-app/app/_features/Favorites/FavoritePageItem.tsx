@@ -9,15 +9,22 @@ import FavoriteRemove from './FavoriteRemove'
 import { Favorites } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 
-export default function FavoritePageItem({ data }: { data: Favorites }) {
+export default function FavoritePageItem({
+  data,
+  active
+}: {
+  data: Favorites
+  active: boolean
+}) {
   const { push } = useRouter()
   const { link, id, icon, name } = data
+  const activeClass = active ? 'active' : ''
   return (
     <div
       onClick={() => {
         link && push(link)
       }}
-      className="nav-item group">
+      className={`nav-item group ${activeClass}`}>
       <div className="left">
         <HiChevronRight className="text-gray-400" />
         <div className="relative">
