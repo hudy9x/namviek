@@ -9,7 +9,8 @@ export default function VisionCreate() {
   const [visible, setVisible] = useState(false)
 
   const handleSubmit = (v: any) => {
-    const randomId = `TASK-ID-RAND-${Date.now()}`
+
+    console.log('formData:', v)
 
     setVisible(false)
     //   addOneTask({

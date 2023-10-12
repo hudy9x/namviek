@@ -1,20 +1,16 @@
 'use client'
 
-import { useVisionStore } from '@/store/vision'
-import ListCell from '../project/[projectId]/views/ListCell'
-import { useTaskStore } from '@/store/task'
 import MemberAvatar from '@/components/MemberAvatar'
 import ProgressBar from '@/components/ProgressBar'
+import { useVisionStore } from '@/store/vision'
+import ListCell from '../project/[projectId]/views/ListCell'
 import TaskDate from '../project/[projectId]/views/TaskDate'
-import { taskList } from './dummy'
 import TaskProject from '../project/[projectId]/views/TaskProject'
 import VisionCreate from './VisionCreate'
+import { taskList } from './dummy'
 
 export default function Page() {
   const { visions } = useVisionStore()
-  const { tasks } = useTaskStore()
-  console.log(tasks)
-  console.log('test')
   return (
     <>
       <div className="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -94,3 +90,4 @@ export default function Page() {
     </>
   )
 }
+   

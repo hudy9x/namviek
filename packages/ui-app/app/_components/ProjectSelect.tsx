@@ -2,7 +2,7 @@
 import { Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { useProjectStatusStore } from '../../store/status'
-import { useServiceOrgList } from '@/hooks/useServiceOrgList'
+import { useProjectStore } from '@/store/project'
 
 const List = Form.List
 
@@ -19,41 +19,40 @@ const defaultOption: ListItemValue = {
   title: ''
 }
 
-export default function OrganizationSelect({
+export default function ProjectSelect({
   title,
   className,
   value,
   onChange,
   placeholder
 }: IStatusSelectProps) {
-  const { statuses } = useProjectStatusStore()
+  const { projects } = useProjectStore()
+
   const [options, setOptions] = useState<ListItemValue[]>([])
-  const [val, setVal] = useState<ListItemValue>(defaultOption)
+  const [val, setVal] = useState(defaultOption)
   const [updateCounter, setUpdateCounter] = useState(0)
 
-  const organizationList = useServiceOrgList()
-
   useEffect(() => {
-    if(organizationList.length) {
-      setOptions(organizationList.map( p => ({id: p.id.toString(), title: p.name})))
+    if (projects.length) {
+      setOptions(projects.map(p => ({ id: p.id + '', title: p.name + '' })))
     }
-  }, [organizationList])
-
+  }, [projects])
 
   useEffect(() => {
-    if (options.length) {
-      const selectedOrg = options.find(opt => opt.id === value)
-      selectedOrg && setVal(selectedOrg)
+    if (projects.length) {
+      const selectedProject = projects.find(opt => opt.id === value)
+      selectedProject &&
+        setVal({ id: selectedProject.id, title: selectedProject.name })
     }
-  }, [options, value])
+  }, [projects, value])
 
   useEffect(() => {
-    if (updateCounter && onChange) {
-      onChange(val.id)
+    if (updateCounter) {
+      onChange && onChange(val.id)
     }
   }, [updateCounter, val])
 
-  const existingOrg = organizationList.find(opt => opt.id === val.id)
+  const existingProject = projects.find(stt => stt.id === val.id)
 
   return (
     <div className={className}>
@@ -68,23 +67,29 @@ export default function OrganizationSelect({
         <List.Button>
           <div className="flex items-center gap-2">
             <img
-              alt="organization avatar"
+              alt="project icon"
               className="w-4 h-4 rounded-md cursor-pointer"
-              src={existingOrg?.avatar ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Vanamo_Logo.png/600px-Vanamo_Logo.png?20120915115534"}
+              src={
+                existingProject?.icon ??
+                'https://img.icons8.com/color/48/cancel-2--v1.png'
+              }
             />
-            <span>{existingOrg?.name ?? 'No Organization'}</span>
+            <span>{existingProject?.name ?? 'No Project'}</span>
           </div>
         </List.Button>
         <List.Options>
           {options.map(option => {
-            const orgs = organizationList.find(org => org.id === option.id)
+            const prj = projects.find(pr => pr.id === option.id)
             return (
               <List.Item key={option.id} value={option}>
                 <div className="flex items-center gap-2">
                   <img
-                    alt="organization avatar"
+                    alt="project icon"
                     className="w-4 h-4 rounded-md cursor-pointer"
-                    src={orgs?.avatar ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Vanamo_Logo.png/600px-Vanamo_Logo.png?20120915115534"}
+                    src={
+                      prj?.icon ??
+                      'https://img.icons8.com/color/48/cancel-2--v1.png'
+                    }
                   />
                   <span>{option.title}</span>
                 </div>

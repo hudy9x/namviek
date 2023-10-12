@@ -1,36 +1,39 @@
-import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
-import { TaskPriority, TaskStatus } from '@prisma/client'
-import { useFormik } from 'formik'
-import { validateTask } from '@shared/validation'
-import { useParams } from 'next/navigation'
-import { useEffect, useState, useRef } from 'react'
-import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import MemberPicker from '@/components/MemberPicker'
-import StatusSelect from '@/components/StatusSelect'
-import PrioritySelect from '@/components/PrioritySelect'
 import OrganizationSelect from '@/components/OrganizationSelect'
+import ProjectSelect from '@/components/ProjectSelect'
+import {
+  Button,
+  DatePicker,
+  Form,
+  messageError,
+  messageWarning
+} from '@shared/ui'
+import { validateVision } from '@shared/validation'
+import { useFormik } from 'formik'
+import { useRef, useState } from 'react'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   assigneeIds: [],
-  taskStatusId: '',
-  priority: TaskPriority.LOW,
+  orgId: '',
+  projectId: '',
   dueDate: new Date(),
   progress: 0,
-  desc: '<p>Tell me what this task about 🤡</p>'
+  desc: 'Tell me what this vision about 👁️'
 }
 
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
-  taskStatusId: string
-  priority: TaskPriority
+  orgId: string
+  projectId: string
   dueDate: Date
   desc: string
   progress: number
 }
 interface ITaskFormProps {
-  taskStatusId?: string
+  orgId?: string
+  projectId?: string
   dueDate?: Date
   defaultValue?: ITaskDefaultValues
   onSubmit: (v: ITaskDefaultValues) => void
@@ -38,21 +41,14 @@ interface ITaskFormProps {
 
 export default function VisionForm({
   dueDate,
-  taskStatusId,
   onSubmit,
   defaultValue = defaultFormikValues
 }: ITaskFormProps) {
   const [loading, setLoading] = useState(false)
-  const params = useParams()
-  const { statuses } = useProjectStatusStore()
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
-  }
-
-  if (taskStatusId) {
-    refDefaultValue.current = { ...refDefaultValue.current, taskStatusId }
   }
 
   const formik = useFormik({
@@ -64,43 +60,23 @@ export default function VisionForm({
       }
 
       setLoading(true)
-      const mergedValues = { ...values, projectId: params.projectId }
-      if (!Array.isArray(mergedValues.assigneeIds)) {
-        mergedValues.assigneeIds = [mergedValues.assigneeIds]
+      if (!Array.isArray(values.assigneeIds)) {
+        values.assigneeIds = [values.assigneeIds]
       }
 
-      const { error, errorArr } = validateTask(mergedValues)
+      const { error, errorArr } = validateVision(values)
       if (error) {
         setLoading(false)
         console.error(errorArr)
+        Object.values(errorArr).forEach(err => {
+          messageError(err)
+        })
         return
       }
 
-      onSubmit(mergedValues)
+      onSubmit(values)
     }
   })
-
-  // select a default status if empty
-  useEffect(() => {
-    if (statuses.length && !formik.values.taskStatusId) {
-      let min: TaskStatus | null = null
-      statuses.forEach(stt => {
-        if (!min) {
-          min = stt
-          return
-        }
-
-        if (min.order > stt.order) {
-          min = stt
-        }
-      })
-
-      if (min) {
-        const status = min as TaskStatus
-        formik.setFieldValue('taskStatusId', status.id)
-      }
-    }
-  }, [statuses])
 
   return (
     <form
@@ -125,17 +101,17 @@ export default function VisionForm({
         title="Organization"
         value={formik.values.orgId}
         onChange={val => {
-          formik.setFieldValue('taskStatusId', val)
-          console.log('status', val)
+          formik.setFieldValue('orgId', val)
+          console.log('orgId', val)
         }}
       />
 
-      <PrioritySelect
-        title="Priority"
-        value={formik.values.priority}
+      <ProjectSelect
+        title="Project"
+        value={formik.values.projectId}
         onChange={val => {
-          formik.setFieldValue('priority', val)
-          console.log('alo', val)
+          formik.setFieldValue('projectId', val)
+          console.log('projectId', val)
         }}
       />
       <DatePicker
