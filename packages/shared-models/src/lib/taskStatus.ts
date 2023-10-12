@@ -1,4 +1,4 @@
-import { TaskStatus } from '@prisma/client'
+import { StatusType, TaskStatus } from '@prisma/client'
 import { taskStatusModel } from './_prisma'
 
 export const mdTaskStatusGetByProjectId = async (projectId: string) => {
@@ -11,6 +11,15 @@ export const mdTaskStatusGetByProjectId = async (projectId: string) => {
 
 interface ITaskStatusQuery {
   projectIds: string[]
+}
+
+export const mdTaskStatusWithDoneType = async (projectId: string) => {
+  return taskStatusModel.findFirst({
+    where: {
+      projectId,
+      type: StatusType.DONE
+    }
+  })
 }
 
 export const mdTaskStatusQuery = async ({ projectIds }: ITaskStatusQuery) => {

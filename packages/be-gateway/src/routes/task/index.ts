@@ -11,7 +11,8 @@ import {
   mdTaskExport,
   mdTaskStatusQuery,
   mdMemberGetProject,
-  mdTaskDelete
+  mdTaskDelete,
+  mdTaskStatusWithDoneType
 } from '@shared/models'
 
 import { Prisma, Task, TaskStatus } from '@prisma/client'
@@ -161,6 +162,10 @@ router.post('/project/task', async (req: AuthRequest, res) => {
 
   const key = [CKEY.TASK_QUERY, projectId]
 
+  const doneStatus = await mdTaskStatusWithDoneType(projectId)
+
+  const done = doneStatus && doneStatus.id === taskStatusId
+
   try {
     const result = await mdTaskAdd({
       title,
@@ -168,6 +173,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       dueDate: dueDate || null,
       assigneeIds,
       desc,
+      done,
       fileIds: [],
       projectId,
       priority,
@@ -293,7 +299,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       }
 
       if (taskStatusId) {
+        const doneStatus = await mdTaskStatusWithDoneType(projectId)
         taskData.taskStatusId = taskStatusId
+        taskData.done = doneStatus && doneStatus.id === taskStatusId
       }
 
       if (assigneeIds) {
