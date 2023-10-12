@@ -7,6 +7,7 @@ import taskRouter from './task'
 import dboardRouter from './dashboard'
 import favRouter from './favorite'
 import automationRouter from './automation'
+import reportRouter from './report'
 // import { storageRouter } from '@be/storage'
 import { storageRouter } from './storage'
 import { authMiddleware } from '../middlewares'
@@ -16,6 +17,7 @@ const router = Router()
 // middlewares
 // router.use([])
 router.use('/storage', [authMiddleware, storageRouter])
+router.use(reportRouter)
 router.use(authRouter)
 router.use(favRouter)
 router.use(automationRouter)
