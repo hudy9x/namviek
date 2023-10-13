@@ -1,3 +1,7 @@
 .report-box {
-  @apply border bg-white shadow-sm rounded-md flex justify-center items-center;
+  @apply border bg-white shadow-sm rounded-md;
+}
+
+.center-all {
+  @apply flex items-center justify-center;
 }

@@ -28,6 +28,7 @@ export default function ReportContent() {
       end: d2
     })
 
+    setLoading(true)
     projects.length &&
       orgMembers.length &&
       taskGetByCond(
@@ -38,8 +39,8 @@ export default function ReportContent() {
         controller.signal
       )
         .then(res => {
-          setLoading(false)
           const { data } = res.data
+          setLoading(false)
           setTasks(data)
         })
         .catch(err => {

@@ -52,8 +52,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
     const projectId = req.query.projectId as string
     const key = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
 
-    console.log('queryKeys', queryKeys)
-
     if (
       queryKeys.length === 2 &&
       queryKeys.includes('projectId') &&
@@ -71,6 +69,8 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
         })
       }
     }
+
+    console.log(11)
 
     const tasks = await mdTaskGetAll(rest)
     if (counter) {
@@ -296,7 +296,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         taskData.desc = desc
       }
 
+      console.log('------------------------')
       if (taskStatusId) {
+        console.log('has task status', taskStatusId)
         const doneStatus = await mdTaskStatusWithDoneType(projectId)
         taskData.taskStatusId = taskStatusId
         if (doneStatus && doneStatus.id === taskStatusId) {
@@ -305,6 +307,8 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       } else {
         taskData.done = false
       }
+
+      console.log('taskData Done', taskData.done)
 
       if (assigneeIds) {
         taskData.assigneeIds = assigneeIds

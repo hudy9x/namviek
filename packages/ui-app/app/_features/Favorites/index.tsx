@@ -34,7 +34,7 @@ export default function FavoritesList() {
           activeId = fav.id
         }
       })
-      activeId && setActive(activeId)
+      setActive(activeId)
     }
   })
 
