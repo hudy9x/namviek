@@ -3,7 +3,7 @@ import { IDbCompProps, refactorConfig } from '../type'
 import DbCompDelete from './DbCompDelete'
 import { useEffect, useState } from 'react'
 import { IDBComponentConfig, dboardQueryBurnChart } from '@/services/dashboard'
-import { ApexOptions } from "apexcharts";
+import { ApexOptions } from 'apexcharts'
 import { DashboardComponentType } from '@prisma/client'
 
 interface ISetting {
@@ -19,69 +19,82 @@ const defaultSetting: ISetting = {
         fontWeight: 'normal'
       }
     },
+
+    colors: ['#216fed', '#66c90e'],
+    // dataLabels: {
+    //   enabled: false
+    // },
     chart: {
       id: 'basic-bar',
+      zoom: {
+        enabled: false
+      },
       toolbar: {
         show: false
-      },
+      }
     },
     xaxis: {
-      categories: [],
+      categories: []
     },
     stroke: {
       curve: 'smooth'
     }
   },
-  series: [{
-    name: "Actual",
-    data: [],
-  },
-  {
-    name: "Ideal",
-    data: []
-  },
+  series: [
+    {
+      name: 'Actual',
+      data: []
+    },
+    {
+      name: 'Ideal',
+      data: []
+    }
   ]
 }
 
 export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
-
   const [setting, setSetting] = useState(defaultSetting)
 
   useEffect(() => {
     const newConfig = refactorConfig(config)
 
-    dboardQueryBurnChart(newConfig as IDBComponentConfig, type as DashboardComponentType ).then(res => {
-      const { status, data } = res.data
-      if (status !== 200) {
-        return
-      }
+    dboardQueryBurnChart(
+      newConfig as IDBComponentConfig,
+      type as DashboardComponentType
+    )
+      .then(res => {
+        const { status, data } = res.data
+        if (status !== 200) {
+          return
+        }
 
-      const updateSetting: ISetting = {
-        options: {
-          ...defaultSetting.options,
-          xaxis: {
-            categories: data.dates,
+        const updateSetting: ISetting = {
+          options: {
+            ...defaultSetting.options,
+            xaxis: {
+              categories: data.dates
+            },
+            title: {
+              ...defaultSetting.options.title,
+              text: title
+            }
           },
-          title: {
-            ...defaultSetting.options.title,
-            text: title
-
-          }
-        },
-        series: [{
-          name: "Actual",
-          data: data.actual,
-        },
-        {
-          name: "Ideal",
-          data: data.ideal
-        },
-        ]
-      }
-      setSetting(updateSetting)
-    }).catch((err) => {
-      console.log(err)
-    })
+          series: [
+            {
+              name: 'Actual',
+              data: data.actual
+            },
+            {
+              name: 'Ideal',
+              data: data.ideal
+            }
+          ]
+        }
+        setSetting(updateSetting)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, [config, type])
 
   return (
@@ -94,6 +107,5 @@ export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
         type="line"
       />
     </div>
-
   )
 }

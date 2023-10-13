@@ -52,7 +52,7 @@ export const useDboardComponentSubmit = ({
       icon,
       title,
       type,
-      assigneeIds: [],
+      assigneeIds: ['ALL'],
       statusIds: [],
       priority: [],
       projectIds: [],

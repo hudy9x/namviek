@@ -127,6 +127,14 @@ export default function TaskForm({
             onChange={formik.handleChange}
             placeholder="Enter your task name here !"
           />
+          <Form.Range
+            title="Progress"
+            step={5}
+            value={formik.values.progress}
+            onChange={v => {
+              formik.setFieldValue('progress', v)
+            }}
+          />
           <Form.TextEditor
             title="Description"
             value={formik.values.desc}
@@ -137,8 +145,9 @@ export default function TaskForm({
           {isUpdate ? <FileControl /> : null}
         </div>
         <div
-          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'w-[200px]'
-            }  shrink-0`}>
+          className={`task-form-right-actions space-y-3 ${
+            isCreate ? 'w-full' : 'w-[200px]'
+          }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}
@@ -170,14 +179,6 @@ export default function TaskForm({
               formik.setFieldValue('dueDate', d)
             }}
           />
-          {isUpdate &&
-            <DatePicker
-              title="Planned Due date"
-              value={formik.values.plannedDueDate}
-              onChange={d => {
-                formik.setFieldValue('plannedDueDate', d)
-              }}
-            />}
           <DatePicker
             title="Planned Start date"
             value={formik.values.planedStartDate}
@@ -185,19 +186,11 @@ export default function TaskForm({
               formik.setFieldValue('plannedStartDate', d)
             }}
           />
-          <Form.TextEditor
-            title="Description"
-            value={formik.values.desc}
-            onChange={v => {
-              formik.setFieldValue('desc', v)
-            }}
-          />
-          <Form.Range
-            title="Progress"
-            step={5}
-            value={formik.values.progress}
-            onChange={v => {
-              formik.setFieldValue('progress', v)
+          <DatePicker
+            title="Planned Due date"
+            value={formik.values.plannedDueDate}
+            onChange={d => {
+              formik.setFieldValue('plannedDueDate', d)
             }}
           />
           <div className="text-right">
