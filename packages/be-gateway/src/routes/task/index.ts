@@ -70,8 +70,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
       }
     }
 
-    console.log(11)
-
     const tasks = await mdTaskGetAll(rest)
     if (counter) {
       const total = await mdTaskGetAll(req.query)
@@ -296,9 +294,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         taskData.desc = desc
       }
 
-      console.log('------------------------')
       if (taskStatusId) {
-        console.log('has task status', taskStatusId)
         const doneStatus = await mdTaskStatusWithDoneType(projectId)
         taskData.taskStatusId = taskStatusId
         if (doneStatus && doneStatus.id === taskStatusId) {
@@ -307,8 +303,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       } else {
         taskData.done = false
       }
-
-      console.log('taskData Done', taskData.done)
 
       if (assigneeIds) {
         taskData.assigneeIds = assigneeIds
