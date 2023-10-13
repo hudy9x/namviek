@@ -169,6 +169,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       title,
       startDate: null,
       dueDate: dueDate || null,
+      plannedDueDate: dueDate || null,
       assigneeIds,
       desc,
       done,
@@ -269,13 +270,14 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     projectId,
     priority,
     taskStatusId,
+    plannedDueDate,
     tagIds,
     parentTaskId,
     progress,
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
-
+  
   try {
     await pmClient.$transaction(async tx => {
       // const taskData = await mdTaskGetOne(id)
@@ -302,6 +304,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         }
       } else {
         taskData.done = false
+      }
+
+      if (plannedDueDate) {
+        taskData.plannedDueDate = plannedDueDate
       }
 
       if (assigneeIds) {

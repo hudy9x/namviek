@@ -73,6 +73,12 @@ type IDBComponentBase = {
   skip?: number
 }
 
+type TaskChart = {
+  id: string
+  dueDate: Date | null
+  plannedDueDate: Date | null
+}
+
 export type IDBComponentConfig = IDBComponentBase & IDBComponentFilter
 
 export type IDBComponentColumnConfig = IDBComponentBase &
@@ -239,6 +245,149 @@ export const mdDBoardQuerySum = ({
   })
 }
 
+type TDateChart = {
+  dueDateMax: number
+  dueDateMin: number
+  planedMinArr: number[]
+  planedMaxArr: number[]
+  planedDateArr: number[]
+  dates: number[]
+}
+
+const handleDates = (tasks: TaskChart[]): TDateChart => {
+
+  let planeDateMin = Infinity
+  let planeDateMax = -Infinity
+  let dueDateMin = Infinity
+  let dueDateMax = -Infinity
+
+  for (const task of tasks) {
+    if (task.plannedDueDate) {
+      const datePlaned = new Date(task.plannedDueDate).getDate()
+      if (datePlaned > planeDateMax) {
+        planeDateMax = datePlaned
+      }
+      if (datePlaned < planeDateMin) {
+        planeDateMin = datePlaned
+      }
+    }
+
+    if (task.dueDate) {
+      const dueDate = new Date(task.dueDate).getDate()
+      if (dueDate > dueDateMax) {
+        dueDateMax = dueDate
+      }
+      if (dueDate < dueDateMin) {
+        dueDateMin = dueDate
+      }
+    }
+  }
+
+  const planedDateArr = []
+  for (let i = planeDateMin; i <= planeDateMax; i++) {
+    planedDateArr.push(i)
+  }
+
+  const planedMinArr = []
+  const planedMaxArr = []
+  for (const task of tasks) {
+    const dueDate = new Date(task.dueDate).getDate()
+    if (dueDate < planeDateMin) {
+      planedMinArr.push(dueDate)
+    }
+
+    if (dueDate > planeDateMax) {
+      planedMaxArr.push(dueDate)
+    }
+  }
+
+  planedMinArr.sort((a, b) => a - b)
+  planedMaxArr.sort((a, b) => a - b)
+
+  return {
+    dueDateMax,
+    dueDateMin,
+    planedMinArr,
+    planedDateArr,
+    planedMaxArr,
+    dates: [0, ...planedMinArr, ...planedDateArr, ...planedMaxArr]
+  }
+}
+
+const handleIdeal = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
+  const { planedMinArr, planedDateArr } = date
+
+  const totalTask = tasks.length
+  const minIdealArr = Array(planedMinArr.length).fill(totalTask)
+  const idealArr = []
+  let decremental = totalTask
+  let incremental = 0
+  
+  for (const planedDate of planedDateArr) {
+    const existPlanedDate = tasks.some((task) => new Date(task.plannedDueDate).getDate() === planedDate)
+
+    if (!existPlanedDate) {
+      type === DashboardComponentType.BURNDOWN ? idealArr.push(decremental) : idealArr.push(incremental)
+      continue
+    }
+
+    const countTask = tasks.filter((task) => new Date(task.plannedDueDate).getDate() === planedDate).length
+    if (type === DashboardComponentType.BURNDOWN) {
+      decremental -= countTask
+      idealArr.push(decremental)
+    } else {
+      incremental += countTask
+      idealArr.push(incremental)
+    }
+  }
+  
+  return type === DashboardComponentType.BURNDOWN ? [totalTask, ...minIdealArr, ...idealArr] : [0, ...minIdealArr, ...idealArr]
+}
+
+const handleActual = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
+  const { dates, dueDateMin, dueDateMax } = date
+
+  const actual = []
+  const index = dates.indexOf(dueDateMax)
+  let decremental = tasks.length
+  let incremental = 0
+
+  /**
+   * In case the actual time dueDate the schedule
+   */
+  const dateActualArr = dates.slice(0, index + 1);
+
+  for (const dateActual of dateActualArr) {
+    if (dateActual < dueDateMin) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(tasks.length) : actual.push(0)
+      continue
+    }
+    if (dateActual >= dueDateMax) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(0) : actual.push(incremental)
+      continue
+    }
+
+    const existDueDate = tasks.some((task) => new Date(task.dueDate).getDate() === dateActual)
+    if (!existDueDate) {
+      type === DashboardComponentType.BURNDOWN ? actual.push(decremental) : actual.push(incremental)
+      continue
+    }
+    
+    const countTask = tasks.filter((task) => new Date(task.dueDate).getDate() === dateActual).length
+
+    if (type === DashboardComponentType.BURNDOWN) {
+      decremental -= countTask
+      actual.push(decremental)
+    } else {
+      incremental += countTask
+      actual.push(incremental)
+    }
+  
+  }
+
+  return actual
+}
+
 const generateColumn = ({
   xAxis,
   series
@@ -260,6 +409,65 @@ const generateColumn = ({
   }
 
   return [columns, xAxises]
+}
+
+const convertDate = (date, dates) => {
+  if (!Array.isArray(dates) || typeof date !== 'string') {
+    throw new Error('Invalid input data');
+  }
+
+  return dates.map((day, index) => {
+    if (day === 0 && index === 0) return 'Day'
+    const month = new Date(`${date}`).getMonth() + 1
+    return `${day}/${month}`
+  })
+}
+
+export const mdDBoardQueryBurnChart = async (config: IDBComponentConfig , type: DashboardComponentType) => {
+  const { startDate, endDate, assigneeIds, projectIds} = config
+  const newConfig: IDBComponentConfig = {}
+
+  newConfig.startDate = startDate
+  newConfig.endDate = endDate
+
+  if (assigneeIds) {
+    newConfig.assigneeIds = assigneeIds
+  }
+
+  if (projectIds) {
+    newConfig.projectIds = projectIds
+  }
+
+  const where = generateQueryCondition(newConfig)
+  
+  const tasks = await taskModel.findMany({
+    where,
+    select: {
+      id: true,
+      dueDate: true,
+      assigneeIds: true,
+      plannedDueDate: true,
+    },
+  }).catch((err) => {
+    console.log('ERR QUERY TASK', err)
+  });
+
+  if (!tasks) {
+    throw new Error('ERR QUERY TASK');
+  }
+
+  console.log(tasks, '---> tasks')
+
+  const dates = handleDates(tasks)
+  const ideal = handleIdeal(dates, tasks, type)
+  const actual = handleActual(dates, tasks, type)
+
+  const formatDate = convertDate(endDate, dates.dates)
+  return {
+    dates: formatDate,
+    ideal,
+    actual
+  }
 }
 
 export const mdDBoardQueryColumn = async ({

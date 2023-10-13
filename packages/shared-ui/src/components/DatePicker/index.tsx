@@ -30,7 +30,7 @@ export default function DatePicker({ title, className, disabled, value, onChange
 
   return (
     <div className={`form-control ${className}`}>
-      {title ? <label>Due date</label> : null}
+      {title ? <label>{title}</label> : null}
       <div className="form-control-wrapper relative">
         <Popover.Root open={visible} onOpenChange={setVisible}>
           <Popover.Trigger asChild>

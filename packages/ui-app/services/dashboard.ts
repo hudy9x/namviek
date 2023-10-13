@@ -1,4 +1,4 @@
-import { DashboardComponent } from '@prisma/client'
+import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 import { httpDel, httpGet, httpPost } from './_req'
 
 interface IDBoardProps {
@@ -70,4 +70,8 @@ export const dboardQuerySummary = (query: IDBComponentConfig) => {
 
 export const dboardQueryColumn = (query: IDBComponentConfig) => {
   return httpPost('/api/dboard/query-column', query)
+}
+
+export const dboardQueryBurnChart = (query: IDBComponentConfig, type: DashboardComponentType) => {
+  return httpPost(`/api/dboard/query-burnchart/${type}`, query)
 }

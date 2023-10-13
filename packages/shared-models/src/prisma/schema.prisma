@@ -105,6 +105,7 @@ model Task {
   title        String
   desc         String?
   dueDate      DateTime?
+  plannedDueDate DateTime?
   startDate    DateTime?
   projectId    String        @db.ObjectId
   priority     TaskPriority?
@@ -236,6 +237,8 @@ enum DashboardComponentType {
   LISTTAB
   LIST
   COLUMN
+  BURNDOWN
+  BURNUP
 }
 
 model DashboardComponent {

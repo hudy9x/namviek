@@ -53,9 +53,21 @@ const charts: IChartType[] = [
     title: 'Task by statuses',
     desc: 'Display the total amount of task by status',
     icon: '🚦'
+  },
+  {
+    type: DashboardComponentType.BURNDOWN,
+    title: 'Burndown Chart',
+    desc: 'Utilize the Burndown Chart to analyze the progress of tasks.',
+    icon: '📉'
+  },
+  {
+    type: DashboardComponentType.BURNUP,
+    title: 'Burnup Chart',
+    desc: 'Utilize the Burnup Chart to analyze the progress of tasks.',
+    icon: '📈'
   }
   // { type: DashboardComponentType.PIE, desc: '', icon: '' },
-  // { type: DashboardComponentType.LINE, desc: '', icon: '' },
+  // { type: DashboardComponentType.BURNDOWN, desc: '', icon: '' },
   // { type: DashboardComponentType.LIST, desc: '', icon: '' }
 ]
 

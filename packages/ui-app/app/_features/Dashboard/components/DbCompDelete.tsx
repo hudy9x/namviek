@@ -27,7 +27,7 @@ export default function DbCompDelete({ id }: { id: string }) {
     })
   }
   return (
-    <div className="absolute top-3 right-3" onClick={onDelete}>
+    <div className="absolute top-3 right-3 z-10" onClick={onDelete}>
       <AiOutlineDelete className="text-gray-400" />
     </div>
   )

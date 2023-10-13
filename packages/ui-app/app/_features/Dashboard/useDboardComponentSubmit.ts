@@ -1,10 +1,13 @@
 import { dboardComponentCreate } from '@/services/dashboard'
 import { useState } from 'react'
 import { useOverviewContext } from '../Project/Overview/context'
-import { DashboardComponentType, TaskPriority } from '@prisma/client'
+import { DashboardComponentType, Task, TaskPriority } from '@prisma/client'
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'
 import { messageError, messageWarning } from '@shared/ui'
 import { useParams } from 'next/navigation'
 import { useFormik } from 'formik'
+import { useTaskStore } from '@/store/task'
+import { taskGetByCond } from '@/services/task'
 
 interface UseDboardComponentProps {
   icon?: string
@@ -40,6 +43,7 @@ export const useDboardComponentSubmit = ({
   onSuccess
 }: UseDboardComponentProps) => {
   const { projectId } = useParams()
+  const { tasks } = useTaskStore()
   const { setComponents, dboardId } = useOverviewContext()
   const [sending, setSending] = useState(false)
 
@@ -48,7 +52,7 @@ export const useDboardComponentSubmit = ({
       icon,
       title,
       type,
-      assigneeIds: [],
+      assigneeIds: ['ALL'],
       statusIds: [],
       priority: [],
       projectIds: [],
@@ -83,7 +87,7 @@ export const useDboardComponentSubmit = ({
       })
   }
 
-  const createDboardComponent = (values: IDboardComponentFields) => {
+  const createDboardComponent = async (values: IDboardComponentFields) => {
     if (sending) {
       messageWarning('Processing ...')
       return
@@ -121,7 +125,7 @@ export const useDboardComponentSubmit = ({
     }
 
     // operator and datestring must required if one of them is selected
-    if (date.length) {
+    if (date.length && (type !== DashboardComponentType.BURNDOWN && type !== DashboardComponentType.BURNUP)) {
       const dateLen = date.filter(Boolean).length
       if (dateLen < 2) {
         messageError('Please input both operator and date')
@@ -179,6 +183,24 @@ export const useDboardComponentSubmit = ({
           icon: mergedValues.icon,
           date,
           fixed: mergedValues.fixed
+        }
+      })
+    }
+
+    if (type === DashboardComponentType.BURNUP || type === DashboardComponentType.BURNDOWN) {
+      let assigneeIds: string[] = []
+      if (xaxis === 'ASSIGNEE') {
+        assigneeIds = mergedValues.assigneeIds
+      }
+
+      createComponent({
+        dashboardId: dboardId,
+        type,
+        title,
+        config: {
+          projectIds,
+          date,
+          assigneeIds,
         }
       })
     }

@@ -32,6 +32,10 @@ export default function DashboardComponentUpdateForm({
     }
   })
 
+  const isBurnChart =
+    formik.values.type === DashboardComponentType.BURNDOWN ||
+    formik.values.type === DashboardComponentType.BURNUP
+  console.log(isBurnChart, '----> isBurnChart')
   return (
     <div>
       <div className="flex items-center gap-2 mb-2 -mt-[3px]">
@@ -61,19 +65,25 @@ export default function DashboardComponentUpdateForm({
           />
         </FormGroup>
 
-        <ListPreset
-          title="Chart type"
-          className="w-full"
-          value={formik.values.type}
-          onChange={val => {
-            formik.setFieldValue('type', val)
-          }}
-          options={[
-            { id: DashboardComponentType.SUMMARY, title: '➕ Summary' },
-            { id: DashboardComponentType.COLUMN, title: '📊 Column' },
-            { id: DashboardComponentType.PIE, disabled: true, title: '🍩 Pie' }
-          ]}
-        />
+        {isBurnChart ? null : (
+          <ListPreset
+            title="Chart type"
+            className="w-full"
+            value={formik.values.type}
+            onChange={val => {
+              formik.setFieldValue('type', val)
+            }}
+            options={[
+              { id: DashboardComponentType.SUMMARY, title: '➕ Summary' },
+              { id: DashboardComponentType.COLUMN, title: '📊 Column' },
+              {
+                id: DashboardComponentType.PIE,
+                disabled: true,
+                title: '🍩 Pie'
+              }
+            ]}
+          />
+        )}
 
         {formik.values.type === DashboardComponentType.COLUMN ? (
           <DboardCompColumnUpdateForm formik={formik} />
@@ -87,13 +97,17 @@ export default function DashboardComponentUpdateForm({
           }}
         />
 
-        <StatusSelectMultiple
-          title="Status"
-          value={formik.values.statusIds}
-          onChange={val => {
-            formik.setFieldValue('statusIds', val)
-          }}
-        />
+        {isBurnChart ? null : (
+          <>
+            <StatusSelectMultiple
+              title="Status"
+              value={formik.values.statusIds}
+              onChange={val => {
+                formik.setFieldValue('statusIds', val)
+              }}
+            />
+          </>
+        )}
 
         {/* <FormGroup title="Priority"> */}
         {/* <ListPreset */}
@@ -104,38 +118,11 @@ export default function DashboardComponentUpdateForm({
         {/*   ]} */}
         {/* /> */}
 
-        <PrioritySelectMultiple
-          title="Priority"
-          className="w-full"
-          value={formik.values.priority}
-          onChange={val => {
-            console.log('user select priority')
-            console.log(val)
-            formik.setFieldValue('priority', val)
-          }}
-        />
-        {/* </FormGroup> */}
-
-        <FormGroup title="Date" helper='If one of them selected, the other must be selected'>
+        {isBurnChart ? (
           <ListPreset
-            defaultOption={{id: '', title: '➗'}}
-            className="w-[300px]"
-            value={formik.values.date[0]}
-            onChange={val => {
-              const date = [...formik.values.date]
-              date[0] = val
-              formik.setFieldValue('date', date)
-            }}
-            options={[
-              { id: '=', title: 'In (=)' },
-              { id: '>', title: 'Greater than (>)' },
-              { id: '<', title: 'Less than (<)' }
-            ]}
-          />
-
-          <ListPreset
+            title="Date"
             className="w-full"
-            defaultOption={{id: '', title: '📆'}}
+            defaultOption={{ id: '', title: '📆' }}
             value={formik.values.date[1]}
             onChange={val => {
               const date = [...formik.values.date]
@@ -143,21 +130,75 @@ export default function DashboardComponentUpdateForm({
               formik.setFieldValue('date', date)
             }}
             options={[
-              { id: 'today', title: 'Today' },
               { id: 'week', title: 'This week' },
               { id: 'month', title: 'This month' }
             ]}
           />
-        </FormGroup>
+        ) : (
+          <PrioritySelectMultiple
+            title="Priority"
+            className="w-full"
+            value={formik.values.priority}
+            onChange={val => {
+              console.log('user select priority')
+              console.log(val)
+              formik.setFieldValue('priority', val)
+            }}
+          />
+        )}
 
-        <Form.Checkbox
-          checked={formik.values.fixed}
-          onChange={val => {
-            formik.setFieldValue('fixed', val)
-          }}
-          name="fixed"
-          desc="Make this chart not be affected by input"
-        />
+        {/* </FormGroup> */}
+
+        {isBurnChart ? null : (
+          <>
+            <>
+              <FormGroup
+                title="Date"
+                helper="If one of them selected, the other must be selected">
+                <ListPreset
+                  defaultOption={{ id: '', title: '➗' }}
+                  className="w-[300px]"
+                  value={formik.values.date[0]}
+                  onChange={val => {
+                    const date = [...formik.values.date]
+                    date[0] = val
+                    formik.setFieldValue('date', date)
+                  }}
+                  options={[
+                    { id: '=', title: 'In (=)' },
+                    { id: '>', title: 'Greater than (>)' },
+                    { id: '<', title: 'Less than (<)' }
+                  ]}
+                />
+
+                <ListPreset
+                  className="w-full"
+                  defaultOption={{ id: '', title: '📆' }}
+                  value={formik.values.date[1]}
+                  onChange={val => {
+                    const date = [...formik.values.date]
+                    date[1] = val
+                    formik.setFieldValue('date', date)
+                  }}
+                  options={[
+                    { id: 'today', title: 'Today' },
+                    { id: 'week', title: 'This week' },
+                    { id: 'month', title: 'This month' }
+                  ]}
+                />
+              </FormGroup>
+
+              <Form.Checkbox
+                checked={formik.values.fixed}
+                onChange={val => {
+                  formik.setFieldValue('fixed', val)
+                }}
+                name="fixed"
+                desc="Make this chart not be affected by input"
+              />
+            </>
+          </>
+        )}
 
         <div className="flex items-center justify-end gap-3">
           <Button title="Cancel" onClick={onBack} />
