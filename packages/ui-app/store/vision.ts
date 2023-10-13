@@ -1,18 +1,6 @@
 import { create } from 'zustand';
+import { Vision } from '@prisma/client';
 
-export interface Vision {
-  id: string,
-  title: string
-  assigneeIds: string[],
-  orgId: string,
-  projectId: string,
-  dueDate: Date,
-  desc: string,
-  createdBy: string,
-  createdAt: Date,
-  updatedBy: string,
-  updatedAt: Date,
-}
 
 
 interface VisionsState {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { safeParse } from "./lib";
-import { Vision } from "@/store/vision"
+import { Vision } from '@prisma/client';
 
 const vision = z.object({
   title: z.string().min(1, 'Vision name is required '),

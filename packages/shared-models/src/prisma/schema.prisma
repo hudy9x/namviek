@@ -160,9 +160,9 @@ type taskAutomateWhenType {
 }
 
 model TaskAutomation {
-  id             String               @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String               @db.ObjectId
-  projectId      String               @db.ObjectId
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String    @db.ObjectId
+  projectId      String    @db.ObjectId
   when           Json
   then           Json
   createdBy      String?
@@ -225,4 +225,18 @@ model Dashboard {
   title               String?              @default("Untitled")
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
+}
+
+model Vision {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  assigneeIds String[]
+  orgId       String   @db.ObjectId
+  projectId   String   @db.ObjectId
+  dueDate     DateTime
+  desc        String?
+  createdBy   String?
+  createdAt   DateTime?
+  updatedBy   String?
+  updatedAt   DateTime?
 }
