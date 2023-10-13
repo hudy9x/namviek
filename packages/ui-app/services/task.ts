@@ -13,6 +13,7 @@ export const taskGetAll = (projectId: string, signal?: AbortSignal) => {
 
 export interface ITaskQuery {
   projectId?: string
+  projectIds?: string[]
   title?: string
   dueDate?: [Date | string, Date | string]
   assigneeIds?: string[]

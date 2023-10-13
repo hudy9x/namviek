@@ -13,7 +13,18 @@ import { useTaskFilter } from './context'
 import './style.css'
 
 let timeout = 0
-export default function TaskFilter() {
+interface ITaskFilterProps {
+  searchEnabled?: boolean
+  pointEnabled?: boolean
+  assigneeEnable?: boolean
+  importEnable?: boolean
+}
+export default function TaskFilter({
+  searchEnabled = true,
+  pointEnabled = true,
+  assigneeEnable = true,
+  importEnable = true
+}: ITaskFilterProps) {
   const [txt, setTxt] = useState('')
   const { filter, setFilterValue } = useTaskFilter()
   const search = useSearchParams()
@@ -48,15 +59,19 @@ export default function TaskFilter() {
   return (
     <div className="task-filter">
       <div className="flex items-center gap-2">
-        <AiOutlineSearch className="text-gray-400" />
-        <input
-          className="text-sm outline-none dark:bg-gray-900"
-          value={txt}
-          onChange={ev => {
-            setTxt(ev.target.value)
-          }}
-          placeholder="Search ..."
-        />
+        {searchEnabled ? (
+          <>
+            <AiOutlineSearch className="text-gray-400" />
+            <input
+              className="text-sm outline-none dark:bg-gray-900"
+              value={txt}
+              onChange={ev => {
+                setTxt(ev.target.value)
+              }}
+              placeholder="Search ..."
+            />
+          </>
+        ) : null}
       </div>
 
       <div className="task-filter-actions">
@@ -117,14 +132,18 @@ export default function TaskFilter() {
             </>
           ) : null}
         </FormGroup>
-        <PointSelect
-          value={point}
-          onChange={val => {
-            setFilterValue('point', val)
-          }}
-          zero={true}
-          infinite={true}
-        />
+
+        {pointEnabled ? (
+          <PointSelect
+            value={point}
+            onChange={val => {
+              setFilterValue('point', val)
+            }}
+            zero={true}
+            infinite={true}
+          />
+        ) : null}
+
         <PrioritySelect
           all={true}
           width={130}
@@ -133,16 +152,20 @@ export default function TaskFilter() {
             setFilterValue('priority', val)
           }}
         />
-        <MultiMemberPicker
-          all={true}
-          value={assigneeIds}
-          onChange={val => {
-            setFilterValue('assigneeIds', val)
-          }}
-          compact={true}
-          className="task-filter-member-picker"
-        />
-        <TaskImport />
+
+        {assigneeEnable ? (
+          <MultiMemberPicker
+            all={true}
+            value={assigneeIds}
+            onChange={val => {
+              setFilterValue('assigneeIds', val)
+            }}
+            compact={true}
+            className="task-filter-member-picker"
+          />
+        ) : null}
+
+        {importEnable ? <TaskImport /> : null}
       </div>
     </div>
   )

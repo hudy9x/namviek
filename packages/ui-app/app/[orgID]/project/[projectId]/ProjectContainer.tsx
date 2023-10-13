@@ -14,7 +14,12 @@ import { taskGetAll, taskGetByCond } from '../../../../services/task'
 import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
-import { fromDateStringToDateObject, to00h00m, to23h59m } from '@shared/libs'
+import {
+  extractDueDate,
+  fromDateStringToDateObject,
+  to00h00m,
+  to23h59m
+} from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 
 export default function ProjectContainer() {
@@ -35,39 +40,6 @@ export default function ProjectContainer() {
     return assigneeIds.filter(a => a !== 'ALL')
   }
 
-  const getDueDate = ({
-    dateOperator,
-    date,
-    start,
-    end
-  }: {
-    dateOperator: string
-    date: string
-    start: Date | undefined
-    end: Date | undefined
-  }) => {
-    if (date === 'date-range') {
-      start && start.setHours(0)
-      end && to23h59m(end)
-
-      return { startDate: start, endDate: end }
-    }
-
-    if (date === 'not-set') {
-      return { startDate: 'not-set', endDate: 'not-set' }
-    }
-
-    const { startDate, endDate } = fromDateStringToDateObject(
-      dateOperator,
-      date
-    )
-
-    return {
-      startDate,
-      endDate
-    }
-  }
-
   useEffect(() => {
     const controller = new AbortController()
     const {
@@ -81,7 +53,7 @@ export default function ProjectContainer() {
       point
     } = filter
 
-    const { startDate, endDate } = getDueDate({
+    const { startDate, endDate } = extractDueDate({
       dateOperator,
       date,
       start,

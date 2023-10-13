@@ -1,5 +1,35 @@
 import { addDays, lastDayOfMonth, setHours, subDays } from 'date-fns'
 
+export const extractDueDate = ({
+  dateOperator,
+  date,
+  start,
+  end
+}: {
+  dateOperator: string
+  date: string
+  start: Date | undefined
+  end: Date | undefined
+}) => {
+  if (date === 'date-range') {
+    start && start.setHours(0)
+    end && to23h59m(end)
+
+    return { startDate: start, endDate: end }
+  }
+
+  if (date === 'not-set') {
+    return { startDate: 'not-set', endDate: 'not-set' }
+  }
+
+  const { startDate, endDate } = fromDateStringToDateObject(dateOperator, date)
+
+  return {
+    startDate,
+    endDate
+  }
+}
+
 const getMondayNSaturdayInWeek = (d: Date) => {
   const mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay())
   const sat = new Date(
