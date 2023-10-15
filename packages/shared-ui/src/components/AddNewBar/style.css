@@ -1,0 +1,22 @@
+.add-new-bar-container {
+  @apply bg-gray-50 dark:bg-gray-800;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom-radius: 2rem;
+}
+
+.add-new-bar-icon {
+  @apply text-gray-500;
+  position: absolute;
+  top: 0.875rem;
+  left: 1rem;
+}
+
+.add-new-bar-input {
+  @apply text-sm text-gray-500 bg-transparent;
+  width: 100%;
+  padding-bottom: 0.75rem;
+  padding-left: 3rem;
+  outline: none;
+}
