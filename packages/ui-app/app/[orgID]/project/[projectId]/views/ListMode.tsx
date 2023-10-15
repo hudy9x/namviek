@@ -12,7 +12,7 @@ import MemberAvatar from '../../../../_components/MemberAvatar'
 import ListCell from './ListCell'
 import TaskPoint from './TaskPoint'
 import TaskStatus from './TaskStatus'
-import { Loading } from '@shared/ui'
+import { Loading, LoadingItem } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -68,14 +68,7 @@ export default function ListMode() {
               </div>
             </div>
             <div className="divide-y dark:divide-gray-800">
-              {taskLoading ? (
-                <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
-                  <span className="w-4 h-4">
-                    <Loading />
-                  </span>
-                  <span>Loading ...</span>
-                </div>
-              ) : null}
+              <LoadingItem isLoading={taskLoading} />
 
               {!taskLoading &&
                 tasks.map(task => {

@@ -10,6 +10,8 @@ import DatePickerContainer from './components/DatePicker';
 import BorderlessDatePickerContainer from "./components/DatePicker/Borderless";
 import ScrollbarContainer from "./components/Scrollbar";
 import FormGroupContainer from "./components/FormGroup";
+import AddNewBarContainer from "./components/AddNewBar";
+import LoadingItemContainer from "./components/LoadingItem"
 
 export { messageInfo, messageError, messageSuccess, messageWarning } from './components/Message';
 
@@ -23,6 +25,8 @@ export const DatePicker = DatePickerContainer;
 export const DatePickerBorderless = BorderlessDatePickerContainer;
 export const Scrollbar = ScrollbarContainer
 export const FormGroup = FormGroupContainer
+export const AddNewBar = AddNewBarContainer
+export const LoadingItem = LoadingItemContainer
 export * from './components/Confirmbox'
 
 export * from './components/Controls/ListControl/type';

@@ -1,9 +1,9 @@
-import { Draggable } from 'react-beautiful-dnd'
-import { TaskStatus } from '@prisma/client'
-import { BoardTaskList } from './BoardTaskList'
-import BoardColumHeader from './BoardColumnHeader'
 import { useTaskStore } from '@/store/task'
-import { Loading } from '@shared/ui'
+import { TaskStatus } from '@prisma/client'
+import { LoadingItem } from '@shared/ui'
+import { Draggable } from 'react-beautiful-dnd'
+import BoardColumHeader from './BoardColumnHeader'
+import { BoardTaskList } from './BoardTaskList'
 
 interface IBoardColumnProps {
   status: TaskStatus
@@ -20,14 +20,7 @@ export const BoardColumn = ({ status, statusIndex }: IBoardColumnProps) => {
           ref={provided.innerRef}>
           <div className="board-column">
             <BoardColumHeader status={status} provided={provided} />
-            {taskLoading ? (
-              <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
-                <span className="w-4 h-4">
-                  <Loading />
-                </span>
-                <span>Loading ...</span>
-              </div>
-            ) : null}
+            <LoadingItem isLoading={taskLoading} />
             <BoardTaskList groupId={status.id} />
           </div>
         </div>
