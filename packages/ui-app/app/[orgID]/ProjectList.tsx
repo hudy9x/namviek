@@ -3,18 +3,22 @@
 import { useProjectStore } from '../../store/project'
 import { useEffect } from 'react'
 import { projectGet } from '../../services/project'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Project } from '@prisma/client'
-// import FavoriteAdd from '@/features/Favorites/FavoriteAdd'
-// import { HiChevronRight } from 'react-icons/hi2'
-// import { useFavStore } from '@/store/favorite'
+import FavoriteAdd from '@/features/Favorites/FavoriteAdd'
+import { useFavStore } from '@/store/favorite'
+import { HiChevronRight } from 'react-icons/hi2'
+import { AiOutlinePushpin } from 'react-icons/ai'
+import ProjectPin from '@/features/Project/Pin'
 
 export default function ProjectList() {
-  // const { favorites } = useFavStore()
-  const { addAllProject, selectProject } = useProjectStore(state => state)
+  const { favorites } = useFavStore()
+  const { projects, addAllProject, selectProject } = useProjectStore(
+    state => state
+  )
   const params = useParams()
-  // const { push } = useRouter()
-  // const favProjects = favorites.filter(f => f.type === 'PROJECT')
+  const { push } = useRouter()
+  const favProjects = favorites.filter(f => f.type === 'PROJECT')
 
   const onSelectProject = (id: string) => {
     selectProject(id)
@@ -37,41 +41,45 @@ export default function ProjectList() {
     })
   }, [])
 
-  return <></>
-
-  // return (
-  //   <nav className="nav">
-  //     {projects.map(project => {
-  //       const { id, name, icon } = project
-  //       const active = params.projectId === id
-  //       const href = `${params.orgID}/project/${id}?mode=task`
-  //       if (favProjects.find(f => f.name === name)) {
-  //         return null
-  //       }
+  const isAddedToFavorite = (projectName: string) => {
+    return favProjects.find(f => f.name === projectName)
+  }
+  // return <></>
   //
-  //       return (
-  //         <div
-  //           key={project.id}
-  //           className={`${active ? 'active' : ''} nav-item group`}
-  //           onClick={() => {
-  //             onSelectProject(project.id)
-  //             push(href)
-  //           }}>
-  //           <div className="left">
-  //             <HiChevronRight className="text-gray-400" />
-  //             <img className="w-5 h-5" src={icon || ''} />
-  //             <span className="whitespace-nowrap">{name}</span>
-  //           </div>
-  //           <FavoriteAdd
-  //             className="opacity-0 group-hover:opacity-100"
-  //             name={name}
-  //             icon={icon || ''}
-  //             link={href}
-  //             type="PROJECT"
-  //           />
-  //         </div>
-  //       )
-  //     })}
-  //   </nav>
-  // )
+  console.log(projects, projects.slice(0, 5))
+
+  return (
+    <nav className="nav">
+      {projects
+        .filter(p => !isAddedToFavorite(p.name))
+        .slice(0, 5)
+        .map(project => {
+          const { id, name, icon } = project
+          const active = params.projectId === id
+          const href = `${params.orgID}/project/${id}?mode=task`
+          if (favProjects.find(f => f.name === name)) {
+            return null
+          }
+
+          return (
+            <div
+              key={project.id}
+              className={`${active ? 'active' : ''} nav-item group`}
+              onClick={() => {
+                onSelectProject(project.id)
+                push(href)
+              }}>
+              <div className="left">
+                <HiChevronRight className="text-gray-400" />
+                <img className="w-5 h-5" src={icon || ''} />
+                <span className="whitespace-nowrap">{name}</span>
+              </div>
+              <div className="right relative group-hover:opacity-100 opacity-0 transition-all">
+                <ProjectPin projectId={id} />
+              </div>
+            </div>
+          )
+        })}
+    </nav>
+  )
 }
