@@ -86,6 +86,12 @@
   @apply hover:text-indigo-500;
 }
 
+.side-nav .section {
+  @apply uppercase text-[10px] font-medium text-gray-500 px-3 py-2 mx-1.5;
+  @apply flex justify-between items-center rounded-md;
+  @apply hover:text-gray-500 dark:hover:text-gray-500;
+}
+
 .side-nav .side-title.active {
   @apply bg-indigo-50/70 text-indigo-500;
   @apply dark:bg-indigo-50/10 text-indigo-400;

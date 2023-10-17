@@ -54,6 +54,7 @@ model User {
   photo               String?
   dob                 DateTime?
   members             Members[]
+  settings            Json?
   organizationMembers OrganizationMembers[]
   createdAt           DateTime?
   createdBy           String?
@@ -101,23 +102,23 @@ model OrganizationMembers {
 }
 
 model Task {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  desc         String?
-  dueDate      DateTime?
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  desc           String?
+  dueDate        DateTime?
   plannedDueDate DateTime?
-  startDate    DateTime?
-  projectId    String        @db.ObjectId
-  priority     TaskPriority?
-  taskStatusId String?       @db.ObjectId
-  tagIds       String[]      @db.ObjectId
-  assigneeIds  String[]      @db.ObjectId
-  fileIds      String[]      @db.ObjectId
-  parentTaskId String?       @db.ObjectId
-  progress     Int?
-  done         Boolean       @default(false)
+  startDate      DateTime?
+  projectId      String        @db.ObjectId
+  priority       TaskPriority?
+  taskStatusId   String?       @db.ObjectId
+  tagIds         String[]      @db.ObjectId
+  assigneeIds    String[]      @db.ObjectId
+  fileIds        String[]      @db.ObjectId
+  parentTaskId   String?       @db.ObjectId
+  progress       Int?
+  done           Boolean       @default(false)
   // do not store `point` as objectID, cuz we just need to fill the point value
-  taskPoint    Int?
+  taskPoint      Int?
 
   createdBy String?
   createdAt DateTime?

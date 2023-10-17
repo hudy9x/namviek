@@ -2,11 +2,20 @@ import { create } from 'zustand'
 import { Project, TaskPriority } from '@prisma/client'
 import { produce } from 'immer'
 
+export type PinnedProjectSetting = {
+  id: string
+  createdAt: Date
+}
+
 interface ProjectState {
   selectedProject: Project | null
   priorities: TaskPriority[]
   loading: boolean
   projects: Project[]
+  pinnedProjects: PinnedProjectSetting[]
+  pin: (id: string) => void
+  unpin: (id: string) => void
+  addPinnedProjects: (data: PinnedProjectSetting[]) => void
   addProject: (data: Project) => void
   updateProject: (data: Partial<Project>) => void
   addAllProject: (datas: Project[]) => void
@@ -24,6 +33,28 @@ export const useProjectStore = create<ProjectState>(set => ({
   ],
   selectedProject: null,
   projects: [],
+  pinnedProjects: [],
+  addPinnedProjects: (data: PinnedProjectSetting[]) =>
+    set(
+      produce((state: ProjectState) => {
+        state.pinnedProjects = data
+      })
+    ),
+  pin: (id: string) =>
+    set(
+      produce((state: ProjectState) => {
+        state.pinnedProjects.push({
+          id,
+          createdAt: new Date()
+        })
+      })
+    ),
+  unpin: (id: string) =>
+    set(
+      produce((state: ProjectState) => {
+        state.pinnedProjects = state.pinnedProjects.filter(p => p.id !== id)
+      })
+    ),
 
   setLoading: (status: boolean) =>
     set(
