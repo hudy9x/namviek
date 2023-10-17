@@ -3,7 +3,8 @@ import { Router } from 'express';
 import { validateRegisterUser } from '@shared/validation';
 import { mdUserAdd, mdUserFindEmail } from '@shared/models';
 import { compareHashPassword, hashPassword } from '../../lib/password';
-import { generateRefreshToken, generateToken } from '../../lib/jwt';
+import { decodeToken, generateRefreshToken, generateToken, generateVerifyToken } from '../../lib/jwt';
+import { sendVerifyEmail } from '../../lib/email';
 
 const router = Router();
 
@@ -63,25 +64,36 @@ router.post('/auth/sign-up', async (req, res) => {
     const resultData = data as User;
     const hashedPwd = hashPassword(resultData.password);
 
-    const user = await mdUserAdd({
-      email: resultData.email,
-      password: hashedPwd,
-      name: resultData.name,
-      country: null,
-      bio: null,
-      dob: null,
-      status: UserStatus.ACTIVE,
-      photo: null,
+    // const user = await mdUserAdd({
+    //   email: resultData.email,
+    //   password: hashedPwd,
+    //   name: resultData.name,
+    //   country: null,
+    //   bio: null,
+    //   dob: null,
+    //   status: UserStatus.INACTIVE,
+    //   photo: null,
 
-      createdAt: new Date(),
-      createdBy: null,
-      updatedAt: null,
-      updatedBy: null
+    //   createdAt: new Date(),
+    //   createdBy: null,
+    //   updatedAt: null,
+    //   updatedBy: null
+    // });
+
+    // res.json({
+    //   status: 200,
+    //   data: user
+    // });
+
+    const token = generateVerifyToken({
+      email: resultData.email,
+      name: resultData.name,
     });
 
+    await sendVerifyEmail({ userName: resultData.name, email: resultData.email, token: token })
     res.json({
       status: 200,
-      data: user
+      data: body
     });
   } catch (error) {
     res.json({
@@ -90,5 +102,21 @@ router.post('/auth/sign-up', async (req, res) => {
     });
   }
 });
+
+router.get('/auth/verify', async (req, res) => {
+  const { token } = req.query as { token: string }
+  try {
+    console.log('test')
+    const { email } = decodeToken(token)
+//Find user data by email
+  
+  } catch (error) {
+    res.json({
+      status: 500,
+      error
+    });
+  }
+});
+
 
 export default router;
