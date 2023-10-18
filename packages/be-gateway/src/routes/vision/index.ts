@@ -3,6 +3,7 @@ import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
   mdVisionAdd,
+  mdVisionDel,
   mdVisionGetByOrg,
   mdVisionGetByProject
 } from '@shared/models'
@@ -66,7 +67,15 @@ router.put('', async (req: AuthRequest, res) => {
   res.json({ status: 200 })
 })
 router.delete('/:id', async (req: AuthRequest, res) => {
-  res.json({ status: 200 })
+  try {
+    const { id } = req.params as { id: string }
+    console.log('vision id', id)
+    await mdVisionDel(id)
+    res.json({ status: 200 })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
 })
 
 export default mainRouter

@@ -1,0 +1,7 @@
+.list-box-actions {
+  @apply flex items-center gap-1;
+}
+
+.list-box-actions .btn {
+  @apply px-1 py-1;
+}

@@ -1,6 +1,6 @@
-import { visionAdd } from '@/services/vision'
+import { visionAdd, visionDelete } from '@/services/vision'
 import { Vision } from '@prisma/client'
-import { randomId } from '@shared/ui'
+import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 
 export type VisionField = Omit<Vision, 'createdAt' | 'createdBy'>
@@ -20,6 +20,18 @@ export const VisionProvider = VisionContext.Provider
 
 export const useVisionContext = () => {
   const { visions, setVisions } = useContext(VisionContext)
+
+  const deleteVision = (id: string) => {
+    setVisions(prev => prev.filter(v => v.id !== id))
+    visionDelete(id)
+      .then(res => {
+        messageSuccess('done')
+      })
+      .catch(err => {
+        messageError('delete vision error ')
+      })
+  }
+
   const createNewVision = (data: Partial<VisionField>) => {
     const visionId = `VISION_RAND_${randomId()}`
 
@@ -48,5 +60,5 @@ export const useVisionContext = () => {
     })
   }
 
-  return { visions, setVisions, createNewVision }
+  return { visions, setVisions, createNewVision, deleteVision }
 }

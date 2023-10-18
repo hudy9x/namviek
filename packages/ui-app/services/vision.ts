@@ -26,5 +26,5 @@ export const visionUpdate = (data: Partial<Vision>) => {
 }
 
 export const visionDelete = (id: string) => {
-  return httpDel(`/api/delete/${id}`)
+  return httpDel(`/api/vision/${id}`)
 }
