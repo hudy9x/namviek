@@ -1,7 +1,12 @@
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
-import { mdVisionGetByOrg, mdVisionGetByProject } from '@shared/models'
+import {
+  mdVisionAdd,
+  mdVisionGetByOrg,
+  mdVisionGetByProject
+} from '@shared/models'
+import { Vision } from '@prisma/client'
 
 const router = Router()
 const mainRouter = Router()
@@ -35,8 +40,26 @@ router.get('/get-by-org', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('', async (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-  res.json({ status: 200 })
+  try {
+    console.log('auth user', req.authen)
+    const { id: uid } = req.authen
+    const { name, parentId, organizationId, projectId, dueDate } =
+      req.body as Vision
+
+    const result = await mdVisionAdd({
+      name,
+      parentId,
+      organizationId,
+      projectId,
+      dueDate,
+      progress: 0,
+      createdBy: uid,
+      createdAt: new Date()
+    })
+    res.json({ data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 
 router.put('', async (req: AuthRequest, res) => {

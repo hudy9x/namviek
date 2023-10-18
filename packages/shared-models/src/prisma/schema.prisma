@@ -227,7 +227,7 @@ model Vision {
   organizationId String?   @db.ObjectId
   parentId       String?   @db.ObjectId
   dueDate        DateTime?
-  process        Int?
+  progress       Int?
   createdBy      String?
   createdAt      DateTime?
 }
