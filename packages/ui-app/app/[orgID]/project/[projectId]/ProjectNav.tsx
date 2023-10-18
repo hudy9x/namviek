@@ -13,6 +13,8 @@ import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import { useState } from 'react'
 import ProjectTabContent from './ProjectTabContent'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
+import { HiOutlineViewfinderCircle } from 'react-icons/hi2'
+import { TbView360 } from 'react-icons/tb'
 import TaskCreate from './TaskCreate'
 import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
@@ -60,6 +62,13 @@ export default function ProjectNav() {
       name: 'team',
       href: '#',
       icon: HiOutlineSquares2X2,
+      current: false
+    },
+    {
+      title: 'Vision',
+      name: 'vision',
+      href: '#',
+      icon: HiOutlineViewfinderCircle,
       current: false
     }
     // {
@@ -117,11 +126,10 @@ export default function ProjectNav() {
           <div className="flex items-center gap-2">
             <div className="tab">
               <div
-                className={`tab-item ${
-                  ['automation', 'automation-create'].includes(mode || '')
+                className={`tab-item ${['automation', 'automation-create'].includes(mode || '')
                     ? 'active'
                     : ''
-                }`}
+                  }`}
                 onClick={() => onMoveTab('automation')}>
                 <HiOutlineCpuChip />
                 <span>Automation</span>

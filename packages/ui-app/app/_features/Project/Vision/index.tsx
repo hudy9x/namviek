@@ -1,3 +1,6 @@
+import './style.css'
 export default function ProjectVision() {
-  return <div></div>
+  return <div className="vision">
+
+  </div>
 }

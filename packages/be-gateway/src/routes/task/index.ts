@@ -178,6 +178,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       priority,
       taskStatusId: taskStatusId,
       tagIds: [],
+      visionId: null,
       parentTaskId: null,
       taskPoint: null,
       createdBy: id,
@@ -273,11 +274,12 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     plannedDueDate,
     tagIds,
     parentTaskId,
+    visionId,
     progress,
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
-  
+
   try {
     await pmClient.$transaction(async tx => {
       // const taskData = await mdTaskGetOne(id)
@@ -333,6 +335,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       if (fileIds && fileIds.length) {
         const oldFileIds = taskData.fileIds || []
         taskData.fileIds = [...fileIds, ...oldFileIds]
+      }
+
+      if (visionId) {
+        taskData.visionId = visionId
       }
 
       taskData.updatedAt = new Date()
