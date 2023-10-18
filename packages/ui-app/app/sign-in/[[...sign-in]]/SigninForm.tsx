@@ -3,15 +3,25 @@
 import { Button, Form, messageError, messageSuccess, useForm } from '@shared/ui'
 import { validateLoginUser } from '@shared/validation'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from '../../../components/Logo'
 
-import { ISignin, saveGoalieUser, signin } from '@goalie/nextjs'
+import {
+  ISignin,
+  resendVerifyEmail,
+  saveGoalieUser,
+  signin
+} from '@goalie/nextjs'
 
 export default function SigninForm() {
   const { push } = useRouter()
   const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [isUserInactive, setIsUserInactive] = useState(false)
+
+  const resendBtnRef = useRef<null | HTMLButtonElement>(null)
+
   const { regField, regHandleSubmit } = useForm({
     values: {
       email: '',
@@ -25,6 +35,7 @@ export default function SigninForm() {
       if (loading) return
       setLoading(true)
       console.log(values)
+      setEmail(values.email)
       signin(values as ISignin)
         .then(res => {
           push('/organization')
@@ -32,8 +43,15 @@ export default function SigninForm() {
           // messageSuccess('Success')
         })
         .catch(err => {
+          if (err === 'INACTIVE_ACCOUNT') {
+            messageError(
+              "You haven't activated your account yet. Please check your email for the activation link."
+            )
+            setIsUserInactive(true)
+          } else {
+            messageError('Your email or password are invalid')
+          }
           console.log(err)
-          messageError('Your email or password are invalid')
         })
         .finally(() => {
           setLoading(false)
@@ -41,19 +59,37 @@ export default function SigninForm() {
     }
   })
 
+  const handleResendVerificationEmail = async () => {
+    const RESEND_DELAY = 5000
+    const resendBtn = resendBtnRef.current as HTMLButtonElement
+    
+    resendBtn.disabled = true
+    try {
+      await resendVerifyEmail(email)
+      messageSuccess('Activation email sent')
+      setTimeout(() => {
+        resendBtn.disabled = false
+      }, RESEND_DELAY)
+    } catch (error) {
+      console.log(error)
+      alert('Error sending activation email')
+      resendBtn.disabled = false
+    }
+  }
+
   return (
-    <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex rounded-md border-2 border-indigo-300 shadow-2xl shadow-indigo-200">
+    <div className="flex items-center justify-center w-screen h-screen sign-page ">
+      <div className="flex border-2 border-indigo-300 rounded-md shadow-2xl shadow-indigo-200">
         <form
           onSubmit={regHandleSubmit}
           className="bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md">
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             <Logo />
-            <h2 className="text-xl sm:text-2xl font-bold">
+            <h2 className="text-xl font-bold sm:text-2xl">
               Welcome to Kampuni
             </h2>
           </div>
-          <p className="text-gray-400 text-sm mt-3">
+          <p className="mt-3 text-sm text-gray-400">
             Enter your email and password to access to your worksppace.
           </p>
 
@@ -73,7 +109,19 @@ export default function SigninForm() {
             />
           </div>
 
-          <div className="mt-6 text-center text-gray-400 text-sm">
+          {isUserInactive && (
+            <div className="flex items-center gap-1 mt-6 text-sm text-center text-gray-400">
+              Haven&apos;t received the activation email?
+              <button
+                onClick={handleResendVerificationEmail}
+                className="text-indigo-600 border-none resend-button hover:underline"
+                ref={resendBtnRef}>
+                Resend
+              </button>
+            </div>
+          )}
+
+          <div className="mt-6 text-sm text-center text-gray-400">
             Do not have any account ?{' '}
             <Link className="text-indigo-600 hover:underline" href={'/sign-up'}>
               Register
@@ -81,8 +129,6 @@ export default function SigninForm() {
           </div>
         </form>
       </div>
-
-      {/* <SignUp /> */}
     </div>
   )
 }

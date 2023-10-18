@@ -1,12 +1,11 @@
+import { User } from '@prisma/client'
+import { decode } from 'jsonwebtoken'
 import {
   saveGoalieRefreshToken,
   saveGoalieToken,
   saveGoalieUser
 } from '../lib/util'
-import { GoalieUser } from '../types'
 import { httpPost } from './_req'
-import { User } from '@prisma/client'
-import { decode } from 'jsonwebtoken'
 
 export const signup = (data: Partial<User>) => {
   return httpPost('/api/auth/sign-up', data)
@@ -23,6 +22,10 @@ export const signin = ({ email, password }: ISignin) => {
     const { headers } = res
 
     console.log('headers', headers)
+
+    if (status === 403) {
+      return Promise.reject('INACTIVE_ACCOUNT')
+    }
 
     if (status !== 200) {
       return Promise.reject('INVALID_INFORMATION')
@@ -50,4 +53,8 @@ export const signin = ({ email, password }: ISignin) => {
 
     return Promise.resolve('SUCCESS')
   })
+}
+
+export const resendVerifyEmail = (email: string) => {
+  return httpPost('/api/auth/resend-verify-email', { email })
 }

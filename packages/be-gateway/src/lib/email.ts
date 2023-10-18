@@ -37,7 +37,7 @@ export const sendEmail = ({ emails, html, subject }: IEmailFields) => {
 }
 
 export const sendVerifyEmail = ({ userName, email, token }: { userName: string, email: string, token: string }) => {
-  const verificationLink = `${process.env.NEXT_PUBLIC_BE_GATEWAY}/api/auth/verify?token=${token}`
+  const verificationLink = `${process.env.NEXT_PUBLIC_BE_GATEWAY}api/auth/verify?token=${token}`
   return sendEmail({
     emails: [email],
     subject: '[Kampuni] Invitation email for joining organization',

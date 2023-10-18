@@ -1,10 +1,12 @@
 import { User, UserStatus } from '@prisma/client';
 import { Router } from 'express';
 import { validateRegisterUser } from '@shared/validation';
-import { mdUserAdd, mdUserFindEmail } from '@shared/models';
+import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models';
 import { compareHashPassword, hashPassword } from '../../lib/password';
 import { decodeToken, generateRefreshToken, generateToken, generateVerifyToken } from '../../lib/jwt';
 import { sendVerifyEmail } from '../../lib/email';
+import { JWTPayload } from '../../types';
+import { randomUUID } from 'crypto';
 
 const router = Router();
 
@@ -18,6 +20,10 @@ router.post('/auth/sign-in', async (req, res) => {
 
     if (!user) {
       return res.json({ status: 400, error: 'Your credential is invalid' });
+    }
+
+    if (user.status === UserStatus.INACTIVE) {
+      return res.json({ status: 403, error: 'Your account is not active' });
     }
 
     console.time('compare-pwd');
@@ -64,26 +70,21 @@ router.post('/auth/sign-up', async (req, res) => {
     const resultData = data as User;
     const hashedPwd = hashPassword(resultData.password);
 
-    // const user = await mdUserAdd({
-    //   email: resultData.email,
-    //   password: hashedPwd,
-    //   name: resultData.name,
-    //   country: null,
-    //   bio: null,
-    //   dob: null,
-    //   status: UserStatus.INACTIVE,
-    //   photo: null,
+    const user = await mdUserAdd({
+      email: resultData.email,
+      password: hashedPwd,
+      name: resultData.name,
+      country: null,
+      bio: null,
+      dob: null,
+      status: UserStatus.INACTIVE,
+      photo: null,
 
-    //   createdAt: new Date(),
-    //   createdBy: null,
-    //   updatedAt: null,
-    //   updatedBy: null
-    // });
-
-    // res.json({
-    //   status: 200,
-    //   data: user
-    // });
+      createdAt: new Date(),
+      createdBy: null,
+      updatedAt: null,
+      updatedBy: null
+    });
 
     const token = generateVerifyToken({
       email: resultData.email,
@@ -91,9 +92,10 @@ router.post('/auth/sign-up', async (req, res) => {
     });
 
     await sendVerifyEmail({ userName: resultData.name, email: resultData.email, token: token })
+
     res.json({
       status: 200,
-      data: body
+      data: user
     });
   } catch (error) {
     res.json({
@@ -102,14 +104,21 @@ router.post('/auth/sign-up', async (req, res) => {
     });
   }
 });
+
 
 router.get('/auth/verify', async (req, res) => {
   const { token } = req.query as { token: string }
   try {
-    console.log('test')
-    const { email } = decodeToken(token)
-//Find user data by email
-  
+    const { email } = decodeToken(token) as JWTPayload
+    const user = await mdUserFindEmail(email)
+    if (!user) {
+      return res.json({ status: 400, error: 'Your credential is invalid' });
+    }
+
+    await mdUserUpdate(user.id, { status: UserStatus.ACTIVE });
+
+    res.json({ status: 200, data: user })
+
   } catch (error) {
     res.json({
       status: 500,
@@ -118,5 +127,32 @@ router.get('/auth/verify', async (req, res) => {
   }
 });
 
+
+router.post('/auth/send-verify-email', async (req, res) => {
+  try {
+
+    const { email } = req.body;
+
+    const user = await mdUserFindEmail(email);
+    if (!user) {
+      return res.json({ status: 400, error: 'Your credential is invalid' });
+    }
+
+    const token = generateVerifyToken({
+      email: email,
+      name: user.name,
+    });
+
+
+    await sendVerifyEmail({ userName: user.name, email: email, token: token })
+
+    res.json({ status: 200, data: user });
+  } catch (error) {
+    res.json({
+      status: 500,
+      error
+    });
+  }
+});
 
 export default router;

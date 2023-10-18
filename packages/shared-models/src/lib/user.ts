@@ -16,3 +16,10 @@ export const mdUserAdd = async (data: Omit<User, 'id'>) => {
 		data: data
 	});
 };
+
+export const mdUserUpdate = async (id: string, data: Partial<User>) => {
+	return userModel.update({
+		where: {id},
+		data: data
+	});
+}
