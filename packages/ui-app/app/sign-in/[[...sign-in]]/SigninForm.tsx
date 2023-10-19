@@ -62,18 +62,21 @@ export default function SigninForm() {
   const handleResendVerificationEmail = async () => {
     const RESEND_DELAY = 5000
     const resendBtn = resendBtnRef.current as HTMLButtonElement
-    
+
     resendBtn.disabled = true
+    resendBtn.classList.replace('text-indigo-600', 'text-gray-600')
     try {
       await resendVerifyEmail(email)
       messageSuccess('Activation email sent')
       setTimeout(() => {
         resendBtn.disabled = false
+        resendBtn.classList.replace('text-gray-600', 'text-indigo-600')
       }, RESEND_DELAY)
     } catch (error) {
       console.log(error)
       alert('Error sending activation email')
       resendBtn.disabled = false
+      resendBtn.classList.replace('text-gray-600', 'text-indigo-600')
     }
   }
 
@@ -114,7 +117,7 @@ export default function SigninForm() {
               Haven&apos;t received the activation email?
               <button
                 onClick={handleResendVerificationEmail}
-                className="text-indigo-600 border-none resend-button hover:underline"
+                className={`text-indigo-600 border-none resend-button hover:underline `}
                 ref={resendBtnRef}>
                 Resend
               </button>

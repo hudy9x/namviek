@@ -1,12 +1,11 @@
 import { User, UserStatus } from '@prisma/client';
-import { Router } from 'express';
-import { validateRegisterUser } from '@shared/validation';
 import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models';
-import { compareHashPassword, hashPassword } from '../../lib/password';
-import { decodeToken, generateRefreshToken, generateToken, generateVerifyToken } from '../../lib/jwt';
+import { validateRegisterUser } from '@shared/validation';
+import { Router } from 'express';
 import { sendVerifyEmail } from '../../lib/email';
+import { decodeToken, generateRefreshToken, generateToken, generateVerifyToken } from '../../lib/jwt';
+import { compareHashPassword, hashPassword } from '../../lib/password';
 import { JWTPayload } from '../../types';
-import { randomUUID } from 'crypto';
 
 const router = Router();
 
@@ -116,10 +115,11 @@ router.get('/auth/verify', async (req, res) => {
     }
 
     await mdUserUpdate(user.id, { status: UserStatus.ACTIVE });
-
+    window.location.href='http://localhost:4200/verification'
     res.json({ status: 200, data: user })
 
   } catch (error) {
+    window.location.href='http://localhost:4200/verification/error'
     res.json({
       status: 500,
       error
@@ -128,9 +128,8 @@ router.get('/auth/verify', async (req, res) => {
 });
 
 
-router.post('/auth/send-verify-email', async (req, res) => {
+router.post('/auth/resend-verify-email', async (req, res) => {
   try {
-
     const { email } = req.body;
 
     const user = await mdUserFindEmail(email);
