@@ -1,3 +1,6 @@
+.list-box {
+  @apply bg-white dark:bg-gray-900 rounded-md border dark:border-gray-800 relative shadow-lg shadow-indigo-100 dark:shadow-gray-900;
+}
 .list-box-actions {
   @apply flex items-center gap-1;
 }

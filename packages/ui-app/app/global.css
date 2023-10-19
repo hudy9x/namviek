@@ -109,8 +109,8 @@
 }
 
 .nav .nav-item {
-  @apply flex transition-all items-center justify-between gap-2 px-3 text-sm text-gray-600 py-2 rounded-md m-1.5;
-  @apply hover:bg-gray-100 dark:hover:bg-gray-800/30 dark:text-gray-500;
+  @apply flex transition-all items-center justify-between gap-2 px-3 text-sm text-gray-600 py-2 rounded-md mx-1.5;
+  @apply dark:text-gray-500;
 }
 
 .nav .nav-item .left {
@@ -122,7 +122,7 @@
 }
 
 .nav .nav-item:hover {
-  @apply text-gray-400;
+  @apply text-indigo-400;
 }
 
 .nav .nav-item.active {
