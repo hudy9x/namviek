@@ -15,12 +15,13 @@ import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 import PointRouter from './point'
 import StatusRouter from './status'
 import TagRouter from './tag'
+import PinRouter from './pin'
 
 const router = Router()
 
 router.use([authMiddleware])
 
-router.use([StatusRouter, TagRouter, PointRouter])
+router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
 
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {

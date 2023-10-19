@@ -1,5 +1,5 @@
 import { Project } from '@prisma/client'
-import { httpGet, httpPost, httpPut } from './_req'
+import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 type IProjectProps = Pick<Project, 'name' | 'desc' | 'organizationId' | 'icon'>
 
@@ -14,4 +14,16 @@ export const projectQuickAdd = (data: IProjectProps) => {
 
 export const projectUpdate = (data: Partial<Project>) => {
   return httpPut('/api/project', data)
+}
+
+export const projectPinGetList = () => {
+  return httpGet('/api/project/pin')
+}
+
+export const projectPin = (projectId: string) => {
+  return httpPost('/api/project/pin', { projectId })
+}
+
+export const projectUnpin = (projectId: string) => {
+  return httpDel('/api/project/pin', { params: { projectId } })
 }
