@@ -23,10 +23,6 @@ export const signin = ({ email, password }: ISignin) => {
 
     console.log('headers', headers)
 
-    if (status === 403) {
-      return Promise.reject('INACTIVE_ACCOUNT')
-    }
-
     if (status !== 200) {
       return Promise.reject('INVALID_INFORMATION')
     }
@@ -52,6 +48,9 @@ export const signin = ({ email, password }: ISignin) => {
     })
 
     return Promise.resolve('SUCCESS')
+  }).catch(err => {
+    console.log('err', err)
+    return Promise.reject(err)
   })
 }
 

@@ -22,7 +22,7 @@ router.post('/auth/sign-in', async (req, res) => {
     }
 
     if (user.status === UserStatus.INACTIVE) {
-      return res.json({ status: 403, error: 'Your account is not active' });
+      return res.status(403).send();
     }
 
     console.time('compare-pwd')
@@ -113,17 +113,16 @@ router.get('/auth/verify', async (req, res) => {
   const { token } = req.query as { token: string }
   try {
     const { email } = decodeToken(token) as JWTPayload
+    console.log('email:', email)
     const user = await mdUserFindEmail(email)
     if (!user) {
       return res.json({ status: 400, error: 'Your credential is invalid' });
     }
 
     await mdUserUpdate(user.id, { status: UserStatus.ACTIVE });
-    window.location.href='http://localhost:4200/verification'
     res.json({ status: 200, data: user })
 
   } catch (error) {
-    window.location.href='http://localhost:4200/verification/error'
     res.json({
       status: 500,
       error

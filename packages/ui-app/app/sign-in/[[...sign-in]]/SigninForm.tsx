@@ -3,24 +3,18 @@
 import { Button, Form, messageError, messageSuccess, useForm } from '@shared/ui'
 import { validateLoginUser } from '@shared/validation'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import Logo from '../../../components/Logo'
 
-import {
-  ISignin,
-  resendVerifyEmail,
-  saveGoalieUser,
-  signin
-} from '@goalie/nextjs'
+import { ISignin, resendVerifyEmail, signin } from '@goalie/nextjs'
 
 export default function SigninForm() {
   const { push } = useRouter()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [isUserInactive, setIsUserInactive] = useState(false)
-
-  const resendBtnRef = useRef<null | HTMLButtonElement>(null)
+  const [isDisabledBtn, setIsDisabledBtn] = useState(false)
 
   const { regField, regHandleSubmit } = useForm({
     values: {
@@ -43,7 +37,7 @@ export default function SigninForm() {
           // messageSuccess('Success')
         })
         .catch(err => {
-          if (err === 'INACTIVE_ACCOUNT') {
+          if (err.response.status === 403) {
             messageError(
               "You haven't activated your account yet. Please check your email for the activation link."
             )
@@ -61,22 +55,17 @@ export default function SigninForm() {
 
   const handleResendVerificationEmail = async () => {
     const RESEND_DELAY = 5000
-    const resendBtn = resendBtnRef.current as HTMLButtonElement
-
-    resendBtn.disabled = true
-    resendBtn.classList.replace('text-indigo-600', 'text-gray-600')
+    setIsDisabledBtn(true)
     try {
       await resendVerifyEmail(email)
       messageSuccess('Activation email sent')
       setTimeout(() => {
-        resendBtn.disabled = false
-        resendBtn.classList.replace('text-gray-600', 'text-indigo-600')
+        setIsDisabledBtn(false)
       }, RESEND_DELAY)
     } catch (error) {
       console.log(error)
+      setIsDisabledBtn(false)
       alert('Error sending activation email')
-      resendBtn.disabled = false
-      resendBtn.classList.replace('text-gray-600', 'text-indigo-600')
     }
   }
 
@@ -117,8 +106,12 @@ export default function SigninForm() {
               Haven&apos;t received the activation email?
               <button
                 onClick={handleResendVerificationEmail}
-                className={`text-indigo-600 border-none resend-button hover:underline `}
-                ref={resendBtnRef}>
+                className={`${
+                  isDisabledBtn
+                    ? 'text-gray-600 cursor-not-allowed'
+                    : 'text-indigo-600'
+                } border-none resend-button hover:underline `}
+                disabled={isDisabledBtn}>
                 Resend
               </button>
             </div>
