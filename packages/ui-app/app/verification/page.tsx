@@ -2,21 +2,22 @@
 
 import { httpGet } from '@/services/_req'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Verification() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
-  const { push } = useRouter()
 
   const [isLoading, setIsLoading] = useState(true)
   const [isTokenValid, setIsTokenValid] = useState(false)
+  const [resMessage, setResMessage] = useState('')
 
   useEffect(() => {
     httpGet(`/api/auth/verify?token=${token}`)
-      .then(() => {
+      .then(res => {
         setIsTokenValid(true)
+        setResMessage(res.data.message)
         setIsLoading(false)
       })
       .catch(error => setIsLoading(false))
@@ -26,8 +27,8 @@ export default function Verification() {
 
   return isTokenValid ? (
     <div>
-      <p>Congratulations! Your Account is Now Active.</p>
-      <Link href={`${process.env.FRONTEND_DOMAIN}sign-in`}>Back to Login</Link>
+      <p>{resMessage}</p>
+      <Link href={`/sign-in`}>Back to Login</Link>
     </div>
   ) : (
     <div>

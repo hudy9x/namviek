@@ -119,8 +119,12 @@ router.get('/auth/verify', async (req, res) => {
       return res.json({ status: 400, error: 'Your credential is invalid' });
     }
 
-    await mdUserUpdate(user.id, { status: UserStatus.ACTIVE });
-    res.json({ status: 200, data: user })
+    if (user.status === UserStatus.ACTIVE) {
+      res.json({ status: 200, message: 'Your account has already been activated' })
+    } else {
+      await mdUserUpdate(user.id, { status: UserStatus.ACTIVE });
+      res.json({ status: 200, message: 'Congratulations! Your Account is Now Active.' })
+    }
 
   } catch (error) {
     res.json({
