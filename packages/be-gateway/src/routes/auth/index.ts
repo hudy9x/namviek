@@ -113,7 +113,6 @@ router.get('/auth/verify', async (req, res) => {
   const { token } = req.query as { token: string }
   try {
     const { email } = decodeToken(token) as JWTPayload
-    console.log('email:', email)
     const user = await mdUserFindEmail(email)
     if (!user) {
       return res.json({ status: 400, error: 'Your credential is invalid' });
@@ -148,7 +147,6 @@ router.post('/auth/resend-verify-email', async (req, res) => {
       email: email,
       name: user.name,
     });
-
 
     await sendVerifyEmail({ userName: user.name, email: email, token: token })
 

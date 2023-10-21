@@ -70,18 +70,18 @@ export default function SigninForm() {
   }
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen sign-page ">
-      <div className="flex border-2 border-indigo-300 rounded-md shadow-2xl shadow-indigo-200">
+    <div className="sign-page h-screen w-screen flex items-center justify-center ">
+      <div className="flex rounded-md border-2 border-indigo-300 shadow-2xl shadow-indigo-200">
         <form
           onSubmit={regHandleSubmit}
           className="bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md">
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <Logo />
-            <h2 className="text-xl font-bold sm:text-2xl">
+            <h2 className="text-xl sm:text-2xl font-bold">
               Welcome to Kampuni
             </h2>
           </div>
-          <p className="mt-3 text-sm text-gray-400">
+          <p className="text-gray-400 text-sm mt-3">
             Enter your email and password to access to your worksppace.
           </p>
 

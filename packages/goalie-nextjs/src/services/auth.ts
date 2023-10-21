@@ -48,9 +48,9 @@ export const signin = ({ email, password }: ISignin) => {
     })
 
     return Promise.resolve('SUCCESS')
-  }).catch(err => {
-    console.log('err', err)
-    return Promise.reject(err)
+  }).catch(error => {
+    console.log('error', error)
+    return Promise.reject(error)
   })
 }
 
