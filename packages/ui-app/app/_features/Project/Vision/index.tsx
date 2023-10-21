@@ -5,6 +5,7 @@ import { VisionField, VisionProvider } from './context'
 import { visionGetByProject } from '@/services/vision'
 import { useParams } from 'next/navigation'
 import ProjectVisionContainer from './VisionContainer'
+import './style.css'
 
 export default function ProjectVision() {
   const { projectId } = useParams()

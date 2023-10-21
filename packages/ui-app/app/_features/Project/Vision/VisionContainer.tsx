@@ -4,51 +4,43 @@ import { HiOutlineBars3, HiOutlineViewColumns } from 'react-icons/hi2'
 import { Button, FormGroup } from '@shared/ui'
 import { useState } from 'react'
 import ListPreset from '@/components/ListPreset'
-import VisionBoard from './VisionBoard'
 import VisionListTask from './VisionListTask'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DndContext, DragEndEvent } from '@dnd-kit/core'
+import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 
 export default function ProjectVisionContainer() {
   const [view, setView] = useState('list')
+  const { updateTaskData } = useServiceTaskUpdate()
+  const onDragEnd = (ev: DragEndEvent) => {
+    const { active, over } = ev
+    if (!active.id || !over?.id) {
+      return
+    }
+
+    const taskId = active.id as string
+    const visionId = over.id as string
+
+    updateTaskData({
+      id: taskId,
+      visionId
+    })
+
+    console.log(active, over)
+  }
   return (
     <div className="vision relative">
-      <div
-        className="flex px-1 divide-x"
-        style={{ height: `calc(100vh - 83px)` }}>
-        <div className="p-3">
-          <VisionListTask />
+      <DndContext onDragEnd={onDragEnd}>
+        <div
+          className="flex px-1 divide-x"
+          style={{ height: `calc(100vh - 83px)` }}>
+          <div className="p-3 w-[300px] shrink-0">
+            <VisionListTask />
+          </div>
+          <div className="p-3 w-[300px] shrink-0">
+            <ProjectVisionList />
+          </div>
         </div>
-        <div className="p-3">
-          <ProjectVisionList />
-        </div>
-      </div>
-
-      {/* <header className="w-[700px] mx-auto mt-12 mb-2"> */}
-      {/*   <div className="flex items-center justify-between gap-2"> */}
-      {/*     <ListPreset */}
-      {/*       value="this-month" */}
-      {/*       options={[ */}
-      {/*         { id: 'this-month', title: 'This month' }, */}
-      {/*         { id: 'this-week', title: 'This week' }, */}
-      {/*         { id: 'all', title: 'All time' } */}
-      {/*       ]} */}
-      {/*     /> */}
-      {/**/}
-      {/*     <FormGroup> */}
-      {/*       <Button */}
-      {/*         disabled={view === 'list'} */}
-      {/*         onClick={() => setView('list')} */}
-      {/*         leadingIcon={<HiOutlineBars3 />} */}
-      {/*       /> */}
-      {/*       <Button */}
-      {/*         disabled={view === 'board'} */}
-      {/*         onClick={() => setView('board')} */}
-      {/*         leadingIcon={<HiOutlineViewColumns />} */}
-      {/*       /> */}
-      {/*     </FormGroup> */}
-      {/*   </div> */}
-      {/* </header> */}
-      {/* {view === 'list' ? <ProjectVisionList /> : <VisionBoard />} */}
+      </DndContext>
     </div>
   )
 }
