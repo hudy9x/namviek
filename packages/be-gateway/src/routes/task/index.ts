@@ -162,7 +162,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
 
   const doneStatus = await mdTaskStatusWithDoneType(projectId)
 
-  const done = doneStatus && doneStatus.id === taskStatusId
+  const done = doneStatus && doneStatus.id === taskStatusId ? true : false
 
   try {
     const result = await mdTaskAdd({

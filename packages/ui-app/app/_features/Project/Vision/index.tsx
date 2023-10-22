@@ -10,6 +10,7 @@ import './style.css'
 export default function ProjectVision() {
   const { projectId } = useParams()
   const [loading, setLoading] = useState(true)
+  const [selected, setSelected] = useState('')
   const [visions, setVisions] = useState<VisionField[]>([])
 
   const clearLoading = () => {
@@ -34,7 +35,15 @@ export default function ProjectVision() {
   }, [projectId])
 
   return (
-    <VisionProvider value={{ visions, loading, setLoading, setVisions }}>
+    <VisionProvider
+      value={{
+        visions,
+        loading,
+        setLoading,
+        setVisions,
+        selected,
+        setSelected
+      }}>
       <ProjectVisionContainer />
     </VisionProvider>
   )

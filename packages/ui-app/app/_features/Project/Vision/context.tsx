@@ -4,8 +4,9 @@ import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 
 export type VisionField = Omit<Vision, 'createdAt' | 'createdBy'>
-
 interface IVisionContextProps {
+  selected: string
+  setSelected: Dispatch<SetStateAction<string>>
   loading: boolean
   setLoading: Dispatch<SetStateAction<boolean>>
   visions: VisionField[]
@@ -14,6 +15,10 @@ interface IVisionContextProps {
 const VisionContext = createContext<IVisionContextProps>({
   loading: false,
   visions: [],
+  selected: '',
+  setSelected: () => {
+    console.log(3)
+  },
   setLoading: () => {
     console.log(2)
   },
@@ -25,7 +30,8 @@ const VisionContext = createContext<IVisionContextProps>({
 export const VisionProvider = VisionContext.Provider
 
 export const useVisionContext = () => {
-  const { visions, setVisions, loading, setLoading } = useContext(VisionContext)
+  const { visions, setVisions, loading, setLoading, selected, setSelected } =
+    useContext(VisionContext)
 
   const deleteVision = (id: string) => {
     setVisions(prev => prev.filter(v => v.id !== id))
@@ -66,5 +72,14 @@ export const useVisionContext = () => {
     })
   }
 
-  return { visions, setVisions, createNewVision, deleteVision, loading, setLoading }
+  return {
+    visions,
+    setVisions,
+    createNewVision,
+    deleteVision,
+    loading,
+    setLoading,
+    selected,
+    setSelected
+  }
 }

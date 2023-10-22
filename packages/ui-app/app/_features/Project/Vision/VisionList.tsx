@@ -9,7 +9,7 @@ import { useTaskStore } from '@/store/task'
 import { Task } from '@prisma/client'
 
 export default function ProjectVisionList() {
-  const { visions, loading } = useVisionContext()
+  const { visions, loading, selected } = useVisionContext()
   const { tasks } = useTaskStore()
 
   const visionByIds: { [key: string]: Task[] } = {}
@@ -25,16 +25,24 @@ export default function ProjectVisionList() {
     visionByIds[visionId].push(task)
   })
 
-  console.log(visionByIds)
-
   return (
     <ListBox className="w-[300px]">
       <AbsoluteLoading enabled={loading} />
 
       <ListBox.Body>
         {visions.map(vision => {
-          const taskData = visionByIds[vision.id]
-          return <VisionItem data={vision} key={vision.id} tasks={taskData} />
+          // const taskData = visionByIds[vision.id]
+          const active = selected === vision.id
+          return (
+            <VisionItem
+              key={vision.id}
+              name={vision.name}
+              id={vision.id}
+              progress={vision.progress || 0}
+              active={active}
+              // tasks={taskData}
+            />
+          )
         })}
         <VisionCreate />
       </ListBox.Body>
