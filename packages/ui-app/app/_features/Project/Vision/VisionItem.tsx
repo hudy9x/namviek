@@ -10,7 +10,6 @@ import { Form } from '@shared/ui'
 
 function VisionItem({
   active,
-  // tasks,
   name,
   id,
   progress
@@ -19,11 +18,17 @@ function VisionItem({
   name: string
   id: string
   progress: number
-  // tasks: Task[]
 }) {
   const { setSelected, selected } = useVisionContext()
   // const date = dueDate ? formatDistanceToNow(new Date(dueDate)) : ''
   console.log(id)
+  const color =
+    progress === 0
+      ? 'bg-gray-100 text-gray-600'
+      : progress === 100
+      ? 'bg-green-500 text-gray-100'
+      : 'bg-yellow-500 text-gray-50'
+
   return (
     <Droppable droppableId={id} type="vision" className="vision-dropzone">
       <div
@@ -43,8 +48,10 @@ function VisionItem({
           </div>
         </div>
         <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
-          <ListCell width={80}>
-            <ProgressBar color="green" progress={progress || 0} />
+          <ListCell width={40}>
+            <div className={`${color} text-[10px] text-center rounded-sm px-1`}>
+              {progress || 0}%
+            </div>
           </ListCell>
           {/* <ListCell width={110}>{date}</ListCell> */}
         </div>

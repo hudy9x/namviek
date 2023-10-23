@@ -25,8 +25,8 @@ export default function VisionListTask() {
     taskCreateOne({
       dueDate: new Date(),
       title: v,
-      taskStatusId: groupId,
-      projectId
+      projectId,
+      visionId: selected
     })
   }
 
@@ -34,7 +34,14 @@ export default function VisionListTask() {
     <div className="space-y-2">
       {taskLoading ? <h2>Loading</h2> : null}
       {taskWithoutVisions.map((t, index) => {
-        return <VisionTaskItem key={t.id} title={t.title} id={t.id} />
+        return (
+          <VisionTaskItem
+            key={t.id}
+            title={t.title}
+            statusId={t.taskStatusId || ''}
+            id={t.id}
+          />
+        )
       })}
       <div className="bg-white rounded-md border shadow-md shadow-indigo-100">
         <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />

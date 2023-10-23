@@ -2,9 +2,14 @@ import React, { ReactNode } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 
+interface IDragProvider {
+  listeners: any
+  attributes: any
+}
+
 interface IDraggableProps {
   className?: string
-  children: ReactNode
+  children: (providers: IDragProvider) => ReactNode
   draggableId: string
 }
 export default function Draggable({
@@ -30,10 +35,8 @@ export default function Draggable({
     <div
       className={classes.filter(Boolean).join(' ')}
       ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}>
-      {children}
+      style={style}>
+      {children({ listeners, attributes })}
     </div>
   )
 }

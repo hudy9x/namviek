@@ -25,6 +25,8 @@ export const useServiceTaskUpdate = () => {
       taskData.done = taskData.taskStatusId === statusDoneId
     }
 
+    console.log('update taskdata', taskData.taskStatusId, taskData.done)
+
     refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
 
     updateTask({
