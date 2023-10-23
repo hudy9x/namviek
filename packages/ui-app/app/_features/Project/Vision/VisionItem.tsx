@@ -1,23 +1,20 @@
-import { memo } from 'react'
 import ListCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/ListCell'
 import VisionDelete from './VisionDelete'
-import { VisionField, useVisionContext } from './context'
-import ProgressBar from '@/components/ProgressBar'
-import { formatDistanceToNow } from 'date-fns'
+import { useVisionContext } from './context'
 import Droppable from '@/components/Dnd/Droppable'
-import { Task } from '@prisma/client'
-import { Form } from '@shared/ui'
 
 function VisionItem({
   active,
   name,
   id,
-  progress
+  progress,
+  inprogress
 }: {
   active: boolean
   name: string
   id: string
   progress: number
+  inprogress: number
 }) {
   const { setSelected, selected } = useVisionContext()
   // const date = dueDate ? formatDistanceToNow(new Date(dueDate)) : ''
@@ -39,15 +36,24 @@ function VisionItem({
           setSelected(selected !== id ? id : '')
         }}>
         <div className="flex items-center gap-2 dark:text-gray-300">
-          <div className="w-full flex items-center gap-2">
-            {name}
+          <div className="w-full flex flex-col gap-0.5">
+            <span>{name}</span>
+            {inprogress ? (
+              <span className="text-[11px] text-yellow-600 capitalize">
+                in progress: {inprogress}
+              </span>
+            ) : (
+              <span className="text-[11px] text-gray-400 capitalize">
+                resolved
+              </span>
+            )}
             {/* {name} - {tasks.length} */}
-          </div>
-          <div className="list-box-actions group-hover:opacity-100 opacity-0 transition-all">
-            <VisionDelete id={id} />
           </div>
         </div>
         <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
+          <div className="list-box-actions group-hover:opacity-100 opacity-0 transition-all">
+            <VisionDelete id={id} />
+          </div>
           <ListCell width={40}>
             <div className={`${color} text-[10px] text-center rounded-sm px-1`}>
               {progress || 0}%
