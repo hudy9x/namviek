@@ -8,6 +8,7 @@ import VisionItem from './VisionItem'
 import { useTaskStore } from '@/store/task'
 import { Task } from '@prisma/client'
 import { useProjectStatusStore } from '@/store/status'
+import Badge from '@/components/Badge'
 
 export default function ProjectVisionList() {
   const { visions, loading, selected } = useVisionContext()
@@ -45,6 +46,9 @@ export default function ProjectVisionList() {
     return progress
   }
 
+  const completeRate = convertToProgress(taskDone, taskTotal)
+  const badgeColor = completeRate === 100 ? 'green' : (completeRate === 0 ? 'gray' : 'yellow')
+
   return (
     <ListBox className="w-[300px]">
       <AbsoluteLoading enabled={loading} />
@@ -52,7 +56,8 @@ export default function ProjectVisionList() {
       <ListBox.Body>
         <div className="flex items-center justify-between px-2 py-1 text-xs">
           <span className="uppercase">Total</span>
-          <span>{convertToProgress(taskDone, taskTotal)}</span>
+          <Badge title={`${completeRate} %`} color={badgeColor} />
+
         </div>
         {visions.map(vision => {
           const progressData = visionProgress[vision.id]
