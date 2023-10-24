@@ -24,7 +24,9 @@ export default function ProjectVisionContainer() {
   }
   return (
     <div className="vision relative">
-      <div className="flex divide-x" style={{ height: `calc(100vh - 83px)` }}>
+      <div
+        className="flex divide-x dark:divide-gray-700"
+        style={{ height: `calc(100vh - 83px)` }}>
         <DndContext onDragEnd={onDragEnd}>
           <VisionListTask />
           <VisionList />

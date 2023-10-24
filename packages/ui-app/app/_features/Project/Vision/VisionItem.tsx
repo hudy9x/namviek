@@ -37,11 +37,13 @@ function VisionItem({
               <span className="text-[11px] text-yellow-600 capitalize">
                 in progress: {inprogress}
               </span>
-            ) : (
+            ) : null}
+
+            {progress === 100 ? (
               <span className="text-[11px] text-gray-400 capitalize">
                 resolved
               </span>
-            )}
+            ) : null}
             {/* {name} - {tasks.length} */}
           </div>
         </div>

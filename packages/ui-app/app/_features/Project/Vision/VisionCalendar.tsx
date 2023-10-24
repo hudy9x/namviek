@@ -53,6 +53,7 @@ export default function VisionCalendar() {
           {day => {
             const key = `${day.getDate()}-${day.getMonth()}`
             const visionList = visionByDays[key]
+            console.log('in here')
 
             return (
               <Droppable

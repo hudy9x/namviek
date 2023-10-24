@@ -21,6 +21,10 @@
   @apply text-xs text-gray-600 dark:text-gray-400;
 }
 
+.cal-day-in-week.today .cal-day {
+  @apply text-indigo-500 font-bold;
+}
+
 .cal-day-in-week.is-sunsat {
   @apply bg-gray-50 dark:bg-black/40;
 }

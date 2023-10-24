@@ -41,9 +41,9 @@ export default function VisionListTask() {
   if (hide) {
     return (
       <div
-        className="w-[30px] h-full bg-white cursor-pointer"
+        className="w-[30px] h-full bg-white dark:bg-gray-900 cursor-pointer"
         onClick={() => setHide(false)}>
-        <div className="whitespace-nowrap uppercase text-[11px] font-bold text-gray-600 transform rotate-90 translate-y-5">
+        <div className="whitespace-nowrap uppercase text-[11px] font-bold text-gray-600 dark:text-gray-500 transform rotate-90 translate-y-5">
           show task list
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function VisionListTask() {
             />
           )
         })}
-        <div className="bg-white rounded-md border shadow-md shadow-indigo-100">
+        <div className="bg-white rounded-md border shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
           <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
         </div>
       </div>
