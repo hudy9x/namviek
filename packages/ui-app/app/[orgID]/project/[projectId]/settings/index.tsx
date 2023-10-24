@@ -8,6 +8,8 @@ import { HiOutlineLink, HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
+import ProjectIntegrations from './integrations'
+
 
 const Setting = () => {
   const { push } = useRouter()
@@ -43,7 +45,7 @@ const Setting = () => {
       title: 'Integrations',
       active: tab === 'integrations',
       href: `${orgID}/project/${projectId}?mode=setting&tab=integrations`,
-      content: <ProjectPoint />,
+      content: <ProjectIntegrations />,
       desc: 'Tools you can incorporate into the Slack interface to expand your remote work capabilities. It lets you access more functionalities from a single platform.'
     },
     {
