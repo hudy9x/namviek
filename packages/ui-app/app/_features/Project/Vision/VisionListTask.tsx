@@ -6,12 +6,12 @@ import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
 import { Button } from '@shared/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function VisionListTask() {
-  const [hide, setHide] = useState(false)
+  const [hide, setHide] = useState(true)
   const { projectId } = useParams()
-  const { selected } = useVisionContext()
+  const { selected, setSelected } = useVisionContext()
   const { tasks, taskLoading } = useTaskStore()
   const { taskCreateOne } = useServiceTaskAdd()
   const taskWithoutVisions = tasks.filter(t => {
@@ -34,6 +34,10 @@ export default function VisionListTask() {
     })
   }
 
+  useEffect(() => {
+    selected && hide && setHide(false)
+  }, [selected])
+
   if (hide) {
     return (
       <div
@@ -47,34 +51,37 @@ export default function VisionListTask() {
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <h2 className="text-[12px] uppercase font-bold text-gray-600">
-          {!taskWithoutVisions.length
-            ? 'No task found'
-            : `All tasks: ${taskWithoutVisions.length}`}
-        </h2>
-        <Button
-          onClick={() => {
-            setHide(true)
-          }}
-          size="sm"
-          leadingIcon={<HiOutlineChevronLeft />}
-        />
-      </div>
-      {taskLoading ? <h2>Loading</h2> : null}
-      {taskWithoutVisions.map((t, index) => {
-        return (
-          <VisionTaskItem
-            key={t.id}
-            title={t.title}
-            statusId={t.taskStatusId || ''}
-            id={t.id}
+    <div className="p-3 w-[300px] shrink-0">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-[12px] uppercase font-bold text-gray-600">
+            {!taskWithoutVisions.length
+              ? 'No task found'
+              : `All tasks: ${taskWithoutVisions.length}`}
+          </h2>
+          <Button
+            onClick={() => {
+              setSelected('')
+              setHide(true)
+            }}
+            size="sm"
+            leadingIcon={<HiOutlineChevronLeft />}
           />
-        )
-      })}
-      <div className="bg-white rounded-md border shadow-md shadow-indigo-100">
-        <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
+        </div>
+        {taskLoading ? <h2>Loading</h2> : null}
+        {taskWithoutVisions.map((t, index) => {
+          return (
+            <VisionTaskItem
+              key={t.id}
+              title={t.title}
+              statusId={t.taskStatusId || ''}
+              id={t.id}
+            />
+          )
+        })}
+        <div className="bg-white rounded-md border shadow-md shadow-indigo-100">
+          <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
+        </div>
       </div>
     </div>
   )

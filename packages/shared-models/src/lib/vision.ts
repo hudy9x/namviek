@@ -36,7 +36,7 @@ export const mdVisionUpdate = async ({
   data
 }: {
   id: string
-  data: Omit<Vision, 'id'>
+  data: Partial<Omit<Vision, 'id'>>
 }) => {
   return visionModel.update({
     where: {

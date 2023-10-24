@@ -1,4 +1,4 @@
-import { visionAdd, visionDelete } from '@/services/vision'
+import { visionAdd, visionDelete, visionUpdate } from '@/services/vision'
 import { Vision } from '@prisma/client'
 import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
@@ -6,6 +6,9 @@ import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 export type VisionField = Omit<Vision, 'createdAt' | 'createdBy'>
 interface IVisionContextProps {
   selected: string
+  taskDone: number
+  taskTotal: number
+  visionProgress: { [key: string]: { total: number; done: number } }
   setSelected: Dispatch<SetStateAction<string>>
   loading: boolean
   setLoading: Dispatch<SetStateAction<boolean>>
@@ -15,6 +18,9 @@ interface IVisionContextProps {
 const VisionContext = createContext<IVisionContextProps>({
   loading: false,
   visions: [],
+  taskDone: 0,
+  taskTotal: 0,
+  visionProgress: {},
   selected: '',
   setSelected: () => {
     console.log(3)
@@ -30,12 +36,54 @@ const VisionContext = createContext<IVisionContextProps>({
 export const VisionProvider = VisionContext.Provider
 
 export const useVisionContext = () => {
-  const { visions, setVisions, loading, setLoading, selected, setSelected } =
-    useContext(VisionContext)
+  const {
+    visions,
+    taskDone,
+    taskTotal,
+    visionProgress,
+    setVisions,
+    loading,
+    setLoading,
+    selected,
+    setSelected
+  } = useContext(VisionContext)
+
+  const convertToProgress = (done: number, total: number) => {
+    const progress = parseFloat(((done / total) * 100).toFixed(1))
+    return progress
+  }
+
+  const getVisionProgress = (id: string) => {
+    const progress = visionProgress[id]
+    if (!progress) {
+      return 0
+    }
+
+    return convertToProgress(progress.done, progress.total)
+  }
 
   const deleteVision = (id: string) => {
     setVisions(prev => prev.filter(v => v.id !== id))
     visionDelete(id)
+      .then(res => {
+        messageSuccess('done')
+      })
+      .catch(err => {
+        messageError('delete vision error ')
+      })
+  }
+
+  const updateVision = (data: Partial<VisionField>) => {
+    setVisions(prev =>
+      prev.map(v => {
+        if (v.id === data.id) {
+          return { ...v, ...data }
+        }
+        return v
+      })
+    )
+
+    visionUpdate(data)
       .then(res => {
         messageSuccess('done')
       })
@@ -74,12 +122,17 @@ export const useVisionContext = () => {
 
   return {
     visions,
+    taskDone,
+    taskTotal,
+    visionProgress,
     setVisions,
     createNewVision,
+    updateVision,
     deleteVision,
     loading,
     setLoading,
     selected,
-    setSelected
+    setSelected,
+    getVisionProgress
   }
 }

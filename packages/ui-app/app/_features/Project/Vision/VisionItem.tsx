@@ -2,6 +2,7 @@ import ListCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/List
 import VisionDelete from './VisionDelete'
 import { useVisionContext } from './context'
 import Droppable from '@/components/Dnd/Droppable'
+import Badge from '@/components/Badge'
 
 function VisionItem({
   active,
@@ -18,19 +19,13 @@ function VisionItem({
 }) {
   const { setSelected, selected } = useVisionContext()
   // const date = dueDate ? formatDistanceToNow(new Date(dueDate)) : ''
-  console.log(id)
-  const color =
-    progress === 0
-      ? 'bg-gray-100 text-gray-600'
-      : progress === 100
-      ? 'bg-green-500 text-gray-100'
-      : 'bg-yellow-500 text-gray-50'
+  const color = progress === 0 ? 'red' : progress === 100 ? 'green' : 'yellow'
 
   return (
     <Droppable droppableId={id} type="vision" className="vision-dropzone">
       <div
         className={`vision-item group cursor-pointer ${
-          active ? 'bg-indigo-50/50' : ''
+          active ? 'bg-indigo-50/50 dark:bg-gray-800' : ''
         }`}
         onClick={() => {
           setSelected(selected !== id ? id : '')
@@ -55,9 +50,7 @@ function VisionItem({
             <VisionDelete id={id} />
           </div>
           <ListCell width={40}>
-            <div className={`${color} text-[10px] text-center rounded-sm px-1`}>
-              {progress || 0}%
-            </div>
+            <Badge title={`${progress || 0} %`} color={color} />
           </ListCell>
           {/* <ListCell width={110}>{date}</ListCell> */}
         </div>

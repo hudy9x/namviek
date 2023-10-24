@@ -5,7 +5,8 @@ import {
   mdVisionAdd,
   mdVisionDel,
   mdVisionGetByOrg,
-  mdVisionGetByProject
+  mdVisionGetByProject,
+  mdVisionUpdate
 } from '@shared/models'
 import { Vision } from '@prisma/client'
 
@@ -64,7 +65,28 @@ router.post('', async (req: AuthRequest, res) => {
 })
 
 router.put('', async (req: AuthRequest, res) => {
-  res.json({ status: 200 })
+  try {
+    const { name, dueDate, id, progress } = req.body as Vision
+
+    const updateData = {} as Vision
+
+    if (dueDate) {
+      updateData.dueDate = new Date(dueDate)
+    }
+
+    if (name) {
+      updateData.name = name
+    }
+
+    await mdVisionUpdate({
+      id,
+      data: updateData
+    })
+
+    res.json({ data: 'ok' })
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 router.delete('/:id', async (req: AuthRequest, res) => {
   try {
