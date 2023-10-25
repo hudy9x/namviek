@@ -36,8 +36,16 @@ export const sendEmail = ({ emails, html, subject }: IEmailFields) => {
   })
 }
 
-export const sendVerifyEmail = ({ userName, email, token }: { userName: string, email: string, token: string }) => {
-  const verificationLink = `${process.env.NEXT_PUBLIC_FE_GATEWAY}verification?token=${token}`
+export const sendVerifyEmail = ({
+  userName,
+  email,
+  token
+}: {
+  userName: string
+  email: string
+  token: string
+}) => {
+  const verificationLink = `${process.env.NEXT_PUBLIC_FE_GATEWAY}email-verification?token=${token}`
   return sendEmail({
     emails: [email],
     subject: '[Kampuni] Invitation email for joining organization',
