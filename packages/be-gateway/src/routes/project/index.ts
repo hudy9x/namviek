@@ -16,12 +16,13 @@ import PointRouter from './point'
 import StatusRouter from './status'
 import TagRouter from './tag'
 import PinRouter from './pin'
+import DiscordNotification from './discordNotification'
 
 const router = Router()
 
 router.use([authMiddleware])
 
-router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
+router.use([StatusRouter, TagRouter, PointRouter, PinRouter, DiscordNotification])
 
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {

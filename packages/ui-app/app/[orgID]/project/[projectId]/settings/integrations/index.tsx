@@ -1,6 +1,6 @@
 import React from 'react'
-import DiscordNotificationForm from './DiscordNotificationForm'
+import DiscordNotificationContainer from './DiscordNotificationContainer'
 
 export default function ProjectIntegrations() {
-  return <DiscordNotificationForm />
+  return <DiscordNotificationContainer />
 }

@@ -1,4 +1,6 @@
 import EmojiInput from '@/components/EmojiInput'
+import { discordNotificationAdd } from '@/services/discordNotification'
+import { DiscordNotification } from '@prisma/client'
 import {
   Button,
   Form,
@@ -11,30 +13,23 @@ import { validateDiscordNotification } from '@shared/validation'
 import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
+import { IDiscordNotificationDefaultValues } from './DiscordNotificationContainer'
 
-export interface IDiscordNotificationDefaultValues {
-  discordWebhookUrl: string
-  discordWebhookName: string
-  discordWebhookIcon: string
-  enabled: boolean
+const handleSubmit = (v: Omit<DiscordNotification, 'id'>) => {
+  discordNotificationAdd(v)
 }
 
-export const defaultFormikValues: IDiscordNotificationDefaultValues = {
-  discordWebhookUrl: '',
-  discordWebhookName: '',
-  discordWebhookIcon: '',
-  enabled: true
+interface IDiscordNotificationFormProps {
+  defaultValue: IDiscordNotificationDefaultValues
 }
 
 export default function DiscordNotificationForm({
-  defaultValue = defaultFormikValues
-}) {
+  defaultValue
+}: IDiscordNotificationFormProps) {
   const params = useParams()
   const [loading, setLoading] = useState(false)
 
-  const refDefaultValue =
-    useRef<IDiscordNotificationDefaultValues>(defaultValue)
-
+  const refDefaultValue = useRef<IDiscordNotificationDefaultValues>(defaultValue)
   const formik = useFormik({
     initialValues: refDefaultValue.current,
     onSubmit: values => {
@@ -56,10 +51,10 @@ export default function DiscordNotificationForm({
         console.error(errorArr)
         return
       }
-      console.log(values)
 
-      messageSuccess(values.discordWebhookUrl)
-      // onsubmit(mergedValues)
+      console.log(values)
+      handleSubmit(mergedValues)
+      messageSuccess('Save success !')
       setLoading(false)
     }
   })
