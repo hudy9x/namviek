@@ -1,6 +1,6 @@
 import EmojiInput from '@/components/EmojiInput'
-import { discordNotificationAdd } from '@/services/discordNotification'
-import { DiscordNotification } from '@prisma/client'
+import { discordWebhookAdd } from '@/services/discordWebhook'
+import { DiscordWebhook } from '@prisma/client'
 import {
   Button,
   Form,
@@ -9,27 +9,27 @@ import {
   messageSuccess,
   messageWarning
 } from '@shared/ui'
-import { validateDiscordNotification } from '@shared/validation'
+import { validateDiscordWebhook } from '@shared/validation'
 import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
-import { IDiscordNotificationDefaultValues } from './DiscordNotificationContainer'
+import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
 
-const handleSubmit = (v: Omit<DiscordNotification, 'id'>) => {
-  discordNotificationAdd(v)
+const handleSubmit = (v: Omit<DiscordWebhook, 'id'>) => {
+  discordWebhookAdd(v)
 }
 
-interface IDiscordNotificationFormProps {
-  defaultValue: IDiscordNotificationDefaultValues
+interface IDiscordWebhookFormProps {
+  defaultValue: IDiscordWebhookDefaultValues
 }
 
-export default function DiscordNotificationForm({
+export default function DiscordWebhookForm({
   defaultValue
-}: IDiscordNotificationFormProps) {
+}: IDiscordWebhookFormProps) {
   const params = useParams()
   const [loading, setLoading] = useState(false)
 
-  const refDefaultValue = useRef<IDiscordNotificationDefaultValues>(defaultValue)
+  const refDefaultValue = useRef<IDiscordWebhookDefaultValues>(defaultValue)
   const formik = useFormik({
     initialValues: refDefaultValue.current,
     onSubmit: values => {
@@ -42,12 +42,12 @@ export default function DiscordNotificationForm({
       setLoading(true)
       const mergedValues = { ...values, projectId: params.projectId }
 
-      const { error, errorArr } = validateDiscordNotification(mergedValues)
+      const { error, errorArr } = validateDiscordWebhook(mergedValues)
 
       if (error) {
         setLoading(false)
-        //This form only require one field: `discordWebhookUrl`
-        messageError(errorArr['discordWebhookUrl'])
+        //This form only require one field: `url`
+        messageError(errorArr['url'])
         console.error(errorArr)
         return
       }
@@ -70,25 +70,25 @@ export default function DiscordNotificationForm({
               <p>Enter your discord web hook</p>
               <Form.Input
                 title="Discord webhook url"
-                name="discordWebhookUrl"
-                value={formik.values.discordWebhookUrl}
+                name="url"
+                value={formik.values.url}
                 onChange={formik.handleChange}
                 placeholder="Enter your discord webhook url !"
               />
               <FormGroup title="Bot's name">
                 <EmojiInput
-                  value={formik.values.discordWebhookIcon}
+                  value={formik.values.botIcon}
                   onChange={val => {
                     console.log(val)
-                    formik.setFieldValue('discordWebhookIcon', val)
+                    formik.setFieldValue('botIcon', val)
                   }}
                 />
                 <Form.Input
                   className="w-full"
-                  name="discordWebhookName"
-                  error={formik.errors.discordWebhookName}
+                  name="botName"
+                  error={formik.errors.botName}
                   onChange={formik.handleChange}
-                  value={formik.values.discordWebhookName}
+                  value={formik.values.botName}
                   placeholder="Ignore to use your discord webhook setting !"
                 />
               </FormGroup>

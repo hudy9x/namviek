@@ -264,11 +264,11 @@ model Dashboard {
   isDefault           Boolean?             @default(false)
 }
 
-model DiscordNotification {
+model DiscordWebhook {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  discordWebhookUrl  String
-  discordWebhookName String?
-  discordWebhookIcon String?
+  url  String
+  botName String?
+  botIcon String?
   projectId          String? @db.ObjectId
   enabled            Boolean @default(true)
 }

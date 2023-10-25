@@ -1,16 +1,16 @@
 import { Router } from 'express';
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
 import { AuthRequest } from '../../types';
-import { mdDiscordNotificationAdd } from '@shared/models';
+import { mdDiscordWebhookAdd } from '@shared/models';
 
 const router = Router()
 
 router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means POST:/api/example
-router.post('/project/discord-notification', async (req: AuthRequest, res) => {
+router.post('/project/discord-webhook', async (req: AuthRequest, res) => {
   try {
-    const result = await mdDiscordNotificationAdd(req.body)
+    const result = await mdDiscordWebhookAdd(req.body)
     console.log(req.body)
     res.json({ status: 200, data: result })
   } catch (error) {

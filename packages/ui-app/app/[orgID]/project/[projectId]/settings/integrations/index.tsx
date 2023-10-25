@@ -1,6 +1,6 @@
 import React from 'react'
-import DiscordNotificationContainer from './DiscordNotificationContainer'
+import DiscordWebhookContainer from './DiscordWebhookContainer'
 
 export default function ProjectIntegrations() {
-  return <DiscordNotificationContainer />
+  return <DiscordWebhookContainer />
 }
