@@ -276,3 +276,35 @@ model Dashboard {
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
 }
+
+enum ActivityType{
+  TASK_CREATED
+  TASK_CHANGED // change due date, task name, description
+
+  TASK_ASSIGNEE_ADDED
+  TASK_ASSIGNEE_REMOVED
+
+  TASK_COMMENT_CREATED
+  TASK_COMMENT_CHANGED
+  TASK_COMMENT_REMOVED
+
+  TASK_STATUS_CREATED
+  TASK_STATUS_CHANGED
+
+  TASK_PROGRESS_CHANGED
+
+  TASK_PRIORITY_CHANGED
+
+  TASK_ATTACHMENT_ADDED
+  TASK_ATTACHMENT_CHANGED
+  TASK_ATTACHMENT_REMOVED
+}
+
+model Activity {
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  objectId            String
+  objectType          String
+  type                ActivityType
+  data                Json?
+  createdAt           DateTime?
+}
