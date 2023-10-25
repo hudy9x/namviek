@@ -54,7 +54,7 @@ export default function SigninForm() {
   })
 
   const handleResendVerificationEmail = async () => {
-    const RESEND_DELAY = 5000
+    const RESEND_DELAY = 30000
     setIsDisabledBtn(true)
     try {
       await resendVerifyEmail(email)
