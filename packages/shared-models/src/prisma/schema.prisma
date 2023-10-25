@@ -265,10 +265,14 @@ model Dashboard {
 }
 
 model DiscordWebhook {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  url  String
-  botName String?
-  botIcon String?
-  projectId          String? @db.ObjectId
-  enabled            Boolean @default(true)
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  botName   String?
+  botIcon   String?
+  projectId String?   @db.ObjectId
+  enabled   Boolean   @default(true)
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
 }

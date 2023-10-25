@@ -1,5 +1,4 @@
 import EmojiInput from '@/components/EmojiInput'
-import { discordWebhookAdd } from '@/services/discordWebhook'
 import { DiscordWebhook } from '@prisma/client'
 import {
   Button,
@@ -15,16 +14,14 @@ import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
 
-const handleSubmit = (v: Omit<DiscordWebhook, 'id'>) => {
-  discordWebhookAdd(v)
-}
-
 interface IDiscordWebhookFormProps {
   defaultValue: IDiscordWebhookDefaultValues
+  onSubmit: (v: Omit<DiscordWebhook, 'id'>) => void
 }
 
 export default function DiscordWebhookForm({
-  defaultValue
+  defaultValue,
+  onSubmit
 }: IDiscordWebhookFormProps) {
   const params = useParams()
   const [loading, setLoading] = useState(false)
@@ -53,7 +50,7 @@ export default function DiscordWebhookForm({
       }
 
       console.log(values)
-      handleSubmit(mergedValues)
+      onSubmit(mergedValues)
       messageSuccess('Save success !')
       setLoading(false)
     }
@@ -94,7 +91,7 @@ export default function DiscordWebhookForm({
               </FormGroup>
 
               <div className="text-right">
-                <Button loading={loading} title="Test" primary />
+                <Button loading={loading} title="Test" />
                 <Button
                   type="submit"
                   loading={loading}
