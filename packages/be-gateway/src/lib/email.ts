@@ -1,5 +1,4 @@
 import { Resend } from 'resend'
-console.log('RESEND_TOKEN', process.env.RESEND_TOKEN)
 const resend = new Resend(process.env.RESEND_TOKEN)
 
 const supportEmail = 'support.dev'
