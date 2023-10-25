@@ -263,3 +263,12 @@ model Dashboard {
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
 }
+
+model DiscordNotification {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  discordWebhookUrl  String
+  discordWebhookName String?
+  discordWebhookIcon String?
+  projectId          String? @db.ObjectId
+  enabled            Boolean @default(true)
+}
