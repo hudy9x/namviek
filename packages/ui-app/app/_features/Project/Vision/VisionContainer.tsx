@@ -2,9 +2,9 @@ import VisionList from './VisionList'
 import VisionListTask from './VisionListTask'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
-import VisionCalendar from './VisionCalendar'
+import VisionCalendarContainer from './VisionCalendaContainer'
 
-export default function ProjectVisionContainer() {
+export default function VisionContainer() {
   const { updateTaskData } = useServiceTaskUpdate()
   const onDragEnd = (ev: DragEndEvent) => {
     const { active, over } = ev
@@ -31,7 +31,7 @@ export default function ProjectVisionContainer() {
           <VisionListTask />
           <VisionList />
         </DndContext>
-        <VisionCalendar />
+        <VisionCalendarContainer />
       </div>
     </div>
   )

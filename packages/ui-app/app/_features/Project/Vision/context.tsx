@@ -4,11 +4,21 @@ import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 
 export type VisionField = Omit<Vision, 'createdAt' | 'createdBy'>
+
+export type VisionByDays = { [key: string]: VisionField[] }
+
+export type IVisionFilter = {
+  month: number
+}
+
 interface IVisionContextProps {
   selected: string
   taskDone: number
   taskTotal: number
+  visionByDays: VisionByDays
   visionProgress: { [key: string]: { total: number; done: number } }
+  filter: IVisionFilter
+  setFilter: Dispatch<SetStateAction<IVisionFilter>>
   setSelected: Dispatch<SetStateAction<string>>
   loading: boolean
   setLoading: Dispatch<SetStateAction<boolean>>
@@ -17,10 +27,17 @@ interface IVisionContextProps {
 }
 const VisionContext = createContext<IVisionContextProps>({
   loading: false,
+  filter: {
+    month: new Date().getMonth() + 1
+  },
+  setFilter: () => {
+    console.log(4)
+  },
   visions: [],
   taskDone: 0,
   taskTotal: 0,
   visionProgress: {},
+  visionByDays: {},
   selected: '',
   setSelected: () => {
     console.log(3)
@@ -40,8 +57,11 @@ export const useVisionContext = () => {
     visions,
     taskDone,
     taskTotal,
+    visionByDays,
     visionProgress,
     setVisions,
+    filter,
+    setFilter,
     loading,
     setLoading,
     selected,
@@ -60,6 +80,10 @@ export const useVisionContext = () => {
     }
 
     return convertToProgress(progress.done, progress.total)
+  }
+
+  const getVisionByDay = (key: string) => {
+    return visionByDays[key] || []
   }
 
   const deleteVision = (id: string) => {
@@ -97,7 +121,7 @@ export const useVisionContext = () => {
 
     const newData = {
       name: data.name || '',
-      dueDate: new Date(),
+      dueDate: data.dueDate || new Date(),
       parentId: null,
       progress: 0,
       projectId: data.projectId || '',
@@ -125,6 +149,7 @@ export const useVisionContext = () => {
     taskDone,
     taskTotal,
     visionProgress,
+    getVisionByDay,
     setVisions,
     createNewVision,
     updateVision,
@@ -132,6 +157,8 @@ export const useVisionContext = () => {
     loading,
     setLoading,
     selected,
+    filter,
+    setFilter,
     setSelected,
     getVisionProgress
   }

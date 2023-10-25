@@ -1,10 +1,17 @@
 import { Vision } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
+import { IVisionFilter } from '@/features/Project/Vision/context'
 
-export const visionGetByProject = (projectId: string) => {
+export const visionGetByProject = (
+  projectId: string,
+  filter: IVisionFilter,
+  signal?: AbortSignal
+) => {
   return httpGet('/api/vision/get-by-project', {
+    signal: signal,
     params: {
-      projectId
+      projectId,
+      month: filter.month
     }
   })
 }

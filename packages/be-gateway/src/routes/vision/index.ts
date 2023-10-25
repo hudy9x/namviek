@@ -9,6 +9,7 @@ import {
   mdVisionUpdate
 } from '@shared/models'
 import { Vision } from '@prisma/client'
+import { CKEY, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()
 const mainRouter = Router()
@@ -20,8 +21,26 @@ router.use(authMiddleware)
 // It means GET:/api/example
 router.get('/get-by-project', async (req: AuthRequest, res) => {
   try {
-    const { projectId } = req.query as { projectId: string }
-    const results = await mdVisionGetByProject(projectId)
+    const { projectId, month } = req.query as {
+      projectId: string
+      month: string
+    }
+    const key = [CKEY.PROJECT_VISION, projectId, month]
+    const cached = await getJSONCache(key)
+
+    if (cached) {
+
+      // return res.json({
+      //   data: cached
+      // })
+    }
+
+    console.log('get vision by project')
+    const results = await mdVisionGetByProject(projectId, {
+      month: parseInt(month, 10)
+    })
+
+    setJSONCache(key, results)
 
     res.json({ data: results })
   } catch (error) {
@@ -53,7 +72,7 @@ router.post('', async (req: AuthRequest, res) => {
       parentId,
       organizationId,
       projectId,
-      dueDate,
+      dueDate: new Date(dueDate),
       progress: 0,
       createdBy: uid,
       createdAt: new Date()

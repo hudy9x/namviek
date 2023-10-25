@@ -45,6 +45,25 @@
   }
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400;
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
 .root-container {
   @apply flex;
 }

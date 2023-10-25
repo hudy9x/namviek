@@ -15,7 +15,8 @@ export default function CalendarDay({
   const d = day.getDay()
 
   const notInMonth = month !== dMonth
-  const isToday = day.getDate() === today.getDate() && month === dMonth
+  const isToday =
+    day.getDate() === today.getDate() && month === new Date().getMonth()
   const isSunSat = d === 0 || d === 6
   const classes = ['cal-day-in-week']
 

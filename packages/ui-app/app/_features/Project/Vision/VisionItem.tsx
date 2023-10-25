@@ -3,6 +3,7 @@ import VisionDelete from './VisionDelete'
 import { useVisionContext } from './context'
 import Droppable from '@/components/Dnd/Droppable'
 import Badge from '@/components/Badge'
+// import { HiOutlinePencil } from 'react-icons/hi2'
 
 function VisionItem({
   active,
@@ -25,16 +26,19 @@ function VisionItem({
     <Droppable droppableId={id} type="vision" className="vision-dropzone">
       <div
         className={`vision-item group cursor-pointer ${
-          active ? 'bg-indigo-50/50 dark:bg-gray-800' : ''
+          active ? 'bg-indigo-50/50 dark:bg-indigo-700' : ''
         }`}
         onClick={() => {
           setSelected(selected !== id ? id : '')
         }}>
         <div className="flex items-center gap-2 dark:text-gray-300">
           <div className="w-full flex flex-col gap-0.5">
-            <span>{name}</span>
+            <div className="leading-6">
+              <span>{name}</span>
+              {/* <HiOutlinePencil className="group-hover:opacity-100 opacity-0 transition-all inline-block bg-white dark:bg-gray-900 ml-2 w-5 h-5 border rounded-md p-1 dark:border-gray-700" /> */}
+            </div>
             {inprogress ? (
-              <span className="text-[11px] text-yellow-600 capitalize">
+              <span className="text-[11px] text-yellow-600 dark:text-yellow-500 capitalize">
                 in progress: {inprogress}
               </span>
             ) : null}

@@ -1,14 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { VisionField, VisionProvider } from './context'
+import { VisionByDays, VisionField, VisionProvider } from './context'
 import { visionGetByProject } from '@/services/vision'
 import { useParams } from 'next/navigation'
-import ProjectVisionContainer from './VisionContainer'
+import VisionContainer from './VisionContainer'
 import './style.css'
 import { Vision } from '@prisma/client'
 import { useTaskStore } from '@/store/task'
 import { useProjectStatusStore } from '@/store/status'
+
+const useVisionByDates = (visions: VisionField[]) => {
+  const visionByDays: VisionByDays = {}
+
+  visions.forEach(vision => {
+    const d = vision.dueDate
+    if (!d) return
+    const key = `${d.getDate()}-${d.getMonth()}`
+    if (!visionByDays[key]) {
+      visionByDays[key] = []
+    }
+
+    visionByDays[key].push(vision)
+  })
+
+  return visionByDays
+}
 
 const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
   const { tasks } = useTaskStore()
@@ -48,8 +65,12 @@ export default function ProjectVision() {
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState('')
   const [visions, setVisions] = useState<VisionField[]>([])
+  const [filter, setFilter] = useState({
+    month: new Date().getMonth() + 1
+  })
 
   const { visionProgress, taskDone, taskTotal } = useVisionProgress({ visions })
+  const visionByDays = useVisionByDates(visions)
 
   const clearLoading = () => {
     setTimeout(() => {
@@ -58,12 +79,15 @@ export default function ProjectVision() {
   }
 
   useEffect(() => {
+    const controller = new AbortController()
     setLoading(true)
-    visionGetByProject(projectId)
+    visionGetByProject(projectId, filter, controller.signal)
       .then(res => {
         clearLoading()
         const { data } = res.data
         const visionData = data as Vision[]
+
+        console.log('data', data)
 
         setVisions(
           visionData.map(v => {
@@ -83,22 +107,29 @@ export default function ProjectVision() {
         clearLoading()
         console.log(err)
       })
-  }, [projectId])
+
+    return () => {
+      controller.abort()
+    }
+  }, [projectId, JSON.stringify(filter)])
 
   return (
     <VisionProvider
       value={{
         taskDone,
         taskTotal,
+        filter,
+        setFilter,
         visions,
         loading,
+        visionByDays,
         visionProgress,
         setLoading,
         setVisions,
         selected,
         setSelected
       }}>
-      <ProjectVisionContainer />
+      <VisionContainer />
     </VisionProvider>
   )
 }

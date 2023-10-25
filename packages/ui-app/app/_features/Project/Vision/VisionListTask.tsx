@@ -44,7 +44,10 @@ export default function VisionListTask() {
         className="w-[30px] h-full bg-white dark:bg-gray-900 cursor-pointer"
         onClick={() => setHide(false)}>
         <div className="whitespace-nowrap uppercase text-[11px] font-bold text-gray-600 dark:text-gray-500 transform rotate-90 translate-y-5">
-          show task list
+          show task list:{' '}
+          <span className="px-1 py-0.5 w-5 rounded-md border dark:border-gray-700">
+            {taskWithoutVisions.length}
+          </span>
         </div>
       </div>
     )

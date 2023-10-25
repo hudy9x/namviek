@@ -1,11 +1,41 @@
 import { Vision } from '@prisma/client'
 import { visionModel } from './_prisma'
 
-export const mdVisionGetByProject = async (projectId: string) => {
+interface IFilterProps {
+  month: number
+}
+export const mdVisionGetByProject = async (
+  projectId: string,
+  filter: IFilterProps
+) => {
+  const where: {
+    [key: string]: unknown
+  } = {}
+
+  const { month } = filter
+
+  if (projectId) {
+    where.projectId = projectId
+  }
+
+  if (month) {
+    const d = new Date()
+    const year = d.getFullYear()
+    const lastDate = new Date(year, month, 1)
+    lastDate.setDate(lastDate.getDate() - 1)
+
+    const start = new Date(year, month - 1, 1)
+    start.setHours(0)
+
+    const end = new Date(year, month - 1, lastDate.getDate())
+    end.setHours(23)
+
+    console.log(start, end)
+    where.AND = [{ dueDate: { gte: start } }, { dueDate: { lte: end } }]
+  }
+
   return visionModel.findMany({
-    where: {
-      projectId
-    }
+    where
   })
 }
 
