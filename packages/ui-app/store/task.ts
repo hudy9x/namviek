@@ -57,7 +57,9 @@ export const useTaskStore = create<TaskState>(set => ({
           assigneeIds,
           priority,
           taskPoint,
+          done,
           dueDate,
+          visionId,
           updatedBy,
           progress
         } = data
@@ -71,6 +73,8 @@ export const useTaskStore = create<TaskState>(set => ({
         if (taskIndex === -1) return
 
         const task = state.tasks[taskIndex]
+
+        task.done = !!done
 
         if (title) {
           task.title = title
@@ -107,6 +111,10 @@ export const useTaskStore = create<TaskState>(set => ({
         if (fileIds) {
           const oldFileIds = task.fileIds
           task.fileIds = [...fileIds, ...oldFileIds]
+        }
+
+        if (visionId && task.visionId !== visionId) {
+          task.visionId = visionId
         }
 
         task.updatedAt = new Date()

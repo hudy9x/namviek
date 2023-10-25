@@ -16,6 +16,10 @@ const Board = dynamic(() => import('./board'), {
   loading: () => <ProjectContentLoading />
 })
 
+const Vision = dynamic(() => import('@/features/Project/Vision'), {
+  loading: () => <ProjectContentLoading />
+})
+
 const Settings = dynamic(() => import('./settings'), {
   loading: () => <ProjectContentLoading />
 })
@@ -45,6 +49,7 @@ export default function ProjectTabContent() {
       {mode === 'team' ? <DynamicTeamView /> : null}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateList /> : null}
+      {mode === 'vision' ? <Vision /> : null}
     </div>
   )
 }

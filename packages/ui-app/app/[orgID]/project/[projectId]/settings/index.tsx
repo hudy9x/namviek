@@ -18,7 +18,7 @@ const Setting = () => {
   const settings = [
     {
       icon: (
-        <AiOutlineStar className="shrink-0 text-orange-400 w-6 h-6 bg-orange-100/50 rounded-full p-1" />
+        <AiOutlineStar className="shrink-0 text-orange-400 w-6 h-6 bg-orange-100/50 dark:bg-orange-500/50 rounded-full p-1" />
       ),
       title: 'Points',
       active: !tab ? true : tab === 'points' ? true : false,
@@ -28,7 +28,7 @@ const Setting = () => {
     },
     {
       icon: (
-        <HiOutlineRectangleStack className="shrink-0 text-blue-500 w-6 h-6 bg-blue-100/90 rounded-full p-1.5" />
+        <HiOutlineRectangleStack className="shrink-0 text-blue-500 w-6 h-6 bg-blue-100/90 dark:bg-blue-500/50 rounded-full p-1.5" />
       ),
       title: 'Statuses',
       active: tab === 'statuses',
@@ -36,16 +36,16 @@ const Setting = () => {
       content: <ProjectStatus />,
       desc: 'Project status refers to the level of progress it achieves in working toward an end goal.'
     },
-    {
-      icon: (
-        <HiOutlineLink className="shrink-0 text-violet-600 w-6 h-6 bg-violet-100/80 rounded-full p-1.5" />
-      ),
-      title: 'Integrations',
-      active: tab === 'integrations',
-      href: `${orgID}/project/${projectId}?mode=setting&tab=integrations`,
-      content: <ProjectPoint />,
-      desc: 'Tools you can incorporate into the Slack interface to expand your remote work capabilities. It lets you access more functionalities from a single platform.'
-    },
+    // {
+    //   icon: (
+    //     <HiOutlineLink className="shrink-0 text-violet-600 w-6 h-6 bg-violet-100/80 rounded-full p-1.5" />
+    //   ),
+    //   title: 'Integrations',
+    //   active: tab === 'integrations',
+    //   href: `${orgID}/project/${projectId}?mode=setting&tab=integrations`,
+    //   content: <ProjectPoint />,
+    //   desc: 'Tools you can incorporate into the Slack interface to expand your remote work capabilities. It lets you access more functionalities from a single platform.'
+    // },
     {
       icon: (
         <HiOutlineUsers className="shrink-0 text-green-600 w-6 h-6 bg-green-100/80 rounded-full p-1.5" />

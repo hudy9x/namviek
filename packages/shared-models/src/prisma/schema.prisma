@@ -110,6 +110,7 @@ model Task {
   startDate      DateTime?
   projectId      String        @db.ObjectId
   priority       TaskPriority?
+  visionId       String?       @db.ObjectId
   taskStatusId   String?       @db.ObjectId
   tagIds         String[]      @db.ObjectId
   assigneeIds    String[]      @db.ObjectId
@@ -217,6 +218,18 @@ model Project {
   organizationId String
   updatedBy      String?
   updatedAt      DateTime?
+}
+
+model Vision {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  projectId      String?   @db.ObjectId
+  organizationId String?   @db.ObjectId
+  parentId       String?   @db.ObjectId
+  dueDate        DateTime?
+  progress       Int?
+  createdBy      String?
+  createdAt      DateTime?
 }
 
 model Members {

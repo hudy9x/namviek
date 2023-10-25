@@ -6,11 +6,13 @@ import { messageError, messageSuccess, messageWarning } from '@shared/ui'
 import { Task } from '@prisma/client'
 import { useTaskAutomation } from './useTaskAutomation'
 import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
+import { useProjectStatusStore } from '@/store/status'
 
 export const useServiceTaskUpdate = () => {
   const { user } = useUser()
   const { projectId } = useParams()
   const { updateTask } = useTaskStore()
+  const { statusDoneId } = useProjectStatusStore()
   const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
 
   const updateTaskData = (taskData: Partial<Task>) => {
@@ -18,6 +20,12 @@ export const useServiceTaskUpdate = () => {
       messageWarning('Wait! this task still syncing data from server')
       return
     }
+
+    if (taskData.taskStatusId) {
+      taskData.done = taskData.taskStatusId === statusDoneId
+    }
+
+    console.log('update taskdata', taskData.taskStatusId, taskData.done)
 
     refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
 

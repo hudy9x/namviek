@@ -1,0 +1,22 @@
+.vision-dropzone.is-dragging-over {
+  @apply relative;
+}
+
+.vision-dropzone.is-dragging-over:before {
+  @apply absolute top-0 left-0 right-0 bottom-0 rounded-md;
+  @apply border border-dashed border-indigo-400;
+  content: '';
+}
+
+.vision-item {
+  @apply px-3 py-2 text-sm flex items-center justify-between;
+}
+
+.vision-calendar .is-dragging-over {
+  @apply relative;
+}
+
+.vision-calendar .is-dragging-over:after {
+  content: '';
+  @apply border-2 border-dashed border-indigo-500 absolute top-0 left-0 bottom-0 right-0 z-10;
+}

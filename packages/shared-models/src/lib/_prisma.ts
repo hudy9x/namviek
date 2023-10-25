@@ -15,3 +15,4 @@ export const dboardModel = pmClient.dashboard
 export const dboardComponentModal = pmClient.dashboardComponent
 export const taskAutomation = pmClient.taskAutomation
 export const fileStorageModel = pmClient.fileStorage
+export const visionModel = pmClient.vision

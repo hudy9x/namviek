@@ -12,10 +12,11 @@ import {
   mdTaskStatusQuery,
   mdMemberGetProject,
   mdTaskDelete,
-  mdTaskStatusWithDoneType
+  mdTaskStatusWithDoneType,
+  mdTaskStatusWithTodoType
 } from '@shared/models'
 
-import { Prisma, Task, TaskStatus } from '@prisma/client'
+import { Prisma, StatusType, Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -146,25 +147,33 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   console.log('body', req.body)
+  const body = req.body as Task
   const {
     desc,
+    visionId,
     assigneeIds,
     title,
     dueDate,
     projectId,
     priority,
-    taskStatusId,
     progress
   } = req.body as Task
+  let taskStatusId = body.taskStatusId
   const { id } = req.authen
 
   const key = [CKEY.TASK_QUERY, projectId]
 
-  const doneStatus = await mdTaskStatusWithDoneType(projectId)
-
-  const done = doneStatus && doneStatus.id === taskStatusId
-
   try {
+    const doneStatus = await mdTaskStatusWithDoneType(projectId)
+
+    const done = doneStatus && doneStatus.id === taskStatusId ? true : false
+
+    if (!taskStatusId) {
+      const todoStatus = await mdTaskStatusWithTodoType(projectId)
+      taskStatusId = todoStatus.id
+      console.log('taskStatusid', taskStatusId)
+    }
+
     const result = await mdTaskAdd({
       title,
       startDate: null,
@@ -178,6 +187,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       priority,
       taskStatusId: taskStatusId,
       tagIds: [],
+      visionId: visionId || null,
       parentTaskId: null,
       taskPoint: null,
       createdBy: id,
@@ -273,84 +283,97 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     plannedDueDate,
     tagIds,
     parentTaskId,
+    visionId,
     progress,
     taskPoint
   } = req.body as Task
   const { id: userId } = req.authen
-  
+
   try {
-    await pmClient.$transaction(async tx => {
-      // const taskData = await mdTaskGetOne(id)
-      const taskData = await tx.task.findFirst({
-        where: {
-          id
-        }
-      })
-      const key = [CKEY.TASK_QUERY, taskData.projectId]
+    // await pmClient.$transaction(async tx => {
+    const taskData = await mdTaskGetOne(id)
+    // const taskData = await tx.task.findFirst({
+    //   where: {
+    //     id
+    //   }
+    // })
+    const key = [CKEY.TASK_QUERY, taskData.projectId]
 
-      if (title) {
-        taskData.title = title
+    if (title) {
+      taskData.title = title
+    }
+
+    if (desc) {
+      taskData.desc = desc
+    }
+
+    if (taskStatusId) {
+      const doneStatus = await mdTaskStatusWithDoneType(projectId)
+      // const doneStatus = await tx.taskStatus.findFirst({
+      //   where: {
+      //     projectId,
+      //     type: StatusType.DONE
+      //   }
+      // })
+
+      taskData.taskStatusId = taskStatusId
+      if (doneStatus && doneStatus.id === taskStatusId) {
+        taskData.done = true
       }
+    } else {
+      taskData.done = false
+    }
 
-      if (desc) {
-        taskData.desc = desc
-      }
+    if (plannedDueDate) {
+      taskData.plannedDueDate = plannedDueDate
+    }
 
-      if (taskStatusId) {
-        const doneStatus = await mdTaskStatusWithDoneType(projectId)
-        taskData.taskStatusId = taskStatusId
-        if (doneStatus && doneStatus.id === taskStatusId) {
-          taskData.done = true
-        }
-      } else {
-        taskData.done = false
-      }
+    if (assigneeIds) {
+      taskData.assigneeIds = assigneeIds
+    }
 
-      if (plannedDueDate) {
-        taskData.plannedDueDate = plannedDueDate
-      }
+    if (priority) {
+      taskData.priority = priority
+    }
 
-      if (assigneeIds) {
-        taskData.assigneeIds = assigneeIds
-      }
+    if (taskPoint) {
+      taskData.taskPoint = taskPoint
+    }
 
-      if (priority) {
-        taskData.priority = priority
-      }
+    if (dueDate) {
+      taskData.dueDate = dueDate
+    }
 
-      if (taskPoint) {
-        taskData.taskPoint = taskPoint
-      }
+    if (progress) {
+      taskData.progress = progress
+    }
 
-      if (dueDate) {
-        taskData.dueDate = dueDate
-      }
+    if (fileIds && fileIds.length) {
+      const oldFileIds = taskData.fileIds || []
+      taskData.fileIds = [...fileIds, ...oldFileIds]
+    }
 
-      if (progress) {
-        taskData.progress = progress
-      }
+    if (visionId) {
+      taskData.visionId = visionId
+    }
 
-      if (fileIds && fileIds.length) {
-        const oldFileIds = taskData.fileIds || []
-        taskData.fileIds = [...fileIds, ...oldFileIds]
-      }
+    taskData.updatedAt = new Date()
+    taskData.updatedBy = userId
 
-      taskData.updatedAt = new Date()
-      taskData.updatedBy = userId
+    // delete taskData.id
+    // const { id: tid, ...rest } = taskData
 
-      delete taskData.id
+    const result = await mdTaskUpdate(taskData)
+    // const result = await tx.task.update({
+    //   where: {
+    //     id
+    //   },
+    //   data: rest
+    // })
 
-      // const result = await mdTaskUpdate(taskData)
-      const result = await tx.task.update({
-        where: {
-          id
-        },
-        data: taskData
-      })
-
-      await findNDelCaches(key)
-      res.json({ status: 200, data: result })
-    })
+    await findNDelCaches(key)
+    res.json({ status: 200, data: result })
+    // })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
