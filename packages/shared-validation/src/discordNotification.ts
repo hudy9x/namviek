@@ -1,11 +1,11 @@
+import { DiscordNotification } from "@prisma/client";
 import { z } from "zod";
-import { DiscordNotification, Task } from "@prisma/client";
 import { safeParse } from "./lib";
 
 const discordNotification = z.object({
-  discordWebhookUrl: z.string().min(3),
-  discordWebhookName: z.string().min(3),
-  discordWebhookIcon: z.string().min(3),
+  discordWebhookUrl: z.string().min(1, { message: "Discord webhook url is required" }),
+  discordWebhookName: z.string(),
+  discordWebhookIcon: z.string(),
   enable: z.boolean(),
 
   createdBy: z.string(),
