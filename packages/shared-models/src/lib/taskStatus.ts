@@ -11,6 +11,7 @@ export const mdTaskStatusGetByProjectId = async (projectId: string) => {
 
 interface ITaskStatusQuery {
   projectIds: string[]
+  types?: StatusType[]
 }
 
 export const mdTaskStatusWithDoneType = async (projectId: string) => {
@@ -22,11 +23,29 @@ export const mdTaskStatusWithDoneType = async (projectId: string) => {
   })
 }
 
-export const mdTaskStatusQuery = async ({ projectIds }: ITaskStatusQuery) => {
+export const mdTaskStatusWithTodoType = async (projectId: string) => {
+  return taskStatusModel.findFirst({
+    where: {
+      projectId,
+      type: StatusType.TODO
+    }
+  })
+}
+
+export const mdTaskStatusQuery = async ({
+  projectIds,
+  types
+}: ITaskStatusQuery) => {
   const where: { [k: string]: unknown } = {}
   if (projectIds && projectIds.length && !projectIds.includes('ALL')) {
     where.projectId = {
       in: projectIds
+    }
+  }
+
+  if (types && types.length) {
+    where.type = {
+      in: types
     }
   }
 

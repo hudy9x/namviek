@@ -13,6 +13,7 @@ export default function TaskStatus({
   const { updateTaskData } = useServiceTaskUpdate()
 
   const onUpdateStatus = (statusId: string) => {
+    if (statusId === value) return
     updateTaskData({
       id: taskId,
       taskStatusId: statusId

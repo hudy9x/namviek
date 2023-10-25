@@ -68,12 +68,14 @@ const TeamMemberProcess = ({ datas }: { datas: Task[] }) => {
         </div>
 
         <div className="team-insight-chart w-[90px] h-[80px] flex items-center justify-center grow-0 dark:text-gray-400">
-          <ApexCharts
-            height={120}
-            options={options}
-            series={[percent]}
-            type="radialBar"
-          />
+          {typeof window !== 'undefined' && (
+            <ApexCharts
+              height={120}
+              options={options}
+              series={[percent]}
+              type="radialBar"
+            />
+          )}
         </div>
       </div>
     </div>
