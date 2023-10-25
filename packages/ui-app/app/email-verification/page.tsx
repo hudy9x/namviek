@@ -1,5 +1,6 @@
 'use client'
 
+import AbsoluteLoading from '@/components/AbsoluateLoading'
 import { httpGet } from '@/services/_req'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -23,16 +24,26 @@ export default function Verification() {
       .catch(error => setIsLoading(false))
   }, [token])
 
-  if (isLoading) return <p>loading...</p>
-
-  return isTokenValid ? (
-    <div>
-      <p>{resMessage}</p>
-      <Link href={`/sign-in`}>Back to Login</Link>
-    </div>
-  ) : (
-    <div>
-      <p>There is something wrong. Active fail! </p>
+  return (
+    <div className="w-screen h-screen relative flex items-center justify-center">
+      <AbsoluteLoading enabled={isLoading} />
+      <div className="text-gray-500 text-center">
+        {isTokenValid ? (
+          <>
+            <p>{resMessage}</p>
+            <Link className="text-indigo-500 hover:underline" href={`/sign-in`}>
+              Back to Login
+            </Link>
+          </>
+        ) : (
+          <>
+            <p>Something went wrong, try to verify your email again </p>
+            <Link className="text-indigo-500 hover:underline" href={`/sign-in`}>
+              Back to Login
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   )
 }
