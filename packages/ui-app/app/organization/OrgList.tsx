@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { orgGet } from '../../services/organization'
 import { Button } from '@shared/ui'
+import { pushNotice } from '@/services/push-notification'
 
 export default function OrgList() {
   const { push } = useRouter()
@@ -13,7 +14,7 @@ export default function OrgList() {
   console.log('root page')
 
   const onSend = () => {
-    console.log(1)
+    pushNotice()
   }
 
   useEffect(() => {

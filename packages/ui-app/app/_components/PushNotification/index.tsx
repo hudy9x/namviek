@@ -17,13 +17,15 @@ export default function PushNotification() {
   useEffect(() => {
     if (user) {
       console.log(user)
-      beamsClient
-        .start()
-        .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))
-        // .then(() => beamsClient.addDeviceInterest('project'))
-        // .then(() => beamsClient.addDeviceInterest('all'))
-        .then(() => console.log('Successfully registered and subscribed!'))
-        .catch(console.error)
+      beamsClient.stop().then(() => {
+        beamsClient
+          .start()
+          .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))
+          // .then(() => beamsClient.addDeviceInterest('project'))
+          // .then(() => beamsClient.addDeviceInterest('all'))
+          .then(() => console.log('Successfully registered and subscribed!'))
+          .catch(console.error)
+      })
     }
   }, [JSON.stringify(user)])
 

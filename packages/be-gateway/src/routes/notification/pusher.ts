@@ -33,8 +33,9 @@ router.get('/pusher/test', [authMiddleware], async (req: AuthRequest, res) => {
     .publishToUsers([uid], {
       web: {
         notification: {
-          title: 'Hello',
-          body: 'Hello, world!'
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Vanamo_Logo.png/600px-Vanamo_Logo.png?20120915115534',
+          title: 'New notification',
+          body: 'Hey friend, i sent you a notification about the new upcomming task'
         }
       }
     })
