@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@goalie/nextjs'
 import Head from 'next/head'
+import PushNotification from './_components/PushNotification'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
         </head>
         <body className={inter.className}>
           <RootLayoutComp>{children}</RootLayoutComp>
+          <PushNotification />
         </body>
       </html>
     </GoalieProvider>
