@@ -16,13 +16,14 @@ import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
 
 interface IDiscordWebhookFormProps {
   defaultValue: IDiscordWebhookDefaultValues
-  onSubmit: (v: Omit<DiscordWebhook, 'id'>) => void
+  onSubmit: (v: IDiscordWebhookDefaultValues) => void
 }
 
 export default function DiscordWebhookForm({
   defaultValue,
   onSubmit
 }: IDiscordWebhookFormProps) {
+  console.log('defaultValue:', defaultValue)
   const params = useParams()
   const [loading, setLoading] = useState(false)
 
@@ -91,7 +92,7 @@ export default function DiscordWebhookForm({
               </FormGroup>
 
               <div className="text-right">
-                <Button loading={loading} title="Test" />
+                <Button loading={loading} title="Test" onClick={() => null} />
                 <Button
                   type="submit"
                   loading={loading}

@@ -1,13 +1,21 @@
+import { DiscordWebhook } from '@prisma/client'
 import axios from 'axios'
 
+export interface IDiscordNotification extends DiscordWebhook {
+  title: string
+  message: string
+}
 
-export const sendNotification = async (message: string) => {
-  const url = process.env.DISCORD_WEBHOOK_URL || ''
+
+export const sendNotification = async (data: Partial<IDiscordNotification>) => {
+  const { url, botName, botIcon, message, title } = data
+  const webhookUrl = url || ''
   console.log('start sending webhook discord')
-  return axios.post(url, {
+
+  return axios.post(webhookUrl, {
     content: message, embeds: [
       {
-        title: "New Task",
+        title: title || 'Notification',
         description: "A new **task** has been created",
       }
     ]

@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DiscordWebhookForm from './DiscordWebhookForm'
 import { DiscordWebhook } from '@prisma/client'
-import { discordWebhookAdd } from '@/services/discordWebhook'
+import {
+  discordWebhookAdd,
+  discordWebhookGetMany
+} from '@/services/discordWebhook'
+import { useParams } from 'next/navigation'
+import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
 
 export interface IDiscordWebhookDefaultValues {
+  projectId?: string
   url: string
   botName: string
   botIcon: string
@@ -18,13 +24,46 @@ export const defaultFormikValues: IDiscordWebhookDefaultValues = {
 }
 
 export default function DiscordWebhookContainer() {
-  const onSubmit = (v: Omit<DiscordWebhook, 'id'>) => {
+  const { projectId } = useParams()
+  const [loading, setLoading] = useState(true)
+  const [discordWebhooks, setDiscordWebhooks] = useState<
+    IDiscordWebhookDefaultValues[]
+  >([])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    discordWebhookGetMany({ projectId: projectId }, controller.signal)
+      .then(res => {
+        const { data } = res.data
+        console.log('data:', data)
+        setDiscordWebhooks(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
+
+    return () => {
+      controller.abort()
+      setLoading(false)
+    }
+  }, [])
+
+  const onSubmit = (v: IDiscordWebhookDefaultValues) => {
     discordWebhookAdd(v)
   }
 
-  return (
+  return loading ? (
+    <div className="w-4 h-4">
+      <LoadingSpinner />
+    </div>
+  ) : (
     <DiscordWebhookForm
-      defaultValue={defaultFormikValues}
+      defaultValue={
+        discordWebhooks.length ? discordWebhooks[0] : defaultFormikValues
+      }
       onSubmit={onSubmit}
     />
   )

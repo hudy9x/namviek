@@ -4,6 +4,7 @@ import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
 import { AuthRequest } from '../../types';
 import { DiscordWebhook } from '@prisma/client';
 import { pmClient } from 'packages/shared-models/src/lib/_prisma';
+import { IDiscordNotification, sendNotification } from '../../lib/discord';
 
 const router = Router()
 
@@ -125,6 +126,19 @@ router.delete('/project/discord-webhooks/query', async (req: AuthRequest, res) =
     const discordWebhook = await mdDiscordWebhookDelete(discordWebhookId)
 
     res.status(200).json({ data: discordWebhook })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+})
+
+router.post('/project/discord-webhooks/send-noti', async (req: AuthRequest, res) => {
+  try {
+    const dicordNotificationData = req.body as IDiscordNotification
+
+    await sendNotification(dicordNotificationData)
+    res.status(200).json({ message: 'send notification successful' })
+
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
