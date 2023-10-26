@@ -43,7 +43,7 @@ export default function DashboardComponentUpdateForm({
           onClick={() => {
             onBack && onBack()
           }}
-          className="w-9 h-9 p-2 text-gray-500 border rounded-md hover:bg-gray-50 cursor-pointer"
+          className="w-9 h-9 p-2 text-gray-500 border rounded-md hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 cursor-pointer"
         />
         <span className="font-medium text-xl">Back</span>
       </div>
