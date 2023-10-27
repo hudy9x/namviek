@@ -13,9 +13,9 @@ import { InvitationStatus, OrganizationRole } from '@prisma/client'
 const router = Router()
 
 router.get('/org/members/:orgId', (req: AuthRequest, res) => {
-  const { projectId } = req.query as { projectId: string }
+  // const { projectId } = req.query as { projectId: string }
   const { orgId } = req.params as { orgId: string }
-  console.log('/org/members', projectId, orgId)
+
   mdOrgMemberGet(orgId)
     .then(result => {
       const users = result.map(r => {
@@ -26,7 +26,7 @@ router.get('/org/members/:orgId', (req: AuthRequest, res) => {
       res.json({ status: 200, data: users })
     })
     .catch(error => {
-      console.log('err', error)
+      console.log('error: GET:/org/members', error)
       res.json({ status: 500, error })
     })
 })

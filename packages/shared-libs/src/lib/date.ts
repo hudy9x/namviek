@@ -2,6 +2,21 @@ export function getDatesInMonth(date: Date) {
   console.log('a')
 }
 
+export function isDateEqual(dateLeft: Date, dateRight: Date): boolean {
+  const d1 = [
+    dateLeft.getFullYear(),
+    dateLeft.getMonth(),
+    dateLeft.getDate()
+  ].join('-')
+  const d2 = [
+    dateRight.getFullYear(),
+    dateRight.getMonth(),
+    dateRight.getDate()
+  ].join('-')
+
+  return d1 === d2
+}
+
 export function getLastDateOfMonth(d: Date) {
   const date = new Date(d.getTime())
 

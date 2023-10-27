@@ -1,13 +1,14 @@
 .inp-checkbox {
-  @apply relative flex items-center
+  @apply relative flex items-center;
 }
 
-.inp-checkbox input[type="checkbox"] {
+.inp-checkbox input[type='checkbox'] {
   @apply h-4 w-4 rounded border-gray-300 text-indigo-600;
+  @apply dark:bg-gray-800 dark:border-gray-700;
   @apply focus:ring-indigo-600;
 }
 
-.inp-checkbox [type="checkbox"]:checked:not(:disabled) {
+.inp-checkbox [type='checkbox']:checked:not(:disabled) {
   @apply border-indigo-600;
 }
 

@@ -1,12 +1,11 @@
+import { User } from '@prisma/client'
+import { decode } from 'jsonwebtoken'
 import {
   saveGoalieRefreshToken,
   saveGoalieToken,
   saveGoalieUser
 } from '../lib/util'
-import { GoalieUser } from '../types'
 import { httpPost } from './_req'
-import { User } from '@prisma/client'
-import { decode } from 'jsonwebtoken'
 
 export const signup = (data: Partial<User>) => {
   return httpPost('/api/auth/sign-up', data)
@@ -49,5 +48,12 @@ export const signin = ({ email, password }: ISignin) => {
     })
 
     return Promise.resolve('SUCCESS')
+  }).catch(error => {
+    console.log('error', error)
+    return Promise.reject(error)
   })
+}
+
+export const resendVerifyEmail = (email: string) => {
+  return httpPost('/api/auth/resend-verify-email', { email })
 }

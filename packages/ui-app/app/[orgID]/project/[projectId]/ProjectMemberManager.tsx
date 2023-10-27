@@ -28,6 +28,9 @@ export default function ProjectMemberManager() {
         </div>
         <div className="divide-y dark:divide-gray-800">
           {members.map(member => {
+            if (!member || !member.email || !member.name) {
+              return null
+            }
             if (!member.email.includes(term) && !member.name?.includes(term))
               return null
 

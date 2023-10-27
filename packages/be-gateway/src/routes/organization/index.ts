@@ -28,7 +28,7 @@ router.get('/org', async (req: AuthRequest, res) => {
     const key = [CKEY.USER_ORGS, id]
     const cached = await getJSONCache(key)
     if (cached) {
-      console.log('return cached org list')
+      console.log('return cached org list 2')
       return res.json({
         status: 200,
         data: cached

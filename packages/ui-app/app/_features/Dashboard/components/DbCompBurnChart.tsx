@@ -100,12 +100,14 @@ export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
   return (
     <div className="col-span-2 mt-3 bg-white border rounded-md shadow-sm pt-3 relative">
       <DbCompDelete id={id} />
-      <Chart
-        options={setting.options}
-        series={setting.series}
-        height={300}
-        type="line"
-      />
+      {typeof window !== 'undefined' && (
+        <Chart
+          options={setting.options}
+          series={setting.series}
+          height={300}
+          type="line"
+        />
+      )}
     </div>
   )
 }

@@ -20,7 +20,7 @@ const Setting = () => {
   const settings = [
     {
       icon: (
-        <AiOutlineStar className="shrink-0 text-orange-400 w-6 h-6 bg-orange-100/50 rounded-full p-1" />
+        <AiOutlineStar className="shrink-0 text-orange-400 w-6 h-6 bg-orange-100/50 dark:bg-orange-500/50 rounded-full p-1" />
       ),
       title: 'Points',
       active: !tab ? true : tab === 'points' ? true : false,
@@ -30,7 +30,7 @@ const Setting = () => {
     },
     {
       icon: (
-        <HiOutlineRectangleStack className="shrink-0 text-blue-500 w-6 h-6 bg-blue-100/90 rounded-full p-1.5" />
+        <HiOutlineRectangleStack className="shrink-0 text-blue-500 w-6 h-6 bg-blue-100/90 dark:bg-blue-500/50 rounded-full p-1.5" />
       ),
       title: 'Statuses',
       active: tab === 'statuses',

@@ -11,7 +11,7 @@ import {
   HiOutlineCog6Tooth,
   HiOutlineStar
 } from 'react-icons/hi2'
-import { Button } from '@shared/ui'
+import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import Favorites from '@/features/Favorites'
@@ -86,32 +86,34 @@ export default function ProjectSidebar() {
       <RootSidebar />
       <nav className="secondary-sidebar">
         <UserSection />
-        <section className="side-nav">
-          {menus.map((menu, mindex) => {
-            const Icon = menu.icon
-            const Child = menu.children
-            const MenuBadge = menu.badge
-            const active = menu.active
-            return (
-              <div key={mindex} className="cursor-pointer">
-                {/* <Link href={menu.href}> */}
-                <div
-                  onClick={() => {
-                    menu.href && push(menu.href)
-                  }}
-                  className={`side-title ${active ? 'active' : ''}`}>
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-5 h-5" />
-                    <span>{menu.title}</span>
+        <Scrollbar style={{ height: `calc(100vh - 74px)` }}>
+          <section className="side-nav">
+            {menus.map((menu, mindex) => {
+              const Icon = menu.icon
+              const Child = menu.children
+              const MenuBadge = menu.badge
+              const active = menu.active
+              return (
+                <div key={mindex} className="cursor-pointer">
+                  {/* <Link href={menu.href}> */}
+                  <div
+                    onClick={() => {
+                      menu.href && push(menu.href)
+                    }}
+                    className={`side-title ${active ? 'active' : ''}`}>
+                    <div className="flex items-center gap-2">
+                      <Icon className="w-5 h-5" />
+                      <span>{menu.title}</span>
+                    </div>
+                    {MenuBadge ? <MenuBadge /> : null}
                   </div>
-                  {MenuBadge ? <MenuBadge /> : null}
+                  {/* </Link> */}
+                  {Child && <Child />}
                 </div>
-                {/* </Link> */}
-                {Child && <Child />}
-              </div>
-            )
-          })}
-        </section>
+              )
+            })}
+          </section>
+        </Scrollbar>
       </nav>
     </aside>
   )
