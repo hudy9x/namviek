@@ -6,12 +6,8 @@ export interface IDiscordNotification extends DiscordWebhook {
   message: string
 }
 
-
 export const sendNotification = async (data: Partial<IDiscordNotification>) => {
   const { url, botName, botIcon, message, title } = data
-  const webhookUrl = url || ''
-  console.log('start sending webhook discord')
-
 
   const discordParams = {
     ...(botName && { username: botName }),
@@ -24,7 +20,7 @@ export const sendNotification = async (data: Partial<IDiscordNotification>) => {
     ]
   }
 
-  return axios.post(webhookUrl, discordParams, {
+  return axios.post(url, discordParams, {
     headers: {
       "Content-Type": "application/json"
     }

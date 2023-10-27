@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import DiscordWebhookForm from './DiscordWebhookForm'
-import { DiscordWebhook } from '@prisma/client'
 import {
   discordWebhookAdd,
   discordWebhookGetMany
 } from '@/services/discordWebhook'
 import { useParams } from 'next/navigation'
 import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
+import { useEffect, useState } from 'react'
+import DiscordWebhookForm from './DiscordWebhookForm'
 
 export interface IDiscordWebhookDefaultValues {
   projectId?: string

@@ -1,10 +1,15 @@
-import { mdDiscordWebhookAdd, mdDiscordWebhookDelete, mdDiscordWebhookGetAll, mdDiscordWebhookGetOne } from '@shared/models';
-import { Router } from 'express';
-import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares';
-import { AuthRequest } from '../../types';
-import { DiscordWebhook } from '@prisma/client';
-import { pmClient } from 'packages/shared-models/src/lib/_prisma';
-import { IDiscordNotification, sendNotification } from '../../lib/discord';
+import {
+  mdDiscordWebhookAdd,
+  mdDiscordWebhookDelete,
+  mdDiscordWebhookGetAll,
+  mdDiscordWebhookGetOne
+} from '@shared/models'
+import { Router } from 'express'
+import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
+import { AuthRequest } from '../../types'
+import { DiscordWebhook } from '@prisma/client'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { IDiscordNotification, sendNotification } from '../../lib/discord'
 
 const router = Router()
 
@@ -12,7 +17,7 @@ router.use([authMiddleware, beProjectMemberMiddleware])
 
 // It means GET:/api/example
 router.get('/project/discord-webhooks', async (req: AuthRequest, res) => {
-  const projectId = req.query.projectId as string | null;
+  const projectId = req.query.projectId as string | null
 
   if (!projectId) {
     return res.status(404).json({ error: 'Project not found' })
@@ -26,11 +31,10 @@ router.get('/project/discord-webhooks', async (req: AuthRequest, res) => {
     console.log(error)
     res.status(500).json({ error })
   }
-
 })
 
 router.get('/project/discord-webhooks/query', async (req: AuthRequest, res) => {
-  const discordWebhookId = req.query.discordWebhookId as string;
+  const discordWebhookId = req.query.discordWebhookId as string
 
   if (!discordWebhookId) {
     return res.status(404).json({ error: 'Discord webhook not found' })
@@ -46,7 +50,6 @@ router.get('/project/discord-webhooks/query', async (req: AuthRequest, res) => {
   }
 })
 
-
 // It means POST:/api/example
 router.post('/project/discord-webhooks', async (req: AuthRequest, res) => {
   try {
@@ -60,14 +63,7 @@ router.post('/project/discord-webhooks', async (req: AuthRequest, res) => {
 })
 
 router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
-  const {
-    id,
-    url,
-    botName,
-    botIcon,
-    enabled,
-
-  } = req.body as DiscordWebhook
+  const { id, url, botName, botIcon, enabled } = req.body as DiscordWebhook
   const { id: userId } = req.authen
 
   try {
@@ -108,7 +104,6 @@ router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
 
       res.status(200).json({ data: result })
     })
-
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
@@ -116,7 +111,7 @@ router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/discord-webhooks/query', async (req: AuthRequest, res) => {
-  const discordWebhookId = req.query.discordWebhookId as string;
+  const discordWebhookId = req.query.discordWebhookId as string
 
   if (!discordWebhookId) {
     return res.status(404).json({ error: 'Discord webhook not found' })
@@ -130,7 +125,8 @@ router.delete('/project/discord-webhooks/query', async (req: AuthRequest, res) =
     console.log(error)
     res.status(500).send(error)
   }
-})
+}
+)
 
 router.post('/project/discord-webhooks/send-noti', async (req: AuthRequest, res) => {
   try {
@@ -138,12 +134,11 @@ router.post('/project/discord-webhooks/send-noti', async (req: AuthRequest, res)
 
     await sendNotification(dicordNotificationData)
     res.status(200).json({ message: 'send notification successful' })
-
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
   }
-})
-
+}
+)
 
 export default router

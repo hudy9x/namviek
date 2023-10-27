@@ -2,7 +2,6 @@ import { DiscordWebhook } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
 import { IDiscordWebhookDefaultValues } from '../app/[orgID]/project/[projectId]/settings/integrations/DiscordWebhookContainer'
 
-
 type IDiscordWebhookField = Partial<DiscordWebhook>
 export interface IDiscordWebhookQueryGetOne {
   discordWebhookId?: string
@@ -10,7 +9,6 @@ export interface IDiscordWebhookQueryGetOne {
 export interface IDiscordWebhookQueryGetMany {
   projectId?: string
 }
-
 
 export const discordWebhookAdd = (data: IDiscordWebhookField) => {
   return httpPost('/api/project/discord-webhooks', data)

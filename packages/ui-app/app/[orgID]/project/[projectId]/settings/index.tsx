@@ -10,7 +10,6 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
 import ProjectIntegrations from './integrations'
 
-
 const Setting = () => {
   const { push } = useRouter()
   const { orgID, projectId } = useParams()
@@ -46,7 +45,7 @@ const Setting = () => {
       active: tab === 'integrations',
       href: `${orgID}/project/${projectId}?mode=setting&tab=integrations`,
       content: <ProjectIntegrations />,
-      desc: 'Tools you can incorporate into the Slack interface to expand your remote work capabilities. It lets you access more functionalities from a single platform.'
+      desc: 'A feature that enables you to send notifications via Discord webhooks. It streamlines the process of communicating updates, alerts, or messages through Discord, making it a seamless part of your notification workflow.'
     },
     {
       icon: (

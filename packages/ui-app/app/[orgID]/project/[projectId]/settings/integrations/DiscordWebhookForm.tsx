@@ -1,5 +1,5 @@
 import EmojiInput from '@/components/EmojiInput'
-import { DiscordWebhook } from '@prisma/client'
+import { discordWebhookSendNotification } from '@/services/discordWebhook'
 import {
   Button,
   Form,
@@ -13,7 +13,6 @@ import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
-import { discordWebhookSendNotification } from '@/services/discordWebhook'
 
 interface IDiscordWebhookFormProps {
   defaultValue: IDiscordWebhookDefaultValues
