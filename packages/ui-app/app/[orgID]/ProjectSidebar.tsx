@@ -71,7 +71,7 @@ export default function ProjectSidebar() {
       title: 'Reports',
       href: `/${orgID}/report`,
       icon: HiOutlineChartPie,
-      active: false
+      active: pathname.includes(`${orgID}/report`)
     },
     {
       title: 'Settings',

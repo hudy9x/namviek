@@ -16,8 +16,8 @@ export default function PushNotification() {
   const { user } = useUser()
   useEffect(() => {
     if (user) {
-      console.log(user)
       beamsClient.stop().then(() => {
+        console.log('start register beam token', user.id)
         beamsClient
           .start()
           .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))

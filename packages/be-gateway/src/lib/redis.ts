@@ -5,6 +5,7 @@ let connected = false
 let error = false
 
 export enum CKEY {
+  USER = 'USER',
   // save the list of organization that user is owner or a member of
   USER_ORGS = 'USER_ORGS',
   // save the list of project that user manages it or be a member

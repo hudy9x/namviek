@@ -5,17 +5,11 @@ import { Organization } from '@prisma/client'
 import Link from 'next/link'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { orgGet } from '../../services/organization'
-import { Button } from '@shared/ui'
-import { pushNotice } from '@/services/push-notification'
 
 export default function OrgList() {
   const { push } = useRouter()
   const [orgs, setOrgs] = useState<Organization[]>([])
   console.log('root page')
-
-  const onSend = () => {
-    pushNotice()
-  }
 
   useEffect(() => {
     orgGet().then(res => {
@@ -69,7 +63,6 @@ export default function OrgList() {
             )
           })}
         </div>
-        <Button title="Send push notification" onClick={onSend} />
       </div>
     </div>
   )

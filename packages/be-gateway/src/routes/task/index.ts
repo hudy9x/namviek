@@ -25,6 +25,8 @@ import {
   setJSONCache
 } from '../../lib/redis'
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { notifyToWebUsers } from '../../lib/buzzer'
+import { genFrontendUrl, getLogoUrl } from '../../lib/url'
 
 const router = Router()
 
@@ -146,7 +148,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  console.log('body', req.body)
   const body = req.body as Task
   const {
     desc,
@@ -171,7 +172,6 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     if (!taskStatusId) {
       const todoStatus = await mdTaskStatusWithTodoType(projectId)
       taskStatusId = todoStatus.id
-      console.log('taskStatusid', taskStatusId)
     }
 
     const result = await mdTaskAdd({
@@ -198,6 +198,20 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     })
 
     await findNDelCaches(key)
+
+    if (result.assigneeIds && result.assigneeIds.length) {
+      const project = await mdProjectGet(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        title: 'New task assigned',
+        body: result.title,
+        icon: getLogoUrl(),
+        deep_link: taskLink
+      })
+    }
 
     res.json({ status: 200, data: result })
   } catch (error) {
@@ -292,6 +306,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const oldStatusId = taskData.taskStatusId
     // const taskData = await tx.task.findFirst({
     //   where: {
     //     id
