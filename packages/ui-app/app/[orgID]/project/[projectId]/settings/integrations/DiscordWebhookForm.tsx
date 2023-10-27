@@ -13,6 +13,7 @@ import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
+import { discordWebhookSendNotification } from '@/services/discordWebhook'
 
 interface IDiscordWebhookFormProps {
   defaultValue: IDiscordWebhookDefaultValues
@@ -57,6 +58,14 @@ export default function DiscordWebhookForm({
     }
   })
 
+  const handleTestWebhook = () =>
+    discordWebhookSendNotification(refDefaultValue.current)
+      .then(res => messageSuccess(res.data.message))
+      .catch(err => {
+        messageError('Create new task error')
+        console.log(err)
+      })
+
   return (
     <div className="setting-container">
       <div className="rounded-lg border dark:border-gray-700">
@@ -92,7 +101,11 @@ export default function DiscordWebhookForm({
               </FormGroup>
 
               <div className="text-right">
-                <Button loading={loading} title="Test" onClick={() => null} />
+                <Button
+                  loading={loading}
+                  title="Test"
+                  onClick={handleTestWebhook}
+                />
                 <Button
                   type="submit"
                   loading={loading}

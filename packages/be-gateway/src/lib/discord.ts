@@ -12,14 +12,19 @@ export const sendNotification = async (data: Partial<IDiscordNotification>) => {
   const webhookUrl = url || ''
   console.log('start sending webhook discord')
 
-  return axios.post(webhookUrl, {
-    content: message, embeds: [
+
+  const discordParams = {
+    ...(botName && { username: botName }),
+    ...(botIcon && { avatar_url: botIcon }),
+    embeds: [
       {
         title: title || 'Notification',
-        description: "A new **task** has been created",
+        description: message || "Congrats! You just send a notification by Kapuni",
       }
     ]
-  }, {
+  }
+
+  return axios.post(webhookUrl, discordParams, {
     headers: {
       "Content-Type": "application/json"
     }
