@@ -1,6 +1,7 @@
 import {
   discordWebhookAdd,
-  discordWebhookGetMany
+  discordWebhookGetMany,
+  discordWebhookUpdate
 } from '@/services/discordWebhook'
 import { useParams } from 'next/navigation'
 import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
@@ -8,6 +9,7 @@ import { useEffect, useState } from 'react'
 import DiscordWebhookForm from './DiscordWebhookForm'
 
 export interface IDiscordWebhookDefaultValues {
+  id?: string
   projectId?: string
   url: string
   botName: string
@@ -51,7 +53,8 @@ export default function DiscordWebhookContainer() {
   }, [])
 
   const onSubmit = (v: IDiscordWebhookDefaultValues) => {
-    discordWebhookAdd(v)
+    console.log(v)
+    // discordWebhooks.length ? discordWebhookUpdate(v) : discordWebhookAdd(v)
   }
 
   return loading ? (
