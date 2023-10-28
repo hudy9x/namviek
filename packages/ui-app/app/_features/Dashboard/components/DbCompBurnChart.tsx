@@ -1,10 +1,13 @@
-import Chart from 'react-apexcharts'
+'use client'
+
 import { IDbCompProps, refactorConfig } from '../type'
 import DbCompDelete from './DbCompDelete'
 import { useEffect, useState } from 'react'
 import { IDBComponentConfig, dboardQueryBurnChart } from '@/services/dashboard'
 import { ApexOptions } from 'apexcharts'
 import { DashboardComponentType } from '@prisma/client'
+import dynamic from 'next/dynamic'
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 interface ISetting {
   options: ApexOptions

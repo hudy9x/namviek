@@ -13,7 +13,7 @@ mainRouter.use('/buzzer', router)
 router.get('/pusher-authentication', async (req, res) => {
   // const { id: uid } = req.authen
   const userId = req.query['user_id'] as string
-  console.log(`user: ${userId} generated`)
+  console.log(`pusher user: ${userId} generated`)
 
   res.send(JSON.stringify(generateBuzzerToken(userId)))
 })

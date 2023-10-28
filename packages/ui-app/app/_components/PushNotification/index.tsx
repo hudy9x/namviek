@@ -2,14 +2,16 @@
 
 import { useUser } from '@goalie/nextjs'
 import * as PusherPushNotifications from '@pusher/push-notifications-web'
+import { messageSuccess } from '@shared/ui'
 import { useEffect } from 'react'
 
+console.log('instance pusher id', process.env.NEXT_PUBLIC_PUSHER_INSTANCE_ID)
 const beamsClient = new PusherPushNotifications.Client({
-  instanceId: '7cd6fb43-a8b9-4196-85b5-46e86f96861a'
+  instanceId: process.env.NEXT_PUBLIC_PUSHER_INSTANCE_ID || ''
 })
 
 const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
-  url: `${process.env.NEXT_PUBLIC_BE_GATEWAY}api/pusher/beams-auth`
+  url: `${process.env.NEXT_PUBLIC_BE_GATEWAY}api/buzzer/pusher-authentication`
 })
 
 export default function PushNotification() {
@@ -23,7 +25,10 @@ export default function PushNotification() {
           .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))
           // .then(() => beamsClient.addDeviceInterest('project'))
           // .then(() => beamsClient.addDeviceInterest('all'))
-          .then(() => console.log('Successfully registered and subscribed!'))
+          .then(() => {
+            messageSuccess('Registered pusher')
+            console.log('Successfully registered and subscribed!')
+          })
           .catch(console.error)
       })
     }
