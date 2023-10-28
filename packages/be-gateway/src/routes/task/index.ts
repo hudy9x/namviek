@@ -27,6 +27,8 @@ import {
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import { notifyToWebUsers } from '../../lib/buzzer'
 import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { serviceGetStatusById } from '../../services/status'
+import { serviceGetProjectById } from '../../services/project'
 
 const router = Router()
 
@@ -206,9 +208,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       )
 
       notifyToWebUsers(result.assigneeIds, {
-        title: 'New task assigned',
-        body: result.title,
-        icon: getLogoUrl(),
+        body: `[New task]: ${result.title} - assigned to you`,
         deep_link: taskLink
       })
     }
@@ -379,12 +379,19 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // const { id: tid, ...rest } = taskData
 
     const result = await mdTaskUpdate(taskData)
-    // const result = await tx.task.update({
-    //   where: {
-    //     id
-    //   },
-    //   data: rest
-    // })
+
+    if (oldStatusId !== result.taskStatusId) {
+      const newStatus = await serviceGetStatusById(result.taskStatusId)
+      const pinfo = await serviceGetProjectById(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `Status changed to ${newStatus.name} on "${result.title}"`,
+        deep_link: taskLink
+      })
+    }
 
     await findNDelCaches(key)
     res.json({ status: 200, data: result })
