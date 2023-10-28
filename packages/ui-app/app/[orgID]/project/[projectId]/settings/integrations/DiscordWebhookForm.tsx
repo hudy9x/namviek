@@ -11,59 +11,63 @@ import {
 import { validateDiscordWebhook } from '@shared/validation'
 import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { IDiscordWebhookDefaultValues } from './DiscordWebhookContainer'
 
 interface IDiscordWebhookFormProps {
   defaultValue: IDiscordWebhookDefaultValues
   onSubmit: (v: IDiscordWebhookDefaultValues) => void
+  loadingForm: boolean
+  setLoadingForm: Dispatch<SetStateAction<boolean>>
 }
 
 export default function DiscordWebhookForm({
   defaultValue,
-  onSubmit
+  onSubmit,
+  loadingForm,
+  setLoadingForm
 }: IDiscordWebhookFormProps) {
-  console.log('defaultValue:', defaultValue)
   const params = useParams()
-  const [loading, setLoading] = useState(false)
 
   const refDefaultValue = useRef<IDiscordWebhookDefaultValues>(defaultValue)
   const formik = useFormik({
     initialValues: refDefaultValue.current,
     onSubmit: values => {
-      console.log('values:', values)
-      if (loading) {
+      if (loadingForm) {
         messageWarning('Server is processing')
         return
       }
 
-      setLoading(true)
+      setLoadingForm(true)
       const mergedValues = { ...values, projectId: params.projectId }
 
       const { error, errorArr } = validateDiscordWebhook(mergedValues)
 
       if (error) {
-        setLoading(false)
+        setLoadingForm(false)
         //This form only require one field: `url`
         messageError(errorArr['url'])
         console.error(errorArr)
         return
       }
 
-      console.log(values)
       onSubmit(mergedValues)
-      messageSuccess('Save success !')
-      setLoading(false)
     }
   })
 
-  const handleTestWebhook = () =>
-    discordWebhookSendNotification(refDefaultValue.current)
-      .then(res => messageSuccess(res.data.message))
+  const handleTestWebhook = () => {
+    setLoadingForm(true)
+    discordWebhookSendNotification(formik.values)
+      .then(res => {
+        setLoadingForm(false)
+        messageSuccess(res.data.message)
+      })
       .catch(err => {
+        setLoadingForm(false)
         messageError('Create new task error')
         console.log(err)
       })
+  }
 
   return (
     <div className="setting-container">
@@ -101,13 +105,13 @@ export default function DiscordWebhookForm({
 
               <div className="text-right">
                 <Button
-                  loading={loading}
+                  loading={loadingForm}
                   title="Test"
                   onClick={handleTestWebhook}
                 />
                 <Button
                   type="submit"
-                  loading={loading}
+                  loading={loadingForm}
                   title="Save"
                   primary
                   className="ml-5"

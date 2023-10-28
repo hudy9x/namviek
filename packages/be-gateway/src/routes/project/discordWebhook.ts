@@ -52,9 +52,15 @@ router.get('/project/discord-webhooks/query', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/discord-webhooks', async (req: AuthRequest, res) => {
+  const { id } = req.authen
   try {
-    const result = await mdDiscordWebhookAdd(req.body)
-    console.log(req.body)
+    const result = await mdDiscordWebhookAdd({
+      ...req.body,
+      createdBy: id,
+      createdAt: new Date(),
+      updatedAt: null,
+      updatedBy: null
+    })
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
@@ -62,7 +68,7 @@ router.post('/project/discord-webhooks', async (req: AuthRequest, res) => {
   }
 })
 
-router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
+router.put('/project/discord-webhooks', async (req: AuthRequest, res) => {
   const { id, url, botName, botIcon, enabled } = req.body as DiscordWebhook
   const { id: userId } = req.authen
 
@@ -83,7 +89,7 @@ router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
       }
 
       if (botIcon) {
-        discordWebhookData.botIcon = url
+        discordWebhookData.botIcon = botIcon
       }
 
       if (enabled) {
@@ -110,35 +116,38 @@ router.put('/project/discord-webhook', async (req: AuthRequest, res) => {
   }
 })
 
-router.delete('/project/discord-webhooks/query', async (req: AuthRequest, res) => {
-  const discordWebhookId = req.query.discordWebhookId as string
+router.delete(
+  '/project/discord-webhooks/query',
+  async (req: AuthRequest, res) => {
+    const discordWebhookId = req.query.discordWebhookId as string
 
-  if (!discordWebhookId) {
-    return res.status(404).json({ error: 'Discord webhook not found' })
+    if (!discordWebhookId) {
+      return res.status(404).json({ error: 'Discord webhook not found' })
+    }
+
+    try {
+      const discordWebhook = await mdDiscordWebhookDelete(discordWebhookId)
+
+      res.status(200).json({ data: discordWebhook })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send(error)
+    }
   }
-
-  try {
-    const discordWebhook = await mdDiscordWebhookDelete(discordWebhookId)
-
-    res.status(200).json({ data: discordWebhook })
-  } catch (error) {
-    console.log(error)
-    res.status(500).send(error)
-  }
-}
 )
 
-router.post('/project/discord-webhooks/send-noti', async (req: AuthRequest, res) => {
-  try {
-    const dicordNotificationData = req.body as IDiscordNotification
-
-    await sendNotification(dicordNotificationData)
-    res.status(200).json({ message: 'send notification successful' })
-  } catch (error) {
-    console.log(error)
-    res.status(500).send(error)
+router.post(
+  '/project/discord-webhooks/send-noti',
+  async (req: AuthRequest, res) => {
+    try {
+      const dicordNotificationData = req.body as IDiscordNotification
+      await sendNotification(dicordNotificationData)
+      res.status(200).json({ message: 'send notification successful' })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send(error)
+    }
   }
-}
 )
 
 export default router

@@ -3,6 +3,7 @@ import {
   discordWebhookGetMany,
   discordWebhookUpdate
 } from '@/services/discordWebhook'
+import { messageError, messageSuccess } from '@shared/ui'
 import { useParams } from 'next/navigation'
 import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
 import { useEffect, useState } from 'react'
@@ -27,6 +28,8 @@ export const defaultFormikValues: IDiscordWebhookDefaultValues = {
 export default function DiscordWebhookContainer() {
   const { projectId } = useParams()
   const [loading, setLoading] = useState(true)
+  const [loadingForm, setLoadingForm] = useState(false)
+
   const [discordWebhooks, setDiscordWebhooks] = useState<
     IDiscordWebhookDefaultValues[]
   >([])
@@ -37,7 +40,6 @@ export default function DiscordWebhookContainer() {
     discordWebhookGetMany({ projectId: projectId }, controller.signal)
       .then(res => {
         const { data } = res.data
-        console.log('data:', data)
         setDiscordWebhooks(data)
         setLoading(false)
       })
@@ -53,8 +55,29 @@ export default function DiscordWebhookContainer() {
   }, [])
 
   const onSubmit = (v: IDiscordWebhookDefaultValues) => {
-    console.log(v)
-    // discordWebhooks.length ? discordWebhookUpdate(v) : discordWebhookAdd(v)
+    discordWebhooks.length
+      ? discordWebhookUpdate(v)
+          .then(res => {
+            const { status } = res
+            setLoadingForm(false)
+            if (status !== 200) return
+            messageSuccess('Update success')
+          })
+          .catch(err => {
+            setLoadingForm(false)
+            messageError('Update webhook error')
+          })
+      : discordWebhookAdd(v)
+          .then(res => {
+            const { status } = res
+            setLoadingForm(false)
+            if (status !== 200) return
+            messageSuccess('Save success')
+          })
+          .catch(err => {
+            setLoadingForm(false)
+            messageError('Save webhook error')
+          })
   }
 
   return loading ? (
@@ -67,6 +90,8 @@ export default function DiscordWebhookContainer() {
         discordWebhooks.length ? discordWebhooks[0] : defaultFormikValues
       }
       onSubmit={onSubmit}
+      loadingForm={loadingForm}
+      setLoadingForm={setLoadingForm}
     />
   )
 }

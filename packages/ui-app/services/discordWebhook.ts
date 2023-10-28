@@ -42,6 +42,8 @@ export const discordWebhookDelete = (data: IDiscordWebhookField) => {
   return httpDel('/api/project/discord-webhooks', data)
 }
 
-export const discordWebhookSendNotification = (data: IDiscordWebhookDefaultValues) => {
+export const discordWebhookSendNotification = (
+  data: IDiscordWebhookDefaultValues
+) => {
   return httpPost('/api/project/discord-webhooks/send-noti', data)
 }

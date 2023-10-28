@@ -8,10 +8,6 @@ const discordWebhook = z.object({
   botIcon: z.string(),
   enable: z.boolean(),
 
-  createdBy: z.string(),
-  createdAt: z.date(),
-  updatedBy: z.string(),
-  updatedAt: z.date()
 }).partial()
 
 const discordWebhookSchema = discordWebhook.required({
