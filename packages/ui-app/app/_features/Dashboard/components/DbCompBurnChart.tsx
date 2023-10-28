@@ -34,7 +34,8 @@ const defaultSetting: ISetting = {
       }
     },
     xaxis: {
-      categories: []
+      categories: [],
+      tickAmount: 3
     },
     stroke: {
       curve: 'smooth'
@@ -72,7 +73,9 @@ export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
           options: {
             ...defaultSetting.options,
             xaxis: {
-              categories: data.dates
+              categories: data.dates,
+              tickAmount: 6,
+              tickPlacement: 'between'
             },
             title: {
               ...defaultSetting.options.title,
