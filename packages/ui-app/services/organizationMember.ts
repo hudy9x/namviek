@@ -42,7 +42,6 @@ export const useOrgMemberGet = () => {
           return
         }
 
-        console.log('members', data)
         addAllOrgMember(data)
       })
       .catch(err => {

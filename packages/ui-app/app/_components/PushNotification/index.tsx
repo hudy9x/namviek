@@ -5,7 +5,6 @@ import * as PusherPushNotifications from '@pusher/push-notifications-web'
 import { messageSuccess } from '@shared/ui'
 import { useEffect } from 'react'
 
-console.log('instance pusher id', process.env.NEXT_PUBLIC_PUSHER_INSTANCE_ID)
 const beamsClient = new PusherPushNotifications.Client({
   instanceId: process.env.NEXT_PUBLIC_PUSHER_INSTANCE_ID || ''
 })
@@ -19,7 +18,6 @@ export default function PushNotification() {
   useEffect(() => {
     if (user) {
       beamsClient.stop().then(() => {
-        console.log('start register beam token', user.id)
         beamsClient
           .start()
           .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))
