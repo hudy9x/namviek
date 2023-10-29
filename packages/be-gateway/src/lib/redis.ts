@@ -5,6 +5,9 @@ let connected = false
 let error = false
 
 export enum CKEY {
+  USER = 'USER',
+  PROJECT = 'PROJECT',
+  STATUS = 'STATUS',
   // save the list of organization that user is owner or a member of
   USER_ORGS = 'USER_ORGS',
   // save the list of project that user manages it or be a member
@@ -152,4 +155,20 @@ export const findNDelCaches = async (key: CACHE_KEY) => {
   } catch (error) {
     console.log('findNDelCAche error', error)
   }
+}
+
+export const hset = async (key: CACHE_KEY, value: { [key: string]: any }) => {
+  await redis.hset(genKey(key), value)
+}
+
+export const hgetAll = (key: CACHE_KEY) => {
+  const obj = redis.hgetall(genKey(key))
+  if (!Object.keys(obj).length) {
+    return null
+  }
+  return obj
+}
+
+export const hget = (key: CACHE_KEY, fieldName: string) => {
+  return redis.hget(genKey(key), fieldName)
 }

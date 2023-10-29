@@ -25,6 +25,10 @@ import {
   setJSONCache
 } from '../../lib/redis'
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { notifyToWebUsers } from '../../lib/buzzer'
+import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { serviceGetStatusById } from '../../services/status'
+import { serviceGetProjectById } from '../../services/project'
 
 const router = Router()
 
@@ -146,7 +150,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  console.log('body', req.body)
   const body = req.body as Task
   const {
     desc,
@@ -171,7 +174,6 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     if (!taskStatusId) {
       const todoStatus = await mdTaskStatusWithTodoType(projectId)
       taskStatusId = todoStatus.id
-      console.log('taskStatusid', taskStatusId)
     }
 
     const result = await mdTaskAdd({
@@ -198,6 +200,18 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     })
 
     await findNDelCaches(key)
+
+    if (result.assigneeIds && result.assigneeIds.length) {
+      const project = await mdProjectGet(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `[New task]: ${result.title} - assigned to you`,
+        deep_link: taskLink
+      })
+    }
 
     res.json({ status: 200, data: result })
   } catch (error) {
@@ -292,6 +306,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const oldStatusId = taskData.taskStatusId
     // const taskData = await tx.task.findFirst({
     //   where: {
     //     id
@@ -364,12 +379,19 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // const { id: tid, ...rest } = taskData
 
     const result = await mdTaskUpdate(taskData)
-    // const result = await tx.task.update({
-    //   where: {
-    //     id
-    //   },
-    //   data: rest
-    // })
+
+    if (oldStatusId !== result.taskStatusId) {
+      const newStatus = await serviceGetStatusById(result.taskStatusId)
+      const pinfo = await serviceGetProjectById(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `Status changed to ${newStatus.name} on "${result.title}"`,
+        deep_link: taskLink
+      })
+    }
 
     await findNDelCaches(key)
     res.json({ status: 200, data: result })

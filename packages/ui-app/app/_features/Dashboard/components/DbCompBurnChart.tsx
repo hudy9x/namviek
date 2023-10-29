@@ -1,10 +1,13 @@
-import Chart from 'react-apexcharts'
+'use client'
+
 import { IDbCompProps, refactorConfig } from '../type'
 import DbCompDelete from './DbCompDelete'
 import { useEffect, useState } from 'react'
 import { IDBComponentConfig, dboardQueryBurnChart } from '@/services/dashboard'
 import { ApexOptions } from 'apexcharts'
 import { DashboardComponentType } from '@prisma/client'
+import dynamic from 'next/dynamic'
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 interface ISetting {
   options: ApexOptions
@@ -34,7 +37,8 @@ const defaultSetting: ISetting = {
       }
     },
     xaxis: {
-      categories: []
+      categories: [],
+      tickAmount: 3
     },
     stroke: {
       curve: 'smooth'
@@ -72,7 +76,9 @@ export const DbCompBurnChart = ({ id, config, type, title }: IDbCompProps) => {
           options: {
             ...defaultSetting.options,
             xaxis: {
-              categories: data.dates
+              categories: data.dates,
+              tickAmount: 6,
+              tickPlacement: 'between'
             },
             title: {
               ...defaultSetting.options.title,

@@ -11,12 +11,14 @@ import reportRouter from './report'
 import visionRouter from './vision'
 // import { storageRouter } from '@be/storage'
 import { storageRouter } from './storage'
+import buzzerRouter from './buzzer'
 import { authMiddleware } from '../middlewares'
 
 const router = Router()
 
 // middlewares
 // router.use([])
+router.use(buzzerRouter)
 router.use('/storage', [authMiddleware, storageRouter])
 router.use(visionRouter)
 router.use(reportRouter)

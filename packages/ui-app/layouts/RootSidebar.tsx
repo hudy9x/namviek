@@ -1,17 +1,26 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { RiBarChartFill, RiCalendarFill, RiDashboardFill, RiHomeFill } from 'react-icons/ri';
-import { IoIosPlayCircle, IoMdLogOut } from 'react-icons/io';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link'
+import { RiBarChartFill, RiCalendarFill, RiDashboardFill } from 'react-icons/ri'
+import { IoIosPlayCircle, IoMdLogOut } from 'react-icons/io'
+import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function RootSidebar() {
-  const { push } = useRouter();
+  const { orgID } = useParams()
+
   return (
     <nav className="primary-sidebar">
       <section>
-        <Link href="/home">
-          <RiHomeFill className="main-nav-icon" />
+        <Link href={`/${orgID}/my-works`}>
+          <div className="flex justify-center pt-3">
+            <Image
+              src={'/logo132x132.svg'}
+              width={35}
+              height={35}
+              alt="Homepage"
+            />
+          </div>
         </Link>
         <Link href="/home">
           <RiDashboardFill className="main-nav-icon active" />
@@ -32,5 +41,5 @@ export default function RootSidebar() {
         </Link>
       </section>
     </nav>
-  );
+  )
 }

@@ -33,7 +33,6 @@ export const useOrgMemberGet = () => {
 
   const { addAllOrgMember } = useOrgMemberStore()
   useEffect(() => {
-    console.log('porjectid', projectId)
     orgMemberGet(projectId, orgID)
       .then(res => {
         const { data, status } = res.data

@@ -10,6 +10,7 @@ export default function OrgList() {
   const { push } = useRouter()
   const [orgs, setOrgs] = useState<Organization[]>([])
   console.log('root page')
+
   useEffect(() => {
     orgGet().then(res => {
       const { data, status } = res.data
