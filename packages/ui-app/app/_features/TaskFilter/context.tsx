@@ -13,6 +13,7 @@ import {
 } from 'react'
 
 interface ITaskFilterFields {
+  groupBy: string
   term?: string
   dateOperator: string
   date: string
@@ -29,6 +30,7 @@ interface ITaskFilterContextProps {
 
 const TaskFilterContext = createContext<ITaskFilterContextProps>({
   filter: {
+    groupBy: 'status',
     term: '',
     dateOperator: '=',
     date: 'this-month',
@@ -49,6 +51,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
   const lastDate = getLastDateOfMonth(new Date())
   const [filter, setFilter] = useState<ITaskFilterFields>({
     term: '',
+    groupBy: 'status',
     dateOperator: '=',
     date: 'this-month',
     startDate: firstDate,

@@ -31,6 +31,7 @@ export default function TaskFilter({
   const mode = search.get('mode')
 
   const {
+    groupBy,
     term,
     dateOperator,
     date,
@@ -164,6 +165,22 @@ export default function TaskFilter({
             className="task-filter-member-picker"
           />
         ) : null}
+
+        <ListPreset
+          value={'status'}
+          onChange={val => {
+            setFilterValue('groupBy', val)
+            // setFilterValue('dateOperator', val)
+          }}
+          className="w-[150px] mr-1"
+          width={150}
+          options={[
+            { id: 'status', title: '🚦 Status' },
+            { id: 'assignees', title: '🤓 Assignees' },
+            { id: 'priority', title: '🚩 Priority' },
+            { id: 'date-in-week', title: '📅 Week' }
+          ]}
+        />
 
         {importEnable ? <TaskImport /> : null}
       </div>
