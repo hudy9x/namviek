@@ -6,14 +6,15 @@ import { projectStatusUpdateOrder } from '@/services/status'
 import { taskUpdate } from '@/services/task'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
-import { messageError, messageSuccess } from '@shared/ui'
+import { Task, TaskPriority } from '@prisma/client'
+import { messageError, messageSuccess, messageWarning } from '@shared/ui'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 
 export const useBoardAction = () => {
-  const { filter } = useTaskFilter()
-  const { groupBy } = filter
+  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
+    useTaskFilter()
   const { statuses, swapOrder } = useProjectStatusStore()
   const { updateTask } = useTaskStore()
   const { projectId } = useParams()
@@ -49,20 +50,39 @@ export const useBoardAction = () => {
       clearTimeout(timeout.current)
     }
 
-    if (groupBy === ETaskFilterGroupByType.STATUS) {
-      updateTask({ id: taskId, taskStatusId: destinationId })
-      timeout.current = setTimeout(() => {
-        taskUpdate({ id: taskId, taskStatusId: destinationId, projectId }).then(
-          res => {
-            const { data, status } = res.data
-            if (status !== 200) {
-              messageError('Can not update status')
-              return
-            }
+    const data: Partial<Task> = {
+      id: taskId,
+      projectId
+    }
+    let update = false
 
-            messageSuccess('Updated')
+    if (isGroupbyAssignee) {
+      update = true
+      data.assigneeIds = [destinationId]
+    }
+
+    if (isGroupbyStatus) {
+      update = true
+      data.taskStatusId = destinationId
+    }
+
+    if (isGroupbyPriority) {
+      update = true
+      data.priority = destinationId as TaskPriority
+    }
+
+    if (update) {
+      updateTask(data)
+      timeout.current = setTimeout(() => {
+        taskUpdate(data).then(res => {
+          const { data, status } = res.data
+          if (status !== 200) {
+            messageError('Can not update status')
+            return
           }
-        )
+
+          messageSuccess('Updated')
+        })
       }, 300)
     }
   }
@@ -75,14 +95,13 @@ export const useBoardAction = () => {
   const onDragEnd = (result: DropResult) => {
     const type = result.type
 
-    if (type === 'column') {
+    if (type === 'column' && isGroupbyStatus) {
       const sourceId = result.source.index
       const destId = result.destination?.index
 
-      console.log('column', sourceId, destId)
-
       destId !== undefined && reorderStatus(sourceId, +destId)
-      console.log('update column position')
+    } else {
+      messageWarning('You can only re-arrange status')
     }
 
     if (type === 'task') {

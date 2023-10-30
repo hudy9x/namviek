@@ -4,7 +4,10 @@ import { BoardTaskList } from './BoardTaskList'
 import BoardColumHeader from './BoardColumnHeader'
 import { useTaskStore } from '@/store/task'
 import { Loading } from '@shared/ui'
-import { ITaskFilterGroupbyItem } from '@/features/TaskFilter/context'
+import {
+  ITaskFilterGroupbyItem,
+  useTaskFilter
+} from '@/features/TaskFilter/context'
 
 interface IBoardColumnProps {
   group: ITaskFilterGroupbyItem
@@ -12,6 +15,7 @@ interface IBoardColumnProps {
 }
 export const BoardColumn = ({ group, statusIndex }: IBoardColumnProps) => {
   const { taskLoading } = useTaskStore()
+  const { groupByLoading } = useTaskFilter()
   return (
     <Draggable draggableId={group.id} index={statusIndex}>
       {provided => (
@@ -27,7 +31,7 @@ export const BoardColumn = ({ group, statusIndex }: IBoardColumnProps) => {
               id={group.id}
               provided={provided}
             />
-            {taskLoading ? (
+            {taskLoading || groupByLoading ? (
               <div className="text-sm px-3 py-2 text-gray-500 flex items-center gap-3">
                 <span className="w-4 h-4">
                   <Loading />

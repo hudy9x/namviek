@@ -18,25 +18,34 @@ export default function BoardColumHeader({
   id,
   provided
 }: IBoardColumnHeaderProps) {
-  const { isGroupbyAssignee } = useTaskFilter()
+  const { isGroupbyAssignee, groupByLoading } = useTaskFilter()
 
   return (
-    <div className="py-1 px-3 flex items-center justify-between">
-      <div className="flex border-1 border-transparent items-center gap-2">
-        <div className="w-3 h-4 text-gray-400" {...provided.dragHandleProps}>
-          <MdDragIndicator />
+    <div className="relative">
+      <div
+        className={`board-header-loading ${
+          groupByLoading ? 'visible' : 'invisible '
+        }`}></div>
+      <div className="board-col-header">
+        <div
+          className={`board-header-section ${
+            groupByLoading ? 'opacity-0' : 'opacity-100'
+          }`}>
+          <div className="w-3 h-4 text-gray-400" {...provided.dragHandleProps}>
+            <MdDragIndicator />
+          </div>
+          {isGroupbyAssignee ? (
+            <Avatar size="md" name={name} src={icon || ''} />
+          ) : (
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: color }}></div>
+          )}
+          <span className="text-sm text-gray-500">{name}</span>
         </div>
-        {isGroupbyAssignee ? (
-          <Avatar size="md" name={name} src={icon || ''} />
-        ) : (
-          <div
-            className="w-4 h-4 rounded"
-            style={{ backgroundColor: color }}></div>
-        )}
-        <span className="text-sm text-gray-500">{name}</span>
-      </div>
-      <div>
-        <BoardActionCreateTaskWithIcon groupId={id} />
+        <div>
+          <BoardActionCreateTaskWithIcon groupId={id} />
+        </div>
       </div>
     </div>
   )
