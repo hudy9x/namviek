@@ -102,24 +102,26 @@ model OrganizationMembers {
 }
 
 model Task {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  title          String
-  desc           String?
-  dueDate        DateTime?
-  plannedDueDate DateTime?
-  startDate      DateTime?
-  projectId      String        @db.ObjectId
-  priority       TaskPriority?
-  visionId       String?       @db.ObjectId
-  taskStatusId   String?       @db.ObjectId
-  tagIds         String[]      @db.ObjectId
-  assigneeIds    String[]      @db.ObjectId
-  fileIds        String[]      @db.ObjectId
-  parentTaskId   String?       @db.ObjectId
-  progress       Int?
-  done           Boolean       @default(false)
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  desc    String?
+  dueDate DateTime?
+
+  plannedStartDate DateTime?
+  plannedDueDate   DateTime?
+  startDate        DateTime?
+  projectId        String        @db.ObjectId
+  priority         TaskPriority?
+  visionId         String?       @db.ObjectId
+  taskStatusId     String?       @db.ObjectId
+  tagIds           String[]      @db.ObjectId
+  assigneeIds      String[]      @db.ObjectId
+  fileIds          String[]      @db.ObjectId
+  parentTaskId     String?       @db.ObjectId
+  progress         Int?
+  done             Boolean       @default(false)
   // do not store `point` as objectID, cuz we just need to fill the point value
-  taskPoint      Int?
+  taskPoint        Int?
 
   createdBy String?
   createdAt DateTime?

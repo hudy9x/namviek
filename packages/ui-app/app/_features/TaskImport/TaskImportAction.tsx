@@ -97,8 +97,13 @@ export default function TaskImportAction() {
       const newTask: ITaskWithoutId = {
         title,
         desc: null,
+        plannedStartDate: null,
+        fileIds: [],
+        visionId: null,
+        done: false,
         dueDate,
         startDate: null,
+        plannedDueDate: null,
         projectId,
         priority,
         taskStatusId,

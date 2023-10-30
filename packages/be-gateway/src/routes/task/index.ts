@@ -180,6 +180,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       title,
       startDate: null,
       dueDate: dueDate || null,
+      plannedStartDate: dueDate || null,
       plannedDueDate: dueDate || null,
       assigneeIds,
       desc,
