@@ -1,3 +1,7 @@
+import {
+  ETaskFilterGroupByType,
+  useTaskFilter
+} from '@/features/TaskFilter/context'
 import { projectStatusUpdateOrder } from '@/services/status'
 import { taskUpdate } from '@/services/task'
 import { useProjectStatusStore } from '@/store/status'
@@ -8,10 +12,12 @@ import { useEffect, useRef, useState } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 
 export const useBoardAction = () => {
+  const { filter } = useTaskFilter()
+  const { groupBy } = filter
   const { statuses, swapOrder } = useProjectStatusStore()
   const { updateTask } = useTaskStore()
   const { projectId } = useParams()
-  const groupBy = 'status'
+
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const timeoutStatus = useRef<ReturnType<typeof setTimeout>>()
 
@@ -31,8 +37,6 @@ export const useBoardAction = () => {
             return
           }
           messageSuccess('Update order successfully')
-          console.log('project status updated')
-          console.log(res.data)
         })
       }, 1500)
     }
@@ -45,7 +49,7 @@ export const useBoardAction = () => {
       clearTimeout(timeout.current)
     }
 
-    if (groupBy === 'status') {
+    if (groupBy === ETaskFilterGroupByType.STATUS) {
       updateTask({ id: taskId, taskStatusId: destinationId })
       timeout.current = setTimeout(() => {
         taskUpdate({ id: taskId, taskStatusId: destinationId, projectId }).then(

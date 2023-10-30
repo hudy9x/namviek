@@ -10,16 +10,11 @@ import { projectPointGet } from '../../../../services/point'
 import { useProjectStatusStore } from '../../../../store/status'
 import { useProjectPointStore } from '../../../../store/point'
 import { TaskStatus } from '@prisma/client'
-import { taskGetAll, taskGetByCond } from '../../../../services/task'
+import { taskGetByCond } from '../../../../services/task'
 import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
-import {
-  extractDueDate,
-  fromDateStringToDateObject,
-  to00h00m,
-  to23h59m
-} from '@shared/libs'
+import { extractDueDate } from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 
 export default function ProjectContainer() {
@@ -40,6 +35,7 @@ export default function ProjectContainer() {
     return assigneeIds.filter(a => a !== 'ALL')
   }
 
+  const { groupBy, ...filterWithoutGroupBy } = filter
   useEffect(() => {
     const controller = new AbortController()
     const {
@@ -89,7 +85,10 @@ export default function ProjectContainer() {
     return () => {
       controller.abort()
     }
-  }, [JSON.stringify(filter)])
+
+    // only re-fetching data when filter changes
+    // excpet groupBy filter
+  }, [JSON.stringify(filterWithoutGroupBy)])
 
   useEffect(() => {
     if (projectId) {

@@ -3,7 +3,7 @@ import { useUser } from '@goalie/nextjs'
 import { useTaskStore } from '@/store/task'
 import { taskUpdate } from '@/services/task'
 import { messageError, messageSuccess, messageWarning } from '@shared/ui'
-import { Task } from '@prisma/client'
+import { Task, TaskPriority } from '@prisma/client'
 import { useTaskAutomation } from './useTaskAutomation'
 import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
 import { useProjectStatusStore } from '@/store/status'
@@ -21,11 +21,13 @@ export const useServiceTaskUpdate = () => {
       return
     }
 
+    if (!taskData.priority) {
+      taskData.priority = TaskPriority.LOW
+    }
+
     if (taskData.taskStatusId) {
       taskData.done = taskData.taskStatusId === statusDoneId
     }
-
-    console.log('update taskdata', taskData.taskStatusId, taskData.done)
 
     refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
 

@@ -1,20 +1,37 @@
 import { Button, Modal, messageError, messageSuccess } from '@shared/ui'
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import TaskForm, { ITaskDefaultValues } from '../TaskForm'
+import TaskForm, { ITaskDefaultValues, defaultFormikValues } from '../TaskForm'
 import { useTaskStore } from '@/store/task'
 import { taskAdd } from '@/services/task'
-import { Task } from '@prisma/client'
+import { Task, TaskPriority } from '@prisma/client'
+import { useTaskFilter } from '@/features/TaskFilter/context'
 
 export const BoardActionCreateTaskWithIcon = ({
   groupId
 }: {
   groupId: string
 }) => {
+  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
+    useTaskFilter()
   const [visible, setVisible] = useState(false)
   const { handleSubmit } = useHandleSubmit(() => {
     setVisible(false)
   })
+
+  const defaultData: ITaskDefaultValues = { ...defaultFormikValues }
+
+  if (isGroupbyStatus) {
+    defaultData.taskStatusId = groupId
+  }
+
+  if (isGroupbyAssignee) {
+    defaultData.assigneeIds = [groupId]
+  }
+
+  if (isGroupbyPriority) {
+    defaultData.priority = groupId as TaskPriority
+  }
 
   return (
     <Modal
@@ -25,7 +42,7 @@ export const BoardActionCreateTaskWithIcon = ({
       content={
         <>
           <TaskForm
-            taskStatusId={groupId}
+            defaultValue={defaultData}
             onSubmit={v => {
               handleSubmit(v)
             }}
@@ -71,10 +88,27 @@ const useHandleSubmit = (cb: () => void) => {
 }
 
 export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
+  const { isGroupbyPriority, isGroupbyAssignee, isGroupbyStatus } =
+    useTaskFilter()
   const [visible, setVisible] = useState(false)
   const { handleSubmit } = useHandleSubmit(() => {
     setVisible(false)
   })
+
+  const defaultData: ITaskDefaultValues = { ...defaultFormikValues }
+
+  if (isGroupbyStatus) {
+    defaultData.taskStatusId = groupId
+  }
+
+  if (isGroupbyAssignee) {
+    defaultData.assigneeIds = [groupId]
+  }
+
+  if (isGroupbyPriority) {
+    defaultData.priority = groupId as TaskPriority
+  }
+
   return (
     <Modal
       visible={visible}
@@ -88,7 +122,7 @@ export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
       content={
         <>
           <TaskForm
-            taskStatusId={groupId}
+            defaultValue={defaultData}
             onSubmit={v => {
               handleSubmit(v)
             }}

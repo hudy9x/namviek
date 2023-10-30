@@ -9,7 +9,7 @@ import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 import CalendarModeFilter from './CalendarModeFilter'
-import { useTaskFilter } from './context'
+import { ETaskFilterGroupByType, useTaskFilter } from './context'
 import './style.css'
 
 let timeout = 0
@@ -26,7 +26,7 @@ export default function TaskFilter({
   importEnable = true
 }: ITaskFilterProps) {
   const [txt, setTxt] = useState('')
-  const { filter, setFilterValue } = useTaskFilter()
+  const { filter, setFilterValue, updateGroupByFilter } = useTaskFilter()
   const search = useSearchParams()
   const mode = search.get('mode')
 
@@ -166,21 +166,34 @@ export default function TaskFilter({
           />
         ) : null}
 
-        <ListPreset
-          value={'status'}
-          onChange={val => {
-            setFilterValue('groupBy', val)
-            // setFilterValue('dateOperator', val)
-          }}
-          className="w-[150px] mr-1"
-          width={150}
-          options={[
-            { id: 'status', title: '🚦 Status' },
-            { id: 'assignees', title: '🤓 Assignees' },
-            { id: 'priority', title: '🚩 Priority' },
-            { id: 'date-in-week', title: '📅 Week' }
-          ]}
-        />
+        {isCalendarMode ? null : (
+          <ListPreset
+            value={filter.groupBy}
+            onChange={val => {
+              updateGroupByFilter(val as ETaskFilterGroupByType)
+            }}
+            className="w-[150px] mr-1"
+            width={150}
+            options={[
+              {
+                id: ETaskFilterGroupByType.STATUS,
+                title: 'Status',
+                icon: '🚦'
+              },
+              {
+                id: ETaskFilterGroupByType.ASSIGNEE,
+                title: 'Assignees',
+                icon: '🤓'
+              },
+              {
+                id: ETaskFilterGroupByType.PRIORITY,
+                title: 'Priority',
+                icon: '🚩'
+              }
+              // { id: ETaskFilterGroupByType.WEEK, title: 'Week', icon: '📅' }
+            ]}
+          />
+        )}
 
         {importEnable ? <TaskImport /> : null}
       </div>
