@@ -152,7 +152,6 @@ const generateQueryCondition = ({
   }
 
   if (assigneeIds && assigneeIds.length) {
-    console.log('assignee', assigneeIds)
     where.assigneeIds = {
       hasSome: assigneeIds
     }
@@ -160,7 +159,6 @@ const generateQueryCondition = ({
 
   if (projectIds && projectIds.length) {
     const [operator, ...restProjectIds] = projectIds
-    console.log('project', operator, restProjectIds)
     if (operator === 'not_in') {
       where.projectId = {
         notIn: restProjectIds
@@ -176,7 +174,6 @@ const generateQueryCondition = ({
 
   if (statusIds && statusIds.length) {
     const [operator, ...restStatusIds] = statusIds
-    console.log('status', operator, restStatusIds)
 
     if (operator === 'not_in') {
       where.taskStatusId = {
@@ -192,7 +189,6 @@ const generateQueryCondition = ({
   }
 
   if (points && points.length) {
-    console.log('points', points)
     where.taskPoint = {
       in: points
     }
@@ -200,7 +196,6 @@ const generateQueryCondition = ({
 
   if (priority && priority.length) {
     const [operator, ...rest] = priority
-    console.log('priority', operator, rest)
 
     if (operator === 'not_in') {
       where.priority = {
@@ -255,7 +250,6 @@ type TDateChart = {
 }
 
 const handleDates = (tasks: TaskChart[]): TDateChart => {
-
   let planeDateMin = Infinity
   let planeDateMax = -Infinity
   let dueDateMin = Infinity
@@ -314,7 +308,11 @@ const handleDates = (tasks: TaskChart[]): TDateChart => {
   }
 }
 
-const handleIdeal = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
+const handleIdeal = (
+  date: TDateChart,
+  tasks: TaskChart[],
+  type: DashboardComponentType
+) => {
   const { planedMinArr, planedDateArr } = date
 
   const totalTask = tasks.length
@@ -322,16 +320,22 @@ const handleIdeal = (date: TDateChart, tasks: TaskChart[], type: DashboardCompon
   const idealArr = []
   let decremental = totalTask
   let incremental = 0
-  
+
   for (const planedDate of planedDateArr) {
-    const existPlanedDate = tasks.some((task) => new Date(task.plannedDueDate).getDate() === planedDate)
+    const existPlanedDate = tasks.some(
+      task => new Date(task.plannedDueDate).getDate() === planedDate
+    )
 
     if (!existPlanedDate) {
-      type === DashboardComponentType.BURNDOWN ? idealArr.push(decremental) : idealArr.push(incremental)
+      type === DashboardComponentType.BURNDOWN
+        ? idealArr.push(decremental)
+        : idealArr.push(incremental)
       continue
     }
 
-    const countTask = tasks.filter((task) => new Date(task.plannedDueDate).getDate() === planedDate).length
+    const countTask = tasks.filter(
+      task => new Date(task.plannedDueDate).getDate() === planedDate
+    ).length
     if (type === DashboardComponentType.BURNDOWN) {
       decremental -= countTask
       idealArr.push(decremental)
@@ -340,11 +344,17 @@ const handleIdeal = (date: TDateChart, tasks: TaskChart[], type: DashboardCompon
       idealArr.push(incremental)
     }
   }
-  
-  return type === DashboardComponentType.BURNDOWN ? [totalTask, ...minIdealArr, ...idealArr] : [0, ...minIdealArr, ...idealArr]
+
+  return type === DashboardComponentType.BURNDOWN
+    ? [totalTask, ...minIdealArr, ...idealArr]
+    : [0, ...minIdealArr, ...idealArr]
 }
 
-const handleActual = (date: TDateChart, tasks: TaskChart[], type: DashboardComponentType) => {
+const handleActual = (
+  date: TDateChart,
+  tasks: TaskChart[],
+  type: DashboardComponentType
+) => {
   const { dates, dueDateMin, dueDateMax } = date
 
   const actual = []
@@ -355,25 +365,35 @@ const handleActual = (date: TDateChart, tasks: TaskChart[], type: DashboardCompo
   /**
    * In case the actual time dueDate the schedule
    */
-  const dateActualArr = dates.slice(0, index + 1);
+  const dateActualArr = dates.slice(0, index + 1)
 
   for (const dateActual of dateActualArr) {
     if (dateActual < dueDateMin) {
-      type === DashboardComponentType.BURNDOWN ? actual.push(tasks.length) : actual.push(0)
+      type === DashboardComponentType.BURNDOWN
+        ? actual.push(tasks.length)
+        : actual.push(0)
       continue
     }
     if (dateActual >= dueDateMax) {
-      type === DashboardComponentType.BURNDOWN ? actual.push(0) : actual.push(incremental)
+      type === DashboardComponentType.BURNDOWN
+        ? actual.push(0)
+        : actual.push(incremental)
       continue
     }
 
-    const existDueDate = tasks.some((task) => new Date(task.dueDate).getDate() === dateActual)
+    const existDueDate = tasks.some(
+      task => new Date(task.dueDate).getDate() === dateActual
+    )
     if (!existDueDate) {
-      type === DashboardComponentType.BURNDOWN ? actual.push(decremental) : actual.push(incremental)
+      type === DashboardComponentType.BURNDOWN
+        ? actual.push(decremental)
+        : actual.push(incremental)
       continue
     }
-    
-    const countTask = tasks.filter((task) => new Date(task.dueDate).getDate() === dateActual).length
+
+    const countTask = tasks.filter(
+      task => new Date(task.dueDate).getDate() === dateActual
+    ).length
 
     if (type === DashboardComponentType.BURNDOWN) {
       decremental -= countTask
@@ -382,7 +402,6 @@ const handleActual = (date: TDateChart, tasks: TaskChart[], type: DashboardCompo
       incremental += countTask
       actual.push(incremental)
     }
-  
   }
 
   return actual
@@ -392,7 +411,6 @@ const generateColumn = ({
   xAxis,
   series
 }: Pick<IDBComponentColumnConfig, 'xAxis' | 'series'>) => {
-  console.log('a')
   const columns = {}
   const xAxises = []
   if (xAxis.assigneeIds.length) {
@@ -413,7 +431,7 @@ const generateColumn = ({
 
 const convertDate = (date, dates) => {
   if (!Array.isArray(dates) || typeof date !== 'string') {
-    throw new Error('Invalid input data');
+    throw new Error('Invalid input data')
   }
 
   return dates.map((day, index) => {
@@ -423,8 +441,11 @@ const convertDate = (date, dates) => {
   })
 }
 
-export const mdDBoardQueryBurnChart = async (config: IDBComponentConfig , type: DashboardComponentType) => {
-  const { startDate, endDate, assigneeIds, projectIds} = config
+export const mdDBoardQueryBurnChart = async (
+  config: IDBComponentConfig,
+  type: DashboardComponentType
+) => {
+  const { startDate, endDate, assigneeIds, projectIds } = config
   const newConfig: IDBComponentConfig = {}
 
   newConfig.startDate = startDate
@@ -439,24 +460,24 @@ export const mdDBoardQueryBurnChart = async (config: IDBComponentConfig , type: 
   }
 
   const where = generateQueryCondition(newConfig)
-  
-  const tasks = await taskModel.findMany({
-    where,
-    select: {
-      id: true,
-      dueDate: true,
-      assigneeIds: true,
-      plannedDueDate: true,
-    },
-  }).catch((err) => {
-    console.log('ERR QUERY TASK', err)
-  });
+
+  const tasks = await taskModel
+    .findMany({
+      where,
+      select: {
+        id: true,
+        dueDate: true,
+        assigneeIds: true,
+        plannedDueDate: true
+      }
+    })
+    .catch(err => {
+      console.log('ERR QUERY TASK', err)
+    })
 
   if (!tasks) {
-    throw new Error('ERR QUERY TASK');
+    throw new Error('ERR QUERY TASK')
   }
-
-  console.log(tasks, '---> tasks')
 
   const dates = handleDates(tasks)
   const ideal = handleIdeal(dates, tasks, type)

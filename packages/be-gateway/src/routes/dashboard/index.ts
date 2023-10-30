@@ -127,9 +127,6 @@ router.post('/dboard/query-summary', async (req: AuthRequest, res) => {
 router.post('/dboard/query-column', async (req: AuthRequest, res) => {
   try {
     const config = req.body as IDBComponentColumnConfig
-
-    console.log('--------------------------------------')
-    console.log('28')
     const result = await mdDBoardQueryColumn(config)
 
     res.json({ status: 200, data: result })
