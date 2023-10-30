@@ -69,8 +69,6 @@ export default function ListCreateTask({
       data.priority = groupId as TaskPriority
     }
 
-    console.log(data)
-
     taskCreateOne(data)
 
     target.value = ''
