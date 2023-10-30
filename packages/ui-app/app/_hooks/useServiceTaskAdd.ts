@@ -1,7 +1,7 @@
 import { taskAdd } from '@/services/task'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
-import { Task } from '@prisma/client'
+import { Task, TaskPriority } from '@prisma/client'
 import { messageError, messageSuccess } from '@shared/ui'
 
 export const useServiceTaskAdd = () => {
@@ -10,6 +10,7 @@ export const useServiceTaskAdd = () => {
 
   const taskCreateOne = (mergedValues: Partial<Task>) => {
     const randomId = `TASK-ID-RAND-${Date.now()}`
+    mergedValues.priority = mergedValues.priority || TaskPriority.LOW
 
     addOneTask({
       ...mergedValues,

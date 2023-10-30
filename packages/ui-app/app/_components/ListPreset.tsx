@@ -55,13 +55,23 @@ function ListPreset({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          <span className="whitespace-nowrap">{selectedVal.title}</span>
+          <span className="whitespace-nowrap">
+            {val.icon ? <span className="pr-1">{val.icon}</span> : null}
+            {selectedVal.title}
+          </span>
         </List.Button>
         <List.Options width={width}>
           {options.map(opt => {
             return (
               <List.Item key={opt.id} value={opt}>
-                {opt.title}
+                <>
+                  {opt.icon ? (
+                    <span className="w-[20px] inline-flex self-center justify-center pr-2">
+                      {opt.icon}
+                    </span>
+                  ) : null}
+                  {opt.title}
+                </>
               </List.Item>
             )
           })}
