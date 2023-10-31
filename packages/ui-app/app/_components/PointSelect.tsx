@@ -76,7 +76,7 @@ export default function PointSelect({
         }}>
         <List.Button>
           <div className="relative w-5">
-            <AiOutlineStar className="w-4 dark:text-gray-300 text-gray-500 h-4 shrink-0" />
+            <AiOutlineStar className="w-4 dark:text-gray-300 text-gray-500 h-5 shrink-0" />
             {val.title ? (
               <span className="absolute -top-1.5 left-2.5 w-4 h-4 text-[10px] flex items-center justify-center rounded-full bg-orange-200 dark:text-gray-900">
                 {val.title ? val.title : ''}

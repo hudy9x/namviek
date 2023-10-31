@@ -18,6 +18,7 @@ import { useParams } from 'next/navigation'
 import TaskActions from '@/features/TaskActions'
 import ProgressBar from '@/components/ProgressBar'
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import TaskMultipleActions from '@/features/TaskMultipleActions'
 
 export default function ListMode() {
   const {
@@ -43,7 +44,7 @@ export default function ListMode() {
               <div
                 style={{ color: group.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">
-                <TaskCheckAll />
+                <TaskCheckAll groupId={group.id} />
                 <div
                   className={`status-name flex items-center ${
                     groupByLoading ? 'loading' : ''
@@ -109,12 +110,13 @@ export default function ListMode() {
                       className="px-3 py-2 text-sm flex items-center justify-between group"
                       key={task.id}>
                       <div className="flex items-center gap-2 dark:text-gray-300">
-                        <TaskCheckbox id={group.id} />
+                        <TaskCheckbox id={task.id} selected={task.selected} />
                         {/* <StatusItem id={stt.id} /> */}
                         <TaskStatus
                           taskId={task.id}
                           value={task.taskStatusId || ''}
                         />
+                        {task.id}
                         <Link
                           key={task.id}
                           href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
@@ -165,6 +167,7 @@ export default function ListMode() {
           </div>
         )
       })}
+      <TaskMultipleActions />
     </div>
   )
 }

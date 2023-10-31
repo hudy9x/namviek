@@ -54,6 +54,12 @@ export const taskAdd = (data: ITaskFields) => {
 export const taskUpdate = (data: ITaskFields) => {
   return httpPut('/api/project/task', data)
 }
+export const taskUpdateMany = (ids: string[], data: ITaskFields) => {
+  return httpPut('/api/project/task-many', {
+    ids,
+    data
+  })
+}
 
 export const taskDelete = (data: { projectId: string; id: string }) => {
   return httpDel('/api/project/task', {

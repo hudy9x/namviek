@@ -1,3 +1,7 @@
 .member-picker .selected-member-item {
   @apply p-0 border-none bg-transparent;
 }
+
+.member-picker .avatar-root {
+  @apply h-5 w-5;
+}

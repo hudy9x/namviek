@@ -37,7 +37,7 @@ const CheckboxControl = ({
   useEffect(() => {
     if (isChecked !== checked) {
       setIsChecked(!!checked)
-      onChange && onChange(!!checked)
+      // onChange && onChange(!!checked)
     }
     // eslint-disable-next-line
   }, [checked, isChecked])

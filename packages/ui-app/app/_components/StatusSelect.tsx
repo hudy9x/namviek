@@ -65,7 +65,7 @@ export default function StatusSelect({
         <List.Button>
           <div className="flex items-center gap-2">
             <div
-              className="w-4 h-4 rounded cursor-pointer"
+              className="w-4 h-4 rounded cursor-pointer shrink-0"
               style={{
                 backgroundColor: existingStatus?.color || '#e5e5e5'
               }}></div>
