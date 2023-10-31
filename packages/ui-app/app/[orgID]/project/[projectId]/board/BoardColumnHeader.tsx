@@ -3,6 +3,7 @@ import { MdDragIndicator } from 'react-icons/md'
 import { BoardActionCreateTaskWithIcon } from './BoardActionCreateTask'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { Avatar } from '@shared/ui'
+import TaskCheckAll from '../views/TaskCheckAll'
 
 interface IBoardColumnHeaderProps {
   color?: string
@@ -34,6 +35,7 @@ export default function BoardColumHeader({
           <div className="w-3 h-4 text-gray-400" {...provided.dragHandleProps}>
             <MdDragIndicator />
           </div>
+          <TaskCheckAll groupId={id}/>
           {isGroupbyAssignee ? (
             <Avatar size="md" name={name} src={icon || ''} />
           ) : (

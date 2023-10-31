@@ -3,10 +3,12 @@ import { Task } from '@prisma/client'
 import TaskAssignee from '../views/TaskAssignee'
 import TaskDate from '../views/TaskDate'
 import { useParams, useRouter } from 'next/navigation'
+import TaskCheckbox from '@/components/TaskCheckbox'
+import { ExtendedTask } from '@/store/task'
 // import TaskPriorityCell from '../views/TaskPriorityCell'
 
 interface IBoardTaskItem {
-  data: Task
+  data: ExtendedTask
   index: number
 }
 
@@ -23,6 +25,7 @@ export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             className="board-task-item">
+            <TaskCheckbox id={data.id} selected={data.selected} />
             <h2
               onClick={() =>
                 replace(
