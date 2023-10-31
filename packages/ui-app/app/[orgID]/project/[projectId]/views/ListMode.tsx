@@ -116,7 +116,7 @@ export default function ListMode() {
                           taskId={task.id}
                           value={task.taskStatusId || ''}
                         />
-                        {task.id}
+                        {/* {task.id} */}
                         <Link
                           key={task.id}
                           href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
