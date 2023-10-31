@@ -3,7 +3,7 @@ import { Task } from '@prisma/client'
 import { produce } from 'immer'
 
 export type PartialTask = Partial<Task>
-type ExtendedTask = Task & {
+export type ExtendedTask = Task & {
   selected: boolean
 }
 
