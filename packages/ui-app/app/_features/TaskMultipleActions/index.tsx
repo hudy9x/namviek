@@ -18,11 +18,13 @@ const defaultData = {
   assignee: ''
 }
 export default function TaskMultipleActions() {
-  const { statuses } = useProjectStatusStore()
+  const { statusDoneId } = useProjectStatusStore()
   const { user } = useUser()
   const { selected, clearAllSelected } = useTaskStore()
   const { updateMultiTaskData } = useServiceTaskUpdate()
-  const [data, setData] = useState(structuredClone(defaultData))
+  const [data, setData] = useState(
+    structuredClone({ ...defaultData, status: statusDoneId })
+  )
   const hasSelected = selected.length
   const { date, point, priority, assignee, status } = data
 
@@ -42,6 +44,8 @@ export default function TaskMultipleActions() {
         priority: data.priority,
         assigneeIds: [data.assignee]
       })
+
+    clearAllSelected()
   }
 
   // fill default user
@@ -50,19 +54,20 @@ export default function TaskMultipleActions() {
       updateData('assignee', user.id)
     }
 
-    if (statuses.length) {
-      updateData('status', statuses[0].id)
+    if (statusDoneId) {
+      updateData('status', statusDoneId)
     }
-    // eslint-disable-next-line
-  }, [user?.id, JSON.stringify(statuses)])
 
-  // clear filled data
-  useEffect(() => {
-    if (!hasSelected && user) {
-      defaultData.assignee = user.id
-      setData(defaultData)
-    }
-  }, [hasSelected, user])
+    // eslint-disable-next-line
+  }, [user?.id, statusDoneId])
+
+  // // clear filled data
+  // useEffect(() => {
+  //   if (!hasSelected && user) {
+  //     defaultData.assignee = user.id
+  //     setData(defaultData)
+  //   }
+  // }, [hasSelected, user])
 
   useEffect(() => {
     const handler = (ev: KeyboardEvent) => {

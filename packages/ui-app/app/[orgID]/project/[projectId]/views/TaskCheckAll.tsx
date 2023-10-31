@@ -33,15 +33,19 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
     })
 
     return ids
-  }, [groupBy, groupId, taskLoading])
+  }, [groupBy, groupId, taskLoading, JSON.stringify(tasks)])
 
   const onChecked = (checked: boolean) => {
     toggleMultipleSelected(checked, taskIds)
   }
 
   useEffect(() => {
-    // uncheck if one of items uncheck
-    if (taskIds.length) {
+    // uncheck/check if one of items uncheck
+    if (taskIds.length && !selected.length) {
+      setChecked(false)
+    }
+
+    if (taskIds.length && selected.length) {
       const map = new Map()
       let counter = 0
 
