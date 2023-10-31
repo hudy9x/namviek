@@ -5,6 +5,9 @@ import { RiBarChartFill, RiCalendarFill, RiDashboardFill } from 'react-icons/ri'
 import { IoIosPlayCircle, IoMdLogOut } from 'react-icons/io'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { HiOutlineUserPlus } from 'react-icons/hi2'
+import { LiaCitySolid } from 'react-icons/lia'
+import { FcOrganization, FcVideoCall } from 'react-icons/fc'
 
 export default function RootSidebar() {
   const { orgID } = useParams()
@@ -22,20 +25,25 @@ export default function RootSidebar() {
             />
           </div>
         </Link>
-        <Link href="/home">
+        <Link href={`/${orgID}/my-works`}>
           <RiDashboardFill className="main-nav-icon active" />
         </Link>
-        <Link href="/home">
-          <RiCalendarFill className="main-nav-icon" />
+        <Link href="/organization">
+          <FcOrganization className="main-nav-icon" />
+          {/* <LiaCitySolid className="main-nav-icon" /> */}
         </Link>
-        <Link href="/home">
-          <RiBarChartFill className="main-nav-icon" />
+        <Link href={`/${orgID}/meeting`}>
+          <FcVideoCall className="main-nav-icon" />
+          {/* <RiBarChartFill className="main-nav-icon" /> */}
         </Link>
         <Link href="/home">
           <IoIosPlayCircle className="main-nav-icon" />
         </Link>
       </section>
       <section>
+        <Link href={`/${orgID}/setting/people`}>
+          <HiOutlineUserPlus className="main-nav-icon" />
+        </Link>
         <Link href="/sign-out">
           <IoMdLogOut className="main-nav-icon" />
         </Link>
