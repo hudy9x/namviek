@@ -18,7 +18,7 @@ const defaultData = {
   assignee: ''
 }
 export default function TaskMultipleActions() {
-  const { statuses, statusDoneId } = useProjectStatusStore()
+  const { statusDoneId } = useProjectStatusStore()
   const { user } = useUser()
   const { selected, clearAllSelected } = useTaskStore()
   const { updateMultiTaskData } = useServiceTaskUpdate()
@@ -85,8 +85,6 @@ export default function TaskMultipleActions() {
 
     // eslint-disable-next-line
   }, [])
-
-  console.log('render', status)
 
   return (
     <div

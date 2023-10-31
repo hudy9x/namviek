@@ -40,8 +40,12 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
   }
 
   useEffect(() => {
-    // uncheck if one of items uncheck
-    if (taskIds.length) {
+    // uncheck/check if one of items uncheck
+    if (taskIds.length && !selected.length) {
+      setChecked(false)
+    }
+
+    if (taskIds.length && selected.length) {
       const map = new Map()
       let counter = 0
 
