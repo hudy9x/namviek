@@ -2,3 +2,12 @@
   @apply hidden;
 }
 
+.chart-type {
+  @apply border rounded-md transition-all hover:shadow-md hover:shadow-gray-100 px-4 py-3 cursor-pointer text-center space-y-1.5 bg-white;
+  @apply dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-800;
+}
+
+.chart-title {
+  @apply uppercase text-xs font-medium text-gray-400;
+  @apply dark:text-gray-200;
+}

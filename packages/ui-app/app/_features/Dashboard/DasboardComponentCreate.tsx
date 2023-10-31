@@ -106,14 +106,12 @@ export default function DashboardComponentCreate() {
                     <div
                       onClick={() => setType(c)}
                       key={cid}
-                      className={`chart-type chart-type-${type} border rounded-md transition-all hover:shadow-md hover:shadow-gray-100 px-4 py-3 cursor-pointer text-center space-y-1.5 group bg-white`}>
-                      <span className="text-3xl opacity-70 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all">
+                      className={`chart-type chart-type-${type} group`}>
+                      <span className="text-3xl opacity-70 group-hover:opacity-100 grayscale group-hover:grayscale-0 dark:group-hover:grayscale-0 transition-all">
                         {icon}
                       </span>
-                      <h2 className="uppercase text-xs font-medium text-gray-400">
-                        {type}
-                      </h2>
-                      <h3 className="text-xs font-bold text-gray-600 group-hover:text-indigo-600 transition-all">
+                      <h2 className="chart-title">{type}</h2>
+                      <h3 className="text-xs font-bold dark:text-gray-400 text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-all">
                         {title}
                       </h3>
                       <p className="text-gray-500 text-xs">{desc}</p>

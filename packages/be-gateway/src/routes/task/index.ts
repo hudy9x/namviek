@@ -13,7 +13,8 @@ import {
   mdMemberGetProject,
   mdTaskDelete,
   mdTaskStatusWithDoneType,
-  mdTaskStatusWithTodoType
+  mdTaskStatusWithTodoType,
+  mdTaskUpdateMany
 } from '@shared/models'
 
 import { Prisma, StatusType, Task, TaskStatus } from '@prisma/client'
@@ -25,6 +26,10 @@ import {
   setJSONCache
 } from '../../lib/redis'
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { notifyToWebUsers } from '../../lib/buzzer'
+import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { serviceGetStatusById } from '../../services/status'
+import { serviceGetProjectById } from '../../services/project'
 
 const router = Router()
 
@@ -146,7 +151,6 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  console.log('body', req.body)
   const body = req.body as Task
   const {
     desc,
@@ -171,13 +175,13 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     if (!taskStatusId) {
       const todoStatus = await mdTaskStatusWithTodoType(projectId)
       taskStatusId = todoStatus.id
-      console.log('taskStatusid', taskStatusId)
     }
 
     const result = await mdTaskAdd({
       title,
       startDate: null,
       dueDate: dueDate || null,
+      plannedStartDate: dueDate || null,
       plannedDueDate: dueDate || null,
       assigneeIds,
       desc,
@@ -198,6 +202,18 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     })
 
     await findNDelCaches(key)
+
+    if (result.assigneeIds && result.assigneeIds.length) {
+      const project = await mdProjectGet(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `[New task]: ${result.title} - assigned to you`,
+        deep_link: taskLink
+      })
+    }
 
     res.json({ status: 200, data: result })
   } catch (error) {
@@ -267,6 +283,102 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
   }
 })
 
+router.put('/project/task-many', async (req: AuthRequest, res) => {
+  const { ids, data } = req.body as { ids: string[]; data: Task }
+  const { dueDate, assigneeIds, priority, taskStatusId, taskPoint, projectId } =
+    data
+  const { id: userId } = req.authen
+  const key = [CKEY.TASK_QUERY, data.projectId]
+
+  console.log('start updating')
+  try {
+    data.updatedAt = new Date()
+    data.updatedBy = userId
+    data.dueDate = new Date(data.dueDate)
+
+    await mdTaskUpdateMany(ids, data)
+    await findNDelCaches(key)
+    console.log('updated already 2')
+
+    res.json({
+      result: 1
+    })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
+  // try {
+  //   const taskData = await mdTaskGetOne(id)
+  //   const oldStatusId = taskData.taskStatusId
+  //   const key = [CKEY.TASK_QUERY, taskData.projectId]
+  //
+  //   if (title) {
+  //     taskData.title = title
+  //   }
+  //
+  //   if (desc) {
+  //     taskData.desc = desc
+  //   }
+  //
+  //   if (taskStatusId) {
+  //     const doneStatus = await mdTaskStatusWithDoneType(projectId)
+  //
+  //     taskData.taskStatusId = taskStatusId
+  //     if (doneStatus && doneStatus.id === taskStatusId) {
+  //       taskData.done = true
+  //     }
+  //   } else {
+  //     taskData.done = false
+  //   }
+  //
+  //
+  //   if (assigneeIds) {
+  //     taskData.assigneeIds = assigneeIds
+  //   }
+  //
+  //   if (priority) {
+  //     taskData.priority = priority
+  //   }
+  //
+  //   if (taskPoint) {
+  //     taskData.taskPoint = taskPoint
+  //   }
+  //
+  //   if (dueDate) {
+  //     taskData.dueDate = dueDate
+  //   }
+  //
+  //
+  //   taskData.updatedAt = new Date()
+  //   taskData.updatedBy = userId
+  //
+  //   // delete taskData.id
+  //   // const { id: tid, ...rest } = taskData
+  //
+  //   const result = await mdTaskUpdate(taskData)
+  //
+  //   if (oldStatusId !== result.taskStatusId) {
+  //     const newStatus = await serviceGetStatusById(result.taskStatusId)
+  //     const pinfo = await serviceGetProjectById(result.projectId)
+  //     const taskLink = genFrontendUrl(
+  //       `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+  //     )
+  //
+  //     notifyToWebUsers(result.assigneeIds, {
+  //       body: `Status changed to ${newStatus.name} on "${result.title}"`,
+  //       deep_link: taskLink
+  //     })
+  //   }
+  //
+  //   await findNDelCaches(key)
+  //   res.json({ status: 200, data: result })
+  //   // })
+  // } catch (error) {
+  //   console.log(error)
+  //   res.status(500).send(error)
+  // }
+})
+
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
   const {
@@ -292,6 +404,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const oldStatusId = taskData.taskStatusId
     // const taskData = await tx.task.findFirst({
     //   where: {
     //     id
@@ -364,12 +477,19 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // const { id: tid, ...rest } = taskData
 
     const result = await mdTaskUpdate(taskData)
-    // const result = await tx.task.update({
-    //   where: {
-    //     id
-    //   },
-    //   data: rest
-    // })
+
+    if (oldStatusId !== result.taskStatusId) {
+      const newStatus = await serviceGetStatusById(result.taskStatusId)
+      const pinfo = await serviceGetProjectById(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `Status changed to ${newStatus.name} on "${result.title}"`,
+        deep_link: taskLink
+      })
+    }
 
     await findNDelCaches(key)
     res.json({ status: 200, data: result })

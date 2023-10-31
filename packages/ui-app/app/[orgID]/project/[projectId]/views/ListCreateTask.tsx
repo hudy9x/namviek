@@ -1,11 +1,13 @@
+import { ETaskFilterGroupByType } from '@/features/TaskFilter/context'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
+import { Task, TaskPriority } from '@prisma/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState, KeyboardEvent } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 interface IListCreateTaskProps {
-  type: string
+  type: ETaskFilterGroupByType
   groupId: string
 }
 
@@ -49,12 +51,25 @@ export default function ListCreateTask({
 
     const value = target.value
 
-    taskCreateOne({
+    const data: Partial<Task> = {
       dueDate: new Date(),
       title: value,
-      taskStatusId: groupId,
       projectId
-    })
+    }
+
+    if (type === ETaskFilterGroupByType.STATUS) {
+      data.taskStatusId = groupId
+    }
+
+    if (type === ETaskFilterGroupByType.ASSIGNEE && groupId) {
+      data.assigneeIds = [groupId]
+    }
+
+    if (type === ETaskFilterGroupByType.PRIORITY) {
+      data.priority = groupId as TaskPriority
+    }
+
+    taskCreateOne(data)
 
     target.value = ''
   }

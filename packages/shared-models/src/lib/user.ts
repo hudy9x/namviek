@@ -18,11 +18,9 @@ export const mdUserAdd = async (data: Omit<User, 'id'>) => {
   })
 }
 
-export const mdUserUpdate = async (id: string, data: Omit<User, 'id'>) => {
+export const mdUserUpdate = async (id: string, data: Partial<Omit<User, 'id'>>) => {
   return userModel.update({
-    where: {
-      id
-    },
+    where: { id },
     data
   })
 }
@@ -34,9 +32,7 @@ export const mdUserUpdateSetting = async (id: string, data: UserSetting) => {
 
   const settings = user.settings as UserSetting
   return userModel.update({
-    where: {
-      id
-    },
+    where: { id },
     data: {
       settings: { ...settings, ...data }
     }

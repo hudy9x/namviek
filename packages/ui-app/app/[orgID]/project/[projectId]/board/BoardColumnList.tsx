@@ -1,9 +1,9 @@
-import { useProjectStatusStore } from '@/store/status'
 import { Droppable } from 'react-beautiful-dnd'
 import { BoardColumn } from './BoardColumn'
+import { useTaskFilter } from '@/features/TaskFilter/context'
 
 export const BoardColumnList = () => {
-  const { statuses } = useProjectStatusStore()
+  const { groupByItems } = useTaskFilter()
 
   return (
     <Droppable droppableId="all-columns" direction="horizontal" type="column">
@@ -12,11 +12,11 @@ export const BoardColumnList = () => {
           className="flex divide-x divide-gray-200 dark:divide-gray-700"
           {...provided.droppableProps}
           ref={provided.innerRef}>
-          {statuses.map((status, statusIndex) => (
+          {groupByItems.map((group, groupIndex) => (
             <BoardColumn
-              status={status}
-              statusIndex={statusIndex}
-              key={status.id}
+              group={group}
+              statusIndex={groupIndex}
+              key={group.id}
             />
           ))}
 

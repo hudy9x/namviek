@@ -112,8 +112,10 @@
 }
 
 .side-nav .side-title.active {
-  @apply bg-indigo-50/70 text-indigo-500;
-  @apply dark:bg-indigo-50/10 text-indigo-400;
+  /* @apply bg-indigo-50/70 text-indigo-500; */
+  /* @apply dark:bg-indigo-50/10 text-indigo-400; */
+  @apply text-indigo-500;
+  @apply text-indigo-400;
 }
 
 .side-nav .section-icon {

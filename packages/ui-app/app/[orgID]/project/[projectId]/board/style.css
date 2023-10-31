@@ -6,6 +6,18 @@
   @apply py-3;
 }
 
+.board-col-header {
+  @apply py-1 px-3 flex items-center justify-between relative;
+}
+
+.board-header-section {
+  @apply flex border border-transparent items-center gap-2 transition-all;
+}
+
+.board-header-loading {
+  @apply absolute top-0 left-3 rounded-md pointer-events-none border dark:border-gray-700 animate-pulse w-[80%] h-full bg-indigo-50 dark:bg-gray-900 transition-all;
+}
+
 .board-column-wrapper {
   @apply shrink-0 w-[270px];
 }

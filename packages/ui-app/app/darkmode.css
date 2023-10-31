@@ -1,5 +1,17 @@
 /* Dark mode */
 
+.bg-base {
+  @apply bg-white/50 dark:bg-gray-900/50 backdrop-blur-md;
+}
+
+.border-color-base {
+  @apply border-gray-200 dark:border-gray-700;
+}
+
+.shadow-color-base {
+  @apply shadow-gray-200 dark:shadow-gray-900;
+}
+
 .dark .select-container .select-button {
   @apply bg-gray-900;
 }

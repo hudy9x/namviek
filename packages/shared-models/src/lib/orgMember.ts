@@ -1,4 +1,8 @@
-import { InvitationStatus, OrganizationMembers } from '@prisma/client'
+import {
+  InvitationStatus,
+  OrganizationMembers,
+  UserStatus
+} from '@prisma/client'
 import { orgMemberModel } from './_prisma'
 
 export const mdOrgMemberExist = async ({
@@ -32,6 +36,8 @@ export const mdOrgMemberSeach = async ({
         notIn: notUids
       },
       users: {
+        AND: [{ status: UserStatus.ACTIVE }],
+
         OR: [
           {
             name: {

@@ -3,6 +3,7 @@ import { useBoardAction } from './useBoardAction'
 import { BoardColumnList } from './BoardColumnList'
 import './style.css'
 import TaskFilter from '@/features/TaskFilter'
+import TaskMultipleActions from '@/features/TaskMultipleActions'
 export const SIDEBAR_WIDTH = 308
 
 export default function Board() {
@@ -20,6 +21,7 @@ export default function Board() {
           <BoardColumnList />
         </DragDropContext>
       </div>
+      <TaskMultipleActions />
     </div>
   )
 }

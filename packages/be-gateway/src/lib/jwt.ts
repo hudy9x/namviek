@@ -2,6 +2,7 @@ import { sign, verify, decode } from 'jsonwebtoken';
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const REFRESH_KEY = process.env.JWT_REFRESH_KEY;
 const TOKEN_EXPIRED = process.env.JWT_TOKEN_EXPIRED;
+const VERIFY_USER_LINK_TOKEN_EXPIRED = process.env.JWT_VERIFY_USER_LINK_TOKEN_EXPIRED;
 const REFRESH_EXPIRED = process.env.JWT_REFRESH_EXPIRED;
 
 export const decodeToken = (token: string) => {
@@ -43,4 +44,8 @@ export const verifyRefreshToken = (token: string): Promise<boolean> => {
       resolve(false);
     }
   });
+};
+
+export const generateVerifyToken = (payload: object) => {
+  return sign(payload, SECRET_KEY, { expiresIn: VERIFY_USER_LINK_TOKEN_EXPIRED });
 };

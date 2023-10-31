@@ -32,6 +32,14 @@ export const mdTaskStatusWithTodoType = async (projectId: string) => {
   })
 }
 
+export const mdTaskStatusGetById = async (id: string) => {
+  return taskStatusModel.findFirst({
+    where: {
+      id
+    }
+  })
+}
+
 export const mdTaskStatusQuery = async ({
   projectIds,
   types
