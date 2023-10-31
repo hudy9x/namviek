@@ -70,7 +70,7 @@ export default function ListMode() {
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
                 <ListCell width={110}>Progress</ListCell>
-                <ListCell width={100}>Created by</ListCell>
+                {/* <ListCell width={100}>Created by</ListCell> */}
               </div>
             </div>
             <div className="divide-y dark:divide-gray-800">
@@ -155,9 +155,9 @@ export default function ListMode() {
                             progress={task.progress || 0}
                           />
                         </ListCell>
-                        <ListCell width={100}>
-                          <MemberAvatar uid={task.createdBy} />
-                        </ListCell>
+                        {/* <ListCell width={100}> */}
+                        {/*   <MemberAvatar uid={task.createdBy} /> */}
+                        {/* </ListCell> */}
                       </div>
                     </div>
                   )
