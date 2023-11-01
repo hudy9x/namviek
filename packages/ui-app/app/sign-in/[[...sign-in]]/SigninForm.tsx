@@ -99,7 +99,7 @@ export default function SigninForm() {
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">
-              Welcome to Kampuni
+              Welcome to Taffyo
             </h2>
           </div>
           <p className="text-gray-400 text-sm mt-3">
