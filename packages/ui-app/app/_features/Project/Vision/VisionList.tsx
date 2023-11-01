@@ -33,7 +33,7 @@ export default function VisionList() {
             rate={completeRate}
           />
           <div
-            className="divide-y custom-scrollbar relative overflow-y-auto overflow-x-hidden"
+            className="divide-y dark:divide-gray-700 custom-scrollbar relative overflow-y-auto overflow-x-hidden"
             style={{ maxHeight: `calc(100vh - 300px)` }}>
             <AbsoluteLoading enabled={loading} />
             {!visions.length ? (
