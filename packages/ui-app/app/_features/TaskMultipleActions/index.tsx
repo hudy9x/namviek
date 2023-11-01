@@ -8,7 +8,7 @@ import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { TaskPriority } from '@prisma/client'
 import { Button, DatePicker } from '@shared/ui'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const defaultData = {
   date: new Date(),
@@ -71,7 +71,7 @@ export default function TaskMultipleActions() {
 
   useEffect(() => {
     const handler = (ev: KeyboardEvent) => {
-      if (ev.key === 'Escape' && hasSelected) {
+      if (ev.key === 'Escape') {
         clearAllSelected()
       }
     }
@@ -88,9 +88,8 @@ export default function TaskMultipleActions() {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg shadow-color-base transition-all z-40 ${
-        hasSelected ? '-translate-y-0' : '-translate-y-full'
-      }`}>
+      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg shadow-color-base transition-all z-40 ${hasSelected ? '-translate-y-0' : '-translate-y-full'
+        }`}>
       <div className="w-full flex items-center justify-center gap-2 text-sm">
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
