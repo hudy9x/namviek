@@ -1,6 +1,7 @@
 import Badge from '@/components/Badge'
 import ListPreset from '@/components/ListPreset'
 import { useVisionContext } from './context'
+import { useTaskFilter } from '@/features/TaskFilter/context'
 
 export default function VisionListHeader({
   total,
@@ -13,6 +14,7 @@ export default function VisionListHeader({
   inprogress: number
   rate: number
 }) {
+  const { setDateRangeByMonth } = useTaskFilter()
   const { filter, setFilter } = useVisionContext()
   const { month } = filter
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -43,6 +45,7 @@ export default function VisionListHeader({
         <ListPreset
           value={currentMonth}
           onChange={v => {
+            setDateRangeByMonth((parseInt(v, 10) - 1).toString())
             setFilter(prev => ({ ...prev, month: parseInt(v, 10) }))
           }}
           options={monthList}
