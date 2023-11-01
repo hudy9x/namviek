@@ -16,7 +16,7 @@ const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
 export default function PushNotification() {
   const { user } = useUser()
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
       beamsClient.stop().then(() => {
         beamsClient
           .start()
@@ -24,7 +24,7 @@ export default function PushNotification() {
           // .then(() => beamsClient.addDeviceInterest('project'))
           // .then(() => beamsClient.addDeviceInterest('all'))
           .then(() => {
-            messageSuccess('Registered pusher')
+            // messageSuccess('Registered pusher')
             console.log('Successfully registered and subscribed!')
           })
           .catch(console.error)
