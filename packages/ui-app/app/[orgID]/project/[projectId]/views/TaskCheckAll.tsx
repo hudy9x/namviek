@@ -40,8 +40,10 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
   }
 
   useEffect(() => {
+    console.log('selected', selected, taskIds)
     // uncheck/check if one of items uncheck
-    if (taskIds.length && !selected.length) {
+    if (!selected.length) {
+      console.log(3)
       setChecked(false)
     }
 
@@ -60,10 +62,12 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
       })
 
       if (counter !== taskIds.length && checked) {
+        console.log(1)
         setChecked(false)
       }
 
       if (counter === taskIds.length && !checked) {
+        console.log(2)
         setChecked(true)
       }
     }
