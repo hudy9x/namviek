@@ -127,7 +127,7 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
   Promise.all(updatePromises)
     .then(result => {
       if (result[0] && result[0].projectId) {
-        const key = [CKEY.PROJECT_POINT, result[0].projectId]
+        const key = [CKEY.PROJECT_STATUS, result[0].projectId]
         delCache(key)
       }
       res.json({ status: 200, data: result })
@@ -143,7 +143,7 @@ router.delete('/project/status/:id', async (req: AuthRequest, res) => {
 
   mdTaskStatusDel(id)
     .then(result => {
-      const key = [CKEY.PROJECT_POINT, result.projectId]
+      const key = [CKEY.PROJECT_STATUS, result.projectId]
       delCache(key)
       res.json({ status: 200, data: result })
     })
