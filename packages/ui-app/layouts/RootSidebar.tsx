@@ -20,8 +20,8 @@ export default function RootSidebar() {
           <div className="flex justify-center pt-3">
             <Image
               src={'/logo132x132.svg'}
-              width={35}
-              height={35}
+              width={30}
+              height={30}
               alt="Homepage"
             />
           </div>

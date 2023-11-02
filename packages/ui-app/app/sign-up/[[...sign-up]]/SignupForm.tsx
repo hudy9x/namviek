@@ -80,10 +80,10 @@ export default function SignupForm() {
           } bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md`}>
           <div className="flex gap-2 items-center">
             <Logo />
-            <h2 className="text-xl sm:text-2xl font-bold">Sign up to Taffyo</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Sign up now</h2>
           </div>
           <p className="text-gray-400 text-sm mt-3">
-            Our registration process is quick and easy, taking no more than 10
+            Our registration process is quick and easy, taking no more than 5
             minutes to complete.
           </p>
 
