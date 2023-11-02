@@ -14,11 +14,11 @@ import { taskGetByCond } from '../../../../services/task'
 import { useTaskStore } from '../../../../store/task'
 import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
-import { extractDueDate } from '@shared/libs'
+import { extractDueDate, setRecentVist } from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 
 export default function ProjectContainer() {
-  const { projectId } = useParams()
+  const { projectId, orgID } = useParams()
   const { addAllMember } = useMemberStore()
   const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
   const { addAllPoints } = useProjectPointStore()
@@ -34,6 +34,10 @@ export default function ProjectContainer() {
 
     return assigneeIds.filter(a => a !== 'ALL')
   }
+
+  useEffect(() => {
+    setRecentVist(`/${orgID}/project/${projectId}?mode=task`)
+  }, [])
 
   const { groupBy, ...filterWithoutGroupBy } = filter
   useEffect(() => {

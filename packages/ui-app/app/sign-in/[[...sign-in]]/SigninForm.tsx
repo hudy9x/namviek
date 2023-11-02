@@ -16,6 +16,7 @@ import Logo from '../../../components/Logo'
 
 import { ISignin, resendVerifyEmail, signin } from '@goalie/nextjs'
 import { BsMailbox } from 'react-icons/bs'
+import { getRecentVisit } from '@shared/libs'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -40,7 +41,8 @@ export default function SigninForm() {
       setEmail(values.email)
       signin(values as ISignin)
         .then(res => {
-          push('/organization')
+          const recentVisit = getRecentVisit()
+          recentVisit ? push(recentVisit) : push('/organization')
 
           // messageSuccess('Success')
         })
