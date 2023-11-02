@@ -9,6 +9,7 @@ import './style.css'
 import { Vision } from '@prisma/client'
 import { useTaskStore } from '@/store/task'
 import { useProjectStatusStore } from '@/store/status'
+import VisionTimeline from '../VisionTimeline'
 
 const useVisionByDates = (visions: VisionField[]) => {
   const visionByDays: VisionByDays = {}
@@ -129,7 +130,8 @@ export default function ProjectVision() {
         selected,
         setSelected
       }}>
-      <VisionContainer />
+      {/* <VisionContainer /> */}
+      <VisionTimeline />
     </VisionProvider>
   )
 }
