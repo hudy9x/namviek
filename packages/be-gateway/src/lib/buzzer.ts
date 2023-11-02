@@ -30,7 +30,7 @@ export const notifyToWebUsers = (
   const uids = Array.isArray(uid) ? uid : [uid]
 
   if (!opts.title) {
-    opts.title = 'Taffyo'
+    opts.title = process.env.NEXT_PUBLIC_APP_NAME
   }
 
   if (!opts.icon) {

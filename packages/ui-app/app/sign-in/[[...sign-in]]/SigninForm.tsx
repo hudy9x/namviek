@@ -99,7 +99,7 @@ export default function SigninForm() {
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">
-              Welcome to Taffyo
+              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
             </h2>
           </div>
           <p className="text-gray-400 text-sm mt-3">
