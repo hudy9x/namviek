@@ -1,4 +1,7 @@
-# Kampuni
+# Namviek
+An open source for managing workflows that built for low budget startups
+
+## Quick looks
 
 ## Generate schema
 In order to typescript suggests your schema when typing, run the generate command below
