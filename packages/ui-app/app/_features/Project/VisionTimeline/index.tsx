@@ -35,8 +35,8 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         className={`flex items-start bg-white border p-0.5 rounded-md ${visible ? '' : 'hidden'
           }`}>
         <section className="vision-timeline-list shrink-0">
-          <header className="border-b flex justify-center">
-            <h2 className="h-7 leading-7 text-sm">Timeline</h2>
+          <header className="border-b flex justify-center h-7">
+            <h2 className=" leading-7 text-sm">Timeline</h2>
           </header>
           <main className="vision-timeline-content divide-y divide-gray-100">
             {visions.map(vision => {
@@ -53,7 +53,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         </section>
         <section className="vision-timeline">
           <header
-            className="grid divide-x border-b"
+            className="grid divide-x"
             style={{
               gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
             }}>
@@ -62,7 +62,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                 const isWeekend = isSunSat(d) ? 'bg-gray-50' : ''
                 return (
                   <div
-                    className={`h-7 text-xs text-center leading-7 text-gray-500 ${isWeekend}`}
+                    className={`h-7 border-b text-xs text-center leading-7 text-gray-500 ${isWeekend}`}
                     key={d.getTime()}>
                     {d.getDate()}
                   </div>
@@ -119,16 +119,25 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                   // />
                   <div
                     key={vision.id}
+                    className="grid hover:bg-indigo-50/50 relative"
                     style={{
-                      height: colHeight,
-                      gridColumnStart: start,
-                      gridColumnEnd: end,
-                      gridRowStart: index + 1
-                    }}
-                    title={vision.name}
-                    className="px-1 flex items-center relative">
-                    <div className="whitespace-nowrap text-gray-600 w-full bg-white px-2.5 py-2 text-sm  rounded-md border shadow-md shadow-indigo-50">
-                      {vision.name}
+                      gridRowStart: index + 1,
+                      gridColumnStart: 1,
+                      gridColumnEnd: totalDates + 1,
+                      gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
+                    }}>
+                    <div
+                      style={{
+                        height: colHeight,
+                        gridColumnStart: start,
+                        gridColumnEnd: end
+                        // gridRowStart: index + 1
+                      }}
+                      title={vision.name}
+                      className="px-1 flex items-center relative">
+                      <div className="whitespace-nowrap text-gray-600 w-full bg-white px-2.5 py-2 text-sm  rounded-md border shadow-md shadow-indigo-50">
+                        {vision.name}
+                      </div>
                     </div>
                   </div>
                 )
