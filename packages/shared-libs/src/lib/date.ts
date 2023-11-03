@@ -35,6 +35,26 @@ export function getMonthList() {
   )
 }
 
+export function isToday(today: Date, date: Date) {
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  )
+}
+
+export function isSunday(d: Date) {
+  return d.getDay() === 0
+}
+
+export function isSaturday(d: Date) {
+  return d.getDay() === 6
+}
+
+export function isSunSat(d: Date) {
+  return isSunday(d) || isSaturday(d)
+}
+
 export function getFirstDateOfMonth(d: Date) {
   d.setDate(1)
   return d

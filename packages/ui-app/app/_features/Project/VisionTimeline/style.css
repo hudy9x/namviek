@@ -1,0 +1,14 @@
+.vision-timeline-list {
+  @apply border-r w-[300px];
+}
+.vision-timeline-item {
+  @apply bg-white truncate text-sm px-1.5;
+}
+
+.vision-timeline {
+  @apply w-full overflow-x-auto overflow-y-hidden;
+}
+
+.vision-timeline-columns {
+  @apply grid divide-x divide-gray-200 divide-dashed col-start-1 row-start-1 row-end-2;
+}

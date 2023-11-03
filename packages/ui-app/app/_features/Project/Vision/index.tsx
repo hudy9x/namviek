@@ -1,7 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { VisionByDays, VisionField, VisionProvider } from './context'
+import {
+  EVisionViewMode,
+  VisionByDays,
+  VisionField,
+  VisionProvider
+} from './context'
 import { visionGetByProject } from '@/services/vision'
 import { useParams } from 'next/navigation'
 import VisionContainer from './VisionContainer'
@@ -62,6 +67,7 @@ const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
 }
 
 export default function ProjectVision() {
+  const [mode, setMode] = useState(EVisionViewMode.TIMELINE)
   const { projectId } = useParams()
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState('')
@@ -92,13 +98,22 @@ export default function ProjectVision() {
 
         setVisions(
           visionData.map(v => {
-            const { id, name, projectId, organizationId, dueDate, progress } = v
+            const {
+              id,
+              name,
+              projectId,
+              organizationId,
+              dueDate,
+              startDate,
+              progress
+            } = v
             return {
               id,
               projectId,
               name,
               organizationId,
               progress,
+              startDate: startDate ? new Date(startDate) : null,
               dueDate: dueDate ? new Date(dueDate) : null
             } as VisionField
           })
@@ -117,6 +132,8 @@ export default function ProjectVision() {
   return (
     <VisionProvider
       value={{
+        mode,
+        setMode,
         taskDone,
         taskTotal,
         filter,
@@ -130,8 +147,8 @@ export default function ProjectVision() {
         selected,
         setSelected
       }}>
-      {/* <VisionContainer /> */}
-      <VisionTimeline />
+      <VisionContainer visible={mode === EVisionViewMode.CALENDAR} />
+      <VisionTimeline visible={mode === EVisionViewMode.TIMELINE} />
     </VisionProvider>
   )
 }

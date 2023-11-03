@@ -55,7 +55,7 @@ export default function PrioritySelect({
   }, [updateCounter, val])
 
   useEffect(() => {
-    if(selectOption) {
+    if (selectOption) {
       setVal(selectOption)
     }
   }, [selectOption])
@@ -83,7 +83,7 @@ export default function PrioritySelect({
         </List.Button>
         <List.Options width={width}>
           {options.map(option => {
-            if (!all && option.id === 'ALL') return <></>
+            if (!all && option.id === 'ALL') return null
             const c = colors.get(option.id)
             return (
               <List.Item key={option.id} value={option}>
