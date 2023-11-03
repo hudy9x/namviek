@@ -32,13 +32,14 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         <VisionViewMode />
       </div>
       <div
-        className={`flex items-start bg-white border p-0.5 rounded-md ${visible ? '' : 'hidden'
-          }`}>
+        className={`flex items-start bg-white dark:bg-gray-900 border dark:border-gray-700 p-0.5 rounded-md ${
+          visible ? '' : 'hidden'
+        }`}>
         <section className="vision-timeline-list shrink-0">
-          <header className="border-b flex justify-center h-7">
+          <header className="border-b dark:border-gray-700 flex justify-center h-7">
             <h2 className=" leading-7 text-sm">Timeline</h2>
           </header>
-          <main className="vision-timeline-content divide-y divide-gray-100">
+          <main className="vision-timeline-content divide-y divide-gray-100 dark:divide-gray-700">
             {visions.map(vision => {
               return (
                 <div
@@ -59,10 +60,12 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
             }}>
             {weeks.map(w => {
               return w.map(d => {
-                const isWeekend = isSunSat(d) ? 'bg-gray-50' : ''
+                const isWeekend = isSunSat(d)
+                  ? 'bg-gray-50 dark:bg-gray-800'
+                  : ''
                 return (
                   <div
-                    className={`h-7 border-b text-xs text-center leading-7 text-gray-500 ${isWeekend}`}
+                    className={`h-7 border-b dark:border-gray-700 text-xs text-center leading-7 text-gray-500 ${isWeekend}`}
                     key={d.getTime()}>
                     {d.getDate()}
                   </div>
@@ -78,7 +81,9 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
               }}>
               {weeks.map(w => {
                 return w.map(d => {
-                  const isWeekend = isSunSat(d) ? 'bg-gray-50' : ''
+                  const isWeekend = isSunSat(d)
+                    ? 'bg-gray-50 dark:bg-gray-800'
+                    : ''
                   return (
                     <div
                       className={`h-full text-sm text-center relative leading-7 text-gray-500 ${isWeekend}`}
@@ -119,7 +124,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                   // />
                   <div
                     key={vision.id}
-                    className="grid hover:bg-indigo-50/50 relative"
+                    className="grid hover:bg-indigo-50/50 dark:hover:bg-indigo-300/10 relative"
                     style={{
                       gridRowStart: index + 1,
                       gridColumnStart: 1,
@@ -135,7 +140,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                       }}
                       title={vision.name}
                       className="px-1 flex items-center relative">
-                      <div className="whitespace-nowrap text-gray-600 w-full bg-white px-2.5 py-2 text-sm  rounded-md border shadow-md shadow-indigo-50">
+                      <div className="whitespace-nowrap text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 px-2.5 py-2 text-sm  rounded-md border shadow-md shadow-indigo-50">
                         {vision.name}
                       </div>
                     </div>

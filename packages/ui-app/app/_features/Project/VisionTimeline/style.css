@@ -1,8 +1,8 @@
 .vision-timeline-list {
-  @apply border-r w-[300px];
+  @apply border-r dark:border-gray-700 w-[300px];
 }
 .vision-timeline-item {
-  @apply bg-white truncate text-sm px-1.5;
+  @apply bg-white dark:bg-gray-900 truncate text-sm px-1.5;
 }
 
 .vision-timeline {
@@ -10,5 +10,5 @@
 }
 
 .vision-timeline-columns {
-  @apply grid divide-x divide-gray-200 divide-dashed col-start-1 row-start-1 row-end-2;
+  @apply grid divide-x divide-gray-200 dark:divide-gray-700 divide-dashed col-start-1 row-start-1 row-end-2;
 }
