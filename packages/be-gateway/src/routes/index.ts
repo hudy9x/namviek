@@ -13,6 +13,7 @@ import visionRouter from './vision'
 import { storageRouter } from './storage'
 import buzzerRouter from './buzzer'
 import { authMiddleware } from '../middlewares'
+import activityRouter from './activity'
 
 const router = Router()
 
@@ -34,5 +35,6 @@ router.use(orgRouter)
 router.use(projectRouter)
 router.use(projectMemberRouter)
 router.use(taskRouter)
+router.use(activityRouter)
 
 export default router

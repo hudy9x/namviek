@@ -43,6 +43,11 @@ enum StatusType {
   TODO
 }
 
+enum ActivityObjectType {
+  TASK
+  PROJECT
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -298,12 +303,15 @@ enum ActivityType {
   TASK_PRIORITY
 
   TASK_ATTACHMENT_ADDED
+  TASK_ATTACHMENT_CHANGED
+  TASK_ATTACHMENT_REMOVED
 }
+
 
 model Activity {
   id                  String               @id @default(auto()) @map("_id") @db.ObjectId
   objectId            String
-  objectType          String
+  objectType          ActivityObjectType
   type                ActivityType
   uid                 String
   data                Json?

@@ -1,15 +1,11 @@
 import { useMemberStore } from '@/store/member'
-import { Activity } from '@prisma/client'
 import { Avatar } from '@shared/ui'
 import { ActivityMember } from './ActivityMember'
 
-interface IActivityDataType {}
-
-interface IActivityCardProps {
-  value: Activity
+interface IActivityCreatorAvatarProps {
+  uid: string
 }
-const ActivityCard = ({ value }: IActivityCardProps) => {
-  const { uid, data } = value
+const ActivityCreatorAvatar = ({ uid }: IActivityCreatorAvatarProps) => {
   const { members } = useMemberStore()
   const author = members.find(member => member.id === uid)
 
@@ -25,4 +21,4 @@ const ActivityCard = ({ value }: IActivityCardProps) => {
   )
 }
 
-export default ActivityCard
+export default ActivityCreatorAvatar

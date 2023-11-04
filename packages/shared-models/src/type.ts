@@ -7,7 +7,7 @@ export interface UserSetting {
   pinnedProjects?: PinnedProjectSetting[]
 }
 
-interface ActivityBase {
+interface BaseActivity {
   title?: string
   content?: string
 }
@@ -17,12 +17,12 @@ interface Interaction {
   uid: string
 }
 
-export interface CommentActivity extends ActivityBase {
+export interface CommentActivity extends BaseActivity {
   edited?: boolean
   interactions: Interaction[]
 }
 
-export interface AttachementActiviity extends ActivityBase {
+export interface AttachementActiviity extends BaseActivity {
   links?: string[] // others can reply comment's link
 }
 
