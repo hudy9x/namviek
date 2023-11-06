@@ -1,6 +1,6 @@
 import { useMemberStore } from '@/store/member'
 import { PropsWithChildren } from 'react'
-import { ActivityMember } from './ActivityMember'
+import { ActivityMember } from './ActivityMemberRepresent'
 
 interface IActivityCardHeaderProps {
   uid: string

@@ -1,8 +1,9 @@
 import { Activity } from '@prisma/client'
-import { ActivityMember } from './ActivityMember'
 import ActivityCardHeader from './ActivityCardHeader'
 import { AttachementActiviity } from '@shared/models'
-import ActivityCardAttachComment from './ActivityCardAttachContent'
+import ActivityCardAttachContent from './ActivityCardAttachContent'
+import ActivityMemberAvatar from './ActivityMemberAvatar'
+import ActivityCard from './ActivityCard'
 
 interface IActivityCardAttachProps {
   activity: Activity
@@ -14,10 +15,10 @@ export default function ActivityCardAttach({
   const { title } = data
 
   return (
-    <div className="">
-      <ActivityMember uid={uid} />
-      <ActivityCardHeader uid={uid}>{title}</ActivityCardHeader>
-      <ActivityCardAttachComment data={data} />
-    </div>
+    <ActivityCard
+      creator={<ActivityMemberAvatar uid={uid} />}
+      title={<ActivityCardHeader uid={uid}>{title}</ActivityCardHeader>}
+      content={<ActivityCardAttachContent data={data} />}
+    />
   )
 }

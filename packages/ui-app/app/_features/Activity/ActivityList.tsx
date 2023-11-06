@@ -9,20 +9,30 @@ interface IActivityList {
   taskId: string
 }
 
-const ATTACHMENT_CATEGORY = [
-  ActivityType.TASK_ATTACHMENT_ADDED,
-  ActivityType.TASK_ATTACHMENT_CHANGED,
-  ActivityType.TASK_ATTACHMENT_REMOVED
+//
+const fakeData: Partial<Activity>[] = [
+  {
+    type: ActivityType.TASK_COMMENT_CREATED,
+    createdAt: new Date(),
+    uid: '64a44b0ae9b966f87f404d79',
+    data: {
+      title: 'comment title 1',
+      content: 'comment content 1'
+    }
+  },
+  {
+    type: ActivityType.TASK_ATTACHMENT_ADDED,
+    createdAt: new Date(),
+    uid: '64a44b0ae9b966f87f404d79',
+    data: {
+      title: 'attach title 1',
+      content: 'attach content 1'
+    }
+  }
 ]
-const COMMENT_CATEGORY = [
-  ActivityType.TASK_COMMENT_CREATED,
-  ActivityType.TASK_COMMENT_CHANGED,
-  ActivityType.TASK_COMMENT_REMOVED
-]
-
-const fakeData: Activity[] = [{}]
 const ActivityList = ({ taskId }: IActivityList) => {
-  const [activities, setActivities] = useState<Activity[]>([])
+  // TODO: fake data
+  const [activities, setActivities] = useState<Activity[]>(fakeData)
 
   const loadActivities = useCallback(() => {
     activityGetAllByTask(taskId).then(res => {
@@ -36,24 +46,35 @@ const ActivityList = ({ taskId }: IActivityList) => {
     })
   }, [taskId])
 
+  const renderActivity = useCallback((activity: Activity) => {
+    const { type } = activity
+    switch (type) {
+      case ActivityType.TASK_ATTACHMENT_ADDED:
+      case ActivityType.TASK_ATTACHMENT_CHANGED:
+      case ActivityType.TASK_ATTACHMENT_REMOVED:
+        return <ActivityCardAttach activity={activity} />
+      case ActivityType.TASK_COMMENT_CREATED:
+      case ActivityType.TASK_COMMENT_CHANGED:
+      case ActivityType.TASK_COMMENT_REMOVED:
+        return <ActivityCardComment activity={activity} />
+      default:
+        return null
+    }
+  }, [])
+
+  // TODO: fake data
+  // useEffect(() => {
+  //   loadActivities()
+  // }, [loadActivities])
   useEffect(() => {
-    loadActivities()
-  }, [loadActivities])
+    setActivities(fakeData)
+  }, [fakeData])
+
   return (
     <div>
-      {activities.map(activity => {
-        const { type } = activity
-        return (
-          <>
-            {ATTACHMENT_CATEGORY.includes(type) ? (
-              <ActivityCardAttach activity={activity} />
-            ) : null}
-            {COMMENT_CATEGORY.includes(type) ? (
-              <ActivityCardComment activity={activity} />
-            ) : null}
-          </>
-        )
-      })}
+      {activities.map((activity, idx) => (
+        <div key={idx}>{renderActivity(activity)}</div>
+      ))}
     </div>
   )
 }

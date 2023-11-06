@@ -1,0 +1,7 @@
+.activity-card {
+  @apply relative ml-10;
+
+  .activity-card-avatar {
+    @apply absolute -left-12;
+  }
+}

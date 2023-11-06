@@ -1,14 +1,14 @@
-import { CommentActivity } from '@shared/models'
+import { AttachementActiviity } from '@shared/models'
 
 interface ActivityCardCommentContentProps {
-  data: CommentActivity
+  data: AttachementActiviity
 }
 //
 // TODO: tiptap render content
-const ActivityCardAttachComment = ({
+const ActivityCardAttachContent = ({
   data
 }: ActivityCardCommentContentProps) => {
   return <div>{JSON.stringify(data)}</div>
 }
 
-export default ActivityCardAttachComment
+export default ActivityCardAttachContent

@@ -202,4 +202,4 @@ router.get('/project/task/activity', async (req: AuthRequest, res) => {
 //   }
 // })
 //
-export const activityRouter = router
+export default router

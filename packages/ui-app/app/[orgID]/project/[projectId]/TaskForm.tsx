@@ -9,8 +9,10 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import FileControl from '@/components/FileKits/FileControl'
+import Activity from '@/features/Activity'
 
 export const defaultFormikValues: ITaskDefaultValues = {
+  id: '',
   title: '',
   assigneeIds: [],
   fileIds: [],
@@ -24,6 +26,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 }
 
 export interface ITaskDefaultValues {
+  id: string
   title: string
   assigneeIds: string[]
   fileIds: string[]
@@ -143,6 +146,7 @@ export default function TaskForm({
             }}
           />
           {isUpdate ? <FileControl /> : null}
+          {isUpdate ? <Activity taskId={formik.values.id} /> : null}
         </div>
         <div
           className={`task-form-right-actions space-y-3 ${
