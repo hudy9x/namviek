@@ -1,30 +1,85 @@
 import './style.css'
 import { useVisionContext } from '../Vision/context'
-import { genCalendarArr, isSunSat, isToday } from '@shared/libs'
+import { genCalendarArr, getDayName, isSunSat, isToday } from '@shared/libs'
 import VisionViewMode from '../Vision/VisionViewMode'
-import VisionTimelineTrack from './VisionTimelineTrack'
+
 import VisionMonthNavigator from '../Vision/VisionMonthNavigator'
+import AbsoluteLoading from '@/components/AbsoluateLoading'
+import VisionTimelineTrack from './VisionTimelineTrack'
 
 export default function VisionTimeline({ visible }: { visible: boolean }) {
-  const { visions } = useVisionContext()
-  const weeks = genCalendarArr(new Date())
+  const { visions, filter, loading } = useVisionContext()
+
+  const ed = new Date()
+  const w1 = genCalendarArr(new Date(ed.getFullYear(), filter.month - 1, 1))
+  const w2 = genCalendarArr(new Date(ed.getFullYear(), filter.month - 2, 1))
+  const w3 = genCalendarArr(new Date(ed.getFullYear(), filter.month + 1, 1))
+
+  // const weeks = [...w2, ...w1, ...w3]
+  const weeks = w1
   const dateMap = new Map()
 
   let totalDates = 0
   const colWidth = '2rem'
   const colHeight = '2.75rem'
 
+  // calculate month columns - start
+  let startMonth = 1
+  let prevD: Date
+  const monthColumns: { month: number; start: number; end: number }[] = []
+  let pos = monthColumns.length - 1
+  // calculate month columns - end
+
   weeks.forEach(w => {
     w.forEach(d => {
+      const m = d.getMonth()
       totalDates++
       dateMap.set(`${d.getDate()}-${d.getMonth()}`, totalDates)
+
+      // calculate month columns - start
+
+      if (!prevD) {
+        monthColumns.push({
+          month: m,
+          start: startMonth,
+          end: startMonth + 1
+        })
+
+        pos = monthColumns.length - 1
+        startMonth++
+        prevD = d
+        return
+      }
+
+      if (prevD.getMonth() === m) {
+        monthColumns[pos].end = startMonth + 1
+        startMonth++
+        prevD = d
+      } else {
+        monthColumns.push({
+          month: m,
+          start: startMonth,
+          end: startMonth + 1
+        })
+        pos = monthColumns.length - 1
+        startMonth++
+        prevD = d
+      }
+      // calculate month columns - end
     })
   })
 
+  console.log(monthColumns)
+
   const today = new Date()
 
+  let startWeek = 1
+
   return (
-    <div className="vision-timeline-container mx-5">
+    <div
+      className="vision-timeline-container mx-auto relative"
+      style={{ maxWidth: `calc(100vw - 340px)` }}>
+      <AbsoluteLoading enabled={loading} />
       <div className="py-3 flex items-center justify-between">
         <div>
           <VisionMonthNavigator />
@@ -36,8 +91,8 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
           visible ? '' : 'hidden'
         }`}>
         <section className="vision-timeline-list shrink-0">
-          <header className="border-b dark:border-gray-700 flex justify-center h-7">
-            <h2 className=" leading-7 text-sm">Timeline</h2>
+          <header className="border-b dark:border-gray-700 flex justify-center h-[78px]">
+            <h2 className=" leading-[78px] text-sm">Timeline</h2>
           </header>
           <main className="vision-timeline-content divide-y divide-gray-100 dark:divide-gray-700">
             {visions.map(vision => {
@@ -50,9 +105,36 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                 </div>
               )
             })}
+            <div className="px-2 text-sm flex items-center">
+              Total: {visions.length}
+            </div>
           </main>
         </section>
         <section className="vision-timeline">
+          <header
+            className="grid divide-x"
+            style={{
+              gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
+            }}>
+            {monthColumns.map((m, index) => {
+              const { month, start, end } = m
+
+              return (
+                <div
+                  style={{
+                    gridColumnStart: start,
+                    gridColumnEnd: end
+                  }}
+                  className="border-b dark:border-gray-700 text-center dark:text-gray-400 text-sm h-7 leading-7 shrink-0"
+                  key={index}>
+                  <span className="text-gray-300 dark:text-gray-600 lowercase pr-0.5">
+                    M
+                  </span>
+                  {month + 1}
+                </div>
+              )
+            })}
+          </header>
           <header
             className="grid divide-x"
             style={{
@@ -65,9 +147,10 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                   : ''
                 return (
                   <div
-                    className={`h-7 border-b dark:border-gray-700 text-xs text-center leading-7 text-gray-500 ${isWeekend}`}
+                    className={`h-[50px] border-b dark:border-gray-700 text-xs text-center leading-7 text-gray-500 dark:text-gray-400 ${isWeekend}`}
                     key={d.getTime()}>
                     {d.getDate()}
+                    <div className="text-[11px] leading-4">{getDayName(d)}</div>
                   </div>
                 )
               })
@@ -110,18 +193,8 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
 
                 const end = dateMap.get(keyEnd) + 1
                 const start = dateMap.get(keyStart) || end - 1
-                console.log(vision)
 
                 return (
-                  // <VisionTimelineTrack
-                  //   key={vision.id}
-                  //   {...{
-                  //     id: vision.id,
-                  //     startCol: start,
-                  //     endCol: end,
-                  //     rowStart: index + 1
-                  //   }}
-                  // />
                   <div
                     key={vision.id}
                     className="grid hover:bg-indigo-50/50 dark:hover:bg-indigo-300/10 relative"
@@ -131,24 +204,49 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
                       gridColumnEnd: totalDates + 1,
                       gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
                     }}>
-                    <div
-                      style={{
-                        height: colHeight,
-                        gridColumnStart: start,
-                        gridColumnEnd: end
-                        // gridRowStart: index + 1
+                    <VisionTimelineTrack
+                      {...{
+                        onChange: (start, end) => {
+                          console.log('change', start, end)
+                          console.log(dateMap.get(start))
+                          console.log(dateMap.get(end))
+                        },
+                        id: vision.id,
+                        title: vision.name,
+                        name: vision.name,
+                        startCol: start,
+                        endCol: end,
+                        height: colHeight
                       }}
-                      title={vision.name}
-                      className="px-1 flex items-center relative">
-                      <div className="whitespace-nowrap text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 px-2.5 py-2 text-sm  rounded-md border shadow-md shadow-indigo-50">
-                        {vision.name}
-                      </div>
-                    </div>
+                    />
                   </div>
                 )
               })}
             </div>
           </main>
+          <header
+            className="grid divide-x dark:divide-gray-700"
+            style={{
+              gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
+            }}>
+            {weeks.map((w, index) => {
+              const start = startWeek
+              const end = startWeek + 7
+              startWeek = end
+
+              return (
+                <div
+                  style={{
+                    gridColumnStart: start,
+                    gridColumnEnd: end
+                  }}
+                  className="border-t dark:text-gray-400 dark:border-gray-700 text-center text-sm h-7 leading-7 shrink-0"
+                  key={index}>
+                  W{index + 1}
+                </div>
+              )
+            })}
+          </header>
         </section>
       </div>
     </div>

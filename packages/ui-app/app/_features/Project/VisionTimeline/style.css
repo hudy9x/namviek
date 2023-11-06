@@ -1,5 +1,5 @@
 .vision-timeline-list {
-  @apply border-r dark:border-gray-700 w-[300px];
+  @apply w-[300px];
 }
 .vision-timeline-item {
   @apply bg-white dark:bg-gray-900 truncate text-sm px-1.5;
@@ -7,6 +7,7 @@
 
 .vision-timeline {
   @apply w-full overflow-x-auto overflow-y-hidden;
+  @apply border-l dark:border-gray-700;
 }
 
 .vision-timeline-columns {

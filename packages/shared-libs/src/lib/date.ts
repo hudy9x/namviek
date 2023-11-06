@@ -35,6 +35,13 @@ export function getMonthList() {
   )
 }
 
+const dayArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+export function getDayName(d: Date) {
+  const dIndex = d.getDay()
+
+  return dayArr[dIndex]
+}
+
 export function isToday(today: Date, date: Date) {
   return (
     date.getDate() === today.getDate() &&
