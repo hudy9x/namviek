@@ -67,7 +67,7 @@ const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
 }
 
 export default function ProjectVision() {
-  const [mode, setMode] = useState(EVisionViewMode.TIMELINE)
+  const [mode, setMode] = useState(EVisionViewMode.CALENDAR)
   const { projectId } = useParams()
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState('')

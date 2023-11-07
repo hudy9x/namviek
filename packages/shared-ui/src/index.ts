@@ -11,6 +11,7 @@ import BorderlessDatePickerContainer from './components/DatePicker/Borderless'
 import ScrollbarContainer from './components/Scrollbar'
 import FormGroupContainer from './components/FormGroup'
 import TooltipContainer from './components/Tooltip'
+import TimelineContainer from './components/Timeline'
 
 export {
   messageInfo,
@@ -30,7 +31,10 @@ export const DatePickerBorderless = BorderlessDatePickerContainer
 export const Scrollbar = ScrollbarContainer
 export const FormGroup = FormGroupContainer
 export const Tooltip = TooltipContainer
+export const Timeline = TimelineContainer
+
 export * from './components/Confirmbox'
+export * from './components/Timeline/type'
 
 export * from './components/Controls/ListControl/type'
 export * from './components/utils'

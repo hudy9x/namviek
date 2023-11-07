@@ -102,6 +102,8 @@ router.put('', async (req: AuthRequest, res) => {
       updateData.name = name
     }
 
+    console.log(updateData)
+
     await mdVisionUpdate({
       id,
       data: updateData

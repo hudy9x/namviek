@@ -1,12 +1,20 @@
-import { useState, MouseEvent, useRef, useEffect, useCallback } from 'react'
+import {
+  useState,
+  MouseEvent,
+  useRef,
+  useEffect,
+  useCallback,
+  ReactNode
+} from 'react'
 
-export default function VisionTimelineTrack({
+export default function TimelineTrack({
   id,
   title,
   name,
   startCol,
   endCol,
   height,
+  children,
   onChange
 }: {
   id: string
@@ -14,6 +22,7 @@ export default function VisionTimelineTrack({
   name?: string
   startCol: number
   endCol: number
+  children: ReactNode
   height: number | string
   onChange?: (start: number, end: number) => void
 }) {
@@ -30,11 +39,10 @@ export default function VisionTimelineTrack({
   const startDragging = useRef(false)
 
   const type = useRef<'head' | 'tail'>('head')
-  const trackId = useRef('')
 
   useEffect(() => {
     if (stopCounter && (startCol !== start || endCol !== end)) {
-      console.log(id)
+      console.log('on change')
       onChange && onChange(start, end)
     }
   }, [start, end, stopCounter])
@@ -96,7 +104,6 @@ export default function VisionTimelineTrack({
       if (!startDragging.current) return
       startDragging.current = false
       setStopCounter(stopCounter => stopCounter + 1)
-      console.log('stop')
     }
 
     document.addEventListener('mousemove', onResize)
@@ -108,8 +115,6 @@ export default function VisionTimelineTrack({
     }
   }, [])
 
-  const isDragging = startDragging.current ? 'select-none' : ''
-
   return (
     <div
       style={{
@@ -119,17 +124,16 @@ export default function VisionTimelineTrack({
         // gridRowStart: index + 1
       }}
       title={title}
-      className="px-1 flex items-center relative transition-all">
-      <div className="whitespace-nowrap relative text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 px-2.5 py-2 text-sm  rounded-md border border-gray-300 shadow-md shadow-indigo-50">
-        <span className={`truncate ${isDragging}`}>{name}</span>
+      className="timeline-track">
+      <div className="timeline-track-container select-none">
+        {children}
+        {/* <span className={`truncate ${isDragging}`}>{name}</span> */}
         <div
           onMouseDown={onResizeHead}
-          className="absolute -left-1.5 top-0 cursor-w-resize h-full w-[10px] bg-transparent"></div>
+          className="timeline-track-handler left"></div>
         <div
           onMouseDown={onResizeTail}
-          className="absolute -right-1.5 top-0 cursor-w-resize h-full w-[10px] bg-transparent hover:bg-gray-200/60 active:bg-red-200/50 rounded-md border border-transparent hover:border-gray-200 border-dashed">
-          {/* <div className="h-full w-1 rounded-md bg-gray-200 left-1.5 relative"></div> */}
-        </div>
+          className="timeline-track-handler right"></div>
       </div>
     </div>
   )
