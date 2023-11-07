@@ -47,7 +47,7 @@ export default function SigninForm() {
           // messageSuccess('Success')
         })
         .catch(err => {
-          if (err.response.status === 403) {
+          if (err.response?.status === 403) {
             messageError(
               "You haven't activated your account yet. Please check your email for the activation link."
             )
