@@ -1,7 +1,7 @@
-import { CommentActivity } from '@shared/models'
+import { ActivityCommentData } from '@shared/models'
 
 interface ActivityCardCommentContentProps {
-  data: CommentActivity
+  data: ActivityCommentData
 }
 //
 // TODO: tiptap render content

@@ -4,6 +4,7 @@ import { activityGetAllByTask } from '@/services/activity'
 import { messageError, messageWarning } from '@shared/ui'
 import ActivityCardAttach from './ActivityCardAttach'
 import ActivityCardComment from './ActivityCardComment'
+import { ActivityAttachData } from '@shared/models'
 
 interface IActivityList {
   taskId: string
@@ -24,12 +25,23 @@ const fakeData: Partial<Activity>[] = [
     type: ActivityType.TASK_ATTACHMENT_ADDED,
     createdAt: new Date(),
     uid: '64a44b0ae9b966f87f404d79',
+    // data: {
+    //   title: 'attach title 1',
+    //   content: 'attach content 1'
+    // }
     data: {
       title: 'attach title 1',
-      content: 'attach content 1'
+      content: 'attach content 1',
+      attachedFiles: [
+        {
+          name: 'cat-with-mac',
+          url: 'https://prideandgroom.com/cdn/shop/articles/funniest_google_searches_about_dogs_1600x.jpg?v=1684247008'
+        }
+      ]
     }
   }
 ]
+
 const ActivityList = ({ taskId }: IActivityList) => {
   // TODO: fake data
   const [activities, setActivities] = useState<Activity[]>(fakeData)
@@ -62,10 +74,11 @@ const ActivityList = ({ taskId }: IActivityList) => {
     }
   }, [])
 
-  // TODO: fake data
+  // TODO: disabled for fake data
   // useEffect(() => {
   //   loadActivities()
   // }, [loadActivities])
+
   useEffect(() => {
     setActivities(fakeData)
   }, [fakeData])

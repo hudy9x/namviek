@@ -1,14 +1,17 @@
-import { AttachementActiviity } from '@shared/models'
-
 interface ActivityCardCommentContentProps {
-  data: AttachementActiviity
-}
-//
-// TODO: tiptap render content
-const ActivityCardAttachContent = ({
-  data
-}: ActivityCardCommentContentProps) => {
-  return <div>{JSON.stringify(data)}</div>
+  url?: string | null
 }
 
+const ActivityCardAttachContent = ({
+  url
+}: ActivityCardCommentContentProps) => {
+  return (
+    <div>
+      {url && (
+        <img className="max-w-full max-h-[500px]" src={url} alt="undefined" />
+      )}
+      {/* {JSON.stringify(url)} */}
+    </div>
+  )
+}
 export default ActivityCardAttachContent

@@ -1,9 +1,7 @@
 import { Activity } from '@prisma/client'
-import { ActivityMember } from './ActivityMember'
+import { ActivityMemberRepresent } from './ActivityMemberRepresent'
 import ActivityCardCommentContent from './ActivityCardCommentContent'
-import { CommentActivity } from '@shared/models'
-import ActivityCardHeader from './ActivityCardHeader'
-import MemberAvatar from '@/components/MemberAvatar'
+import { ActivityCommentData } from '@shared/models'
 import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
 
@@ -14,13 +12,22 @@ interface IActivityCardCommentProps {
 export default function ActivityCardComment({
   activity
 }: IActivityCardCommentProps) {
-  const { uid, data } = activity as Activity & { data: CommentActivity }
+  const { uid, data, createdAt } = activity as Activity & {
+    data: ActivityCommentData
+  }
+  const createdTime = createdAt?.toLocaleDateString()
   console.log({ ActivityCardComment: activity })
   const { title } = data
   return (
     <ActivityCard
       creator={<ActivityMemberAvatar uid={uid} />}
-      title={<ActivityCardHeader uid={uid}>{title}</ActivityCardHeader>}
+      title={
+        <span>
+          <ActivityMemberRepresent uid={uid} />
+          {/* <EditorContent editor={editor} /> */}
+          <a>{createdTime}</a>
+        </span>
+      }
       content={<ActivityCardCommentContent data={data} />}
     />
   )

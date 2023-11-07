@@ -4,7 +4,7 @@ interface IActivityMember {
   uid: string
 }
 
-export function ActivityMember({ uid }: IActivityMember) {
+export function ActivityMemberRepresent({ uid }: IActivityMember) {
   const { members } = useMemberStore()
   const member = members.find(member => member.id === uid)
 

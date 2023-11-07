@@ -1,3 +1,5 @@
+import { FileStorage } from '@prisma/client'
+
 export type PinnedProjectSetting = {
   id: string
   createdAt: Date
@@ -7,7 +9,7 @@ export interface UserSetting {
   pinnedProjects?: PinnedProjectSetting[]
 }
 
-interface BaseActivity {
+interface ActivityDataBase {
   title?: string
   content?: string
 }
@@ -17,13 +19,13 @@ interface Interaction {
   uid: string
 }
 
-export interface CommentActivity extends BaseActivity {
+export interface ActivityCommentData extends ActivityDataBase {
   edited?: boolean
   interactions: Interaction[]
 }
 
-export interface AttachementActiviity extends BaseActivity {
-  links?: string[] // others can reply comment's link
+export interface ActivityAttachData extends ActivityDataBase {
+  attachedFiles?: FileStorage[] // others can reply comment's link
 }
 
 export type TaskLogActivity = string
