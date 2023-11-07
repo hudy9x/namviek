@@ -1,7 +1,6 @@
 import Badge from '@/components/Badge'
-import ListPreset from '@/components/ListPreset'
-import { useVisionContext } from './context'
-import { useTaskFilter } from '@/features/TaskFilter/context'
+import VisionViewMode from './VisionViewMode'
+import VisionMonthNavigator from './VisionMonthNavigator'
 
 export default function VisionListHeader({
   total,
@@ -14,18 +13,6 @@ export default function VisionListHeader({
   inprogress: number
   rate: number
 }) {
-  const { setDateRangeByMonth } = useTaskFilter()
-  const { filter, setFilter } = useVisionContext()
-  const { month } = filter
-  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  const d = new Date()
-  const year = d.getFullYear()
-  const currentMonth = month + ''
-  const monthList = months.map(m => ({
-    id: m + '',
-    title: `${m > 9 ? m : `0${m}`}/${year}`
-  }))
-
   const badgeColor = rate === 100 ? 'green' : rate === 0 ? 'red' : 'yellow'
   return (
     <div className="rounded-t-md bg-gray-50 dark:bg-gray-800">
@@ -41,15 +28,9 @@ export default function VisionListHeader({
         </div>
         <Badge title={`${rate} %`} color={badgeColor} />
       </div>
-      <div className="px-3 pb-2">
-        <ListPreset
-          value={currentMonth}
-          onChange={v => {
-            setDateRangeByMonth((parseInt(v, 10) - 1).toString())
-            setFilter(prev => ({ ...prev, month: parseInt(v, 10) }))
-          }}
-          options={monthList}
-        />
+      <div className="px-3 pb-2 flex gap-2 items-center">
+        <VisionMonthNavigator />
+        <VisionViewMode />
       </div>
     </div>
   )

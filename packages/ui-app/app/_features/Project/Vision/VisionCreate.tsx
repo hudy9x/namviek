@@ -9,32 +9,52 @@ export default function VisionCreate() {
   const { createNewVision, filter } = useVisionContext()
   const { month } = filter
   const onEnter = (v: string) => {
-    const dateRegex = /\/\d+/
-    const match = dateRegex.exec(v)
+    const startRegex = /(\/start-(\d+)\s*)/
+    const endRegex = /(\/end-(\d+)\s*)/
+
+    const matchStart = startRegex.exec(v)
+    const matchEnd = endRegex.exec(v)
+
     const d = new Date()
     const y = d.getFullYear()
     const m = month - 1
+
+    let startDate = new Date(y, m, 1)
+    let endDate = new Date(y, m, d.getDate())
+
     const visionData = {
       name: v,
       projectId,
       parentId: null,
       organizationId: orgID,
+      startDate: new Date(y, m, 1),
       dueDate: new Date(y, m, 1)
     }
 
-    if (match) {
-      const date = match[0]
-      const dateNum = parseInt(date.replace('/', ''), 10)
+    if (matchStart) {
+      startDate = new Date(y, m, parseInt(matchStart[2], 10))
+      visionData.name = visionData.name
+        .replace(matchStart[0], '')
+        .replace(/^\s*|\s*$/g, '')
+
+      visionData.startDate = startDate
+    }
+
+    if (matchEnd) {
+      endDate = new Date(y, m, parseInt(matchEnd[2], 10))
       const endOfDate = endOfMonth(new Date(y, m, 1))
       const eDate = endOfDate.getDate()
 
-      if (dateNum > eDate) {
+      if (endDate.getDate() > eDate) {
         messageError(`Date should be from 1 to ${eDate}`)
         return
       }
 
-      visionData.name = v.replace(date, '').replace(/^\s*|\s*$/g, '')
-      visionData.dueDate = new Date(y, m, dateNum, 18, 0)
+      visionData.name = visionData.name
+        .replace(matchEnd[0], '')
+        .replace(/^\s*|\s*$/g, '')
+
+      visionData.dueDate = endDate
     }
 
     createNewVision(visionData)

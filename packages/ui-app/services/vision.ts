@@ -11,6 +11,7 @@ export const visionGetByProject = (
     signal: signal,
     params: {
       projectId,
+
       month: filter.month
     }
   })

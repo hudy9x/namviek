@@ -11,7 +11,14 @@ export type IVisionFilter = {
   month: number
 }
 
+export enum EVisionViewMode {
+  TIMELINE = 'TIMELINE',
+  CALENDAR = 'CALENDAR'
+}
+
 interface IVisionContextProps {
+  mode: EVisionViewMode
+  setMode: Dispatch<SetStateAction<EVisionViewMode>>
   selected: string
   taskDone: number
   taskTotal: number
@@ -26,6 +33,10 @@ interface IVisionContextProps {
   setVisions: Dispatch<SetStateAction<VisionField[]>>
 }
 const VisionContext = createContext<IVisionContextProps>({
+  mode: EVisionViewMode.CALENDAR,
+  setMode: () => {
+    console.log(5)
+  },
   loading: false,
   filter: {
     month: new Date().getMonth() + 1
@@ -62,6 +73,8 @@ export const useVisionContext = () => {
     setVisions,
     filter,
     setFilter,
+    mode,
+    setMode,
     loading,
     setLoading,
     selected,
@@ -122,6 +135,7 @@ export const useVisionContext = () => {
     const newData = {
       name: data.name || '',
       dueDate: data.dueDate || new Date(),
+      startDate: data.startDate || new Date(),
       parentId: null,
       progress: 0,
       projectId: data.projectId || '',
@@ -159,6 +173,8 @@ export const useVisionContext = () => {
     selected,
     filter,
     setFilter,
+    mode,
+    setMode,
     setSelected,
     getVisionProgress
   }

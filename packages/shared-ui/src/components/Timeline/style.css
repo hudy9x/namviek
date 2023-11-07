@@ -1,0 +1,34 @@
+.timeline-list {
+  @apply w-[300px];
+}
+.timeline-item {
+  @apply bg-white dark:bg-gray-900 truncate text-sm px-1.5;
+}
+
+.timeline-track {
+  @apply px-1 flex items-center relative transition-all;
+}
+
+.timeline-track-container {
+  @apply whitespace-nowrap relative text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 px-2.5 py-2 text-sm  rounded-md border border-gray-300 shadow-md shadow-indigo-50;
+}
+
+.timeline-track-handler {
+  @apply absolute top-0 cursor-w-resize h-full w-[10px] bg-gray-50/50 hover:bg-gray-200/60 active:bg-red-200/50 rounded-md border border-transparent hover:border-gray-200 border-dashed;
+}
+
+.timeline-track-handler.right {
+  @apply -right-1.5;
+}
+.timeline-track-handler.left {
+  @apply -left-1.5;
+}
+
+.timeline {
+  @apply w-full overflow-x-auto overflow-y-hidden;
+  @apply border-l dark:border-gray-700;
+}
+
+.timeline-columns {
+  @apply grid divide-x divide-gray-200 dark:divide-gray-700 divide-dashed col-start-1 row-start-1 row-end-2;
+}
