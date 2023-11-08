@@ -94,10 +94,10 @@ export default function SigninForm() {
 
   return (
     <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex rounded-md border-2 border-indigo-300 shadow-2xl shadow-indigo-200">
+      <div className="flex rounded-xl border-4 border-white/30 dark:border-gray-800/50 ">
         <form
           onSubmit={regHandleSubmit}
-          className="bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md">
+          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md">
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">

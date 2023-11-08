@@ -166,8 +166,11 @@
 }
 
 .sign-page {
-  background-image: url('/pat-1.webp');
-  background-size: 100%;
+  background-image: url('/background.png');
+  background-size: 54%;
+  background-repeat: no-repeat;
+  background-position: center;
+  @apply bg-white dark:bg-gray-900;
 }
 
 .droppable {
