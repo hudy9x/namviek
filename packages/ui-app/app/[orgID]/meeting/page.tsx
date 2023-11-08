@@ -1,3 +1,5 @@
+import MeetingContainer from './MeetingContainer'
+
 export default function Page() {
-  return <div>Meeting page</div>
+  return <MeetingContainer />
 }
