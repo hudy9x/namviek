@@ -4,6 +4,8 @@ import ActivityCardCommentContent from './ActivityCardCommentContent'
 import { ActivityCommentData } from '@shared/models'
 import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
+import { ActivityTimeLog } from './ActivityTimeLog'
+import ActivityCardCommentReaction from './ActivityCardCommentReaction'
 
 interface IActivityCardCommentProps {
   activity: Activity
@@ -15,20 +17,23 @@ export default function ActivityCardComment({
   const { uid, data, createdAt } = activity as Activity & {
     data: ActivityCommentData
   }
-  const createdTime = createdAt?.toLocaleDateString()
   console.log({ ActivityCardComment: activity })
-  const { title } = data
+  const { content } = data
   return (
     <ActivityCard
       creator={<ActivityMemberAvatar uid={uid} />}
       title={
-        <span>
+        <div>
           <ActivityMemberRepresent uid={uid} />
-          {/* <EditorContent editor={editor} /> */}
-          <a>{createdTime}</a>
-        </span>
+          {createdAt && <ActivityTimeLog time={createdAt} />}
+        </div>
       }
-      content={<ActivityCardCommentContent data={data} />}
+      content={
+        <div>
+          {content ? <ActivityCardCommentContent content={content} /> : null}
+          <ActivityCardCommentReaction />
+        </div>
+      }
     />
   )
 }

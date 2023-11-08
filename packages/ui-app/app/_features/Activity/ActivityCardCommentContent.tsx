@@ -1,14 +1,35 @@
-import { ActivityCommentData } from '@shared/models'
+import Document from '@tiptap/extension-document'
+import Link from '@tiptap/extension-link'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import { EditorContent, useEditor } from '@tiptap/react'
+import { useState } from 'react'
 
 interface ActivityCardCommentContentProps {
-  data: ActivityCommentData
+  content: string
 }
 //
 // TODO: tiptap render content
 const ActivityCardCommentContent = ({
-  data
+  content
 }: ActivityCardCommentContentProps) => {
-  return <div>{JSON.stringify(data)}</div>
+  const editor = useEditor(
+    {
+      extensions: [
+        Document,
+        Paragraph,
+        Text,
+        Link.configure({
+          openOnClick: false
+        })
+      ],
+      editable: false,
+      content
+    },
+    [content]
+  )
+
+  return <EditorContent editor={editor} />
 }
 
 export default ActivityCardCommentContent

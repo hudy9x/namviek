@@ -17,8 +17,12 @@ const fakeData: Partial<Activity>[] = [
     createdAt: new Date(),
     uid: '64a44b0ae9b966f87f404d79',
     data: {
-      title: 'comment title 1',
-      content: 'comment content 1'
+      content: `        
+      <p>Hi everyone! Don’t forget the daily stand up at 8 AM.</p>
+        <p><span data-type="mention" data-id="Jennifer Grey"></span> Would you mind to share what you’ve been working on lately? We fear not much happened since Dirty Dancing.
+        <p><span data-type="mention" data-id="Winona Ryder"></span> <span data-type="mention" data-id="Axl Rose"></span> Let’s go through your most important points quickly.</p>
+        <p>I have a meeting with <span data-type="mention" data-id="Christina Applegate"></span> and don’t want to come late.</p>
+        <p>– Thanks, your big boss</p>`
     }
   },
   {
@@ -32,12 +36,10 @@ const fakeData: Partial<Activity>[] = [
     data: {
       title: 'attach title 1',
       content: 'attach content 1',
-      attachedFiles: [
-        {
-          name: 'cat-with-mac',
-          url: 'https://prideandgroom.com/cdn/shop/articles/funniest_google_searches_about_dogs_1600x.jpg?v=1684247008'
-        }
-      ]
+      attachedFile: {
+        name: 'cat-with-mac',
+        url: 'https://prideandgroom.com/cdn/shop/articles/funniest_google_searches_about_dogs_1600x.jpg?v=1684247008'
+      }
     }
   }
 ]
