@@ -1,7 +1,10 @@
 'use client'
 import '@livekit/components-styles'
+import MeetingRoomList from './MeetingRoomList'
 
 export default function MeetingContainer() {
-  return <div>Meeting Room</div>
+  return <div>
+    <MeetingRoomList />
+  </div>
 }
 

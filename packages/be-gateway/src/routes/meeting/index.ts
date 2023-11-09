@@ -24,7 +24,6 @@ router.post('/room', async (req: AuthRequest, res) => {
       emptyTimeout: 10 * 60, // 10 min
       maxParticipants: 30
     })
-    console.log('2')
 
     res.json({
       data: room
@@ -48,6 +47,36 @@ router.delete('/room/:name', async (req: AuthRequest, res) => {
   } catch (error) {
     res.status(500).send(error)
   }
+})
+
+router.get('/join', async (req: AuthRequest, res) => {
+
+  const { room, username } = req.query as {
+    room: string
+    username: string
+  }
+
+  if (!room) {
+    return res.status(500).send('Missing room')
+  }
+
+  if (!username) {
+    return res.status(500).send('Missing username')
+  }
+
+  if (!apiKey || !apiSecret || !wsUrl) {
+    return res.status(500).send('Server misconfigured')
+  }
+
+  const at = new AccessToken(apiKey, apiSecret, { identity: username })
+
+  at.addGrant({ room, roomJoin: true, canPublish: true, canSubscribe: true })
+
+  console.log('return access token')
+
+  res.json({
+    token: at.toJwt()
+  })
 })
 
 // It means GET:/api/example
