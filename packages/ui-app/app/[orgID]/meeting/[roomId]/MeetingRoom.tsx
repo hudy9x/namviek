@@ -16,16 +16,18 @@ import { Track } from 'livekit-client'
 import { meetingGetParticipant } from '@/services/meeting'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
-import { Form } from '@shared/ui'
+import { Form, messageSuccess } from '@shared/ui'
+import { HiOutlineDuplicate } from 'react-icons/hi'
+import { copyToClipboard } from '@shared/libs'
 
 export default function MeetingContainer() {
   // TODO: get user input for room and name
   const { roomId, orgID } = useParams()
   const { push } = useRouter()
   const { user } = useUser()
-
-
   const [token, setToken] = useState('')
+
+  const link = `${process.env.NEXT_PUBLIC_FE_GATEWAY}${orgID}/meeting/${roomId}`
 
   useEffect(() => {
     if (user && user.name && roomId) {
@@ -76,7 +78,15 @@ export default function MeetingContainer() {
         <div className='space-y-2'>
           <p>Share this link with others you want in the meeting</p>
 
-          <Form.Input readOnly value={roomId} />
+          <div className='relative'>
+            <Form.Input readOnly value={link} />
+            <HiOutlineDuplicate
+              onClick={() => {
+                copyToClipboard(link)
+                messageSuccess('Copied to clipboard already !')
+              }}
+              className='absolute top-2 right-2 p-1 w-6 h-6 hover:border-gray-900 cursor-pointer bg-white border rounded-md shadow' />
+          </div>
           <p>People who use this meeting link must get your permission before they can join </p>
         </div>
       </div>
