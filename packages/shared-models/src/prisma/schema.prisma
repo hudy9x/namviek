@@ -228,6 +228,7 @@ model Vision {
   projectId      String?   @db.ObjectId
   organizationId String?   @db.ObjectId
   parentId       String?   @db.ObjectId
+  startDate      DateTime?
   dueDate        DateTime?
   progress       Int?
   createdBy      String?
