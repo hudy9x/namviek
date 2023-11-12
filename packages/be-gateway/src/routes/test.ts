@@ -1,5 +1,6 @@
 import UserController, { MeetingController } from './testController'
 import { RouteDefinition } from '../lib/decorator/route-definition'
+import '../lib/decorator/mapper'
 
 const controllers = [UserController, MeetingController]
 

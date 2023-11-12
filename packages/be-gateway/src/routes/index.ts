@@ -15,7 +15,8 @@ import buzzerRouter from './buzzer'
 import meetingRouter from './meeting'
 import { authMiddleware } from '../middlewares'
 
-import "./test";
+// import "./test";
+import "./test2";
 
 const router = Router()
 
