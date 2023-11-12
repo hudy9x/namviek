@@ -1,0 +1,42 @@
+#loading-wrapper {
+    @apply fixed top-0 left-0 w-full;
+    @apply z-30;
+    @apply h-[80vh];
+
+    /*@apply h-full;*/
+    @apply flex justify-center items-center;
+    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
+
+    &.loading-hidden {
+        @apply hidden;
+    }
+}
+
+.loading-container {
+    @apply h-full;
+    @apply flex justify-center items-center;
+    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
+}
+
+.loading-icon-container {
+    @apply flex items-center gap-2;
+}
+
+.loading-icon {
+    &.default svg{
+        @apply w-4 h-4;
+    }
+
+    &.small {
+        @apply w-2 h-2;
+    }
+
+    &.large {
+        @apply w-6 h-6;
+    }
+}
+
+.loading-absolute {
+    @apply absolute top-0 left-0 w-full h-full;
+    @apply flex justify-center items-center;
+}

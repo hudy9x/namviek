@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
-import { LoadingSpinner } from "../Loading";
 import "./index.css";
+import Loading from '../Loading/LoadingContainer'
 
 type ButtonBaseAttrs = HTMLAttributes<HTMLButtonElement>;
 type ButtonBaseAttrsFilter = Pick<
@@ -65,7 +65,7 @@ const Button = ({
   return (
     <button type={type} className={classes.join(" ")} disabled={disabled} {...otherProps}>
       {leadingIcon && !loading ? leadingIcon : null}
-      {loading ? <LoadingSpinner /> : null}
+      {loading ? <Loading /> : null}
       {title}
     </button>
   );
