@@ -51,9 +51,9 @@ export default function SignupForm() {
 
   return (
     <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex rounded-md border-2 border-indigo-300 shadow-2xl shadow-indigo-200">
+      <div className="flex rounded-xl border-4 border-white/30 dark:border-gray-800/50 ">
         <div
-          className={`w-[350px] sm:w-[400px] text-center p-8 rounded-md bg-white dark:bg-gray-900 ${
+          className={`w-[350px] sm:w-[400px] text-center p-8 rounded-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-md ${
             success ? '' : 'hidden'
           }`}>
           <img src="/email.svg" className="m-auto pb-6 w-[200px]" />
@@ -77,7 +77,7 @@ export default function SignupForm() {
           onSubmit={regHandleSubmit}
           className={`${
             success ? 'hidden' : ''
-          } bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md`}>
+          } bg-white/90 dark:bg-gray-900/95 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md`}>
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">Sign up now</h2>

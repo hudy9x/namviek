@@ -4,7 +4,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import VisionCalendarContainer from './VisionCalendaContainer'
 
-export default function VisionContainer() {
+export default function VisionContainer({ visible }: { visible: boolean }) {
   const { updateTaskData } = useServiceTaskUpdate()
   const onDragEnd = (ev: DragEndEvent) => {
     const { active, over } = ev
@@ -19,11 +19,10 @@ export default function VisionContainer() {
       id: taskId,
       visionId
     })
-
-    console.log(active, over)
   }
+
   return (
-    <div className="vision relative">
+    <div className={`vision relative ${visible ? '' : 'hidden'}`}>
       <div
         className="flex divide-x dark:divide-gray-700"
         style={{ height: `calc(100vh - 83px)` }}>

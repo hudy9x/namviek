@@ -9,7 +9,9 @@ import {
   HiOutlineChartPie,
   HiOutlineServerStack,
   HiOutlineCog6Tooth,
-  HiOutlineStar
+  HiOutlineStar,
+  HiOutlineCamera,
+  HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -51,6 +53,12 @@ export default function ProjectSidebar() {
       href: `/${orgID}/my-works`,
       icon: HiOutlineBriefcase,
       active: pathname.includes('/my-works')
+    },
+    {
+      title: 'Meeting',
+      href: `/${orgID}/meeting`,
+      icon: HiOutlineVideoCamera,
+      active: pathname.includes('/meeting')
     },
     {
       title: 'Favorites',

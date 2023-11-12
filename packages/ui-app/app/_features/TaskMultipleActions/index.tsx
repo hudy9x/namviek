@@ -88,8 +88,11 @@ export default function TaskMultipleActions() {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg shadow-color-base transition-all z-40 ${hasSelected ? '-translate-y-0' : '-translate-y-full'
-        }`}>
+      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg transition-all z-40 ${
+        hasSelected
+          ? '-translate-y-0 shadow-color-base'
+          : '-translate-y-full shadow-transparent'
+      }`}>
       <div className="w-full flex items-center justify-center gap-2 text-sm">
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
