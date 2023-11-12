@@ -4,10 +4,10 @@ import { Button } from '@shared/ui'
 import { dboardCreate } from '@/services/dashboard'
 import { useParams } from 'next/navigation'
 import DashboardComponentCreate from '../../Dashboard/DasboardComponentCreate'
-import { LoadingSpinner } from 'packages/shared-ui/src/components/Loading'
 import DboardComponentList from '../../Dashboard/DboardComponentList'
 import { useOverviewContext } from './context'
 import Image from 'next/image'
+import { LoadingSpinnerIcon } from 'packages/shared-ui/src/components/Loading/Icon'
 
 export default function OverviewContent() {
   const { user } = useUser()
@@ -44,7 +44,7 @@ export default function OverviewContent() {
           style={{ height: 'calc(100vh - 83px)' }}>
           <div className="flex items-center gap-3 bg-white dark:bg-gray-900 px-4 py-3 rounded-md shadow-lg dark:shadow-gray-900 ">
             <div className="w-4 h-4">
-              <LoadingSpinner />
+              <LoadingSpinnerIcon />
             </div>
             <span>Loading ...</span>
           </div>
