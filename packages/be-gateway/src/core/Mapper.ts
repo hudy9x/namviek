@@ -1,12 +1,33 @@
-
 const mapper = new Map()
 
-export const setMetadata = (key: string, value: unknown, classObject: any) => {
-  mapper.set(`${key}]${classObject.name}`, value)
+const genKey = (...args: string[]) => {
+  return args.filter(Boolean).join(']')
 }
 
-export const getMetadata = (key: string, classObject: any) => {
-  return mapper.get(`${key}]${classObject.name}`)
+export const setMetadata = (
+  key: string,
+  value: unknown,
+  classObject: any,
+  propertyKey?: string
+) => {
+  const _key = genKey(key, classObject.name, propertyKey)
+  mapper.set(_key, value)
 }
 
+export const getMetadata = (
+  key: string,
+  classObject: any,
+  propertyKey?: string
+) => {
+  const _key = genKey(key, classObject.name, propertyKey)
+  return mapper.get(_key)
+}
 
+export const hasMetadata = (
+  key: string,
+  classObject: any,
+  propertyKey?: string
+) => {
+  const _key = genKey(key, classObject.name, propertyKey)
+  return mapper.has(_key)
+}
