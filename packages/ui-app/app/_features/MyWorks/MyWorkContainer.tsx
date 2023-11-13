@@ -42,7 +42,7 @@ export default function MyworkContainer() {
         </div>
 
         <div
-          className="bg-indigo-50/50 dark:bg-[#182031]"
+          className="bg-indigo-50/50 dark:bg-[#182031] overflow-y-auto"
           style={{ height: 'calc(100vh - 73px)' }}>
           <div className="w-[1120px] mx-auto pt-10 grid grid-cols-4 gap-6">
             <div className="grid grid-cols-2 col-span-3 gap-6">

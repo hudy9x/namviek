@@ -41,14 +41,15 @@ export const useServiceTaskUpdate = () => {
   }
 
   const updateMultiTaskData = (ids: string[], data: Partial<Task>) => {
-    console.log(ids)
     if (ids.some(id => _isRandomId(id))) {
       messageWarning('Wait! this task still syncing data from server')
       return
     }
 
     const handledData = _handleTaskData(data)
+    console.log('handledData', handledData)
     const updatedData = {
+      progress: handledData?.progress,
       dueDate: handledData?.dueDate,
       taskPoint: handledData?.taskPoint,
       priority: handledData?.priority,

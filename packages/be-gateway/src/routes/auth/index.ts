@@ -11,15 +11,24 @@ import {
 } from '../../lib/jwt'
 import { compareHashPassword, hashPassword } from '../../lib/password'
 import { JWTPayload } from '../../types'
+import { serviceGetUserByEmail, serviceGetUserById } from '../../services/user'
 
+const mainRouter = Router()
 const router = Router()
 
-router.post('/auth/sign-in', async (req, res) => {
+mainRouter.use('/auth', router)
+
+router.post('/refresh-token', async (req, res) => {
+  console.log('a')
+})
+
+router.post('/sign-in', async (req, res) => {
   try {
     const body = req.body as Pick<User, 'email' | 'password'>
     console.log('/auth/sign-in =============')
     console.time('getUser')
-    const user = await mdUserFindEmail(body.email)
+    const user = await serviceGetUserByEmail(body.email)
+    // const user = await mdUserFindEmail(body.email)
     console.timeEnd('getUser')
 
     if (!user) {
@@ -65,7 +74,7 @@ router.post('/auth/sign-in', async (req, res) => {
   }
 })
 
-router.post('/auth/sign-up', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   try {
     const body = req.body as User
     const { error, errorArr, data } = validateRegisterUser(body)
@@ -117,7 +126,7 @@ router.post('/auth/sign-up', async (req, res) => {
   }
 })
 
-router.get('/auth/verify', async (req, res) => {
+router.get('/verify', async (req, res) => {
   const { token } = req.query as { token: string }
   try {
     const { email } = decodeToken(token) as JWTPayload
@@ -144,7 +153,7 @@ router.get('/auth/verify', async (req, res) => {
   }
 })
 
-router.post('/auth/resend-verify-email', async (req, res) => {
+router.post('/resend-verify-email', async (req, res) => {
   try {
     const { email } = req.body
 
@@ -169,4 +178,4 @@ router.post('/auth/resend-verify-email', async (req, res) => {
   }
 })
 
-export default router
+export default mainRouter

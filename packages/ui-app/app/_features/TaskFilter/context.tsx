@@ -195,6 +195,19 @@ export const useTaskFilter = () => {
     setFilterValue('groupBy', val)
   }
 
+  const setDateRangeByMonth = (month: string) => {
+    const today = new Date()
+    const lastDayOfMonth = new Date(today.getFullYear(), +month + 1, 0)
+    const startDayOfMonth = new Date(today.getFullYear(), +month, 1)
+
+    setFilter(prev => ({
+      ...prev,
+      date: 'date-range',
+      startDate: startDayOfMonth,
+      endDate: lastDayOfMonth
+    }))
+  }
+
   useEffect(() => {
     if (timeout) {
       clearTimeout(timeout)
@@ -218,6 +231,7 @@ export const useTaskFilter = () => {
     setFilterValue,
     isGroupbyStatus,
     updateGroupByFilter,
+    setDateRangeByMonth,
     isGroupbyAssignee,
     isGroupbyPriority
   }

@@ -1,11 +1,7 @@
 // import RootPage from "../components/RootPage";
 
+import { redirect } from 'next/navigation'
+
 export default async function Index() {
-  return (
-    <div>
-      <div className="wrapper">
-        {/* <RootPage/> */}
-      </div>
-    </div>
-  );
+  redirect('/organization')
 }

@@ -29,7 +29,6 @@ router.get('/get-by-project', async (req: AuthRequest, res) => {
     const cached = await getJSONCache(key)
 
     if (cached) {
-
       // return res.json({
       //   data: cached
       // })
@@ -64,7 +63,7 @@ router.post('', async (req: AuthRequest, res) => {
   try {
     console.log('auth user', req.authen)
     const { id: uid } = req.authen
-    const { name, parentId, organizationId, projectId, dueDate } =
+    const { name, parentId, organizationId, projectId, dueDate, startDate } =
       req.body as Vision
 
     const result = await mdVisionAdd({
@@ -72,6 +71,7 @@ router.post('', async (req: AuthRequest, res) => {
       parentId,
       organizationId,
       projectId,
+      startDate: new Date(startDate),
       dueDate: new Date(dueDate),
       progress: 0,
       createdBy: uid,
@@ -79,13 +79,14 @@ router.post('', async (req: AuthRequest, res) => {
     })
     res.json({ data: result })
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 })
 
 router.put('', async (req: AuthRequest, res) => {
   try {
-    const { name, dueDate, id, progress } = req.body as Vision
+    const { name, dueDate, id, progress, startDate } = req.body as Vision
 
     const updateData = {} as Vision
 
@@ -93,9 +94,15 @@ router.put('', async (req: AuthRequest, res) => {
       updateData.dueDate = new Date(dueDate)
     }
 
+    if (startDate) {
+      updateData.startDate = new Date(startDate)
+    }
+
     if (name) {
       updateData.name = name
     }
+
+    console.log(updateData)
 
     await mdVisionUpdate({
       id,

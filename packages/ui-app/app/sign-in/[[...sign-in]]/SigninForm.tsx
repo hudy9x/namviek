@@ -16,6 +16,7 @@ import Logo from '../../../components/Logo'
 
 import { ISignin, resendVerifyEmail, signin } from '@goalie/nextjs'
 import { BsMailbox } from 'react-icons/bs'
+import { getRecentVisit } from '@shared/libs'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -40,7 +41,8 @@ export default function SigninForm() {
       setEmail(values.email)
       signin(values as ISignin)
         .then(res => {
-          push('/organization')
+          const recentVisit = getRecentVisit()
+          recentVisit ? push(recentVisit) : push('/organization')
 
           // messageSuccess('Success')
         })
@@ -92,14 +94,14 @@ export default function SigninForm() {
 
   return (
     <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex rounded-md border-2 border-indigo-300 shadow-2xl shadow-indigo-200">
+      <div className="flex rounded-xl border-4 border-white/30 dark:border-gray-800/50 ">
         <form
           onSubmit={regHandleSubmit}
-          className="bg-white dark:bg-gray-900 p-8 w-[350px] sm:w-[400px] rounded-md">
+          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md">
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">
-              Welcome to Kampuni
+              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
             </h2>
           </div>
           <p className="text-gray-400 text-sm mt-3">
