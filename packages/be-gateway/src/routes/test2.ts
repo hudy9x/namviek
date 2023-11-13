@@ -1,11 +1,15 @@
-import { Controller } from '../core/Controller'
-import { Delete } from '../core/Delete'
-import { Get } from '../core/Get'
-import { getMetadata } from '../core/Mapper'
-import { Post } from '../core/Post'
-import { Put } from '../core/Put'
-import { Response } from '../core/Response'
-import { MetaKey, RouteDefinition } from '../core/type'
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Response,
+  getMetadata,
+  MetaKey,
+  RouteDefinition
+} from '../core'
+import { Router } from 'express'
 
 @Controller('/meeting')
 class MeetingController {
@@ -46,14 +50,19 @@ class AdminController {
   }
 }
 
-const routes = [MeetingController, AdminController]
+const routeControllers = [MeetingController, AdminController]
 
-routes.forEach(controller => {
+const routeList = []
+
+routeControllers.forEach(controller => {
   const instance = new controller()
   console.log('================')
 
   const prefix = getMetadata(MetaKey.PREFIX, controller)
   const routes = getMetadata(MetaKey.ROUTES, controller) as RouteDefinition[]
+
+  const mainRouter = Router()
+  mainRouter.use(prefix)
 
   // console.log(prefix, routes)
 
