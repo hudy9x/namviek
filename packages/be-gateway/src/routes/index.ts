@@ -16,10 +16,12 @@ import meetingRouter from './meeting'
 import { authMiddleware } from '../middlewares'
 
 // import "./test";
-import "./test2";
+import AdminController from './test2'
+import { AppRoutes } from '../core/AppRoutes'
 
 const router = Router()
 
+router.use(AppRoutes([AdminController]))
 // middlewares
 // router.use([])
 router.use((req, res, next) => {

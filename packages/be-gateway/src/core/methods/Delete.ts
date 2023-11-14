@@ -1,7 +1,7 @@
-import { getMetadata, hasMetadata, setMetadata } from './Mapper'
-import { HTTPMethod, MetaKey, RouteDefinition } from './type'
+import { getMetadata, hasMetadata, setMetadata } from '../Mapper'
+import { HTTPMethod, MetaKey, RouteDefinition } from '../type'
 
-export const Put = (path: string): MethodDecorator => {
+export const Delete = (path: string): MethodDecorator => {
   return (target, propertyKey: string): void => {
     if (!hasMetadata(MetaKey.ROUTES, target.constructor)) {
       setMetadata(MetaKey.ROUTES, [], target.constructor)
@@ -13,7 +13,7 @@ export const Put = (path: string): MethodDecorator => {
     ) as RouteDefinition[]
 
     routes.push({
-      requestMethod: HTTPMethod.PUT,
+      requestMethod: HTTPMethod.DELETE,
       path,
       methodName: propertyKey
     })

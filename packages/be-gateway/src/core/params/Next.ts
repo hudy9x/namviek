@@ -1,7 +1,7 @@
-import { getMetadata, hasMetadata, setMetadata } from './Mapper'
-import { MetaKey } from './type'
+import { getMetadata, hasMetadata, setMetadata } from '../Mapper'
+import { MetaKey, RouterParams } from '../type'
 
-export const Response = (): ParameterDecorator => {
+export const Next = (): ParameterDecorator => {
   return (target: any, propertyKey: string, parameterIndex: number) => {
     const _target = target.constructor
 
@@ -11,7 +11,7 @@ export const Response = (): ParameterDecorator => {
 
     const params = getMetadata(MetaKey.PARAMS, _target, propertyKey) as string[]
 
-    params[parameterIndex] = 'RESPONSE'
+    params[parameterIndex] = RouterParams.NEXT
 
     setMetadata(MetaKey.PARAMS, params, _target, propertyKey)
   }

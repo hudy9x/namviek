@@ -1,8 +1,20 @@
+import { NextFunction, Request, Response } from 'express'
+
 export enum HTTPMethod {
-  GET = 'GET',
-  POST = 'POST',
-  DELETE = 'DELETE',
-  PUT = 'PUT'
+  GET = 'get',
+  POST = 'post',
+  DELETE = 'delete',
+  PUT = 'put'
+}
+
+export enum RouterParams {
+  REQUEST = 'REQUEST',
+  RESPONSE = 'RESPONSE',
+  NEXT = 'NEXT',
+  BODY = 'BODY',
+  QUERY = 'QUERY',
+  PARAM = 'PARAM',
+  USER = 'USER'
 }
 
 export enum MetaKey {
@@ -17,3 +29,7 @@ export interface RouteDefinition {
   path: string
   methodName: string
 }
+
+export type ExpressRequest = Request
+export type ExpressResponse = Response
+export type ExpressNext = NextFunction

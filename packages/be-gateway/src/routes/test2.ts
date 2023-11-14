@@ -1,85 +1,60 @@
+import { Request, Response } from 'express'
 import {
   Controller,
   Delete,
+  ExpressResponse,
   Get,
   Post,
   Put,
-  Response,
-  getMetadata,
-  MetaKey,
-  RouteDefinition
+  Res,
+  Req,
+  Body,
+  Next,
+  Param,
+  Query,
+  AbstractController
 } from '../core'
-import { Router } from 'express'
-
-@Controller('/meeting')
-class MeetingController {
-  constructor() {
-    console.log()
-  }
-
-  @Get('/get')
-  index() {
-    console.log('index')
-  }
-
-  @Post('/add')
-  add() {
-    console.log('add')
-  }
-}
 
 @Controller('/admin')
-class AdminController {
+export default class AdminController extends AbstractController {
+  name: string
   constructor() {
+    super()
     console.log()
+    this.name = 'admin controller'
   }
 
   @Get('/get')
-  something() {
-    console.log()
+  something(@Res() res: ExpressResponse, @Param() params, @Query() query) {
+    console.log('called me')
+    console.log('params', params)
+    console.log('query', query)
+    res.send('done')
+  }
+
+  @Get('/:name')
+  getName(@Param() params) {
+    console.log('params', params)
+    this.res.send('done hee' + this.name)
+  }
+
+  @Post('')
+  addAdmin(@Body() body, @Res() res: ExpressResponse) {
+    console.log(body)
+    res.send('done')
   }
 
   @Put('/update-admin')
-  adminDelete() {
+  adminDelete(req, res) {
     console.log()
+    res.send('done admin update')
   }
 
   @Delete('/delete-info')
-  deleteInfo(@Response() res) {
-    console.log(res)
+  deleteInfo(@Res() res: Response, @Req() req: Request, @Next() next) {
+    console.log('called delete info')
+    console.log(req.headers)
+    console.log(this.name)
+    res.send('called delte info')
   }
 }
-
-const routeControllers = [MeetingController, AdminController]
-
-const routeList = []
-
-routeControllers.forEach(controller => {
-  const instance = new controller()
-  console.log('================')
-
-  const prefix = getMetadata(MetaKey.PREFIX, controller)
-  const routes = getMetadata(MetaKey.ROUTES, controller) as RouteDefinition[]
-
-  const mainRouter = Router()
-  mainRouter.use(prefix)
-
-  // console.log(prefix, routes)
-
-  routes.forEach(r => {
-    const params = getMetadata(
-      MetaKey.PARAMS,
-      controller,
-      r.methodName
-    ) as string[]
-
-    if (params && params.length) {
-      console.log(instance)
-      console.log(r.methodName)
-      console.log(params)
-      if (instance[r.methodName]) {
-        instance[r.methodName].apply(null, [params[0]])
-      }
-    }
-  })
-})
