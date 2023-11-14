@@ -21,7 +21,8 @@ export enum MetaKey {
   ROUTES = 'ROUTES',
   PREFIX = 'PREFIX',
   MIDDLEWARES = 'MIDDLEWARES',
-  PARAMS = 'PARAMS'
+  PARAMS = 'PARAMS',
+  AUTH = 'AUTH'
 }
 
 export interface RouteDefinition {
@@ -33,3 +34,5 @@ export interface RouteDefinition {
 export type ExpressRequest = Request
 export type ExpressResponse = Response
 export type ExpressNext = NextFunction
+
+export type ExpressMiddlewareFunction = (req: Request, res: Response, next: NextFunction) => void

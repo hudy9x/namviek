@@ -1,4 +1,10 @@
-import { getMetadata, MetaKey, RouteDefinition, RouterParams } from '../core'
+import {
+  ExpressMiddlewareFunction,
+  getMetadata,
+  MetaKey,
+  RouteDefinition,
+  RouterParams
+} from '../core'
 import { Router } from 'express'
 
 export const AppRoutes = (routeControllers: any[]) => {
@@ -10,12 +16,17 @@ export const AppRoutes = (routeControllers: any[]) => {
 
     const prefix = getMetadata(MetaKey.PREFIX, controller) as string
     const routes = getMetadata(MetaKey.ROUTES, controller) as RouteDefinition[]
+    const controllerMiddleware = getMetadata(
+      MetaKey.MIDDLEWARES,
+      controller
+    ) as ExpressMiddlewareFunction[]
 
     if (!prefix) return
 
     const controllerRouter = Router()
     const methodRouter = Router()
     console.log(prefix)
+    console.log('middleware:', controllerMiddleware)
 
     // mainRouter.use(`${prefix}`)
 
@@ -80,9 +91,10 @@ export const AppRoutes = (routeControllers: any[]) => {
           func.apply(instance, [])
         })
       }
-
-      controllerRouter.use(prefix, methodRouter)
     })
+
+    const middlewares = controllerMiddleware || []
+    controllerRouter.use(prefix, middlewares, methodRouter)
 
     rootRouter.use(controllerRouter)
 

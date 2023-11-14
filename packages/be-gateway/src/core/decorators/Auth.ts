@@ -1,8 +1,8 @@
 import { setMetadata } from '../Mapper'
 import { MetaKey } from '../type'
 
-export const Auth = (): ClassDecorator => {
+export const Auth = (roles: string[]): ClassDecorator => {
   return (target: any) => {
-    setMetadata(MetaKey.MIDDLEWARES, '', target)
+    setMetadata(MetaKey.AUTH, roles, target)
   }
 }

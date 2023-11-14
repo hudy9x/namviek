@@ -2,6 +2,8 @@ export * from './Controller'
 export * from './Mapper'
 export * from './type'
 
+export * from './UseMiddleware'
+
 export * from './abstracts/Controller'
 
 export * from './methods/Method'
