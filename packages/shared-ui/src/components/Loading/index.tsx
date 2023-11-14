@@ -6,7 +6,7 @@ const createLoadingContainer = () => {
   const wrapper = document.createElement('div')
   wrapper.id = 'loading-wrapper'
   document.body.appendChild(wrapper)
-  
+
   return wrapper
 }
 
@@ -20,9 +20,9 @@ export const setFixLoading: SetFixLoading = (
     const root = createRoot(container)
 
     root.render(<Loading {...{ enabled, title, icon, className }} />)
-  } else {
-    enabled
-      ? loadingWrapper.classList.remove('loading-hidden')
-      : loadingWrapper.classList.add('loading-hidden')
   }
+
+  enabled
+    ? loadingWrapper?.classList.remove('loading-hidden')
+    : loadingWrapper?.classList.add('loading-hidden')
 }

@@ -23,15 +23,15 @@
 }
 
 .loading-icon {
-    &.default svg{
+    &.base svg{
         @apply w-4 h-4;
     }
 
-    &.small {
+    &.sm svg{
         @apply w-2 h-2;
     }
 
-    &.large {
+    &.lg svg{
         @apply w-6 h-6;
     }
 }

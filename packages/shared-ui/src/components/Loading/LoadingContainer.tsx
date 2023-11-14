@@ -1,10 +1,11 @@
-import React from 'react'
+import { ReactNode } from 'react'
 import { LoadingSpinnerIcon } from './Icon'
 import './style.css'
+import AbsoluteLoading from './AbsoluteLoading'
 export interface ILoadingProps {
   title?: string
-  icon?: React.ReactNode
-  size?: 'default' | 'small' | 'large'
+  icon?: ReactNode
+  size?: 'base' | 'sm' | 'lg'
   className?: string
 }
 
@@ -16,7 +17,7 @@ const LoadingContainer = ({
   enabled = true,
   title,
   icon = true,
-  size = 'default',
+  size = 'base',
   className = ''
 }: ILoadingEnabled) => {
   if (!enabled) return null
@@ -31,20 +32,6 @@ const LoadingContainer = ({
   )
 }
 
-LoadingContainer.Absolute = ({
-  title = 'Loading...',
-  icon = true,
-  size = 'default',
-  className = ''
-}) => {
-  return (
-    <div className="loading-absolute loading-icon-container">
-      <div className={`loading-icon ${size} ${className}`}>
-        {typeof icon === 'boolean' ? icon && <LoadingSpinnerIcon /> : icon}
-      </div>
-      {title && <p className="text-gray-500 dark:text-gray-300">{title}</p>}
-    </div>
-  )
-}
+LoadingContainer.Absolute = AbsoluteLoading
 
 export default LoadingContainer
