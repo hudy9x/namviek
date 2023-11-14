@@ -12,18 +12,17 @@ import {
   Next,
   Param,
   Query,
-  AbstractController,
+  BaseController,
   UseMiddleware
 } from '../core'
 import { testMiddleware, test2Middleware } from '../middlewares'
 
 @Controller('/admin')
 @UseMiddleware([testMiddleware, test2Middleware])
-export default class AdminController extends AbstractController {
+export default class AdminController extends BaseController {
   name: string
   constructor() {
     super()
-    console.log()
     this.name = 'admin controller'
   }
 

@@ -1,6 +1,6 @@
 import { ExpressNext, ExpressRequest, ExpressResponse } from '../type'
 
-export class AbstractController {
+export class BaseController {
   req: ExpressRequest
   res: ExpressResponse
   next: ExpressNext
