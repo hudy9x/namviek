@@ -1,6 +1,6 @@
+import { Loading } from '@shared/ui';
 import { HTMLAttributes } from "react";
 import "./index.css";
-import { LoadingSpinnerIcon } from '../Loading/Icon';
 
 type ButtonBaseAttrs = HTMLAttributes<HTMLButtonElement>;
 type ButtonBaseAttrsFilter = Pick<
@@ -65,7 +65,7 @@ const Button = ({
   return (
     <button type={type} className={classes.join(" ")} disabled={disabled} {...otherProps}>
       {leadingIcon && !loading ? leadingIcon : null}
-      {loading ? <LoadingSpinnerIcon /> : null}
+      {loading ? <Loading /> : null}
       {title}
     </button>
   );

@@ -9,7 +9,7 @@ export default function ProjectContentLoading() {
         <div className="w-4 h-4">
           <LoadingSpinnerIcon />
         </div>
-        <span>Loading ...</span>
+        <span>Ola Loading -----------------------...</span>
       </div>
     </div>
   )

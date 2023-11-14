@@ -12,12 +12,6 @@
     }
 }
 
-.loading-container {
-    @apply h-full;
-    @apply flex justify-center items-center;
-    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
-}
-
 .loading-icon-container {
     @apply flex items-center gap-2;
 }
@@ -39,4 +33,5 @@
 .loading-absolute {
     @apply absolute top-0 left-0 w-full h-full;
     @apply flex justify-center items-center;
+    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
 }

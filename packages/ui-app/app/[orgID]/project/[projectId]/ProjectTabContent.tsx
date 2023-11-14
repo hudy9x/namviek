@@ -5,33 +5,34 @@ import { useSearchParams } from 'next/navigation'
 import TaskList from './TaskList'
 import ProjectOverview from '@/features/Project/Overview'
 import ProjectContentLoading from './ProjectContentLoading'
+import { Loading } from '@shared/ui'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 const Calendar = dynamic(() => import('./calendar'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 const Board = dynamic(() => import('./board'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 
 const Vision = dynamic(() => import('@/features/Project/Vision'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 
 const Settings = dynamic(() => import('./settings'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 
 const Automation = dynamic(() => import('@/features/Automation'), {
-  loading: () => <ProjectContentLoading />
+  loading: () => <Loading.Absolute />
 })
 
 const AutomateList = dynamic(
   () => import('@/features/Automation/AutomateList'),
   {
-    loading: () => <ProjectContentLoading />
+    loading: () => <Loading.Absolute />
   }
 )
 
