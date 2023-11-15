@@ -8,7 +8,7 @@ const AbsoluteLoading = ({
   className = ''
 }: ILoadingProps) => {
   return (
-    <div className="loading-absolute loading-icon-container">
+    <div className={`loading-absolute loading-icon-container ${className}`}>
       <div className={`loading-icon ${size} ${className}`}>
         {typeof icon === 'boolean' ? icon && <LoadingSpinnerIcon /> : icon}
       </div>

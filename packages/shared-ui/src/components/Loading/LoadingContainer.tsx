@@ -23,8 +23,8 @@ const LoadingContainer = ({
   if (!enabled) return null
 
   return (
-    <div className="loading-icon-container">
-      <div className={`loading-icon ${size} ${className}`}>
+    <div className={`loading-icon-container ${className}`}>
+      <div className={`loading-icon ${size}`}>
         {typeof icon === 'boolean' ? icon && <LoadingSpinnerIcon /> : icon}
       </div>
       {title && <p className="text-gray-500 dark:text-gray-300">{title}</p>}
