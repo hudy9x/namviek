@@ -42,4 +42,5 @@ Thumbs.db
 .next
 .env.local
 .env
-:qa
+pm2.json
+
