@@ -28,7 +28,6 @@ export const GoalieProvider = function({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<GoalieUser | null>(null)
 
   useEffect(() => {
-    console.log('get now')
     setUser(getGoalieUser())
   }, [])
   useGoalieInProtectionMode({ user })
