@@ -9,6 +9,7 @@ import {
 import { messageError } from '@shared/ui'
 import axios from 'axios'
 
+console.log(process.env.NEXT_PUBLIC_BE_GATEWAY)
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BE_GATEWAY || ''
 })
