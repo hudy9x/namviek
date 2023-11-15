@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Logo from '../../../components/Logo'
 
-import { ISignin, resendVerifyEmail, signin } from '@goalie/nextjs'
+import { ISignin, getGoalieUser, resendVerifyEmail, signin, useUser } from '@goalie/nextjs'
 import { BsMailbox } from 'react-icons/bs'
 import { getRecentVisit } from '@shared/libs'
 
@@ -24,6 +24,7 @@ export default function SigninForm() {
   const [email, setEmail] = useState('')
   const [isUserInactive, setIsUserInactive] = useState(false)
   const [sending, setSending] = useState(false)
+  const { setUser } = useUser()
 
   const { regField, regHandleSubmit } = useForm({
     values: {
@@ -31,18 +32,25 @@ export default function SigninForm() {
       password: ''
     },
     validateFn: values => {
-      console.log('validate', values)
+
       return validateLoginUser(values)
     },
     onSubmit: values => {
       if (loading) return
       setLoading(true)
-      console.log(values)
+
       setEmail(values.email)
       signin(values as ISignin)
         .then(res => {
           const recentVisit = getRecentVisit()
-          recentVisit ? push(recentVisit) : push('/organization')
+          setUser(getGoalieUser())
+
+          if (recentVisit) {
+            const location = window.location
+            location.href = `${location.protocol}//${location.host}${recentVisit}`
+          } else {
+            push('/organization')
+          }
 
           // messageSuccess('Success')
         })
@@ -94,7 +102,7 @@ export default function SigninForm() {
 
   return (
     <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex rounded-xl border-4 border-white/30 dark:border-gray-800/50 ">
+      <div className="flex border-4 border-white/30 dark:border-gray-800/50 " style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
           onSubmit={regHandleSubmit}
           className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md">
