@@ -1,38 +1,37 @@
 'use client'
 
+import ProjectOverview from '@/features/Project/Overview'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
-import TaskList from './TaskList'
-import ProjectOverview from '@/features/Project/Overview'
 import ProjectContentLoading from './ProjectContentLoading'
-import { Loading } from '@shared/ui'
+import TaskList from './TaskList'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 const Calendar = dynamic(() => import('./calendar'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 const Board = dynamic(() => import('./board'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 
 const Vision = dynamic(() => import('@/features/Project/Vision'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 
 const Settings = dynamic(() => import('./settings'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 
 const Automation = dynamic(() => import('@/features/Automation'), {
-  loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+  loading: () => <ProjectContentLoading />
 })
 
 const AutomateList = dynamic(
   () => import('@/features/Automation/AutomateList'),
   {
-    loading: () => <Loading.Absolute className='h-[calc(100vh-83px)]'/>
+    loading: () => <ProjectContentLoading />
   }
 )
 

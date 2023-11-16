@@ -19,7 +19,6 @@ import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
-import { Button, Loading, setFixLoading } from '@shared/ui'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -27,7 +26,6 @@ export default function ProjectNav() {
   const params = useParams()
   const { selectedProject } = useProjectStore(state => state)
   const mode = searchParams.get('mode')
-  const [iconLoading, setIconLoading] = useState(false)
 
   const [tabs] = useState([
     {
@@ -152,18 +150,6 @@ export default function ProjectNav() {
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="flex items-center gap-2 ">
-          <div className="relative w-28 h-10 bg-white dark:bg-slate-900 border border-gray-200 rounded-md">
-            <Loading.Absolute />
-          </div>
-          <Button
-            className="z-40"
-            onClick={() => {
-              setIconLoading(prevState => !prevState)
-              setFixLoading(!iconLoading, { title: 'Loading...' })
-            }}
-            title="toggle loading"
-            loading={iconLoading}
-          />
           <FavoriteAddModal />
           <TaskCreate />
         </div>
