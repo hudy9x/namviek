@@ -1,0 +1,68 @@
+name: Deploy Namviek
+run-name: Deploy Namviek API
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build-backend-api:
+    runs-on: myvps
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          
+      - name: create pm2.json file
+        run: |
+          echo '{"apps":[{"name":"kampuni-be","script":"npm","args":"run prod:be"}]}' > pm2.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          
+      - name: install node_modules
+        run: |
+          npm install
+          npm run generate2
+      - name: install pm2 for starting nodejs app forever
+        run: npm install pm2 -g
+          
+      - name: build backend source
+        run: |
+          npm run build:be
+          
+      - name: add environment variables
+        run: |
+          date > ./packages/be-gateway/built.time
+          echo "NEXT_PUBLIC_FE_GATEWAY=${{ vars.NEXT_PUBLIC_FE_GATEWAY }}
+           NEXT_PUBLIC_BE_GATEWAY=
+           PORT=${{ vars.PORT }}
+           NEXT_PUBLIC_APP_NAME=
+           MONGODB_URL=${{ vars.MONGODB_URL }}
+           JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }}
+           JWT_REFRESH_KEY=${{ vars.JWT_REFRESH_KEY }}
+           JWT_VERIFY_USER_LINK_TOKEN_EXPIRED=${{ vars.JWT_VERIFY_USER_LINK_TOKEN_EXPIRED }}
+           JWT_TOKEN_EXPIRED=${{ vars.JWT_TOKEN_EXPIRED }}
+           JWT_REFRESH_EXPIRED=${{ vars.JWT_REFRESH_EXPIRED }}
+           REDIS_HOST=
+           RESEND_TOKEN=${{ vars.RESEND_TOKEN }}
+           RESEND_EMAIL_DOMAIN=${{ vars.RESEND_EMAIL_DOMAIN }}
+           AWS_ACCESS_KEY=${{ vars.AWS_ACCESS_KEY }}
+           AWS_SECRET_ACCESS_KEY=${{ vars.AWS_SECRET_ACCESS_KEY }}
+           AWS_REGION=${{ vars.AWS_REGION }}
+           AWS_S3_BUCKET=${{ vars.AWS_S3_BUCKET }}
+           REPLICATE_API_TOKEN=${{ vars.REPLICATE_API_TOKEN }}
+           OPEN_API_KEY=${{ vars.OPEN_API_KEY }}
+           NEXT_PUBLIC_PUSHER_INSTANCE_ID=
+           PUSHER_INSTANCE_ID=${{ vars.PUSHER_INSTANCE_ID }}
+           PUSHER_SECRET_KEY=${{ vars.PUSHER_SECRET_KEY }}
+           LIVEKIT_API_KEY=${{ vars.LIVEKIT_API_KEY }}
+           LIVEKIT_API_SECRET=${{ vars.LIVEKIT_API_SECRET }}
+           NEXT_PUBLIC_LIVEKIT_URL=" > .env
+      - name: run app
+        run: |
+          pm2 start pm2.json &
+      - name: finish deployment
+        run: echo 'done2'
+
