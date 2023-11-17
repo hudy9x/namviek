@@ -11,7 +11,7 @@ import Routes from './routes'
 const app: Application = express()
 
 app.get('/check-health', (req, res) => {
-  res.send(`🚀🎃🎃:e Site available ${new Date()} `)
+  res.send(`🚀🎃🎃🎨🎨:e Site available ${new Date()} `)
 })
 
 app.use(
