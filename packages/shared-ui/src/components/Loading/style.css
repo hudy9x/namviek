@@ -1,37 +1,42 @@
 #loading-wrapper {
-    @apply fixed top-0 left-0 w-full;
-    @apply z-30;
-    @apply h-[80vh];
+  @apply fixed top-0 left-0 w-full h-full;
+  @apply z-30;
+  @apply flex justify-center items-center;
+  @apply bg-white/50  dark:bg-gray-900/50;
+}
 
-    /*@apply h-full;*/
-    @apply flex justify-center items-center;
-    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
-
-    &.loading-hidden {
-        @apply hidden;
-    }
+#loading-wrapper.loading-hidden {
+  @apply hidden;
 }
 
 .loading-icon-container {
-    @apply flex items-center gap-2;
+  @apply flex items-center gap-2;
+}
+
+.loading-icon-container.loading-border {
+  @apply border  px-2 py-1 rounded-md shadow-lg;
+  @apply shadow-gray-200/80 dark:shadow-gray-900;
+  @apply bg-white dark:bg-gray-900 dark:border-gray-700;
 }
 
 .loading-icon {
-    &.base svg{
-        @apply w-4 h-4;
-    }
+  @apply text-gray-500 dark:text-gray-300;
+}
 
-    &.sm svg{
-        @apply w-2 h-2;
-    }
+.loading-icon.base svg {
+  @apply w-4 h-4;
+}
 
-    &.lg svg{
-        @apply w-6 h-6;
-    }
+.loading-icon.sm svg {
+  @apply w-2 h-2;
+}
+
+.loading-icon.lg svg {
+  @apply w-6 h-6;
 }
 
 .loading-absolute {
-    @apply absolute top-0 left-0 w-full h-full;
-    @apply flex justify-center items-center;
-    @apply bg-[#0000001a]  dark:bg-[#19233b9c];
+  @apply absolute z-10 top-0 left-0 w-full h-full;
+  @apply flex justify-center items-center;
+  @apply bg-white/50  dark:bg-gray-900/50 backdrop-blur-sm;
 }

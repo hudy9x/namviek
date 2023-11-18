@@ -7,10 +7,8 @@ export interface ILoadingProps {
   icon?: ReactNode
   size?: 'base' | 'sm' | 'lg'
   className?: string
-}
-
-export interface ILoadingEnabled extends ILoadingProps {
   enabled?: boolean
+  border?: boolean
 }
 
 const LoadingContainer = ({
@@ -18,16 +16,18 @@ const LoadingContainer = ({
   title,
   icon,
   size = 'base',
-  className = ''
-}: ILoadingEnabled) => {
+  className = '',
+  border = false,
+}: ILoadingProps) => {
   if (!enabled) return null
+  const loadingBorder = border ? 'loading-border' : ''
 
   return (
-    <div className={`loading-icon-container ${className}`}>
+    <div className={`loading-icon-container ${className} ${loadingBorder}`}>
       <div className={`loading-icon ${size}`}>
         {icon || <LoadingSpinnerIcon />}
       </div>
-      {title && <p className="text-gray-500 dark:text-gray-300">{title}</p>}
+      {title && <p className="text-sm text-gray-500 dark:text-gray-300">{title}</p>}
     </div>
   )
 }
