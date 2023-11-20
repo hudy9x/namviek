@@ -1,5 +1,4 @@
 name: Deploy Namviek
-run-name: Deploy Namviek API
 on: 
   push:
     branches:
