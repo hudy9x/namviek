@@ -1,5 +1,5 @@
 .report-box {
-  @apply border bg-white shadow-sm rounded-md;
+  @apply border dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm rounded-md;
 }
 
 .center-all {
