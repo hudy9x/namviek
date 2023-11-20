@@ -2,9 +2,8 @@ import './style.css'
 import { useVisionContext } from '../Vision/context'
 import VisionViewMode from '../Vision/VisionViewMode'
 
+import { Loading, Timeline } from '@shared/ui'
 import VisionMonthNavigator from '../Vision/VisionMonthNavigator'
-import AbsoluteLoading from '@/components/AbsoluateLoading'
-import { Timeline } from '@shared/ui'
 
 export default function VisionTimeline({ visible }: { visible: boolean }) {
   const { visions, filter, loading, getVisionProgress, updateVision } =
@@ -18,7 +17,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         visible ? '' : 'hidden'
       }`}
       style={{ maxWidth: `calc(100vw - 340px)` }}>
-      <AbsoluteLoading enabled={loading} />
+      <Loading.Absolute enabled={loading} border/>
       <div className="py-3 flex items-center justify-between">
         <div>
           <VisionMonthNavigator />

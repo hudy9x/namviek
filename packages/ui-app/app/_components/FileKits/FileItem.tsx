@@ -1,7 +1,6 @@
-import { Button } from '@shared/ui'
+import { Button, Loading } from '@shared/ui'
 import FileThumb from './FileThumb'
 import { IFileItem } from './context'
-import AbsoluteLoading from '../AbsoluateLoading'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'
 
@@ -32,7 +31,7 @@ export default function FileItem({ data }: { data: IFileItem }) {
 
   return (
     <div className="file-item">
-      <AbsoluteLoading title="Uploading ..." enabled={uploading} />
+      <Loading.Absolute title="Uploading ..." enabled={uploading} />
       <FileThumb {...{ name, src: url, ext, type: mimeType, id: id || '' }} />
 
       <div className="px-3 py-2">

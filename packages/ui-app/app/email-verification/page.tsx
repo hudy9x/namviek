@@ -1,7 +1,7 @@
 'use client'
 
-import AbsoluteLoading from '@/components/AbsoluateLoading'
 import { httpGet } from '@/services/_req'
+import { Loading } from '@shared/ui'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -26,7 +26,7 @@ export default function Verification() {
 
   return (
     <div className="w-screen h-screen relative flex items-center justify-center">
-      <AbsoluteLoading enabled={isLoading} />
+      <Loading.Absolute enabled={isLoading} border/>
       <div className="text-gray-500 text-center">
         {isTokenValid ? (
           <>

@@ -4,7 +4,6 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import useCalendarAction from './useCalendarAction'
 import { useTaskStore } from '@/store/task'
 import { Loading } from '@shared/ui'
-import AbsoluteLoading from '@/components/AbsoluateLoading'
 
 interface ICalMonthContainerProps {
   date: Date
@@ -20,7 +19,7 @@ export default function CalMonthContainer({ date }: ICalMonthContainerProps) {
       <div
         className="flex flex-col justify-between divide-y dark:divide-gray-700 relative"
         style={{ height: 'calc(100vh - 124px)' }}>
-        <AbsoluteLoading enabled={taskLoading} />
+        <Loading.Absolute enabled={taskLoading} border/>
         {calendars.map((week, weekIndex) => {
           return (
             <div

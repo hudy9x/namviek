@@ -3,9 +3,8 @@
 import VisionCreate from './VisionCreate'
 import { useVisionContext } from './context'
 import ListBox from '@/components/ListBox'
-import AbsoluteLoading from '@/components/AbsoluateLoading'
+import { Loading } from '@shared/ui'
 import VisionItem from './VisionItem'
-
 import VisionListHeader from './VisionListHeader'
 
 import { HiOutlineInbox } from 'react-icons/hi2'
@@ -35,7 +34,7 @@ export default function VisionList() {
           <div
             className="divide-y dark:divide-gray-700 custom-scrollbar relative overflow-y-auto overflow-x-hidden"
             style={{ maxHeight: `calc(100vh - 300px)` }}>
-            <AbsoluteLoading enabled={loading} />
+            <Loading.Absolute enabled={loading} border />
             {!visions.length ? (
               <div className="py-4 flex items-center justify-center text-gray-400 text-sm">
                 <div className="text-center">

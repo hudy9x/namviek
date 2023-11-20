@@ -1,10 +1,10 @@
 import { useRef } from 'react'
-import AbsoluteLoading from '../AbsoluateLoading'
 import { useFileKitContext } from './context'
-import { randomId } from '@shared/ui'
+import { Loading, randomId } from '@shared/ui'
 import FileDesc from './FileDesc'
 import FileListWrapper from './FileListWrapper'
 import useFileUpload from './useFileUpload'
+
 
 export default function FileControl() {
   const { loading, previewFiles } = useFileKitContext()
@@ -19,7 +19,7 @@ export default function FileControl() {
 
   return (
     <div className="form-control relative">
-      <AbsoluteLoading enabled={loading} />
+      <Loading.Absolute enabled={loading} border />
       <label>Attachments {hasAttachments ? `(${fileLen} files)` : null}</label>
       <div>
         <FileListWrapper />
