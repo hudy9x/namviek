@@ -48,7 +48,9 @@ const ActivityCardCommentContent = ({
     return <p>{...visualContent}</p>
   }
 
-  return <div>{renderContent()}</div>
+  return (
+    <div className="rounded border-black bg-white p-1">{renderContent()}</div>
+  )
 }
 
 export default ActivityCardCommentContent
