@@ -1,22 +1,54 @@
-import Document from '@tiptap/extension-document'
-import Link from '@tiptap/extension-link'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
 import { useState } from 'react'
 
 interface ActivityCardCommentContentProps {
   content: string
 }
 
-const userReg = /@[\w\d]*(?=\b)/g
-const linkReg = /(\[[^[]+\]\(.*\))/g
-const contentReg = new RegExp([userReg.source, linkReg].join('|'), 'g')
+const regDelimiter = '<@@-just-regex-delimieter-@@>'
+
+const userReg = /(@[\w\d]*(?=\b))/
+const linkReg = /(\[[^[]+\]\(.*\))/
+const contentReg = new RegExp([userReg.source, linkReg.source].join('|'), 'g')
 
 // TODO: tiptap render content
 const ActivityCardCommentContent = ({
   content
 }: ActivityCardCommentContentProps) => {
-  return <EditorContent editor={editor} />
+  const renderContent = () => {
+    const renderableObjects = Array.from(content.matchAll(contentReg))
+    const textObjects = content
+      .replace(contentReg, regDelimiter)
+      .split(regDelimiter)
+
+    const visualContent = []
+
+    let i = 0,
+      j = 0
+    for (; i < textObjects.length; i++) {
+      visualContent.push(textObjects[i])
+      for (; j < renderableObjects.length; j++) {
+        const group = renderableObjects[j]
+        for (let k = 1; k < group.length; k++) {
+          const text = group[k]
+          if (!text) continue
+          let element
+          switch (k) {
+            case 1:
+              element = <a className="text-red-600">{text}</a>
+              break
+            case 2:
+              element = <a className="text-blue-600">{text}</a>
+              break
+          }
+          if (element) visualContent.push(element)
+        }
+      }
+    }
+
+    return <p>{...visualContent}</p>
+  }
+
+  return <div>{renderContent()}</div>
 }
 
 export default ActivityCardCommentContent
