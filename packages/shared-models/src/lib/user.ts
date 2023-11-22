@@ -9,6 +9,7 @@ export const mdUserFindEmail = async (email: string) => {
 }
 
 export const mdUserFindFirst = async cond => {
+  console.log({ cond })
   return userModel.findFirst(cond)
 }
 
@@ -18,7 +19,10 @@ export const mdUserAdd = async (data: Omit<User, 'id'>) => {
   })
 }
 
-export const mdUserUpdate = async (id: string, data: Partial<Omit<User, 'id'>>) => {
+export const mdUserUpdate = async (
+  id: string,
+  data: Partial<Omit<User, 'id'>>
+) => {
   return userModel.update({
     where: { id },
     data
