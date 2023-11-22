@@ -1,5 +1,5 @@
+import { Loading } from '@shared/ui';
 import { HTMLAttributes } from "react";
-import { LoadingSpinner } from "../Loading";
 import "./index.css";
 
 type ButtonBaseAttrs = HTMLAttributes<HTMLButtonElement>;
@@ -65,7 +65,7 @@ const Button = ({
   return (
     <button type={type} className={classes.join(" ")} disabled={disabled} {...otherProps}>
       {leadingIcon && !loading ? leadingIcon : null}
-      {loading ? <LoadingSpinner /> : null}
+      {loading ? <Loading /> : null}
       {title}
     </button>
   );

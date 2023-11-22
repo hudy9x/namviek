@@ -1,10 +1,10 @@
 'use client'
 
+import ProjectOverview from '@/features/Project/Overview'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
-import TaskList from './TaskList'
-import ProjectOverview from '@/features/Project/Overview'
 import ProjectContentLoading from './ProjectContentLoading'
+import TaskList from './TaskList'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />

@@ -1,12 +1,9 @@
 'use client'
 
-import AbsoluteLoading from '@/components/AbsoluateLoading'
 import { useReportContext } from './context'
-import ReactApexChart from 'react-apexcharts'
 import { useEffect, useState } from 'react'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { Avatar } from '@shared/ui'
-
+import { Avatar, Loading } from '@shared/ui'
 interface IWorkByMember {
   [key: string]: {
     done: number
@@ -53,7 +50,7 @@ function MemberChartItem({ name, photo, data }: IMemberChartItem) {
           {notDonePercent} %
         </div>
       </div>
-      <div className="w-[48px] h-[20px] shrink-0 text-[10px] flex items-center justify-center border rounded-md bg-gray-100 px-1">
+      <div className="w-[48px] h-[20px] shrink-0 text-[10px] flex items-center justify-center border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-slate-800 px-1">
         {done}/{notDone}
       </div>
     </div>
@@ -93,7 +90,7 @@ export default function ReportMemberProgressChart() {
 
   return (
     <div className="relative center-all w-full h-full">
-      <AbsoluteLoading enabled={loading} />
+      <Loading.Absolute enabled={loading} border/>
       <div className="w-[90%] space-y-1">
         {orgMembers.map(mem => {
           const data = workByMembers[mem.id]

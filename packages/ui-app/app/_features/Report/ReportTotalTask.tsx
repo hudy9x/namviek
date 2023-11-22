@@ -1,11 +1,5 @@
-import AbsoluteLoading from '@/components/AbsoluateLoading'
+import { Loading } from '@shared/ui'
 import { useEffect, useState } from 'react'
-import {
-  TbSum,
-  TbSquareRounded,
-  TbInfoSquareRounded,
-  TbSquareRoundedCheck
-} from 'react-icons/tb'
 import { useReportContext } from './context'
 
 export default function ReportTotalTask() {
@@ -40,17 +34,17 @@ export default function ReportTotalTask() {
   return (
     <>
       <div className="report-box relative p-4">
-        <AbsoluteLoading enabled={loading} />
+        <Loading.Absolute enabled={loading} border/>
         <h2 className="text-sm text-gray-500">Number of complete tasks</h2>
         <span className="text-4xl font-bold">{metric.done}</span>
       </div>
       <div className="report-box relative p-4">
-        <AbsoluteLoading enabled={loading} />
+        <Loading.Absolute enabled={loading} border/>
         <h2 className="text-sm text-gray-500">Number of incomplete tasks</h2>
         <span className="text-4xl font-bold">{metric.notDone}</span>
       </div>
       <div className="report-box relative p-4">
-        <AbsoluteLoading enabled={loading} />
+        <Loading.Absolute enabled={loading} border/>
         <h2 className="text-sm text-gray-500">Total task</h2>
         <span className="text-4xl font-bold">{metric.total}</span>
       </div>

@@ -92,14 +92,7 @@ const SearchStatus = ({ status }: { status: boolean }) => {
     <>
       {status ? (
         <div className="px-6 py-3">
-          <div className="flex items-center gap-5">
-            <div className="w-4 h-4">
-              <Loading />
-            </div>
-            <div className="flex flex-col text-sm">
-              <span className="text-gray-700 font-medium">Searching ...</span>
-            </div>
-          </div>
+          <Loading title='Searching ...'/>
         </div>
       ) : null}
     </>

@@ -1,6 +1,6 @@
 'use client'
 
-import AbsoluteLoading from '@/components/AbsoluateLoading'
+import { Loading } from '@shared/ui'
 import { useReportContext } from './context'
 import ReactApexChart from 'react-apexcharts'
 import { useEffect, useState } from 'react'
@@ -27,7 +27,7 @@ export default function ReportWorkProgressChart() {
 
   return (
     <div className="relative">
-      <AbsoluteLoading enabled={loading} />
+      <Loading.Absolute enabled={loading} border/>
       {typeof window !== 'undefined' && (
         <ReactApexChart
           type="pie"

@@ -6,14 +6,14 @@ import {
   HiOutlineViewColumns,
   HiOutlineCalendar,
   HiOutlineCpuChip,
-  HiOutlineSquares2X2
+  HiOutlineSquares2X2,
+  HiOutlineViewfinderCircle
 } from 'react-icons/hi2'
 import { useProjectStore } from '../../../../store/project'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import { useState } from 'react'
 import ProjectTabContent from './ProjectTabContent'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
-import { HiOutlineViewfinderCircle } from 'react-icons/hi2'
 import TaskCreate from './TaskCreate'
 import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
@@ -148,7 +148,7 @@ export default function ProjectNav() {
       <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
         <ProjectTabContent />
       </div>
-      <div className="absolute bottom-10 right-10 z-[11] ">
+      <div className="absolute bottom-10 right-10 z-[11]">
         <div className="flex items-center gap-2 ">
           <FavoriteAddModal />
           <TaskCreate />
