@@ -81,9 +81,9 @@ export default function PromptTaskAllocation() {
         ```csv
         <br />
         NO,TITLE,ASSIGNEE,START_DATE,END_DATE,PRIORITY <br />
-        1,cong viec 2, Huudai,23/11/2023, 24/11/2023, LOW <br />
-        2,cong viec 3, huy,23/11/2023, 25/11/2023,LOW <br />
-        3,cong viec 5, Huudai,25/11/2023, 27/11/2023,LOW <br />
+        1,cong viec 2, Huudai,11/23/2023, 11/24/2023, LOW <br />
+        2,cong viec 3, huy,11/23/2023, 11/25/2023,LOW <br />
+        3,cong viec 5, Huudai,11/25/2023, 11/27/2023,LOW <br />
         ```
       </div>
     </div>
