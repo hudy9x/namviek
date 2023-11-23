@@ -1,0 +1,17 @@
+.dropdown-menu-content {
+  @apply bg-white border rounded-md py-1.5;
+  min-width: 220px;
+}
+
+.dropdown-item {
+  @apply flex items-center text-sm px-3 py-3 cursor-pointer;
+  @apply hover:bg-gray-50;
+}
+
+.dropdown-item .right-slot {
+  @apply ml-auto text-gray-400;
+}
+
+.dropdown-item[data-disabled] {
+  @apply opacity-50;
+}
