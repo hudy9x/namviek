@@ -34,7 +34,10 @@ export default function TaskImport() {
       <div>
         <div>
           <DropdownMenu>
-            <DropdownMenu.Trigger title="Import" />
+            <DropdownMenu.Trigger
+              icon={<AiOutlineCloudUpload />}
+              title="Import"
+            />
             <DropdownMenu.Content>
               <DropdownMenu.Item
                 onClick={() => setVisible(true)}

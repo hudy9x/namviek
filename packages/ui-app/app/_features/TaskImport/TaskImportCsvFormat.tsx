@@ -1,5 +1,7 @@
+import { useMemberStore } from '@/store/member'
+import { useTaskStore } from '@/store/task'
 import { Form, Modal } from '@shared/ui'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function TaskImportCsvFormat({
   visible,
@@ -10,6 +12,14 @@ export default function TaskImportCsvFormat({
 }) {
   const [csv, setCsv] = useState('')
   const [headers, setHeaders] = useState<string[]>([])
+  const { members } = useMemberStore()
+  const { tasks } = useTaskStore()
+
+  useEffect(() => {
+    if (!visible) {
+      setHeaders([])
+    }
+  }, [visible])
 
   const csvToJson = (csv: string) => {
     // Split the CSV into lines
@@ -37,7 +47,29 @@ export default function TaskImportCsvFormat({
       // Iterate over each column in the current line
       for (let j = 0; j < header.length; j++) {
         // Use the header names as keys and the current line's values as values
-        obj[header[j]] = currentLine[j]
+        const headerKey = header[j]
+        let cell = currentLine[j]
+
+        if (headerKey === 'ASSIGNEE') {
+          console.log(cell)
+          const mem = members.find(m => m.name === cell)
+          if (mem && mem.id) {
+            cell = mem.id
+          }
+        }
+
+        if (headerKey === 'TITLE') {
+          const task = tasks.find(t => t.title.trim() === cell.trim())
+          if (task) {
+            cell = task.id
+          }
+        }
+
+        if (['START_DATE', 'END_DATE'].includes(headerKey)) {
+          // cell = new Date()
+        }
+
+        obj[header[j]] = cell
       }
 
       // Add the object to the result array
@@ -61,7 +93,12 @@ export default function TaskImportCsvFormat({
       title="Insert data using .csv format"
       content={
         <div>
-          <Form.Textarea onChange={ev => csvToJson(ev.target.value)} />
+          <Form.Textarea
+            onChange={ev => {
+              const result = csvToJson(ev.target.value)
+              console.log(result)
+            }}
+          />
           <div>
             <div>
               {headers.map((h, hIndex) => {

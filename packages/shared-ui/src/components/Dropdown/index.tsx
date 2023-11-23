@@ -2,6 +2,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 import './style.css'
 import { ReactNode } from 'react'
+import Button from '../Button'
 
 export default function DropdownMenuContainer({
   children
@@ -11,12 +12,20 @@ export default function DropdownMenuContainer({
   return <DropdownMenu.Root>{children}</DropdownMenu.Root>
 }
 
-const DropdownTrigger = ({ title }: { title: string }) => {
+const DropdownTrigger = ({
+  icon,
+  title,
+  size = 'base'
+}: {
+  icon?: ReactNode
+  title: string
+  size?: 'sm' | 'base' | 'lg'
+}) => {
   return (
     <DropdownMenu.Trigger asChild>
-      <button className="btn" aria-label="Customise options">
-        {title}
-      </button>
+      <div>
+        <Button leadingIcon={icon} title={title} size={size} />
+      </div>
     </DropdownMenu.Trigger>
   )
 }
@@ -26,6 +35,7 @@ const DropdownContent = ({ children }: { children: ReactNode }) => {
     <DropdownMenu.Portal>
       <DropdownMenu.Content className="dropdown-menu-content" sideOffset={5}>
         {children}
+        {/* <DropdownMenu.Arrow className="dropdown-arrow" /> */}
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
   )

@@ -1,6 +1,10 @@
 .dropdown-menu-content {
-  @apply bg-white border rounded-md py-1.5;
+  @apply bg-white border rounded-md py-1.5 shadow-lg;
   min-width: 220px;
+}
+
+.dropdown-arrow {
+  fill: white;
 }
 
 .dropdown-item {
