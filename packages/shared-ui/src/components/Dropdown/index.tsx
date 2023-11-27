@@ -14,15 +14,17 @@ export default function DropdownMenuContainer({
 
 const DropdownTrigger = ({
   icon,
+  className,
   title,
   size = 'base'
 }: {
   icon?: ReactNode
+  className?: string
   title: string
   size?: 'sm' | 'base' | 'lg'
 }) => {
   return (
-    <DropdownMenu.Trigger asChild>
+    <DropdownMenu.Trigger className={className} asChild>
       <div>
         <Button leadingIcon={icon} title={title} size={size} />
       </div>

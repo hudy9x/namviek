@@ -3,8 +3,9 @@ import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { StatusType } from '@prisma/client'
 import { copyToClipboard } from '@shared/libs'
-import { messageSuccess } from '@shared/ui'
-import { useRef, Fragment } from 'react'
+import { DatePicker, messageSuccess } from '@shared/ui'
+import { format } from 'date-fns'
+import { useRef, Fragment, useState } from 'react'
 import { HiOutlineSquare2Stack } from 'react-icons/hi2'
 
 export default function PromptTaskAllocation() {
@@ -12,6 +13,7 @@ export default function PromptTaskAllocation() {
   const { tasks } = useTaskStore()
   const { members } = useMemberStore()
   const { statuses } = useProjectStatusStore()
+  const [deadline, setDeadline] = useState(new Date())
 
   const onCopy = () => {
     if (!divRef.current) return
@@ -28,10 +30,17 @@ export default function PromptTaskAllocation() {
         onClick={onCopy}>
         <HiOutlineSquare2Stack className="w-5 h-5" />
       </div>
+      <DatePicker
+        value={deadline}
+        onChange={val => setDeadline(val)}
+        placeholder="Set an expected deadline"
+        className="w-[300px] mb-3"
+      />
       <div ref={divRef}>
         Act as a software project manager <br />
         Based on the following tasklist and members <br />
-        And the deadline for all of task are before or in 30/11/2023 <br />
+        And the deadline for all of task are before or in{' '}
+        {format(deadline, 'dd/MM/yyyy')} <br />
         So please help me to allocate the following task to every single members
         <br />
         Make sure that every members should be assigned to appropriate workloads

@@ -72,42 +72,54 @@ export const useServiceTaskUpdate = () => {
       })
   }
 
-  const updateTaskData = (taskData: Partial<Task>) => {
-    if (taskData.id?.includes('TASK-ID-RAND')) {
-      messageWarning('Wait! this task still syncing data from server')
-      return
-    }
+  const updateTaskData = (
+    taskData: Partial<Task>,
+    showAlert = true
+  ): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      if (taskData.id?.includes('TASK-ID-RAND')) {
+        showAlert &&
+          messageWarning('Wait! this task still syncing data from server')
+        reject()
+        return
+      }
 
-    if (!taskData.priority) {
-      taskData.priority = TaskPriority.LOW
-    }
+      if (!taskData.priority) {
+        taskData.priority = TaskPriority.LOW
+      }
 
-    if (taskData.taskStatusId) {
-      taskData.done = taskData.taskStatusId === statusDoneId
-    }
+      if (taskData.taskStatusId) {
+        taskData.done = taskData.taskStatusId === statusDoneId
+      }
 
-    refactorTaskFieldByAutomationConfig('task', taskData as ITaskDefaultValues)
+      refactorTaskFieldByAutomationConfig(
+        'task',
+        taskData as ITaskDefaultValues
+      )
 
-    updateTask({
-      updatedBy: user?.id,
-      ...taskData
-    })
-    taskUpdate({
-      projectId,
-      ...taskData
-    })
-      .then(result => {
-        const { status } = result
-        if (status !== 200) {
-          messageError('update error')
-          return
-        }
-        messageSuccess('update success')
+      updateTask({
+        updatedBy: user?.id,
+        ...taskData
       })
-      .catch(error => {
-        console.log(error)
-        messageError('update error')
+      taskUpdate({
+        projectId,
+        ...taskData
       })
+        .then(result => {
+          const { status } = result
+          if (status !== 200) {
+            showAlert && messageError('update error')
+            reject()
+            return
+          }
+          showAlert && messageSuccess('update success')
+          resolve(true)
+        })
+        .catch(error => {
+          reject(error)
+          showAlert && messageError('update error')
+        })
+    })
   }
   return {
     updateTaskData,

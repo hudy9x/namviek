@@ -7,6 +7,7 @@ import TaskImportPreview from './TaskImportPreview'
 import TaskImportArea from './TaskImportArea'
 import { TaskImportProvider } from './context'
 import TaskImportCsvFormat from './TaskImportCsvFormat'
+import './style.css'
 
 export default function TaskImport() {
   const [visible, setVisible] = useState(false)
@@ -35,6 +36,7 @@ export default function TaskImport() {
         <div>
           <DropdownMenu>
             <DropdownMenu.Trigger
+              className="btn-trigger-no-border"
               icon={<AiOutlineCloudUpload />}
               title="Import"
             />
