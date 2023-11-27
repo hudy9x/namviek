@@ -17,7 +17,7 @@ const fakeData: Partial<Activity>[] = [
     createdAt: new Date(),
     uid: '64a44b0ae9b966f87f404d79',
     data: {
-      content: `@card we don't use [www.facebook.com](http://www.facebook.com) for communicating any more!`
+      content: `@64a44b0ae9b966f87f404d79 we don't use [www.facebook.com](http://www.facebook.com) for communicating any more!`
     }
   },
   {
@@ -42,7 +42,7 @@ const fakeData: Partial<Activity>[] = [
     createdAt: new Date(),
     uid: '64a44b0ae9b966f87f404d79',
     data: {
-      content: `# Neovim-config\n\n## Lsp-manager\n\n**mason**\n\n## Useful tools\n\n- jk-accelaration\n- lspsaga\n- vim-surround\n- \n\n[My nvim config](http://github.com/huypl53/nvim "")\n\n\n\n![uttq-lasso.png](https://trello.com/1/cards/652d372f993addd851f85161/attachments/652feb75474c0ededc31aa97/download/uttq-lasso.png)\n\n---\n\n:stuck_out_tongue_closed_eyes: @ppllhh this could help you!\n\n> Just an IDE…`
+      content: `# Neovim-config\n\n## Lsp-manager\n\n**mason**\n\n## Useful tools\n\n- jk-accelaration\n- lspsaga\n- vim-surround\n- \n\n[My nvim config](http://github.com/huypl53/nvim "")\n\n\n\n![uttq-lasso.png](https://trello.com/1/cards/652d372f993addd851f85161/attachments/652feb75474c0ededc31aa97/download/uttq-lasso.png)\n\n---\n\n:stuck_out_tongue_closed_eyes: @64a44b0ae9b966f87f404d79 this could help you!\n\n> Just an IDE…`
     }
   }
 ]

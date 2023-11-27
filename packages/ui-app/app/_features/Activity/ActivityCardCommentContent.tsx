@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import ActivityCardCommentMention from './ActivityCardCommentMention'
+import { userReg, linkReg } from './regex'
 
 interface ActivityCardCommentContentProps {
   content: string
@@ -6,8 +8,6 @@ interface ActivityCardCommentContentProps {
 
 const regDelimiter = '<@@-just-regex-delimieter-@@>'
 
-const userReg = /(@[\w\d]*(?=\b))/
-const linkReg = /(\[[^[]+\]\(.*\))/
 const contentReg = new RegExp([userReg.source, linkReg.source].join('|'), 'g')
 
 // TODO: tiptap render content
@@ -34,7 +34,7 @@ const ActivityCardCommentContent = ({
           let element
           switch (k) {
             case 1:
-              element = <a className="text-red-600">{text}</a>
+              element = <ActivityCardCommentMention memberId={text.slice(1)} />
               break
             case 2:
               element = <a className="text-blue-600">{text}</a>
