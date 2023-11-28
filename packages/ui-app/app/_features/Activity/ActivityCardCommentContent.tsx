@@ -49,13 +49,14 @@ const ActivityCardCommentContent = ({
         }
       }
     }
-    console.log({ visualContent })
 
     return <p>{...visualContent}</p>
   }
 
   return (
-    <div className="rounded border-black bg-white p-1">{renderContent()}</div>
+    <div className="rounded-xl p-4 bg-slate-200 dark:bg-gray-700">
+      {renderContent()}
+    </div>
   )
 }
 

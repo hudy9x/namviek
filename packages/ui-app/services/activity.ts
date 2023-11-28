@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { httpDel, httpGet, httpPost } from './_req'
+import { Activity } from '@prisma/client'
 
 export const activityGetAllByTask = (taskId: string) => {
   return httpGet(`/api/project/task/activity`, {
@@ -8,25 +9,16 @@ export const activityGetAllByTask = (taskId: string) => {
     }
   })
 }
-// export const activityCreatePresignedUrl = ({
-//   orgId,
-//   projectId,
-//   name,
-//   type
-// }: {
-//   orgId: string
-//   projectId: string
-//   name: string
-//   type: string
-// }) => {
-//   console.log('name:', name, type)
-//   return httpPost('/api/activity/create-presigned-url', {
-//     orgId,
-//     projectId,
-//     name,
-//     type
-//   })
-// }
+
+export const activityCreate = (
+  objectId: string,
+  activity: Partial<Activity>
+) => {
+  return httpPost('/api/project/task/activity', activity, {
+    params: { objectId }
+  })
+}
+
 //
 // export const activityDelFile = (id: string, projectId: string) => {
 //   return httpDel('/api/activity/del-file', {

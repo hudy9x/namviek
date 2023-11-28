@@ -39,6 +39,7 @@ export default function ActivityCardAttach({
             <a
               className="text-blue-500 hover:underline"
               key={url}
+              target="_blank"
               href={url || '#'}>
               {name}
             </a>{' '}

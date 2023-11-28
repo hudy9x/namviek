@@ -7,51 +7,48 @@ import {
   randomObjectKeyName
 } from '@be/storage'
 import {
+  mdActivityAdd,
   mdActivityGetAllByTask,
+  mdMemberAdd,
   mdStorageAdd,
   mdStorageGet,
   mdStorageGetByOwner,
   mdStorageGetOne
 } from '@shared/models'
-import { FileOwnerType, FileStorage } from '@prisma/client'
+import { Activity, FileOwnerType, FileStorage } from '@prisma/client'
 import { AuthRequest } from '../../types'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
-import { CKEY, findNDelCaches } from '../../lib/redis'
 
 const router = Router()
 
 router.get('/project/task/activity', async (req: AuthRequest, res) => {
-  const { taskId } = req.query as { taskId: string }
-  console.log({ activityGetTaskId: taskId })
+  const { objectId } = req.query as { objectId: string }
 
   try {
-    const results = await mdActivityGetAllByTask(taskId)
+    const results = await mdActivityGetAllByTask(objectId)
     res.json({ status: 200, data: results })
   } catch (error) {
-    res.status(500).send(error)
+    res.json({
+      status: 500,
+      err: error,
+      data: []
+    })
   }
 })
-//
-// router.post('/create-presigned-url', async (req, res, next) => {
-//   const { name, type, orgId, projectId } = req.body as {
-//     name: string
-//     type: string
-//     projectId: string
-//     orgId: string
-//   }
-//
-//   const randName = `${orgId}/${projectId}/` + randomObjectKeyName(name)
-//   const presignedUrl = await createPresignedUrlWithClient(randName, type)
-//
-//   res.status(200).json({
-//     data: {
-//       name: randName,
-//       presignedUrl,
-//       url: getObjectURL(randName)
-//     }
-//   })
-// })
-//
+
+router.post('/project/task/activity', async (req: AuthRequest, res, next) => {
+  const body = req.body as Omit<Activity, 'id'>
+  console.log({ body })
+  try {
+    mdActivityAdd(body)
+  } catch (error) {
+    console.log({ error })
+    res.json({
+      status: 500,
+      err: error
+    })
+  }
+})
+
 // router.delete('/del-file', async (req: AuthRequest, res) => {
 //   const { id, projectId } = req.query as { id: string; projectId: string }
 //   const key = [CKEY.TASK_QUERY, projectId]

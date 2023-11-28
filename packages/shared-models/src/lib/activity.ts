@@ -1,11 +1,11 @@
 import { Activity, ActivityObjectType } from '@prisma/client'
 import { activityModel } from './_prisma'
 
-// export const mdActivityAdd = (data: Omit<Activity, 'id'>) => {
-//   return activityModel.create({
-//     data
-//   })
-// }
+export const mdActivityAdd = (data: Omit<Activity, 'id'>) => {
+  return activityModel.create({
+    data
+  })
+}
 
 // export const mdActivityGet = (objectId: string, objectType: string) => {
 //   return activityModel.findMany({
@@ -32,6 +32,7 @@ import { activityModel } from './_prisma'
 //     data: data
 //   })
 // }
+
 export const mdActivityGetAllByTask = (taskId: string) => {
   return activityModel.findMany({
     where: {

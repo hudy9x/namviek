@@ -58,7 +58,7 @@ const ActivityList = ({ taskId }: IActivityList) => {
         messageError(error)
         return false
       }
-      setActivities(data)
+      setActivities([...data, ...fakeData])
       return true
     })
   }, [taskId])
@@ -80,13 +80,13 @@ const ActivityList = ({ taskId }: IActivityList) => {
   }, [])
 
   // TODO: disabled for fake data
-  // useEffect(() => {
-  //   loadActivities()
-  // }, [loadActivities])
-
   useEffect(() => {
-    setActivities(fakeData)
-  }, [fakeData])
+    loadActivities()
+  }, [loadActivities])
+
+  // useEffect(() => {
+  //   setActivities(fakeData)
+  // }, [fakeData])
 
   return (
     <div>

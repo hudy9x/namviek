@@ -2,22 +2,49 @@ import { TextEditor } from 'packages/shared-ui/src/components/Controls'
 import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
 import { Button } from '@shared/ui'
+import { useState } from 'react'
+import { Activity, ActivityObjectType, ActivityType } from '@prisma/client'
+import { activityCreate } from '@/services/activity'
+import { useTaskStore } from '@/store/task'
 interface IActivityCommentEditorProps {
-  uid: string
+  taskId: string
 }
 export default function ActivityCommentEditor({
-  uid
+  taskId
 }: IActivityCommentEditorProps) {
+  const [content, setContent] = useState<string>('')
+
+  const { tasks } = useTaskStore()
+  const task = tasks.find(t => t.id === taskId)
+
+  const { createdBy } = task || {}
+  if (!createdBy) return null
+
+  const handleSaveEvent = () => {
+    const newComment: Omit<Activity, 'id'> = {
+      type: ActivityType.TASK_COMMENT_CREATED,
+      objectId: taskId,
+      objectType: ActivityObjectType.TASK,
+      createdAt: new Date(),
+      uid: createdBy,
+      data: {
+        content
+      }
+    }
+
+    activityCreate(taskId, newComment)
+  }
+
   return (
     <ActivityCard
-      creator={<ActivityMemberAvatar uid={uid} />}
+      creator={<ActivityMemberAvatar uid={createdBy} />}
       title={
         <div>
-          <TextEditor />
+          <TextEditor value={content} onChange={setContent} />
           <Button
             title="Save"
             type="button"
-            onClick={() => console.log({ saveClicked: true })}
+            onClick={() => handleSaveEvent()}
           />
         </div>
       }

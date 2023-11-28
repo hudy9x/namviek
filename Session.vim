@@ -13,34 +13,31 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +6 packages/ui-app/app/_features/Activity/index.tsx
-badd +7 packages/ui-app/app/_features/Activity/ActivityList.tsx
-badd +21 packages/ui-app/app/_features/Activity/ActivityCardComment.tsx
-badd +19 packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx
-badd +0 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardAttachContent.tsx
-badd +2 packages/shared-models/src/prisma/schema.prisma
-badd +26 packages/shared-models/src/type.ts
-badd +205 packages/be-gateway/src/routes/activity/index.ts
-badd +172 packages/be-gateway/src/routes/auth/index.ts
-badd +503 packages/be-gateway/src/routes/task/index.ts
-badd +90 packages/ui-app/app/[orgID]/project/[projectId]/TaskUpdate.tsx
-badd +150 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/TaskForm.tsx
-badd +13 packages/ui-app/app/_features/Automation/index.tsx
-badd +117 packages/ui-app/app/[orgID]/project/[projectId]/ProjectNav.tsx
-badd +12 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityMember.tsx
-badd +84 packages/ui-app/app/_components/MemberPicker/index.tsx
-badd +43 packages/ui-app/app/_features/Project/List/index.tsx
-badd +0 packages/ui-app/app/[orgID]/project/[projectId]/views/ListMode.tsx
-badd +0 packages/ui-app/app/_components/MemberAvatar.tsx
-badd +3 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardHeader.tsx
-badd +0 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/style.css
-badd +5 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/style.css
-badd +13 packages/shared-ui/src/components/Avatar/index.tsx
-badd +18 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityMemberAvatar.tsx
+badd +8 packages/ui-app/app/_features/Activity/ActivityCardCommentMention.tsx
+badd +1 packages/ui-app/app/_features/Activity/ActivityCardCommentLink.tsx
+badd +58 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardCommentContent.tsx
+badd +9 packages/ui-app/app/_features/Activity/regex.ts
+badd +20 packages/ui-app/app/_features/Activity/ActivityList.tsx
+badd +1 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardAttachContent.tsx
+badd +0 packages/ui-app/app/_features/Automation/AutomateList.tsx
+badd +42 packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx
+badd +143 packages/ui-app/app/[orgID]/project/[projectId]/TaskForm.tsx
+badd +63 packages/ui-app/app/_features/TaskImport/TaskImportArea.tsx
+badd +66 package.json
+badd +35 ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx
+badd +24 ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/report/index.ts
+badd +40 ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts
+badd +20 packages/ui-app/app/_features/Activity/ActivityCardComment.tsx
+badd +11 ~/code/tutors/mern/kampuni/activity/packages/shared-ui/src/components/Controls/index.tsx
+badd +57 ~/code/tutors/mern/kampuni/activity/packages/shared-ui/src/components/Controls/TextEditorControl/index.tsx
+badd +0 packages/shared-models/src/prisma/schema.prisma
+badd +14 packages/ui-app/services/activity.ts
+badd +9 packages/ui-app/app/_features/Activity/index.tsx
+badd +35 packages/shared-models/src/lib/activity.ts
+badd +79 packages/be-gateway/src/routes/member/index.ts
+badd +16 packages/shared-models/src/lib/index.ts
 argglobal
 %argdel
-tabnew +setlocal\ bufhidden=wipe
-tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
@@ -51,7 +48,14 @@ let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
 wincmd w
 wincmd _ | wincmd |
 split
@@ -70,15 +74,21 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 70 + 105) / 210)
+exe 'vert 1resize ' . ((&columns * 48 + 105) / 210)
 exe '2resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 2resize ' . ((&columns * 139 + 105) / 210)
+exe 'vert 2resize ' . ((&columns * 53 + 105) / 210)
 exe '3resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 3resize ' . ((&columns * 69 + 105) / 210)
+exe 'vert 3resize ' . ((&columns * 53 + 105) / 210)
 exe '4resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 4resize ' . ((&columns * 69 + 105) / 210)
+exe 'vert 4resize ' . ((&columns * 107 + 105) / 210)
+exe '5resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 5resize ' . ((&columns * 53 + 105) / 210)
+exe '6resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 6resize ' . ((&columns * 53 + 105) / 210)
 argglobal
-balt packages/ui-app/app/_features/Activity/index.tsx
+enew
+file NvimTree_1
+balt packages/ui-app/app/_features/Activity/regex.ts
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -86,94 +96,8 @@ setlocal fdi=#
 setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 7 - ((6 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 7
-normal! 0
+setlocal nofen
 wincmd w
-argglobal
-if bufexists(fnamemodify("packages/ui-app/app/_features/Activity/ActivityCardComment.tsx", ":p")) | buffer packages/ui-app/app/_features/Activity/ActivityCardComment.tsx | else | edit packages/ui-app/app/_features/Activity/ActivityCardComment.tsx | endif
-if &buftype ==# 'terminal'
-  silent file packages/ui-app/app/_features/Activity/ActivityCardComment.tsx
-endif
-balt ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityMemberAvatar.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 18 - ((11 * winheight(0) + 11) / 22)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 18
-normal! 024|
-wincmd w
-argglobal
-if bufexists(fnamemodify("packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx", ":p")) | buffer packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx | else | edit packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx | endif
-if &buftype ==# 'terminal'
-  silent file packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx
-endif
-balt ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardAttachContent.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 10 - ((9 * winheight(0) + 11) / 22)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 10
-normal! 021|
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/style.css", ":p")) | buffer ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/style.css | else | edit ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/style.css | endif
-if &buftype ==# 'terminal'
-  silent file ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/style.css
-endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 5 - ((4 * winheight(0) + 11) / 22)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 5
-normal! 028|
-wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 70 + 105) / 210)
-exe '2resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 2resize ' . ((&columns * 139 + 105) / 210)
-exe '3resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 3resize ' . ((&columns * 69 + 105) / 210)
-exe '4resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 4resize ' . ((&columns * 69 + 105) / 210)
-tabnext
-edit packages/shared-ui/src/components/Avatar/index.tsx
 argglobal
 balt packages/ui-app/app/_features/Activity/ActivityCardAttach.tsx
 setlocal fdm=manual
@@ -186,57 +110,19 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 10 - ((9 * winheight(0) + 23) / 46)
+let s:l = 60 - ((9 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
-normal! 033|
-tabnext
-edit ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/TaskForm.tsx
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-argglobal
-balt packages/ui-app/app/[orgID]/project/[projectId]/TaskUpdate.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 2 - ((1 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 2
-normal! 018|
+keepjumps 60
+normal! 07|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/style.css", ":p")) | buffer ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/style.css | else | edit ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/style.css | endif
+if bufexists(fnamemodify("packages/ui-app/app/_features/Activity/ActivityList.tsx", ":p")) | buffer packages/ui-app/app/_features/Activity/ActivityList.tsx | else | edit packages/ui-app/app/_features/Activity/ActivityList.tsx | endif
 if &buftype ==# 'terminal'
-  silent file ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/[orgID]/project/[projectId]/style.css
+  silent file packages/ui-app/app/_features/Activity/ActivityList.tsx
 endif
-balt packages/ui-app/app/[orgID]/project/[projectId]/TaskUpdate.tsx
+balt packages/ui-app/app/_features/Activity/ActivityCardCommentLink.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -247,147 +133,19 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 10 - ((9 * winheight(0) + 23) / 46)
+let s:l = 16 - ((11 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
-normal! 015|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-tabnext
-edit packages/ui-app/app/_components/MemberAvatar.tsx
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-argglobal
-balt packages/ui-app/app/_components/MemberPicker/index.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 21 - ((20 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 21
-normal! 08|
-wincmd w
-argglobal
-if bufexists(fnamemodify("packages/ui-app/app/[orgID]/project/[projectId]/views/ListMode.tsx", ":p")) | buffer packages/ui-app/app/[orgID]/project/[projectId]/views/ListMode.tsx | else | edit packages/ui-app/app/[orgID]/project/[projectId]/views/ListMode.tsx | endif
-if &buftype ==# 'terminal'
-  silent file packages/ui-app/app/[orgID]/project/[projectId]/views/ListMode.tsx
-endif
-balt packages/ui-app/app/_features/Project/List/index.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 159 - ((33 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 159
-normal! 028|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-tabnext
-edit packages/shared-models/src/prisma/schema.prisma
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-argglobal
-balt ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardAttachContent.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 64 - ((35 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 64
-normal! 023|
-wincmd w
-argglobal
-if bufexists(fnamemodify("packages/shared-models/src/type.ts", ":p")) | buffer packages/shared-models/src/type.ts | else | edit packages/shared-models/src/type.ts | endif
-if &buftype ==# 'terminal'
-  silent file packages/shared-models/src/type.ts
-endif
-balt packages/shared-models/src/prisma/schema.prisma
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 27 - ((26 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 27
+keepjumps 16
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 210)
-exe 'vert 2resize ' . ((&columns * 104 + 105) / 210)
-tabnext
-edit packages/be-gateway/src/routes/activity/index.ts
 argglobal
-balt packages/shared-models/src/type.ts
+if bufexists(fnamemodify("~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardCommentContent.tsx", ":p")) | buffer ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardCommentContent.tsx | else | edit ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardCommentContent.tsx | endif
+if &buftype ==# 'terminal'
+  silent file ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCardCommentContent.tsx
+endif
+balt packages/ui-app/app/_features/Activity/ActivityCardCommentLink.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -398,13 +156,240 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 11 - ((10 * winheight(0) + 23) / 46)
+let s:l = 54 - ((12 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 015|
-tabnext 1
+keepjumps 54
+normal! 03|
+wincmd w
+argglobal
+if bufexists(fnamemodify("packages/ui-app/app/_features/Activity/index.tsx", ":p")) | buffer packages/ui-app/app/_features/Activity/index.tsx | else | edit packages/ui-app/app/_features/Activity/index.tsx | endif
+if &buftype ==# 'terminal'
+  silent file packages/ui-app/app/_features/Activity/index.tsx
+endif
+balt ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 8 - ((7 * winheight(0) + 11) / 22)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 8
+normal! 06|
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx", ":p")) | buffer ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx | else | edit ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx | endif
+if &buftype ==# 'terminal'
+  silent file ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx
+endif
+balt packages/ui-app/app/_features/Activity/index.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 29 - ((11 * winheight(0) + 11) / 22)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 29
+normal! 019|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 48 + 105) / 210)
+exe '2resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 2resize ' . ((&columns * 53 + 105) / 210)
+exe '3resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 3resize ' . ((&columns * 53 + 105) / 210)
+exe '4resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 4resize ' . ((&columns * 107 + 105) / 210)
+exe '5resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 5resize ' . ((&columns * 53 + 105) / 210)
+exe '6resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 6resize ' . ((&columns * 53 + 105) / 210)
+tabnext
+edit packages/ui-app/services/activity.ts
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 70 + 105) / 210)
+exe '2resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 2resize ' . ((&columns * 69 + 105) / 210)
+exe '3resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 3resize ' . ((&columns * 69 + 105) / 210)
+exe '4resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 4resize ' . ((&columns * 139 + 105) / 210)
+argglobal
+balt ~/code/tutors/mern/kampuni/activity/packages/ui-app/app/_features/Activity/ActivityCommentEditor.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 16 - ((14 * winheight(0) + 23) / 46)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 16
+normal! 06|
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts", ":p")) | buffer ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts | else | edit ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts | endif
+if &buftype ==# 'terminal'
+  silent file ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts
+endif
+balt packages/ui-app/services/activity.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 47 - ((10 * winheight(0) + 11) / 22)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 47
+normal! 016|
+wincmd w
+argglobal
+if bufexists(fnamemodify("packages/be-gateway/src/routes/member/index.ts", ":p")) | buffer packages/be-gateway/src/routes/member/index.ts | else | edit packages/be-gateway/src/routes/member/index.ts | endif
+if &buftype ==# 'terminal'
+  silent file packages/be-gateway/src/routes/member/index.ts
+endif
+balt ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 88 - ((10 * winheight(0) + 11) / 22)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 88
+normal! 06|
+wincmd w
+argglobal
+if bufexists(fnamemodify("packages/shared-models/src/lib/activity.ts", ":p")) | buffer packages/shared-models/src/lib/activity.ts | else | edit packages/shared-models/src/lib/activity.ts | endif
+if &buftype ==# 'terminal'
+  silent file packages/shared-models/src/lib/activity.ts
+endif
+balt ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 40 - ((18 * winheight(0) + 11) / 22)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 40
+normal! 0
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 70 + 105) / 210)
+exe '2resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 2resize ' . ((&columns * 69 + 105) / 210)
+exe '3resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 3resize ' . ((&columns * 69 + 105) / 210)
+exe '4resize ' . ((&lines * 23 + 25) / 50)
+exe 'vert 4resize ' . ((&columns * 139 + 105) / 210)
+tabnext
+edit packages/shared-models/src/prisma/schema.prisma
+argglobal
+balt ~/code/tutors/mern/kampuni/activity/packages/be-gateway/src/routes/activity/index.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 314 - ((37 * winheight(0) + 23) / 46)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 314
+normal! 028|
+tabnext
+edit packages/ui-app/app/_features/Automation/AutomateList.tsx
+argglobal
+balt packages/ui-app/app/_features/Activity/ActivityCardCommentLink.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 3 - ((2 * winheight(0) + 23) / 46)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 3
+normal! 08|
+tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

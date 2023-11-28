@@ -17,7 +17,6 @@ export default function ActivityCardComment({
   const { uid, data, createdAt } = activity as Activity & {
     data: ActivityCommentData
   }
-  console.log({ ActivityCardComment: activity })
   const { content } = data
   return (
     <ActivityCard
