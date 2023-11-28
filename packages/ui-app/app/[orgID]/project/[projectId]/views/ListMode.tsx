@@ -75,7 +75,7 @@ export default function ListMode() {
             </div>
             <div className="divide-y dark:divide-gray-800">
               {taskLoading || groupByLoading ? (
-                <Loading className='px-3 py-2 text-sm' title='Loading ...'/>
+                <Loading className="px-3 py-2 text-sm" title="Loading ..." />
               ) : null}
 
               {!taskLoading &&

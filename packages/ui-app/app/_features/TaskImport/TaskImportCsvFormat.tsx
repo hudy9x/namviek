@@ -78,7 +78,7 @@ export default function TaskImportCsvFormat({
         // Iterate over each column in the current line
         for (let j = 0; j < header.length; j++) {
           // Use the header names as keys and the current line's values as values
-          const headerKey = header[j].replace(/\n/, '')
+          const headerKey = header[j].replace(/\n/, '').trim()
           const cell = currentLine[j]
 
           if (headerKey === 'ASSIGNEE') {
@@ -155,11 +155,12 @@ export default function TaskImportCsvFormat({
       updatePromise.push(updateTaskData(t, false))
     })
 
+    setFixLoading(false)
+    setVisible(false)
+
     Promise.allSettled(updatePromise)
       .then(result => {
         messageSuccess('All data has been updated')
-        setFixLoading(false)
-        setVisible(false)
       })
       .catch(err => {
         messageWarning('One of update process has been failed')
@@ -208,7 +209,11 @@ export default function TaskImportCsvFormat({
             />
           ) : (
             <>
-              <Form.Input type="file" onChange={onInpFile} />
+              <Form.Input
+                type="file"
+                className="mb-3 hidden"
+                onChange={onInpFile}
+              />
               <Form.Textarea
                 placeholder="Paste your csv content here"
                 onChange={ev => {
@@ -226,7 +231,7 @@ export default function TaskImportCsvFormat({
           )}
           <div className="mt-3">
             {taskDatas.length ? (
-              <div className="space-y-2 bg-indigo-50/50 p-3 rounded-md shadow-inner shadow-indigo-100">
+              <div className="space-y-2 bg-indigo-50/50  dark:bg-gray-800 p-3 rounded-md shadow-inner shadow-indigo-100 dark:shadow-gray-800">
                 {taskDatas.map((t, tindex) => {
                   const {
                     plannedStartDate,

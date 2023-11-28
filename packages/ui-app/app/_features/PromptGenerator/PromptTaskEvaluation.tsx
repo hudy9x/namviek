@@ -1,4 +1,5 @@
 import { useMemberStore } from '@/store/member'
+import { useProjectPointStore } from '@/store/point'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { StatusType } from '@prisma/client'
@@ -11,8 +12,7 @@ import { HiOutlineSquare2Stack } from 'react-icons/hi2'
 export default function PromptTaskEvaluation() {
   const divRef = useRef<HTMLDivElement>(null)
   const { tasks } = useTaskStore()
-  const { members } = useMemberStore()
-  const { statuses } = useProjectStatusStore()
+  const { points } = useProjectPointStore()
 
   const onCopy = () => {
     if (!divRef.current) return
@@ -34,16 +34,29 @@ export default function PromptTaskEvaluation() {
         Based on start date and end date of following tasklist <br />
         So please help me to calculate the point for each task
         <br />
-        The point is calculated by substracting the end date to the start date
-        <br />
-        Ex:
-        <br />
-        start date: 11/22/2023 <br />
-        end date: 11/23/2023
-        <br />
-        then the point is 11/23/2023 - 11/22/2023 = 1 point
-        <br />
-        <br />
+        {!points.length ? (
+          <>
+            The point is calculated by substracting the end date to the start
+            date
+            <br />
+            Ex:
+            <br />
+            start date: 11/22/2023 <br />
+            end date: 11/23/2023
+            <br />
+            then the point is 11/23/2023 - 11/22/2023 = 1 point
+            <br />
+          </>
+        ) : (
+          <>
+            Here is the list of points that pre-configured
+            <br />
+            {points.map(p => p.point).join(',')}
+            <br />
+            The lowest point corresponds to the lowest complexity and vice versa
+            <br />
+          </>
+        )}
         Here is the task list
         <br />
         ```csv

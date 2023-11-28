@@ -8,6 +8,7 @@ import TaskImportArea from './TaskImportArea'
 import { TaskImportProvider } from './context'
 import TaskImportCsvFormat from './TaskImportCsvFormat'
 import './style.css'
+import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 
 export default function TaskImport() {
   const [visible, setVisible] = useState(false)
@@ -37,8 +38,8 @@ export default function TaskImport() {
           <DropdownMenu>
             <DropdownMenu.Trigger
               className="btn-trigger-no-border"
-              icon={<AiOutlineCloudUpload />}
-              title="Import"
+              icon={<HiOutlineDotsHorizontal />}
+              title=""
             />
             <DropdownMenu.Content>
               <DropdownMenu.Item
@@ -46,7 +47,7 @@ export default function TaskImport() {
                 title={
                   <div className="flex items-center gap-2">
                     <PiMicrosoftExcelLogo className="w-5 h-5 text-gray-600" />
-                    From .xlsx file
+                    Import .xlsx file
                   </div>
                 }
               />
@@ -55,19 +56,19 @@ export default function TaskImport() {
                 title={
                   <div className="flex items-center gap-2">
                     <PiTableLight className="w-5 h-5 text-gray-600" />
-                    From .csv format
+                    Import .csv format
                   </div>
                 }
               />
-              <DropdownMenu.Item
-                disabled={true}
-                title={
-                  <div className="flex items-center gap-2">
-                    <PiFileCsv className="w-5 h-5 text-gray-600" />
-                    From .csv file
-                  </div>
-                }
-              />
+              {/* <DropdownMenu.Item */}
+              {/*   disabled={true} */}
+              {/*   title={ */}
+              {/*     <div className="flex items-center gap-2"> */}
+              {/*       <PiFileCsv className="w-5 h-5 text-gray-600" /> */}
+              {/*       From .csv file */}
+              {/*     </div> */}
+              {/*   } */}
+              {/* /> */}
             </DropdownMenu.Content>
           </DropdownMenu>
         </div>

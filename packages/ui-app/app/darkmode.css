@@ -21,6 +21,10 @@
   @apply dark:ring-indigo-300 dark:focus:ring-indigo-400;
 }
 
+.form-control.readonly .form-input {
+  @apply dark:bg-gray-900 dark:text-gray-600;
+}
+
 .form-control label {
   @apply dark:text-gray-400;
 }
@@ -99,4 +103,12 @@
 
 .btn svg {
   @apply dark:text-gray-400;
+}
+
+.dropdown-menu-content {
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300;
+}
+
+.dropdown-item {
+  @apply dark:hover:bg-gray-800;
 }
