@@ -13,13 +13,14 @@ import { useProjectStore } from '../../../../store/project'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import { useState } from 'react'
 import ProjectTabContent from './ProjectTabContent'
-import { HiOutlineMenuAlt1 } from 'react-icons/hi'
+import { HiOutlineDotsHorizontal, HiOutlineMenuAlt1 } from 'react-icons/hi'
 import TaskCreate from './TaskCreate'
 import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
 import PromptGenerator from '@/features/PromptGenerator'
+import { DropdownMenu } from '@shared/ui'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -80,6 +81,19 @@ export default function ProjectNav() {
     // }
   ])
 
+  const mobileTabs = [
+    ...tabs,
+    ...[
+      {
+        title: 'Setting',
+        name: 'setting',
+        href: '#',
+        icon: HiOutlineCog6Tooth,
+        current: false
+      }
+    ]
+  ]
+
   const onMoveTab = (name: string) => {
     push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
   }
@@ -87,27 +101,55 @@ export default function ProjectNav() {
   return (
     <div className="project-nav">
       <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-        <h2 className="text-xl dark:text-gray-200 font-bold px-4 pt-2 flex items-center gap-2">
-          <Link
-            href={`${params.orgID}/project`}
-            className="p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:hover:bg-slate-800">
-            <AiOutlineArrowLeft />
-          </Link>
-          {selectedProject?.icon ? (
-            <img
-              alt={selectedProject.icon}
-              src={selectedProject?.icon || ''}
-              className="w-6 h-6"
-            />
-          ) : null}
-          {selectedProject?.name || (
-            <span className="text-transparent animate-pulse bg-gray-100 dark:bg-gray-700 rounded-md">
-              Project
-            </span>
-          )}
+        <h2 className="text-xl pb-2 sm:pb-0 dark:text-gray-200 font-bold px-4 pt-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link
+              href={`${params.orgID}/project`}
+              className="hidden sm:inline-block p-2 border rounded-md bg-white text-sm text-gray-500 hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:hover:bg-slate-800">
+              <AiOutlineArrowLeft />
+            </Link>
+            {selectedProject?.icon ? (
+              <img
+                alt={selectedProject.icon}
+                src={selectedProject?.icon || ''}
+                className="w-6 h-6"
+              />
+            ) : null}
+            {selectedProject?.name || (
+              <span className="text-transparent animate-pulse bg-gray-100 dark:bg-gray-700 rounded-md">
+                Project
+              </span>
+            )}
+          </div>
+          <div className="sm:hidden">
+            <DropdownMenu>
+              <DropdownMenu.Trigger
+                className="w-full"
+                icon={<HiOutlineDotsHorizontal />}
+                title=""
+              />
+              <DropdownMenu.Content>
+                {mobileTabs.map((tab, tindex) => {
+                  const Icon = tab.icon
+                  return (
+                    <DropdownMenu.Item
+                      onClick={() => onMoveTab(tab.name)}
+                      key={tindex}
+                      title={
+                        <div className="flex items-center gap-2">
+                          <Icon />
+                          {tab.title}
+                        </div>
+                      }
+                    />
+                  )
+                })}
+              </DropdownMenu.Content>
+            </DropdownMenu>
+          </div>
         </h2>
 
-        <div className="flex items-center justify-between">
+        <div className="hidden sm:flex items-center justify-between">
           <div className="tab pl-1">
             {tabs.map((tab, index) => {
               const Icon = tab.icon
@@ -150,7 +192,7 @@ export default function ProjectNav() {
         <ProjectTabContent />
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
-        <div className="flex items-center gap-2 ">
+        <div className="hidden sm:flex items-center gap-2 ">
           <PromptGenerator />
           <FavoriteAddModal />
           <TaskCreate />

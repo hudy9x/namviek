@@ -4,7 +4,7 @@ import { AiOutlineStar } from 'react-icons/ai'
 import ProjectPoint from './ProjectPoint'
 import { HiOutlineRectangleStack } from 'react-icons/hi2'
 import { ProjectStatus } from './status/index'
-import { HiOutlineLink, HiOutlineUsers } from 'react-icons/hi'
+import { HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
@@ -61,8 +61,8 @@ const Setting = () => {
   const selectedTab = settings.find(s => s.active)
 
   return (
-    <div className="flex gap-8 ml-8 mt-8">
-      <div className="w-[350px] space-y-6">
+    <div className="sm:flex gap-8 sm:mx-5 sm:ml-8 sm:mt-8">
+      <div className="flex px-4 py-2 sm:block sm:w-[350px] sm:space-y-6">
         {settings.map(setting => {
           const activeClass = setting.active
             ? 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-lg shadow-lg shadow-indigo-100 dark:shadow-gray-900'
@@ -75,19 +75,19 @@ const Setting = () => {
                 push(setting.href)
               }}
               key={setting.title}
-              className={`transition-all px-4 py-3 cursor-pointer border border-transparent ${hover} ${activeClass}`}>
-              <div className="flex gap-2 items-center dark:text-gray-400 ">
+              className={`transition-all px-3 py-2 sm:px-4 sm:py-3 cursor-pointer border border-transparent ${hover} ${activeClass}`}>
+              <div className="flex gap-2 items-center dark:text-gray-400 text-sm sm:text-base ">
                 {setting.icon}
                 <span>{setting.title}</span>
               </div>
-              <p className="text-xs text-gray-500 mt-2 leading-5">
+              <p className="hidden sm:block text-xs text-gray-500 mt-2 leading-5">
                 {setting.desc}
               </p>
             </div>
           )
         })}
       </div>
-      <div className="w-[500px]">
+      <div className="px-4 sm:px-0 sm:w-[500px]">
         {selectedTab ? selectedTab.content : null}
       </div>
     </div>

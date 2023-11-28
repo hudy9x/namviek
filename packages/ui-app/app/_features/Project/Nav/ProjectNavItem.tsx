@@ -3,6 +3,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { HiChevronRight } from 'react-icons/hi2'
 import ProjectPin from '../Pin'
 import { useEffect, useState } from 'react'
+import { useMenuStore } from '@/store/menu'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -16,6 +17,7 @@ export default function ProjectNavItem({
   icon: string
 }) {
   const [visible, setVisible] = useState(false)
+  const { setVisible: setMenuVisible } = useMenuStore()
   const params = useParams()
   const { push } = useRouter()
   const active = params.projectId === id
@@ -38,6 +40,7 @@ export default function ProjectNavItem({
       } transition-all duration-300`}
       onClick={() => {
         onSelectProject(id)
+        setMenuVisible(false)
         push(href)
       }}>
       <div className="left">

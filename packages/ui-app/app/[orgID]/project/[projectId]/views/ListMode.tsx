@@ -64,7 +64,7 @@ export default function ListMode() {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
+              <div className="hidden sm:flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
                 <ListCell width={150}>Assignee</ListCell>
                 <ListCell width={75}>Priority</ListCell>
                 <ListCell width={50}>Point</ListCell>
@@ -102,7 +102,7 @@ export default function ListMode() {
 
                   return (
                     <div
-                      className="px-3 py-2 text-sm flex items-center justify-between group"
+                      className="px-3 py-2 text-sm sm:flex items-center justify-between group relative"
                       key={task.id}>
                       <div className="flex items-center gap-2 dark:text-gray-300">
                         <TaskCheckbox id={task.id} selected={task.selected} />
@@ -122,37 +122,36 @@ export default function ListMode() {
                           taskId={task.id}
                         />
                       </div>
-                      <div className="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
-                        <ListCell width={150}>
+                      <div className="mt-2 sm:mt-0 flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
+                        <ListCell className="absolute top-3 right-2 sm:relative sm:w-[150px]">
                           <TaskAssignee
+                            className="no-name"
                             taskId={task.id}
                             uids={task.assigneeIds}
                           />
                         </ListCell>
-                        <ListCell width={75}>
+                        <ListCell width={75} className="hidden sm:block">
                           <TaskPriorityCell
                             taskId={task.id}
                             value={task.priority}
                           />
                         </ListCell>
-                        <ListCell width={50}>
+                        <ListCell className="hidden sm:w-[50px]">
                           <TaskPoint taskId={task.id} value={task.taskPoint} />
                         </ListCell>
-                        <ListCell width={110}>
+                        <ListCell className="ml-6 sm:w-[110px]">
                           <TaskDate
+                            toNow={true}
                             taskId={task.id}
                             date={task.dueDate ? new Date(task.dueDate) : null}
                           />
                         </ListCell>
-                        <ListCell width={110}>
+                        <ListCell className="hidden sm:block" width={110}>
                           <ProgressBar
                             color="green"
                             progress={task.progress || 0}
                           />
                         </ListCell>
-                        {/* <ListCell width={100}> */}
-                        {/*   <MemberAvatar uid={task.createdBy} /> */}
-                        {/* </ListCell> */}
                       </div>
                     </div>
                   )

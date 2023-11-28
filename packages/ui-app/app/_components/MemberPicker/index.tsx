@@ -8,6 +8,7 @@ const List = Form.List
 interface IMemberPicker {
   multiple?: boolean
   className?: string
+  showName?: boolean
   title?: string
   value?: string
   onChange?: (val: string) => void
@@ -17,6 +18,7 @@ const defaultAssignee = { id: 'NONE', title: 'No assignee' }
 
 export default function MemberPicker({
   title,
+  showName = true,
   onChange,
   value,
   className,
@@ -62,7 +64,9 @@ export default function MemberPicker({
       return (
         <div className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50 selected-member-item">
           <Avatar name={'None'} size="md" src={''} />{' '}
-          <span className="selected-member-name">No one</span>
+          {showName ? (
+            <span className="selected-member-name">No one</span>
+          ) : null}
         </div>
       )
     }
@@ -73,9 +77,11 @@ export default function MemberPicker({
         title={name || ''}
         className="flex gap-2 items-center shrink-0 px-2 py-1.5 border rounded-md bg-gray-50 selected-member-item">
         <Avatar name={name || ''} size="md" src={photo || ''} />{' '}
-        <span className="selected-member-name truncate">
-          {name ? name : 'None'}
-        </span>
+        {showName ? (
+          <span className="selected-member-name truncate">
+            {name ? name : 'None'}
+          </span>
+        ) : null}
       </div>
     )
   }

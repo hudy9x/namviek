@@ -1,4 +1,5 @@
 export interface ConfirmAction {
+  title?: string
   message: string
   yes: () => void
   no?: () => void

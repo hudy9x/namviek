@@ -10,13 +10,14 @@ import {
   HiOutlineServerStack,
   HiOutlineCog6Tooth,
   HiOutlineStar,
-  HiOutlineCamera,
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import Favorites from '@/features/Favorites'
+import { useState } from 'react'
+import { useMenuStore } from '@/store/menu'
 
 function ViewAllBtn() {
   return (
@@ -40,8 +41,10 @@ function ViewAllBtn() {
 
 export default function ProjectSidebar() {
   const { orgID } = useParams()
+  const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
+  const [open, setOpen] = useState(false)
 
   if (pathname.includes('/sign-in') || pathname.includes('/sign-up')) {
     return null
@@ -90,39 +93,42 @@ export default function ProjectSidebar() {
   ]
 
   return (
-    <aside className="root-sidebar">
-      <RootSidebar />
-      <nav className="secondary-sidebar">
-        <UserSection />
-        <Scrollbar style={{ height: `calc(100vh - 74px)` }}>
-          <section className="side-nav">
-            {menus.map((menu, mindex) => {
-              const Icon = menu.icon
-              const Child = menu.children
-              const MenuBadge = menu.badge
-              const active = menu.active
-              return (
-                <div key={mindex} className="cursor-pointer">
-                  {/* <Link href={menu.href}> */}
-                  <div
-                    onClick={() => {
-                      menu.href && push(menu.href)
-                    }}
-                    className={`side-title ${active ? 'active' : ''}`}>
-                    <div className="flex items-center gap-2">
-                      <Icon className="w-5 h-5" />
-                      <span>{menu.title}</span>
+    <>
+      <aside className={`root-sidebar`}>
+        <RootSidebar />
+        <nav className="secondary-sidebar">
+          <UserSection />
+          <Scrollbar style={{ height: `calc(100vh - 74px)` }}>
+            <section className="side-nav">
+              {menus.map((menu, mindex) => {
+                const Icon = menu.icon
+                const Child = menu.children
+                const MenuBadge = menu.badge
+                const active = menu.active
+                return (
+                  <div key={mindex} className="cursor-pointer">
+                    {/* <Link href={menu.href}> */}
+                    <div
+                      onClick={() => {
+                        menu.href && push(menu.href)
+                        setMenuVisible(false)
+                      }}
+                      className={`side-title ${active ? 'active' : ''}`}>
+                      <div className="flex items-center gap-2">
+                        <Icon className="w-5 h-5" />
+                        <span>{menu.title}</span>
+                      </div>
+                      {MenuBadge ? <MenuBadge /> : null}
                     </div>
-                    {MenuBadge ? <MenuBadge /> : null}
+                    {/* </Link> */}
+                    {Child && <Child />}
                   </div>
-                  {/* </Link> */}
-                  {Child && <Child />}
-                </div>
-              )
-            })}
-          </section>
-        </Scrollbar>
-      </nav>
-    </aside>
+                )
+              })}
+            </section>
+          </Scrollbar>
+        </nav>
+      </aside>
+    </>
   )
 }
