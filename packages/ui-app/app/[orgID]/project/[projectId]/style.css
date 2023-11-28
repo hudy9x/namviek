@@ -9,6 +9,7 @@
   border: none;
   padding: 0px;
   box-shadow: none !important;
+  @apply text-xs sm:text-sm;
 }
 
 .task-status .status-title {
@@ -50,6 +51,7 @@
 
 .task-date .form-input {
   padding: 0;
+  @apply text-xs sm:text-sm;
 }
 
 .project-member-permission {

@@ -1,12 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { RiBarChartFill, RiCalendarFill, RiDashboardFill } from 'react-icons/ri'
-import { IoIosPlayCircle, IoMdLogOut } from 'react-icons/io'
-import { useParams, useRouter } from 'next/navigation'
+import { IoMdLogOut } from 'react-icons/io'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { HiOutlineUserPlus } from 'react-icons/hi2'
-import { LiaCitySolid } from 'react-icons/lia'
 import { FcBriefcase, FcOrganization, FcVideoCall } from 'react-icons/fc'
 import { Tooltip } from '@shared/ui'
 

@@ -5,6 +5,7 @@ import FavoriteRemove from './FavoriteRemove'
 import { useUrl } from '@/hooks/useUrl'
 import { useProjectStore } from '@/store/project'
 import { useEffect } from 'react'
+import { useMenuStore } from '@/store/menu'
 
 export default function FavoriteProjectItem({
   data,
@@ -13,6 +14,7 @@ export default function FavoriteProjectItem({
   data: Favorites
   active: boolean
 }) {
+  const { setVisible: setMenuVisible } = useMenuStore()
   const { push } = useRouter()
   const { projectId } = useParams()
   const { selectProject } = useProjectStore()
@@ -28,7 +30,10 @@ export default function FavoriteProjectItem({
   return (
     <div
       onClick={() => {
-        link && push(link)
+        if (link) {
+          setMenuVisible(false)
+          push(link)
+        }
       }}
       className={`nav-item group ${activeClass}`}>
       <div className="left">

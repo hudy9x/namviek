@@ -118,7 +118,7 @@ export default function TaskForm({
     <form
       onSubmit={formik.handleSubmit}
       className="task-form space-y-3 gap-6 relative">
-      <div className={`flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
+      <div className={`sm:flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
         <div className="task-form-detail space-y-3 w-full">
           <Form.Input
             title="Task name"
@@ -146,7 +146,7 @@ export default function TaskForm({
         </div>
         <div
           className={`task-form-right-actions space-y-3 ${
-            isCreate ? 'w-full' : 'w-[200px]'
+            isCreate ? 'w-full' : 'sm:w-[200px]'
           }  shrink-0`}>
           <MemberPicker
             title="Assignees"

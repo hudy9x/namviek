@@ -9,6 +9,11 @@ import { messageError } from '@shared/ui'
 import { MdOutlineRefresh } from 'react-icons/md'
 import { useMyworkContext } from './context'
 import MyworkLoading from './MyworkLoading'
+import {
+  HiOutlineChevronDown,
+  HiOutlineChevronUp,
+  HiOutlinePlus
+} from 'react-icons/hi2'
 
 interface IMyworkCardProps {
   title: string
@@ -20,6 +25,7 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
   const [total, setTotal] = useState(0)
   const [updateCounter, setUpdate] = useState(0)
   const { assigneeIds, projectId } = useMyworkContext()
+  const [collapse, setCollapse] = useState(false)
 
   const getTask = (
     assigneeIds: string[],
@@ -72,13 +78,23 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
         <div>
           {title} <span className="mw-card-total">{total}</span>
         </div>
-        <MdOutlineRefresh
-          onClick={() => setUpdate(u => u + 1)}
-          className="mw-card-reload"
-        />
+        <div className="flex items-center gap-1">
+          <MdOutlineRefresh
+            onClick={() => setUpdate(u => u + 1)}
+            className="mw-card-reload"
+          />
+          <HiOutlineChevronDown
+            onClick={() => setCollapse(true)}
+            className={`mw-card-reload ${collapse ? 'hidden' : ''}`}
+          />
+          <HiOutlineChevronUp
+            onClick={() => setCollapse(false)}
+            className={`mw-card-reload ${collapse ? '' : 'hidden'}`}
+          />
+        </div>
       </h2>
       <MyworkLoading loading={loading} />
-      <div className="space-y-2">
+      <div className={`space-y-2 ${collapse ? 'hidden' : ''}`}>
         {!loading &&
           tasks.map(task => {
             return (

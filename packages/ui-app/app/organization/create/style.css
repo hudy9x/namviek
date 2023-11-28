@@ -3,7 +3,7 @@
 }
 
 .org-setup {
-	@apply bg-white w-[500px] p-8 border border-indigo-100 rounded-lg shadow-xl shadow-indigo-100;
+	@apply bg-white mx-4 p-6 sm:w-[500px] sm:p-8 sm:mx-auto border border-indigo-100 rounded-lg shadow-xl shadow-indigo-100;
 }
 
 .setup-step {

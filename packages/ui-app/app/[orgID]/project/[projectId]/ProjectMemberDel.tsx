@@ -9,7 +9,8 @@ export default function ProjectMemberDel({ uid }: { uid: string }) {
   const { delMember } = useMemberStore()
   const onDelete = () => {
     confirmAlert({
-      message: `Are you sure to want to remove this user from project ? Remember this action does not delete user. It only makes user have no access to the project`,
+      title: 'Remove member',
+      message: `Are you sure to want to remove this user from project ? Remember that it just kick user out of the project`,
       yes: () => {
         delMember(uid)
         memDeleteFromProject(projectId, uid)

@@ -93,7 +93,7 @@ export default function TaskMultipleActions() {
           ? '-translate-y-0 shadow-color-base'
           : '-translate-y-full shadow-transparent'
       }`}>
-      <div className="w-full flex items-center justify-center gap-2 text-sm">
+      <div className="w-full grid grid-cols-2 px-4 sm:flex sm:items-center justify-center gap-2 text-sm">
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
           value={date}
@@ -108,7 +108,7 @@ export default function TaskMultipleActions() {
           onChange={val => {
             updateData('status', val)
           }}
-          className="w-[150px]"
+          className="sm:w-[150px]"
         />
 
         <PointSelect
