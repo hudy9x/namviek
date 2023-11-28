@@ -10,7 +10,7 @@ export default function ActivityCardCommentMention({
   const { members } = useMemberStore()
   const member = members.find(({ id }) => id === memberId)
   return (
-    <span className="rounded-3xl bg-blue-600 text-white py-1 px-[2px]">
+    <span className="rounded-3xl bg-blue-600 text-white py-1 px-[2px] whitespace-nowrap cursor-pointer">
       {member ? `@${member.name}` : 'Unidentified user'}
     </span>
   )

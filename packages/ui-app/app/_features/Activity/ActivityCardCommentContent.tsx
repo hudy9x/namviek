@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ActivityCardCommentMention from './ActivityCardCommentMention'
 import { userReg, linkReg } from './regex'
+import ActivityCardCommentLink from './ActivityCardCommentLink'
 
 interface ActivityCardCommentContentProps {
   content: string
@@ -37,13 +38,18 @@ const ActivityCardCommentContent = ({
               element = <ActivityCardCommentMention memberId={text.slice(1)} />
               break
             case 2:
-              element = <a className="text-blue-600">{text}</a>
+              element = <ActivityCardCommentLink linkObject={text} />
+              break
+
+            case 3:
+              element = <br />
               break
           }
           if (element) visualContent.push(element)
         }
       }
     }
+    console.log({ visualContent })
 
     return <p>{...visualContent}</p>
   }

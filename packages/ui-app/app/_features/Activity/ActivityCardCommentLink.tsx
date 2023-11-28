@@ -1,17 +1,20 @@
-import { useMemberStore } from '@/store/member'
-
-interface IActivityCardCommentMention {
-  memberId: string
+import { linkNameReg, linkRefReg } from './regex'
+interface IActivityCardCommentLink {
+  linkObject: string
 }
 
-export default function ActivityCardCommentMention({
-  memberId
-}: IActivityCardCommentMention) {
-  const { members } = useMemberStore()
-  const member = members.find(({ id }) => id === memberId)
+export default function ActivityCardCommentLink({
+  linkObject
+}: IActivityCardCommentLink) {
+  const linkName = linkObject.match(linkNameReg)?.[0]?.slice(1, -1)
+  const linkRef = linkObject.match(linkRefReg)?.[0]?.slice(1, -1)
+
   return (
-    <span className="rounded-3xl bg-blue-600 text-white py-1 px-[2px]">
-      {member ? `@${member.name}` : 'Unidentified user'}
-    </span>
+    <a
+      className="text-blue-600 whitespace-nowrap hover:underline"
+      target="_blank"
+      href={linkRef || '#'}>
+      {linkName || 'undefined'}
+    </a>
   )
 }
