@@ -19,6 +19,7 @@ import { TaskUpdate } from './TaskUpdate'
 import Link from 'next/link'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
+import PromptGenerator from '@/features/PromptGenerator'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -150,6 +151,7 @@ export default function ProjectNav() {
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="flex items-center gap-2 ">
+          <PromptGenerator />
           <FavoriteAddModal />
           <TaskCreate />
         </div>

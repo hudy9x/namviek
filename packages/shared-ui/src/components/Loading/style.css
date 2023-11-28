@@ -1,8 +1,8 @@
 #loading-wrapper {
   @apply fixed top-0 left-0 w-full h-full;
-  @apply z-30;
   @apply flex justify-center items-center;
   @apply bg-white/50  dark:bg-gray-900/50;
+  z-index: 9999;
 }
 
 #loading-wrapper.loading-hidden {

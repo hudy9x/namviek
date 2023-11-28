@@ -32,7 +32,17 @@ export const mdTaskPointGetByProjectId = async (projectId: string) => {
   })
 }
 
-export const mdTaskPointAddOne = async (data: Pick<TaskPoint, 'point' | 'projectId' | 'icon'>) => {
+export const mdTaskPointAddMany = async (
+  data: Pick<TaskPoint, 'point' | 'projectId' | 'icon'>[]
+) => {
+  return taskPointModel.createMany({
+    data
+  })
+}
+
+export const mdTaskPointAddOne = async (
+  data: Pick<TaskPoint, 'point' | 'projectId' | 'icon'>
+) => {
   return taskPointModel.create({
     data: data
   })
