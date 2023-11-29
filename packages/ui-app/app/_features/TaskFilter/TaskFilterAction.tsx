@@ -15,12 +15,14 @@ interface ITaskFilterProps {
   pointEnabled?: boolean
   assigneeEnable?: boolean
   importEnable?: boolean
+  className?: string
 }
 export default function TaskFilterAction({
   searchEnabled = true,
   pointEnabled = true,
   assigneeEnable = true,
-  importEnable = true
+  importEnable = true,
+  className
 }: ITaskFilterProps) {
   const { filter, setFilterValue, updateGroupByFilter } = useTaskFilter()
   const search = useSearchParams()
@@ -41,7 +43,7 @@ export default function TaskFilterAction({
   const showOperator = ['this-month', 'this-week', 'today']
 
   return (
-    <div className="task-filter-actions">
+    <div className={`task-filter-actions ${className || ''}`}>
       <FormGroup>
         {isCalendarMode ? (
           <CalendarModeFilter />

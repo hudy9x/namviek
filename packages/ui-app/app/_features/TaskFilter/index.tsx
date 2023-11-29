@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { TbFilterCog } from 'react-icons/tb'
 import { useTaskFilter } from './context'
@@ -18,6 +18,7 @@ export default function TaskFilter({
   assigneeEnable = true,
   importEnable = true
 }: ITaskFilterProps) {
+  const divRef = useRef<HTMLDivElement>(null)
   const [txt, setTxt] = useState('')
   const { setFilterValue } = useTaskFilter()
 
@@ -31,6 +32,20 @@ export default function TaskFilter({
       setFilterValue('term', txt)
     }, 250) as unknown as number
   }, [txt])
+
+  const toggleMobileAction = () => {
+    const divElem = divRef.current
+    if (!divElem) return
+
+    const style = divElem.getAttribute('style') || ''
+
+    if (style.includes('none')) {
+      divElem.setAttribute('style', 'display:flex')
+    } else {
+      divElem.setAttribute('style', 'display:none')
+    }
+
+  }
 
   return (
     <div className="task-filter">
@@ -46,12 +61,15 @@ export default function TaskFilter({
               }}
               placeholder="Search ..."
             />
-            <TbFilterCog className="absolute top-2 right-2 w-7 h-7 p-1.5 cursor-pointer text-gray-500 sm:hidden" />
+            <TbFilterCog onClick={toggleMobileAction} className="absolute top-2 right-2 w-7 h-7 p-1.5 cursor-pointer text-gray-500 sm:hidden" />
           </div>
         ) : null}
       </div>
 
-      <TaskFilterAction {...{ pointEnabled, assigneeEnable, importEnable }} />
+      <div ref={divRef}>
+        <TaskFilterAction className='flex flex-wrap sm:hidden' {...{ pointEnabled, assigneeEnable, importEnable }} />
+      </div>
+      <TaskFilterAction className='hidden sm:flex' {...{ pointEnabled, assigneeEnable, importEnable }} />
     </div>
   )
 }
