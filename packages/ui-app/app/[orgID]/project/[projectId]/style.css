@@ -52,6 +52,11 @@
 .task-date .form-input {
   padding: 0;
   @apply text-xs sm:text-sm;
+  @apply text-gray-400 sm:text-gray-500;
+}
+
+.task-date.overdue .form-input {
+  @apply text-red-400 animate-pulse;
 }
 
 .project-member-permission {

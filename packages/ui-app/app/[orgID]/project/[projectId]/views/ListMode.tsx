@@ -19,6 +19,7 @@ import TaskActions from '@/features/TaskActions'
 import ProgressBar from '@/components/ProgressBar'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
+import { useProjectStatusStore } from '@/store/status'
 
 export default function ListMode() {
   const {
@@ -29,9 +30,19 @@ export default function ListMode() {
     isGroupbyAssignee,
     isGroupbyStatus
   } = useTaskFilter()
+  const { statusDoneId } = useProjectStatusStore()
 
   const { tasks, taskLoading } = useTaskStore()
   const params = useParams()
+  const isOverdue = (sttId: string, dueDate: Date | null) => {
+    if (!dueDate) {
+      return false
+    }
+
+    const today = new Date()
+    console.log(dueDate, today)
+    return today > dueDate && sttId !== statusDoneId
+  }
 
   return (
     <div className="pb-[300px]">
@@ -100,6 +111,8 @@ export default function ListMode() {
                     return null
                   }
 
+                  const dueDate = task.dueDate ? new Date(task.dueDate) : null
+
                   return (
                     <div
                       className="px-3 py-2 text-sm sm:flex items-center justify-between group relative"
@@ -123,7 +136,7 @@ export default function ListMode() {
                         />
                       </div>
                       <div className="mt-2 sm:mt-0 flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
-                        <ListCell className="absolute top-3 right-2 sm:relative sm:w-[150px]">
+                        <ListCell className="ml-6 sm:ml-0 sm:w-[150px]">
                           <TaskAssignee
                             className="no-name"
                             taskId={task.id}
@@ -139,11 +152,15 @@ export default function ListMode() {
                         <ListCell className="hidden sm:w-[50px]">
                           <TaskPoint taskId={task.id} value={task.taskPoint} />
                         </ListCell>
-                        <ListCell className="ml-6 sm:w-[110px]">
+                        <ListCell className="sm:w-[110px]">
                           <TaskDate
+                            overdue={isOverdue(
+                              task.taskStatusId || '',
+                              dueDate
+                            )}
                             toNow={true}
                             taskId={task.id}
-                            date={task.dueDate ? new Date(task.dueDate) : null}
+                            date={dueDate}
                           />
                         </ListCell>
                         <ListCell className="hidden sm:block" width={110}>

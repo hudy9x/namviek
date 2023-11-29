@@ -6,12 +6,14 @@ export default function TaskDate({
   date,
   taskId,
   toNow = false,
+  overdue,
   className
 }: {
   date: Date | null
   taskId: string
   className?: string
   toNow?: boolean
+  overdue?: boolean
 }) {
   const [value, setValue] = useState(date)
   const { updateTaskData } = useTaskUpdate()
@@ -33,7 +35,7 @@ export default function TaskDate({
   }
 
   return (
-    <div className={`task-date ${className}`}>
+    <div className={`task-date ${className} ${overdue ? 'overdue' : ''}`}>
       <DatePickerBorderless
         toNow={toNow}
         value={value || undefined}

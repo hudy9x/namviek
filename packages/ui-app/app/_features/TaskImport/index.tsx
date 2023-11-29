@@ -37,7 +37,7 @@ export default function TaskImport() {
         <div>
           <DropdownMenu>
             <DropdownMenu.Trigger
-              className="btn-trigger-no-border"
+              className="hidden sm:inline-block btn-trigger-no-border"
               icon={<HiOutlineDotsHorizontal />}
               title=""
             />
