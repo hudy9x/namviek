@@ -2,6 +2,10 @@ import { useState } from 'react'
 import ActivityCardCommentMention from './ActivityCardCommentMention'
 import { userReg, linkReg } from './regex'
 import ActivityCardCommentLink from './ActivityCardCommentLink'
+import { TextEditor } from 'packages/shared-ui/src/components/Controls'
+
+import Mention from '@tiptap/extension-mention'
+import MemberSuggestion from 'packages/shared-ui/src/components/Controls/TextEditorControl/MemberSuggestion'
 
 interface ActivityCardCommentContentProps {
   content: string
@@ -15,47 +19,71 @@ const contentReg = new RegExp([userReg.source, linkReg.source].join('|'), 'g')
 const ActivityCardCommentContent = ({
   content
 }: ActivityCardCommentContentProps) => {
-  const renderContent = () => {
-    const renderableObjects = Array.from(content.matchAll(contentReg))
-    const textObjects = content
-      .replace(contentReg, regDelimiter)
-      .split(regDelimiter)
-
-    const visualContent = []
-
-    let i = 0,
-      j = 0
-    for (; i < textObjects.length; i++) {
-      visualContent.push(textObjects[i])
-      for (; j < renderableObjects.length; j++) {
-        const group = renderableObjects[j]
-        for (let k = 1; k < group.length; k++) {
-          const text = group[k]
-          if (!text) continue
-          let element
-          switch (k) {
-            case 1:
-              element = <ActivityCardCommentMention memberId={text.slice(1)} />
-              break
-            case 2:
-              element = <ActivityCardCommentLink linkObject={text} />
-              break
-
-            // case 3:
-            //   element = <br />
-            //   break
-          }
-          if (element) visualContent.push(element)
-        }
-      }
-    }
-
-    return <p contentEditable>{...visualContent}</p>
-  }
+  const [value, setValue] = useState(content)
+  // const renderContent = () => {
+  //   const renderableObjects = Array.from(content.matchAll(contentReg))
+  //   const textObjects = content
+  //     .replace(contentReg, regDelimiter)
+  //     .split(regDelimiter)
+  //
+  //   const visualContent = []
+  //
+  //   let i = 0,
+  //     j = 0
+  //   for (; i < textObjects.length; i++) {
+  //     visualContent.push(textObjects[i])
+  //     for (; j < renderableObjects.length; j++) {
+  //       const group = renderableObjects[j]
+  //       for (let k = 1; k < group.length; k++) {
+  //         const text = group[k]
+  //         if (!text) continue
+  //         let element
+  //         switch (k) {
+  //           case 1:
+  //             element = <ActivityCardCommentMention memberId={text.slice(1)} />
+  //             break
+  //           case 2:
+  //             element = <ActivityCardCommentLink linkObject={text} />
+  //             break
+  //
+  //           // case 3:
+  //           //   element = <br />
+  //           //   break
+  //         }
+  //         if (element) visualContent.push(element)
+  //       }
+  //     }
+  //   }
+  //
+  //   return <p contentEditable>{...visualContent}</p>
+  // }
 
   return (
     <div className="rounded-xl p-4 bg-slate-200 dark:bg-gray-700">
-      {renderContent()}
+      {/* {renderContent()} */}
+      <TextEditor
+        extensions={[
+          Mention.extend({
+            addAttributes() {
+              return {
+                ...this.parent(),
+                value: {
+                  default: ''
+                }
+              }
+            }
+          }).configure({
+            HTMLAttributes: {
+              class: 'mention'
+            },
+            suggestion: MemberSuggestion
+          })
+        ]}
+        value={value}
+        onChange={v => {
+          console.log({ v })
+        }}
+      />
     </div>
   )
 }

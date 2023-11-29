@@ -132,7 +132,13 @@ const fakeData: Partial<Activity>[] = [
     createdAt: new Date(),
     uid: '64a44b0ae9b966f87f404d79',
     data: {
-      content: `# Neovim-config\n\n## Lsp-manager\n\n**mason**\n\n## Useful tools\n\n- jk-accelaration\n- lspsaga\n- vim-surround\n- \n\n[My nvim config](http://github.com/huypl53/nvim)\n\n\n\n![uttq-lasso.png](https://trello.com/1/cards/652d372f993addd851f85161/attachments/652feb75474c0ededc31aa97/download/uttq-lasso.png)\n\n---\n\n:stuck_out_tongue_closed_eyes: @64a44b0ae9b966f87f404d79 this could help you!\n\n> Just an IDE…`
+      content: `
+        <p>Hi everyone! Don’t forget the daily stand up at 8 AM.</p>
+        <p><span data-type="mention" data-label="Jennifer Grey" data-id="1"></span> Would you mind to share what you’ve been working on lately? We fear not much happened since Dirty Dancing.
+        <p><span data-type="mention" data-label="Winona Ryder" data-id="2"></span> <span data-type="mention" data-label="Axl Rose" data-id="4"></span> Let’s go through your most important points quickly.</p>
+        <p>I have a meeting with <span data-type="mention" data-label="Christina Applegate" data-id="6"></span> and don’t want to come late.</p>
+        <p>– Thanks, your big boss</p>
+      `
     }
   }
 ]

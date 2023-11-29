@@ -53,7 +53,6 @@ export default function ActivityCardCommentReaction({
 
               last.uids = [...last.uids, uid]
               const res = [...accumulator.slice(0, -1), last]
-              console.log({ res })
               return res
             }, [] as { emoji: string; uids: string[] }[])
             .slice(0, 5)

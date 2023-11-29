@@ -1,4 +1,5 @@
 import { ChangeEvent, FocusEvent } from 'react'
+import { Node } from '@tiptap/core'
 
 interface InputBaseProps {
   title: string
@@ -33,6 +34,7 @@ type TextareaBaseProps = Omit<InputBaseProps, 'onChange'> & {
 
 type TexteditorBaseProps = Omit<InputBaseProps, 'onChange'> & {
   onChange: (ev: string) => void
+  extensions?: Node[]
 }
 
 export type RangerSlider = Partial<RangerSliderBaseProps>
