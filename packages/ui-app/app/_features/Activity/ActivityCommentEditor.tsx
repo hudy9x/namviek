@@ -6,18 +6,17 @@ import { useState } from 'react'
 import { Activity, ActivityObjectType, ActivityType } from '@prisma/client'
 import { activityCreate } from '@/services/activity'
 import { useTaskStore } from '@/store/task'
-interface IActivityCommentEditorProps {
-  taskId: string
-}
-export default function ActivityCommentEditor({
-  taskId
-}: IActivityCommentEditorProps) {
+import { useActivityContext } from './context'
+
+export default function ActivityCommentEditor() {
+  const { taskId, addActivity } = useActivityContext()
   const [content, setContent] = useState<string>('')
 
   const { tasks } = useTaskStore()
   const task = tasks.find(t => t.id === taskId)
 
   const { createdBy } = task || {}
+  // console.log({ createdBy, taskId, activities })
   if (!createdBy) return null
 
   const handleSaveEvent = () => {
@@ -32,7 +31,12 @@ export default function ActivityCommentEditor({
       }
     }
 
-    activityCreate(taskId, newComment)
+    activityCreate(taskId, newComment).then(res => {
+      const {
+        data: { data }
+      } = res
+      addActivity(data)
+    })
   }
 
   return (

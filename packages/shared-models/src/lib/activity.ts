@@ -23,15 +23,15 @@ export const mdActivityAdd = (data: Omit<Activity, 'id'>) => {
 //     }
 //   })
 // }
-//
-// export const mdActivityUpdate = (id: string, data: Partial<Activity>) => {
-//   return activityModel.update({
-//     where: {
-//       id
-//     },
-//     data: data
-//   })
-// }
+
+export const mdActivityUpdate = (id: string, data: Omit<Activity, 'id'>) => {
+  return activityModel.update({
+    where: {
+      id
+    },
+    data: data
+  })
+}
 
 export const mdActivityGetAllByTask = (taskId: string) => {
   return activityModel.findMany({

@@ -44,7 +44,7 @@ export default function ActivityCardAttach({
               {name}
             </a>{' '}
             at {/* TODO: focus on clicked! */}
-            {createdAt && <ActivityTimeLog time={createdAt} />}
+            {createdAt && <ActivityTimeLog time={new Date(createdAt)} />}
           </span>
         </div>
       }

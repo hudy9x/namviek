@@ -1,13 +1,11 @@
-import { useTaskStore } from '@/store/task'
-import ActivityCommentEditor from './ActivityCommentEditor'
-import ActivityList from './ActivityList'
 import './style.css'
+import { ActivityContextProvider, useActivityContext } from './context'
+import ActivityContainer from './ActivityContainer'
 
-export default function ActivityContainer({ taskId }: { taskId: string }) {
+export default function Activity({ taskId }: { taskId: string }) {
   return (
-    <>
-      <ActivityCommentEditor taskId={taskId} />
-      <ActivityList taskId={taskId} />
-    </>
+    <ActivityContextProvider>
+      <ActivityContainer taskId={taskId} />
+    </ActivityContextProvider>
   )
 }

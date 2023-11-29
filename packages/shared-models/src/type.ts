@@ -21,7 +21,7 @@ interface Interaction {
 
 export interface ActivityCommentData extends ActivityDataBase {
   edited?: boolean
-  interactions: Interaction[]
+  interactions?: Interaction[]
 }
 
 export interface ActivityAttachData extends ActivityDataBase {

@@ -14,7 +14,7 @@ interface IActivityCardCommentProps {
 export default function ActivityCardComment({
   activity
 }: IActivityCardCommentProps) {
-  const { uid, data, createdAt } = activity as Activity & {
+  const { uid, data, createdAt, id } = activity as Activity & {
     data: ActivityCommentData
   }
   const { content } = data
@@ -24,13 +24,13 @@ export default function ActivityCardComment({
       title={
         <div>
           <ActivityMemberRepresent uid={uid} />
-          {createdAt && <ActivityTimeLog time={createdAt} />}
+          {createdAt && <ActivityTimeLog time={new Date(createdAt)} />}
         </div>
       }
       content={
         <div>
           {content ? <ActivityCardCommentContent content={content} /> : null}
-          <ActivityCardCommentReaction />
+          {content ? <ActivityCardCommentReaction commentId={id} /> : null}
         </div>
       }
     />

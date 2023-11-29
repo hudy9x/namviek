@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { httpDel, httpGet, httpPost } from './_req'
+import { httpDel, httpGet, httpPost, httpPut } from './_req'
 import { Activity } from '@prisma/client'
 
 export const activityGetAllByTask = (taskId: string) => {
   return httpGet(`/api/project/task/activity`, {
     params: {
-      taskId
+      objectId: taskId
     }
   })
 }
@@ -19,6 +19,9 @@ export const activityCreate = (
   })
 }
 
+export const activityUpdate = (activity: Activity) => {
+  return httpPut('/api/project/task/activity', activity)
+}
 //
 // export const activityDelFile = (id: string, projectId: string) => {
 //   return httpDel('/api/activity/del-file', {

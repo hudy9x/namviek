@@ -41,16 +41,16 @@ const ActivityCardCommentContent = ({
               element = <ActivityCardCommentLink linkObject={text} />
               break
 
-            case 3:
-              element = <br />
-              break
+            // case 3:
+            //   element = <br />
+            //   break
           }
           if (element) visualContent.push(element)
         }
       }
     }
 
-    return <p>{...visualContent}</p>
+    return <p contentEditable>{...visualContent}</p>
   }
 
   return (
