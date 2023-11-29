@@ -68,7 +68,9 @@ export default function ActivityCardCommentReaction({
               </div>
             ))
         : null}
-      {interactions ? `+ ${interactions.slice(5).length} mores...` : null}
+      {interactions?.slice(5).length
+        ? `+ ${interactions.slice(5).length} mores...`
+        : null}
       <PopoverControl
         triggerBy={
           <div className="rounded-2xl border-gray-600 border p-1 px-2">

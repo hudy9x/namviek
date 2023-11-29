@@ -14,6 +14,7 @@ router.get('/project/task/activity', async (req: AuthRequest, res) => {
 
   try {
     const results = await mdActivityGetAllByTask(objectId)
+    // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
     res.json({ status: 200, data: results })
   } catch (error) {
     res.json({
