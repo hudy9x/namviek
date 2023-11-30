@@ -94,7 +94,7 @@
 }
 
 .side-nav {
-  @apply border-t dark:border-t-gray-800 pt-3;
+  @apply dark:border-t-gray-800 pt-3;
   @apply w-[250px] shrink-0;
 }
 
