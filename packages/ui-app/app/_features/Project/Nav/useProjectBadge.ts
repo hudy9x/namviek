@@ -2,6 +2,7 @@ import { taskGetByCond } from '@/services/task'
 import { useProjectStore } from '@/store/project'
 import { useUser } from '@goalie/nextjs'
 import { TaskPriority } from '@prisma/client'
+import { LCK, getLocalCache, setLocalCache } from '@shared/libs'
 import { useEffect, useRef, useState } from 'react'
 
 interface IBadgeProp {
@@ -10,16 +11,39 @@ interface IBadgeProp {
   type: string
 }
 
+interface IBadgeData {
+
+  [key: string]: {
+    overdue: number
+    urgent: number
+    upcoming: number
+  }
+}
+
+const getCachedBadge = () => {
+  const cache = getLocalCache(LCK.PROJECT_BADGE)
+  if (!cache) return {}
+  return JSON.parse(cache)
+}
+
+const setCachedBadge = (badges: IBadgeData) => {
+  setLocalCache(LCK.PROJECT_BADGE, JSON.stringify(badges))
+}
+
 export const useProjectBadge = () => {
   const { pinnedProjects } = useProjectStore()
   const { user } = useUser()
-  const [badge, setBadge] = useState<{
-    [key: string]: {
-      overdue: number
-      urgent: number
-      upcoming: number
+  const [badge, setBadge] = useState<IBadgeData>({})
+
+  useEffect(() => {
+    setBadge(getCachedBadge())
+  }, [])
+
+  useEffect(() => {
+    if (Object.keys(badge).length) {
+      setCachedBadge(badge)
     }
-  }>({})
+  }, [badge])
 
   const getBadge = async (
     assigneeId: string,
@@ -42,6 +66,7 @@ export const useProjectBadge = () => {
       abortControllers.push(abort2)
       abortControllers.push(abort3)
 
+      // get urgent task by user
       projectProcess.push(
         taskGetByCond(
           {
@@ -62,6 +87,7 @@ export const useProjectBadge = () => {
         })
       )
 
+      // get overdue task by user
       projectProcess.push(
         taskGetByCond(
           {
@@ -81,6 +107,8 @@ export const useProjectBadge = () => {
           }
         })
       )
+
+      // get upcoming task by user
       projectProcess.push(
         taskGetByCond(
           {
@@ -100,6 +128,7 @@ export const useProjectBadge = () => {
         })
       )
 
+      // wait for all request finished
       Promise.allSettled(projectProcess).then(res => {
         const datas = res as { status: string; value: IBadgeProp }[]
 
@@ -111,6 +140,7 @@ export const useProjectBadge = () => {
           console.log(datas)
         }
 
+        // fill overdue, upcoming, urgent into project id
         datas.forEach(({ status, value }) => {
           if (status !== 'fulfilled') return
           const { total, type } = value
@@ -138,6 +168,8 @@ export const useProjectBadge = () => {
     })
   }
 
+  // wait for a sec before getting badge
+  // in order to reduce requests to server
   const timeout = useRef(0)
   const runGetBadge = (
     uid: string,
