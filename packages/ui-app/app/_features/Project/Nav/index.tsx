@@ -7,8 +7,10 @@ import { useParams } from 'next/navigation'
 import { Project } from '@prisma/client'
 import ProjectNavItem from './ProjectNavItem'
 import { useProjectPinUnpin } from '@/hooks/useProjectPinUnPin'
+import { useProjectBadge } from './useProjectBadge'
 
 export default function ProjectList() {
+  const { badge } = useProjectBadge()
   const { extractPinNUnpinProjects } = useProjectPinUnpin()
   const {
     projects,
@@ -54,10 +56,13 @@ export default function ProjectList() {
       {pin.length ? <h2 className="section">Pinned</h2> : null}
       {pin.map(project => {
         const { id, name, icon } = project
+        const b = badge[id] || { urgent: 0, upcoming: 0, overdue: 0 }
 
+        console.log(badge[id])
         return (
           <ProjectNavItem
             pinned={true}
+            badges={[b.urgent, b.overdue, b.upcoming]}
             key={id}
             id={id}
             name={name || ''}

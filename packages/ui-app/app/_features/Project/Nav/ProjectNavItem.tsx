@@ -4,14 +4,18 @@ import { HiChevronRight } from 'react-icons/hi2'
 import ProjectPin from '../Pin'
 import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
+import Badge from '@/components/Badge'
+import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 
 export default function ProjectNavItem({
   pinned = false,
   id,
   name,
+  badges,
   icon
 }: {
   pinned?: boolean
+  badges?: [number, number, number]
   id: string
   name: string
   icon: string
@@ -33,6 +37,29 @@ export default function ProjectNavItem({
     }, 100)
   }, [])
 
+  const showBadges = () => {
+    const [urgent, overdue, upcoming] = badges || []
+    if (urgent)
+      return (
+        <Tooltip title={`${urgent} urgent`} wrapDiv={true}>
+          <Badge title={urgent + ''} color="red" />
+        </Tooltip>
+      )
+    if (overdue)
+      return (
+        <Tooltip title={`${overdue} overdue`} wrapDiv={true}>
+          <Badge title={overdue + ''} color="purple" />
+        </Tooltip>
+      )
+    if (upcoming)
+      return (
+        <Tooltip title={`${upcoming} upcoming`} wrapDiv={true}>
+          <Badge title={upcoming + ''} />
+        </Tooltip>
+      )
+    return <></>
+  }
+
   return (
     <div
       className={`${active ? 'active' : ''} nav-item group ${
@@ -47,6 +74,7 @@ export default function ProjectNavItem({
         <HiChevronRight className="text-gray-400" />
         <img className="w-5 h-5" src={icon || ''} />
         <span className="whitespace-nowrap">{name}</span>
+        {showBadges()}
       </div>
       <div className="right relative group-hover:opacity-100 opacity-0 transition-all">
         <ProjectPin projectId={id} pinned={pinned} />
