@@ -7,7 +7,6 @@ export const useDebounce = (cb: () => void, dependencies: DependencyList, time?:
     timeout.current = setTimeout(() => {
       cb()
     }, time || 300) as unknown as number
-    console.log(1)
 
     return () => {
       if (timeout.current) {
@@ -17,3 +16,4 @@ export const useDebounce = (cb: () => void, dependencies: DependencyList, time?:
     }
   }, dependencies)
 }
+
