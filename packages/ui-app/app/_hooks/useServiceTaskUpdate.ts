@@ -27,10 +27,6 @@ export const useServiceTaskUpdate = () => {
       return
     }
 
-    if (!data.priority) {
-      data.priority = TaskPriority.LOW
-    }
-
     if (data.taskStatusId) {
       data.done = data.taskStatusId === statusDoneId
     }
