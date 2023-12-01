@@ -25,6 +25,9 @@ export enum CKEY {
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
+const MIN = 60
+const HOUR = MIN * 60
+const DAY = 24 * HOUR
 
 let redis: Redis
 
@@ -84,7 +87,7 @@ export const setJSONCache = (
     return null
   }
   try {
-    redis.set(genKey(key), JSON.stringify(value))
+    redis.set(genKey(key), JSON.stringify(value), 'EX', 1 * DAY)
   } catch (error) {
     console.log('set redis cache error')
   }

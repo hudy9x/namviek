@@ -14,6 +14,7 @@ import {
   HiOutlineChevronUp,
   HiOutlinePlus
 } from 'react-icons/hi2'
+import { format } from 'date-fns'
 
 interface IMyworkCardProps {
   title: string
@@ -97,11 +98,16 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
       <div className={`space-y-2 ${collapse ? 'hidden' : ''}`}>
         {!loading &&
           tasks.map(task => {
+            const dueDate = task.dueDate ? new Date(task.dueDate) : null
             return (
               <div className="mw-task" key={task.id}>
-                <div className="flex items-center gap-2">
+                <div className="">
                   {/* <TaskStatus taskId={task.id} value={task.taskStatusId || ''} /> */}
                   {task.title}
+                  <div className="text-xs text-gray-400 mt-1.5">
+                    {dueDate ? format(dueDate, 'PP') : null}
+                  </div>
+
                   {/* <TaskPriorityCell taskId={task.id} value={task.priority} /> */}
                 </div>
               </div>

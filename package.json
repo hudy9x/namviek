@@ -2,6 +2,9 @@
   "name": "kampuni",
   "version": "0.0.0",
   "license": "MIT",
+  "prisma": {
+    "seed": "ts-node ./packages/shared-models/src/prisma/seed"
+   },
   "scripts": {
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",

@@ -27,13 +27,16 @@ export const useServiceTaskUpdate = () => {
       return
     }
 
-    if (!data.priority) {
-      data.priority = TaskPriority.LOW
-    }
+    console.log(data.priority)
+    // if (!data.priority) {
+      // data.priority = TaskPriority.LOW
+    // }
 
     if (data.taskStatusId) {
       data.done = data.taskStatusId === statusDoneId
     }
+
+    console.log('update taskdate', taskData)
 
     refactorTaskFieldByAutomationConfig('task', data as ITaskDefaultValues)
 
@@ -88,14 +91,20 @@ export const useServiceTaskUpdate = () => {
         taskData.priority = TaskPriority.LOW
       }
 
+      console.log('taskData.taskStatusId', taskData.taskStatusId)
+
       if (taskData.taskStatusId) {
         taskData.done = taskData.taskStatusId === statusDoneId
       }
+
+
 
       refactorTaskFieldByAutomationConfig(
         'task',
         taskData as ITaskDefaultValues
       )
+
+      console.log('after refactoring', taskData.taskStatusId)
 
       updateTask({
         updatedBy: user?.id,

@@ -16,15 +16,18 @@ import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { extractDueDate, setRecentVist } from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
+import { useBadgeFilter } from '@/features/TaskFilter/useBadgeFilter'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
+
   const { addAllMember } = useMemberStore()
   const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
   const { addAllPoints } = useProjectPointStore()
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { getAutomationByProject } = useServiceAutomation()
 
+  useBadgeFilter()
   const { filter } = useTaskFilter()
 
   const getAssigneeIds = (assigneeIds: string[]) => {
@@ -34,6 +37,8 @@ export default function ProjectContainer() {
 
     return assigneeIds.filter(a => a !== 'ALL')
   }
+
+
 
   useEffect(() => {
     setRecentVist(`/${orgID}/project/${projectId}?mode=task`)
@@ -50,9 +55,12 @@ export default function ProjectContainer() {
       dateOperator,
       assigneeIds,
       priority,
+      isDone,
       point
     } = filter
 
+    console.log('---------------')
+    console.log(date, start, end)
     const { startDate, endDate } = extractDueDate({
       dateOperator,
       date,
@@ -60,11 +68,15 @@ export default function ProjectContainer() {
       end
     })
 
+    console.log('startDate', startDate)
+    console.log('endDate', endDate)
+
     setTaskLoading(true)
     taskGetByCond(
       {
         title: term || undefined,
         taskPoint: +point === -1 ? undefined : +point,
+        isDone: isDone,
         priority: priority === 'ALL' ? undefined : priority,
         assigneeIds: getAssigneeIds(assigneeIds),
         projectId,

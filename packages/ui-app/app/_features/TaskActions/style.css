@@ -1,5 +1,5 @@
 .task-actions {
-  @apply flex items-center gap-1;
+  @apply items-center gap-1;
 }
 
 .task-actions .btn {

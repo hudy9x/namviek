@@ -52,7 +52,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
   try {
     // const query = req.body as ITaskQuery
     const { counter, ...rest } = req.query
-
+    console.log('1')
     let ableToCache = false
     const queryKeys = Object.keys(req.query)
     const projectId = req.query.projectId as string

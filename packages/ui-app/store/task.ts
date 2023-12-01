@@ -159,7 +159,7 @@ export const useTaskStore = create<TaskState>(set => ({
 
         const taskIndex = state.tasks.findIndex(t => t.id === id)
 
-        console.log('taskindex', taskIndex)
+        console.log('taskindex', taskIndex, priority)
 
         if (taskIndex === -1) return
 
@@ -207,6 +207,8 @@ export const useTaskStore = create<TaskState>(set => ({
         if (visionId && task.visionId !== visionId) {
           task.visionId = visionId
         }
+
+        console.log('last update', task.priority)
 
         task.updatedAt = new Date()
       })

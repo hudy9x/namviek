@@ -7,6 +7,7 @@ export interface ITaskQuery {
   title?: string
   dueDate?: [Date | string, Date | string]
   assigneeIds?: string[]
+  isDone?: 'yes' | 'no'
   statusIds?: string[]
   taskPoint?: number
   priority?: TaskPriority
@@ -19,6 +20,7 @@ export interface ITaskQuery {
 const generateConditions = ({
   take,
   skip,
+  isDone,
   orderBy,
   priority,
   projectId,
@@ -71,6 +73,11 @@ const generateConditions = ({
     }
   }
 
+
+  if (['yes', 'no'].includes(isDone)) {
+    where.done = isDone === 'yes'
+  }
+
   if (dueDate && dueDate[0] === 'undefined') {
     dueDate[0] = null
   }
@@ -89,7 +96,13 @@ const generateConditions = ({
     where.dueDate = null
   }
 
-  if (!dueDateNotSet && dueDate && (dueDate[0] || dueDate[1])) {
+  console.log('dueDate', dueDate)
+  let dueDateIsAny = false
+  if (dueDate) {
+    dueDateIsAny = dueDate.includes('any')
+  }
+
+  if (!dueDateNotSet && !dueDateIsAny && dueDate && (dueDate[0] || dueDate[1])) {
     let [start, end] = dueDate
 
     if (start && start !== 'null') {

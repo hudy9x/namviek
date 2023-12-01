@@ -40,9 +40,11 @@ export default function ListMode() {
     }
 
     const today = new Date()
-    console.log(dueDate, today)
+
     return today > dueDate && sttId !== statusDoneId
   }
+
+  console.log(tasks)
 
   return (
     <div className="pb-[300px]">
@@ -57,9 +59,8 @@ export default function ListMode() {
                 className="flex gap-2 items-center text-xs uppercase font-bold">
                 <TaskCheckAll groupId={group.id} />
                 <div
-                  className={`status-name flex items-center ${
-                    groupByLoading ? 'loading' : ''
-                  }`}>
+                  className={`status-name flex items-center ${groupByLoading ? 'loading' : ''
+                    }`}>
                   {isGroupbyAssignee ? (
                     <div className="mr-2 inline-block">
                       <Avatar
@@ -131,7 +132,7 @@ export default function ListMode() {
                           <div className="w-full">{task.title}</div>
                         </Link>
                         <TaskActions
-                          className="opacity-0 group-hover:opacity-100 transition-all duration-100"
+                          className="hidden sm:flex opacity-0 group-hover:opacity-100 transition-all duration-100"
                           taskId={task.id}
                         />
                       </div>
@@ -149,7 +150,7 @@ export default function ListMode() {
                             value={task.priority}
                           />
                         </ListCell>
-                        <ListCell className="hidden sm:w-[50px]">
+                        <ListCell className="hidden sm:block sm:w-[50px]">
                           <TaskPoint taskId={task.id} value={task.taskPoint} />
                         </ListCell>
                         <ListCell className="sm:w-[110px]">
