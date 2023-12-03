@@ -30,7 +30,7 @@ import { notifyToWebUsers } from '../../lib/buzzer'
 import { genFrontendUrl, getLogoUrl } from '../../lib/url'
 import { serviceGetStatusById } from '../../services/status'
 import { serviceGetProjectById } from '../../services/project'
-import { getTodoCounter, updateTodoCounter } from '../../services/todo.counter'
+import { decreaseTodoCounter, getTodoCounter, increaseTodoCounter, updateTodoCounter } from '../../services/todo.counter'
 
 const router = Router()
 
@@ -276,7 +276,18 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       progress
     })
 
-    await findNDelCaches(key)
+    const processes = []
+    // update todo counter
+    // only increase counter with undone task
+    if (!done) {
+      processes.push(increaseTodoCounter([id, projectId]))
+    }
+
+    // delete all cached tasks
+    processes.push(findNDelCaches(key))
+
+    // run all process
+    await Promise.allSettled(processes)
 
     if (result.assigneeIds && result.assigneeIds.length) {
       const project = await mdProjectGet(result.projectId)
@@ -341,11 +352,17 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/task', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
   const { id, projectId } = req.query as { id: string; projectId: string }
 
   try {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
+
+    if (!result.done) {
+      decreaseTodoCounter([uid, projectId])
+    }
+
     await findNDelCaches(key)
     console.log('deleted task', id)
     res.json({
@@ -479,12 +496,8 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
-    // const taskData = await tx.task.findFirst({
-    //   where: {
-    //     id
-    //   }
-    // })
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
     if (title) {
@@ -497,12 +510,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
     if (taskStatusId) {
       const doneStatus = await mdTaskStatusWithDoneType(projectId)
-      // const doneStatus = await tx.taskStatus.findFirst({
-      //   where: {
-      //     projectId,
-      //     type: StatusType.DONE
-      //   }
-      // })
 
       taskData.taskStatusId = taskStatusId
       if (doneStatus && doneStatus.id === taskStatusId) {
@@ -548,11 +555,27 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.updatedAt = new Date()
     taskData.updatedBy = userId
 
-    // delete taskData.id
-    // const { id: tid, ...rest } = taskData
-
     const result = await mdTaskUpdate(taskData)
 
+    const processes = []
+
+    // update todo counter
+    // case 1: status switched from todo to done
+    const counterKey = [userId, projectId]
+    if (!isDoneBefore && taskData.done) {
+      processes.push(decreaseTodoCounter(counterKey))
+    }
+
+    // case 2: status switched from done to todo
+    if (isDoneBefore && !taskData.done) {
+      processes.push(increaseTodoCounter(counterKey))
+    }
+
+    processes.push(findNDelCaches(key))
+
+    await Promise.allSettled(processes)
+
+    // send notification as status changed
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)
       const pinfo = await serviceGetProjectById(result.projectId)
@@ -566,7 +589,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       })
     }
 
-    await findNDelCaches(key)
     res.json({ status: 200, data: result })
     // })
   } catch (error) {
