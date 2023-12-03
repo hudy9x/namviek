@@ -14,10 +14,11 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  ITaskQuery
 } from '@shared/models'
 
-import { Prisma, StatusType, Task, TaskStatus } from '@prisma/client'
+import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -25,11 +26,11 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import { notifyToWebUsers } from '../../lib/buzzer'
-import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { genFrontendUrl } from '../../lib/url'
 import { serviceGetStatusById } from '../../services/status'
 import { serviceGetProjectById } from '../../services/project'
+import { updateTodoCounter } from '../../services/project.todo.counter'
 
 const router = Router()
 
@@ -201,8 +202,20 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       progress
     })
 
-    await findNDelCaches(key)
+    const processes = []
+    // cache todo and urgent tasks for each user
+    const increase = done ? -1 : 1
+    processes.push(updateTodoCounter(increase, {
+      projectId,
+      uid: id,
+    }))
 
+    // clear all caches about project tasks
+    processes.push(findNDelCaches(key))
+
+    await Promise.all(processes)
+
+    // send notification to users when new task added
     if (result.assigneeIds && result.assigneeIds.length) {
       const project = await mdProjectGet(result.projectId)
       const taskLink = genFrontendUrl(
@@ -266,11 +279,23 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/task', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
   const { id, projectId } = req.query as { id: string; projectId: string }
 
   try {
+
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
+
+    // update todo counter
+    if (!result.done) {
+      updateTodoCounter(-1, {
+        uid,
+        projectId
+      })
+    }
+
+
     await findNDelCaches(key)
     console.log('deleted task', id)
     res.json({
@@ -379,6 +404,39 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
   // }
 })
 
+router.get('/project/task/counter', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
+  const { projectIds } = req.query as {
+    projectIds: string[]
+  }
+
+  const processes = []
+  projectIds.map(pid => {
+    const cond: ITaskQuery = {
+      projectId: pid,
+      assigneeIds: [uid],
+      isDone: 'no',
+      counter: true
+    }
+    // get todo tasks by project
+    processes.push(mdTaskGetAll(cond))
+  })
+
+  const result = await Promise.all(processes)
+
+  console.log(result)
+
+  res.json({
+    data: result
+  })
+
+  try {
+    console.log(1)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
   const {
@@ -477,6 +535,13 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // const { id: tid, ...rest } = taskData
 
     const result = await mdTaskUpdate(taskData)
+
+    // update todo counter
+    const increase = result.done ? -1 : 1
+    updateTodoCounter(increase, {
+      uid: userId,
+      projectId
+    })
 
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)

@@ -12,6 +12,12 @@ export enum CKEY {
   USER_ORGS = 'USER_ORGS',
   // save the list of project that user manages it or be a member
   USER_PROJECT = 'USER_PROJECT',
+
+  // Todo counter by each user
+  USER_TODOS = 'USER_TODOS',
+  // Todo counter by each project
+  PROJECT_TODOS = 'PROJECT_TODOS',
+
   // project status
   PROJECT_STATUS = 'PROJECT_STATUS',
   PROJECT_MEMBER = 'PROJECT_MEMBER',
@@ -21,7 +27,8 @@ export enum CKEY {
   TASK_QUERY = 'TASK_QUERY',
 
   // save user's favorite links
-  FAV_QUERY = 'FAV_QUERY'
+  FAV_QUERY = 'FAV_QUERY',
+
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
@@ -109,6 +116,39 @@ export const getJSONCache = async (key: CACHE_KEY) => {
     return null
   } catch (error) {
     return null
+  }
+}
+
+export const addToSetCache = async (key: CACHE_KEY, value: RedisValue) => {
+  try {
+    await redis.sadd(genKey(key), value)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getSetCache = async (key: CACHE_KEY) => {
+  try {
+    const n = await redis.scard(genKey(key))
+    return n
+  } catch (error) {
+    return null
+  }
+}
+
+export const incrByCache = async (key: CACHE_KEY) => {
+  try {
+    await redis.incrby(genKey(key), 1)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const decrbyCache = async (key: CACHE_KEY) => {
+  try {
+    await redis.decrby(genKey(key), 1)
+  } catch (error) {
+    console.log(error)
   }
 }
 

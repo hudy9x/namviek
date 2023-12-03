@@ -74,3 +74,10 @@ export const taskAddMany = (data: {
 }) => {
   return httpPost('/api/project/tasks', data)
 }
+
+export const taskCounter = (projectIds: string[], signal: AbortSignal) => {
+  return httpGet('/api/project/task/counter', {
+    params: projectIds,
+    signal
+  })
+}

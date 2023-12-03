@@ -1,4 +1,4 @@
-import { taskGetByCond } from '@/services/task'
+import { taskCounter, taskGetByCond } from '@/services/task'
 import { useProjectStore } from '@/store/project'
 import { useUser } from '@goalie/nextjs'
 import { TaskPriority } from '@prisma/client'
@@ -181,20 +181,29 @@ export const useProjectBadge = () => {
     }, 300) as unknown as number
   }
 
+
+
   useEffect(() => {
     const abortControllers: AbortController[] = []
+    const counterAbort = new AbortController()
     if (user && user.id) {
+      const pids = pinnedProjects.map(p => p.id)
       runGetBadge(
         user.id,
-        pinnedProjects.map(p => p.id),
+        pids,
         abortControllers
       )
+
+      taskCounter(pids, counterAbort.signal).then(res => {
+        console.log(res)
+      })
     }
 
     return () => {
       abortControllers.map(controller => {
         controller.abort()
       })
+      counterAbort.abort()
     }
   }, [pinnedProjects, user?.id])
 

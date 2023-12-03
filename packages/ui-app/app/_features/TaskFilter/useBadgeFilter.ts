@@ -62,10 +62,6 @@ export const useBadgeFilter = () => {
   useDebounce(() => {
     const badgeFilter = sp.get('badgeFilter') || ''
 
-    console.log(badgeFilter)
-
-
-
     if (user && user.id) {
       console.log('run badge', badgeFilter || 'EMPTY')
       applyFilter(badgeFilter, user.id)
