@@ -10,6 +10,7 @@ export interface ITaskQuery {
   statusIds?: string[]
   taskPoint?: number
   priority?: TaskPriority
+  done?: 'yes' | 'no'
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']
@@ -28,6 +29,7 @@ const generateConditions = ({
   assigneeIds,
   statusIds,
   taskPoint,
+  done,
   counter
 }: ITaskQuery) => {
   const where: {
@@ -63,6 +65,10 @@ const generateConditions = ({
         in: projectIds
       }
     }
+  }
+
+  if (['yes', 'no'].includes(done)) {
+    where.done = done === 'yes'
   }
 
   if (statusIds) {

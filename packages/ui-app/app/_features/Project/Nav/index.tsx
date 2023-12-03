@@ -7,10 +7,10 @@ import { useParams } from 'next/navigation'
 import { Project } from '@prisma/client'
 import ProjectNavItem from './ProjectNavItem'
 import { useProjectPinUnpin } from '@/hooks/useProjectPinUnPin'
-import { useProjectBadge } from './useProjectBadge'
+import { useTodoCounter } from '@/hooks/useTodoCounter'
 
 export default function ProjectList() {
-  const { badge } = useProjectBadge()
+  const { todoCounter } = useTodoCounter()
   const { extractPinNUnpinProjects } = useProjectPinUnpin()
   const {
     projects,
@@ -56,13 +56,13 @@ export default function ProjectList() {
       {pin.length ? <h2 className="section">Pinned</h2> : null}
       {pin.map(project => {
         const { id, name, icon } = project
-        const b = badge[id] || { urgent: 0, upcoming: 0, overdue: 0 }
+        const counter = todoCounter[id]
 
-        console.log(badge[id])
+
         return (
           <ProjectNavItem
             pinned={true}
-            badges={[b.urgent, b.overdue, b.upcoming]}
+            badge={counter}
             key={id}
             id={id}
             name={name || ''}
@@ -73,9 +73,11 @@ export default function ProjectList() {
       {pin.length ? <h2 className="section">All project</h2> : null}
       {unpin.map(project => {
         const { id, name, icon } = project
+        const counter = todoCounter[id]
 
         return (
           <ProjectNavItem
+            badge={counter}
             key={id}
             id={id}
             name={name || ''}

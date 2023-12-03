@@ -11,11 +11,11 @@ export default function ProjectNavItem({
   pinned = false,
   id,
   name,
-  badges,
+  badge,
   icon
 }: {
   pinned?: boolean
-  badges?: [number, number, number]
+  badge?: number
   id: string
   name: string
   icon: string
@@ -38,33 +38,18 @@ export default function ProjectNavItem({
   }, [])
 
   const showBadges = () => {
-    const [urgent, overdue, upcoming] = badges || []
-    if (urgent)
-      return (
-        <Tooltip title={`${urgent} urgent`} wrapDiv={true}>
-          <Badge title={urgent + ''} color="red" />
-        </Tooltip>
-      )
-    if (overdue)
-      return (
-        <Tooltip title={`${overdue} overdue`} wrapDiv={true}>
-          <Badge title={overdue + ''} color="purple" />
-        </Tooltip>
-      )
-    if (upcoming)
-      return (
-        <Tooltip title={`${upcoming} upcoming`} wrapDiv={true}>
-          <Badge title={upcoming + ''} />
-        </Tooltip>
-      )
-    return <></>
+    if (!badge) return null
+    return (
+      <Tooltip title={`${badge} todos`} wrapDiv={true}>
+        <Badge title={badge + ''} />
+      </Tooltip>
+    )
   }
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${
-        visible ? 'opacity-100' : 'opacity-0'
-      } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+        } transition-all duration-300`}
       onClick={() => {
         onSelectProject(id)
         setMenuVisible(false)

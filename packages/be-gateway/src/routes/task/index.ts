@@ -30,6 +30,7 @@ import { notifyToWebUsers } from '../../lib/buzzer'
 import { genFrontendUrl, getLogoUrl } from '../../lib/url'
 import { serviceGetStatusById } from '../../services/status'
 import { serviceGetProjectById } from '../../services/project'
+import { getTodoCounter, updateTodoCounter } from '../../services/todo.counter'
 
 const router = Router()
 
@@ -45,6 +46,80 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task/counter', async (req: AuthRequest, res) => {
+  try {
+    const { id: uid } = req.authen
+    const { projectIds } = req.query as { projectIds: string[] }
+
+    if (!projectIds.length) {
+      return res.json({
+        data: []
+      })
+    }
+
+
+    // get todo tasks by user
+
+    const processes = []
+
+    for (let i = 0; i < projectIds.length; i++) {
+      const pid = projectIds[i];
+      const todoCounter = await getTodoCounter([uid, pid])
+
+      console.log('===>', pid)
+      console.log('todo counter', todoCounter)
+
+      if (todoCounter) {
+        processes.push(Promise.resolve({
+          total: parseInt(todoCounter, 10),
+          projectId: pid
+        }))
+        continue
+      }
+
+      processes.push(
+        mdTaskGetAll({
+          assigneeIds: [uid],
+          projectId: pid,
+          done: 'no',
+          counter: true,
+        }).then(val => {
+          return {
+            total: val,
+            projectId: pid
+          }
+        })
+      )
+    }
+
+    // run all task query asynchronous
+    const results = await Promise.allSettled(processes) as PromiseSettledResult<{ total: number, projectId: string }>[]
+
+
+    // filter fulfilled results
+    const lastResults = results.map(r => {
+      if (r.status === 'fulfilled') {
+        const { total, projectId } = r.value
+        // update todo counter
+        updateTodoCounter([uid, projectId], total)
+        return {
+          total,
+          projectId
+        }
+      }
+    })
+
+    res.json({
+      data: lastResults
+    })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+
   }
 })
 
