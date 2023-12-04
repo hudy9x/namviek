@@ -22,6 +22,10 @@ export const extractDueDate = ({
     return { startDate: 'not-set', endDate: 'not-set' }
   }
 
+  if (date === 'any') {
+    return { startDate: 'any', endDate: 'any' }
+  }
+
   const { startDate, endDate } = fromDateStringToDateObject(dateOperator, date)
 
   return {

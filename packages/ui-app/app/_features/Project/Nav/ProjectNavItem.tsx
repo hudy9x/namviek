@@ -11,11 +11,11 @@ export default function ProjectNavItem({
   pinned = false,
   id,
   name,
-  badges,
+  badge,
   icon
 }: {
   pinned?: boolean
-  badges?: [number, number, number]
+  badge?: number
   id: string
   name: string
   icon: string
@@ -37,27 +37,24 @@ export default function ProjectNavItem({
     }, 100)
   }, [])
 
+  const onSelectItem = (link: string) => {
+    onSelectProject(id)
+    setMenuVisible(false)
+    push(link)
+  }
+
   const showBadges = () => {
-    const [urgent, overdue, upcoming] = badges || []
-    if (urgent)
-      return (
-        <Tooltip title={`${urgent} urgent`} wrapDiv={true}>
-          <Badge title={urgent + ''} color="red" />
-        </Tooltip>
-      )
-    if (overdue)
-      return (
-        <Tooltip title={`${overdue} overdue`} wrapDiv={true}>
-          <Badge title={overdue + ''} color="purple" />
-        </Tooltip>
-      )
-    if (upcoming)
-      return (
-        <Tooltip title={`${upcoming} upcoming`} wrapDiv={true}>
-          <Badge title={upcoming + ''} />
-        </Tooltip>
-      )
-    return <></>
+    if (!badge) return null
+    return (
+      <Tooltip title={`${badge} todos`} wrapDiv={true}>
+        <Badge
+          onClick={() => {
+            onSelectItem(href + '&badgeFilter=todo')
+          }}
+          title={badge + ''}
+        />
+      </Tooltip>
+    )
   }
 
   return (
@@ -66,9 +63,7 @@ export default function ProjectNavItem({
         visible ? 'opacity-100' : 'opacity-0'
       } transition-all duration-300`}
       onClick={() => {
-        onSelectProject(id)
-        setMenuVisible(false)
-        push(href)
+        onSelectItem(href)
       }}>
       <div className="left">
         <HiChevronRight className="text-gray-400" />

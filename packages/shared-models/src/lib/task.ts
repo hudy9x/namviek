@@ -10,6 +10,7 @@ export interface ITaskQuery {
   statusIds?: string[]
   taskPoint?: number
   priority?: TaskPriority
+  done?: 'yes' | 'no'
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']
@@ -28,6 +29,7 @@ const generateConditions = ({
   assigneeIds,
   statusIds,
   taskPoint,
+  done,
   counter
 }: ITaskQuery) => {
   const where: {
@@ -36,6 +38,7 @@ const generateConditions = ({
 
   take = take ? parseInt(take as unknown as string, 10) : undefined
 
+  // filter task by title
   if (title) {
     where.title = {
       contains: title,
@@ -65,12 +68,18 @@ const generateConditions = ({
     }
   }
 
+  // filter done tasks
+  if (['yes', 'no'].includes(done)) {
+    where.done = done === 'yes'
+  }
+
   if (statusIds) {
     where.taskStatusId = {
       in: statusIds
     }
   }
 
+  // clear due date as it's value is undefined
   if (dueDate && dueDate[0] === 'undefined') {
     dueDate[0] = null
   }
@@ -79,6 +88,7 @@ const generateConditions = ({
     dueDate[1] = null
   }
 
+  // filter tasks that not set dueDate
   let dueDateNotSet = false
 
   if (dueDate) {
@@ -89,7 +99,19 @@ const generateConditions = ({
     where.dueDate = null
   }
 
-  if (!dueDateNotSet && dueDate && (dueDate[0] || dueDate[1])) {
+  // filter tasks without date range
+  let dueDateIsAny = false
+  if (dueDate) {
+    dueDateIsAny = dueDate.includes('any')
+  }
+
+  // filter tasks with date range
+  if (
+    !dueDateNotSet &&
+    !dueDateIsAny &&
+    dueDate &&
+    (dueDate[0] || dueDate[1])
+  ) {
     let [start, end] = dueDate
 
     if (start && start !== 'null') {
@@ -125,6 +147,7 @@ const generateConditions = ({
     }
   }
 
+  // filter task with specified assignees
   if (assigneeIds && assigneeIds.length) {
     if (assigneeIds.includes('null')) {
       where.assigneeIds = {

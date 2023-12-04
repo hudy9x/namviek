@@ -113,7 +113,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
           onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
-        {/* {status.type} */}
+        {status.type}
       </div>
       <div className="absolute right-3 gap-2 hidden group-hover:flex ">
         <IoIosClose

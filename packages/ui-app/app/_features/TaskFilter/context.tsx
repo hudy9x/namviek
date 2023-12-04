@@ -26,6 +26,7 @@ interface ITaskFilterFields {
   dateOperator: string
   date: string
   startDate?: Date
+  done?: 'yes' | 'no'
   endDate?: Date
   point: string
   priority: TaskPriority | 'ALL'
