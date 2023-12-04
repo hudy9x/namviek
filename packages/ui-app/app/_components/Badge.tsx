@@ -2,11 +2,13 @@ interface IBadeProps {
   title: string
   pulse?: boolean
   color?: 'gray' | 'green' | 'yellow' | 'red' | 'pink' | 'indigo' | 'purple'
+  onClick?: () => void
 }
 export default function Badge({
   title,
   pulse = false,
-  color = 'gray'
+  color = 'gray',
+  onClick
 }: IBadeProps) {
   const classes = []
 
@@ -23,6 +25,12 @@ export default function Badge({
 
   return (
     <div
+      onClick={ev => {
+        if (onClick) {
+          ev.stopPropagation()
+          onClick()
+        }
+      }}
       className={`${classes.join(
         ' '
       )} text-[10px] text-center rounded h-4 leading-4 inline-block px-2`}>

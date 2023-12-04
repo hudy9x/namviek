@@ -17,7 +17,7 @@ import {
   mdTaskUpdateMany
 } from '@shared/models'
 
-import { Prisma, StatusType, Task, TaskStatus } from '@prisma/client'
+import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -25,12 +25,16 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+
 import { notifyToWebUsers } from '../../lib/buzzer'
-import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { genFrontendUrl } from '../../lib/url'
 import { serviceGetStatusById } from '../../services/status'
 import { serviceGetProjectById } from '../../services/project'
-import { decreaseTodoCounter, getTodoCounter, increaseTodoCounter, updateTodoCounter } from '../../services/todo.counter'
+import {
+  deleteTodoCounter,
+  getTodoCounter,
+  updateTodoCounter
+} from '../../services/todo.counter'
 
 const router = Router()
 
@@ -60,23 +64,21 @@ router.get('/project/task/counter', async (req: AuthRequest, res) => {
       })
     }
 
-
     // get todo tasks by user
 
     const processes = []
 
     for (let i = 0; i < projectIds.length; i++) {
-      const pid = projectIds[i];
+      const pid = projectIds[i]
       const todoCounter = await getTodoCounter([uid, pid])
 
-      console.log('===>', pid)
-      console.log('todo counter', todoCounter)
-
       if (todoCounter) {
-        processes.push(Promise.resolve({
-          total: parseInt(todoCounter, 10),
-          projectId: pid
-        }))
+        processes.push(
+          Promise.resolve({
+            total: parseInt(todoCounter, 10),
+            projectId: pid
+          })
+        )
         continue
       }
 
@@ -85,7 +87,7 @@ router.get('/project/task/counter', async (req: AuthRequest, res) => {
           assigneeIds: [uid],
           projectId: pid,
           done: 'no',
-          counter: true,
+          counter: true
         }).then(val => {
           return {
             total: val,
@@ -96,8 +98,9 @@ router.get('/project/task/counter', async (req: AuthRequest, res) => {
     }
 
     // run all task query asynchronous
-    const results = await Promise.allSettled(processes) as PromiseSettledResult<{ total: number, projectId: string }>[]
-
+    const results = (await Promise.allSettled(
+      processes
+    )) as PromiseSettledResult<{ total: number; projectId: string }>[]
 
     // filter fulfilled results
     const lastResults = results.map(r => {
@@ -115,11 +118,9 @@ router.get('/project/task/counter', async (req: AuthRequest, res) => {
     res.json({
       data: lastResults
     })
-
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
-
   }
 })
 
@@ -277,10 +278,10 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     })
 
     const processes = []
-    // update todo counter
-    // only increase counter with undone task
-    if (!done) {
-      processes.push(increaseTodoCounter([id, projectId]))
+
+    // delete todo counter
+    if (assigneeIds && assigneeIds[0]) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
     }
 
     // delete all cached tasks
@@ -352,15 +353,16 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/task', async (req: AuthRequest, res) => {
-  const { id: uid } = req.authen
+  // const { id: uid } = req.authen
   const { id, projectId } = req.query as { id: string; projectId: string }
 
   try {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
 
-    if (!result.done) {
-      decreaseTodoCounter([uid, projectId])
+    if (!result.done && result.assigneeIds && result.assigneeIds[0]) {
+      console.log('delete todo counter')
+      await deleteTodoCounter([result.assigneeIds[0], projectId])
     }
 
     await findNDelCaches(key)
@@ -498,6 +500,8 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const taskData = await mdTaskGetOne(id)
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
+    const oldAssigneeId = taskData?.assigneeIds[0]
+
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
     if (title) {
@@ -559,16 +563,16 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
     const processes = []
 
-    // update todo counter
-    // case 1: status switched from todo to done
-    const counterKey = [userId, projectId]
-    if (!isDoneBefore && taskData.done) {
-      processes.push(decreaseTodoCounter(counterKey))
+    // delete todo counter
+    console.log('update todo counter', oldAssigneeId, assigneeIds)
+    console.log(isDoneBefore, taskData.done)
+
+    if (oldAssigneeId) {
+      processes.push(deleteTodoCounter([oldAssigneeId, projectId]))
     }
 
-    // case 2: status switched from done to todo
-    if (isDoneBefore && !taskData.done) {
-      processes.push(increaseTodoCounter(counterKey))
+    if (assigneeIds && assigneeIds[0] && assigneeIds[0] !== oldAssigneeId) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
     }
 
     processes.push(findNDelCaches(key))

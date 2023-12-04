@@ -20,6 +20,7 @@ export interface ITaskQuery {
   statusIds?: string[]
   taskPoint?: number
   priority?: TaskPriority
+  done?: 'yes' | 'no'
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']

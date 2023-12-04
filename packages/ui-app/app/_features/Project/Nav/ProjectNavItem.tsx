@@ -37,23 +37,33 @@ export default function ProjectNavItem({
     }, 100)
   }, [])
 
+  const onSelectItem = (link: string) => {
+    onSelectProject(id)
+    setMenuVisible(false)
+    push(link)
+  }
+
   const showBadges = () => {
     if (!badge) return null
     return (
       <Tooltip title={`${badge} todos`} wrapDiv={true}>
-        <Badge title={badge + ''} />
+        <Badge
+          onClick={() => {
+            onSelectItem(href + '&badgeFilter=todo')
+          }}
+          title={badge + ''}
+        />
       </Tooltip>
     )
   }
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
-        } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${
+        visible ? 'opacity-100' : 'opacity-0'
+      } transition-all duration-300`}
       onClick={() => {
-        onSelectProject(id)
-        setMenuVisible(false)
-        push(href)
+        onSelectItem(href)
       }}>
       <div className="left">
         <HiChevronRight className="text-gray-400" />

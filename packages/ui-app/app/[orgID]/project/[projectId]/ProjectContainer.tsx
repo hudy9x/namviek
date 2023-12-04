@@ -16,6 +16,7 @@ import { messageError } from '@shared/ui'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { extractDueDate, setRecentVist } from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
+import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -25,6 +26,7 @@ export default function ProjectContainer() {
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { getAutomationByProject } = useServiceAutomation()
 
+  useTodoFilter()
   const { filter } = useTaskFilter()
 
   const getAssigneeIds = (assigneeIds: string[]) => {
@@ -48,6 +50,7 @@ export default function ProjectContainer() {
       startDate: start,
       endDate: end,
       dateOperator,
+      done,
       assigneeIds,
       priority,
       point
@@ -67,6 +70,7 @@ export default function ProjectContainer() {
         taskPoint: +point === -1 ? undefined : +point,
         priority: priority === 'ALL' ? undefined : priority,
         assigneeIds: getAssigneeIds(assigneeIds),
+        done,
         projectId,
         dueDate: [startDate || 'null', endDate || 'null']
       },
