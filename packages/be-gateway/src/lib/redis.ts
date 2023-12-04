@@ -31,6 +31,11 @@ type CACHE_KEY = CKEY | (CKEY | string)[]
 
 let redis: Redis
 
+const MIN = 60
+const HOUR = 60 * MIN
+
+const DAY = 23 * HOUR
+
 try {
   redis = new Redis(process.env.REDIS_HOST)
   redis.once('connect', () => {
@@ -87,7 +92,9 @@ export const setJSONCache = (
     return null
   }
   try {
-    redis.set(genKey(key), JSON.stringify(value))
+    const cacheKey = genKey(key)
+    redis.set(cacheKey, JSON.stringify(value))
+    redis.expire(cacheKey, DAY)
   } catch (error) {
     console.log('set redis cache error')
   }
@@ -208,4 +215,3 @@ export const decrCache = async (key: CACHE_KEY) => {
     return null
   }
 }
-
