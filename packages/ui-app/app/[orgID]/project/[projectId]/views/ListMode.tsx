@@ -123,7 +123,7 @@ export default function ListMode() {
                         />
                       </div>
                       <div className="mt-2 sm:mt-0 flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-300">
-                        <ListCell className="absolute top-3 right-2 sm:relative sm:w-[150px]">
+                        <ListCell className="absolute top-3 right-2 sm:top-0 sm:left-0 sm:relative sm:w-[150px]">
                           <TaskAssignee
                             className="no-name"
                             taskId={task.id}
@@ -136,10 +136,10 @@ export default function ListMode() {
                             value={task.priority}
                           />
                         </ListCell>
-                        <ListCell className="hidden sm:w-[50px]">
+                        <ListCell className="hidden sm:w-[50px] sm:block">
                           <TaskPoint taskId={task.id} value={task.taskPoint} />
                         </ListCell>
-                        <ListCell className="ml-6 sm:w-[110px]">
+                        <ListCell className="ml-6 sm:ml-0 sm:w-[110px]">
                           <TaskDate
                             toNow={true}
                             taskId={task.id}
