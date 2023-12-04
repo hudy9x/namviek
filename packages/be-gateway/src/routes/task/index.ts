@@ -564,9 +564,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const processes = []
 
     // delete todo counter
-    console.log('update todo counter', oldAssigneeId, assigneeIds)
-    console.log(isDoneBefore, taskData.done)
-
     if (oldAssigneeId) {
       processes.push(deleteTodoCounter([oldAssigneeId, projectId]))
     }
@@ -575,6 +572,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
     }
 
+    // delete cached tasks
     processes.push(findNDelCaches(key))
 
     await Promise.allSettled(processes)
