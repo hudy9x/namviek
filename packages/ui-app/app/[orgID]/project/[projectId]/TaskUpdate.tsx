@@ -87,6 +87,7 @@ export const TaskUpdate = () => {
 
     if (currentTask) {
       setCurrentTask({
+        id: currentTask?.id || defaultFormikValues.id,
         title: currentTask?.title || defaultFormikValues.title,
         fileIds: currentTask.fileIds || [],
         taskStatusId:
@@ -99,7 +100,7 @@ export const TaskUpdate = () => {
           : defaultFormikValues.dueDate,
         plannedDueDate: currentTask.plannedDueDate
           ? new Date(currentTask.plannedDueDate)
-          : defaultFormikValues.plannedDueDate, 
+          : defaultFormikValues.plannedDueDate,
         planedStartDate: currentTask.plannedStartDate
           ? new Date(currentTask.plannedStartDate)
           : defaultFormikValues.planedStartDate,

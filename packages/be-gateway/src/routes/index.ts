@@ -14,6 +14,7 @@ import { storageRouter } from './storage'
 import buzzerRouter from './buzzer'
 import meetingRouter from './meeting'
 import { authMiddleware } from '../middlewares'
+import ActivityRouter from './activity'
 
 // import "./test";
 import AdminController from './test2'
@@ -21,7 +22,7 @@ import { AppRoutes } from '../core/AppRoutes'
 
 const router = Router()
 
-router.use(AppRoutes([AdminController]))
+router.use(AppRoutes([AdminController, ActivityRouter]))
 // middlewares
 // router.use([])
 router.use((req, res, next) => {
