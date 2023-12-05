@@ -6,7 +6,6 @@ import {
   mdProjectGetAllByIds,
   mdProjectUpdate,
   mdTaskPointAddMany,
-  mdTaskPointAddOne,
   mdTaskStatusAddMany
 } from '@shared/models'
 import { Router } from 'express'
@@ -28,17 +27,18 @@ router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
+  const { isArchived } = req.query as { isArchived: string }
   const key = [CKEY.USER_PROJECT, userId]
 
   try {
     const cached = await getJSONCache(key)
-    if (cached) {
-      console.log('return cached project')
-      return res.json({
-        status: 200,
-        data: cached
-      })
-    }
+    // if (cached) {
+    //   console.log('return cached project')
+    //   return res.json({
+    //     status: 200,
+    //     data: cached
+    //   })
+    // }
     const invitedProjects = await mdMemberGetProject(userId)
 
     if (!invitedProjects) {
@@ -49,12 +49,15 @@ router.get('/project', async (req: AuthRequest, res) => {
       })
     }
 
+    console.log('isArchive', isArchived === 'true')
+
     const projectIds = invitedProjects.map(p => p.projectId)
-    const projects = await mdProjectGetAllByIds(projectIds)
+    const projects = await mdProjectGetAllByIds(projectIds, {
+      isArchived: isArchived === 'true'
+    })
+
 
     setJSONCache(key, projects)
-
-    console.log('get project success')
 
     // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
@@ -89,6 +92,7 @@ router.post('/project', async (req: AuthRequest, res) => {
       name: body.name,
       desc: body.desc,
       createdBy: userId,
+      isArchived: false,
       createdAt: new Date(),
       organizationId: body.organizationId,
       updatedAt: null,

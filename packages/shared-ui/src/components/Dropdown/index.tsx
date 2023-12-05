@@ -45,20 +45,27 @@ const DropdownContent = ({ children }: { children: ReactNode }) => {
 
 const DropdownItem = ({
   title,
+  icon,
   right,
   disabled,
   onClick
 }: {
+  icon?: ReactNode
   title: ReactNode
   right?: ReactNode
   disabled?: boolean
   onClick?: () => void
 }) => {
+
   return (
     <DropdownMenu.Item
-      onClick={() => onClick && onClick()}
+      onClick={(ev) => {
+        ev.stopPropagation()
+        onClick && onClick()
+      }}
       disabled={disabled}
       className="dropdown-item">
+      {icon ? <span className='mr-2'>{icon}</span> : null}
       {title} {right ? <div className="right-slot">{right}</div> : null}
     </DropdownMenu.Item>
   )

@@ -32,7 +32,9 @@ export default function ProjectList() {
 
       addPinnedProjects(pinnedProjects)
     })
-    projectGet().then(result => {
+    projectGet({
+      isArchive: false
+    }).then(result => {
       const { data, status } = result.data
       const projects = data as Project[]
 
