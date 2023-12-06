@@ -14,10 +14,22 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  ActivityLogData,
+  mdActivityAddMany
 } from '@shared/models'
 
-import { Prisma, StatusType, Task, TaskStatus } from '@prisma/client'
+import isSameDay from 'date-fns/isSameDay'
+
+import {
+  Activity,
+  ActivityObjectType,
+  ActivityType,
+  Prisma,
+  StatusType,
+  Task,
+  TaskStatus
+} from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -405,6 +417,17 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
     const oldStatusId = taskData.taskStatusId
+
+    const activityTemplate = {
+      objectId: taskData.id,
+      objectType: ActivityObjectType.TASK,
+      createdBy: userId,
+      // data
+      createdAt: new Date()
+    } as Omit<Activity, 'id'>
+
+    const updatingActivities: Omit<Activity, 'id'>[] = []
+
     // const taskData = await tx.task.findFirst({
     //   where: {
     //     id
@@ -413,14 +436,46 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
     if (title) {
+      if (taskData.title !== title) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_TITLE_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: taskData.title,
+          changeTo: title
+        }
+        newActivity.data = JSON.stringify(data)
+        updatingActivities.push(newActivity)
+      }
+
       taskData.title = title
     }
 
     if (desc) {
+      if (taskData.desc !== desc) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_DESC_CHANGED
+        updatingActivities.push(newActivity)
+      }
+
       taskData.desc = desc
     }
 
     if (taskStatusId) {
+      if (taskData.taskStatusId !== taskStatusId) {
+        const newActivity = structuredClone(activityTemplate)
+
+        if (!taskData.taskStatusId)
+          newActivity.type = ActivityType.TASK_STATUS_CREATED
+        else {
+          newActivity.type = ActivityType.TASK_STATUS_CHANGED
+          const data: ActivityLogData = {
+            changeFrom: taskData.taskStatusId,
+            changeTo: taskStatusId
+          }
+          newActivity.data = JSON.stringify(data)
+        }
+        updatingActivities.push(newActivity)
+      }
       const doneStatus = await mdTaskStatusWithDoneType(projectId)
       // const doneStatus = await tx.taskStatus.findFirst({
       //   where: {
@@ -442,31 +497,125 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     }
 
     if (assigneeIds) {
+      const newAssigneeIds = assigneeIds.filter(
+        id => !taskData.assigneeIds.includes(id)
+      )
+      if (newAssigneeIds.length) {
+        const newAssigneesActivity = structuredClone(activityTemplate)
+        newAssigneesActivity.type = ActivityType.TASK_ASSIGNEE_ADDED
+        newAssigneesActivity.data = newAssigneeIds
+        updatingActivities.push(newAssigneesActivity)
+      }
+
+      const removedAssigneeIds = taskData.assigneeIds.filter(
+        id => !assigneeIds.includes(id)
+      )
+      if (removedAssigneeIds.length) {
+        const removedAssigneesActivity = structuredClone(activityTemplate)
+        removedAssigneesActivity.type = ActivityType.TASK_ASSIGNEE_REMOVED
+        removedAssigneesActivity.data = removedAssigneeIds
+        updatingActivities.push(removedAssigneesActivity)
+      }
+
       taskData.assigneeIds = assigneeIds
     }
 
     if (priority) {
+      if (taskData.priority !== priority) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_PRIORITY_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: taskData.priority,
+          changeTo: priority
+        }
+        newActivity.data = JSON.stringify(data)
+
+        updatingActivities.push(newActivity)
+      }
+
       taskData.priority = priority
     }
 
     if (taskPoint) {
+      if (taskData.taskPoint !== taskPoint) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_POINT_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: taskData.taskPoint.toString(),
+          changeTo: taskPoint.toString()
+        }
+        newActivity.data = JSON.stringify(data)
+
+        updatingActivities.push(newActivity)
+      }
+
       taskData.taskPoint = taskPoint
     }
 
     if (dueDate) {
+      if (isSameDay(new Date(taskData.dueDate), new Date(dueDate))) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_DUEDATE_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: new Date(taskData.dueDate).toISOString(),
+          changeTo: new Date(dueDate).toISOString()
+        }
+        newActivity.data = JSON.stringify(data)
+        updatingActivities.push(newActivity)
+      }
+
       taskData.dueDate = dueDate
     }
 
     if (progress) {
+      if (taskData.progress !== progress) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_PROGRESS_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: taskData.progress.toString(),
+          changeTo: progress.toString()
+        }
+        newActivity.data = JSON.stringify(data)
+
+        updatingActivities.push(newActivity)
+      }
+
       taskData.progress = progress
     }
 
     if (fileIds && fileIds.length) {
       const oldFileIds = taskData.fileIds || []
+
+      const newFileIds = fileIds.filter(id => !oldFileIds.includes(id))
+      if (newFileIds.length) {
+        const newFilesActivity = structuredClone(activityTemplate)
+        newFilesActivity.type = ActivityType.TASK_ATTACHMENT_ADDED
+        newFilesActivity.data = newFileIds
+        updatingActivities.push(newFilesActivity)
+      }
+
+      const removedFileIds = oldFileIds.filter(id => !fileIds.includes(id))
+      if (removedFileIds.length) {
+        const removedFilesActivity = structuredClone(activityTemplate)
+        removedFilesActivity.type = ActivityType.TASK_ATTACHMENT_REMOVED
+        removedFilesActivity.data = removedFileIds
+        updatingActivities.push(removedFilesActivity)
+      }
       taskData.fileIds = [...fileIds, ...oldFileIds]
     }
 
     if (visionId) {
+      if (taskData.visionId !== visionId) {
+        const newActivity = structuredClone(activityTemplate)
+        newActivity.type = ActivityType.TASK_VISION_CHANGED
+        const data: ActivityLogData = {
+          changeFrom: taskData.visionId,
+          changeTo: visionId
+        }
+        newActivity.data = JSON.stringify(data)
+        updatingActivities.push(newActivity)
+      }
+
       taskData.visionId = visionId
     }
 
@@ -477,6 +626,13 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     // const { id: tid, ...rest } = taskData
 
     const result = await mdTaskUpdate(taskData)
+
+    try {
+      const res = await mdActivityAddMany(updatingActivities)
+      console.log({ res })
+    } catch (err) {
+      console.log(`Add task updates activity failed with: ${err}`)
+    }
 
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)

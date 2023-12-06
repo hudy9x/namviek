@@ -10,7 +10,6 @@ export interface UserSetting {
 }
 
 interface ActivityData {
-  // title?: string
   content?: string
 }
 
@@ -28,4 +27,9 @@ export interface ActivityAttachData extends ActivityData {
   attachedFile?: FileStorage // others can reply comment's link
 }
 
-export type TaskLogActivity = string
+interface ActivityChangeData extends ActivityData {
+  changeFrom: string
+  changeTo: string
+}
+
+export type ActivityLogData = ActivityChangeData | string[]

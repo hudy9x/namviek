@@ -3,7 +3,6 @@ import { Activity, ActivityType } from '@prisma/client'
 import { messageError, messageSuccess } from '@shared/ui'
 import {
   PropsWithChildren,
-  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -16,6 +15,7 @@ interface IActivityContext {
   taskId: string
   setTaskId: (taskId: string) => void
   activities: Activity[]
+  getActivities: () => void
   addActivity: (activiyy: Activity) => void
   updateActivity: (activity: Activity) => void
   removeActivity: (id: string) => void
@@ -27,6 +27,9 @@ interface IActivityContext {
 const ActivityContext = createContext<IActivityContext>({
   taskId: '',
   editingActivityId: '',
+  getActivities: () => {
+    console.log(1)
+  },
   setTaskId: () => {
     console.log(1)
   },
@@ -114,7 +117,8 @@ export const ActivityContextProvider = ({ children }: PropsWithChildren) => {
         activities,
         updateActivity,
         editingActivityId,
-        setEditingActivityId
+        setEditingActivityId,
+        getActivities: loadActivities
       }}>
       {children}
     </ActivityContext.Provider>

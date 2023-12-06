@@ -7,6 +7,11 @@ export const mdActivityAdd = (data: Omit<Activity, 'id'>) => {
   })
 }
 
+export const mdActivityAddMany = (data: Omit<Activity, 'id'>[]) => {
+  return activityModel.createMany({
+    data
+  })
+}
 // export const mdActivityGet = (objectId: string, objectType: string) => {
 //   return activityModel.findMany({
 //     where: {

@@ -13,7 +13,7 @@ interface IActivityCardAttachProps {
 export default function ActivityCardAttach({
   activity
 }: IActivityCardAttachProps) {
-  const { udpatedBy, data, createdAt, type } = activity as Activity & {
+  const { createdBy, data, createdAt, type } = activity as Activity & {
     data: ActivityAttachData
   }
   const { attachedFile } = data
@@ -30,10 +30,10 @@ export default function ActivityCardAttach({
 
   return (
     <ActivityCard
-      creator={<ActivityMemberAvatar createdBy={udpatedBy} />}
+      creator={<ActivityMemberAvatar createdBy={createdBy} />}
       title={
         <div>
-          <ActivityMemberRepresent createdBy={udpatedBy} />
+          <ActivityMemberRepresent createdBy={createdBy} />
           <span>
             attached{' '}
             <a
