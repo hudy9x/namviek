@@ -9,13 +9,25 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
   })
 }
 
-export const mdProjectArchive = async (projectId: string, value: boolean) => {
+export const mdProjectArchive = async ({
+  projectId,
+  isArchived,
+  updatedAt,
+  updatedBy
+}: {
+  projectId: string
+  isArchived: boolean
+  updatedAt: Date
+  updatedBy: string
+}) => {
   return projectModel.update({
     where: {
       id: projectId
     },
     data: {
-      isArchived: value
+      isArchived,
+      updatedAt,
+      updatedBy
     }
   })
 }
@@ -30,17 +42,18 @@ export const mdProjectUpdate = async (data: Partial<Project>) => {
   })
 }
 
-export const mdProjectGetAllByIds = async (ids: string[], cond: {
-  isArchived: boolean
-}) => {
+export const mdProjectGetAllByIds = async (
+  ids: string[],
+  cond: {
+    isArchived: boolean
+  }
+) => {
   const { isArchived } = cond
   const where: {
     [key: string]: unknown
   } = {}
 
-
   if (!isArchived) {
-
     where.OR = [
       {
         isArchived: {
@@ -55,13 +68,13 @@ export const mdProjectGetAllByIds = async (ids: string[], cond: {
     where.isArchived = true
   }
 
-  console.log('where', where)
-
-
   return projectModel.findMany({
     where: {
       id: { in: ids },
       ...where
+    },
+    orderBy: {
+      updatedAt: 'asc'
     }
   })
 }

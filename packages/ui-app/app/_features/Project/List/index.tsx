@@ -10,27 +10,9 @@ import ProjectAddModal from '../Add/ProjectAddModal'
 import ProjectItem from './ProjectItem'
 
 import ProjectArchived from './ProjectArchived'
+import ProjectAvailable from './ProjectAvailable'
 
 export default function ProjectList() {
-  const { projects, addAllProject } = useProjectStore(
-    state => state
-  )
-
-  useEffect(() => {
-    if (!projects.length) {
-      projectGet({
-        isArchive: false
-      }).then(result => {
-        const { data, status } = result.data
-        // const projects = data as Project[]
-        if (status !== 200) return
-
-        addAllProject(data)
-      })
-    }
-  }, [JSON.stringify(projects)])
-
-
   return (
     <div className="bg-indigo-50/50 dark:bg-[#182031]">
       <div className="bg-white py-3 border-b dark:bg-gray-900 dark:border-gray-700">
@@ -62,14 +44,7 @@ export default function ProjectList() {
               }
             />
           </div>
-          <h2 className="text-lg mb-3 text-gray-500">Select one to go</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-            {projects.map(project => {
-              return (
-                <ProjectItem key={project.id} project={project} />
-              )
-            })}
-          </div>
+          <ProjectAvailable />
           <ProjectArchived />
         </div>
       </div>
