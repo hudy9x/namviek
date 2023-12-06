@@ -3,8 +3,14 @@ import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 type IProjectProps = Pick<Project, 'name' | 'desc' | 'organizationId' | 'icon'>
 
-export const projectGet = () => {
-  return httpGet('/api/project')
+export const projectGet = ({ isArchive = false }: {
+  isArchive?: boolean
+}) => {
+  return httpGet('/api/project', {
+    params: {
+      isArchived: isArchive
+    }
+  })
 }
 
 export const projectQuickAdd = (data: IProjectProps) => {
@@ -26,4 +32,13 @@ export const projectPin = (projectId: string) => {
 
 export const projectUnpin = (projectId: string) => {
   return httpDel('/api/project/pin', { params: { projectId } })
+}
+
+export const projectService = {
+  archive: (projectId: string, value: boolean) => {
+    return httpPost('/api/project/archive', {
+      projectId,
+      archive: value
+    })
+  }
 }

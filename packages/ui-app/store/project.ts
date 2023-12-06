@@ -17,6 +17,7 @@ interface ProjectState {
   unpin: (id: string) => void
   addPinnedProjects: (data: PinnedProjectSetting[]) => void
   addProject: (data: Project) => void
+  removeProject: (id: string) => void
   updateProject: (data: Partial<Project>) => void
   addAllProject: (datas: Project[]) => void
   selectProject: (id: string) => void
@@ -60,6 +61,13 @@ export const useProjectStore = create<ProjectState>(set => ({
     set(
       produce((state: ProjectState) => {
         state.loading = status
+      })
+    ),
+
+  removeProject: (id: string) =>
+    set(
+      produce((state: ProjectState) => {
+        state.projects = state.projects.filter(p => p.id !== id)
       })
     ),
 
