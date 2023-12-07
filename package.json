@@ -4,10 +4,11 @@
   "license": "MIT",
   "prisma": {
     "seed": "ts-node ./packages/shared-models/src/prisma/seed"
-   },
+  },
   "scripts": {
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",
+    "scheduler": "nx serve scheduler",
     "build:fe": "nx build ui-app --prod --skip-nx-cache",
     "build:be": "nx build be-gateway --prod --skip-nx-cache",
     "build:all": "yarn build:fe && yarn build:be",
@@ -58,6 +59,7 @@
     "livekit-server-sdk": "^1.2.7",
     "next": "13.4.1",
     "next-themes": "^0.2.1",
+    "node-cron": "^3.0.3",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-beautiful-dnd": "^13.1.1",
@@ -95,6 +97,7 @@
     "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "18.14.2",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "18.0.28",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "18.0.11",
