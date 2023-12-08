@@ -1,0 +1,45 @@
+{
+  "name": "shared-redis-cache",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/shared-redis-cache/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/shared-redis-cache",
+        "tsConfig": "packages/shared-redis-cache/tsconfig.lib.json",
+        "packageJson": "packages/shared-redis-cache/package.json",
+        "main": "packages/shared-redis-cache/src/index.ts",
+        "assets": ["packages/shared-redis-cache/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs shared-redis-cache {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/shared-redis-cache/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/shared-redis-cache/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
