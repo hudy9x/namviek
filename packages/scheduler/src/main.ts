@@ -1,8 +1,8 @@
 import cron from 'node-cron'
 import { reqApi } from './req'
-import { sharedRedisCache } from '@shared/redis-cache'
+import { initRedis } from '@shared/redis-cache'
 
-console.log(sharedRedisCache())
+initRedis()
 
 // cron.schedule('*/2 * * * * *', () => {
 cron.schedule('45 8 * * *', () => {
