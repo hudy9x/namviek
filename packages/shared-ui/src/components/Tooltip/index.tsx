@@ -6,17 +6,25 @@ interface ITooltipProps {
   side?: 'top' | 'bottom' | 'left' | 'right'
   title: string
   children: ReactNode
+  wrapDiv?: boolean
 }
 
 export default function Tooltip({
   title,
   children,
+  wrapDiv = false,
   side = 'top'
 }: ITooltipProps) {
   return (
     <TooltipRadix.Provider>
       <TooltipRadix.Root delayDuration={200}>
-        <TooltipRadix.Trigger asChild>{children}</TooltipRadix.Trigger>
+        <TooltipRadix.Trigger asChild>
+          {wrapDiv ? (
+            <div className="tooltip-wrap-div">{children}</div>
+          ) : (
+            children
+          )}
+        </TooltipRadix.Trigger>
         <TooltipRadix.Portal>
           <TooltipRadix.Content
             className="tooltip-content"

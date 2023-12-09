@@ -220,6 +220,7 @@ model Project {
   desc           String?
   cover          String?
   icon           String?
+  isArchived     Boolean? @default(false)
   createdBy      String?
   createdAt      DateTime?
   organizationId String

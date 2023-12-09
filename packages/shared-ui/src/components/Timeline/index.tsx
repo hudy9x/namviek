@@ -151,7 +151,7 @@ export default function Timeline({
               })
             })}
           </header>
-          <main className="grid flex-auto grid-cols-1 grid-rows-1">
+          <main className="grid flex-auto grid-cols-1 grid-rows-1 min-h-[100px]">
             <div
               className="timeline-columns"
               style={{

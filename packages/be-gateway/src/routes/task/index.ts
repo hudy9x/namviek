@@ -37,11 +37,16 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+
 import { notifyToWebUsers } from '../../lib/buzzer'
-import { genFrontendUrl, getLogoUrl } from '../../lib/url'
+import { genFrontendUrl } from '../../lib/url'
 import { serviceGetStatusById } from '../../services/status'
 import { serviceGetProjectById } from '../../services/project'
+import {
+  deleteTodoCounter,
+  getTodoCounter,
+  updateTodoCounter
+} from '../../services/todo.counter'
 
 const router = Router()
 
@@ -57,6 +62,77 @@ router.get('/project/task', async (req: AuthRequest, res) => {
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task/counter', async (req: AuthRequest, res) => {
+  try {
+    const { id: uid } = req.authen
+    const { projectIds } = req.query as { projectIds: string[] }
+
+    if (!projectIds.length) {
+      return res.json({
+        data: []
+      })
+    }
+
+    // get todo tasks by user
+
+    const processes = []
+
+    for (let i = 0; i < projectIds.length; i++) {
+      const pid = projectIds[i]
+      const todoCounter = await getTodoCounter([uid, pid])
+
+      if (todoCounter) {
+        processes.push(
+          Promise.resolve({
+            total: parseInt(todoCounter, 10),
+            projectId: pid
+          })
+        )
+        continue
+      }
+
+      processes.push(
+        mdTaskGetAll({
+          assigneeIds: [uid],
+          projectId: pid,
+          done: 'no',
+          counter: true
+        }).then(val => {
+          return {
+            total: val,
+            projectId: pid
+          }
+        })
+      )
+    }
+
+    // run all task query asynchronous
+    const results = (await Promise.allSettled(
+      processes
+    )) as PromiseSettledResult<{ total: number; projectId: string }>[]
+
+    // filter fulfilled results
+    const lastResults = results.map(r => {
+      if (r.status === 'fulfilled') {
+        const { total, projectId } = r.value
+        // update todo counter
+        updateTodoCounter([uid, projectId], total)
+        return {
+          total,
+          projectId
+        }
+      }
+    })
+
+    res.json({
+      data: lastResults
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
   }
 })
 
@@ -213,7 +289,18 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       progress
     })
 
-    await findNDelCaches(key)
+    const processes = []
+
+    // delete todo counter
+    if (assigneeIds && assigneeIds[0]) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
+    }
+
+    // delete all cached tasks
+    processes.push(findNDelCaches(key))
+
+    // run all process
+    await Promise.allSettled(processes)
 
     if (result.assigneeIds && result.assigneeIds.length) {
       const project = await mdProjectGet(result.projectId)
@@ -278,11 +365,18 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/task', async (req: AuthRequest, res) => {
+  // const { id: uid } = req.authen
   const { id, projectId } = req.query as { id: string; projectId: string }
 
   try {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
+
+    if (!result.done && result.assigneeIds && result.assigneeIds[0]) {
+      console.log('delete todo counter')
+      await deleteTodoCounter([result.assigneeIds[0], projectId])
+    }
+
     await findNDelCaches(key)
     console.log('deleted task', id)
     res.json({
@@ -416,7 +510,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
+<<<<<<< HEAD
 
     const activityTemplate = {
       objectId: taskData.id,
@@ -433,6 +529,10 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     //     id
     //   }
     // })
+=======
+    const oldAssigneeId = taskData?.assigneeIds[0]
+
+>>>>>>> origin/main
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
     if (title) {
@@ -477,12 +577,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         updatingActivities.push(newActivity)
       }
       const doneStatus = await mdTaskStatusWithDoneType(projectId)
-      // const doneStatus = await tx.taskStatus.findFirst({
-      //   where: {
-      //     projectId,
-      //     type: StatusType.DONE
-      //   }
-      // })
 
       taskData.taskStatusId = taskStatusId
       if (doneStatus && doneStatus.id === taskStatusId) {
@@ -622,11 +716,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.updatedAt = new Date()
     taskData.updatedBy = userId
 
-    // delete taskData.id
-    // const { id: tid, ...rest } = taskData
-
     const result = await mdTaskUpdate(taskData)
 
+<<<<<<< HEAD
     try {
       const res = await mdActivityAddMany(updatingActivities)
       console.log({ res })
@@ -634,6 +726,25 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       console.log(`Add task updates activity failed with: ${err}`)
     }
 
+=======
+    const processes = []
+
+    // delete todo counter
+    if (oldAssigneeId) {
+      processes.push(deleteTodoCounter([oldAssigneeId, projectId]))
+    }
+
+    if (assigneeIds && assigneeIds[0] && assigneeIds[0] !== oldAssigneeId) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
+    }
+
+    // delete cached tasks
+    processes.push(findNDelCaches(key))
+
+    await Promise.allSettled(processes)
+
+    // send notification as status changed
+>>>>>>> origin/main
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)
       const pinfo = await serviceGetProjectById(result.projectId)
@@ -647,7 +758,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       })
     }
 
-    await findNDelCaches(key)
     res.json({ status: 200, data: result })
     // })
   } catch (error) {

@@ -20,6 +20,7 @@ export interface ITaskQuery {
   statusIds?: string[]
   taskPoint?: number
   priority?: TaskPriority
+  done?: 'yes' | 'no'
   take?: number
   skip?: number
   orderBy?: [string, 'asc' | 'desc']
@@ -72,4 +73,11 @@ export const taskAddMany = (data: {
   projectId: string
 }) => {
   return httpPost('/api/project/tasks', data)
+}
+
+export const taskCounterByUser = (projectIds: string[], signal: AbortSignal) => {
+  return httpGet('/api/project/task/counter', {
+    params: { projectIds },
+    signal
+  })
 }

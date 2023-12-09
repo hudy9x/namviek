@@ -5,6 +5,7 @@ import {
   mdProjectAdd,
   mdProjectGetAllByIds,
   mdProjectUpdate,
+  mdTaskPointAddMany,
   mdTaskStatusAddMany
 } from '@shared/models'
 import { Router } from 'express'
@@ -26,17 +27,18 @@ router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
+  const { isArchived } = req.query as { isArchived: string }
   const key = [CKEY.USER_PROJECT, userId]
 
   try {
     const cached = await getJSONCache(key)
-    if (cached) {
-      console.log('return cached project')
-      return res.json({
-        status: 200,
-        data: cached
-      })
-    }
+    // if (cached) {
+    //   console.log('return cached project')
+    //   return res.json({
+    //     status: 200,
+    //     data: cached
+    //   })
+    // }
     const invitedProjects = await mdMemberGetProject(userId)
 
     if (!invitedProjects) {
@@ -47,12 +49,15 @@ router.get('/project', async (req: AuthRequest, res) => {
       })
     }
 
+    console.log('isArchive', isArchived === 'true')
+
     const projectIds = invitedProjects.map(p => p.projectId)
-    const projects = await mdProjectGetAllByIds(projectIds)
+    const projects = await mdProjectGetAllByIds(projectIds, {
+      isArchived: isArchived === 'true'
+    })
+
 
     setJSONCache(key, projects)
-
-    console.log('get project success')
 
     // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
@@ -80,65 +85,79 @@ router.post('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
 
   console.log('project data:', body)
-
-  const result = await mdProjectAdd({
-    cover: null,
-    icon: body.icon || '',
-    name: body.name,
-    desc: body.desc,
-    createdBy: userId,
-    createdAt: new Date(),
-    organizationId: body.organizationId,
-    updatedAt: null,
-    updatedBy: null
-  })
-
-  // init status task
-  const initialStatusData = [
-    {
-      color: '#d9d9d9',
-      name: 'TODO',
-      order: 0,
-      projectId: result.id,
-      type: StatusType.TODO
-    },
-    {
-      color: '#4286f4',
-      name: 'INPROGRESS',
-      order: 1,
-      projectId: result.id,
-      type: StatusType.INPROCESS
-    },
-    {
-      color: '#4caf50',
-      name: 'CLOSED',
-      order: 2,
-      projectId: result.id,
-      type: StatusType.DONE
-    }
-  ]
-
-  const promise = [
-    mdTaskStatusAddMany(initialStatusData),
-    mdMemberAdd({
-      uid: userId,
-      projectId: result.id,
-      role: MemberRole.MANAGER,
-      createdAt: new Date(),
+  try {
+    const result = await mdProjectAdd({
+      cover: null,
+      icon: body.icon || '',
+      name: body.name,
+      desc: body.desc,
       createdBy: userId,
-      updatedBy: null,
-      updatedAt: null
+      isArchived: false,
+      createdAt: new Date(),
+      organizationId: body.organizationId,
+      updatedAt: null,
+      updatedBy: null
     })
-  ]
 
-  await Promise.all(promise)
+    // init status task
+    const initialStatusData = [
+      {
+        color: '#d9d9d9',
+        name: 'TODO',
+        order: 0,
+        projectId: result.id,
+        type: StatusType.TODO
+      },
+      {
+        color: '#4286f4',
+        name: 'INPROGRESS',
+        order: 1,
+        projectId: result.id,
+        type: StatusType.INPROCESS
+      },
+      {
+        color: '#4caf50',
+        name: 'CLOSED',
+        order: 2,
+        projectId: result.id,
+        type: StatusType.DONE
+      }
+    ]
 
-  delCache([CKEY.USER_PROJECT, userId])
+    const initialPointData = [
+      { point: 1, projectId: result.id, icon: null },
+      { point: 2, projectId: result.id, icon: null },
+      { point: 3, projectId: result.id, icon: null },
+      { point: 5, projectId: result.id, icon: null },
+      { point: 8, projectId: result.id, icon: null }
+    ]
 
-  res.json({
-    status: 200,
-    data: result
-  })
+    const promise = [
+      mdTaskStatusAddMany(initialStatusData),
+      mdTaskPointAddMany(initialPointData),
+      mdMemberAdd({
+        uid: userId,
+        projectId: result.id,
+        role: MemberRole.MANAGER,
+        createdAt: new Date(),
+        createdBy: userId,
+        updatedBy: null,
+        updatedAt: null
+      })
+    ]
+
+    await Promise.all(promise)
+
+    delCache([CKEY.USER_PROJECT, userId])
+
+    res.json({
+      status: 200,
+      data: result
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
 })
 
 router.put('/project', async (req: AuthRequest, res) => {

@@ -13,7 +13,7 @@ interface Props {
 
 export default function ConfirmBox({ type, action, root, container }: Props) {
   const [visible, setVisible] = useState(true)
-  const { message, yes, no } = action
+  const { message, title, yes, no } = action
 
   const close = () => {
     container.style.display = 'none'
@@ -59,10 +59,11 @@ export default function ConfirmBox({ type, action, root, container }: Props) {
   return (
     <div className={`confirmbox ${type} ${visible ? '' : 'hidden'}`}>
       {getConfirmIcons(type)}
+      {title ? <h2 className="text-lg font-bold mb-2">{title}</h2> : null}
       <p>{message}</p>
       <div className="confirm-actions grid grid-cols-2 gap-4 w-full">
-        <Button title="Ok" onClick={onOk} primary />
-        <Button title="Cancel" onClick={onCancel} />
+        <Button title="Yes" onClick={onOk} primary />
+        <Button title="No" onClick={onCancel} />
       </div>
     </div>
   )

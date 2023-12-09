@@ -1,32 +1,49 @@
-import { format, isValid } from 'date-fns';
-import * as Popover from '@radix-ui/react-popover';
-import { useEffect, useState } from 'react';
-import { DayPicker } from 'react-day-picker';
-import { AiOutlineCalendar } from 'react-icons/ai';
-import 'react-day-picker/dist/style.css';
-import './style.css';
+import { format, formatDistanceToNowStrict, isValid } from 'date-fns'
+import * as Popover from '@radix-ui/react-popover'
+import { useEffect, useState } from 'react'
+import { DayPicker } from 'react-day-picker'
+import { AiOutlineCalendar } from 'react-icons/ai'
+import 'react-day-picker/dist/style.css'
+import './style.css'
 
 export interface IDatePicker {
-  className?: string;
-  disabled?: boolean;
-  title?: string;
-  value?: Date;
-  onChange?: (d: Date) => void;
-  placeholder?: string;
+  className?: string
+  disabled?: boolean
+  title?: string
+  value?: Date
+  onChange?: (d: Date) => void
+  placeholder?: string
+  toNow?: boolean
 }
 
-export default function DatePicker({ title, className, disabled, value, onChange, placeholder }: IDatePicker) {
-  const [selected, setSelected] = useState<Date>();
-  const [visible, setVisible] = useState(false);
+export default function DatePicker({
+  title,
+  className,
+  disabled,
+  value,
+  onChange,
+  toNow = false,
+  placeholder
+}: IDatePicker) {
+  const [selected, setSelected] = useState<Date>()
+  const [visible, setVisible] = useState(false)
 
   // fill default value
   useEffect(() => {
-    value && setSelected(value);
-  }, [value]);
+    value && setSelected(value)
+  }, [value])
 
   const onDatepickerChange = (d: Date) => {
-    onChange && onChange(d);
-  };
+    onChange && onChange(d)
+  }
+
+  const showDateStr = (d: Date) => {
+    if (toNow) {
+      return formatDistanceToNowStrict(d, { addSuffix: true })
+    }
+
+    return format(d, 'PP')
+  }
 
   return (
     <div className={`form-control ${className}`}>
@@ -35,9 +52,11 @@ export default function DatePicker({ title, className, disabled, value, onChange
         <Popover.Root open={visible} onOpenChange={setVisible}>
           <Popover.Trigger asChild>
             <div>
-              <div className="form-input cursor-pointer whitespace-nowrap pr-8" tabIndex={-1}>
+              <div
+                className="form-input cursor-pointer whitespace-nowrap pr-8"
+                tabIndex={-1}>
                 {selected && isValid(selected) ? (
-                  format(selected, 'PP')
+                  showDateStr(selected)
                 ) : placeholder ? (
                   <span className="text-gray-400">{placeholder}</span>
                 ) : (
@@ -55,9 +74,9 @@ export default function DatePicker({ title, className, disabled, value, onChange
                 showOutsideDays
                 fixedWeeks
                 onSelect={value => {
-                  setVisible(false);
-                  setSelected(value);
-                  value && onDatepickerChange(value);
+                  setVisible(false)
+                  setSelected(value)
+                  value && onDatepickerChange(value)
                 }}
               />
               {/* <Popover.Arrow className="popover-arrow" /> */}
@@ -66,5 +85,5 @@ export default function DatePicker({ title, className, disabled, value, onChange
         </Popover.Root>
       </div>
     </div>
-  );
+  )
 }

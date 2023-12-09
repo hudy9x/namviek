@@ -8,6 +8,7 @@ import {
 import FavoriteRemove from './FavoriteRemove'
 import { Favorites } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import { useMenuStore } from '@/store/menu'
 
 export default function FavoritePageItem({
   data,
@@ -17,12 +18,16 @@ export default function FavoritePageItem({
   active: boolean
 }) {
   const { push } = useRouter()
+  const { setVisible: setMenuVisible } = useMenuStore()
   const { link, id, icon, name } = data
   const activeClass = active ? 'active' : ''
   return (
     <div
       onClick={() => {
-        link && push(link)
+        if (link) {
+          setMenuVisible(false)
+          push(link)
+        }
       }}
       className={`nav-item group ${activeClass}`}>
       <div className="left">
