@@ -1,7 +1,7 @@
 {
-  "name": "scheduler",
+  "name": "be-scheduler",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/scheduler/src",
+  "sourceRoot": "packages/be-scheduler/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,11 +11,12 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/packages/scheduler",
-        "main": "packages/scheduler/src/main.ts",
-        "tsConfig": "packages/scheduler/tsconfig.app.json",
+        "outputPath": "dist/packages/be-scheduler",
+        "main": "packages/be-scheduler/src/main.ts",
+        "tsConfig": "packages/be-scheduler/tsconfig.app.json",
+        "assets": ["packages/be-scheduler/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "packages/scheduler/webpack.config.js"
+        "webpackConfig": "packages/be-scheduler/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -26,14 +27,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "scheduler:build"
+        "buildTarget": "be-scheduler:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "scheduler:build:development"
+          "buildTarget": "be-scheduler:build:development"
         },
         "production": {
-          "buildTarget": "scheduler:build:production"
+          "buildTarget": "be-scheduler:build:production"
         }
       }
     },
@@ -41,14 +42,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scheduler/**/*.ts"]
+        "lintFilePatterns": ["packages/be-scheduler/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/scheduler/jest.config.ts",
+        "jestConfig": "packages/be-scheduler/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

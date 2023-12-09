@@ -8,7 +8,7 @@
   "scripts": {
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",
-    "scheduler": "nx serve scheduler",
+    "scheduler": "nx serve be-scheduler",
     "build:fe": "nx build ui-app --prod --skip-nx-cache",
     "build:be": "nx build be-gateway --prod --skip-nx-cache",
     "build:se": "nx build scheduler --prod --skip-nx-cache",

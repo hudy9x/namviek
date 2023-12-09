@@ -1,13 +1,13 @@
 {
-  "name": "scheduler-e2e",
+  "name": "be-scheduler-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["scheduler"],
+  "implicitDependencies": ["be-scheduler"],
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "packages/scheduler-e2e/jest.config.ts",
+        "jestConfig": "packages/be-scheduler-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -15,7 +15,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scheduler-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["packages/be-scheduler-e2e/**/*.{js,ts}"]
       }
     }
   }

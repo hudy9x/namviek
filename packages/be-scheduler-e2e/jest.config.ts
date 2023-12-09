@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'scheduler-e2e',
+  displayName: 'be-scheduler-e2e',
   preset: '../..//jest.preset.js',
   setupFiles: ['<rootDir>/src/test-setup.ts'],
   testEnvironment: 'node',
@@ -13,5 +13,5 @@ export default {
     ]
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../..//coverage/scheduler-e2e'
+  coverageDirectory: '../..//coverage/be-scheduler-e2e'
 }
