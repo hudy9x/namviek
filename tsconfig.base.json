@@ -23,6 +23,7 @@
       "@be/storage": ["packages/be-storage/src/index.ts"],
       "@goalie/nextjs": ["packages/goalie-nextjs/src/index.ts"],
       "@goalie/nextjs/server": ["packages/goalie-nextjs/src/server.ts"],
+      "@shared/cache": ["packages/shared-cache/src/index.ts"],
       "@shared/libs": ["packages/shared-libs/src/index.ts"],
       "@shared/models": ["packages/shared-models/src/index.ts"],
       "@shared/ui": ["packages/shared-ui/src/index.ts"],

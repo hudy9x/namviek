@@ -215,7 +215,7 @@ model Project {
   desc           String?
   cover          String?
   icon           String?
-  isArchived     Boolean? @default(false)
+  isArchived     Boolean?  @default(false)
   createdBy      String?
   createdAt      DateTime?
   organizationId String
@@ -279,4 +279,16 @@ model Dashboard {
   title               String?              @default("Untitled")
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
+}
+
+model Scheduler {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  pattern        String
+  name           String?
+  data           Json?
+  cronId         String?
+  organizationId String?   @db.ObjectId
+  projectId      String?   @db.ObjectId
+  createdAt      DateTime?
+  createdBy      String?
 }

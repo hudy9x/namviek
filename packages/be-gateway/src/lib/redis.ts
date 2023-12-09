@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis'
+import { Callback, Redis } from 'ioredis'
 import crypto from 'crypto'
 
 let connected = false
@@ -214,4 +214,12 @@ export const decrCache = async (key: CACHE_KEY) => {
     console.log(error)
     return null
   }
+}
+
+export const rSub = (name: string, callback: Callback) => {
+  redis.subscribe(name, callback)
+}
+
+export const rPub = (name: string, body: unknown) => {
+  redis.publish(name, JSON.stringify(body))
 }

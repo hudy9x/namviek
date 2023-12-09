@@ -17,12 +17,13 @@ import { authMiddleware } from '../middlewares'
 
 // import "./test";
 import AdminController from './test2'
-import ProjectController from "./project/project.controller";
+import ProjectController from './project/project.controller'
+import SchedulerController from './scheduler/index.controller'
 import { AppRoutes } from '../core/AppRoutes'
 
 const router = Router()
 
-router.use(AppRoutes([AdminController, ProjectController]))
+router.use(AppRoutes([AdminController, ProjectController, SchedulerController]))
 // middlewares
 // router.use([])
 router.use((req, res, next) => {
