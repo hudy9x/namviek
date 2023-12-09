@@ -119,7 +119,7 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
-          size="lg"
+          size="xl"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)

@@ -12,22 +12,14 @@ export const mdActivityAddMany = (data: Omit<Activity, 'id'>[]) => {
     data
   })
 }
-// export const mdActivityGet = (objectId: string, objectType: string) => {
-//   return activityModel.findMany({
-//     where: {
-//       objectId,
-//       objectType
-//     }
-//   })
-// }
-//
-// export const mdActivityDel = (id: string) => {
-//   return activityModel.delete({
-//     where: {
-//       id
-//     }
-//   })
-// }
+
+export const mdActivityDel = (id: string) => {
+  return activityModel.delete({
+    where: {
+      id
+    }
+  })
+}
 
 export const mdActivityUpdate = (id: string, data: Omit<Activity, 'id'>) => {
   return activityModel.update({

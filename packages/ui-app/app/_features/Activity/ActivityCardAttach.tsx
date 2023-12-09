@@ -13,7 +13,13 @@ interface IActivityCardAttachProps {
 export default function ActivityCardAttach({
   activity
 }: IActivityCardAttachProps) {
-  const { createdBy, data, createdAt, type } = activity as Activity & {
+  const {
+    createdBy,
+    data,
+    createdAt,
+    type,
+    id: activityId
+  } = activity as Activity & {
     data: ActivityAttachData
   }
   const { attachedFile } = data
@@ -30,6 +36,7 @@ export default function ActivityCardAttach({
 
   return (
     <ActivityCard
+      activityId={activityId}
       creator={<ActivityMemberAvatar createdBy={createdBy} />}
       title={
         <div>
@@ -44,7 +51,12 @@ export default function ActivityCardAttach({
               {name}
             </a>{' '}
             at {/* TODO: focus on clicked! */}
-            {createdAt && <ActivityTimeLog time={new Date(createdAt)} />}
+            {createdAt && (
+              <ActivityTimeLog
+                time={new Date(createdAt)}
+                activityId={activityId}
+              />
+            )}
           </span>
         </div>
       }

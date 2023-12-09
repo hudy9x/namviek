@@ -5,7 +5,6 @@ import { ActivityCommentData } from '@shared/models'
 import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
 import { ActivityTimeLog } from './ActivityTimeLog'
-import { useState } from 'react'
 import { useActivityContext } from './context'
 
 interface IActivityCardCommentProps {
@@ -15,13 +14,18 @@ interface IActivityCardCommentProps {
 export default function ActivityCardComment({
   activity
 }: IActivityCardCommentProps) {
-  const { createdBy, data, createdAt, id } = activity as Activity & {
+  const {
+    createdBy,
+    data,
+    createdAt,
+    id: activityId
+  } = activity as Activity & {
     data: ActivityCommentData
   }
   const { content } = data
   const sourceContent = content || ''
   // const [isEditing, setIsEditing] = useState(false)
-  const { updateActivity } = useActivityContext()
+  const { updateActivity, deleteActivity } = useActivityContext()
   const { editingActivityId, setEditingActivityId } = useActivityContext()
 
   const isEditing = editingActivityId === activity.id
@@ -41,17 +45,28 @@ export default function ActivityCardComment({
         content: newContent
       }
     }
-    console.log({ newActivity })
+    // console.log({ newActivity })
     updateActivity(newActivity)
+  }
+
+  const handleDeleteComment = () => {
+    const { id } = activity
+    deleteActivity(id)
   }
 
   return (
     <ActivityCard
+      activityId={activityId}
       creator={<ActivityMemberAvatar createdBy={createdBy} />}
       title={
         <div>
           <ActivityMemberRepresent createdBy={createdBy} />
-          {createdAt && <ActivityTimeLog time={new Date(createdAt)} />}
+          {createdAt && (
+            <ActivityTimeLog
+              time={new Date(createdAt)}
+              activityId={activityId}
+            />
+          )}
         </div>
       }
       content={
@@ -63,16 +78,21 @@ export default function ActivityCardComment({
               isEditing ? handleDiscardContentChange : undefined
             }
             onSaveContent={isEditing ? handleUpdateContent : undefined}
+            onEditEnd={() => setEditingActivityId('')}
           />
           {!isEditing ? (
-            <div className="flex items-center">
+            <div className="flex items-center text-xs mt-2 mb-3">
               <span
                 className="underline cursor-pointer"
                 onClick={handleEditContent}>
                 Edit
               </span>
               <span>&#x2022;</span>
-              <span className="underline cursor-pointer">Delete</span>
+              <span
+                className="underline cursor-pointer"
+                onClick={handleDeleteComment}>
+                Delete
+              </span>
             </div>
           ) : null}
         </div>

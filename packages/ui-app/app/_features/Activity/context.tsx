@@ -1,4 +1,8 @@
-import { activityGetAllByTask, activityUpdate } from '@/services/activity'
+import {
+  activityGetAllByTask,
+  activityUpdate,
+  activityDelete
+} from '@/services/activity'
 import { Activity, ActivityType } from '@prisma/client'
 import { messageError, messageSuccess } from '@shared/ui'
 import {
@@ -18,7 +22,7 @@ interface IActivityContext {
   getActivities: () => void
   addActivity: (activiyy: Activity) => void
   updateActivity: (activity: Activity) => void
-  removeActivity: (id: string) => void
+  deleteActivity: (id: string) => void
 
   editingActivityId: string
   setEditingActivityId: (id: string) => void
@@ -37,7 +41,7 @@ const ActivityContext = createContext<IActivityContext>({
   addActivity: () => {
     console.log(1)
   },
-  removeActivity: () => {
+  deleteActivity: () => {
     console.log(1)
   },
   updateActivity: () => {
@@ -57,30 +61,45 @@ export const ActivityContextProvider = ({ children }: PropsWithChildren) => {
     setActivities(prev => [activity, ...prev])
   }, [])
 
-  const removeActivity = useCallback(
-    (id: string) => [...activities.filter(activity => activity.id !== id)],
+  const deleteActivity = useCallback(
+    (id: string) => {
+      const removingActivity = activities.find(activity => activity.id === id)
+      setActivities(activities => [
+        ...activities.filter(activity => activity.id !== id)
+      ])
+      activityDelete(id)
+        .then(() => {
+          messageSuccess('Remove successfully')
+        })
+        .catch(error => {
+          messageError('Remove failed...')
+          removingActivity &&
+            setActivities(activities => [...activities, removingActivity])
+        })
+    },
     [activities]
   )
 
   const loadActivities = useCallback(() => {
-    activityGetAllByTask(taskId)
-      .then(res => {
-        const { status, error, data } = res.data
-        if (status !== 200) {
+    taskId &&
+      activityGetAllByTask(taskId)
+        .then(res => {
+          const { status, error, data } = res.data
+          if (status !== 200) {
+            messageError(error)
+            return false
+          }
+          if (!Array.isArray(data)) throw Error
+          data.sort((a, b) =>
+            compareAsc(new Date(b.createdAt), new Date(a.createdAt))
+          )
+          // console.log({ loadActivities: data, taskId })
+          setActivities([...data, ...fakeData])
+          return true
+        })
+        .catch(error => {
           messageError(error)
-          return false
-        }
-        if (!Array.isArray(data)) throw Error
-        data.sort((a, b) =>
-          compareAsc(new Date(b.createdAt), new Date(a.createdAt))
-        )
-        // console.log({ loadActivities: data })
-        setActivities([...data, ...fakeData])
-        return true
-      })
-      .catch(error => {
-        messageError(error)
-      })
+        })
   }, [taskId])
 
   useEffect(() => {
@@ -113,7 +132,7 @@ export const ActivityContextProvider = ({ children }: PropsWithChildren) => {
         taskId,
         setTaskId: (id: string) => setTaskId(id),
         addActivity,
-        removeActivity,
+        deleteActivity,
         activities,
         updateActivity,
         editingActivityId,

@@ -17,7 +17,8 @@ import {
   ExpressResponse,
   Get,
   Post,
-  Put
+  Put,
+  Delete
 } from '../../core'
 
 @Controller('/activity')
@@ -82,5 +83,19 @@ export default class TaskActivity extends BaseController {
           err: error
         })
       })
+  }
+
+  @Delete('')
+  async adminDelete(@Param() params, @Res() res: Response) {
+    try {
+      const { id } = params
+      const result = await mdActivityAdd(id)
+      res.json({ status: 200, data: result })
+    } catch (error) {
+      res.json({
+        status: 500,
+        err: error
+      })
+    }
   }
 }

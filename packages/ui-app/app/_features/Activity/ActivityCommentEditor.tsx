@@ -27,7 +27,6 @@ export default function ActivityCommentEditor() {
       }
     }
 
-    console.log({ newComment })
     activityCreate(taskId, newComment)
       .then(res => {
         const {

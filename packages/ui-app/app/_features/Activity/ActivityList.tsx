@@ -11,11 +11,8 @@ interface IActivityList {
   taskId: string
 }
 
-//
-
 const ActivityList = () => {
   const { activities } = useActivityContext()
-  console.log({ activities })
   const renderActivity = useCallback((activity: Activity) => {
     const { type } = activity
     switch (type) {
@@ -34,7 +31,9 @@ const ActivityList = () => {
   return (
     <div>
       {activities.map((activity, i) => (
-        <div key={activity.id || i}>{renderActivity(activity)}</div>
+        <div key={activity.id || i} className="mb-2">
+          {renderActivity(activity)}
+        </div>
       ))}
     </div>
   )

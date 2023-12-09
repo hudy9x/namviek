@@ -12,7 +12,13 @@ interface IActivityLog {
 }
 
 export default function ActivityLog({ activity }: IActivityLog) {
-  const { createdBy, data, createdAt, type } = activity as Activity
+  const {
+    createdBy,
+    data,
+    createdAt,
+    type,
+    id: activityId
+  } = activity as Activity
 
   const { changeFrom, changeTo } = JSON.parse(
     data?.toString()
@@ -35,6 +41,23 @@ export default function ActivityLog({ activity }: IActivityLog) {
       break
     case ActivityType.TASK_DUEDATE_CHANGED:
       content = `change duedate ${changeFrom ? changeFrom : ''} to ${changeTo}`
+      try {
+        const changeFromDate = changeFrom ? new Date(changeFrom) : null
+        const changeToDate = changeTo ? new Date(changeTo) : null
+        content = `change duedate ${
+          changeFromDate
+            ? changeToDate?.toLocaleString('en-US', {
+                dateStyle: 'short',
+                timeStyle: 'short'
+              })
+            : ''
+        } to ${changeToDate?.toLocaleString('en-US', {
+          dateStyle: 'short',
+          timeStyle: 'short'
+        })}`
+      } catch (error) {
+        console.log({ ActivityLog: error })
+      }
       break
     case ActivityType.TASK_ASSIGNEE_ADDED:
       const addedAssignees = members
@@ -77,13 +100,21 @@ export default function ActivityLog({ activity }: IActivityLog) {
 
   return (
     <ActivityCard
+      activityId={activityId}
       creator={<ActivityMemberAvatar createdBy={createdBy} />}
       title={
         <div>
           <ActivityMemberRepresent createdBy={createdBy} />
           <span>{content} </span>
-          at {/* TODO: focus on clicked! */}
-          {createdAt && <ActivityTimeLog time={new Date(createdAt)} />}
+          {/* TODO: focus on clicked! */}
+          <div>
+            {createdAt && (
+              <ActivityTimeLog
+                time={new Date(createdAt)}
+                activityId={activityId}
+              />
+            )}
+          </div>
         </div>
       }
     />
