@@ -17,3 +17,4 @@ export const taskAutomation = pmClient.taskAutomation
 export const fileStorageModel = pmClient.fileStorage
 export const visionModel = pmClient.vision
 export const schedulerModel = pmClient.scheduler
+export const projectSettingModel = pmClient.projectSetting

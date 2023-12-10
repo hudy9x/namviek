@@ -16,11 +16,12 @@ const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
 export default function PushNotification() {
   const { user } = useUser()
   useEffect(() => {
-    if (user && user.id) {
+    if (true) {
+      console.log('VAO DAYYYYY')
       beamsClient.stop().then(() => {
         beamsClient
           .start()
-          .then(() => beamsClient.setUserId(user.id, beamsTokenProvider))
+          .then(() => beamsClient.setUserId('6562bafbe1898b05a8256af7', beamsTokenProvider))
           // .then(() => beamsClient.addDeviceInterest('project'))
           // .then(() => beamsClient.addDeviceInterest('all'))
           .then(() => {
