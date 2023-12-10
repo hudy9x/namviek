@@ -55,9 +55,7 @@ export default class Schedule extends BaseController {
       const result = await mdScheduler.getByName('remind-at-0845am')
 
       if (!result) return res.status(500).send('NOTHING_FOUND')
-
       const projectMembers = await mdMemberGetAllByProjectId(result.projectId)
-
       const memberIds = projectMembers.map(p => p.uid)
 
       console.log('-------------------')

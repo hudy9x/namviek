@@ -292,3 +292,12 @@ model Scheduler {
   createdAt      DateTime?
   createdBy      String?
 }
+
+model ProjectSetting {
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  projectId             String  @db.ObjectId
+  upComingTaskStatus    Boolean @default(false)
+  overDueTaskStatus     Boolean @default(false)
+  todayTaskStatus       Boolean @default(false)
+  newTaskAssignedStatus Boolean @default(false)
+}
