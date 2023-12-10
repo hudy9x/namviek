@@ -5,6 +5,7 @@ import ProjectPoint from './ProjectPoint'
 import { HiOutlineRectangleStack } from 'react-icons/hi2'
 import { ProjectStatus } from './status/index'
 import { HiOutlineUsers } from 'react-icons/hi'
+import { IoIosNotificationsOutline } from "react-icons/io"
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
