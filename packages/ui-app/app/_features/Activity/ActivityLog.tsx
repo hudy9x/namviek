@@ -21,8 +21,8 @@ export default function ActivityLog({ activity }: IActivityLog) {
   } = activity as Activity
 
   const { changeFrom, changeTo } = JSON.parse(
-    data?.toString()
-  ) as ActivityLogData
+    (data as ActivityLogData)?.toString()
+  )
 
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
@@ -60,11 +60,17 @@ export default function ActivityLog({ activity }: IActivityLog) {
       }
       break
     case ActivityType.TASK_ASSIGNEE_ADDED:
-      const addedAssignees = members
-        .filter(({ id }) => data?.includes(id))
-        .map(({ name }) => name)
-        .join(', ')
-      content = `added assignees ${addedAssignees}`
+      {
+        try {
+          const addedAssignees = members
+            .filter(({ id }) => (data as string[])?.includes(id))
+            .map(({ name }) => name)
+            .join(', ')
+          content = `added assignees ${addedAssignees}`
+        } catch (error) {
+          break
+        }
+      }
       break
     case ActivityType.TASK_ASSIGNEE_REMOVED:
       content = `removed assignees `

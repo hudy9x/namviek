@@ -512,7 +512,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const taskData = await mdTaskGetOne(id)
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
-<<<<<<< HEAD
 
     const activityTemplate = {
       objectId: taskData.id,
@@ -529,10 +528,8 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     //     id
     //   }
     // })
-=======
     const oldAssigneeId = taskData?.assigneeIds[0]
 
->>>>>>> origin/main
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
     if (title) {
@@ -718,7 +715,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
     const result = await mdTaskUpdate(taskData)
 
-<<<<<<< HEAD
     try {
       const res = await mdActivityAddMany(updatingActivities)
       console.log({ res })
@@ -726,7 +722,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       console.log(`Add task updates activity failed with: ${err}`)
     }
 
-=======
     const processes = []
 
     // delete todo counter
@@ -744,7 +739,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     await Promise.allSettled(processes)
 
     // send notification as status changed
->>>>>>> origin/main
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)
       const pinfo = await serviceGetProjectById(result.projectId)
