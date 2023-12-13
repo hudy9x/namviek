@@ -20,9 +20,14 @@ export default function ActivityLog({ activity }: IActivityLog) {
     id: activityId
   } = activity as Activity
 
-  const { changeFrom, changeTo } = JSON.parse(
-    (data as ActivityLogData)?.toString()
-  )
+  let changeFrom, changeTo
+  if (data) {
+    const logData = JSON.parse((data as ActivityLogData)?.toString())
+    if (logData) {
+      changeFrom = logData.changeFrom
+      changeTo = logData.changeTo
+    }
+  }
 
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
@@ -59,19 +64,18 @@ export default function ActivityLog({ activity }: IActivityLog) {
         console.log({ ActivityLog: error })
       }
       break
-    case ActivityType.TASK_ASSIGNEE_ADDED:
-      {
-        try {
-          const addedAssignees = members
-            .filter(({ id }) => (data as string[])?.includes(id))
-            .map(({ name }) => name)
-            .join(', ')
-          content = `added assignees ${addedAssignees}`
-        } catch (error) {
-          break
-        }
+    case ActivityType.TASK_ASSIGNEE_ADDED: {
+      try {
+        const addedAssignees = members
+          .filter(({ id }) => (data as string[])?.includes(id))
+          .map(({ name }) => name)
+          .join(', ')
+        content = `added assignees ${addedAssignees}`
+      } catch (error) {
+        console.log({ activityAssigneeError: error })
       }
       break
+    }
     case ActivityType.TASK_ASSIGNEE_REMOVED:
       content = `removed assignees `
       break
@@ -112,7 +116,6 @@ export default function ActivityLog({ activity }: IActivityLog) {
         <div>
           <ActivityMemberRepresent createdBy={createdBy} />
           <span>{content} </span>
-          {/* TODO: focus on clicked! */}
           <div>
             {createdAt && (
               <ActivityTimeLog
