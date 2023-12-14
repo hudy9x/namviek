@@ -25,9 +25,10 @@ export const notifyToWebUsers = (
   uid: string | string[],
   opts: WebNotificationPayload
 ) => {
-
   console.log('notify to web users', uid, opts)
   const uids = Array.isArray(uid) ? uid : [uid]
+
+  if (!uids.length) return
 
   if (!opts.title) {
     opts.title = process.env.NEXT_PUBLIC_APP_NAME
