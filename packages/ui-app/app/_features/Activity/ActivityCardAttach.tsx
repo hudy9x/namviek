@@ -5,6 +5,8 @@ import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
 import { ActivityMemberRepresent } from './ActivityMemberRepresent'
 import { ActivityTimeLog } from './ActivityTimeLog'
+import MemberAvatar from '@/components/MemberAvatar'
+import Time from '@/components/Time'
 
 interface IActivityCardAttachProps {
   activity: Activity
@@ -33,6 +35,21 @@ export default function ActivityCardAttach({
   })()
 
   const { title } = data
+
+  console.log('attach card', data)
+  return (
+    <div className="activity-item">
+      <div className="flex items-start gap-2">
+        <MemberAvatar uid={createdBy} />
+        <div className="mt-0.5">
+          <p className="text-sm text-gray-600">
+            attached files -
+            <Time date={new Date(createdAt)} />
+          </p>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <ActivityCard

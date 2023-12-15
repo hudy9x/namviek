@@ -6,6 +6,9 @@ import { ActivityMemberRepresent } from './ActivityMemberRepresent'
 import { ActivityTimeLog } from './ActivityTimeLog'
 import { useProjectStatusStore } from '@/store/status'
 import { useMemberStore } from '@/store/member'
+import { Avatar } from '@shared/ui'
+import MemberAvatar from '@/components/MemberAvatar'
+import Time from '@/components/Time'
 
 interface IActivityLog {
   activity: Activity
@@ -20,7 +23,8 @@ export default function ActivityLog({ activity }: IActivityLog) {
     id: activityId
   } = activity as Activity
 
-  let changeFrom, changeTo
+  let changeFrom = '',
+    changeTo = ''
   if (data) {
     const logData = JSON.parse((data as ActivityLogData)?.toString())
     if (logData) {
@@ -107,6 +111,15 @@ export default function ActivityLog({ activity }: IActivityLog) {
       content = `changed vision ${changeFrom ? changeFrom : ''} to ${changeTo}`
       break
   }
+
+  return (
+    <div className="activity-item">
+      <MemberAvatar uid={createdBy} />
+      <p className="text-sm text-gray-600">
+        {content} - <Time date={new Date(createdAt)} />
+      </p>
+    </div>
+  )
 
   return (
     <ActivityCard

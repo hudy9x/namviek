@@ -94,7 +94,8 @@ export const ActivityContextProvider = ({ children }: PropsWithChildren) => {
             compareAsc(new Date(b.createdAt), new Date(a.createdAt))
           )
           // console.log({ loadActivities: data, taskId })
-          setActivities([...data, ...fakeData])
+          // setActivities([...data, ...fakeData])
+          setActivities(data)
           return true
         })
         .catch(error => {

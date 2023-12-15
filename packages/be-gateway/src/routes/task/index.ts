@@ -507,7 +507,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const oldStatusId = taskData.taskStatusId
     const oldAssigneeId = taskData?.assigneeIds[0]
 
-    console.log('3')
+    console.log('4')
 
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 

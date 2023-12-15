@@ -8,7 +8,7 @@ interface ActivityCardCommentContentProps {
   onDiscardContentChange?: () => void
   onSaveContent?: (newContent: string) => void
   readonly?: boolean
-  onEditEnd: () => void
+  onEditEnd?: () => void
 }
 
 const ActivityCardCommentContent = ({
@@ -23,12 +23,12 @@ const ActivityCardCommentContent = ({
   const handleDiscardChange = () => {
     setValue(content)
     onDiscardContentChange && onDiscardContentChange()
-    onEditEnd()
+    onEditEnd && onEditEnd()
   }
 
   const handleSaveUpdate = () => {
     onSaveContent && onSaveContent(value)
-    onEditEnd()
+    onEditEnd && onEditEnd()
   }
   return (
     <div>

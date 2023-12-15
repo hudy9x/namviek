@@ -6,6 +6,10 @@ import ActivityMemberAvatar from './ActivityMemberAvatar'
 import ActivityCard from './ActivityCard'
 import { ActivityTimeLog } from './ActivityTimeLog'
 import { useActivityContext } from './context'
+import MemberAvatar from '@/components/MemberAvatar'
+import { dateFormat } from '@shared/libs'
+import { Tooltip } from '@shared/ui'
+import Time from '@/components/Time'
 
 interface IActivityCardCommentProps {
   activity: Activity
@@ -53,6 +57,23 @@ export default function ActivityCardComment({
     const { id } = activity
     deleteActivity(id)
   }
+
+  return (
+    <div className="activity-item none">
+      <div className="flex items-start gap-2">
+        <MemberAvatar uid={createdBy} />
+        <div className="mt-0.5">
+          <p className="text-sm text-gray-600">
+            wrote a comment -
+            <Time date={new Date(createdAt)} />
+          </p>
+        </div>
+      </div>
+      <p
+        className="activity-comment"
+        dangerouslySetInnerHTML={{ __html: content || '' }}></p>
+    </div>
+  )
 
   return (
     <ActivityCard

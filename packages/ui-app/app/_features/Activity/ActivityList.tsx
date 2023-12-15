@@ -1,15 +1,9 @@
 import { Activity, ActivityType } from '@prisma/client'
-import { useCallback, useEffect, useState } from 'react'
-import { activityGetAllByTask } from '@/services/activity'
-import { messageError, messageWarning } from '@shared/ui'
+import { useCallback } from 'react'
 import ActivityCardAttach from './ActivityCardAttach'
 import ActivityCardComment from './ActivityCardComment'
 import { useActivityContext } from './context'
 import ActivityLog from './ActivityLog'
-
-interface IActivityList {
-  taskId: string
-}
 
 const ActivityList = () => {
   const { activities } = useActivityContext()
@@ -29,11 +23,9 @@ const ActivityList = () => {
   }, [])
 
   return (
-    <div>
+    <div className="activity-list">
       {activities.map((activity, i) => (
-        <div key={activity.id || i} className="mb-2">
-          {renderActivity(activity)}
-        </div>
+        <div key={activity.id || i}>{renderActivity(activity)}</div>
       ))}
     </div>
   )
