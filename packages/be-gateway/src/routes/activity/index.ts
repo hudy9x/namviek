@@ -38,6 +38,7 @@ export default class TaskActivity extends BaseController {
     const { objectId } = req.query as { objectId: string }
 
     try {
+      console.log('2')
       const results = await mdActivityGetAllByTask(objectId)
       // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
       res.json({ status: 200, data: results })

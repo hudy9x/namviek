@@ -35,6 +35,8 @@ export const mdActivityGetAllByTask = (taskId: string) => {
     where: {
       objectId: taskId,
       objectType: ActivityObjectType.TASK
-    }
+    },
+    take: 5,
+    skip: 0
   })
 }

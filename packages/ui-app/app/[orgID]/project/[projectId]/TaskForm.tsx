@@ -12,7 +12,6 @@ import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 
 export const defaultFormikValues: ITaskDefaultValues = {
-  id: '',
   title: '',
   assigneeIds: [],
   fileIds: [],
@@ -26,7 +25,6 @@ export const defaultFormikValues: ITaskDefaultValues = {
 }
 
 export interface ITaskDefaultValues {
-  id: string
   title: string
   assigneeIds: string[]
   fileIds: string[]
@@ -121,7 +119,8 @@ export default function TaskForm({
     <form
       onSubmit={formik.handleSubmit}
       className="task-form space-y-3 gap-6 relative">
-      <div className={`sm:flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
+      <div
+        className={`sm:flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}>
         <div className="task-form-detail space-y-3 w-full">
           <Form.Input
             title="Task name"
@@ -146,12 +145,11 @@ export default function TaskForm({
             }}
           />
           {isUpdate ? <FileControl /> : null}
-          {isUpdate ? <Activity taskId={formik.values.id} /> : null}
+          {isUpdate ? <Activity /> : null}
         </div>
         <div
-          className={`task-form-right-actions space-y-3 ${
-            isCreate ? 'w-full' : 'sm:w-[200px]'
-          }  shrink-0`}>
+          className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'sm:w-[200px]'
+            }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}
