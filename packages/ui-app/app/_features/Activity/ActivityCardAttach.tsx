@@ -7,6 +7,7 @@ import { ActivityMemberRepresent } from './ActivityMemberRepresent'
 import { ActivityTimeLog } from './ActivityTimeLog'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
+import { MdOutlineAttachFile } from 'react-icons/md'
 
 interface IActivityCardAttachProps {
   activity: Activity
@@ -24,30 +25,45 @@ export default function ActivityCardAttach({
   } = activity as Activity & {
     data: ActivityAttachData
   }
-  const { attachedFile } = data
-  const { url, name } = attachedFile || {}
 
-  const label = (() => {
-    switch (type) {
-      case ActivityType.TASK_ATTACHMENT_ADDED:
-        return
-    }
-  })()
+  const files = data as { name: string, url: string, type: string }[]
+  // const { attachedFile } = data
+  // const { url, name } = attachedFile || {}
+  //
+  // const label = (() => {
+  //   switch (type) {
+  //     case ActivityType.TASK_ATTACHMENT_ADDED:
+  //       return
+  //   }
+  // })()
+  //
+  // const { title } = data
+  if (!files || !files.length) return null
 
-  const { title } = data
+  const len = files.length
 
   console.log('attach card', data)
   return (
-    <div className="activity-item">
+    <div className="activity-item none">
       <div className="flex items-start gap-2">
         <MemberAvatar uid={createdBy} />
         <div className="mt-0.5">
-          <p className="text-sm text-gray-600">
-            attached files -
+          <p className="text-sm text-gray-400">
+            attached {len} file{len > 1 ? 's' : ''} -
             <Time date={new Date(createdAt)} />
           </p>
         </div>
       </div>
+      <p className="activity-info space-y-1">
+        {files.map((file, fid) => {
+          return (
+            <div key={fid} className='flex items-center gap-2'>
+              <MdOutlineAttachFile className='p-1 w-6 h-6 rounded-md bg-gray-100' />
+              <span className='italic'>{file.name}</span>
+            </div>
+          )
+        })}
+      </p>
     </div>
   )
 

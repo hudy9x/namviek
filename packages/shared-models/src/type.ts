@@ -32,4 +32,4 @@ interface ActivityChangeData extends ActivityData {
   changeTo: string
 }
 
-export type ActivityLogData = ActivityChangeData | string[]
+export type ActivityLogData = ActivityChangeData

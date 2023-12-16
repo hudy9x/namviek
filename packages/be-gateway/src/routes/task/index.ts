@@ -229,6 +229,7 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   const body = req.body as Task
+  const activityService = new ActivityService()
   const {
     desc,
     visionId,
@@ -276,6 +277,11 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null,
       progress
+    })
+
+    activityService.createTask({
+      id: result.id,
+      userId: id
     })
 
     const processes = []

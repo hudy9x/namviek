@@ -63,8 +63,8 @@ export default function ActivityCardComment({
       <div className="flex items-start gap-2">
         <MemberAvatar uid={createdBy} />
         <div className="mt-0.5">
-          <p className="text-sm text-gray-600">
-            wrote a comment -
+          <p className="text-sm text-gray-400">
+            wrote a comment 👄 -
             <Time date={new Date(createdAt)} />
           </p>
         </div>

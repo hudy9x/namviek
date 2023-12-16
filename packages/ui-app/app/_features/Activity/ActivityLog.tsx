@@ -9,6 +9,7 @@ import { useMemberStore } from '@/store/member'
 import { Avatar } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
+import { dateFormat, diffText } from '@shared/libs'
 
 interface IActivityLog {
   activity: Activity
@@ -23,49 +24,37 @@ export default function ActivityLog({ activity }: IActivityLog) {
     id: activityId
   } = activity as Activity
 
-  let changeFrom = '',
-    changeTo = ''
-  if (data) {
-    const logData = JSON.parse((data as ActivityLogData)?.toString())
-    if (logData) {
-      changeFrom = logData.changeFrom
-      changeTo = logData.changeTo
-    }
-  }
-
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
+
+  let changeFrom = ''
+  let changeTo = ''
+
+  if (data) {
+    // cast Prisma.Json to ActivityLogData
+    const cloneData = structuredClone(data as unknown) as ActivityLogData
+    changeFrom = cloneData.changeFrom
+    changeTo = cloneData.changeTo
+  }
+
 
   let content
   switch (type) {
     case ActivityType.TASK_CREATED:
+      content = 'created this task 📢'
       break
-    case ActivityType.TASK_TITLE_CHANGED:
-      content = `change title ${changeFrom ? changeFrom : ''} to ${changeTo}`
-      break
-    case ActivityType.TASK_DESC_CHANGED:
-      content = `change description ${
-        changeFrom ? changeFrom : ''
-      } to ${changeTo}`
-      break
+    // case ActivityType.TASK_TITLE_CHANGED:
+    //   content = `changed title 📋 ${changeFrom ? changeFrom : ''} to ${changeTo}`
+    // break
     case ActivityType.TASK_DUEDATE_CHANGED:
-      content = `change duedate ${changeFrom ? changeFrom : ''} to ${changeTo}`
       try {
-        const changeFromDate = changeFrom ? new Date(changeFrom) : null
-        const changeToDate = changeTo ? new Date(changeTo) : null
-        content = `change duedate ${
-          changeFromDate
-            ? changeToDate?.toLocaleString('en-US', {
-                dateStyle: 'short',
-                timeStyle: 'short'
-              })
-            : ''
-        } to ${changeToDate?.toLocaleString('en-US', {
-          dateStyle: 'short',
-          timeStyle: 'short'
-        })}`
+        console.log(data, changeFrom, changeTo)
+        const d1 = changeFrom ? `📆 ${dateFormat(new Date(changeFrom), 'P')}` : '';
+        const d2 = dateFormat(new Date(changeTo), 'P')
+        content = `set due date ${d1} to 📆 ${d2}`
+
       } catch (error) {
-        console.log({ ActivityLog: error })
+        console.log(error)
       }
       break
     case ActivityType.TASK_ASSIGNEE_ADDED: {
@@ -74,14 +63,15 @@ export default function ActivityLog({ activity }: IActivityLog) {
           .filter(({ id }) => (data as string[])?.includes(id))
           .map(({ name }) => name)
           .join(', ')
-        content = `added assignees ${addedAssignees}`
+        content = `added assignees 👦 ${addedAssignees}`
       } catch (error) {
         console.log({ activityAssigneeError: error })
       }
       break
     }
+
     case ActivityType.TASK_ASSIGNEE_REMOVED:
-      content = `removed assignees `
+      content = `removed assignees 👦`
       break
     // case ActivityType.TASK_STATUS_CREATED:
     //   content = `created status ${data}`
@@ -91,21 +81,19 @@ export default function ActivityLog({ activity }: IActivityLog) {
         const oldStatus = statuses.find(({ id }) => id === changeFrom)?.name
         const newStatus = statuses.find(({ id }) => id === changeTo)?.name
 
-        content = `changed status ${oldStatus ? oldStatus : ''} to ${newStatus}`
+        content = `changed status ${oldStatus ? '🚦 ' + oldStatus : ''} to 🚦 ${newStatus}`
       }
       break
     case ActivityType.TASK_PROGRESS_CHANGED:
-      content = `changed progress ${
-        changeFrom ? changeFrom : ''
-      } to ${changeTo}`
+      content = `updated progress ${changeFrom ? '⏳️ ' + changeFrom : ''
+        } to ⏳️ ${changeTo}`
       break
     case ActivityType.TASK_PRIORITY_CHANGED:
-      content = `changed priority ${
-        changeFrom ? changeFrom : ''
-      } to ${changeTo}`
+      content = `changed priority 🚩 ${changeFrom ? changeFrom : ''
+        } to ${changeTo}`
       break
     case ActivityType.TASK_POINT_CHANGED:
-      content = `changed point ${changeFrom ? changeFrom : ''} to ${changeTo}`
+      content = `changed point ${changeFrom ? '⭐️ ' + changeFrom : ''} to ⭐️ ${changeTo}`
       break
     case ActivityType.TASK_VISION_CHANGED:
       content = `changed vision ${changeFrom ? changeFrom : ''} to ${changeTo}`
@@ -115,7 +103,7 @@ export default function ActivityLog({ activity }: IActivityLog) {
   return (
     <div className="activity-item">
       <MemberAvatar uid={createdBy} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-400">
         {content} - <Time date={new Date(createdAt)} />
       </p>
     </div>

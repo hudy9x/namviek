@@ -4,6 +4,7 @@ import ActivityCardAttach from './ActivityCardAttach'
 import ActivityCardComment from './ActivityCardComment'
 import { useActivityContext } from './context'
 import ActivityLog from './ActivityLog'
+import ActivityLogDesc from './ActivityLogDesc'
 
 const ActivityList = () => {
   const { activities } = useActivityContext()
@@ -17,6 +18,10 @@ const ActivityList = () => {
       case ActivityType.TASK_COMMENT_CHANGED:
       case ActivityType.TASK_COMMENT_REMOVED:
         return <ActivityCardComment activity={activity} />
+
+      case ActivityType.TASK_TITLE_CHANGED:
+      case ActivityType.TASK_DESC_CHANGED:
+        return <ActivityLogDesc activity={activity} />
       default:
         return <ActivityLog activity={activity} />
     }
