@@ -6,6 +6,10 @@
   @apply flex items-center gap-2;
 }
 
+.activity-item .member-name{
+  @apply mr-1
+}
+
 .activity-item.none {
   @apply flex-col items-start gap-0;
 }
@@ -19,7 +23,7 @@
 }
 
 .activity-time {
-  @apply text-xs text-gray-500;
+  @apply text-xs text-gray-500 pl-1;
 }
 
 .activity-item .selected-member-name {

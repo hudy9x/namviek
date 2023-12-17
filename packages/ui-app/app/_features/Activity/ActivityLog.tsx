@@ -10,6 +10,7 @@ import { Avatar } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
 import { dateFormat, diffText } from '@shared/libs'
+import MemberName from '@/components/MemberName'
 
 interface IActivityLog {
   activity: Activity
@@ -43,9 +44,7 @@ export default function ActivityLog({ activity }: IActivityLog) {
     case ActivityType.TASK_CREATED:
       content = 'created this task 📢'
       break
-    // case ActivityType.TASK_TITLE_CHANGED:
-    //   content = `changed title 📋 ${changeFrom ? changeFrom : ''} to ${changeTo}`
-    // break
+
     case ActivityType.TASK_DUEDATE_CHANGED:
       try {
         console.log(data, changeFrom, changeTo)
@@ -102,31 +101,32 @@ export default function ActivityLog({ activity }: IActivityLog) {
 
   return (
     <div className="activity-item">
-      <MemberAvatar uid={createdBy} />
+      <MemberAvatar uid={createdBy} noName={true} />
       <p className="text-sm text-gray-400">
-        {content} - <Time date={new Date(createdAt)} />
+        <MemberName uid={createdBy} />
+        {content} -<Time date={new Date(createdAt)} />
       </p>
     </div>
   )
 
-  return (
-    <ActivityCard
-      activityId={activityId}
-      creator={<ActivityMemberAvatar createdBy={createdBy} />}
-      title={
-        <div>
-          <ActivityMemberRepresent createdBy={createdBy} />
-          <span>{content} </span>
-          <div>
-            {createdAt && (
-              <ActivityTimeLog
-                time={new Date(createdAt)}
-                activityId={activityId}
-              />
-            )}
-          </div>
-        </div>
-      }
-    />
-  )
+  // return (
+  //   <ActivityCard
+  //     activityId={activityId}
+  //     creator={<ActivityMemberAvatar createdBy={createdBy} />}
+  //     title={
+  //       <div>
+  //         <ActivityMemberRepresent createdBy={createdBy} />
+  //         <span>{content} </span>
+  //         <div>
+  //           {createdAt && (
+  //             <ActivityTimeLog
+  //               time={new Date(createdAt)}
+  //               activityId={activityId}
+  //             />
+  //           )}
+  //         </div>
+  //       </div>
+  //     }
+  //   />
+  // )
 }

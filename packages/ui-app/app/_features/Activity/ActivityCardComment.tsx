@@ -10,6 +10,7 @@ import MemberAvatar from '@/components/MemberAvatar'
 import { dateFormat } from '@shared/libs'
 import { Tooltip } from '@shared/ui'
 import Time from '@/components/Time'
+import MemberName from '@/components/MemberName'
 
 interface IActivityCardCommentProps {
   activity: Activity
@@ -22,48 +23,48 @@ export default function ActivityCardComment({
     createdBy,
     data,
     createdAt,
-    id: activityId
   } = activity as Activity & {
     data: ActivityCommentData
   }
   const { content } = data
-  const sourceContent = content || ''
+  // const sourceContent = content || ''
   // const [isEditing, setIsEditing] = useState(false)
-  const { updateActivity, deleteActivity } = useActivityContext()
-  const { editingActivityId, setEditingActivityId } = useActivityContext()
+  // const { updateActivity, deleteActivity } = useActivityContext()
+  // const { editingActivityId, setEditingActivityId } = useActivityContext()
 
-  const isEditing = editingActivityId === activity.id
-  const handleEditContent = () => {
-    setEditingActivityId(activity.id)
-  }
+  // const isEditing = editingActivityId === activity.id
+  // const handleEditContent = () => {
+  //   setEditingActivityId(activity.id)
+  // }
 
-  const handleDiscardContentChange = () => {
-    setEditingActivityId('')
-  }
+  // const handleDiscardContentChange = () => {
+  //   setEditingActivityId('')
+  // }
 
-  const handleUpdateContent = (newContent: string) => {
-    const newActivity: typeof activity = {
-      ...activity,
-      data: {
-        ...data,
-        content: newContent
-      }
-    }
-    // console.log({ newActivity })
-    updateActivity(newActivity)
-  }
+  // const handleUpdateContent = (newContent: string) => {
+  //   const newActivity: typeof activity = {
+  //     ...activity,
+  //     data: {
+  //       ...data,
+  //       content: newContent
+  //     }
+  //   }
+  //   // console.log({ newActivity })
+  //   updateActivity(newActivity)
+  // }
 
-  const handleDeleteComment = () => {
-    const { id } = activity
-    deleteActivity(id)
-  }
+  // const handleDeleteComment = () => {
+  //   const { id } = activity
+  //   deleteActivity(id)
+  // }
 
   return (
     <div className="activity-item none">
       <div className="flex items-start gap-2">
-        <MemberAvatar uid={createdBy} />
+        <MemberAvatar uid={createdBy} noName={true} />
         <div className="mt-0.5">
           <p className="text-sm text-gray-400">
+            <MemberName uid={createdBy} />
             wrote a comment 👄 -
             <Time date={new Date(createdAt)} />
           </p>
@@ -75,49 +76,49 @@ export default function ActivityCardComment({
     </div>
   )
 
-  return (
-    <ActivityCard
-      activityId={activityId}
-      creator={<ActivityMemberAvatar createdBy={createdBy} />}
-      title={
-        <div>
-          <ActivityMemberRepresent createdBy={createdBy} />
-          {createdAt && (
-            <ActivityTimeLog
-              time={new Date(createdAt)}
-              activityId={activityId}
-            />
-          )}
-        </div>
-      }
-      content={
-        <div>
-          <ActivityCardCommentContent
-            content={sourceContent}
-            readonly={!isEditing}
-            onDiscardContentChange={
-              isEditing ? handleDiscardContentChange : undefined
-            }
-            onSaveContent={isEditing ? handleUpdateContent : undefined}
-            onEditEnd={() => setEditingActivityId('')}
-          />
-          {!isEditing ? (
-            <div className="flex items-center text-xs mt-2 mb-3">
-              <span
-                className="underline cursor-pointer"
-                onClick={handleEditContent}>
-                Edit
-              </span>
-              <span>&#x2022;</span>
-              <span
-                className="underline cursor-pointer"
-                onClick={handleDeleteComment}>
-                Delete
-              </span>
-            </div>
-          ) : null}
-        </div>
-      }
-    />
-  )
+  // return (
+  //   <ActivityCard
+  //     activityId={activityId}
+  //     creator={<ActivityMemberAvatar createdBy={createdBy} />}
+  //     title={
+  //       <div>
+  //         <ActivityMemberRepresent createdBy={createdBy} />
+  //         {createdAt && (
+  //           <ActivityTimeLog
+  //             time={new Date(createdAt)}
+  //             activityId={activityId}
+  //           />
+  //         )}
+  //       </div>
+  //     }
+  //     content={
+  //       <div>
+  //         <ActivityCardCommentContent
+  //           content={sourceContent}
+  //           readonly={!isEditing}
+  //           onDiscardContentChange={
+  //             isEditing ? handleDiscardContentChange : undefined
+  //           }
+  //           onSaveContent={isEditing ? handleUpdateContent : undefined}
+  //           onEditEnd={() => setEditingActivityId('')}
+  //         />
+  //         {!isEditing ? (
+  //           <div className="flex items-center text-xs mt-2 mb-3">
+  //             <span
+  //               className="underline cursor-pointer"
+  //               onClick={handleEditContent}>
+  //               Edit
+  //             </span>
+  //             <span>&#x2022;</span>
+  //             <span
+  //               className="underline cursor-pointer"
+  //               onClick={handleDeleteComment}>
+  //               Delete
+  //             </span>
+  //           </div>
+  //         ) : null}
+  //       </div>
+  //     }
+  //   />
+  // )
 }

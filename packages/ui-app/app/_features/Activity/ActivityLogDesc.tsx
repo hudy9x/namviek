@@ -9,7 +9,8 @@ import { useMemberStore } from '@/store/member'
 import { Avatar } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
-import { dateFormat, diffText } from '@shared/libs'
+import { diffText } from '@shared/libs'
+import MemberName from '@/components/MemberName'
 
 interface IActivityLog {
   activity: Activity
@@ -21,7 +22,7 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
     data,
     createdAt,
     type,
-    id: activityId
+    // id: activityId
   } = activity as Activity
 
 
@@ -65,9 +66,10 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
   return (
     <div className="activity-item none">
       <div className="flex items-start gap-2">
-        <MemberAvatar uid={createdBy} />
+        <MemberAvatar uid={createdBy} noName={true} />
         <div className="mt-0.5">
           <p className="text-sm text-gray-400">
+            <MemberName uid={createdBy} />
             {title} -
             <Time date={new Date(createdAt)} />
           </p>
@@ -79,24 +81,24 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
     </div>
   )
 
-  return (
-    <ActivityCard
-      activityId={activityId}
-      creator={<ActivityMemberAvatar createdBy={createdBy} />}
-      title={
-        <div>
-          <ActivityMemberRepresent createdBy={createdBy} />
-          <span>{content} </span>
-          <div>
-            {createdAt && (
-              <ActivityTimeLog
-                time={new Date(createdAt)}
-                activityId={activityId}
-              />
-            )}
-          </div>
-        </div>
-      }
-    />
-  )
+  // return (
+  //   <ActivityCard
+  //     activityId={activityId}
+  //     creator={<ActivityMemberAvatar createdBy={createdBy} />}
+  //     title={
+  //       <div>
+  //         <ActivityMemberRepresent createdBy={createdBy} />
+  //         <span>{content} </span>
+  //         <div>
+  //           {createdAt && (
+  //             <ActivityTimeLog
+  //               time={new Date(createdAt)}
+  //               activityId={activityId}
+  //             />
+  //           )}
+  //         </div>
+  //       </div>
+  //     }
+  //   />
+  // )
 }
