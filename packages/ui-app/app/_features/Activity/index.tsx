@@ -1,5 +1,5 @@
 import './style.css'
-import { ActivityContextProvider, useActivityContext } from './context'
+import { ActivityContextProvider } from './context'
 import ActivityContainer from './ActivityContainer'
 import { useSearchParams } from 'next/navigation'
 

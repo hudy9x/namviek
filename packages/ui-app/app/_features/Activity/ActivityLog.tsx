@@ -1,15 +1,10 @@
-import { Activity, ActivityObjectType, ActivityType } from '@prisma/client'
-import ActivityCard from './ActivityCard'
+import { Activity, ActivityType } from '@prisma/client'
 import { ActivityLogData } from '@shared/models'
-import ActivityMemberAvatar from './ActivityMemberAvatar'
-import { ActivityMemberRepresent } from './ActivityMemberRepresent'
-import { ActivityTimeLog } from './ActivityTimeLog'
 import { useProjectStatusStore } from '@/store/status'
 import { useMemberStore } from '@/store/member'
-import { Avatar } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
-import { dateFormat, diffText } from '@shared/libs'
+import { dateFormat } from '@shared/libs'
 import MemberName from '@/components/MemberName'
 
 interface IActivityLog {
@@ -109,24 +104,4 @@ export default function ActivityLog({ activity }: IActivityLog) {
     </div>
   )
 
-  // return (
-  //   <ActivityCard
-  //     activityId={activityId}
-  //     creator={<ActivityMemberAvatar createdBy={createdBy} />}
-  //     title={
-  //       <div>
-  //         <ActivityMemberRepresent createdBy={createdBy} />
-  //         <span>{content} </span>
-  //         <div>
-  //           {createdAt && (
-  //             <ActivityTimeLog
-  //               time={new Date(createdAt)}
-  //               activityId={activityId}
-  //             />
-  //           )}
-  //         </div>
-  //       </div>
-  //     }
-  //   />
-  // )
 }

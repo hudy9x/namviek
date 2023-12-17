@@ -1,14 +1,6 @@
 import { Activity } from '@prisma/client'
-import { ActivityMemberRepresent } from './ActivityMemberRepresent'
-import ActivityCardCommentContent from './ActivityCardCommentContent'
 import { ActivityCommentData } from '@shared/models'
-import ActivityMemberAvatar from './ActivityMemberAvatar'
-import ActivityCard from './ActivityCard'
-import { ActivityTimeLog } from './ActivityTimeLog'
-import { useActivityContext } from './context'
 import MemberAvatar from '@/components/MemberAvatar'
-import { dateFormat } from '@shared/libs'
-import { Tooltip } from '@shared/ui'
 import Time from '@/components/Time'
 import MemberName from '@/components/MemberName'
 
@@ -76,49 +68,4 @@ export default function ActivityCardComment({
     </div>
   )
 
-  // return (
-  //   <ActivityCard
-  //     activityId={activityId}
-  //     creator={<ActivityMemberAvatar createdBy={createdBy} />}
-  //     title={
-  //       <div>
-  //         <ActivityMemberRepresent createdBy={createdBy} />
-  //         {createdAt && (
-  //           <ActivityTimeLog
-  //             time={new Date(createdAt)}
-  //             activityId={activityId}
-  //           />
-  //         )}
-  //       </div>
-  //     }
-  //     content={
-  //       <div>
-  //         <ActivityCardCommentContent
-  //           content={sourceContent}
-  //           readonly={!isEditing}
-  //           onDiscardContentChange={
-  //             isEditing ? handleDiscardContentChange : undefined
-  //           }
-  //           onSaveContent={isEditing ? handleUpdateContent : undefined}
-  //           onEditEnd={() => setEditingActivityId('')}
-  //         />
-  //         {!isEditing ? (
-  //           <div className="flex items-center text-xs mt-2 mb-3">
-  //             <span
-  //               className="underline cursor-pointer"
-  //               onClick={handleEditContent}>
-  //               Edit
-  //             </span>
-  //             <span>&#x2022;</span>
-  //             <span
-  //               className="underline cursor-pointer"
-  //               onClick={handleDeleteComment}>
-  //               Delete
-  //             </span>
-  //           </div>
-  //         ) : null}
-  //       </div>
-  //     }
-  //   />
-  // )
 }
