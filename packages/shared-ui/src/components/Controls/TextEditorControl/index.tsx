@@ -27,10 +27,6 @@ export default function TextareaControl({
   //   onChange && onChange(ev);
   // };
 
-  useEffect(() => {
-    setValue(value);
-  }, [value]);
-
   const editor = useEditor({
     extensions: [StarterKit, Link.configure({ openOnClick: false })],
     content: val,
@@ -39,6 +35,12 @@ export default function TextareaControl({
       onChange && !disabled && onChange(editor.getHTML());
     }
   });
+
+  useEffect(() => {
+    setValue(value)
+    value && editor?.commands.setContent(value)
+  }, [value, editor])
+
 
   useEffect(() => {
     editor && editor.setEditable(!disabled);

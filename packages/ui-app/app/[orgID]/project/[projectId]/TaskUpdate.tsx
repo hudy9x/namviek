@@ -99,7 +99,7 @@ export const TaskUpdate = () => {
           : defaultFormikValues.dueDate,
         plannedDueDate: currentTask.plannedDueDate
           ? new Date(currentTask.plannedDueDate)
-          : defaultFormikValues.plannedDueDate, 
+          : defaultFormikValues.plannedDueDate,
         planedStartDate: currentTask.plannedStartDate
           ? new Date(currentTask.plannedStartDate)
           : defaultFormikValues.planedStartDate,
@@ -118,7 +118,7 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
-          size="lg"
+          size="xl"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)

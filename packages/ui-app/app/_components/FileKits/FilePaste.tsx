@@ -7,7 +7,7 @@ export default function FilePaste() {
   const onPaste = async (e: ClipboardEvent) => {
     e.preventDefault()
     const files = e.clipboardData?.files
-    if (!files) return
+    if (!files || !files.length) return
 
     messageSuccess('You pasted an image !')
     onFileHandler(files)

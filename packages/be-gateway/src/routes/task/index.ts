@@ -35,6 +35,7 @@ import {
   getTodoCounter,
   updateTodoCounter
 } from '../../services/todo.counter'
+import ActivityService from '../../services/activity.service'
 
 const router = Router()
 
@@ -228,6 +229,7 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   const body = req.body as Task
+  const activityService = new ActivityService()
   const {
     desc,
     visionId,
@@ -275,6 +277,11 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null,
       progress
+    })
+
+    activityService.createTask({
+      id: result.id,
+      userId: id
     })
 
     const processes = []
@@ -475,6 +482,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
+  const body = req.body as Task
   const {
     id,
     title,
@@ -492,15 +500,20 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     visionId,
     progress,
     taskPoint
-  } = req.body as Task
+  } = body
   const { id: userId } = req.authen
+
+  const activityService = new ActivityService()
 
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const oldTaskData = structuredClone(taskData)
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
     const oldAssigneeId = taskData?.assigneeIds[0]
+
+    console.log('4')
 
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
@@ -560,6 +573,12 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.updatedBy = userId
 
     const result = await mdTaskUpdate(taskData)
+
+    activityService.updateTaskActivity({
+      taskData: oldTaskData,
+      updatedTaskData: body,
+      userId
+    })
 
     const processes = []
 

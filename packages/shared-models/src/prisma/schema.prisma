@@ -43,6 +43,11 @@ enum StatusType {
   TODO
 }
 
+enum ActivityObjectType {
+  TASK
+  PROJECT
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -279,4 +284,44 @@ model Dashboard {
   title               String?              @default("Untitled")
   projectId           String?              @db.ObjectId
   isDefault           Boolean?             @default(false)
+}
+
+enum ActivityType {
+  TASK_CREATED
+  // TASK_CHANGED // change due date, task title, description
+  TASK_TITLE_CHANGED
+  TASK_DESC_CHANGED
+  TASK_DUEDATE_CHANGED
+
+  TASK_ASSIGNEE_ADDED
+  TASK_ASSIGNEE_REMOVED
+
+
+  TASK_STATUS_CREATED
+  TASK_STATUS_CHANGED
+
+  TASK_PROGRESS_CHANGED
+  TASK_PRIORITY_CHANGED
+  TASK_POINT_CHANGED
+  TASK_VISION_CHANGED
+
+  TASK_COMMENT_CREATED
+  TASK_COMMENT_CHANGED
+  TASK_COMMENT_REMOVED
+
+  TASK_ATTACHMENT_ADDED
+  TASK_ATTACHMENT_REMOVED
+}
+
+
+model Activity {
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  objectId            String
+  objectType          ActivityObjectType
+  type                ActivityType
+  createdBy           String 
+  data                Json?
+  createdAt           DateTime
+  updatedAt           DateTime?
+  updatedBy           String? 
 }
