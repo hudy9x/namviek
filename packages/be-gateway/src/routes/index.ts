@@ -13,6 +13,7 @@ import visionRouter from './vision'
 import { storageRouter } from './storage'
 import buzzerRouter from './buzzer'
 import meetingRouter from './meeting'
+import setting from './setting'
 import { authMiddleware } from '../middlewares'
 
 // import "./test";
@@ -43,5 +44,6 @@ router.use(orgRouter)
 router.use(projectRouter)
 router.use(projectMemberRouter)
 router.use(taskRouter)
+router.use(setting)
 
 export default router

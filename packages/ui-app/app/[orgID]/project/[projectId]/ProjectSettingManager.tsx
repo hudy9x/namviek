@@ -8,8 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 enum ESetting {
   OverdueTask = 'overDueTaskStatus',
   TodayTask = 'todayTaskStatus',
-  UpcomingTask = 'upComingTaskStatus',
-  NewTaskAssigned = 'newTaskAssignedStatus'
+  UrgentTask = 'urgentTaskStatus',
 }
 
 interface ISetting {
@@ -30,15 +29,10 @@ const defaultProjectSetting: ISetting[] = [
     isChecked: false
   },
   {
-    key: ESetting.UpcomingTask,
-    name: 'Upcoming Task',
+    key: ESetting.UrgentTask,
+    name: 'Urgent Task',
     isChecked: false
   },
-  {
-    key: ESetting.NewTaskAssigned,
-    name: 'New Task Assigned',
-    isChecked: false
-  }
 ]
 
 const convertProjectSettingToArray = (projectSetting: ProjectSetting) => {
@@ -66,6 +60,7 @@ export default function ProjectSettingManager() {
       ...refProjectSetting.current,
       [value.key]: checked
     }
+    console.log(updateSetting, '----> updateSetting')
     try {
       const setting = (await (
         await projectSettingUpdate(updateSetting)
@@ -73,6 +68,7 @@ export default function ProjectSettingManager() {
       setListProjectSetting(
         convertProjectSettingToArray(setting)
       )
+      refProjectSetting.current = setting
       messageSuccess('Update setting successfully ! 🐸')
     } catch (error) {
       messageError('Update setting error ! 😥')
@@ -82,10 +78,14 @@ export default function ProjectSettingManager() {
 
   useEffect(() => {
     void (async () => {
-      const setting = (await projectSettingGet(projectId)).data
-        .data as ProjectSetting
-      refProjectSetting.current = setting
-      setListProjectSetting(convertProjectSettingToArray(setting))
+      try {
+        const setting = (await projectSettingGet(projectId)).data
+          .data as ProjectSetting
+        refProjectSetting.current = setting
+        setListProjectSetting(convertProjectSettingToArray(setting))
+      } catch (error) {
+        console.log(error)
+      }
     })()
   }, [])
 

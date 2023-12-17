@@ -76,6 +76,7 @@ export const mdMemberBelongToProject = async (
   })
 }
 
+
 export const mdMemberGetAllByProjectId = async (projectId: string) => {
   return memberModel.findMany({
     where: {
@@ -86,3 +87,13 @@ export const mdMemberGetAllByProjectId = async (projectId: string) => {
     }
   })
 }
+
+export const mdMemberGetAll = async () => {
+  return memberModel.findMany({
+    include: {
+      users: true
+    }
+  });
+};
+
+ 

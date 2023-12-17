@@ -9,6 +9,7 @@ import { IoIosNotificationsOutline } from "react-icons/io"
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
+import ProjectSettingManager from '../ProjectSettingManager'
 
 const Setting = () => {
   const { push } = useRouter()
@@ -56,6 +57,16 @@ const Setting = () => {
       href: `${orgID}/project/${projectId}?mode=setting&tab=members`,
       content: <ProjectMemberManager />,
       desc: 'Where you can send add users to the projects. It also helps you to grant access to a specific member.'
+    },
+    {
+      icon: (
+        <IoIosNotificationsOutline className="shrink-0 text-green-600 w-6 h-6 bg-green-100/80 rounded-full p-1.5" />
+      ),
+      title: 'Notifications',
+      active: tab === 'notifications',
+      href: `${orgID}/project/${projectId}?mode=setting&tab=notifications`,
+      content: <ProjectSettingManager />,
+      desc: 'Manage project notifications and user access. Set up how and when you receive important updates. Grant access to specific members to control project visibility and collaboration.'
     }
   ]
 

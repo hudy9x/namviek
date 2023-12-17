@@ -1,11 +1,15 @@
 import { Task, TaskPriority } from '@prisma/client'
 import { taskModel, pmClient } from './_prisma'
+import { mdMemberGetAll } from './member'
+import { mdSettingNotificationQuery } from './setting'
 
 export interface ITaskQuery {
   projectId?: string
   projectIds?: string[]
   title?: string
-  dueDate?: [Date | string, Date | string]
+  dueDate?: [Date | string | null, Date | string | null]
+  isOverDueDate?: boolean
+  isToday?: boolean
   assigneeIds?: string[]
   statusIds?: string[]
   taskPoint?: number
@@ -25,12 +29,14 @@ const generateConditions = ({
   projectId,
   projectIds,
   title,
+  isOverDueDate,
+  isToday,
   dueDate,
   assigneeIds,
   statusIds,
   taskPoint,
   done,
-  counter
+  counter,
 }: ITaskQuery) => {
   const where: {
     [key: string]: unknown
@@ -160,6 +166,21 @@ const generateConditions = ({
     }
   }
 
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  if (isOverDueDate) {
+    where.plannedDueDate = {
+      lt: today
+    }
+  }
+
+  if (isToday) {
+    where.plannedDueDate = {
+      gte: today,
+      lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
+    }
+  }
+
   if (priority) {
     where.priority = priority
   }
@@ -255,4 +276,62 @@ export const mdTaskUpdate = async (data: Partial<Task>) => {
     },
     data: rest
   })
+}
+
+export const getTaskBySetting = async () => {
+  let taskCountsByCategory = {}
+  const members = await mdMemberGetAll()
+  for (const member of members) {
+    const { projectId, uid } = member
+    const setting = await mdSettingNotificationQuery(projectId)
+
+    if (!taskCountsByCategory.hasOwnProperty(uid)) {
+      taskCountsByCategory  = {
+        ...taskCountsByCategory ,
+        [uid]: {
+          numUrgentTasks: setting.urgentTaskStatus ? 0 : undefined,
+          numOverDueTasks: setting.overDueTaskStatus ? 0 : undefined,
+          numTodayTask: setting.todayTaskStatus ? 0 : undefined
+        }
+      }
+    }
+
+    const taskOverDueDate = await mdTaskGetAll({
+      counter: true,
+      isOverDueDate: true,
+      done: 'yes',
+      projectId,
+      assigneeIds: [uid]
+    })
+
+    const taskUrgent = await mdTaskGetAll({
+      counter: true,
+      done: 'no',
+      priority: TaskPriority.URGENT,
+      projectId,
+      assigneeIds: [uid]
+    })
+
+    const taskToday = await mdTaskGetAll({
+      counter: true,
+      done: 'no',
+      isToday: true,
+      projectId,
+      assigneeIds: [uid]
+    })
+
+    if (taskCountsByCategory [uid].numOverDueTasks >= 0) {
+      taskCountsByCategory [uid].numOverDueTasks += taskOverDueDate
+    }
+
+    if (taskCountsByCategory [uid].numTodayTask >= 0) {
+      taskCountsByCategory [uid].numTodayTask += taskToday
+    }
+
+    if (taskCountsByCategory [uid].numUrgentTasks >= 0) {
+      taskCountsByCategory [uid].numUrgentTasks += taskUrgent
+    }
+  }
+
+  return taskCountsByCategory 
 }
