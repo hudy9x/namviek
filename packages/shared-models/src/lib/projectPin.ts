@@ -6,9 +6,7 @@ const _getPinnedProjectList = async (
   uid: string
 ): Promise<PinnedProjectSetting[]> => {
   const user = await mdUserFindFirst({
-    where: {
-      id: uid
-    }
+    id: uid
   })
 
   if (!user) return []

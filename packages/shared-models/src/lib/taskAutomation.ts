@@ -13,8 +13,27 @@ export const mdAutomationGet = async (projectId: string) => {
 }
 
 export const mdAutomationPost = async (data: Omit<TaskAutomation, 'id'>) => {
+  const {
+    organizationId,
+    projectId,
+    when,
+    then,
+    createdAt,
+    createdBy,
+    updatedAt,
+    updatedBy
+  } = data
   return taskAutomation.create({
-    data
+    data: {
+      organizationId,
+      projectId,
+      when: when || {},
+      then: then || {},
+      createdAt,
+      createdBy,
+      updatedAt,
+      updatedBy
+    }
   })
 }
 
