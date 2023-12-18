@@ -285,6 +285,8 @@ const handleDates = (tasks: TaskChart[]): TDateChart => {
   const planedMinArr = []
   const planedMaxArr = []
   for (const task of tasks) {
+    if (!task.dueDate) continue
+
     const dueDate = new Date(task.dueDate).getDate()
     if (dueDate < planeDateMin) {
       planedMinArr.push(dueDate)
@@ -322,9 +324,11 @@ const handleIdeal = (
   let incremental = 0
 
   for (const planedDate of planedDateArr) {
-    const existPlanedDate = tasks.some(
-      task => new Date(task.plannedDueDate).getDate() === planedDate
-    )
+    const existPlanedDate = tasks.some(task => {
+      // NOTE: Fix build, do not know the spec
+      if (!task.plannedDueDate) return false
+      return new Date(task.plannedDueDate).getDate() === planedDate
+    })
 
     if (!existPlanedDate) {
       type === DashboardComponentType.BURNDOWN
@@ -333,9 +337,11 @@ const handleIdeal = (
       continue
     }
 
-    const countTask = tasks.filter(
-      task => new Date(task.plannedDueDate).getDate() === planedDate
-    ).length
+    const countTask = tasks.filter(task => {
+      // NOTE: Fix build, do not know the spec
+      if (!task.plannedDueDate) return false
+      return new Date(task.plannedDueDate).getDate() === planedDate
+    }).length
     if (type === DashboardComponentType.BURNDOWN) {
       decremental -= countTask
       idealArr.push(decremental)
@@ -381,9 +387,10 @@ const handleActual = (
       continue
     }
 
-    const existDueDate = tasks.some(
-      task => new Date(task.dueDate).getDate() === dateActual
-    )
+    const existDueDate = tasks.some(task => {
+      if (!task.dueDate) return false
+      return new Date(task.dueDate).getDate() === dateActual
+    })
     if (!existDueDate) {
       type === DashboardComponentType.BURNDOWN
         ? actual.push(decremental)
@@ -391,9 +398,10 @@ const handleActual = (
       continue
     }
 
-    const countTask = tasks.filter(
-      task => new Date(task.dueDate).getDate() === dateActual
-    ).length
+    const countTask = tasks.filter(task => {
+      if (!task.dueDate) return false
+      return new Date(task.dueDate).getDate() === dateActual
+    }).length
 
     if (type === DashboardComponentType.BURNDOWN) {
       decremental -= countTask
@@ -407,17 +415,22 @@ const handleActual = (
   return actual
 }
 
+type ColumnConfig = {
+  [key: string]: {
+    [key: string]: number
+  }
+}
 const generateColumn = ({
   xAxis,
   series
 }: Pick<IDBComponentColumnConfig, 'xAxis' | 'series'>) => {
-  const columns = {}
-  const xAxises = []
-  if (xAxis.assigneeIds.length) {
+  const columns: ColumnConfig = {}
+  const xAxises: string[] = []
+  if (xAxis && xAxis.assigneeIds && xAxis.assigneeIds.length) {
     xAxis.assigneeIds.forEach(uid => {
       columns[uid] = {}
       xAxises.push(uid)
-      if (series.statusIds.length) {
+      if (series && series.statusIds && series.statusIds.length) {
         series.statusIds.forEach(stt => {
           if (['in', 'not_in'].includes(stt)) return
           columns[uid][stt] = 0
@@ -429,10 +442,12 @@ const generateColumn = ({
   return [columns, xAxises]
 }
 
-const convertDate = (date, dates) => {
+const convertDate = (date: Date | undefined, dates: number[]) => {
   if (!Array.isArray(dates) || typeof date !== 'string') {
     throw new Error('Invalid input data')
   }
+
+  if (!date) return ''
 
   return dates.map((day, index) => {
     if (day === 0 && index === 0) return 'Day'
@@ -511,11 +526,11 @@ export const mdDBoardQueryColumn = async ({
   config.startDate = startDate
   config.endDate = endDate
 
-  if (xAxis.assigneeIds) {
+  if (xAxis && xAxis.assigneeIds) {
     config.assigneeIds = xAxis.assigneeIds
   }
 
-  if (series.statusIds) {
+  if (series && series.statusIds) {
     config.statusIds = series.statusIds
   }
 
@@ -539,10 +554,14 @@ export const mdDBoardQueryColumn = async ({
   })
 
   // generate default columns
-  const [columns, xAxises] = generateColumn({
+  // const [columns, xAxises] = generateColumn({
+  const result = generateColumn({
     xAxis,
     series
   })
+
+  const columns = result[0] as ColumnConfig
+  const xAxises = result[1] as string[]
 
   // mapping returned data to generated columns
   if (tasks.length) {
@@ -558,6 +577,8 @@ export const mdDBoardQueryColumn = async ({
 
       const column = columns[colName]
       const type = task.taskStatusId
+
+      if (!type) continue
 
       if (!column[type]) {
         column[type] = 0

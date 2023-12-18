@@ -5,7 +5,7 @@ export interface ITaskQuery {
   projectId?: string
   projectIds?: string[]
   title?: string
-  dueDate?: [Date | string, Date | string]
+  dueDate?: [Date | string | null, Date | string | null]
   assigneeIds?: string[]
   statusIds?: string[]
   taskPoint?: number
@@ -49,7 +49,7 @@ const generateConditions = ({
   if (taskPoint) {
     taskPoint = +taskPoint
     if (taskPoint === 0) {
-      taskPoint = null
+      taskPoint = undefined
     }
 
     where.taskPoint = taskPoint
@@ -69,7 +69,7 @@ const generateConditions = ({
   }
 
   // filter done tasks
-  if (['yes', 'no'].includes(done)) {
+  if (done && ['yes', 'no'].includes(done)) {
     where.done = done === 'yes'
   }
 

@@ -11,6 +11,8 @@ const _getPinnedProjectList = async (
     }
   })
 
+  if (!user) return []
+
   const settings = user.settings as unknown as UserSetting
 
   if (!settings || !settings.pinnedProjects) {
@@ -40,6 +42,8 @@ const _updatePinSetting = async ({
         id: uid
       }
     })
+
+    if (!user) return
 
     const settings = user.settings as unknown as UserSetting
 
