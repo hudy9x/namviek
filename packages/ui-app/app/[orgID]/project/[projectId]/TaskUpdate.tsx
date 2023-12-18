@@ -8,6 +8,7 @@ import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
+import TaskDetail from '@/features/TaskDetail'
 
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
@@ -118,19 +119,18 @@ export const TaskUpdate = () => {
     <>
       <div>
         <Modal
-          size="xl"
+          size="lg"
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)
             router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
           }}
           loading={taskLoading}
-          title="Update task"
+          title=""
           content={
             <>
               <FileKitContainer fileIds={currentTask.fileIds}>
-                <TaskForm
-                  isUpdate={true}
+                <TaskDetail
                   defaultValue={currentTask}
                   onSubmit={v => handleSubmit(v)}
                 />
