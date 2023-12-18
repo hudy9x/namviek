@@ -3,7 +3,11 @@
 }
 
 .task-info-label {
-  @apply flex items-center gap-2 text-sm w-[100px];
+  @apply flex items-center gap-2 text-sm w-[150px];
+}
+
+.task-info-label svg {
+  @apply text-lg text-gray-500 
 }
 
 .task-info-content .form-input {

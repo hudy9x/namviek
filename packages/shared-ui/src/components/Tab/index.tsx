@@ -3,11 +3,12 @@ import './style.css'
 import { ReactNode } from 'react'
 
 interface ITabProps {
+  defaultValue?: string
   children: ReactNode
 }
 
-export default function Tab({ children }: ITabProps) {
-  return <Tabs.Root className="tab-root">{children}</Tabs.Root>
+export default function Tab({ children, defaultValue = '' }: ITabProps) {
+  return <Tabs.Root defaultValue={defaultValue} className="tab-root">{children}</Tabs.Root>
 }
 
 Tab.List = ({ children }: { children: ReactNode }) => {
