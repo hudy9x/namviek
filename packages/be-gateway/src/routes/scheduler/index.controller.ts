@@ -1,7 +1,4 @@
-import {
-  getTaskBySetting,
-  mdScheduler,
-} from '@shared/models'
+import { mdScheduler } from '@shared/models'
 import {
   BaseController,
   Body,
@@ -15,6 +12,8 @@ import {
 import { notifyToWebUsers } from '../../lib/buzzer'
 import { AuthRequest } from '../../types'
 import { Scheduler } from '@prisma/client'
+import { getTaskCountsBySetting } from '../../services/task'
+import { genFrontendUrl } from '../../lib/url'
 
 @Controller('/scheduler')
 export default class Schedule extends BaseController {
@@ -55,21 +54,35 @@ export default class Schedule extends BaseController {
   @Get('/remind-at-0845am')
   async remindTaskReportEveryMorning(@Res() res: ExpressResponse) {
     try {
-      const tasksBySetting = await getTaskBySetting();
+      const tasksBySetting = await getTaskCountsBySetting()
       for (const uid in tasksBySetting) {
-        const { numUrgentTasks, numOverDueTasks, numTodayTask } = tasksBySetting[uid];
-      
-        const urgentTaskMessage = numUrgentTasks >= 0 ? `urgent task ${numUrgentTasks}` : null;
-        const overdueTaskMessage = numOverDueTasks >= 0 ? `overdue task ${numOverDueTasks}` : null;
-        const todayTaskMessage = numTodayTask >= 0 ? `today task ${numTodayTask}` : null;
-      
+        const {
+          numUrgentTasks,
+          numOverDueTasks,
+          numTodayTask,
+          organizationIds
+        } = tasksBySetting[uid]
+
+        const urgentTaskMessage = numUrgentTasks
+          ? `urgent task ${numUrgentTasks}`
+          : null
+        const overdueTaskMessage = numOverDueTasks
+          ? `overdue task ${numOverDueTasks}`
+          : null
+        const todayTaskMessage = numTodayTask
+          ? `today task ${numTodayTask}`
+          : null
+
         const notificationBody = `
-          ${urgentTaskMessage ? urgentTaskMessage : ''}
-          ${overdueTaskMessage ? overdueTaskMessage : ''}
-          ${todayTaskMessage ? todayTaskMessage : ''}
-        `;
-      
-        notifyToWebUsers(uid, { body: notificationBody });
+          ${urgentTaskMessage}
+          ${overdueTaskMessage}
+          ${todayTaskMessage}
+        `
+
+        organizationIds.forEach(org => {
+          const taskLink = genFrontendUrl(`${org}/my-works`)
+          notifyToWebUsers(uid, { body: notificationBody, deep_link: taskLink })
+        })
       }
       res.status(200)
     } catch (error) {

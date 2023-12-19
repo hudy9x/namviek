@@ -20,6 +20,7 @@ import {
 import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
+  delCache,
   findNDelCaches,
   genKeyFromSource,
   getJSONCache,
@@ -35,6 +36,7 @@ import {
   getTodoCounter,
   updateTodoCounter
 } from '../../services/todo.counter'
+import { KEY_TASK_COUNT } from '../../services/task'
 
 const router = Router()
 
@@ -284,6 +286,9 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
     }
 
+    // delete task by setting notification
+    delCache(KEY_TASK_COUNT)
+
     // delete all cached tasks
     processes.push(findNDelCaches(key))
 
@@ -338,6 +343,10 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null
     }))
+
+    // delete task by setting notification
+    delCache(KEY_TASK_COUNT)
+
     console.timeEnd('reassign-task-data')
 
     console.time('import')
@@ -359,14 +368,19 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
   try {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
-
-    if (!result.done && result.assigneeIds && result.assigneeIds[0]) {
+    const assigneeId = result.assigneeIds[0]
+    
+    if (!result.done && result.assigneeIds && assigneeId) {
       console.log('delete todo counter')
-      await deleteTodoCounter([result.assigneeIds[0], projectId])
+      await deleteTodoCounter([assigneeId, projectId])
     }
-
+    
+    // delete task by setting notification
+    delCache(KEY_TASK_COUNT)
+    
     await findNDelCaches(key)
     console.log('deleted task', id)
+
     res.json({
       status: 200,
       data: result
@@ -389,6 +403,9 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
     data.updatedAt = new Date()
     data.updatedBy = userId
     data.dueDate = new Date(data.dueDate)
+
+    // delete task by setting notification
+    delCache(KEY_TASK_COUNT)
 
     await mdTaskUpdateMany(ids, data)
     await findNDelCaches(key)
@@ -567,6 +584,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     if (oldAssigneeId) {
       processes.push(deleteTodoCounter([oldAssigneeId, projectId]))
     }
+
+    // delete task by setting notification
+    delCache(KEY_TASK_COUNT)
 
     if (assigneeIds && assigneeIds[0] && assigneeIds[0] !== oldAssigneeId) {
       processes.push(deleteTodoCounter([assigneeIds[0], projectId]))

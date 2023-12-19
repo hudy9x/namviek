@@ -4,11 +4,8 @@ import {
   mdSettingNotificationQuery,
   mdSettingNotificationUpdate,
 } from '@shared/models'
-import { TaskPriority } from '@prisma/client'
 
 const router = Router()
-
-//router.use([authMiddleware])
 
 router.get(
   '/project-setting/notification/:projectId',

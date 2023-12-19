@@ -24,7 +24,10 @@ export enum CKEY {
   TASK_QUERY = 'TASK_QUERY',
 
   // save user's favorite links
-  FAV_QUERY = 'FAV_QUERY'
+  FAV_QUERY = 'FAV_QUERY',
+
+  // save task by setting
+  TASK_COUNTS = 'TASK_COUNTS'
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]

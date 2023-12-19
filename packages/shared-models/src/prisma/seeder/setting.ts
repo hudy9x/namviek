@@ -14,9 +14,10 @@ export const dummyProjectSetting = async () => {
     projects.forEach(async item => {
       const data = {
         projectId: item.id,
+        organizationId: item.organizationId,
         urgentTaskStatus: false,
         overDueTaskStatus: false,
-        todayTaskStatus: false,
+        todayTaskStatus: false
       }
       const setting = await mdProjectSetting.create({
         data
