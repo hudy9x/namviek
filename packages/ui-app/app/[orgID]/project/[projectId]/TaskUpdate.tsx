@@ -90,6 +90,7 @@ export const TaskUpdate = () => {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
         fileIds: currentTask.fileIds || [],
+        cover: currentTask.cover || '',
         taskStatusId:
           currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
         priority: currentTask.priority
@@ -131,6 +132,7 @@ export const TaskUpdate = () => {
             <>
               <FileKitContainer fileIds={currentTask.fileIds}>
                 <TaskDetail
+                  cover={currentTask.cover || ''}
                   defaultValue={currentTask}
                   onSubmit={v => handleSubmit(v)}
                 />

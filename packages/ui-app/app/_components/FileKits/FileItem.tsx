@@ -1,8 +1,11 @@
-import { Button, Loading } from '@shared/ui'
+import { Button, Loading, messageSuccess } from '@shared/ui'
 import FileThumb from './FileThumb'
 import { IFileItem } from './context'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'
+import { useParams, useSearchParams } from 'next/navigation'
+import { taskMakeCover } from '@/services/task'
+import { useTaskStore } from '@/store/task'
 
 const generateSizeStr = (size: number) => {
   const n = size / 1024
@@ -23,6 +26,10 @@ const generateSizeStr = (size: number) => {
 
 export default function FileItem({ data }: { data: IFileItem }) {
   const { name, url, ext, mimeType, uploading, id, createdAt } = data
+  const sp = useSearchParams()
+  const taskId = sp.get('taskId')
+  const { projectId } = useParams()
+  const { updateTask } = useTaskStore()
 
   const createdDate = createdAt
     ? formatDistanceToNow(new Date(createdAt))
@@ -30,7 +37,19 @@ export default function FileItem({ data }: { data: IFileItem }) {
   const createdTime = createdAt ? format(new Date(createdAt), 'HH:mm') : null
 
   const makeThisCover = () => {
-    console.log('a')
+    if (!taskId) return
+
+    updateTask({
+      id: taskId,
+      cover: url
+    })
+    taskMakeCover({
+      taskId,
+      url,
+      projectId
+    }).then(res => {
+      messageSuccess('updated cover')
+    })
   }
 
   return (
@@ -62,7 +81,11 @@ export default function FileItem({ data }: { data: IFileItem }) {
           <a href={url} target="_blank" className="btn sm">
             Download
           </a>
-          <Button title="Turn this into cover" size='sm' onClick={makeThisCover} />
+          <Button
+            title="Turn this into cover"
+            size="sm"
+            onClick={makeThisCover}
+          />
         </div>
       </div>
     </div>

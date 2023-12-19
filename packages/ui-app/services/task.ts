@@ -75,9 +75,20 @@ export const taskAddMany = (data: {
   return httpPost('/api/project/tasks', data)
 }
 
-export const taskCounterByUser = (projectIds: string[], signal: AbortSignal) => {
+export const taskCounterByUser = (
+  projectIds: string[],
+  signal: AbortSignal
+) => {
   return httpGet('/api/project/task/counter', {
     params: { projectIds },
     signal
   })
+}
+
+export const taskMakeCover = (data: {
+  taskId: string
+  url: string
+  projectId: string
+}) => {
+  return httpPost('/api/project/task/make-cover', data)
 }

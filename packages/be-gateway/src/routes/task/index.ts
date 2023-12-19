@@ -226,6 +226,31 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
   }
 })
 
+router.post('/project/task/make-cover', async (req: AuthRequest, res) => {
+  try {
+    const { taskId, url, projectId } = req.body as {
+      taskId: string
+      projectId: string
+      url: string
+    }
+    const { id: uid } = req.authen
+
+    const result = await mdTaskUpdate({
+      id: taskId,
+      cover: url,
+      updatedAt: new Date(),
+      updatedBy: uid
+    })
+
+    const key = [CKEY.TASK_QUERY, projectId]
+    await findNDelCaches(key)
+
+    res.json({ data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   const body = req.body as Task
@@ -257,6 +282,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
 
     const result = await mdTaskAdd({
       title,
+      cover: null,
       startDate: null,
       dueDate: dueDate || null,
       plannedStartDate: dueDate || null,
