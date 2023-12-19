@@ -23,6 +23,6 @@ export default function MemberName({
 
 
   return (
-    <span className="member-name font-bold text-gray-600">{name || 'None'}</span>
+    <span className="member-name text-gray-900">{name || 'None'}</span>
   )
 }

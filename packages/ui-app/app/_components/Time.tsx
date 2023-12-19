@@ -3,7 +3,7 @@ import { Tooltip } from '@shared/ui'
 
 export default function Time({ date }: { date: Date }) {
   const time = dateFormat(date, 'Pp')
-  const hour = dateFormat(date, 'HH:mm aa')
+  const hour = dateFormat(date, 'HH:mm:ss aa')
 
   return (
     <Tooltip title={time}>

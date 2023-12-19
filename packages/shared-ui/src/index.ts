@@ -13,6 +13,7 @@ import TooltipContainer from './components/Tooltip'
 import LoadingContainer from './components/Loading/LoadingContainer'
 import TimelineContainer from './components/Timeline'
 import DropdownMenuContainer from './components/Dropdown'
+import TabContainer from './components/Tab'
 
 export {
   messageInfo,
@@ -35,6 +36,7 @@ export const FormGroup = FormGroupContainer
 export const Tooltip = TooltipContainer
 export const Timeline = TimelineContainer
 export const DropdownMenu = DropdownMenuContainer
+export const Tab = TabContainer
 
 export * from './components/Confirmbox'
 export * from './components/Timeline/type'

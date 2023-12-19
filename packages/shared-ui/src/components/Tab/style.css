@@ -1,0 +1,27 @@
+.tab-root {
+  @apply flex flex-col;
+}
+
+.tab-list {
+  @apply flex border-b items-center mb-2;
+}
+
+.tab-trigger {
+  @apply flex items-center justify-center select-none;
+  @apply py-1 px-3 text-sm;
+  @apply hover:bg-gray-50;
+}
+
+.tab-trigger[data-state='active'] {
+  @apply relative;
+}
+
+.tab-trigger[data-state='active']:after {
+  height: 1px;
+  content: '';
+  @apply absolute bottom-0 left-0 w-full bg-indigo-400;
+}
+
+.tab-content {
+  @apply w-full;
+}

@@ -23,10 +23,16 @@ export default function FileDrop({ children }: { children: ReactNode }) {
       onDrop={onDropFileChange}
       onDragOver={ev => {
         ev.preventDefault()
+        // if (!ev.dataTransfer.files.length) return
+        if (!ev.dataTransfer.types.includes('Files')) return
+        console.log(111, ev.dataTransfer.types)
         setDragging(true)
       }}
-      onDragOverCapture={() => {
+      onDragOverCapture={(ev) => {
         if (dragoverTimeout.current) clearTimeout(dragoverTimeout.current)
+        // if (!ev.dataTransfer.files.length) return
+        if (!ev.dataTransfer.types.includes('Files')) return
+        console.log(222, ev.dataTransfer.types)
         setDragging(true)
       }}
       onDragLeave={() => {

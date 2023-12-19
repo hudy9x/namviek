@@ -7,11 +7,11 @@ export default function Activity() {
   const sp = useSearchParams()
   const taskId = sp.get('taskId')
 
-  if (!taskId) return null
+  // if (!taskId) return null
 
   return (
     <ActivityContextProvider>
-      <ActivityContainer taskId={taskId} />
+      <ActivityContainer taskId={taskId || ''} />
     </ActivityContextProvider>
   )
 }
