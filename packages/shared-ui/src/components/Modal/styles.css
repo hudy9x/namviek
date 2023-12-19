@@ -12,6 +12,10 @@
   @apply py-[100px];
 }
 
+.modal-close {
+  @apply bg-white dark:bg-gray-800;
+}
+
 .modal-content {
   background-color: white;
   border-radius: 6px;

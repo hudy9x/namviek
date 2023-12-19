@@ -28,6 +28,7 @@ import TaskComments from '../TaskComments'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
+  cover: '',
   assigneeIds: [],
   fileIds: [],
   taskStatusId: '',
@@ -41,6 +42,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 
 export interface ITaskDefaultValues {
   title: string
+  cover: string
   assigneeIds: string[]
   fileIds: string[]
   taskStatusId: string
@@ -52,6 +54,7 @@ export interface ITaskDefaultValues {
   progress: number
 }
 interface ITaskFormProps {
+  cover?: string
   isUpdate?: boolean
   taskStatusId?: string
   dueDate?: Date
@@ -60,6 +63,7 @@ interface ITaskFormProps {
 }
 
 export default function TaskDetail({
+  cover,
   dueDate,
   taskStatusId,
   onSubmit,
@@ -134,7 +138,7 @@ export default function TaskDetail({
     <form
       onSubmit={formik.handleSubmit}
       className="task-form space-y-3 gap-6 relative">
-      <TaskCover />
+      {cover ? <TaskCover url={cover || ''} /> : null}
       <div className="">
         <div className="mb-2">
           <h2
@@ -264,7 +268,7 @@ export default function TaskDetail({
             </div>
             <div className="task-info-content w-full mt-4">
               <div
-                className="text-sm ProseMirror border px-6 py-3 -mx-6 bg-gray-50"
+                className="text-sm ProseMirror border-y dark:border-gray-700 px-6 py-3 -mx-6 bg-gray-50 dark:bg-gray-800"
                 dangerouslySetInnerHTML={{ __html: formik.values.desc }}></div>
               {/* <Form.TextEditor */}
               {/*   value={formik.values.desc} */}
@@ -304,7 +308,7 @@ export default function TaskDetail({
           </Tab>
         </section>
 
-        <section className="sticky bottom-[-99px] left-0 backdrop-blur-sm bg-white/50">
+        <section className="sticky bottom-[-99px] left-0 backdrop-blur-sm bg-white/50 dark:bg-gray-900/50">
           <div className="text-right pt-3 pb-2">
             <Button
               type="submit"

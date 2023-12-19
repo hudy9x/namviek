@@ -3,13 +3,13 @@
 }
 
 .tab-list {
-  @apply flex border-b items-center mb-2;
+  @apply flex border-b dark:border-gray-700 items-center mb-2;
 }
 
 .tab-trigger {
   @apply flex items-center justify-center select-none;
   @apply py-1 px-3 text-sm;
-  @apply hover:bg-gray-50;
+  @apply hover:bg-gray-50 dark:hover:bg-gray-800;
 }
 
 .tab-trigger[data-state='active'] {

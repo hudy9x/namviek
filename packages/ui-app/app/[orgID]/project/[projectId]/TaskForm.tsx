@@ -13,6 +13,7 @@ import Activity from '@/features/Activity'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
+  cover: '',
   assigneeIds: [],
   fileIds: [],
   taskStatusId: '',
@@ -27,6 +28,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
+  cover: string
   fileIds: string[]
   taskStatusId: string
   priority: TaskPriority

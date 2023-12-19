@@ -84,6 +84,8 @@ export default function ProjectContainer() {
           return
         }
 
+        console.log(data)
+
         addAllTasks(data)
       })
       .finally(() => {
