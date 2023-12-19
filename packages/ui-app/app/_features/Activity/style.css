@@ -15,7 +15,7 @@
 }
 
 .activity-comment {
-  @apply text-sm text-gray-600 pl-8;
+  @apply text-sm text-gray-900 pl-8;
 }
 
 .activity-info {

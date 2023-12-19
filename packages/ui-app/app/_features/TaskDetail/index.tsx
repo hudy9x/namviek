@@ -17,6 +17,7 @@ import {
   HiOutlineClock,
   HiOutlineDocumentText,
   HiOutlineFlag,
+  HiOutlineMap,
   HiOutlinePaperClip,
   HiOutlineSquare2Stack,
   HiOutlineUser
@@ -198,7 +199,7 @@ export default function TaskDetail({
               <HiOutlineClock /> <span>Timeline</span>
             </div>
             <div className="task-info-content">
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <DatePicker
                   value={formik.values.planedStartDate}
                   onChange={d => {
@@ -214,13 +215,13 @@ export default function TaskDetail({
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start py-2">
+          <div className="flex flex-col items-start pt-2">
             <div className="task-info-label">
               <HiOutlineBriefcase /> <span>Description</span>
             </div>
-            <div className="task-info-content mt-2">
+            <div className="task-info-content w-full mt-4">
               <div
-                className="text-sm ProseMirror border rounded-md p-3 bg-gray-50"
+                className="text-sm ProseMirror border px-6 py-3 -mx-6 bg-gray-50"
                 dangerouslySetInnerHTML={{ __html: formik.values.desc }}></div>
               {/* <Form.TextEditor */}
               {/*   value={formik.values.desc} */}
@@ -231,40 +232,28 @@ export default function TaskDetail({
             </div>
           </div>
 
-          <div>
-
-          </div>
+          <div></div>
         </section>
-        <section className="mt-3">
-          <Tab defaultValue='task-attachment'>
+        <section className="mt-3 task-tab-section">
+          <Tab defaultValue="task-attachment">
             <Tab.List>
               <Tab.Trigger value="task-attachment">
-                <HiOutlinePaperClip className="mr-2" />
+                <HiOutlinePaperClip className="mr-2 text-lg text-gray-500" />
                 Attachments
               </Tab.Trigger>
-              <Tab.Trigger value="task-desc">
-                <HiOutlineDocumentText className="mr-2" /> Description
+              <Tab.Trigger value="task-activity">
+                <HiOutlineMap className="mr-2 text-lg text-gray-500" />
+                Activities
               </Tab.Trigger>
             </Tab.List>
 
-            <Tab.Content value="task-desc">
-              <div
-                className="text-sm ProseMirror"
-                dangerouslySetInnerHTML={{ __html: formik.values.desc }}></div>
-              {/* <Form.TextEditor */}
-              {/*   value={formik.values.desc} */}
-              {/*   onChange={v => { */}
-              {/*     formik.setFieldValue('desc', v) */}
-              {/*   }} */}
-              {/* /> */}
+            <Tab.Content value="task-activity">
+              <Activity />
             </Tab.Content>
             <Tab.Content value="task-attachment">
               <FileControl />
             </Tab.Content>
           </Tab>
-        </section>
-        <section className="mt-5">
-          <Activity />
         </section>
       </div>
 
@@ -297,8 +286,9 @@ export default function TaskDetail({
           {isUpdate ? <Activity /> : null}
         </div>
         <div
-          className={`task-form-right-actions hidden space-y-3 ${isCreate ? 'w-full' : 'sm:w-[200px]'
-            }  shrink-0`}>
+          className={`task-form-right-actions hidden space-y-3 ${
+            isCreate ? 'w-full' : 'sm:w-[200px]'
+          }  shrink-0`}>
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}

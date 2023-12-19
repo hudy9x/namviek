@@ -10,8 +10,8 @@ export default function ActivityContainer({ taskId }: { taskId: string }) {
   return (
     <div>
       <div className="text-sm mb-2 flex items-center gap-2">
-        <HiOutlineMap />
-        <span>Activities</span>
+        {/* <HiOutlineMap /> */}
+        {/* <span>Activities</span> */}
       </div>
       <ActivityCommentEditor />
       <ActivityList />

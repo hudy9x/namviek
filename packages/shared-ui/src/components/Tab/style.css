@@ -23,4 +23,5 @@
 }
 
 .tab-content {
+  @apply w-full;
 }

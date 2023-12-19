@@ -5,9 +5,11 @@ import ActivityCardComment from './ActivityCardComment'
 import { useActivityContext } from './context'
 import ActivityLog from './ActivityLog'
 import ActivityLogDesc from './ActivityLogDesc'
+import ActivitySectionTime from './ActivitySectionTime'
 
 const ActivityList = () => {
   const { activities } = useActivityContext()
+
   const renderActivity = useCallback((activity: Activity) => {
     const { type } = activity
     switch (type) {
@@ -30,7 +32,10 @@ const ActivityList = () => {
   return (
     <div className="activity-list">
       {activities.map((activity, i) => (
-        <div key={activity.id || i}>{renderActivity(activity)}</div>
+        <div key={activity.id || i}>
+          <ActivitySectionTime time={activity.createdAt} />
+          {renderActivity(activity)}
+        </div>
       ))}
     </div>
   )
