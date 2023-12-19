@@ -8,6 +8,8 @@
   font-size: 1.5rem;
   font-weight: bold;
   height: 32px;
+  width: 100%;
+  /* outline: none; */
 }
 
 .task-info-label {
@@ -30,6 +32,7 @@
 
 .task-info-content .select-icon {
   /* display: none; */
+  @apply invisible;
 }
 
 .task-tab-section .tab-list {

@@ -11,6 +11,7 @@ import { useProjectStatusStore } from '@/store/status'
 import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 import {
+  HiOutlineBattery50,
   HiOutlineBeaker,
   HiOutlineBriefcase,
   HiOutlineChatBubbleLeft,
@@ -233,6 +234,7 @@ export default function TaskDetail({
                     formik.setFieldValue('plannedStartDate', d)
                   }}
                 />
+                <span>-</span>
                 <DatePicker
                   value={formik.values.plannedDueDate}
                   onChange={d => {
@@ -240,6 +242,20 @@ export default function TaskDetail({
                   }}
                 />
               </div>
+            </div>
+          </div>
+          <div className="task-info-item">
+            <div className="task-info-label">
+              <HiOutlineBattery50 /> <span>Progress</span>
+            </div>
+            <div className="task-info-content w-[230px] pl-3">
+              <Form.Range
+                step={5}
+                value={formik.values.progress}
+                onChange={v => {
+                  formik.setFieldValue('progress', v)
+                }}
+              />
             </div>
           </div>
           <div className="flex flex-col items-start pt-2">
@@ -290,7 +306,12 @@ export default function TaskDetail({
 
         <section className="sticky bottom-[-99px] left-0 backdrop-blur-sm bg-white/50">
           <div className="text-right pt-3 pb-2">
-            <Button type="submit" loading={loading} title="Submit" primary />
+            <Button
+              type="submit"
+              loading={loading}
+              title="Submit changes"
+              primary
+            />
           </div>
         </section>
       </div>
