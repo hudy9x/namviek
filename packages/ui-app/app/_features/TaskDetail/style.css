@@ -2,6 +2,14 @@
   @apply flex items-center gap-2 py-2;
 }
 
+.task-form .task-title-input {
+  border-color: transparent;
+  padding: 0px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  height: 32px;
+}
+
 .task-info-label {
   @apply flex items-center gap-2 text-sm w-[150px];
 }
@@ -11,7 +19,6 @@
 }
 
 .task-info-content {
-
 }
 
 .task-info-content .form-input {

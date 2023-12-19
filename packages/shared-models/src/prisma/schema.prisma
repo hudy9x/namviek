@@ -112,6 +112,7 @@ model Task {
   desc    String?
   dueDate DateTime?
 
+  cover            String?
   plannedStartDate DateTime?
   plannedDueDate   DateTime?
   startDate        DateTime?
@@ -220,7 +221,7 @@ model Project {
   desc           String?
   cover          String?
   icon           String?
-  isArchived     Boolean? @default(false)
+  isArchived     Boolean?  @default(false)
   createdBy      String?
   createdAt      DateTime?
   organizationId String
@@ -296,7 +297,6 @@ enum ActivityType {
   TASK_ASSIGNEE_ADDED
   TASK_ASSIGNEE_REMOVED
 
-
   TASK_STATUS_CREATED
   TASK_STATUS_CHANGED
 
@@ -313,15 +313,14 @@ enum ActivityType {
   TASK_ATTACHMENT_REMOVED
 }
 
-
 model Activity {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  objectId            String
-  objectType          ActivityObjectType
-  type                ActivityType
-  createdBy           String 
-  data                Json?
-  createdAt           DateTime
-  updatedAt           DateTime?
-  updatedBy           String? 
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  objectId   String
+  objectType ActivityObjectType
+  type       ActivityType
+  createdBy  String
+  data       Json?
+  createdAt  DateTime
+  updatedAt  DateTime?
+  updatedBy  String?
 }

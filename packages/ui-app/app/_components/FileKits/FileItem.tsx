@@ -29,6 +29,10 @@ export default function FileItem({ data }: { data: IFileItem }) {
     : null
   const createdTime = createdAt ? format(new Date(createdAt), 'HH:mm') : null
 
+  const makeThisCover = () => {
+    console.log('a')
+  }
+
   return (
     <div className="file-item">
       <Loading.Absolute title="Uploading ..." enabled={uploading} />
@@ -58,6 +62,7 @@ export default function FileItem({ data }: { data: IFileItem }) {
           <a href={url} target="_blank" className="btn sm">
             Download
           </a>
+          <Button title="Turn this into cover" size='sm' onClick={makeThisCover} />
         </div>
       </div>
     </div>
