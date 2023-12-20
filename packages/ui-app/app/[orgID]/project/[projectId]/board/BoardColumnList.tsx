@@ -5,8 +5,6 @@ import { useTaskFilter } from '@/features/TaskFilter/context'
 export const BoardColumnList = () => {
   const { groupByItems } = useTaskFilter()
 
-  console.log('group by items ===> 🧧 ', JSON.stringify(groupByItems))
-
   return (
     <Droppable droppableId="all-columns" direction="horizontal" type="column">
       {provided => (
