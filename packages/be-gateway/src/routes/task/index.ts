@@ -14,7 +14,8 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  mdTaskCounterByProject
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -23,6 +24,7 @@ import {
   findNDelCaches,
   genKeyFromSource,
   getJSONCache,
+  incrCache,
   setJSONCache
 } from '../../lib/redis'
 
@@ -279,6 +281,9 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       const todoStatus = await mdTaskStatusWithTodoType(projectId)
       taskStatusId = todoStatus.id
     }
+
+    // const taskCoutner = await mdTaskCounterByProject(projectId)
+    const counter = await incrCache([CKEY.PROJECT_TASK_COUNTER])
 
     const result = await mdTaskAdd({
       title,
