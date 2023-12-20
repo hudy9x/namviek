@@ -100,7 +100,7 @@ export const useBoardAction = () => {
     setTimeout(() => {
       swapOrder(sourceId, destinationId)
       setUpdateSttCounter(stt => stt + 1)
-    }, 400)
+    }, 200)
   }
 
   const onDragEnd = (result: DropResult) => {
