@@ -3,6 +3,7 @@ import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
 import { TaskPriority } from '@prisma/client'
 import { getLastDateOfMonth } from '@shared/libs'
+import { produce } from 'immer'
 import {
   createContext,
   useContext,
@@ -10,7 +11,8 @@ import {
   SetStateAction,
   useState,
   ReactNode,
-  useEffect
+  useEffect,
+  useRef
 } from 'react'
 
 export enum ETaskFilterGroupByType {
@@ -108,9 +110,11 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
 }
 
 let timeout = 0
+
 export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
+  const oldGroupByType = useRef('')
 
   const {
     filter,
@@ -209,13 +213,26 @@ export const useTaskFilter = () => {
     }))
   }
 
+  const swapGroupItemOrder = (sourceId: number, destId: number) => {
+    const cloned = structuredClone(groupByItems)
+
+    const destItem = cloned[sourceId]
+    cloned.splice(sourceId, 1)
+    cloned.splice(destId, 0, destItem)
+
+    setGroupbyItems(cloned)
+  }
+
   useEffect(() => {
     if (timeout) {
       clearTimeout(timeout)
     }
 
     timeout = setTimeout(() => {
-      updateGroupbyItems()
+      if (oldGroupByType.current !== filter.groupBy) {
+        updateGroupbyItems()
+        oldGroupByType.current = filter.groupBy
+      }
     }, 350) as unknown as number
   }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses)])
 
@@ -227,6 +244,7 @@ export const useTaskFilter = () => {
     groupBy: filter.groupBy,
     groupByLoading,
     groupByItems,
+    swapGroupItemOrder,
     filter,
     setFilter,
     setFilterValue,
