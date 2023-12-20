@@ -37,6 +37,8 @@ export const useProjectStatusStore = create<ProjectStatusState>(set => ({
         updateStatus[oldIndex].order = oldIndex
         updateStatus[newIndex].order = newIndex
 
+        console.log('start updating status', updateStatus)
+
         state.statuses = updateStatus
       })
     ),
