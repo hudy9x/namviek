@@ -19,11 +19,13 @@ import ActivityRouter from './activity'
 // import "./test";
 import AdminController from './test2'
 import ProjectController from './project/project.controller'
+
 import { AppRoutes } from '../core/AppRoutes'
+import { TestRouter } from './test'
 
 const router = Router()
 
-router.use(AppRoutes([AdminController, ProjectController, ActivityRouter]))
+router.use(AppRoutes([AdminController, ProjectController, ActivityRouter, TestRouter]))
 // middlewares
 // router.use([])
 router.use((req, res, next) => {
