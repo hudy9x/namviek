@@ -283,88 +283,62 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       taskStatusId = todoStatus.id
     }
 
-    console.log('----------------', projectId)
-    const result = await pmClient.task.aggregateRaw({
-      pipeline: [
-        {
-          $match: {
-            projectId: { $oid: projectId }
-          }
-        },
-        // {
-        //   $project: {
-        //     projectId: 1
-        //   }
-        // }
-        {
-          $group: {
-            _id: '$projectId',
-            total: { $sum: 1 }
-          }
-        }
-      ]
+    const result = await mdTaskAdd({
+      title,
+      cover: null,
+      startDate: null,
+      dueDate: dueDate || null,
+      plannedStartDate: dueDate || null,
+      plannedDueDate: dueDate || null,
+      assigneeIds,
+      desc,
+      done,
+      fileIds: [],
+      projectId,
+      priority,
+      taskStatusId: taskStatusId,
+      tagIds: [],
+      visionId: visionId || null,
+      parentTaskId: null,
+      taskPoint: null,
+      createdBy: id,
+      createdAt: new Date(),
+      updatedAt: null,
+      updatedBy: null,
+      progress
     })
 
-    console.log('result:', result)
+    activityService.createTask({
+      id: result.id,
+      userId: id
+    })
 
-    res.json({ status: 200, data: {} })
+    const processes = []
 
-    // const result = await mdTaskAdd({
-    //   title,
-    //   cover: null,
-    //   startDate: null,
-    //   dueDate: dueDate || null,
-    //   plannedStartDate: dueDate || null,
-    //   plannedDueDate: dueDate || null,
-    //   assigneeIds,
-    //   desc,
-    //   done,
-    //   fileIds: [],
-    //   projectId,
-    //   priority,
-    //   taskStatusId: taskStatusId,
-    //   tagIds: [],
-    //   visionId: visionId || null,
-    //   parentTaskId: null,
-    //   taskPoint: null,
-    //   createdBy: id,
-    //   createdAt: new Date(),
-    //   updatedAt: null,
-    //   updatedBy: null,
-    //   progress
-    // })
-    //
-    // activityService.createTask({
-    //   id: result.id,
-    //   userId: id
-    // })
-    //
-    // const processes = []
-    //
-    // // delete todo counter
-    // if (assigneeIds && assigneeIds[0]) {
-    //   processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
-    // }
-    //
-    // // delete all cached tasks
-    // processes.push(findNDelCaches(key))
-    //
-    // // run all process
-    // await Promise.allSettled(processes)
-    //
-    // if (result.assigneeIds && result.assigneeIds.length) {
-    //   const project = await mdProjectGet(result.projectId)
-    //   const taskLink = genFrontendUrl(
-    //     `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-    //   )
-    //
-    //   notifyToWebUsers(result.assigneeIds, {
-    //     body: `[New task]: ${result.title} - assigned to you`,
-    //     deep_link: taskLink
-    //   })
-    // }
-    //
-    // res.json({ status: 200, data: result })
+    // delete todo counter
+    if (assigneeIds && assigneeIds[0]) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
+    }
+
+    // delete all cached tasks
+    processes.push(findNDelCaches(key))
+
+    // run all process
+    await Promise.allSettled(processes)
+
+    if (result.assigneeIds && result.assigneeIds.length) {
+      const project = await mdProjectGet(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      notifyToWebUsers(result.assigneeIds, {
+        body: `[New task]: ${result.title} - assigned to you`,
+        deep_link: taskLink
+      })
+    }
+
+    res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })

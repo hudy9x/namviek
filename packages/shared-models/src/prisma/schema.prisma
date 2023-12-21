@@ -106,6 +106,17 @@ model OrganizationMembers {
   updatedBy      String?
 }
 
+model Counter {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  task Int
+}
+
+model Test {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  order Int
+}
+
 model Task {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
   title   String
