@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 export const pmClient = new PrismaClient()
+export const pmTrans = pmClient.$transaction
 export const projectModel = pmClient.project
 export const taskStatusModel = pmClient.taskStatus
 export const taskPointModel = pmClient.taskPoint

@@ -18,7 +18,7 @@ import {
   mdTaskCounterByProject
 } from '@shared/models'
 
-import { Task, TaskStatus } from '@prisma/client'
+import { Prisma, Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -38,6 +38,7 @@ import {
   updateTodoCounter
 } from '../../services/todo.counter'
 import ActivityService from '../../services/activity.service'
+import { pmClient, pmTrans } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
@@ -282,65 +283,88 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       taskStatusId = todoStatus.id
     }
 
-    // const taskCoutner = await mdTaskCounterByProject(projectId)
-    const counter = await incrCache([CKEY.PROJECT_TASK_COUNTER])
-
-    const result = await mdTaskAdd({
-      title,
-      cover: null,
-      startDate: null,
-      dueDate: dueDate || null,
-      plannedStartDate: dueDate || null,
-      plannedDueDate: dueDate || null,
-      assigneeIds,
-      desc,
-      done,
-      fileIds: [],
-      projectId,
-      priority,
-      taskStatusId: taskStatusId,
-      tagIds: [],
-      visionId: visionId || null,
-      parentTaskId: null,
-      taskPoint: null,
-      createdBy: id,
-      createdAt: new Date(),
-      updatedAt: null,
-      updatedBy: null,
-      progress
+    console.log('----------------', projectId)
+    const result = await pmClient.task.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            projectId: { $oid: projectId }
+          }
+        },
+        // {
+        //   $project: {
+        //     projectId: 1
+        //   }
+        // }
+        {
+          $group: {
+            _id: '$projectId',
+            total: { $sum: 1 }
+          }
+        }
+      ]
     })
 
-    activityService.createTask({
-      id: result.id,
-      userId: id
-    })
+    console.log('result:', result)
 
-    const processes = []
+    res.json({ status: 200, data: {} })
 
-    // delete todo counter
-    if (assigneeIds && assigneeIds[0]) {
-      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
-    }
-
-    // delete all cached tasks
-    processes.push(findNDelCaches(key))
-
-    // run all process
-    await Promise.allSettled(processes)
-
-    if (result.assigneeIds && result.assigneeIds.length) {
-      const project = await mdProjectGet(result.projectId)
-      const taskLink = genFrontendUrl(
-        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-      )
-
-      notifyToWebUsers(result.assigneeIds, {
-        body: `[New task]: ${result.title} - assigned to you`,
-        deep_link: taskLink
-      })
-    }
-
-    res.json({ status: 200, data: result })
+    // const result = await mdTaskAdd({
+    //   title,
+    //   cover: null,
+    //   startDate: null,
+    //   dueDate: dueDate || null,
+    //   plannedStartDate: dueDate || null,
+    //   plannedDueDate: dueDate || null,
+    //   assigneeIds,
+    //   desc,
+    //   done,
+    //   fileIds: [],
+    //   projectId,
+    //   priority,
+    //   taskStatusId: taskStatusId,
+    //   tagIds: [],
+    //   visionId: visionId || null,
+    //   parentTaskId: null,
+    //   taskPoint: null,
+    //   createdBy: id,
+    //   createdAt: new Date(),
+    //   updatedAt: null,
+    //   updatedBy: null,
+    //   progress
+    // })
+    //
+    // activityService.createTask({
+    //   id: result.id,
+    //   userId: id
+    // })
+    //
+    // const processes = []
+    //
+    // // delete todo counter
+    // if (assigneeIds && assigneeIds[0]) {
+    //   processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
+    // }
+    //
+    // // delete all cached tasks
+    // processes.push(findNDelCaches(key))
+    //
+    // // run all process
+    // await Promise.allSettled(processes)
+    //
+    // if (result.assigneeIds && result.assigneeIds.length) {
+    //   const project = await mdProjectGet(result.projectId)
+    //   const taskLink = genFrontendUrl(
+    //     `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+    //   )
+    //
+    //   notifyToWebUsers(result.assigneeIds, {
+    //     body: `[New task]: ${result.title} - assigned to you`,
+    //     deep_link: taskLink
+    //   })
+    // }
+    //
+    // res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
     res.json({ status: 500, error })
