@@ -284,11 +284,11 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       taskStatusId = todoStatus.id
     }
 
-    const counter = await incrCache(counterKey)
+    const order = await incrCache(counterKey)
     const result = await mdTaskAdd({
       title,
       cover: null,
-      order: counter,
+      order: order,
       startDate: null,
       dueDate: dueDate || null,
       plannedStartDate: dueDate || null,
