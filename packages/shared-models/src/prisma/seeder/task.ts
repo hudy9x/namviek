@@ -14,6 +14,14 @@ const mdProjectMember = prisma.members
 const mdPoint = prisma.taskPoint
 const mdStatus = prisma.taskStatus
 
+export const updateTaskCounter = () => {
+  mdTask.findMany({
+    where: {
+      order: { isSet: false }
+    }
+  })
+}
+
 export const dummyTask = () => {
   console.log('dummy task ====================')
   mdProject.findMany().then(projects => {

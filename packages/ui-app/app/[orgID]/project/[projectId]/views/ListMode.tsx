@@ -33,6 +33,8 @@ export default function ListMode() {
   const { tasks, taskLoading } = useTaskStore()
   const params = useParams()
 
+  console.log('group by items', groupByItems)
+
   return (
     <div className="pb-[300px]">
       {groupByItems.map(group => {

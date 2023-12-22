@@ -129,6 +129,7 @@ model Task {
   title   String
   desc    String?
   dueDate DateTime?
+  order   Int?
 
   cover            String?
   plannedStartDate DateTime?

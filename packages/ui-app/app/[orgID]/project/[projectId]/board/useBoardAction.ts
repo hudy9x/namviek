@@ -93,11 +93,12 @@ export const useBoardAction = () => {
   }
 
   const reorderStatus = (sourceId: number, destinationId: number) => {
-    swapGroupItemOrder(sourceId, destinationId)
-    // NOTE:
+    swapGroupItemOrder(sourceId, destinationId) // this swaps board's order
+    // NOTE: WHY NEED THIS CODE ?
     // swapOrder must be ran after the above function
     // otherwise, the UI will be misaligned as swapping the status's order
     setTimeout(() => {
+      // the two blow re-arrange the status's order
       swapOrder(sourceId, destinationId)
       setUpdateSttCounter(stt => stt + 1)
     }, 200)
