@@ -115,6 +115,7 @@ export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
   const oldGroupByType = useRef('')
+  const oldStatusList = useRef(statuses)
 
   const {
     filter,
@@ -223,6 +224,8 @@ export const useTaskFilter = () => {
     setGroupbyItems(cloned)
   }
 
+  // Only update groupByItems as groupBy option changed
+  // keep logic simple
   useEffect(() => {
     if (timeout) {
       clearTimeout(timeout)
@@ -235,6 +238,21 @@ export const useTaskFilter = () => {
       }
     }, 350) as unknown as number
   }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses)])
+
+  useEffect(() => {
+    if (oldStatusList.current) {
+      const oldStatusArr = oldStatusList.current
+
+      // When page reload, the status list is empty
+      // after a few seconds it will be fetched from servers
+      // so we need to update the groupByItems
+      if (!oldStatusArr.length && statuses.length) {
+        console.log(oldStatusArr, statuses.length)
+        updateGroupbyItems()
+      }
+    }
+  }, [statuses])
+
 
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE
