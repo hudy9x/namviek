@@ -1,10 +1,89 @@
-import { pmClient, pmTrans } from 'packages/shared-models/src/lib/_prisma'
-import { Controller, ExpressResponse, Get, Res } from '../../core'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { Controller, ExpressRequest, ExpressResponse, Get, Req, Res } from '../../core'
 import { CounterType } from '@prisma/client'
-import { CKEY, incrCache } from '../../lib/redis'
+import { CKEY, incrCache, setCache } from '../../lib/redis'
+import { map } from 'zod'
 
 @Controller('/test')
 class TestController {
+
+  @Get('/check-task-order')
+  async getTaskWithoutOrder(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
+
+    const { isSet } = req.query as { isSet: string }
+
+
+    const tasks = await pmClient.task.findMany({
+      where: {
+        order: { isSet: isSet === '1' }
+      },
+      select: {
+        id: true,
+        order: true,
+        title: true
+      }
+    })
+
+    res.json({
+      total: tasks.length,
+      data: tasks
+    })
+  }
+  @Get('/update-task-order')
+  async updateTaskOrder(@Res() res: ExpressResponse) {
+    const tasks = await pmClient.task.findMany({
+      // where: {
+      //   order: { isSet: false }
+      // },
+      orderBy: {
+        createdAt: 'asc'
+      }
+    })
+
+    const projects = await pmClient.project.findMany({})
+
+
+    console.log('reset all project counter')
+    for (let j = 0; j < projects.length; j++) {
+      const p = projects[j];
+
+      const counterKey = [CKEY.PROJECT_TASK_COUNTER, p.id]
+      await setCache(counterKey, 0)
+    }
+
+    console.log('start updating order by each project')
+    const updateData = []
+    for (let index = 0; index < tasks.length; index++) {
+      const task = tasks[index];
+      if (!task.projectId) continue
+
+      const counterKey = [CKEY.PROJECT_TASK_COUNTER, task.projectId]
+      const order = await incrCache(counterKey)
+
+      updateData.push(pmClient.task.update({
+        where: {
+          id: task.id
+        },
+        data: {
+          order
+        },
+        select: {
+          id: true,
+          order: true,
+          title: true
+        },
+      }))
+
+    }
+
+    console.log('waiting for all updates done')
+    const result = await Promise.allSettled(updateData)
+    console.log('==> ok it is done')
+
+    res.json({
+      data: result
+    })
+  }
   @Get('/counter')
   async increaseTaskCounter(@Res() res: ExpressResponse) {
     const d = new Date()

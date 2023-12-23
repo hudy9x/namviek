@@ -253,6 +253,7 @@ export const useTaskFilter = () => {
     }
   }, [statuses])
 
+
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE
   const isGroupbyPriority = filter.groupBy === ETaskFilterGroupByType.PRIORITY
