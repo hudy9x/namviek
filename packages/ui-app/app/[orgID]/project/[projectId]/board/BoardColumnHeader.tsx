@@ -35,7 +35,7 @@ export default function BoardColumHeader({
           <div className="w-3 h-4 text-gray-400" {...provided.dragHandleProps}>
             <MdDragIndicator />
           </div>
-          <TaskCheckAll groupId={id}/>
+          {/* <TaskCheckAll groupId={id}/> */}
           {isGroupbyAssignee ? (
             <Avatar size="md" name={name} src={icon || ''} />
           ) : (

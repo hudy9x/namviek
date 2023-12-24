@@ -33,7 +33,7 @@ export const BoardColumn = ({ group, statusIndex }: IBoardColumnProps) => {
             {taskLoading || groupByLoading ? (
               <Loading title='Loading ...' className='px-3 py-2'/>
             ) : null}
-            <BoardTaskList groupId={group.id} />
+            <BoardTaskList groupId={group.id} items={group.items} />
           </div>
         </div>
       )}

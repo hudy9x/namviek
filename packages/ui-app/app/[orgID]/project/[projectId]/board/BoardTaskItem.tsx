@@ -43,7 +43,7 @@ export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
                 )
               }
               className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal hover:underline cursor-pointer flex items-center gap-2">
-              <TaskCheckbox id={data.id} selected={data.selected} />
+              {/* <TaskCheckbox id={data.id} selected={data.selected} /> */}
               {data.title}
               {/* <TaskPriorityCell taskId={data.id} value={data.priority} /> */}
             </h2>

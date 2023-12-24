@@ -17,7 +17,8 @@ export const useBoardAction = () => {
     isGroupbyStatus,
     isGroupbyAssignee,
     isGroupbyPriority,
-    swapGroupItemOrder
+    swapGroupItemOrder,
+    swapTaskOrder
   } = useTaskFilter()
   const { statuses, swapOrder } = useProjectStatusStore()
 
@@ -104,8 +105,21 @@ export const useBoardAction = () => {
     }, 200)
   }
 
+  const reorderTask = (dropId: string, sourceIndex: number, destIndex: number) => {
+    swapTaskOrder(dropId, sourceIndex, destIndex)
+
+  }
+
   const onDragEnd = (result: DropResult) => {
-    const type = result.type
+    const { type, source, destination } = result
+
+    if (source.droppableId === destination?.droppableId) {
+      const sourceIndex = source.index
+      const destIndex = destination.index
+
+      reorderTask(source.droppableId, sourceIndex, destIndex)
+      return
+    }
 
     if (type === 'column' && isGroupbyStatus) {
       const sourceId = result.source.index

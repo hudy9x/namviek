@@ -1,9 +1,10 @@
 'use client'
 import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
+import { useTaskStore } from '@/store/task'
 import { TaskPriority } from '@prisma/client'
 import { getLastDateOfMonth } from '@shared/libs'
-import { produce } from 'immer'
+
 import {
   createContext,
   useContext,
@@ -40,6 +41,7 @@ export interface ITaskFilterGroupbyItem {
   name: string
   icon?: string
   color?: string
+  items: string[]
 }
 
 interface ITaskFilterContextProps {
@@ -116,6 +118,7 @@ export const useTaskFilter = () => {
   const { members } = useMemberStore()
   const oldGroupByType = useRef('')
   const oldStatusList = useRef(statuses)
+  const { tasks } = useTaskStore()
 
   const {
     filter,
@@ -134,12 +137,27 @@ export const useTaskFilter = () => {
   }
 
   const _groupByStatus = (): ITaskFilterGroupbyItem[] => {
+    const ignored: string[] = []
+
     return statuses.map(stt => {
       const { id, name, color } = stt
+      const items: string[] = []
+
+      tasks.forEach(t => {
+
+        if (ignored.includes(t.id)) return
+
+        if (t.taskStatusId === id) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+
       return {
         id,
         color,
-        name
+        name,
+        items
       }
     })
   }
@@ -155,7 +173,8 @@ export const useTaskFilter = () => {
     return priorities.map(p => ({
       id: p[0],
       name: p[0],
-      color: p[1]
+      color: p[1],
+      items: []
     }))
   }
 
@@ -163,13 +182,15 @@ export const useTaskFilter = () => {
     const newMembers = members.map(mem => ({
       id: mem.id,
       name: mem.name || '',
-      icon: mem.photo || ''
+      icon: mem.photo || '',
+      items: []
     }))
 
     newMembers.push({
       id: 'NONE',
       name: 'Not assigned',
-      icon: ''
+      icon: '',
+      items: []
     })
 
     return newMembers
@@ -224,6 +245,29 @@ export const useTaskFilter = () => {
     setGroupbyItems(cloned)
   }
 
+  const swapTaskOrder = (dropId: string, sourceIndex: number, destIndex: number) => {
+    console.log('swap task order now')
+    console.log(dropId, sourceIndex, destIndex)
+
+    const cloned = structuredClone(groupByItems)
+    const groupItem = cloned.find(c => c.id === dropId)
+
+    if (!groupItem) return
+
+    const items = groupItem.items
+
+    // const destItem = items[sourceIndex]
+    // items.splice(sourceIndex, 1)
+    // items.splice(destIndex, 0, destItem)
+
+    const [removed] = items.splice(sourceIndex, 1);
+    items.splice(destIndex, 0, removed);
+
+
+    setGroupbyItems(cloned)
+
+  }
+
   // Only update groupByItems as groupBy option changed
   // keep logic simple
   useEffect(() => {
@@ -237,7 +281,7 @@ export const useTaskFilter = () => {
         oldGroupByType.current = filter.groupBy
       }
     }, 350) as unknown as number
-  }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses)])
+  }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses), JSON.stringify(tasks)])
 
   useEffect(() => {
     if (oldStatusList.current) {
@@ -262,6 +306,7 @@ export const useTaskFilter = () => {
     groupBy: filter.groupBy,
     groupByLoading,
     groupByItems,
+    swapTaskOrder,
     swapGroupItemOrder,
     filter,
     setFilter,
