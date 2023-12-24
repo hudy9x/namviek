@@ -2,7 +2,6 @@ import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import { Controller, ExpressRequest, ExpressResponse, Get, Req, Res } from '../../core'
 import { CounterType } from '@prisma/client'
 import { CKEY, incrCache, setCache } from '../../lib/redis'
-import { map } from 'zod'
 
 @Controller('/test')
 class TestController {
@@ -13,20 +12,22 @@ class TestController {
     const { isSet } = req.query as { isSet: string }
 
 
-    const tasks = await pmClient.task.findMany({
-      where: {
-        order: { isSet: isSet === '1' }
-      },
-      select: {
-        id: true,
-        order: true,
-        title: true
-      }
-    })
+    // const tasks = await pmClient.task.findMany({
+    //   where: {
+    //     order: {
+    //       
+    //     }
+    //   },
+    //   select: {
+    //     id: true,
+    //     order: true,
+    //     title: true
+    //   }
+    // })
 
     res.json({
-      total: tasks.length,
-      data: tasks
+      // total: tasks.length,
+      // data: tasks
     })
   }
   @Get('/update-task-order')

@@ -3,11 +3,13 @@ import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 type IProjectProps = Pick<Project, 'name' | 'desc' | 'organizationId' | 'icon'>
 
-export const projectGet = ({ isArchive = false }: {
-  isArchive?: boolean
+export const projectGet = ({ orgId, isArchive = false }: {
+  isArchive?: boolean,
+  orgId: string
 }) => {
   return httpGet('/api/project', {
     params: {
+      orgId,
       isArchived: isArchive
     }
   })

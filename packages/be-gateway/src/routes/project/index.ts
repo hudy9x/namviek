@@ -27,8 +27,10 @@ router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
-  const { isArchived } = req.query as { isArchived: string }
+  const { isArchived, orgId } = req.query as { isArchived: string, orgId: string }
   const key = [CKEY.USER_PROJECT, userId]
+
+  console.log('orgId', orgId)
 
   try {
     const cached = await getJSONCache(key)
@@ -49,10 +51,11 @@ router.get('/project', async (req: AuthRequest, res) => {
       })
     }
 
-    console.log('isArchive', isArchived === 'true')
+    console.log('get projects that not archived and same org')
 
     const projectIds = invitedProjects.map(p => p.projectId)
     const projects = await mdProjectGetAllByIds(projectIds, {
+      orgId,
       isArchived: isArchived === 'true'
     })
 

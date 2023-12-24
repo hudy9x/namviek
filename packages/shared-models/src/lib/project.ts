@@ -45,13 +45,18 @@ export const mdProjectUpdate = async (data: Partial<Project>) => {
 export const mdProjectGetAllByIds = async (
   ids: string[],
   cond: {
-    isArchived: boolean
+    isArchived: boolean,
+    orgId: string
   }
 ) => {
-  const { isArchived } = cond
+  const { isArchived, orgId } = cond
   const where: {
     [key: string]: unknown
   } = {}
+
+  if (orgId) {
+    where.organizationId = orgId
+  }
 
   if (!isArchived) {
     where.OR = [
