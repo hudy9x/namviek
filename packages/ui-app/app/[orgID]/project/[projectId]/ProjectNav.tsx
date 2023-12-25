@@ -52,6 +52,13 @@ export default function ProjectNav() {
       current: false
     },
     {
+      title: 'Board2',
+      name: 'board2',
+      href: '#',
+      icon: HiOutlineViewColumns,
+      current: false
+    },
+    {
       title: 'Calendar',
       name: 'calendar',
       href: '#',

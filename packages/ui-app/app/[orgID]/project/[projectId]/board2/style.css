@@ -1,0 +1,16 @@
+.board-container {
+  @apply flex items-start divide-x;
+}
+
+.board {
+  @apply w-[300px] p-2;
+  height: calc(100vh - 200px);
+}
+
+.board-list {
+  @apply space-y-2;
+}
+
+.board-item {
+  @apply rounded-sm border bg-white p-2;
+}

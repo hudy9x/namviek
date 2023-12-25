@@ -116,9 +116,11 @@ let timeout = 0
 export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
+  const { tasks } = useTaskStore()
+
   const oldGroupByType = useRef('')
   const oldStatusList = useRef(statuses)
-  const { tasks } = useTaskStore()
+  const oldTaskList = useRef(tasks)
 
   const {
     filter,
@@ -144,7 +146,6 @@ export const useTaskFilter = () => {
       const items: string[] = []
 
       tasks.forEach(t => {
-
         if (ignored.includes(t.id)) return
 
         if (t.taskStatusId === id) {
@@ -245,10 +246,11 @@ export const useTaskFilter = () => {
     setGroupbyItems(cloned)
   }
 
-  const swapTaskOrder = (dropId: string, sourceIndex: number, destIndex: number) => {
-    console.log('swap task order now')
-    console.log(dropId, sourceIndex, destIndex)
-
+  const swapTaskOrder = (
+    dropId: string,
+    sourceIndex: number,
+    destIndex: number
+  ) => {
     const cloned = structuredClone(groupByItems)
     const groupItem = cloned.find(c => c.id === dropId)
 
@@ -260,12 +262,10 @@ export const useTaskFilter = () => {
     // items.splice(sourceIndex, 1)
     // items.splice(destIndex, 0, destItem)
 
-    const [removed] = items.splice(sourceIndex, 1);
-    items.splice(destIndex, 0, removed);
-
+    const [removed] = items.splice(sourceIndex, 1)
+    items.splice(destIndex, 0, removed)
 
     setGroupbyItems(cloned)
-
   }
 
   // Only update groupByItems as groupBy option changed
@@ -281,7 +281,12 @@ export const useTaskFilter = () => {
         oldGroupByType.current = filter.groupBy
       }
     }, 350) as unknown as number
-  }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses), JSON.stringify(tasks)])
+  }, [
+    filter.groupBy,
+    JSON.stringify(members),
+    JSON.stringify(statuses),
+    JSON.stringify(tasks)
+  ])
 
   useEffect(() => {
     if (oldStatusList.current) {
@@ -291,12 +296,23 @@ export const useTaskFilter = () => {
       // after a few seconds it will be fetched from servers
       // so we need to update the groupByItems
       if (!oldStatusArr.length && statuses.length) {
-        console.log(oldStatusArr, statuses.length)
         updateGroupbyItems()
       }
     }
   }, [statuses])
 
+  useEffect(() => {
+    if (oldTaskList.current) {
+      const oldTaskArr = oldTaskList.current
+
+      // When page reload, the task list is empty
+      // after a few seconds it will be fetched from servers
+      // so we need to update the groupByItems
+      if (!oldTaskArr.length && tasks.length) {
+        updateGroupbyItems()
+      }
+    }
+  }, [tasks])
 
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE
@@ -306,6 +322,7 @@ export const useTaskFilter = () => {
     groupBy: filter.groupBy,
     groupByLoading,
     groupByItems,
+    setGroupbyItems,
     swapTaskOrder,
     swapGroupItemOrder,
     filter,
