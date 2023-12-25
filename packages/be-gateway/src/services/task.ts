@@ -9,8 +9,19 @@ import { CKEY, getJSONCache, setJSONCache } from '../lib/redis'
 
 export const KEY_TASK_COUNT = CKEY.TASK_COUNTS
 
-export const getTaskCountsBySetting = async () => {
-  let taskCountsBySetting = {}
+interface ITaskSummary {
+  numOverDueTasks: number,
+  numTodayTask: number,
+  numUrgentTasks: number,
+  organizationIds: string[],
+}
+
+interface ITaskSummaryForUID {
+  [key: string]: ITaskSummary;
+}
+
+export const getTaskSummary = async () => {
+  let taskSummary: ITaskSummaryForUID = {}
   const taskCounts = await getJSONCache(KEY_TASK_COUNT)
   if (taskCounts) {
     return taskCounts
@@ -27,24 +38,25 @@ export const getTaskCountsBySetting = async () => {
       urgentTaskStatus
     } = setting
 
-    if (!taskCountsBySetting.hasOwnProperty(uid)) {
-      taskCountsBySetting = {
-        ...taskCountsBySetting,
+    if (!taskSummary.hasOwnProperty(uid)) {
+      taskSummary = {
+        ...taskSummary,
         [uid]: {
+          ...taskSummary[uid],
           organizationIds: [organizationId]
         }
       }
 
       if (urgentTaskStatus) {
-        taskCountsBySetting[uid].numUrgentTasks = 0
+        taskSummary[uid].numUrgentTasks = 0
       }
 
       if (overDueTaskStatus) {
-        taskCountsBySetting[uid].numOverDueTasks = 0
+        taskSummary[uid].numOverDueTasks = 0
       }
 
       if (todayTaskStatus) {
-        taskCountsBySetting[uid].numTodayTask = 0
+        taskSummary[uid].numTodayTask = 0
       }
     }
 
@@ -72,24 +84,24 @@ export const getTaskCountsBySetting = async () => {
       assigneeIds: [uid]
     })
 
-    if (taskCountsBySetting[uid].numOverDueTasks >= 0) {
-      taskCountsBySetting[uid].numOverDueTasks += taskOverDueDate
+    if (taskSummary[uid].numOverDueTasks >= 0 && typeof taskOverDueDate === 'number') {
+      taskSummary[uid].numOverDueTasks += taskOverDueDate
     }
 
-    if (taskCountsBySetting[uid].numTodayTask >= 0) {
-      taskCountsBySetting[uid].numTodayTask += taskToday
+    if (taskSummary[uid].numTodayTask >= 0  && typeof taskToday === 'number') {
+      taskSummary[uid].numTodayTask += taskToday
     }
 
-    if (taskCountsBySetting[uid].numUrgentTasks >= 0) {
-      taskCountsBySetting[uid].numUrgentTasks += taskUrgent
+    if (taskSummary[uid].numUrgentTasks >= 0 && typeof taskUrgent === 'number') {
+      taskSummary[uid].numUrgentTasks += taskUrgent
     }
 
-    if (!taskCountsBySetting[uid].organizationIds.includes(organizationId)) {
-      taskCountsBySetting[uid].organizationIds.push(organizationId)
+    if (!taskSummary[uid].organizationIds.includes(organizationId)) {
+      taskSummary[uid].organizationIds.push(organizationId)
     }
   }
 
-  setJSONCache(KEY_TASK_COUNT, taskCountsBySetting)
+  setJSONCache(KEY_TASK_COUNT, taskSummary)
 
-  return taskCountsBySetting
+  return taskSummary
 }

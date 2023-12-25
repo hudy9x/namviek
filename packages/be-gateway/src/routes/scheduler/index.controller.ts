@@ -12,7 +12,7 @@ import {
 import { notifyToWebUsers } from '../../lib/buzzer'
 import { AuthRequest } from '../../types'
 import { Scheduler } from '@prisma/client'
-import { getTaskCountsBySetting } from '../../services/task'
+import { getTaskSummary } from '../../services/task'
 import { genFrontendUrl } from '../../lib/url'
 
 @Controller('/scheduler')
@@ -54,29 +54,29 @@ export default class Schedule extends BaseController {
   @Get('/remind-at-0845am')
   async remindTaskReportEveryMorning(@Res() res: ExpressResponse) {
     try {
-      const tasksBySetting = await getTaskCountsBySetting()
-      for (const uid in tasksBySetting) {
+      const taskSummary = await getTaskSummary()
+      for (const uid in taskSummary) {
         const {
           numUrgentTasks,
           numOverDueTasks,
           numTodayTask,
           organizationIds
-        } = tasksBySetting[uid]
+        } = taskSummary[uid]
 
-        const urgentTaskMessage = numUrgentTasks
+        const urgentTaskMessage = numUrgentTasks >= 0
           ? `urgent task ${numUrgentTasks}`
           : null
-        const overdueTaskMessage = numOverDueTasks
+        const overdueTaskMessage = numOverDueTasks >= 0
           ? `overdue task ${numOverDueTasks}`
           : null
-        const todayTaskMessage = numTodayTask
+        const todayTaskMessage = numTodayTask >= 0
           ? `today task ${numTodayTask}`
           : null
 
         const notificationBody = `
-          ${urgentTaskMessage}
-          ${overdueTaskMessage}
-          ${todayTaskMessage}
+        ${urgentTaskMessage}
+        ${overdueTaskMessage}
+        ${todayTaskMessage}
         `
 
         organizationIds.forEach(org => {
