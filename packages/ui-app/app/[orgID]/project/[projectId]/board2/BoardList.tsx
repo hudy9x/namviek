@@ -1,13 +1,21 @@
-export default function BoardList({ items }: { items: string[] }) {
+
+import { Droppable, Draggable } from "react-beautiful-dnd"
+import BoardItem from "./BoardItem"
+
+export default function BoardList({ items, groupId }: { items: string[], groupId: string }) {
+  console.log(items)
   return (
-    <div className="board-list">
-      {items.map(item => {
-        return (
-          <div className="board-item" key={item}>
-            {item}
-          </div>
-        )
-      })}
-    </div>
+    <Droppable droppableId={groupId} type="task">
+      {provided => <div className="board-list"
+        ref={provided.innerRef}
+        {...provided.droppableProps}>
+        {items.map((item, itemIndex) => {
+          return (
+            <BoardItem item={item} key={item} index={itemIndex} />
+          )
+        })}
+        {provided.placeholder}
+      </div>}
+    </Droppable>
   )
 }
