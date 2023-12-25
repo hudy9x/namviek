@@ -3,6 +3,7 @@ import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
 import { TaskPriority } from '@prisma/client'
 import { getLastDateOfMonth } from '@shared/libs'
+import { produce } from 'immer'
 import {
   createContext,
   useContext,
@@ -10,7 +11,8 @@ import {
   SetStateAction,
   useState,
   ReactNode,
-  useEffect
+  useEffect,
+  useRef
 } from 'react'
 
 export enum ETaskFilterGroupByType {
@@ -108,9 +110,12 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
 }
 
 let timeout = 0
+
 export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
+  const oldGroupByType = useRef('')
+  const oldStatusList = useRef(statuses)
 
   const {
     filter,
@@ -209,15 +214,45 @@ export const useTaskFilter = () => {
     }))
   }
 
+  const swapGroupItemOrder = (sourceId: number, destId: number) => {
+    const cloned = structuredClone(groupByItems)
+
+    const destItem = cloned[sourceId]
+    cloned.splice(sourceId, 1)
+    cloned.splice(destId, 0, destItem)
+
+    setGroupbyItems(cloned)
+  }
+
+  // Only update groupByItems as groupBy option changed
+  // keep logic simple
   useEffect(() => {
     if (timeout) {
       clearTimeout(timeout)
     }
 
     timeout = setTimeout(() => {
-      updateGroupbyItems()
+      if (oldGroupByType.current !== filter.groupBy) {
+        updateGroupbyItems()
+        oldGroupByType.current = filter.groupBy
+      }
     }, 350) as unknown as number
   }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses)])
+
+  useEffect(() => {
+    if (oldStatusList.current) {
+      const oldStatusArr = oldStatusList.current
+
+      // When page reload, the status list is empty
+      // after a few seconds it will be fetched from servers
+      // so we need to update the groupByItems
+      if (!oldStatusArr.length && statuses.length) {
+        console.log(oldStatusArr, statuses.length)
+        updateGroupbyItems()
+      }
+    }
+  }, [statuses])
+
 
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE
@@ -227,6 +262,7 @@ export const useTaskFilter = () => {
     groupBy: filter.groupBy,
     groupByLoading,
     groupByItems,
+    swapGroupItemOrder,
     filter,
     setFilter,
     setFilterValue,

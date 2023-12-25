@@ -55,7 +55,7 @@ const generateConditions = ({
   if (taskPoint) {
     taskPoint = +taskPoint
     if (taskPoint === 0) {
-      taskPoint = null
+      taskPoint = undefined
     }
 
     where.taskPoint = taskPoint
@@ -75,7 +75,7 @@ const generateConditions = ({
   }
 
   // filter done tasks
-  if (['yes', 'no'].includes(done)) {
+  if (done && ['yes', 'no'].includes(done)) {
     where.done = done === 'yes'
   }
 

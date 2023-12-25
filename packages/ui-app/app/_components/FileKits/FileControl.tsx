@@ -20,7 +20,7 @@ export default function FileControl() {
   return (
     <div className="form-control relative">
       <Loading.Absolute enabled={loading} border />
-      <label>Attachments {hasAttachments ? `(${fileLen} files)` : null}</label>
+      {/* <label>Attachments {hasAttachments ? `(${fileLen} files)` : null}</label> */}
       <div>
         <FileListWrapper />
         {!hasAttachments ? <FileDesc inputId={idRef.current} /> : null}

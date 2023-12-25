@@ -8,6 +8,7 @@ import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
+import TaskDetail from '@/features/TaskDetail'
 
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
@@ -89,6 +90,7 @@ export const TaskUpdate = () => {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
         fileIds: currentTask.fileIds || [],
+        cover: currentTask.cover || '',
         taskStatusId:
           currentTask?.taskStatusId || defaultFormikValues.taskStatusId,
         priority: currentTask.priority
@@ -99,7 +101,7 @@ export const TaskUpdate = () => {
           : defaultFormikValues.dueDate,
         plannedDueDate: currentTask.plannedDueDate
           ? new Date(currentTask.plannedDueDate)
-          : defaultFormikValues.plannedDueDate, 
+          : defaultFormikValues.plannedDueDate,
         planedStartDate: currentTask.plannedStartDate
           ? new Date(currentTask.plannedStartDate)
           : defaultFormikValues.planedStartDate,
@@ -125,12 +127,12 @@ export const TaskUpdate = () => {
             router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
           }}
           loading={taskLoading}
-          title="Update task"
+          title=""
           content={
             <>
               <FileKitContainer fileIds={currentTask.fileIds}>
-                <TaskForm
-                  isUpdate={true}
+                <TaskDetail
+                  cover={currentTask.cover || ''}
                   defaultValue={currentTask}
                   onSubmit={v => handleSubmit(v)}
                 />

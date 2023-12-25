@@ -1,0 +1,43 @@
+.task-info-item {
+  @apply flex items-center gap-2 py-2;
+}
+
+.task-form .task-title-input {
+  border-color: transparent;
+  padding: 0px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  height: 32px;
+  width: 100%;
+  /* outline: none; */
+}
+
+.task-info-label {
+  @apply flex items-center gap-2 text-sm w-[150px];
+}
+
+.task-info-label svg {
+  @apply text-lg text-gray-500;
+}
+
+.task-info-content {
+}
+
+.task-info-content .form-input {
+  border: none;
+  box-shadow: none !important;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.task-info-content .select-icon {
+  /* display: none; */
+  @apply invisible;
+}
+
+.task-tab-section .tab-list {
+  @apply -mx-6 px-6 mb-3;
+}
+.task-tab-section .tab-trigger:first-child {
+  padding-left: 0px;
+}

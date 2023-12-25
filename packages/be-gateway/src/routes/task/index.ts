@@ -37,6 +37,7 @@ import {
   updateTodoCounter
 } from '../../services/todo.counter'
 import { KEY_TASK_COUNT } from '../../services/task'
+import ActivityService from '../../services/activity.service'
 
 const router = Router()
 
@@ -227,9 +228,35 @@ router.get('/project/task/export', async (req: AuthRequest, res) => {
   }
 })
 
+router.post('/project/task/make-cover', async (req: AuthRequest, res) => {
+  try {
+    const { taskId, url, projectId } = req.body as {
+      taskId: string
+      projectId: string
+      url: string
+    }
+    const { id: uid } = req.authen
+
+    const result = await mdTaskUpdate({
+      id: taskId,
+      cover: url,
+      updatedAt: new Date(),
+      updatedBy: uid
+    })
+
+    const key = [CKEY.TASK_QUERY, projectId]
+    await findNDelCaches(key)
+
+    res.json({ data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   const body = req.body as Task
+  const activityService = new ActivityService()
   const {
     desc,
     visionId,
@@ -257,6 +284,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
 
     const result = await mdTaskAdd({
       title,
+      cover: null,
       startDate: null,
       dueDate: dueDate || null,
       plannedStartDate: dueDate || null,
@@ -277,6 +305,11 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null,
       progress
+    })
+
+    activityService.createTask({
+      id: result.id,
+      userId: id
     })
 
     const processes = []
@@ -492,6 +525,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
+  const body = req.body as Task
   const {
     id,
     title,
@@ -509,15 +543,20 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     visionId,
     progress,
     taskPoint
-  } = req.body as Task
+  } = body
   const { id: userId } = req.authen
+
+  const activityService = new ActivityService()
 
   try {
     // await pmClient.$transaction(async tx => {
     const taskData = await mdTaskGetOne(id)
+    const oldTaskData = structuredClone(taskData)
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
     const oldAssigneeId = taskData?.assigneeIds[0]
+
+    console.log('4')
 
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 
@@ -577,6 +616,12 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     taskData.updatedBy = userId
 
     const result = await mdTaskUpdate(taskData)
+
+    activityService.updateTaskActivity({
+      taskData: oldTaskData,
+      updatedTaskData: body,
+      userId
+    })
 
     const processes = []
 

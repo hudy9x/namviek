@@ -27,6 +27,7 @@ type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value' | 'onBlur
 type TextareaBaseProps = Omit<InputBaseProps, 'onChange'> & {
   onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
   onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
+  onEnter: (val: string, target: HTMLTextAreaElement) => void
   rows: number
   cols: number
 }

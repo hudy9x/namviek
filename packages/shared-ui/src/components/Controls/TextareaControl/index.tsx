@@ -4,6 +4,7 @@ import { TextareaProps } from "../type";
 export default function TextareaControl({
   title, value, name,
   onChange, placeholder,
+  onEnter,
   helper, error,
   required, disabled, readOnly,
   rows = 4, cols,
@@ -35,6 +36,13 @@ export default function TextareaControl({
         disabled={disabled}
         readOnly={readOnly}
         onChange={onInputChange}
+        onKeyUp={(ev) => {
+          const target = ev.target as HTMLTextAreaElement
+          if (ev.key === 'Enter' && !ev.shiftKey) {
+            onEnter && onEnter(target.value, target)
+            console.log('pressed Enter')
+          }
+        }}
         placeholder={placeholder}
         className="form-input"
       />

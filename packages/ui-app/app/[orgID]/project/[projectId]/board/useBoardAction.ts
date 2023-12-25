@@ -13,9 +13,14 @@ import { useEffect, useRef, useState } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 
 export const useBoardAction = () => {
-  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
-    useTaskFilter()
+  const {
+    isGroupbyStatus,
+    isGroupbyAssignee,
+    isGroupbyPriority,
+    swapGroupItemOrder
+  } = useTaskFilter()
   const { statuses, swapOrder } = useProjectStatusStore()
+
   const { updateTask } = useTaskStore()
   const { projectId } = useParams()
 
@@ -88,8 +93,14 @@ export const useBoardAction = () => {
   }
 
   const reorderStatus = (sourceId: number, destinationId: number) => {
-    swapOrder(sourceId, destinationId)
-    setUpdateSttCounter(stt => stt + 1)
+    swapGroupItemOrder(sourceId, destinationId)
+    // NOTE:
+    // swapOrder must be ran after the above function
+    // otherwise, the UI will be misaligned as swapping the status's order
+    setTimeout(() => {
+      swapOrder(sourceId, destinationId)
+      setUpdateSttCounter(stt => stt + 1)
+    }, 200)
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -101,7 +112,7 @@ export const useBoardAction = () => {
 
       destId !== undefined && reorderStatus(sourceId, +destId)
     } else {
-      messageWarning('You can only re-arrange status')
+      console.log('You can only re-arrange status')
     }
 
     if (type === 'task') {

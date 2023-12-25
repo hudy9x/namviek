@@ -25,14 +25,25 @@ export const BoardTaskItem = ({ data, index }: IBoardTaskItem) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             className="board-task-item">
-            <TaskCheckbox id={data.id} selected={data.selected} />
+            {data.cover ? (
+              <div
+                onClick={() =>
+                  replace(
+                    `${orgID}/project/${projectId}?mode=board&taskId=${data.id}`
+                  )
+                }
+                className="max-h-60 -mx-3 bg-gray-50 -mt-3 mb-2 rounded-t-md overflow-hidden">
+                <img className="" src={data.cover} />
+              </div>
+            ) : null}
             <h2
               onClick={() =>
                 replace(
                   `${orgID}/project/${projectId}?mode=board&taskId=${data.id}`
                 )
               }
-              className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal hover:underline cursor-pointer">
+              className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal hover:underline cursor-pointer flex items-center gap-2">
+              <TaskCheckbox id={data.id} selected={data.selected} />
               {data.title}
               {/* <TaskPriorityCell taskId={data.id} value={data.priority} /> */}
             </h2>

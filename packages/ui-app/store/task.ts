@@ -142,6 +142,7 @@ export const useTaskStore = create<TaskState>(set => ({
       produce((state: TaskState) => {
         const {
           id,
+          cover,
           title,
           fileIds,
           taskStatusId,
@@ -159,8 +160,6 @@ export const useTaskStore = create<TaskState>(set => ({
 
         const taskIndex = state.tasks.findIndex(t => t.id === id)
 
-        console.log('taskindex', taskIndex)
-
         if (taskIndex === -1) return
 
         const task = state.tasks[taskIndex]
@@ -169,6 +168,10 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (title) {
           task.title = title
+        }
+
+        if (cover) {
+          task.cover = cover
         }
 
         if (taskStatusId) {
