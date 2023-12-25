@@ -7,18 +7,15 @@ import {
 
 const router = Router()
 
-router.get(
-  '/project-setting/notification/:projectId',
-  async (req: AuthRequest, res) => {
-    try {
-      const { projectId } = req.params
-      const setting = await mdSettingNotificationQuery(projectId)
-      res.json({ status: 200, data: setting })
-    } catch (error) {
-      res.status(500).send(error)
-    }
+router.get('/project-setting/notification/:projectId', async (req: AuthRequest, res) => {
+  try {
+    const { projectId } = req.params
+    const setting = await mdSettingNotificationQuery(projectId)
+    res.json({ status: 200, data: setting })
+  } catch (error) {
+    res.status(500).send(error)
   }
-)
+})
 
 router.put('/project-setting/notification', async (req: AuthRequest, res) => {
   try {

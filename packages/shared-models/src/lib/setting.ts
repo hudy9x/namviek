@@ -18,3 +18,4 @@ export const mdSettingNotificationUpdate = async (data: ProjectSetting) => {
     data: newProjectSetting
   })
 }
+
