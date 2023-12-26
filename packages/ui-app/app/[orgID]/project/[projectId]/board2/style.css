@@ -3,14 +3,19 @@
 }
 
 .board {
-  @apply w-[300px] p-2;
+  @apply w-[300px] shrink-0 relative;
   height: calc(100vh - 200px);
 }
 
+.board-header {
+  @apply px-3 py-2 sticky top-[41px] left-0 w-full;
+  @apply bg-white/30 backdrop-blur-sm;
+}
+
 .board-list {
-  @apply space-y-2;
+  @apply space-y-3 h-full;
 }
 
 .board-item {
-  @apply rounded-sm border bg-white p-2;
+  @apply rounded-sm border bg-white p-2 mx-3;
 }
