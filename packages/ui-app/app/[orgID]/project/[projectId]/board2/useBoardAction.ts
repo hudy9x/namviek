@@ -22,8 +22,6 @@ export const useBoardAction = () => {
         return cloned
       }
 
-      console.log(JSON.stringify(column.items), sourceIndex, destIndex)
-
       const sourceItem = column.items[sourceIndex]
       column.items.splice(sourceIndex, 1)
       column.items.splice(destIndex, 0, sourceItem)
@@ -61,6 +59,9 @@ export const useBoardAction = () => {
       destColumn.items.splice(destIndex, 0, sourceItem)
       // column.items[sourceIndex] = column.items[destIndex]
       // column.items[destIndex] = sourceItem
+      //
+      console.log('moved task to column')
+      console.log(sourceItem, destColumn.id)
 
       return cloned
     })
