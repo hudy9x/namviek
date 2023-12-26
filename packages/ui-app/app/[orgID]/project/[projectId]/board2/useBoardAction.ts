@@ -1,92 +1,93 @@
-import { useTaskFilter } from '@/features/TaskFilter/context'
+import { useTaskFilter } from "@/features/TaskFilter/context"
+import { projectStatusUpdateOrder } from "@/services/status"
+import { taskUpdate } from "@/services/task"
+import { useProjectStatusStore } from "@/store/status"
+import { useTaskStore } from "@/store/task"
+import { Task, TaskPriority } from "@prisma/client"
+import { messageError, messageSuccess } from "@shared/ui"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+// import { useRef } from "react"
 
 export const useBoardAction = () => {
-  const { setGroupbyItems } = useTaskFilter()
+  const { updateTask } = useTaskStore()
+  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } = useTaskFilter()
+  const { projectId } = useParams()
+  const [updateSttCounter, setUpdateSttCounter] = useState(0)
+  const { statuses, swapOrder } = useProjectStatusStore()
+  // const timeout = useRef(0)
 
-  const reorderTaskInSameColumn = ({
-    sourceColId,
-    sourceIndex,
-    destIndex
-  }: {
-    sourceColId: string
-    sourceIndex: number
-    destIndex: number
-  }) => {
-    setGroupbyItems(prev => {
-      const cloned = structuredClone(prev)
-
-      const column = cloned.find(c => c.id === sourceColId)
-
-      if (!column) {
-        console.log('empoty column')
-        return cloned
-      }
-
-      const sourceItem = column.items[sourceIndex]
-      column.items.splice(sourceIndex, 1)
-      column.items.splice(destIndex, 0, sourceItem)
-      // column.items[sourceIndex] = column.items[destIndex]
-      // column.items[destIndex] = sourceItem
-
-      return cloned
-    })
+  const rearrangeColumn = (sourceId: number, destinationId: number) => {
+    swapOrder(sourceId, destinationId)
+    setUpdateSttCounter(stt => stt + 1)
   }
 
-  const moveTaskToAnotherColumn = ({
-    sourceIndex,
-    destIndex,
-    sourceColId,
-    destColId
-  }: {
-    sourceIndex: number
-    destIndex: number
-    sourceColId: string
-    destColId: string
-  }) => {
-    setGroupbyItems(prev => {
-      const cloned = structuredClone(prev)
+  const moveTaskToAnotherGroup = (taskId: string, groupId: string) => {
+    if (!groupId) return
 
-      const column = cloned.find(c => c.id === sourceColId)
-      const destColumn = cloned.find(c => c.id === destColId)
+    // if (timeout.current) {
+    //   clearTimeout(timeout.current)
+    // }
 
-      if (!column || !destColumn) {
-        console.log('empty column')
-        return cloned
-      }
+    const data: Partial<Task> = {
+      id: taskId,
+      projectId
+    }
+    let update = false
 
-      const sourceItem = column.items[sourceIndex]
-      column.items.splice(sourceIndex, 1)
-      destColumn.items.splice(destIndex, 0, sourceItem)
-      // column.items[sourceIndex] = column.items[destIndex]
-      // column.items[destIndex] = sourceItem
+    if (isGroupbyAssignee) {
+      update = true
+      data.assigneeIds = [groupId]
+    }
+
+    if (isGroupbyStatus) {
+      update = true
+      data.taskStatusId = groupId
+    }
+
+    if (isGroupbyPriority) {
+      update = true
+      data.priority = groupId as TaskPriority
+    }
+
+    if (update) {
+      updateTask(data)
+      // timeout.current = setTimeout(() => {
+      taskUpdate(data).then(res => {
+        const { data, status } = res.data
+        if (status !== 200) {
+          messageError('Can not update status')
+          return
+        }
+
+        messageSuccess('Updated')
+      })
+      // }, 300) as unknown as number
+    }
+  }
+
+
+  useEffect(() => {
+    if (updateSttCounter > 0) {
+      // if (timeoutStatus.current) clearTimeout(timeoutStatus.current)
       //
-      console.log('moved task to column')
-      console.log(sourceItem, destColumn.id)
+      // timeoutStatus.current = setTimeout(() => {
+      projectStatusUpdateOrder(
+        statuses.map(stt => ({ id: stt.id, order: stt.order }))
+      ).then(res => {
+        const { status, data } = res.data
+        if (status !== 200) {
+          messageError('Update status order error')
+          return
+        }
+        messageSuccess('Update order successfully')
+      })
+      // }, 1500)
+    }
+  }, [updateSttCounter, statuses])
 
-      return cloned
-    })
-  }
-
-  const reorderColumn = ({
-    sourceIndex,
-    destIndex
-  }: {
-    sourceIndex: number
-    destIndex: number
-  }) => {
-    setGroupbyItems(prev => {
-      const cloned = structuredClone(prev)
-
-      const currentColumn = cloned[sourceIndex]
-      cloned.splice(sourceIndex, 1)
-      cloned.splice(destIndex, 0, currentColumn)
-
-      return cloned
-    })
-  }
   return {
-    reorderTaskInSameColumn,
-    moveTaskToAnotherColumn,
-    reorderColumn
+    rearrangeColumn,
+    moveTaskToAnotherGroup
   }
 }

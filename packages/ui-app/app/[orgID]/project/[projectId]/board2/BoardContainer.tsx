@@ -7,12 +7,15 @@ import {
   Droppable
 } from 'react-beautiful-dnd'
 import BoardList from './BoardList'
-import { useBoardAction } from './useBoardAction'
+
+import { useBoardDndAction } from './useBoardDndAction'
 
 export default function BoardContainer() {
   const { groupByItems, setGroupbyItems } = useTaskFilter()
-  const { reorderColumn, reorderTaskInSameColumn, moveTaskToAnotherColumn } =
-    useBoardAction()
+  const { dragColumnToAnotherPosition, dragItemToAnotherPosition, dragItemToAnotherColumn } =
+    useBoardDndAction()
+
+  console.log('render group by item', JSON.stringify(groupByItems))
 
   const addNewStatus = () => {
     console.log('a')
@@ -43,9 +46,7 @@ export default function BoardContainer() {
     const destColId = destination.droppableId
 
     if (type === 'column') {
-      console.log(source.droppableId)
-      console.log(sourceIndex, destIndex)
-      reorderColumn({
+      dragColumnToAnotherPosition({
         sourceIndex,
         destIndex
       })
@@ -53,7 +54,7 @@ export default function BoardContainer() {
     }
 
     if (sourceColId === destColId) {
-      reorderTaskInSameColumn({
+      dragItemToAnotherPosition({
         sourceIndex,
         destIndex,
         sourceColId
@@ -61,7 +62,7 @@ export default function BoardContainer() {
     }
 
     if (sourceColId !== destColId) {
-      moveTaskToAnotherColumn({
+      dragItemToAnotherColumn({
         sourceColId,
         destColId,
         sourceIndex,
@@ -69,6 +70,7 @@ export default function BoardContainer() {
       })
     }
   }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">

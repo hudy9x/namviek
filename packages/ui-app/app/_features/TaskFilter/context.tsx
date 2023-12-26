@@ -198,6 +198,7 @@ export const useTaskFilter = () => {
   }
 
   const updateGroupbyItems = () => {
+    console.log('update group by items')
     let groupItems: ITaskFilterGroupbyItem[] = []
 
     switch (filter.groupBy) {
