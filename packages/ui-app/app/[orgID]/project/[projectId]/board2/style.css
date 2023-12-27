@@ -21,13 +21,17 @@
   @apply bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm;
 }
 
+.board-header-section {
+  @apply flex border border-transparent items-center gap-2 transition-all;
+}
+
 .board-list {
   /* @apply space-y-3 h-full; */
   min-height: 400px;
 }
 
-.board-item-container{
-  @apply px-3 pb-3
+.board-item-container {
+  @apply px-3 pb-3;
 }
 
 .board-item {
@@ -37,3 +41,6 @@
   @apply hover:dark:border-indigo-400 hover:border-indigo-400;
 }
 
+.board-item-action {
+  @apply flex items-center justify-between text-gray-500 mt-3;
+}
