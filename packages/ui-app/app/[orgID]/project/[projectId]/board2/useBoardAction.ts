@@ -1,28 +1,31 @@
-import { useTaskFilter } from "@/features/TaskFilter/context"
-import { projectStatusUpdateOrder } from "@/services/status"
-import { taskUpdate } from "@/services/task"
-import { useProjectStatusStore } from "@/store/status"
-import { useTaskStore } from "@/store/task"
-import { Task, TaskPriority } from "@prisma/client"
-import { messageError, messageSuccess } from "@shared/ui"
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useTaskFilter } from '@/features/TaskFilter/context'
+import { projectStatusUpdateOrder } from '@/services/status'
+import { taskUpdate } from '@/services/task'
+import { useProjectStatusStore } from '@/store/status'
+import { useTaskStore } from '@/store/task'
+import { Task, TaskPriority } from '@prisma/client'
+import { messageError, messageSuccess } from '@shared/ui'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 // import { useRef } from "react"
 
 export const useBoardAction = () => {
   const { updateTask } = useTaskStore()
-  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } = useTaskFilter()
+  const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
+    useTaskFilter()
   const { projectId } = useParams()
   const [updateSttCounter, setUpdateSttCounter] = useState(0)
   const { statuses, swapOrder } = useProjectStatusStore()
   // const timeout = useRef(0)
 
   const rearrangeColumn = (sourceId: number, destinationId: number) => {
+    if (!isGroupbyStatus) return
     swapOrder(sourceId, destinationId)
     setUpdateSttCounter(stt => stt + 1)
   }
 
   const moveTaskToAnotherGroup = (taskId: string, groupId: string) => {
+    console.log('move task to another group', taskId, groupId)
     if (!groupId) return
 
     // if (timeout.current) {
@@ -37,7 +40,7 @@ export const useBoardAction = () => {
 
     if (isGroupbyAssignee) {
       update = true
-      data.assigneeIds = [groupId]
+      data.assigneeIds = groupId === 'NONE' ? [] : [groupId]
     }
 
     if (isGroupbyStatus) {
@@ -65,7 +68,6 @@ export const useBoardAction = () => {
       // }, 300) as unknown as number
     }
   }
-
 
   useEffect(() => {
     if (updateSttCounter > 0) {

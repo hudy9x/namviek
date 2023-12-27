@@ -165,33 +165,66 @@ export const useTaskFilter = () => {
 
   const _groupByPriority = (): ITaskFilterGroupbyItem[] => {
     const priorities = [
-      [TaskPriority.URGENT, '#ff1345'],
-      [TaskPriority.HIGH, '#ffce37'],
+      [TaskPriority.LOW, '#ababab'],
       [TaskPriority.NORMAL, '#13cfff'],
-      [TaskPriority.LOW, '#ababab']
+      [TaskPriority.HIGH, '#ffce37'],
+      [TaskPriority.URGENT, '#ff1345']
     ]
 
-    return priorities.map(p => ({
-      id: p[0],
-      name: p[0],
-      color: p[1],
-      items: []
-    }))
+    const ignored: string[] = []
+    return priorities.map(p => {
+      const items: string[] = []
+
+      tasks.forEach(t => {
+        if (ignored.includes(t.id)) return
+
+        if (t.priority === p[0]) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+
+      return {
+        id: p[0],
+        name: p[0],
+        color: p[1],
+        items
+      }
+    })
   }
 
   const _groupByAssignee = (): ITaskFilterGroupbyItem[] => {
-    const newMembers = members.map(mem => ({
-      id: mem.id,
-      name: mem.name || '',
-      icon: mem.photo || '',
-      items: []
-    }))
+    const ignored: string[] = []
+    const taskWithoutAssignee: string[] = []
+    const newMembers = members.map(mem => {
+      const items: string[] = []
+
+      tasks.forEach(t => {
+        if (ignored.includes(t.id)) return
+
+        if (!t.assigneeIds.length) {
+          taskWithoutAssignee.push(t.id)
+          return
+        }
+
+        if (t.assigneeIds.includes(mem.id)) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+      return {
+        id: mem.id,
+        name: mem.name || '',
+        icon: mem.photo || '',
+        items
+      }
+    })
 
     newMembers.push({
       id: 'NONE',
       name: 'Not assigned',
       icon: '',
-      items: []
+      items: taskWithoutAssignee
     })
 
     return newMembers

@@ -3,7 +3,7 @@
 }
 
 .board {
-  @apply w-[300px] shrink-0 relative;
+  @apply w-[280px] shrink-0 relative;
   height: calc(100vh - 200px);
 }
 

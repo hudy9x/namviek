@@ -61,7 +61,7 @@ export const useBoardDndAction = () => {
       column.items.splice(sourceIndex, 1)
       destColumn.items.splice(destIndex, 0, sourceItem)
 
-      // delay update for 500ms 
+      // delay update for 200ms 
       // otherwise it causes a 
       setTimeout(() => {
         moveTaskToAnotherGroup(sourceItem, destColumn.id)
