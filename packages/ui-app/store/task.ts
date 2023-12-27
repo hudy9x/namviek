@@ -143,6 +143,7 @@ export const useTaskStore = create<TaskState>(set => ({
         const {
           id,
           cover,
+          order,
           title,
           fileIds,
           taskStatusId,
@@ -168,6 +169,10 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (title) {
           task.title = title
+        }
+
+        if (order) {
+          task.order = order
         }
 
         if (cover) {

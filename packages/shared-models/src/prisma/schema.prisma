@@ -106,11 +106,30 @@ model OrganizationMembers {
   updatedBy      String?
 }
 
+enum CounterType {
+  TASK
+  PROJECT
+  ORGANIZATION
+}
+
+model Counter {
+  id      String      @id @default(auto()) @map("_id") @db.ObjectId
+  type    CounterType
+  counter Int
+}
+
+model Test {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  order Int
+}
+
 model Task {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   desc    String?
   dueDate DateTime?
+  order   Int
 
   cover            String?
   plannedStartDate DateTime?

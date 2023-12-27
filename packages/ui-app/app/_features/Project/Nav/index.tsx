@@ -33,6 +33,7 @@ export default function ProjectList() {
       addPinnedProjects(pinnedProjects)
     })
     projectGet({
+      orgId: params.orgID,
       isArchive: false
     }).then(result => {
       const { data, status } = result.data

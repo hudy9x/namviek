@@ -1,14 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 import { dummyAutomation } from './seeder/automation'
-import { dummyTask } from './seeder/task'
+import { dummyTask, updateTaskCounter } from './seeder/task'
 import { dummyMemberToAllProject } from './seeder/member'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  dummyAutomation()
-  dummyTask()
-  dummyMemberToAllProject()
+  updateTaskCounter()
+  // dummyAutomation()
+  // dummyTask()
+  // dummyMemberToAllProject()
 }
 main()
   .then(async () => {

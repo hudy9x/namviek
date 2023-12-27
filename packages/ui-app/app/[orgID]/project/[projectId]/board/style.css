@@ -1,40 +1,46 @@
-.board-wrapper {
-  @apply h-full overflow-auto flex whitespace-nowrap;
+.board-container {
+  @apply flex items-start;
 }
 
-.board-column {
-  @apply py-3;
+.board {
+  @apply w-[280px] shrink-0 relative;
+  @apply pb-8 border-x rounded-b-lg border-b bg-gray-50;
+  @apply dark:bg-gray-800 dark:border-gray-700;
 }
 
-.board-col-header {
-  @apply py-1 px-3 flex items-center justify-between relative;
+.board:first-child {
+  border-left: none;
+}
+
+.board:not(:first-child) {
+  margin-left: -1px;
+}
+
+.board-header {
+  @apply px-3 py-2 sticky top-[41px] left-0 w-full;
+  @apply bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm;
 }
 
 .board-header-section {
   @apply flex border border-transparent items-center gap-2 transition-all;
 }
 
-.board-header-loading {
-  @apply absolute top-0 left-3 rounded-md pointer-events-none border dark:border-gray-700 animate-pulse w-[80%] h-full bg-indigo-50 dark:bg-gray-900 transition-all;
+.board-list {
+  /* @apply space-y-3 h-full; */
+  min-height: 400px;
 }
 
-.board-column-wrapper {
-  @apply shrink-0 w-[270px];
+.board-item-container {
+  @apply px-3 pb-3;
 }
 
-.board-task-item {
+.board-item {
   @apply bg-white p-3 rounded-md shadow-sm border;
   @apply dark:bg-gray-900 dark:border-gray-700;
-}
-
-.board-task-item .selected-member-name {
-  @apply hidden;
+  @apply active:scale-[95%] transition-all;
+  @apply hover:dark:border-indigo-400 hover:border-indigo-400;
 }
 
 .board-item-action {
   @apply flex items-center justify-between text-gray-500 mt-3;
-}
-
-.board-item-action .task-date .form-input {
-  @apply text-xs;
 }

@@ -1,9 +1,10 @@
 'use client'
 import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
+import { useTaskStore } from '@/store/task'
 import { TaskPriority } from '@prisma/client'
 import { getLastDateOfMonth } from '@shared/libs'
-import { produce } from 'immer'
+
 import {
   createContext,
   useContext,
@@ -40,6 +41,7 @@ export interface ITaskFilterGroupbyItem {
   name: string
   icon?: string
   color?: string
+  items: string[]
 }
 
 interface ITaskFilterContextProps {
@@ -114,8 +116,11 @@ let timeout = 0
 export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
+  const { tasks } = useTaskStore()
+
   const oldGroupByType = useRef('')
   const oldStatusList = useRef(statuses)
+  const oldTaskList = useRef(tasks)
 
   const {
     filter,
@@ -134,48 +139,99 @@ export const useTaskFilter = () => {
   }
 
   const _groupByStatus = (): ITaskFilterGroupbyItem[] => {
+    const ignored: string[] = []
+
     return statuses.map(stt => {
       const { id, name, color } = stt
+      const items: string[] = []
+
+      tasks.forEach(t => {
+        if (ignored.includes(t.id)) return
+
+        if (t.taskStatusId === id) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+
       return {
         id,
         color,
-        name
+        name,
+        items
       }
     })
   }
 
   const _groupByPriority = (): ITaskFilterGroupbyItem[] => {
     const priorities = [
-      [TaskPriority.URGENT, '#ff1345'],
-      [TaskPriority.HIGH, '#ffce37'],
+      [TaskPriority.LOW, '#ababab'],
       [TaskPriority.NORMAL, '#13cfff'],
-      [TaskPriority.LOW, '#ababab']
+      [TaskPriority.HIGH, '#ffce37'],
+      [TaskPriority.URGENT, '#ff1345']
     ]
 
-    return priorities.map(p => ({
-      id: p[0],
-      name: p[0],
-      color: p[1]
-    }))
+    const ignored: string[] = []
+    return priorities.map(p => {
+      const items: string[] = []
+
+      tasks.forEach(t => {
+        if (ignored.includes(t.id)) return
+
+        if (t.priority === p[0]) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+
+      return {
+        id: p[0],
+        name: p[0],
+        color: p[1],
+        items
+      }
+    })
   }
 
   const _groupByAssignee = (): ITaskFilterGroupbyItem[] => {
-    const newMembers = members.map(mem => ({
-      id: mem.id,
-      name: mem.name || '',
-      icon: mem.photo || ''
-    }))
+    const ignored: string[] = []
+    const taskWithoutAssignee: string[] = []
+    const newMembers = members.map(mem => {
+      const items: string[] = []
+
+      tasks.forEach(t => {
+        if (ignored.includes(t.id)) return
+
+        if (!t.assigneeIds.length) {
+          taskWithoutAssignee.push(t.id)
+          return
+        }
+
+        if (t.assigneeIds.includes(mem.id)) {
+          items.push(t.id)
+          ignored.push(t.id)
+        }
+      })
+      return {
+        id: mem.id,
+        name: mem.name || '',
+        icon: mem.photo || '',
+        items
+      }
+    })
 
     newMembers.push({
       id: 'NONE',
       name: 'Not assigned',
-      icon: ''
+      icon: '',
+      items: taskWithoutAssignee
     })
 
     return newMembers
   }
 
   const updateGroupbyItems = () => {
+    console.log('update group by items')
     let groupItems: ITaskFilterGroupbyItem[] = []
 
     switch (filter.groupBy) {
@@ -224,6 +280,28 @@ export const useTaskFilter = () => {
     setGroupbyItems(cloned)
   }
 
+  const swapTaskOrder = (
+    dropId: string,
+    sourceIndex: number,
+    destIndex: number
+  ) => {
+    const cloned = structuredClone(groupByItems)
+    const groupItem = cloned.find(c => c.id === dropId)
+
+    if (!groupItem) return
+
+    const items = groupItem.items
+
+    // const destItem = items[sourceIndex]
+    // items.splice(sourceIndex, 1)
+    // items.splice(destIndex, 0, destItem)
+
+    const [removed] = items.splice(sourceIndex, 1)
+    items.splice(destIndex, 0, removed)
+
+    setGroupbyItems(cloned)
+  }
+
   // Only update groupByItems as groupBy option changed
   // keep logic simple
   useEffect(() => {
@@ -237,7 +315,12 @@ export const useTaskFilter = () => {
         oldGroupByType.current = filter.groupBy
       }
     }, 350) as unknown as number
-  }, [filter.groupBy, JSON.stringify(members), JSON.stringify(statuses)])
+  }, [
+    filter.groupBy,
+    JSON.stringify(members),
+    JSON.stringify(statuses),
+    JSON.stringify(tasks)
+  ])
 
   useEffect(() => {
     if (oldStatusList.current) {
@@ -247,12 +330,23 @@ export const useTaskFilter = () => {
       // after a few seconds it will be fetched from servers
       // so we need to update the groupByItems
       if (!oldStatusArr.length && statuses.length) {
-        console.log(oldStatusArr, statuses.length)
         updateGroupbyItems()
       }
     }
   }, [statuses])
 
+  useEffect(() => {
+    if (oldTaskList.current) {
+      const oldTaskArr = oldTaskList.current
+
+      // When page reload, the task list is empty
+      // after a few seconds it will be fetched from servers
+      // so we need to update the groupByItems
+      if (!oldTaskArr.length && tasks.length) {
+        updateGroupbyItems()
+      }
+    }
+  }, [tasks])
 
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE
@@ -262,6 +356,8 @@ export const useTaskFilter = () => {
     groupBy: filter.groupBy,
     groupByLoading,
     groupByItems,
+    setGroupbyItems,
+    swapTaskOrder,
     swapGroupItemOrder,
     filter,
     setFilter,

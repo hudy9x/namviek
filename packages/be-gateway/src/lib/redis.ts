@@ -17,6 +17,7 @@ export enum CKEY {
   PROJECT_MEMBER = 'PROJECT_MEMBER',
   PROJECT_POINT = 'PROJECT_POINT',
   PROJECT_VISION = 'PROJECT_VISION',
+  PROJECT_TASK_COUNTER = 'PROJECT_TASK_COUNTER',
 
   // count the number of undone tasks
   TODO_COUNTER = 'TODO_COUNTER',
@@ -201,15 +202,16 @@ export const getCache = async (key: CACHE_KEY) => {
 
 export const incrCache = async (key: CACHE_KEY) => {
   try {
-    await redis.incr(genKey(key))
+    return await redis.incr(genKey(key))
   } catch (error) {
     console.log(error)
+    return null
   }
 }
 
 export const decrCache = async (key: CACHE_KEY) => {
   try {
-    await redis.decr(genKey(key))
+    return await redis.decr(genKey(key))
   } catch (error) {
     console.log(error)
     return null

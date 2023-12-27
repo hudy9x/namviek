@@ -3,6 +3,7 @@ import { useProjectArchiveStore } from '@/store/projecArchived'
 import { useProjectStore } from '@/store/project'
 import { Project } from '@prisma/client'
 import { messageError, messageSuccess } from '@shared/ui'
+import { useParams } from 'next/navigation'
 
 export default function useServiceProjectArchive() {
   const {
@@ -11,10 +12,12 @@ export default function useServiceProjectArchive() {
     removeFromArchive: remove
   } = useProjectArchiveStore()
 
+  const { orgID } = useParams()
+
   const { addProject, removeProject } = useProjectStore()
 
   const getArchivedProject = () => {
-    projectGet({ isArchive: true }).then(res => {
+    projectGet({ isArchive: true, orgId: orgID }).then(res => {
       const { data } = res.data
 
       moveManyToArchive(data)

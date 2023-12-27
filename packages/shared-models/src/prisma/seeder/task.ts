@@ -5,6 +5,7 @@ import {
   TaskPriority,
   TaskStatus
 } from '@prisma/client'
+import { CKEY, incrCache } from './redis'
 
 const prisma = new PrismaClient()
 
@@ -13,6 +14,19 @@ const mdProject = prisma.project
 const mdProjectMember = prisma.members
 const mdPoint = prisma.taskPoint
 const mdStatus = prisma.taskStatus
+
+export const updateTaskCounter = async () => {
+  const projects = await mdProject.findMany({})
+
+  console.log(projects)
+  // const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
+  // const order = incrCache(counterKey)
+  // mdTask.findMany({
+  //   where: {
+  //     order: { isSet: false }
+  //   }
+  // })
+}
 
 export const dummyTask = () => {
   console.log('dummy task ====================')

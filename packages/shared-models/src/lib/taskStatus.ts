@@ -9,6 +9,14 @@ export const mdTaskStatusGetByProjectId = async (projectId: string) => {
   })
 }
 
+export const mdTaskCounterByProject = async (projectId: string) => {
+  return taskStatusModel.count({
+    where: {
+      projectId
+    }
+  })
+}
+
 interface ITaskStatusQuery {
   projectIds: string[]
   types?: StatusType[]

@@ -14,15 +14,17 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  mdTaskCounterByProject
 } from '@shared/models'
 
-import { Task, TaskStatus } from '@prisma/client'
+import { Prisma, Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
   genKeyFromSource,
   getJSONCache,
+  incrCache,
   setJSONCache
 } from '../../lib/redis'
 
@@ -36,6 +38,7 @@ import {
   updateTodoCounter
 } from '../../services/todo.counter'
 import ActivityService from '../../services/activity.service'
+import { pmClient, pmTrans } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
@@ -269,6 +272,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
   const { id } = req.authen
 
   const key = [CKEY.TASK_QUERY, projectId]
+  const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
 
   try {
     const doneStatus = await mdTaskStatusWithDoneType(projectId)
@@ -280,9 +284,11 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       taskStatusId = todoStatus.id
     }
 
+    const order = await incrCache(counterKey)
     const result = await mdTaskAdd({
       title,
       cover: null,
+      order: order,
       startDate: null,
       dueDate: dueDate || null,
       plannedStartDate: dueDate || null,
@@ -351,6 +357,7 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
   const { id } = req.authen
   try {
     console.time('project-checking')
+    const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
     const existProject = await mdProjectGet(projectId)
     console.timeEnd('project-checking')
     if (!existProject) {
@@ -361,16 +368,25 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
     }
 
     console.time('reassign-task-data')
-    const newTasks = tasks.map(task => ({
-      ...task,
-      startDate: null,
-      tagIds: [],
-      parentTaskId: null,
-      createdBy: id,
-      createdAt: new Date(),
-      updatedAt: null,
-      updatedBy: null
-    }))
+    const newTasks: Task[] = []
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      const order = await incrCache(counterKey)
+      newTasks.push(
+        {
+          ...task,
+          order,
+          startDate: null,
+          tagIds: [],
+          parentTaskId: null,
+          createdBy: id,
+          createdAt: new Date(),
+          updatedAt: null,
+          updatedBy: null
+        }
+      )
+    }
+
     console.timeEnd('reassign-task-data')
 
     console.time('import')
@@ -538,8 +554,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
     const oldAssigneeId = taskData?.assigneeIds[0]
-
-    console.log('4')
 
     const key = [CKEY.TASK_QUERY, taskData.projectId]
 

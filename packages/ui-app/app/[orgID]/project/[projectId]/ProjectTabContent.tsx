@@ -42,6 +42,7 @@ export default function ProjectTabContent() {
   return (
     <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
       {mode === 'board' && <Board />}
+      {/* {mode === 'board2' && <Board2 />} */}
       {mode === 'task' && <TaskList />}
       {mode === 'setting' && <Settings />}
       {mode === 'overview' ? <ProjectOverview /> : null}
