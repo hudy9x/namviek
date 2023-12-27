@@ -8,7 +8,7 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
   const { replace } = useRouter()
   // return <div className="">{data.title}</div>
-  const link = `${orgID}/project/${projectId}?mode=board2&taskId=${data.id}`
+  const link = `${orgID}/project/${projectId}?mode=board&taskId=${data.id}`
 
   return (
     <div

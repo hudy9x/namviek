@@ -15,9 +15,6 @@ const Calendar = dynamic(() => import('./calendar'), {
 const Board = dynamic(() => import('./board'), {
   loading: () => <ProjectContentLoading />
 })
-const Board2 = dynamic(() => import('./board2'), {
-  loading: () => <ProjectContentLoading />
-})
 
 const Vision = dynamic(() => import('@/features/Project/Vision'), {
   loading: () => <ProjectContentLoading />
@@ -45,7 +42,7 @@ export default function ProjectTabContent() {
   return (
     <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
       {mode === 'board' && <Board />}
-      {mode === 'board2' && <Board2 />}
+      {/* {mode === 'board2' && <Board2 />} */}
       {mode === 'task' && <TaskList />}
       {mode === 'setting' && <Settings />}
       {mode === 'overview' ? <ProjectOverview /> : null}
