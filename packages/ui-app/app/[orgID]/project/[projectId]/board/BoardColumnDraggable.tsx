@@ -23,6 +23,7 @@ export default function BoardColumnDraggable({
               name={group.name}
               color={group.color}
               id={group.id}
+              total={group.items.length}
               provided={provided}
             />
             <BoardList items={group.items} groupId={group.id} />

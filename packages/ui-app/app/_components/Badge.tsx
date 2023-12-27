@@ -14,7 +14,7 @@ export default function Badge({
 
   pulse && classes.push('animate-pulse')
 
-  color === 'gray' && classes.push('bg-gray-100 text-gray-600')
+  color === 'gray' && classes.push('bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400')
   color === 'red' && classes.push('bg-red-100 text-red-700')
   color === 'pink' && classes.push('bg-pink-100 text-pink-700')
   color === 'indigo' && classes.push('bg-indigo-100 text-indigo-700')

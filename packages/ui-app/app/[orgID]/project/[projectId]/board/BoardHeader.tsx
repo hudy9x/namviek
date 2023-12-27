@@ -3,6 +3,7 @@ import { MdDragIndicator } from 'react-icons/md'
 // import { BoardActionCreateTaskWithIcon } from './BoardActionCreateTask'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { Avatar } from '@shared/ui'
+import Badge from '@/components/Badge'
 // import TaskCheckAll from '../views/TaskCheckAll'
 
 interface IBoardHeaderProps {
@@ -10,12 +11,14 @@ interface IBoardHeaderProps {
   icon?: string
   name: string
   id: string
+  total: number
   provided: DraggableProvided
 }
 export default function BoardHeader({
   color,
   icon,
   name,
+  total,
   id,
   provided
 }: IBoardHeaderProps) {
@@ -24,14 +27,12 @@ export default function BoardHeader({
   return (
     <div className="board-header">
       <div
-        className={`board-header-loading ${
-          groupByLoading ? 'visible' : 'invisible '
-        }`}></div>
+        className={`board-header-loading ${groupByLoading ? 'visible' : 'invisible '
+          }`}></div>
       <div className="board-col-header">
         <div
-          className={`board-header-section ${
-            groupByLoading ? 'opacity-0' : 'opacity-100'
-          }`}>
+          className={`board-header-section ${groupByLoading ? 'opacity-0' : 'opacity-100'
+            }`}>
           {isGroupbyStatus ? (
             <div
               className="w-3 h-4 text-gray-400"
@@ -48,6 +49,7 @@ export default function BoardHeader({
               style={{ backgroundColor: color }}></div>
           )}
           <span className="text-sm text-gray-500">{name}</span>
+          <Badge title={total + ''} />
         </div>
         <div>{/* <BoardActionCreateTaskWithIcon groupId={id} /> */}</div>
       </div>
