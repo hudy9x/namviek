@@ -25,7 +25,7 @@ export default function MemberAvatar({
 
   if (!user) {
     return (
-      <div className="flex gap-2 items-center shrink-0 px-2">
+      <div className="flex gap-2 items-center shrink-0">
         <Avatar name={'None'} size={size} src={''} />{' '}
         {noName ? null : <span className="selected-member-name">{'None'}</span>}
       </div>

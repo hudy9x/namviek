@@ -42,7 +42,7 @@ export default function ActivityCardAttach({
         {files.map((file, fid) => {
           return (
             <div key={fid} className='flex items-center gap-2'>
-              <MdOutlineAttachFile className='p-1 w-6 h-6 rounded-md bg-gray-100' />
+              <MdOutlineAttachFile className='p-1 w-6 h-6 rounded-md bg-gray-100 dark:bg-gray-700' />
               <span className='italic'>{file.name}</span>
             </div>
           )

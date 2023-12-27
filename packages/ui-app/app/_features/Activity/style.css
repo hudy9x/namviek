@@ -7,7 +7,7 @@
 }
 
 .activity-item .member-name{
-  @apply mr-1
+  @apply mr-1 dark:text-gray-400;
 }
 
 .activity-item.none {

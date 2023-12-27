@@ -18,6 +18,7 @@
 .file-area-desc {
   @apply flex items-center flex-col text-sm gap-2 text-gray-400;
   @apply border-2 border-dashed rounded-md py-4;
+  @apply dark:border-gray-700
 }
 
 .file-drop-label {

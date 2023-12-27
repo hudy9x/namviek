@@ -6,9 +6,9 @@
   @apply py-3;
 }
 
-.board-col-header {
-  @apply py-1 px-3 flex items-center justify-between relative;
-}
+/* .board-col-header { */
+/*   @apply py-1 px-3 flex items-center justify-between relative; */
+/* } */
 
 .board-header-section {
   @apply flex border border-transparent items-center gap-2 transition-all;

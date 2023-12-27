@@ -1,5 +1,7 @@
 import { Droppable } from 'react-beautiful-dnd'
-import BoardItem from './BoardItem'
+
+import BoardItemDraggable from './BoardItemDraggable'
+import { BoardActionCreateTask } from './BoardActionCreateTask'
 
 export default function BoardList({
   items,
@@ -16,8 +18,14 @@ export default function BoardList({
           ref={provided.innerRef}
           {...provided.droppableProps}>
           {items.map((item, itemIndex) => {
-            return <BoardItem item={item} key={item} index={itemIndex} />
+            return (
+              <BoardItemDraggable item={item} key={item} index={itemIndex} />
+            )
           })}
+
+          <div className="mx-3">
+            <BoardActionCreateTask groupId={groupId} />
+          </div>
           {provided.placeholder}
         </div>
       )}

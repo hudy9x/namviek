@@ -9,11 +9,16 @@ import {
 import BoardList from './BoardList'
 
 import { useBoardDndAction } from './useBoardDndAction'
+import BoardHeader from './BoardHeader'
+import BoardColumnDraggable from './BoardColumnDraggable'
 
 export default function BoardContainer() {
   const { groupByItems, setGroupbyItems } = useTaskFilter()
-  const { dragColumnToAnotherPosition, dragItemToAnotherPosition, dragItemToAnotherColumn } =
-    useBoardDndAction()
+  const {
+    dragColumnToAnotherPosition,
+    dragItemToAnotherPosition,
+    dragItemToAnotherColumn
+  } = useBoardDndAction()
 
   console.log('render group by item', JSON.stringify(groupByItems))
 
@@ -82,33 +87,18 @@ export default function BoardContainer() {
               ref={provided.innerRef}>
               {groupByItems.map((group, groupIndex) => {
                 return (
-                  <Draggable
+                  <BoardColumnDraggable
+                    group={group}
+                    groupIndex={groupIndex}
                     key={group.id}
-                    draggableId={group.id}
-                    index={groupIndex}>
-                    {provided => {
-                      return (
-                        <div
-                          className="board"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}>
-                          <div
-                            className="board-header"
-                            {...provided.dragHandleProps}>
-                            <h2>{group.name}</h2>
-                          </div>
-                          <BoardList items={group.items} groupId={group.id} />
-                        </div>
-                      )
-                    }}
-                  </Draggable>
+                  />
                 )
               })}
-              <div className="board">
-                <h2 className="btn" onClick={addNewStatus}>
-                  Create new status
-                </h2>
-              </div>
+              {/* <div className="board"> */}
+              {/*   <h2 className="btn" onClick={addNewStatus}> */}
+              {/*     Create new status */}
+              {/*   </h2> */}
+              {/* </div> */}
               {provided.placeholder}
             </div>
           )

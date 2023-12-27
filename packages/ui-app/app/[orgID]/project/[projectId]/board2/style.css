@@ -1,21 +1,39 @@
 .board-container {
-  @apply flex items-start divide-x;
+  @apply flex items-start;
 }
 
 .board {
   @apply w-[280px] shrink-0 relative;
-  height: calc(100vh - 200px);
+  @apply pb-8 border-x rounded-b-lg border-b bg-gray-50;
+  @apply dark:bg-gray-800 dark:border-gray-700;
+}
+
+.board:first-child {
+  border-left: none;
+}
+
+.board:not(:first-child) {
+  margin-left: -1px;
 }
 
 .board-header {
   @apply px-3 py-2 sticky top-[41px] left-0 w-full;
-  @apply bg-white/30 backdrop-blur-sm;
+  @apply bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm;
 }
 
 .board-list {
-  @apply space-y-3 h-full;
+  /* @apply space-y-3 h-full; */
+  min-height: 400px;
+}
+
+.board-item-container{
+  @apply px-3 pb-3
 }
 
 .board-item {
-  @apply rounded-sm border bg-white p-2 mx-3;
+  @apply bg-white p-3 rounded-md shadow-sm border;
+  @apply dark:bg-gray-900 dark:border-gray-700;
+  @apply active:scale-[95%] transition-all;
+  @apply hover:dark:border-indigo-400 hover:border-indigo-400;
 }
+

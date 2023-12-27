@@ -12,11 +12,11 @@ export default function ActivitySectionTime({
 
   const render = (txt: string) => (
     <div
-      className={`relative text-gray-900 text-center uppercase text-[10px] mt-5 mb-2 ${
+      className={`relative text-gray-900 text-center uppercase text-[10px] mt-8 mb-2 ${
         visible ? '' : 'hidden'
       }`}>
-      <span className="bg-white px-1 relative z-10">{txt}</span>
-      <div className="h-[1px] top-1/2 bg-gray-200 absolute left-0 w-full"></div>
+      <span className="bg-white dark:bg-gray-700 dark:text-gray-400 px-1 relative z-10">{txt}</span>
+      <div className="h-[1px] top-1/2 bg-gray-200 dark:bg-gray-700 absolute left-0 w-full"></div>
     </div>
   )
 
