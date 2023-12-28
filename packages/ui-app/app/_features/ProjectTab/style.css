@@ -13,9 +13,34 @@
   @apply dark:border-indigo-300 text-indigo-400;
 }
 
+.view-form {
+  @apply flex items-stretch -m-6 rounded-l-md;
+}
+
 .view-types {
+  @apply shrink-0 w-[200px] h-full bg-white rounded-l-md;
+  @apply p-4 space-y-1.5;
 }
 
 .view-item {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2 cursor-pointer;
+  @apply text-sm text-gray-500;
+  @apply py-2 px-2.5 rounded-md transition-all;
+  @apply duration-150;
+  @apply hover:bg-gray-100;
+
+  svg {
+    @apply w-5 h-5;
+  }
+
+  &.active{
+    @apply bg-indigo-50 text-indigo-600
+  }
 }
+
+
+.view-form-detail {
+  @apply bg-gray-100 rounded-r-md;
+  @apply py-4 px-8 
+}
+
