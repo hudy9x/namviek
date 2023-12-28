@@ -21,6 +21,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
 import PromptGenerator from '@/features/PromptGenerator'
 import { DropdownMenu } from '@shared/ui'
+import ProjectTab from '@/features/ProjectTab'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -150,21 +151,7 @@ export default function ProjectNav() {
         </h2>
 
         <div className="hidden sm:flex items-center justify-between">
-          <div className="tab pl-1">
-            {tabs.map((tab, index) => {
-              const Icon = tab.icon
-              const active = tab.name.toLowerCase() === mode
-              return (
-                <div
-                  onClick={() => onMoveTab(tab.name)}
-                  className={`tab-item ${active ? 'active' : ''}`}
-                  key={index}>
-                  <Icon />
-                  <span>{tab.title}</span>
-                </div>
-              )
-            })}
-          </div>
+          <ProjectTab />
           <div className="flex items-center gap-2">
             <div className="tab">
               <div

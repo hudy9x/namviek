@@ -1,0 +1,21 @@
+.project-tab {
+  @apply flex;
+}
+
+.project-tab-item {
+  @apply flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
+  @apply cursor-pointer py-2 px-3 border-b-2 border-transparent;
+  @apply hover:bg-gray-100;
+}
+
+.project-tab-item.active {
+  @apply border-indigo-400 text-indigo-700;
+  @apply dark:border-indigo-300 text-indigo-400;
+}
+
+.view-types {
+}
+
+.view-item {
+  @apply flex items-center gap-3;
+}

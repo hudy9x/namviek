@@ -248,6 +248,30 @@ model Project {
   updatedAt      DateTime?
 }
 
+enum ProjectViewType {
+  DASHBOARD
+  LIST
+  BOARD
+  CALENDAR
+  TIMELINE
+  GOAL
+  TEAM
+  ACTIVITY
+}
+
+model ProjectView {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  type      ProjectViewType
+  icon      String?
+  projectId String?         @db.ObjectId
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
 model Vision {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String
