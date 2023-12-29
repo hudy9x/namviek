@@ -15,7 +15,7 @@ export default function ProjectViewCreate() {
         visible,
         setVisible
       }}>
-      <div className="w-[1px] h-[20px] bg-gray-300 mx-2 my-2"></div>
+
       <Modal
         backdrop={false}
         className="project-view-modal"

@@ -4,6 +4,7 @@ import {
   HiOutlineCalendar,
   HiOutlineClipboardDocumentList,
   HiOutlineRectangleGroup,
+  HiOutlineRocketLaunch,
   HiOutlineUserGroup,
   HiOutlineViewColumns
 } from 'react-icons/hi2'
@@ -28,7 +29,7 @@ export default function ProjectViewIcon({ type }: { type: ProjectViewType }) {
     }
 
     if (type === ProjectViewType.GOAL) {
-      return
+      return <HiOutlineRocketLaunch />
     }
     if (type === ProjectViewType.TEAM) {
       return <HiOutlineUserGroup />

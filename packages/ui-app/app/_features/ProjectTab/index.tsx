@@ -1,16 +1,6 @@
 'use client'
 
-import {
-  HiOutlineUserCircle,
-  HiOutlineViewColumns,
-  HiOutlineCalendar,
-  HiOutlineSquares2X2,
-  HiOutlineViewfinderCircle
-} from 'react-icons/hi2'
-
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import ProjectViewCreate from './ProjectViewCreate'
 import './style.css'
 import { useProjectViewList } from './useProjectViewList'
@@ -27,10 +17,12 @@ export default function ProjectTab() {
     push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
   }
 
+  console.log('views', views)
+
   return (
     <div className="project-tab pl-1">
       {views.map((view, index) => {
-        const active = false
+        const active = mode === view.id
 
         return (
           <div
@@ -43,6 +35,8 @@ export default function ProjectTab() {
         )
       })}
 
+      {views.length ?
+        <div className="w-[1px] h-[20px] bg-gray-300 mx-2 my-2"></div> : null}
       <ProjectViewCreate />
     </div>
   )

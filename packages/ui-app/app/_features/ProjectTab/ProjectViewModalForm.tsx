@@ -16,7 +16,7 @@ export default function ProjectViewModalForm({
   desc: string
 }) {
   const { projectId } = useParams()
-  const { setVisible, name: viewName } = useProjectViewContext()
+  const { setVisible, name: viewName, setName } = useProjectViewContext()
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
 
@@ -24,6 +24,7 @@ export default function ProjectViewModalForm({
     setTimeout(() => {
       setLoading(false)
       setVisible(false)
+      setName('')
     }, 500)
   }
 

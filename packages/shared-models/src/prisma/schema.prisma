@@ -265,6 +265,8 @@ model ProjectView {
   type      ProjectViewType
   icon      String?
   projectId String?         @db.ObjectId
+  order     Int?
+  data      Json?
 
   createdBy String?
   createdAt DateTime?
