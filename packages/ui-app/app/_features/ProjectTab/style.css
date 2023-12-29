@@ -1,3 +1,8 @@
+.project-view-modal .modal-close {
+  top: 13px;
+  right: 30px;
+}
+
 .project-tab {
   @apply flex;
 }
@@ -14,7 +19,20 @@
 }
 
 .view-form {
-  @apply flex items-stretch -m-6 rounded-l-md;
+  @apply -m-6 rounded-l-md;
+}
+
+.view-name-input {
+  @apply flex items-center gap-2 border-b px-[1.625rem] py-4;
+  @apply text-gray-500;
+
+  input {
+    @apply outline-none w-[87%] text-lg;
+  }
+
+  svg {
+    @apply w-5 h-5;
+  }
 }
 
 .view-types {
@@ -33,14 +51,12 @@
     @apply w-5 h-5;
   }
 
-  &.active{
-    @apply bg-indigo-50 text-indigo-600
+  &.active {
+    @apply bg-indigo-50 text-indigo-600;
   }
 }
 
-
 .view-form-detail {
   @apply bg-gray-100 rounded-r-md;
-  @apply py-4 px-8 
+  @apply py-4 px-8 w-full border-l;
 }
-

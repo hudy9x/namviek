@@ -20,22 +20,20 @@ export default function BoardContainer() {
     dragItemToAnotherColumn
   } = useBoardDndAction()
 
-  console.log('render group by item', JSON.stringify(groupByItems))
-
-  const addNewStatus = () => {
-    console.log('a')
-
-    setGroupbyItems(prev => {
-      return [
-        ...prev,
-        {
-          id: new Date().getMilliseconds().toString(),
-          name: 'New Status ' + new Date(),
-          items: []
-        }
-      ]
-    })
-  }
+  // const addNewStatus = () => {
+  //   console.log('a')
+  //
+  //   setGroupbyItems(prev => {
+  //     return [
+  //       ...prev,
+  //       {
+  //         id: new Date().getMilliseconds().toString(),
+  //         name: 'New Status ' + new Date(),
+  //         items: []
+  //       }
+  //     ]
+  //   })
+  // }
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result

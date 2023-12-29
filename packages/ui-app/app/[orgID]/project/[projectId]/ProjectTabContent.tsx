@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 import ProjectContentLoading from './ProjectContentLoading'
 import TaskList from './TaskList'
+import { useProjectViewStore } from '@/store/projectView'
+import { useMemo } from 'react'
+import { ProjectViewType } from '@prisma/client'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -36,21 +39,31 @@ const AutomateList = dynamic(
 )
 
 export default function ProjectTabContent() {
+  const { views } = useProjectViewStore()
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
+  const ignored = ['setting', 'automation', 'automation-create']
+  const isIgnored = () => ignored.includes(mode || '')
+
+  const type = useMemo(() => {
+    const view = views.find(v => v.id === mode)
+    return view ? view.type : 'LIST'
+  }, [mode, JSON.stringify(views)])
+
+  const isView = (t: ProjectViewType) => !isIgnored() && type === t
 
   return (
     <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
-      {mode === 'board' && <Board />}
+      {isView(ProjectViewType.BOARD) && <Board />}
       {/* {mode === 'board2' && <Board2 />} */}
-      {mode === 'task' && <TaskList />}
+      {isView(ProjectViewType.LIST) && <TaskList />}
+      {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null}
+      {isView(ProjectViewType.CALENDAR) ? <Calendar /> : null}
+      {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null}
+      {isView(ProjectViewType.GOAL) ? <Vision /> : null}
       {mode === 'setting' && <Settings />}
-      {mode === 'overview' ? <ProjectOverview /> : null}
-      {mode === 'calendar' ? <Calendar /> : null}
-      {mode === 'team' ? <DynamicTeamView /> : null}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateList /> : null}
-      {mode === 'vision' ? <Vision /> : null}
     </div>
   )
 }
