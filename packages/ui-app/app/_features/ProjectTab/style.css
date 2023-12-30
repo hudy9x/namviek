@@ -18,6 +18,12 @@
   }
 }
 
+.project-tab-item .project-tab-action {
+  @apply opacity-0 transition-all absolute -right-1 top-1.5 p-1 hover:bg-gray-100 rounded;
+  @apply w-[23px] h-[23px];
+
+}
+
 .project-tab-item.active {
   @apply border-indigo-400 text-indigo-700;
   @apply dark:border-indigo-300 text-indigo-600;

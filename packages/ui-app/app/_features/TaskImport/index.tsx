@@ -60,15 +60,6 @@ export default function TaskImport() {
                   </div>
                 }
               />
-              {/* <DropdownMenu.Item */}
-              {/*   disabled={true} */}
-              {/*   title={ */}
-              {/*     <div className="flex items-center gap-2"> */}
-              {/*       <PiFileCsv className="w-5 h-5 text-gray-600" /> */}
-              {/*       From .csv file */}
-              {/*     </div> */}
-              {/*   } */}
-              {/* /> */}
             </DropdownMenu.Content>
           </DropdownMenu>
         </div>

@@ -6,11 +6,16 @@ interface ProjectViewState {
   views: ProjectView[]
   addAllView: (data: ProjectView[]) => void
   addView: (data: ProjectView) => void
+  deleteView: (id: string) => void
   updateView: (id: string, data: Partial<ProjectView>) => void
 }
 
 export const useProjectViewStore = create<ProjectViewState>(set => ({
   views: [],
+
+  deleteView: (id: string) => set(produce((state: ProjectViewState) => {
+    state.views = state.views.filter(v => v.id !== id)
+  })),
 
   updateView: (id: string, data: Partial<ProjectView>) =>
     set(
@@ -20,7 +25,12 @@ export const useProjectViewStore = create<ProjectViewState>(set => ({
         const foundIndex = state.views.findIndex(v => v.id === id)
         if (foundIndex === -1) return
 
-        // state.views[foundIndex] = data
+        const view = state.views[foundIndex]
+        const { name } = data
+
+        if (name) {
+          view.name = name
+        }
       })
     ),
 

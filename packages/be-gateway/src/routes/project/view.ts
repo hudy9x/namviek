@@ -55,12 +55,25 @@ export default class ProjectViewController extends BaseController {
   }
 
   @Put('/')
-  updateView(@Res() res: ExpressResponse, @Req() req: ExpressRequest) {
-    res.json({ data: 1 })
+  async updateView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
+    const { id: uid } = req.authen
+    const { name, id } = req.body as { id: string, name: string }
+
+    const result = await mdProjectView.update(id, {
+      name: name,
+      updatedAt: new Date(),
+      updatedBy: uid
+    })
+
+    return result
   }
 
   @Delete('/')
-  deleteView(@Res() res: ExpressResponse, @Req() req: ExpressRequest) {
-    res.json({ data: 1 })
+
+  async deleteView(@Res() res: ExpressResponse, @Req() req: ExpressRequest) {
+    const { id } = req.query as { id: string }
+    const result = await mdProjectView.delete(id)
+
+    return result
   }
 }

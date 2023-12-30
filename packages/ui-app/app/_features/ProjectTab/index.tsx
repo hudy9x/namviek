@@ -5,6 +5,8 @@ import ProjectViewCreate from './ProjectViewCreate'
 import './style.css'
 import { useProjectViewList } from './useProjectViewList'
 import ProjectViewIcon from './ProjectViewIcon'
+import { HiOutlineDotsVertical } from 'react-icons/hi'
+import ProjectTabItemDropdown from './ProjectTabItemDropdown'
 
 export default function ProjectTab() {
   const searchParams = useSearchParams()
@@ -27,10 +29,11 @@ export default function ProjectTab() {
         return (
           <div
             onClick={() => onMoveTab(view.id)}
-            className={`project-tab-item ${active ? 'active' : ''}`}
+            className={`project-tab-item group relative ${active ? 'active' : ''}`}
             key={index}>
             <ProjectViewIcon type={view.type} />
             <span>{view.name}</span>
+            <ProjectTabItemDropdown id={view.id} name={view.name} />
           </div>
         )
       })}

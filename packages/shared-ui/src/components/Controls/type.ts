@@ -8,6 +8,7 @@ interface InputBaseProps {
   type: string
   onChange: (ev: ChangeEvent<HTMLInputElement>) => void
   onBlur: (ev: FocusEvent<HTMLInputElement>) => void
+  onEnter: (val: string, target: HTMLInputElement) => void
   placeholder: string
   helper: string
   error: string
@@ -18,13 +19,13 @@ interface InputBaseProps {
   addon: string
 }
 
-type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value' | 'onBlur'> & {
+type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value' | 'onBlur' | 'onEnter'> & {
   onChange: (v: number) => void
   value: number
   maxValue: number
   step: number
 }
-type TextareaBaseProps = Omit<InputBaseProps, 'onChange'> & {
+type TextareaBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
   onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
   onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
   onEnter: (val: string, target: HTMLTextAreaElement) => void
@@ -32,7 +33,7 @@ type TextareaBaseProps = Omit<InputBaseProps, 'onChange'> & {
   cols: number
 }
 
-type TexteditorBaseProps = Omit<InputBaseProps, 'onChange'> & {
+type TexteditorBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
   onChange: (ev: string) => void
 }
 
