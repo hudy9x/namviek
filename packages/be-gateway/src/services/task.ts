@@ -2,12 +2,12 @@
 import { Task, TaskPriority } from '@prisma/client'
 import {
   mdMemberGetAll,
-  mdSettingNotificationQuery,
+  mdProjectSettingQuery,
   mdTaskGetAll
 } from '@shared/models'
 import { CKEY, getJSONCache, setJSONCache } from '../lib/redis'
 
-export const KEY_TASK_COUNT = CKEY.TASK_COUNTS
+export const KEY_TASK_SUMMARY = CKEY.TASK_SUMMARY
 
 interface ITaskSummary {
   numOverDueTasks: number,
@@ -22,15 +22,19 @@ interface ITaskSummaryForUID {
 
 export const getTaskSummary = async () => {
   let taskSummary: ITaskSummaryForUID = {}
-  const taskCounts = await getJSONCache(KEY_TASK_COUNT)
-  if (taskCounts) {
-    return taskCounts
+  const taskSummaryCache = await getJSONCache(KEY_TASK_SUMMARY)
+  if (taskSummaryCache) {
+    return taskSummaryCache
   }
 
   const members = await mdMemberGetAll()
   for (const member of members) {
     const { projectId, uid } = member
-    const setting = await mdSettingNotificationQuery(projectId)
+    const setting = await mdProjectSettingQuery(projectId)
+    if(!setting) {
+      continue
+    }
+
     const {
       organizationId,
       overDueTaskStatus,
@@ -101,7 +105,7 @@ export const getTaskSummary = async () => {
     }
   }
 
-  setJSONCache(KEY_TASK_COUNT, taskSummary)
+  setJSONCache(KEY_TASK_SUMMARY, taskSummary)
 
   return taskSummary
 }

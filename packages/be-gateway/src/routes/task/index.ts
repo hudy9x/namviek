@@ -36,7 +36,7 @@ import {
   getTodoCounter,
   updateTodoCounter
 } from '../../services/todo.counter'
-import { KEY_TASK_COUNT } from '../../services/task'
+import { KEY_TASK_SUMMARY } from '../../services/task'
 import ActivityService from '../../services/activity.service'
 
 const router = Router()
@@ -320,7 +320,7 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     }
 
     // delete task by setting notification
-    delCache(KEY_TASK_COUNT)
+    delCache(KEY_TASK_SUMMARY)
 
     // delete all cached tasks
     processes.push(findNDelCaches(key))
@@ -378,7 +378,7 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
     }))
 
     // delete task by setting notification
-    delCache(KEY_TASK_COUNT)
+    delCache(KEY_TASK_SUMMARY)
 
     console.timeEnd('reassign-task-data')
 
@@ -409,7 +409,7 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
     }
     
     // delete task by setting notification
-    delCache(KEY_TASK_COUNT)
+    delCache(KEY_TASK_SUMMARY)
     
     await findNDelCaches(key)
     console.log('deleted task', id)
@@ -438,7 +438,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
     data.dueDate = new Date(data.dueDate)
 
     // delete task by setting notification
-    delCache(KEY_TASK_COUNT)
+    delCache(KEY_TASK_SUMMARY)
 
     await mdTaskUpdateMany(ids, data)
     await findNDelCaches(key)
@@ -631,7 +631,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     }
 
     // delete task by setting notification
-    delCache(KEY_TASK_COUNT)
+    delCache(KEY_TASK_SUMMARY)
 
     if (assigneeIds && assigneeIds[0] && assigneeIds[0] !== oldAssigneeId) {
       processes.push(deleteTodoCounter([assigneeIds[0], projectId]))

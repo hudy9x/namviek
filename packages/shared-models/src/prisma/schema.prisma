@@ -300,12 +300,12 @@ model Scheduler {
 }
 
 model ProjectSetting {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  projectId         String  @db.ObjectId
-  organizationId    String  @db.ObjectId
-  urgentTaskStatus  Boolean @default(false)
-  overDueTaskStatus Boolean @default(false)
-  todayTaskStatus   Boolean @default(false)
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId         String?  @db.ObjectId
+  organizationId    String?  @db.ObjectId
+  urgentTaskStatus  Boolean? @default(false)
+  overDueTaskStatus Boolean? @default(false)
+  todayTaskStatus   Boolean? @default(false)
 }
 
 enum ActivityType {

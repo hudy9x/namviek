@@ -1,7 +1,5 @@
 import { Task, TaskPriority } from '@prisma/client'
 import { taskModel, pmClient } from './_prisma'
-import { mdMemberGetAll } from './member'
-import { mdSettingNotificationQuery } from './setting'
 
 export interface ITaskQuery {
   projectId?: string
@@ -41,7 +39,7 @@ const generateConditions = ({
   const where: {
     [key: string]: unknown
   } = {}
-
+  
   take = take ? parseInt(take as unknown as string, 10) : undefined
 
   // filter task by title

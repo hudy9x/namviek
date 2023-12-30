@@ -27,7 +27,7 @@ export enum CKEY {
   FAV_QUERY = 'FAV_QUERY',
 
   // save task by setting
-  TASK_COUNTS = 'TASK_COUNTS'
+  TASK_SUMMARY = 'TASK_SUMMARY'
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]

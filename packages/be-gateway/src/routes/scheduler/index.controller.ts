@@ -65,20 +65,20 @@ export default class Schedule extends BaseController {
 
         const urgentTaskMessage = numUrgentTasks >= 0
           ? `urgent task ${numUrgentTasks}`
-          : null
+          : ''
         const overdueTaskMessage = numOverDueTasks >= 0
           ? `overdue task ${numOverDueTasks}`
-          : null
+          : ''
         const todayTaskMessage = numTodayTask >= 0
           ? `today task ${numTodayTask}`
-          : null
+          : ''
 
         const notificationBody = `
-        ${urgentTaskMessage}
         ${overdueTaskMessage}
-        ${todayTaskMessage}
+${urgentTaskMessage}
+${todayTaskMessage}
         `
-
+        console.log(notificationBody, '----> notificationBody')
         organizationIds.forEach(org => {
           const taskLink = genFrontendUrl(`${org}/my-works`)
           notifyToWebUsers(uid, { body: notificationBody, deep_link: taskLink })
