@@ -9,6 +9,14 @@ export const mdProjectView = {
       }
     })
   },
+  getByProjects: (projectIds: string[]) => {
+    return projectViewModel.findMany({
+      where: {
+        projectId: { in: projectIds }
+      },
+      // distinct: ['projectId']
+    })
+  },
 
   add: (data: Omit<ProjectView, 'id'>) => {
     return projectViewModel.create({

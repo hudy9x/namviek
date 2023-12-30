@@ -2,18 +2,21 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { projectView } from '@/services/projectView'
 import { useProjectViewStore } from '@/store/projectView'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
 
 export const useProjectViewList = () => {
+
   const { projectId } = useParams()
-  const { views, addAllView } = useProjectViewStore()
+  const { views, addAllView, loading, setLoading } = useProjectViewStore()
 
   useDebounce(() => {
     console.log('get project view')
+    setLoading(true)
     projectView.get(projectId).then(res => {
       const { data } = res.data
-
       addAllView(data)
+
+    }).finally(() => {
+      setLoading(false)
     })
   }, [projectId])
 
@@ -25,5 +28,5 @@ export const useProjectViewList = () => {
   //   })
   // }, [projectId])
   //
-  return { views }
+  return { views, loading }
 }

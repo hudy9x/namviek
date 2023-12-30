@@ -31,6 +31,8 @@ export default class ProjectViewController extends BaseController {
     const result = await mdProjectView.add({
       icon: null,
       name,
+      order: null,
+      data: {},
       type,
       projectId,
       createdBy: uid,
@@ -39,7 +41,8 @@ export default class ProjectViewController extends BaseController {
       updatedBy: null
     })
 
-    console.log(result)
+    console.log('added new project view', result.id)
+
     return result
   }
 
@@ -48,9 +51,6 @@ export default class ProjectViewController extends BaseController {
     const { projectId } = this.req.query as { projectId: string }
 
     const result = await mdProjectView.getByProject(projectId)
-
-    console.log('result', result)
-
     return result
   }
 

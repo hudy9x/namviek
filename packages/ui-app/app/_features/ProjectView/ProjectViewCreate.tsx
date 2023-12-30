@@ -24,7 +24,7 @@ export default function ProjectViewCreate() {
         onVisibleChange={setVisible}
         title=""
         triggerBy={
-          <div className="project-tab-item">
+          <div className="project-view-item">
             <AiOutlinePlus />
             <span>View</span>
           </div>

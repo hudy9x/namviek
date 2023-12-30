@@ -3,11 +3,11 @@
   right: 30px;
 }
 
-.project-tab {
+.project-view {
   @apply flex;
 }
 
-.project-tab-item {
+.project-view-item {
   @apply flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
   @apply cursor-pointer py-2 pl-3 pr-4 border-b-2 border-transparent;
   /* @apply hover:bg-gray-100; */
@@ -18,15 +18,16 @@
   }
 }
 
-.project-tab-item .project-tab-action {
+.project-view-item .project-tab-action {
   @apply opacity-0 transition-all absolute -right-1 top-1.5 p-1 hover:bg-gray-100 rounded;
   @apply w-[23px] h-[23px];
 
 }
 
-.project-tab-item.active {
+.project-view-item.active {
   @apply border-indigo-400 text-indigo-700;
-  @apply dark:border-indigo-300 text-indigo-600;
+  @apply dark:border-indigo-500 text-indigo-600;
+  @apply dark:text-indigo-400;
 }
 
 .view-form {
@@ -34,11 +35,13 @@
 }
 
 .view-name-input {
-  @apply flex items-center gap-2 border-b px-[1.625rem] py-4;
+  @apply flex items-center gap-2 border-b;
+  @apply dark:border-gray-700 px-[1.625rem] py-4;
   @apply text-gray-500;
 
   input {
     @apply outline-none w-[87%] text-lg;
+    @apply bg-transparent;
   }
 
   svg {
@@ -47,7 +50,7 @@
 }
 
 .view-types {
-  @apply shrink-0 w-[200px] h-full bg-white rounded-l-md;
+  @apply shrink-0 w-[200px] h-full bg-white dark:bg-gray-900 rounded-l-md;
   @apply p-4 space-y-1.5;
 }
 
@@ -56,7 +59,7 @@
   @apply text-sm text-gray-500;
   @apply py-2 px-2.5 rounded-md transition-all;
   @apply duration-150;
-  @apply hover:bg-gray-100;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-400;
 
   svg {
     @apply w-5 h-5;
@@ -64,10 +67,11 @@
 
   &.active {
     @apply bg-indigo-50 text-indigo-600;
+    @apply dark:bg-indigo-500/20 dark:text-indigo-300;
   }
 }
 
 .view-form-detail {
-  @apply bg-gray-100 rounded-r-md;
-  @apply py-4 px-8 w-full border-l;
+  @apply bg-gray-100 dark:bg-gray-800 rounded-r-md;
+  @apply py-4 px-8 w-full border-l dark:border-gray-700;
 }

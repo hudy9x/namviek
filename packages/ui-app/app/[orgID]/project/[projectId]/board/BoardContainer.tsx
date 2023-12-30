@@ -9,7 +9,6 @@ import {
 import BoardList from './BoardList'
 
 import { useBoardDndAction } from './useBoardDndAction'
-import BoardHeader from './BoardHeader'
 import BoardColumnDraggable from './BoardColumnDraggable'
 
 export default function BoardContainer() {

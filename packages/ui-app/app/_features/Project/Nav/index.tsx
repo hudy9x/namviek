@@ -41,6 +41,7 @@ export default function ProjectList() {
 
       if (status !== 200) return
 
+      console.log(data)
       addAllProject(data)
       // active project item
       projects.some(p => {
@@ -58,7 +59,7 @@ export default function ProjectList() {
     <nav className="nav">
       {pin.length ? <h2 className="section">Pinned</h2> : null}
       {pin.map(project => {
-        const { id, name, icon } = project
+        const { id, name, icon, projectViewId } = project
         const counter = todoCounter[id]
 
 
@@ -66,6 +67,7 @@ export default function ProjectList() {
           <ProjectNavItem
             pinned={true}
             badge={counter}
+            view={projectViewId || ''}
             key={id}
             id={id}
             name={name || ''}
@@ -75,13 +77,14 @@ export default function ProjectList() {
       })}
       {pin.length ? <h2 className="section">All project</h2> : null}
       {unpin.map(project => {
-        const { id, name, icon } = project
+        const { id, name, icon, projectViewId } = project
         const counter = todoCounter[id]
 
         return (
           <ProjectNavItem
             badge={counter}
             key={id}
+            view={projectViewId || ''}
             id={id}
             name={name || ''}
             icon={icon || ''}

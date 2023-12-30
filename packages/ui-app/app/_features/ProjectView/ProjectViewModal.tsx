@@ -1,17 +1,14 @@
 import { ProjectViewType } from '@prisma/client'
-import { Button } from '@shared/ui'
 import { useState } from 'react'
-import { HiOutlineMenuAlt1, HiOutlineViewList } from 'react-icons/hi'
+import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import {
-  HiListBullet,
   HiOutlineCalendar,
-  HiOutlineClipboardDocumentList,
   HiOutlineRectangleGroup,
   HiOutlineRocketLaunch,
   HiOutlineUserGroup,
   HiOutlineViewColumns
 } from 'react-icons/hi2'
-import { TbTimeline } from 'react-icons/tb'
+
 import ProjectViewModalForm from './ProjectViewModalForm'
 import { useProjectViewContext } from './context'
 
@@ -37,12 +34,12 @@ export default function ProjectViewModal() {
       title: 'Calendar',
       desc: 'Calendar view is your place for planning, scheduling, and resource management.'
     },
-    {
-      icon: <TbTimeline />,
-      type: ProjectViewType.TIMELINE,
-      title: 'Timeline',
-      desc: 'Plan out your work over time. See overlaps, map your schedule out and see it all divided by groups.'
-    },
+    // {
+    //   icon: <TbTimeline />,
+    //   type: ProjectViewType.TIMELINE,
+    //   title: 'Timeline',
+    //   desc: 'Plan out your work over time. See overlaps, map your schedule out and see it all divided by groups.'
+    // },
     {
       icon: <HiOutlineRocketLaunch />,
       type: ProjectViewType.GOAL,
@@ -55,12 +52,12 @@ export default function ProjectViewModal() {
       title: 'Team',
       desc: 'Monitor what people are working on, what has been done, and who needs more tasks with Team view'
     },
-    {
-      icon: <HiOutlineClipboardDocumentList />,
-      type: ProjectViewType.ACTIVITY,
-      title: 'Acitivity',
-      desc: 'Get an aggregated view of all activity across a location. Filter for people and type to get granular with the activity you see.'
-    },
+    // {
+    //   icon: <HiOutlineClipboardDocumentList />,
+    //   type: ProjectViewType.ACTIVITY,
+    //   title: 'Acitivity',
+    //   desc: 'Get an aggregated view of all activity across a location. Filter for people and type to get granular with the activity you see.'
+    // },
     {
       icon: <HiOutlineRectangleGroup />,
       type: ProjectViewType.DASHBOARD,

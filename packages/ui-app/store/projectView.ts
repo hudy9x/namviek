@@ -3,6 +3,8 @@ import { ProjectView } from '@prisma/client'
 import { produce } from 'immer'
 
 interface ProjectViewState {
+  loading: boolean
+  setLoading: (stt: boolean) => void
   views: ProjectView[]
   addAllView: (data: ProjectView[]) => void
   addView: (data: ProjectView) => void
@@ -11,7 +13,12 @@ interface ProjectViewState {
 }
 
 export const useProjectViewStore = create<ProjectViewState>(set => ({
+  loading: false,
   views: [],
+
+  setLoading: (stt: boolean) => set(produce((state: ProjectViewState) => {
+    state.loading = stt
+  })),
 
   deleteView: (id: string) => set(produce((state: ProjectViewState) => {
     state.views = state.views.filter(v => v.id !== id)

@@ -21,7 +21,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import FavoriteAddModal from '@/features/Favorites/FavoriteAddModal'
 import PromptGenerator from '@/features/PromptGenerator'
 import { DropdownMenu } from '@shared/ui'
-import ProjectTab from '@/features/ProjectTab'
+import ProjectView from '@/features/ProjectView'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -151,15 +151,14 @@ export default function ProjectNav() {
         </h2>
 
         <div className="hidden sm:flex items-center justify-between">
-          <ProjectTab />
+          <ProjectView />
           <div className="flex items-center gap-2">
             <div className="tab">
               <div
-                className={`tab-item ${
-                  ['automation', 'automation-create'].includes(mode || '')
-                    ? 'active'
-                    : ''
-                }`}
+                className={`tab-item ${['automation', 'automation-create'].includes(mode || '')
+                  ? 'active'
+                  : ''
+                  }`}
                 onClick={() => onMoveTab('automation')}>
                 <HiOutlineCpuChip />
                 <span>Automation</span>

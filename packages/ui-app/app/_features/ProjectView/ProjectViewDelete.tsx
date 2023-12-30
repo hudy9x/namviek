@@ -7,8 +7,8 @@ export default function ProjectViewDelete({ id }: { id: string }) {
   const { deleteView } = useProjectViewStore()
   const onDelete = () => {
     confirmWarning({
-      title: "Delete project view",
-      message: 'Keep in mind that your data is still safe. Just create another view to bring your data back.',
+      title: "Delete project tab",
+      message: "Keep in mind that your data is still be safe. Just create another view to bring your data back.",
       yes: () => {
         deleteView(id)
         projectView.delete(id).then(res => {

@@ -4,8 +4,10 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { HiOutlineDocumentText, HiOutlineTrash } from "react-icons/hi2";
 import ProjectViewChangeName from "./ProjectViewChangeName";
 import ProjectViewDelete from "./ProjectViewDelete";
+import { ProjectViewType } from "@prisma/client";
+import ProjectViewSetAsDefault from "./ProjectViewSetAsDefault";
 
-export default function ProjectTabItemDropdown({ id, name }: { id: string, name: string }) {
+export default function ProjectViewItemDropdown({ id, name, type }: { id: string, name: string, type: ProjectViewType }) {
   const [visible, setVisible] = useState(false)
 
 
@@ -20,11 +22,12 @@ export default function ProjectTabItemDropdown({ id, name }: { id: string, name:
           icon={<HiOutlineDocumentText />}
           title='Rename'
         />
+        <ProjectViewSetAsDefault id={id} />
         <ProjectViewDelete id={id} />
       </DropdownMenu.Content>
     </DropdownMenu >
     <Modal visible={visible} onVisibleChange={setVisible} title="Rename tab" content={
-      <ProjectViewChangeName id={id} name={name} hideModal={() => {
+      <ProjectViewChangeName id={id} name={name} type={type} hideModal={() => {
         setVisible(false)
       }} />
     } />

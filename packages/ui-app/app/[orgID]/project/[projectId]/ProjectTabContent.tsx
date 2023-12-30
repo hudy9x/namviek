@@ -8,6 +8,8 @@ import TaskList from './TaskList'
 import { useProjectViewStore } from '@/store/projectView'
 import { useMemo } from 'react'
 import { ProjectViewType } from '@prisma/client'
+import AbsoluteLoading from 'packages/shared-ui/src/components/Loading/AbsoluteLoading'
+import { Loading } from '@shared/ui'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -39,7 +41,7 @@ const AutomateList = dynamic(
 )
 
 export default function ProjectTabContent() {
-  const { views } = useProjectViewStore()
+  const { views, loading } = useProjectViewStore()
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
   const ignored = ['setting', 'automation', 'automation-create']
@@ -47,13 +49,15 @@ export default function ProjectTabContent() {
 
   const type = useMemo(() => {
     const view = views.find(v => v.id === mode)
-    return view ? view.type : 'LIST'
+    return view ? view.type : 'NONE'
   }, [mode, JSON.stringify(views)])
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
 
   return (
-    <div className="overflow-y-auto" style={{ height: 'calc(100vh - 83px)' }}>
+    <div className="overflow-y-auto relative" style={{ height: 'calc(100vh - 83px)' }}>
+      <Loading.Absolute enabled={loading}/>
+      {type === 'NONE' && <TaskList />}
       {isView(ProjectViewType.BOARD) && <Board />}
       {/* {mode === 'board2' && <Board2 />} */}
       {isView(ProjectViewType.LIST) && <TaskList />}

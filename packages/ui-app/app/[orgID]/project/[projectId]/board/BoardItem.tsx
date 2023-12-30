@@ -3,12 +3,14 @@ import { useParams, useRouter } from 'next/navigation'
 
 import { dateFormat } from '@shared/libs'
 import MemberAvatar from '@/components/MemberAvatar'
+import { useUrl } from '@/hooks/useUrl'
 
 export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
   const { replace } = useRouter()
+  const { getSp } = useUrl()
   // return <div className="">{data.title}</div>
-  const link = `${orgID}/project/${projectId}?mode=board&taskId=${data.id}`
+  const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${data.id}`
 
   return (
     <div

@@ -6,10 +6,12 @@ import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 import Badge from '@/components/Badge'
 import Tooltip from 'packages/shared-ui/src/components/Tooltip'
+import { useProjectViewStore } from '@/store/projectView'
 
 export default function ProjectNavItem({
   pinned = false,
   id,
+  view,
   name,
   badge,
   icon
@@ -17,15 +19,17 @@ export default function ProjectNavItem({
   pinned?: boolean
   badge?: number
   id: string
+  view: string
   name: string
   icon: string
 }) {
   const [visible, setVisible] = useState(false)
   const { setVisible: setMenuVisible } = useMenuStore()
+  const { setLoading: setProjectViewLoading } = useProjectViewStore()
   const params = useParams()
   const { push } = useRouter()
   const active = params.projectId === id
-  const href = `${params.orgID}/project/${id}?mode=task`
+  const href = `${params.orgID}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
   const onSelectProject = (id: string) => {
     selectProject(id)
@@ -38,6 +42,7 @@ export default function ProjectNavItem({
   }, [])
 
   const onSelectItem = (link: string) => {
+    setProjectViewLoading(true)
     onSelectProject(id)
     setMenuVisible(false)
     push(link)
@@ -59,9 +64,8 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${
-        visible ? 'opacity-100' : 'opacity-0'
-      } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+        } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
       }}>

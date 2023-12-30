@@ -1,10 +1,11 @@
-import { MemberRole, Project, StatusType } from '@prisma/client'
+import { MemberRole, Project, ProjectViewType, StatusType } from '@prisma/client'
 import {
   mdMemberAdd,
   mdMemberGetProject,
   mdProjectAdd,
   mdProjectGetAllByIds,
   mdProjectUpdate,
+  mdProjectView,
   mdTaskPointAddMany,
   mdTaskStatusAddMany
 } from '@shared/models'
@@ -59,13 +60,12 @@ router.get('/project', async (req: AuthRequest, res) => {
       isArchived: isArchived === 'true'
     })
 
-
     setJSONCache(key, projects)
 
     // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
       status: 200,
-      data: projects
+      data: projects,
     })
   } catch (error) {
     console.log('get project by member error', error)
@@ -92,6 +92,7 @@ router.post('/project', async (req: AuthRequest, res) => {
     const result = await mdProjectAdd({
       cover: null,
       icon: body.icon || '',
+      projectViewId: null,
       name: body.name,
       desc: body.desc,
       createdBy: userId,
@@ -135,6 +136,22 @@ router.post('/project', async (req: AuthRequest, res) => {
       { point: 8, projectId: result.id, icon: null }
     ]
 
+    const initialProjectView = {
+      icon: null,
+      name: 'Board',
+      projectId: result.id,
+      type: ProjectViewType.BOARD,
+      data: {},
+      order: null,
+      createdAt: new Date(),
+      createdBy: userId,
+      updatedBy: null,
+      updatedAt: null
+    }
+
+    const defaultView = await mdProjectView.add(initialProjectView);
+    await mdProjectUpdate({ id: result.id, projectViewId: defaultView.id })
+
     const promise = [
       mdTaskStatusAddMany(initialStatusData),
       mdTaskPointAddMany(initialPointData),
@@ -164,11 +181,12 @@ router.post('/project', async (req: AuthRequest, res) => {
 })
 
 router.put('/project', async (req: AuthRequest, res) => {
-  const { id, icon, name, desc, organizationId } = req.body as {
+  const { id, icon, name, desc, projectViewId, organizationId } = req.body as {
     id: string
     icon: string
     name: string
     desc: string
+    projectViewId: string
     organizationId: string
   }
   const { id: userId } = req.authen
@@ -197,6 +215,10 @@ router.put('/project', async (req: AuthRequest, res) => {
 
   if (organizationId) {
     updateData.organizationId = organizationId
+  }
+
+  if (projectViewId) {
+    updateData.projectViewId = projectViewId
   }
 
   const result = await mdProjectUpdate(updateData)

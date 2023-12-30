@@ -237,6 +237,7 @@ model FileStorage {
 model Project {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String
+  projectViewId  String?   @db.ObjectId
   desc           String?
   cover          String?
   icon           String?
