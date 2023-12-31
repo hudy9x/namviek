@@ -52,10 +52,12 @@ export default function TaskFilter({
     }
 
     timeout = setTimeout(() => {
-      console.log('update search term')
+
       setFilterValue('term', txt)
     }, 250) as unknown as number
   }, [txt])
+
+  console.log('task filter', assigneeIds)
 
   return (
     <div className="task-filter">

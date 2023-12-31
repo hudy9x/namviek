@@ -56,8 +56,8 @@ export default function ProjectTabContent() {
 
   return (
     <div className="overflow-y-auto relative" style={{ height: 'calc(100vh - 83px)' }}>
-      <Loading.Absolute enabled={loading}/>
-      {type === 'NONE' && <TaskList />}
+      <Loading.Absolute enabled={loading} />
+      {type === 'NONE' && !isIgnored() && <TaskList />}
       {isView(ProjectViewType.BOARD) && <Board />}
       {/* {mode === 'board2' && <Board2 />} */}
       {isView(ProjectViewType.LIST) && <TaskList />}
