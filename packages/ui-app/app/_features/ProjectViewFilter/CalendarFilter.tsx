@@ -1,5 +1,6 @@
 import { ProjectViewType } from "@prisma/client";
 import { Button } from "@shared/ui";
+import FilterForm from "./FilterForm";
 
 export default function ProjectViewFilterByCalendar({ type, desc, onAdd }: {
   type: ProjectViewType
@@ -14,6 +15,7 @@ export default function ProjectViewFilterByCalendar({ type, desc, onAdd }: {
     <div className="">
       <h2 className="text-xl mb-3">Calendar</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
+      <FilterForm />
       <div className="text-right">
         <Button
           onClick={onAdd}

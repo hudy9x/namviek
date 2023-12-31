@@ -22,17 +22,34 @@ export default class ProjectViewController extends BaseController {
   @Post('/')
   async addView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, type, projectId } = req.body as {
+    const { name, type, projectId, data } = req.body as {
       name: string
       type: ProjectViewType
       projectId: string
+      data: {
+        date: string
+        priority: string
+        point: string
+        groupBy: string
+      }
     }
+
+    if (!data) {
+      console.log('error')
+    }
+    console.log(data, typeof data)
 
     const result = await mdProjectView.add({
       icon: null,
       name,
       order: null,
-      data: {},
+      data: data ? {
+        date: data.date,
+        priority: data.priority,
+        point: data.point,
+        groupBy: data.groupBy
+      } : {},
+
       type,
       projectId,
       createdBy: uid,

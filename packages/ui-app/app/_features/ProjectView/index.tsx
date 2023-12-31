@@ -7,6 +7,8 @@ import { useProjectViewList } from './useProjectViewList'
 import ProjectViewIcon from './ProjectViewIcon'
 import { Loading } from '@shared/ui'
 import ProjectViewItemDropdown from './ProjectViewItemDropdown'
+import { useTaskFilter } from '../TaskFilter/context'
+import { IBoardFilter } from './context'
 
 export default function ProjectView() {
   const searchParams = useSearchParams()
@@ -14,8 +16,30 @@ export default function ProjectView() {
   const params = useParams()
   const mode = searchParams.get('mode')
   const { views, loading } = useProjectViewList()
+  const { setFilter, setDefaultFilter } = useTaskFilter()
 
   const onMoveTab = (name: string) => {
+    const view = views.find(v => v.id === name)
+
+    if (view && !view.data) {
+      setDefaultFilter()
+    }
+
+    if (view && view.data) {
+
+      const data = view.data as unknown as IBoardFilter
+      setFilter(filter => ({
+        ...filter,
+        ...{
+          date: data.date,
+          groupBy: data.groupBy,
+          priority: data.priority,
+          point: data.point
+        }
+      }))
+      console.log(view?.data)
+    }
+
     push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
   }
 

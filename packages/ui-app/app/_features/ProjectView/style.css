@@ -11,7 +11,7 @@
   @apply flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
   @apply cursor-pointer py-2 pl-3 pr-4 border-b-2 border-transparent;
   /* @apply hover:bg-gray-100; */
-  @apply hover:text-indigo-400;
+  @apply hover:text-gray-500 dark:hover:text-gray-300;
 
   svg {
     @apply w-[18px] h-[18px];
@@ -21,6 +21,7 @@
 .project-view-item .project-tab-action {
   @apply opacity-0 transition-all absolute -right-1 top-1.5 p-1 hover:bg-gray-100 rounded;
   @apply w-[23px] h-[23px];
+  @apply dark:hover:bg-gray-700;
 
 }
 

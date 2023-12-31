@@ -14,7 +14,7 @@ import { useProjectViewContext } from './context'
 
 export default function ProjectViewModal() {
   const { name, setName } = useProjectViewContext()
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState<ProjectViewType>(ProjectViewType.LIST)
   const [views] = useState([
     {
       icon: <HiOutlineMenuAlt1 />,
@@ -34,6 +34,10 @@ export default function ProjectViewModal() {
       title: 'Calendar',
       desc: 'Calendar view is your place for planning, scheduling, and resource management.'
     },
+  ])
+
+  const otherViews = [
+
     // {
     //   icon: <TbTimeline />,
     //   type: ProjectViewType.TIMELINE,
@@ -64,14 +68,14 @@ export default function ProjectViewModal() {
       title: 'Dashboard',
       desc: 'Have a overlook view'
     }
-  ])
+  ]
 
-  const activeView = views[active]
+  const activeView = views.find(v => v.type === active) || otherViews.find(v => v.type === active)
 
   return (
     <div className="view-form">
       <div className="view-name-input">
-        {activeView.icon}
+        {activeView?.icon}
         <input
           value={name}
           onChange={ev => setName(ev.target.value)}
@@ -81,15 +85,33 @@ export default function ProjectViewModal() {
       </div>
       <div className="flex items-start w-full">
         <div className="view-types">
+          <div className='pl-3 text-[10px] uppercase text-gray-500'>Popular</div>
           {views.map((view, viewIndex) => {
-            const { icon, title } = view
-            const isActive = viewIndex === active
+            const { icon, title, type } = view
+            const isActive = type === active
             return (
               <div
                 className={`view-item ${isActive ? 'active' : ''}`}
                 key={viewIndex}
                 onClick={() => {
-                  setActive(viewIndex)
+                  setActive(type)
+                }}>
+                {icon}
+                {title}
+              </div>
+            )
+          })}
+
+          <div className='pl-3 text-[10px] uppercase text-gray-500 pt-5'>Other</div>
+          {otherViews.map((view, viewIndex) => {
+            const { icon, title, type } = view
+            const isActive = type === active
+            return (
+              <div
+                className={`view-item ${isActive ? 'active' : ''}`}
+                key={viewIndex}
+                onClick={() => {
+                  setActive(type)
                 }}>
                 {icon}
                 {title}
@@ -98,11 +120,11 @@ export default function ProjectViewModal() {
           })}
         </div>
         <div className="view-form-detail">
-          <ProjectViewModalForm
+          {activeView ? <ProjectViewModalForm
             type={activeView.type}
             name={activeView.title}
             desc={activeView.desc}
-          />
+          /> : null}
         </div>
       </div>
     </div>
