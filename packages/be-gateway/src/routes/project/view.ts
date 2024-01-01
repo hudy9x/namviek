@@ -37,7 +37,6 @@ export default class ProjectViewController extends BaseController {
     if (!data) {
       console.log('error')
     }
-    console.log(data, typeof data)
 
     const result = await mdProjectView.add({
       icon: null,
