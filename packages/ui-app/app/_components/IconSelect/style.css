@@ -1,0 +1,22 @@
+.icon-select-content {
+  @apply grid grid-cols-11;
+  @apply px-2
+}
+
+.icon-select-trigger .btn {
+  @apply border-none p-0 transition-all;
+
+  &:active{
+    @apply scale-95;
+  }
+}
+
+.icon-select-content .dropdown-item {
+  min-width: 0px;
+   
+  svg {
+    @apply w-[20px] h-[20px]
+  }
+}
+
+

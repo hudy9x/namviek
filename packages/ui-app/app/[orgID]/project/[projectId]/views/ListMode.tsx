@@ -19,6 +19,7 @@ import TaskActions from '@/features/TaskActions'
 import ProgressBar from '@/components/ProgressBar'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
+import { useUrl } from '@/hooks/useUrl'
 
 export default function ListMode() {
   const {
@@ -32,6 +33,8 @@ export default function ListMode() {
 
   const { tasks, taskLoading } = useTaskStore()
   const params = useParams()
+  const { getSp } = useUrl()
+
 
   return (
     <div className="pb-[300px]">
@@ -46,9 +49,8 @@ export default function ListMode() {
                 className="flex gap-2 items-center text-xs uppercase font-bold">
                 <TaskCheckAll groupId={group.id} />
                 <div
-                  className={`status-name flex items-center ${
-                    groupByLoading ? 'loading' : ''
-                  }`}>
+                  className={`status-name flex items-center ${groupByLoading ? 'loading' : ''
+                    }`}>
                   {isGroupbyAssignee ? (
                     <div className="mr-2 inline-block">
                       <Avatar
@@ -114,7 +116,7 @@ export default function ListMode() {
                         {/* {task.id} */}
                         <Link
                           key={task.id}
-                          href={`${params.orgID}/project/${task.projectId}?mode=task&taskId=${task.id}`}>
+                          href={`${params.orgID}/project/${task.projectId}?mode=${getSp('mode')}&taskId=${task.id}`}>
                           <div className="w-full">{task.title}</div>
                         </Link>
                         <TaskActions

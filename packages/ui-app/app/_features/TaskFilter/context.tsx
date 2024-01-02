@@ -78,23 +78,28 @@ const TaskFilterContext = createContext<ITaskFilterContextProps>({
   }
 })
 
+const d = new Date()
+const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
+const lastDate = getLastDateOfMonth(new Date())
+const defaultFilter: ITaskFilterFields = {
+  term: '',
+  groupBy: ETaskFilterGroupByType.STATUS,
+  dateOperator: '=',
+  date: 'this-month',
+  startDate: firstDate,
+  endDate: lastDate,
+  point: '-1',
+  priority: 'ALL',
+  assigneeIds: ['ALL']
+}
+
 export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
-  const d = new Date()
-  const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
-  const lastDate = getLastDateOfMonth(new Date())
+  // const d = new Date()
+  // const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
+  // const lastDate = getLastDateOfMonth(new Date())
   const [groupByItems, setGroupbyItems] = useState<ITaskFilterGroupbyItem[]>([])
   const [groupByLoading, setGroupbyLoading] = useState(false)
-  const [filter, setFilter] = useState<ITaskFilterFields>({
-    term: '',
-    groupBy: ETaskFilterGroupByType.STATUS,
-    dateOperator: '=',
-    date: 'this-month',
-    startDate: firstDate,
-    endDate: lastDate,
-    point: '-1',
-    priority: 'ALL',
-    assigneeIds: ['ALL']
-  })
+  const [filter, setFilter] = useState<ITaskFilterFields>(defaultFilter)
 
   return (
     <TaskFilterContext.Provider
@@ -136,6 +141,10 @@ export const useTaskFilter = () => {
     val: string | string[] | Date | ETaskFilterGroupByType
   ) => {
     setFilter(filter => ({ ...filter, [name]: val }))
+  }
+
+  const setDefaultFilter = () => {
+    setFilter(defaultFilter)
   }
 
   const _groupByStatus = (): ITaskFilterGroupbyItem[] => {
@@ -231,7 +240,7 @@ export const useTaskFilter = () => {
   }
 
   const updateGroupbyItems = () => {
-    console.log('update group by items')
+
     let groupItems: ITaskFilterGroupbyItem[] = []
 
     switch (filter.groupBy) {
@@ -361,6 +370,7 @@ export const useTaskFilter = () => {
     swapGroupItemOrder,
     filter,
     setFilter,
+    setDefaultFilter,
     setFilterValue,
     isGroupbyStatus,
     updateGroupByFilter,

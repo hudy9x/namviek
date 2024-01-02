@@ -8,6 +8,7 @@ export default function InputControl({
   title,
   value,
   onChange,
+  onEnter,
   onBlur,
   type = 'text',
   name,
@@ -64,6 +65,12 @@ export default function InputControl({
           readOnly={readOnly}
           onChange={onInputChange}
           onBlur={onBlur}
+          onKeyUp={(ev) => {
+            const target = ev.target as HTMLInputElement
+            if (ev.key === 'Enter' && !ev.shiftKey) {
+              onEnter && onEnter(target.value, target)
+            }
+          }}
           placeholder={placeholder}
           className="form-input"
         />

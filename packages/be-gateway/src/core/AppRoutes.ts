@@ -7,6 +7,10 @@ import {
 } from '../core'
 import { Router } from 'express'
 
+function isPromise(p) {
+  return p && Object.prototype.toString.call(p) === '[object Promise]'
+}
+
 export const AppRoutes = (routeControllers: any[]) => {
   const rootRouter = Router()
 
@@ -49,7 +53,7 @@ export const AppRoutes = (routeControllers: any[]) => {
         console.log('path', path, r.methodName)
         console.log(params)
 
-        methodRouter[method](path, (req, res, next) => {
+        methodRouter[method](path, async (req, res, next) => {
           const paramDatas = []
           params.forEach(p => {
             if (p === RouterParams.REQUEST) {
@@ -80,15 +84,30 @@ export const AppRoutes = (routeControllers: any[]) => {
           instance.req = req
           instance.res = res
           instance.next = next
-          func.apply(instance, paramDatas)
+
+          const result = await func.apply(instance, paramDatas)
+          // console.log('result app route', result)
+          if (result !== undefined) {
+            res.json({
+              data: result
+            })
+          }
         })
       } else {
         console.log('path', path, r.methodName, func)
-        methodRouter[method](path, (req, res, next) => {
+        methodRouter[method](path, async (req, res, next) => {
           instance.req = req
           instance.res = res
           instance.next = next
-          func.apply(instance, [])
+
+          const result = await func.apply(instance, [])
+
+          // console.log('result app route else:', result, typeof result)
+          if (result !== undefined) {
+            res.json({
+              data: result
+            })
+          }
         })
       }
     })

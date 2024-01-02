@@ -88,7 +88,16 @@ export const useProjectStore = create<ProjectState>(set => ({
           return
         }
 
-        project.icon = rest.icon || ''
+        const { icon, projectViewId } = rest
+
+        if (icon) {
+          project.icon = icon
+        }
+
+        if (projectViewId) {
+          project.projectViewId = projectViewId
+        }
+
       })
     ),
 

@@ -17,6 +17,8 @@ import { useTaskFilter } from '@/features/TaskFilter/context'
 import { extractDueDate, setRecentVist } from '@shared/libs'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
+import { useUrl } from '@/hooks/useUrl'
+import { useDebounce } from '@/hooks/useDebounce'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -25,6 +27,7 @@ export default function ProjectContainer() {
   const { addAllPoints } = useProjectPointStore()
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { getAutomationByProject } = useServiceAutomation()
+  const { getSp } = useUrl()
 
   useTodoFilter()
   const { filter } = useTaskFilter()
@@ -37,9 +40,10 @@ export default function ProjectContainer() {
     return assigneeIds.filter(a => a !== 'ALL')
   }
 
-  useEffect(() => {
-    setRecentVist(`/${orgID}/project/${projectId}?mode=task`)
-  }, [])
+  useDebounce(() => {
+    console.log('save lastest visit url')
+    setRecentVist(`/${orgID}/project/${projectId}?mode=${getSp('mode')}`)
+  })
 
   const { groupBy, ...filterWithoutGroupBy } = filter
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { DependencyList, EffectCallback, useEffect, useRef } from "react"
 
-export const useDebounce = (cb: EffectCallback, dependencies: DependencyList, time?: number) => {
+export const useDebounce = (cb: EffectCallback, dependencies?: DependencyList, time?: number) => {
   const timeout = useRef(0)
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const useDebounce = (cb: EffectCallback, dependencies: DependencyList, ti
       }
 
       if (timeout.current) {
-        console.log('debounce run')
+        // console.log('debounce run')
         clearTimeout(timeout.current)
       }
     }

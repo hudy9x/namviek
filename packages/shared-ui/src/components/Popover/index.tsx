@@ -10,7 +10,7 @@ export default function PopoverContainer() {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content className="popover-content" sideOffset={5}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}></div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>heheheheheh</div>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

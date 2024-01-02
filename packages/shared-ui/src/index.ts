@@ -14,6 +14,7 @@ import LoadingContainer from './components/Loading/LoadingContainer'
 import TimelineContainer from './components/Timeline'
 import DropdownMenuContainer from './components/Dropdown'
 import TabContainer from './components/Tab'
+import PopoverContainer from "./components/Popover";
 
 export {
   messageInfo,
@@ -23,6 +24,7 @@ export {
 } from './components/Message'
 export { setFixLoading } from './components/Loading'
 
+export const Popover = PopoverContainer
 export const Modal = ModalComp
 export const Form = FormControls
 export const Button = ButtonControl
