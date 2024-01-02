@@ -1,5 +1,5 @@
 import { useProjectStore } from '@/store/project'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { HiChevronRight } from 'react-icons/hi2'
 import ProjectPin from '../Pin'
 import { useEffect, useState } from 'react'
@@ -27,6 +27,7 @@ export default function ProjectNavItem({
   const { setVisible: setMenuVisible } = useMenuStore()
   const { setLoading: setProjectViewLoading } = useProjectViewStore()
   const params = useParams()
+  const pathName = usePathname()
   const { push } = useRouter()
   const active = params.projectId === id
   const href = `${params.orgID}/project/${id}?mode=${view}`
@@ -42,7 +43,12 @@ export default function ProjectNavItem({
   }, [])
 
   const onSelectItem = (link: string) => {
-    setProjectViewLoading(true)
+    const p = `${params.orgID}/project/${id}`
+
+    if (!pathName.includes(p)) {
+      setProjectViewLoading(true)
+    }
+
     onSelectProject(id)
     setMenuVisible(false)
     push(link)

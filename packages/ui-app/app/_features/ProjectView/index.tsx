@@ -29,16 +29,11 @@ export default function ProjectView() {
     const viewId = mode
     const view = views.find(v => v.id === viewId)
 
-
-
-    if (view && !Object.keys(view.data as { [key: string]: unknown }).length) {
-      console.log('set default filter')
+    if (view && view.data && !Object.keys(view.data as { [key: string]: unknown }).length) {
       setDefaultFilter()
     }
 
-    if (view && Object.keys(view.data as { [key: string]: unknown }).length) {
-      console.log('set custom filter', view.data)
-
+    if (view && view.data && Object.keys(view.data as { [key: string]: unknown }).length) {
       const data = view.data as unknown as IBoardFilter
       setFilter(filter => ({
         ...filter,
@@ -49,7 +44,7 @@ export default function ProjectView() {
           point: data.point
         }
       }))
-      console.log(view?.data)
+
     }
   }, [mode, views.toString()])
 
@@ -60,7 +55,6 @@ export default function ProjectView() {
       {views.map((view, index) => {
         const active = mode === view.id
         const { icon } = view
-        console.log(icon)
 
         return (
           <div

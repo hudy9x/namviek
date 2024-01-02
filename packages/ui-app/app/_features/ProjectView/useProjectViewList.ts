@@ -28,5 +28,5 @@ export const useProjectViewList = () => {
   //   })
   // }, [projectId])
   //
-  return { views, loading }
+  return { views, loading, setLoading }
 }

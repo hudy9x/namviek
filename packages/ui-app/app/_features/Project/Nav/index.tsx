@@ -41,7 +41,6 @@ export default function ProjectList() {
 
       if (status !== 200) return
 
-      console.log(data)
       addAllProject(data)
       // active project item
       projects.some(p => {
