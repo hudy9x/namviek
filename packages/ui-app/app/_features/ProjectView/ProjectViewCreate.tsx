@@ -7,6 +7,7 @@ import { ETaskFilterGroupByType } from '../TaskFilter/context'
 
 export default function ProjectViewCreate() {
   const [visible, setVisible] = useState(false)
+  const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
   const [filter, setFilter] = useState<IBoardFilter>({
@@ -19,7 +20,9 @@ export default function ProjectViewCreate() {
   return (
     <ProjectViewProvider
       value={{
+        icon,
         name,
+        setIcon,
         setName,
         visible,
         setVisible,

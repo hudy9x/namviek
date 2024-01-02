@@ -7,11 +7,13 @@ export const useProjectViewAdd = () => {
   const { addView } = useProjectViewStore()
 
   const addProjectView = ({
+    icon,
     name,
     type,
     projectId,
     data
   }: {
+    icon: string
     name: string
     type: ProjectViewType
     projectId: string
@@ -26,7 +28,7 @@ export const useProjectViewAdd = () => {
     } : null
 
     // addView({ name, type, projectId })
-    return projectView.add({ name, type, projectId, data: filter }).then(res => {
+    return projectView.add({ icon, name, type, projectId, data: filter }).then(res => {
       const { data } = res.data
       addView(data)
     })

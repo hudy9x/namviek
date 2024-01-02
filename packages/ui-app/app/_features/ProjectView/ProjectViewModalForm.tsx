@@ -21,7 +21,7 @@ export default function ProjectViewModalForm({
   desc: string
 }) {
   const { projectId } = useParams()
-  const { setVisible, name: viewName, setName, filter, customView } = useProjectViewContext()
+  const { setVisible, name: viewName, icon, setName, filter, customView } = useProjectViewContext()
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
 
@@ -37,6 +37,7 @@ export default function ProjectViewModalForm({
     console.log(filter, customView)
     setLoading(true)
     addProjectView({
+      icon,
       name: viewName || name,
       type,
       projectId,

@@ -10,6 +10,8 @@ export interface IBoardFilter {
 }
 
 interface IProjectViewContextProps {
+  icon: string
+  setIcon: Dispatch<SetStateAction<string>>
   name: string
   setName: Dispatch<SetStateAction<string>>
   visible: boolean
@@ -20,6 +22,8 @@ interface IProjectViewContextProps {
   setFilter: Dispatch<SetStateAction<IBoardFilter>>
 }
 const ProjectViewContext = createContext<IProjectViewContextProps>({
+  icon: '',
+  setIcon: () => { console.log(1) },
   name: '',
   setName: () => {
     console.log(1)
@@ -46,6 +50,7 @@ export const ProjectViewProvider = ProjectViewContext.Provider
 export const useProjectViewContext = () => {
   const { filter, setFilter, customView,
     setCustomView, setName, name,
+    icon, setIcon,
     visible, setVisible } = useContext(ProjectViewContext)
 
   const setFilterValue = (
@@ -56,6 +61,7 @@ export const useProjectViewContext = () => {
   }
 
   return {
+    icon, setIcon,
     filter, setFilter, setFilterValue,
     customView, setCustomView, setName,
     name, visible, setVisible

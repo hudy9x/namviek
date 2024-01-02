@@ -65,7 +65,7 @@
 }
 
 .root-container {
-  @apply flex;
+  @apply flex overflow-x-hidden;
 }
 
 /* .root-container * { */

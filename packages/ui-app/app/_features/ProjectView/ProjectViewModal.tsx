@@ -2,7 +2,13 @@ import { ProjectViewType } from '@prisma/client'
 import { useState } from 'react'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import {
+  HiMiniBars4,
+  HiOutlineBars2,
+  HiOutlineBars3,
+  HiOutlineBars3BottomLeft,
+  HiOutlineBars3BottomRight,
   HiOutlineCalendar,
+  HiOutlineListBullet,
   HiOutlineRectangleGroup,
   HiOutlineRocketLaunch,
   HiOutlineUserGroup,
@@ -11,25 +17,27 @@ import {
 
 import ProjectViewModalForm from './ProjectViewModalForm'
 import { useProjectViewContext } from './context'
+import DynamicIcon from '@/components/DynamicIcon'
+import IconSelect from '@/components/IconSelect'
 
 export default function ProjectViewModal() {
-  const { name, setName } = useProjectViewContext()
+  const { name, setName, setIcon } = useProjectViewContext()
   const [active, setActive] = useState<ProjectViewType>(ProjectViewType.LIST)
   const [views] = useState([
     {
-      icon: <HiOutlineMenuAlt1 />,
+      icon: 'HiOutlineBars3CenterLeft',
       type: ProjectViewType.LIST,
       title: 'List',
       desc: 'Use List view to organize your tasks in anyway imaginable – sort, filter, group, and customize columns.'
     },
     {
-      icon: <HiOutlineViewColumns />,
+      icon: 'HiOutlineViewColumns',
       type: ProjectViewType.BOARD,
       title: 'Board',
       desc: 'Build your perfect Board and easily drag-and-drop tasks between columns.'
     },
     {
-      icon: <HiOutlineCalendar />,
+      icon: 'HiOutlineCalendar',
       type: ProjectViewType.CALENDAR,
       title: 'Calendar',
       desc: 'Calendar view is your place for planning, scheduling, and resource management.'
@@ -45,13 +53,13 @@ export default function ProjectViewModal() {
     //   desc: 'Plan out your work over time. See overlaps, map your schedule out and see it all divided by groups.'
     // },
     {
-      icon: <HiOutlineRocketLaunch />,
+      icon: 'HiOutlineRocketLaunch',
       type: ProjectViewType.GOAL,
       title: 'Goal',
       desc: 'Set multiple goals'
     },
     {
-      icon: <HiOutlineUserGroup />,
+      icon: 'HiOutlineUserGroup',
       type: ProjectViewType.TEAM,
       title: 'Team',
       desc: 'Monitor what people are working on, what has been done, and who needs more tasks with Team view'
@@ -63,7 +71,7 @@ export default function ProjectViewModal() {
     //   desc: 'Get an aggregated view of all activity across a location. Filter for people and type to get granular with the activity you see.'
     // },
     {
-      icon: <HiOutlineRectangleGroup />,
+      icon: 'HiOutlineRectangleGroup',
       type: ProjectViewType.DASHBOARD,
       title: 'Dashboard',
       desc: 'Have a overlook view'
@@ -75,7 +83,10 @@ export default function ProjectViewModal() {
   return (
     <div className="view-form">
       <div className="view-name-input">
-        {activeView?.icon}
+        <IconSelect value={activeView?.icon || 'HiOutlineBars3CenterLeft'} onChange={val => {
+          console.log(val)
+          setIcon(val)
+        }} />
         <input
           value={name}
           onChange={ev => setName(ev.target.value)}
@@ -96,7 +107,7 @@ export default function ProjectViewModal() {
                 onClick={() => {
                   setActive(type)
                 }}>
-                {icon}
+                <DynamicIcon name={icon} />
                 {title}
               </div>
             )
@@ -113,7 +124,7 @@ export default function ProjectViewModal() {
                 onClick={() => {
                   setActive(type)
                 }}>
-                {icon}
+                <DynamicIcon name={icon} />
                 {title}
               </div>
             )

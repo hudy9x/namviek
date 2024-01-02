@@ -22,8 +22,9 @@ export default class ProjectViewController extends BaseController {
   @Post('/')
   async addView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, type, projectId, data } = req.body as {
+    const { icon, name, type, projectId, data } = req.body as {
       name: string
+      icon: string
       type: ProjectViewType
       projectId: string
       data: {
@@ -38,8 +39,10 @@ export default class ProjectViewController extends BaseController {
       console.log('error')
     }
 
+    console.log(icon)
+
     const result = await mdProjectView.add({
-      icon: null,
+      icon,
       name,
       order: null,
       data: data ? {

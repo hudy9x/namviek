@@ -35,12 +35,10 @@ export default function ProjectViewChangeName({ name, id, type, hideModal }: { n
   }
 
   return <div className="space-y-3">
-    <p className="text-gray-500 text-sm">
-      Feel free to change your tab name as you like. It will not afftect any other tabs, even if you give them the same name
-    </p>
+    <p className="text-gray-500 text-sm">{`Personalize your tab's name. By the way, names are independent, so duplicates are welcome.`}</p>
     <Form.Input onEnter={onChange} value={newName} onChange={(ev) => setNewName(ev.target.value)} />
     <div className="text-right">
-      <Button title="Change tab's name" primary onClick={onChange} />
+      <Button title="Just do it" primary onClick={onChange} />
     </div>
   </div>
 }

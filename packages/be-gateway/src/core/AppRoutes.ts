@@ -86,7 +86,7 @@ export const AppRoutes = (routeControllers: any[]) => {
           instance.next = next
 
           const result = await func.apply(instance, paramDatas)
-          console.log('result app route', result)
+          // console.log('result app route', result)
           if (result !== undefined) {
             res.json({
               data: result
@@ -102,7 +102,7 @@ export const AppRoutes = (routeControllers: any[]) => {
 
           const result = await func.apply(instance, [])
 
-          console.log('result app route else:', result, typeof result)
+          // console.log('result app route else:', result, typeof result)
           if (result !== undefined) {
             res.json({
               data: result
