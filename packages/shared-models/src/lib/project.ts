@@ -9,6 +9,17 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
   })
 }
 
+export const mdProjectGetOrgId = async (projectId: string) => {
+  return projectModel.findFirst({
+    where: {
+      id: projectId
+    },
+    select: {
+      organizationId: true
+    }
+  })
+}
+
 export const mdProjectArchive = async ({
   projectId,
   isArchived,
