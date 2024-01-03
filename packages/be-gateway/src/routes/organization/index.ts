@@ -15,6 +15,7 @@ import {
 import orgMembers from './members'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
+const MAX_STORAGE_SIZE = 500 * 1024 * 1024
 const router = Router()
 
 router.use([authMiddleware])
@@ -67,6 +68,7 @@ router.post('/org', async (req: AuthRequest, res) => {
     const result = await mdOrgAdd({
       name: body.name,
       desc: body.desc,
+      maxStorageSize: MAX_STORAGE_SIZE,
       cover: null,
       avatar: null,
       createdAt: new Date(),

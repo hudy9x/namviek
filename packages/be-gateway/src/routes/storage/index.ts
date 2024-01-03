@@ -7,6 +7,7 @@ import {
   randomObjectKeyName
 } from '@be/storage'
 import {
+  mdOrgGetOne,
   mdProjectGetOrgId,
   mdStorageAdd,
   mdStorageGet,
@@ -35,6 +36,12 @@ router.post('/create-presigned-url', async (req, res, next) => {
   const { organizationId } = await mdProjectGetOrgId(projectId)
   const storageCache = new StorageCache(organizationId)
   const size = await storageCache.getSize()
+  const { maxStorageSize } = await mdOrgGetOne(organizationId)
+
+  if (maxStorageSize && size > maxStorageSize) {
+    res.status(500).send('MAX_SIZE_STORAGE')
+    return
+  }
 
   if (size > LIMIT) {
     res.status(500).send('MAX_SIZE_STORAGE')
