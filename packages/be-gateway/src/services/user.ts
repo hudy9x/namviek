@@ -15,7 +15,7 @@ export const serviceGetUserById = async (id: string) => {
     return result
   } catch (error) {
     console.log('service get user by id error', error)
-    return {}
+    return null
   }
 }
 
@@ -33,6 +33,6 @@ export const serviceGetUserByEmail = async (email: string) => {
     return result
   } catch (error) {
     console.log('service get user by id error', error)
-    return {}
+    return null
   }
 }

@@ -5,13 +5,14 @@ import { Router } from 'express'
 import { sendVerifyEmail } from '../../lib/email'
 import {
   decodeToken,
-  generateRefreshToken,
-  generateToken,
   generateVerifyToken
 } from '../../lib/jwt'
-import { compareHashPassword, hashPassword } from '../../lib/password'
+import { hashPassword } from '../../lib/password'
 import { JWTPayload } from '../../types'
-import { serviceGetUserByEmail, serviceGetUserById } from '../../services/user'
+import JwtProvider from '../../providers/JwtProvider'
+import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
+import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
+import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
 
 const mainRouter = Router()
 const router = Router()
@@ -24,53 +25,51 @@ router.post('/refresh-token', async (req, res) => {
 
 router.post('/sign-in', async (req, res) => {
   try {
-    const body = req.body as Pick<User, 'email' | 'password'>
-    console.log('/auth/sign-in =============')
-    console.time('getUser')
-    const user = await serviceGetUserByEmail(body.email)
-    // const user = await mdUserFindEmail(body.email)
-    console.timeEnd('getUser')
-
-    if (!user) {
-      return res.json({ status: 400, error: 'Your credential is invalid' })
+    const body = req.body as Pick<User, 'email' | 'password'> & {
+      provider: 'GOOGLE' | 'EMAIL_PASSWORD'
     }
 
-    if (user.status === UserStatus.INACTIVE) {
-      return res.status(403).send()
-    }
+    const isEmailPasswordProvider = body.provider === 'EMAIL_PASSWORD'
+    const isGoogleProvider = body.provider === 'GOOGLE'
 
-    console.time('compare-pwd')
-    const result = compareHashPassword(body.password, user.password)
-    console.timeEnd('compare-pwd')
-    if (!result) {
-      return res.json({
-        status: 400,
-        error: 'Your email or password is invalid'
+    let authProvider: EmailAuthProvider | GoogleAuthProvider
+
+    if (isEmailPasswordProvider) {
+      authProvider = new EmailAuthProvider({
+        email: body.email,
+        password: body.password
       })
     }
 
-    console.time('gen-token')
-    const token = generateToken({
+    if (isGoogleProvider) {
+      authProvider = new GoogleAuthProvider({
+        email: body.email,
+        password: body.password
+      })
+    }
+
+    if (!authProvider) {
+      throw new CredentialInvalidException()
+    }
+
+    await authProvider.verify()
+    const user = authProvider.getUser()
+
+    const jwtProvider = new JwtProvider({
       id: user.id,
       email: user.email,
       name: user.name,
       photo: user.photo
     })
-    console.timeEnd('gen-token')
 
-    console.time('gen-refresh-token')
-    const refreshToken = generateRefreshToken({
-      email: user.email
-    })
-    console.timeEnd('gen-refresh-token')
+    const { token, refreshToken } = jwtProvider.generate()
 
     res.setHeader('Authorization', token)
     res.setHeader('RefreshToken', refreshToken)
 
     res.json({ status: 200, data: user })
   } catch (error) {
-    console.log(error)
-    res.json({ status: 500, error })
+    res.json({ status: error.status, error })
   }
 })
 
