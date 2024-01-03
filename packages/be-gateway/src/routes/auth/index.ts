@@ -1,21 +1,18 @@
 import { User, UserStatus } from '@prisma/client'
 import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models'
 import { validateRegisterUser } from '@shared/validation'
-import { getAuth } from 'firebase-admin/auth'
 import { Router } from 'express'
 import { sendVerifyEmail } from '../../lib/email'
 import {
   decodeToken,
-  generateRefreshToken,
-  generateToken,
   generateVerifyToken
 } from '../../lib/jwt'
-import { compareHashPassword, hashPassword } from '../../lib/password'
+import { hashPassword } from '../../lib/password'
 import { JWTPayload } from '../../types'
-import { serviceGetUserByEmail, serviceGetUserById } from '../../services/user'
 import JwtProvider from '../../providers/JwtProvider'
 import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
+import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
 
 const mainRouter = Router()
 const router = Router()
@@ -35,19 +32,17 @@ router.post('/sign-in', async (req, res) => {
     const isEmailPasswordProvider = body.provider === 'EMAIL_PASSWORD'
     const isGoogleProvider = body.provider === 'GOOGLE'
 
-    console.log('/auth/sign-in =============')
-    console.log(body)
+    let authProvider: EmailAuthProvider | GoogleAuthProvider
 
-    if (isGoogleProvider) {
-      const verifiedIDToken = await getAuth().verifyIdToken(body.password)
-      console.log('verify Id token', verifiedIDToken)
+    if (isEmailPasswordProvider) {
+      authProvider = new EmailAuthProvider({
+        email: body.email,
+        password: body.password
+      })
     }
 
-    let authProvider: EmailAuthProvider
-    console.log('1')
-    if (isEmailPasswordProvider) {
-      console.log(23)
-      authProvider = new EmailAuthProvider({
+    if (isGoogleProvider) {
+      authProvider = new GoogleAuthProvider({
         email: body.email,
         password: body.password
       })
@@ -58,31 +53,7 @@ router.post('/sign-in', async (req, res) => {
     }
 
     await authProvider.verify()
-
     const user = authProvider.getUser()
-
-    // console.time('getUser')
-    // const user = await serviceGetUserByEmail(body.email)
-    // // const user = await mdUserFindEmail(body.email)
-    // console.timeEnd('getUser')
-    //
-    // if (!user) {
-    //   return res.json({ status: 400, error: 'Your credential is invalid' })
-    // }
-    //
-    // if (user.status === UserStatus.INACTIVE) {
-    //   return res.status(403).send()
-    // }
-    //
-    // console.time('compare-pwd')
-    // const result = compareHashPassword(body.password, user.password)
-    // console.timeEnd('compare-pwd')
-    // if (!result) {
-    //   return res.json({
-    //     status: 400,
-    //     error: 'Your email or password is invalid'
-    //   })
-    // }
 
     const jwtProvider = new JwtProvider({
       id: user.id,
@@ -98,8 +69,7 @@ router.post('/sign-in', async (req, res) => {
 
     res.json({ status: 200, data: user })
   } catch (error) {
-    console.log(error)
-    res.json({ status: 500, error })
+    res.json({ status: error.status, error })
   }
 })
 

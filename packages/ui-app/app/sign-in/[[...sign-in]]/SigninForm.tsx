@@ -6,6 +6,7 @@ import {
   messageError,
   messageSuccess,
   messageWarning,
+  setFixLoading,
   useForm
 } from '@shared/ui'
 import { validateLoginUser } from '@shared/validation'
@@ -53,11 +54,8 @@ export default function SigninForm() {
   const signInWithThirdParty = async () => {
     try {
       const result = await signinWithGoogle()
-      const { user, accessToken } = result
-
+      const { user } = result
       const idToken = await user.getIdToken()
-
-      console.log(idToken)
 
       submitHandler({
         email: user.email || '',
@@ -65,7 +63,6 @@ export default function SigninForm() {
         provider: 'GOOGLE'
       })
     } catch (error) {
-      messageError('Sign in with google error !')
       console.log(error)
     }
   }
@@ -80,11 +77,18 @@ export default function SigninForm() {
         const recentVisit = getRecentVisit()
         setUser(getGoalieUser())
 
+        setFixLoading(true, {
+          title: 'Redirecting to main screen ...'
+        })
         if (recentVisit) {
           const location = window.location
           location.href = `${location.protocol}//${location.host}${recentVisit}`
         } else {
           push('/organization')
+          setTimeout(() => {
+            setFixLoading(false)
+          }, 500)
+
         }
 
         // messageSuccess('Success')
@@ -160,7 +164,7 @@ export default function SigninForm() {
               {...regField('password')}
             />
 
-            <div className="space-y-2">
+            <div className="space-y-3 mt-2">
               <Button
                 loading={loading}
                 title="Sign in"
@@ -172,7 +176,7 @@ export default function SigninForm() {
               <Button
                 onClick={signInWithThirdParty}
                 block
-                leadingIcon={<img src="/google.png" className="w-5 h-5 mr-3" />}
+                leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
                 title="Sign in with google"
               />
             </div>
