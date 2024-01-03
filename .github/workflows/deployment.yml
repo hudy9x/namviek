@@ -58,7 +58,11 @@ jobs:
            PUSHER_SECRET_KEY=${{ vars.PUSHER_SECRET_KEY }}
            LIVEKIT_API_KEY=${{ vars.LIVEKIT_API_KEY }}
            LIVEKIT_API_SECRET=${{ vars.LIVEKIT_API_SECRET }}
-           NEXT_PUBLIC_LIVEKIT_URL=${{ vars.NEXT_PUBLIC_LIVEKIT_URL }}" > .env
+           NEXT_PUBLIC_LIVEKIT_URL=${{ vars.NEXT_PUBLIC_LIVEKIT_URL }}
+           FIREBASE_PROJECT_ID=${{vars.FIREBASE_PROJECT_ID}}
+           FIREBASE_CLIENT_EMAIL=${{vars.FIREBASE_CLIENT_EMAIL}}
+           FIREBASE_PRIVATE_KEY=${{vars.FIREBASE_PRIVATE_KEY}}
+           " > .env
       - name: run app
         run: |
           pm2 start pm2.json &
