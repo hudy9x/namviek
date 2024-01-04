@@ -1,15 +1,14 @@
 'use client'
 
-import { Button, Form, FormGroup, messageError, messageWarning } from '@shared/ui'
-import { useFormik } from 'formik'
-import { orgCreate } from '../../../services/organization'
-import { Organization } from '@prisma/client'
-import { useRouter } from 'next/navigation'
-import EmojiInput from '@/components/EmojiInput'
-import { AxiosError } from 'axios'
+import EmojiInput from "@/components/EmojiInput"
+import { useDebounce } from "@/hooks/useDebounce"
+import { orgGetById, orgUpdate } from "@/services/organization"
+import { Button, Form, FormGroup, messageError, messageSuccess } from "@shared/ui"
+import { useFormik } from "formik"
+import { useParams } from "next/navigation"
 
-export default function CreateOrganization() {
-  const { push } = useRouter()
+export default function SettingAboutContent() {
+  const { orgID } = useParams()
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -17,28 +16,19 @@ export default function CreateOrganization() {
       cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
     },
     onSubmit: values => {
-      if (!values.name) {
-        messageError('Title is required !')
-        return
-      }
-
-      orgCreate(values).then(res => {
-        const { status } = res
-        const { data } = res.data
-        const org = data as Organization
-        if (status !== 200) {
-          messageError('Cannot create organization')
-          return
-        }
-        push(`/${org.id}`)
+      console.log(values)
+      orgUpdate({
+        id: orgID,
+        name: values.name,
+        cover: values.cover,
+        desc: values.desc
+      }).then(res => {
+        messageSuccess('Updated successully')
+        console.log(res)
       }).catch(err => {
-        const error = err as AxiosError
-        if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {
-          messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade')
-
-          console.log(err)
-        }
+        console.log(err)
       })
+
     }
   })
 
@@ -54,7 +44,21 @@ export default function CreateOrganization() {
     }
   }
 
-  return (
+
+  useDebounce(() => {
+    orgGetById(orgID).then(res => {
+      const { data } = res.data
+
+      formik.setValues({
+        name: data.name,
+        cover: data.cover,
+        desc: data.desc
+      })
+    })
+  }, [orgID])
+
+  return <div className="pt-12 w-[500px] mx-auto">
+
     <form onSubmit={formik.handleSubmit}>
       <div className="org">
         <div className="org-setup">
@@ -85,11 +89,10 @@ export default function CreateOrganization() {
             />
             <div>
               <Button type="submit" title="Save it" primary />{' '}
-              <Button onClick={() => push('/organization')} title="Back" />
             </div>
           </div>
         </div>
       </div>
     </form>
-  )
+  </div>
 }

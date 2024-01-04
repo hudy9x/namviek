@@ -9,9 +9,9 @@
 
 .message {
   max-width: 300px;
-  @apply rounded-md bg-white shadow-sm;
+  @apply rounded-md bg-white dark:bg-gray-900 dark:border-gray-700 shadow-sm;
   @apply m-auto py-3 px-4 inline-flex gap-3 items-center;
-  @apply border text-sm text-gray-700;
+  @apply border text-sm text-gray-700 dark:text-gray-400;
 }
 
 .message svg {
@@ -19,7 +19,7 @@
 }
 
 .message.info svg {
-  @apply text-blue-700;
+  @apply text-blue-700 dark:text-blue-400;
 }
 
 .message p {
@@ -39,13 +39,13 @@
 }
 
 .message.success svg {
-  @apply text-green-600 bg-green-500/20;
+  @apply text-green-600 dark:text-green-400 bg-green-500/20;
 }
 
 .message.error svg {
-  @apply text-red-700 bg-red-500/20;
+  @apply text-red-700 dark:text-red-400 bg-red-500/20;
 }
 
 .message.warning svg {
-  @apply text-yellow-700 bg-yellow-500/20;
+  @apply text-yellow-700 dark:text-yellow-400 bg-yellow-500/20;
 }
