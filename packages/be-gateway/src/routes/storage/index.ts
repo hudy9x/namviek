@@ -22,7 +22,7 @@ import StorageCache from '../../caches/StorageCache'
 
 const router = Router()
 
-const LIMIT = 100 * 1024 * 1024 // 100Mb
+export const MAX_STORAGE_SIZE = 100 * 1024 * 1024 // 100Mb
 router.get('/current-storage-size', async (req, res) => {
   const { orgId } = req.query as { orgId: string }
   if (!orgId) {
@@ -37,7 +37,7 @@ router.get('/current-storage-size', async (req, res) => {
   res.json({
     status: 200,
     data: {
-      maximum: maxStorageSize || LIMIT,
+      maximum: maxStorageSize || MAX_STORAGE_SIZE,
       total: totalSize
     }
   })
@@ -66,7 +66,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
     return
   }
 
-  if (totalSize > LIMIT) {
+  if (totalSize > MAX_STORAGE_SIZE) {
     res.status(500).send('MAX_SIZE_STORAGE')
     return
   }
