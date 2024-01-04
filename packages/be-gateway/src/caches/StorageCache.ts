@@ -6,7 +6,7 @@ export default class StorageCache {
     this.key = [CKEY.ORG_STORAGE_SIZE, orgId]
   }
 
-  async getSize() {
+  async getTotalSize() {
     const size = await getCache(this.key)
     return parseInt(size, 10)
   }

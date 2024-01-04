@@ -23,6 +23,26 @@ import StorageCache from '../../caches/StorageCache'
 const router = Router()
 
 const LIMIT = 100 * 1024 * 1024 // 100Mb
+router.get('/current-storage-size', async (req, res) => {
+  const { orgId } = req.query as { orgId: string }
+  if (!orgId) {
+    return res.status(500).send('ORG_MUST_PROVIDED')
+  }
+
+  const storageCache = new StorageCache(orgId)
+  const totalSize = await storageCache.getTotalSize()
+
+  const { maxStorageSize } = await mdOrgGetOne(orgId)
+
+  res.json({
+    status: 200,
+    data: {
+      maximum: maxStorageSize || LIMIT,
+      total: totalSize
+    }
+  })
+})
+
 router.post('/create-presigned-url', async (req, res, next) => {
   const { name, type, orgId, projectId } = req.body as {
     name: string
@@ -35,15 +55,18 @@ router.post('/create-presigned-url', async (req, res, next) => {
   const presignedUrl = await createPresignedUrlWithClient(randName, type)
   const { organizationId } = await mdProjectGetOrgId(projectId)
   const storageCache = new StorageCache(organizationId)
-  const size = await storageCache.getSize()
+  const totalSize = await storageCache.getTotalSize()
   const { maxStorageSize } = await mdOrgGetOne(organizationId)
 
-  if (maxStorageSize && size > maxStorageSize) {
+  console.log('totalSize', totalSize)
+  console.log('maxStorageSize', maxStorageSize)
+
+  if (maxStorageSize && totalSize > maxStorageSize) {
     res.status(500).send('MAX_SIZE_STORAGE')
     return
   }
 
-  if (size > LIMIT) {
+  if (totalSize > LIMIT) {
     res.status(500).send('MAX_SIZE_STORAGE')
     return
   }
@@ -60,7 +83,6 @@ router.post('/create-presigned-url', async (req, res, next) => {
 router.delete('/del-file', async (req: AuthRequest, res) => {
   const { id, projectId } = req.query as { id: string; projectId: string }
   try {
-
     const key = [CKEY.TASK_QUERY, projectId]
 
     const { organizationId } = await mdProjectGetOrgId(projectId)
@@ -92,7 +114,6 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
           task.fileIds = fileIds.filter(f => f !== fileId)
 
-
           delete task.id
 
           const promises = []
@@ -115,7 +136,7 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
           await deleteObject(keyName)
           await findNDelCaches(key)
 
-          // decrease storage size 
+          // decrease storage size
           const file = await mdStorageGetOne(fileId)
           if (file && file.size) {
             storageCache.decrSize(file.size)
@@ -188,7 +209,6 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
   } = req.body as FileStorage
 
   try {
-
     if (size) {
       const storageCache = new StorageCache(organizationId)
       await storageCache.incrSize(size)
@@ -217,10 +237,8 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
       data: result
     })
   } catch (error) {
-
     res.status(500).send(error)
   }
-
 })
 
 router.get('/get-object-url', async (req, res, next) => {

@@ -7,7 +7,14 @@ import {
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, IFileUploadItem, useFileKitContext } from './context'
-import { messageError, messageWarning, randomId } from '@shared/ui'
+import {
+  confirmAlert,
+  confirmWarning,
+  messageError,
+  messageWarning,
+  randomId
+} from '@shared/ui'
+import { AxiosError } from 'axios'
 
 export default function useFileUpload() {
   const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
@@ -28,6 +35,8 @@ export default function useFileUpload() {
         name: file.name,
         type: file.type
       })
+
+      console.log('res', res)
 
       const { name, presignedUrl, url } = res.data.data
       const keyName = name as string
@@ -60,7 +69,22 @@ export default function useFileUpload() {
         createdAt: fileData.createdAt || undefined,
         url
       }
-    } catch (error) {
+    } catch (err) {
+      console.log('hehheeh', err)
+      const error = err as AxiosError
+      if (error.response && error.response.data === 'MAX_SIZE_STORAGE') {
+        // messageWarning(
+        //   'Your organization has reached to max storage limit. Please contact to admin to upgrade the plan.'
+        // )
+        confirmWarning({
+          title: 'Max storage size',
+          message:
+            'Your organization has reached to max storage limit. Please contact to admin to upgrade the plan.',
+          yes: () => {
+            console.log('1')
+          }
+        })
+      }
       return null
     }
   }
