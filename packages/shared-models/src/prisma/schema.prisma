@@ -82,15 +82,16 @@ model Favorites {
 }
 
 model Organization {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String    @unique
-  cover     String?
-  avatar    String?
-  desc      String?
-  createdAt DateTime?
-  createdBy String?
-  updatedAt DateTime?
-  updatedBy String?
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String    @unique
+  cover          String?
+  avatar         String?
+  maxStorageSize Int?
+  desc           String?
+  createdAt      DateTime?
+  createdBy      String?
+  updatedAt      DateTime?
+  updatedBy      String?
 }
 
 model OrganizationMembers {

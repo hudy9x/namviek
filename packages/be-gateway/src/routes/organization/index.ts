@@ -14,6 +14,7 @@ import {
 } from '@shared/models'
 import orgMembers from './members'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
+import { MAX_STORAGE_SIZE } from '../storage'
 
 const router = Router()
 
@@ -60,13 +61,10 @@ router.post('/org', async (req: AuthRequest, res) => {
     const { id } = req.authen
     const key = [CKEY.USER_ORGS, id]
 
-    console.log('called organization')
-    console.log(body)
-    console.log(req.authen)
-
     const result = await mdOrgAdd({
       name: body.name,
       desc: body.desc,
+      maxStorageSize: MAX_STORAGE_SIZE,
       cover: null,
       avatar: null,
       createdAt: new Date(),
@@ -76,8 +74,6 @@ router.post('/org', async (req: AuthRequest, res) => {
     })
 
     delCache(key)
-
-    console.log('created', result)
 
     await mdOrgMemAdd({
       uid: id,

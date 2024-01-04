@@ -25,7 +25,10 @@ export enum CKEY {
   TASK_QUERY = 'TASK_QUERY',
 
   // save user's favorite links
-  FAV_QUERY = 'FAV_QUERY'
+  FAV_QUERY = 'FAV_QUERY',
+
+  ORG_STORAGE_SIZE = 'ORG_STORAGE_SIZE',
+  ORG_MAX_STORAGE_SIZE = 'ORG_MAX_STORAGE_SIZE',
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
@@ -209,9 +212,27 @@ export const incrCache = async (key: CACHE_KEY) => {
   }
 }
 
+export const incrByCache = async (key: CACHE_KEY, val: number) => {
+  try {
+    return await redis.incrby(genKey(key), val)
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
 export const decrCache = async (key: CACHE_KEY) => {
   try {
     return await redis.decr(genKey(key))
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const decrByCache = async (key: CACHE_KEY, val: number) => {
+  try {
+    return await redis.decrby(genKey(key), val)
   } catch (error) {
     console.log(error)
     return null
