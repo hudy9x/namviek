@@ -1,9 +1,11 @@
 .org {
-	@apply bg-indigo-50 w-screen h-screen flex items-center justify-center;
+	@apply bg-indigo-50 dark:bg-gray-800 w-screen h-screen flex items-center justify-center;
 }
 
 .org-setup {
 	@apply bg-white mx-4 p-6 sm:w-[500px] sm:p-8 sm:mx-auto border border-indigo-100 rounded-lg shadow-xl shadow-indigo-100;
+  @apply dark:bg-gray-900 dark:text-gray-400 dark:border-gray-700;
+  @apply dark:shadow-gray-900;
 }
 
 .setup-step {

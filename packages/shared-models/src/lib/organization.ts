@@ -21,6 +21,14 @@ export const mdOrgGet = async (projectId: string | string[]) => {
   });
 };
 
+export const mdOrgGetOwned = async (uid: string) => {
+  return orgModel.findMany({
+    where: {
+      createdBy: uid
+    }
+  })
+}
+
 export const mdOrgAdd = async (data: Omit<Organization, 'id'>) => {
   return orgModel.create({
     data: data

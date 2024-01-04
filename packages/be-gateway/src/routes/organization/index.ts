@@ -9,6 +9,7 @@ import { AuthRequest } from '../../types'
 import {
   mdOrgAdd,
   mdOrgGet,
+  mdOrgGetOwned,
   mdOrgMemAdd,
   mdOrgMemGetByUid
 } from '@shared/models'
@@ -57,15 +58,21 @@ router.get('/org', async (req: AuthRequest, res) => {
 
 router.post('/org', async (req: AuthRequest, res) => {
   try {
-    const body = req.body as Pick<Organization, 'name' | 'desc'>
+    const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover'>
     const { id } = req.authen
     const key = [CKEY.USER_ORGS, id]
+
+    const ownedOrgs = await mdOrgGetOwned(id)
+
+    if (ownedOrgs.length > 1) {
+      return res.status(500).send('REACHED_MAX_ORGANIZATION')
+    }
 
     const result = await mdOrgAdd({
       name: body.name,
       desc: body.desc,
       maxStorageSize: MAX_STORAGE_SIZE,
-      cover: null,
+      cover: body.cover,
       avatar: null,
       createdAt: new Date(),
       createdBy: id,
