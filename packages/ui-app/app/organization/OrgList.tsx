@@ -50,7 +50,8 @@ export default function OrgList() {
                 <div className="box border dark:border-gray-700 dark:bg-gray-900 dark:shadow-gray-900 flex h-[100px] gap-3 items-center cursor-pointer hover:border-indigo-300 text-indigo-800 dark:text-indigo-400">
                   <img
                     className="w-10 h-10 rounded-md"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Vanamo_Logo.png/600px-Vanamo_Logo.png?20120915115534"
+                    alt='Organization cover'
+                    src={org.cover || ''}
                   />
                   <h2>{org.name}</h2>
                 </div>

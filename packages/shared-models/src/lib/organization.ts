@@ -1,11 +1,11 @@
 import { Organization, OrganizationMembers } from '@prisma/client';
 import { orgMemberModel, orgModel } from './_prisma';
 
-export const mdOrgGetOne = async (projectId: string | string[]) => {
+export const mdOrgGetOne = async (orgId: string | string[]) => {
   return orgModel.findFirst({
     where: {
       id: {
-        in: Array.isArray(projectId) ? projectId : [projectId]
+        in: Array.isArray(orgId) ? orgId : [orgId]
       }
     }
   });
@@ -34,6 +34,16 @@ export const mdOrgAdd = async (data: Omit<Organization, 'id'>) => {
     data: data
   });
 };
+
+export const mdOrgUpdate = async (id: string, data: Partial<Organization>) => {
+
+  return orgModel.update({
+    data: data,
+    where: {
+      id: id
+    }
+  })
+}
 
 export const mdOrgMemGetByUid = async (uid: string) => {
   return orgMemberModel.findMany({

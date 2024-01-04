@@ -9,9 +9,11 @@ import { AuthRequest } from '../../types'
 import {
   mdOrgAdd,
   mdOrgGet,
+  mdOrgGetOne,
   mdOrgGetOwned,
   mdOrgMemAdd,
-  mdOrgMemGetByUid
+  mdOrgMemGetByUid,
+  mdOrgUpdate
 } from '@shared/models'
 import orgMembers from './members'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
@@ -22,6 +24,16 @@ const router = Router()
 router.use([authMiddleware])
 
 router.use([orgMembers])
+
+router.get('/org/:orgId', async (req: AuthRequest, res) => {
+  const { orgId } = req.params as { orgId: string }
+  const result = await mdOrgGetOne(orgId)
+
+  res.json({
+    status: 200,
+    data: result
+  })
+})
 
 router.get('/org', async (req: AuthRequest, res) => {
   try {
@@ -92,6 +104,30 @@ router.post('/org', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null
     })
+
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log('create org error', error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.put('/org', async (req: AuthRequest, res) => {
+  try {
+    const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover' | 'id'>
+    const { id } = req.authen
+    const key = [CKEY.USER_ORGS, id]
+
+    const result = await mdOrgUpdate(body.id, {
+      name: body.name,
+      desc: body.desc,
+      cover: body.cover,
+      avatar: null,
+      updatedAt: new Date(),
+      updatedBy: id
+    })
+
+    delCache(key)
 
     res.json({ status: 200, data: result })
   } catch (error) {
