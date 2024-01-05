@@ -151,7 +151,7 @@ export default function ProjectNav() {
         </h2>
 
         <div className="hidden sm:flex items-center justify-between">
-          {/* <ProjectView /> */}
+          <ProjectView />
           <div className="flex items-center gap-2">
             <div className="tab">
               <div

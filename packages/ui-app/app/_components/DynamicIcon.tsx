@@ -1,25 +1,123 @@
-import loadable from "@loadable/component"
-import { Suspense, memo } from "react";
-import { IconBaseProps, IconType } from "react-icons/lib"
+import loadable from '@loadable/component'
+import { Suspense, memo } from 'react'
+import { IconBaseProps, IconType } from 'react-icons/lib'
+
+import {
+  HiOutlineBattery0,
+  HiOutlineBattery100,
+  HiOutlineBattery50,
+  HiOutlineBeaker,
+  HiOutlineBell,
+  HiOutlineBellAlert,
+  HiOutlineChartBarSquare,
+  HiOutlineChartPie,
+  HiOutlineChatBubbleBottomCenter,
+  HiOutlineChatBubbleBottomCenterText,
+  HiOutlineChatBubbleLeft,
+  HiOutlineChatBubbleLeftEllipsis,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineBookmarkSquare,
+  HiOutlineViewColumns,
+  HiOutlineBriefcase,
+  HiOutlineBugAnt,
+  HiOutlineBuildingLibrary,
+  HiOutlineFolderPlus,
+  HiOutlineForward,
+  HiOutlineRectangleGroup,
+  HiOutlineRectangleStack,
+  HiOutlineRocketLaunch,
+  HiOutlineRss,
+  HiOutlineScale,
+  HiOutlineScissors,
+  HiOutlineViewfinderCircle,
+  HiOutlineWallet,
+  HiOutlineWifi,
+  HiOutlineWindow,
+  HiOutlineWrench,
+  HiOutlineWrenchScrewdriver,
+  HiOutlineUser,
+  HiOutlineUserCircle,
+  HiOutlineUserGroup,
+  HiOutlineUserMinus,
+  HiOutlineUserPlus,
+  HiOutlineUsers,
+  HiOutlineCalendar,
+  HiOutlineCalendarDays,
+  HiOutlineCamera,
+  HiOutlineChartBar,
+  HiOutlineBars3,
+  HiOutlineBars3BottomLeft,
+  HiOutlineBars3BottomRight,
+  HiOutlineBars3CenterLeft
+} from 'react-icons/hi2'
+import { GoLaw, GoVersions, GoCodeOfConduct } from 'react-icons/go'
+
+const icons: { [key: string]: IconType } = {
+  GoLaw,
+  GoVersions,
+  GoCodeOfConduct,
+
+  HiOutlineBattery0,
+  HiOutlineBattery100,
+  HiOutlineBattery50,
+  HiOutlineBeaker,
+  HiOutlineBell,
+  HiOutlineBellAlert,
+  HiOutlineChartBarSquare,
+  HiOutlineChartPie,
+  HiOutlineChatBubbleBottomCenter,
+  HiOutlineChatBubbleBottomCenterText,
+  HiOutlineChatBubbleLeft,
+  HiOutlineChatBubbleLeftEllipsis,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineBookmarkSquare,
+  HiOutlineViewColumns,
+  HiOutlineBriefcase,
+  HiOutlineBugAnt,
+  HiOutlineBuildingLibrary,
+  HiOutlineFolderPlus,
+  HiOutlineForward,
+  HiOutlineRectangleGroup,
+  HiOutlineRectangleStack,
+  HiOutlineRocketLaunch,
+  HiOutlineRss,
+  HiOutlineScale,
+  HiOutlineScissors,
+  HiOutlineViewfinderCircle,
+  HiOutlineWallet,
+  HiOutlineWifi,
+  HiOutlineWindow,
+  HiOutlineWrench,
+  HiOutlineWrenchScrewdriver,
+  HiOutlineUser,
+  HiOutlineUserCircle,
+  HiOutlineUserGroup,
+  HiOutlineUserMinus,
+  HiOutlineUserPlus,
+  HiOutlineUsers,
+  HiOutlineCalendar,
+  HiOutlineCalendarDays,
+  HiOutlineCamera,
+  HiOutlineChartBar,
+  HiOutlineBars3,
+  HiOutlineBars3BottomLeft,
+  HiOutlineBars3BottomRight,
+  HiOutlineBars3CenterLeft
+}
 
 interface typesPropsIcon {
-  name: string;
+  name: string
   propsIcon?: IconBaseProps
 }
 
- function DynamicIcon({ name: nameIcon, propsIcon }: typesPropsIcon): JSX.Element {
-  const lib = nameIcon.replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(" ")[0].toLocaleLowerCase();
+function DynamicIcon({ name, propsIcon }: typesPropsIcon) {
+  console.log(name in icons)
+  if (name in icons) {
+    const Icon = icons[name] as IconType
+    return <Icon />
+  }
 
-  const libName = lib === 'hi' ? 'hi2' : lib
-
-  const ElementIcon: IconType = loadable(() => import(`react-icons/${libName}/index.js`), {
-    fallback: <svg></svg>,
-    resolveComponent: (el: JSX.Element) => el[nameIcon as keyof JSX.Element]
-  }) as IconType;
-
-
-  return <ElementIcon {...propsIcon} />
-
+  return null
 }
 
 export default memo(DynamicIcon)
