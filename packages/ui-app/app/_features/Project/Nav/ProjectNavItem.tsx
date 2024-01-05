@@ -70,15 +70,17 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
-        } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${
+        visible ? 'opacity-100' : 'opacity-0'
+      } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
-      }}>
+      }}
+      title={name}>
       <div className="left">
-        <HiChevronRight className="text-gray-400" />
+        <HiChevronRight className="text-gray-400 shrink-0" />
         <img className="w-5 h-5" src={icon || ''} />
-        <span className="whitespace-nowrap">{name}</span>
+        <span className="whitespace-nowrap truncate">{name}</span>
         {showBadges()}
       </div>
       <div className="right relative group-hover:opacity-100 opacity-0 transition-all">
