@@ -151,14 +151,15 @@ export default function ProjectNav() {
         </h2>
 
         <div className="hidden sm:flex items-center justify-between">
-          <ProjectView />
+          {/* <ProjectView /> */}
           <div className="flex items-center gap-2">
             <div className="tab">
               <div
-                className={`tab-item ${['automation', 'automation-create'].includes(mode || '')
-                  ? 'active'
-                  : ''
-                  }`}
+                className={`tab-item ${
+                  ['automation', 'automation-create'].includes(mode || '')
+                    ? 'active'
+                    : ''
+                }`}
                 onClick={() => onMoveTab('automation')}>
                 <HiOutlineCpuChip />
                 <span>Automation</span>
@@ -175,7 +176,7 @@ export default function ProjectNav() {
       </div>
 
       <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
-        {/* <ProjectTabContent /> */}
+        <ProjectTabContent />
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="hidden sm:flex items-center gap-2 ">
