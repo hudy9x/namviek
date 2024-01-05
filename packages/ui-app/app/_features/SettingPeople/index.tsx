@@ -2,7 +2,15 @@
 import { useServiceOrgMember } from '@/hooks/useServiceOrgMember'
 import { useOrgMemberGet } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { Avatar, Button, Form, messageError, messageSuccess } from '@shared/ui'
+import {
+  Avatar,
+  Button,
+  Form,
+  confirmWarning,
+  messageError,
+  messageSuccess,
+  messageWarning
+} from '@shared/ui'
 import { useParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useState } from 'react'
@@ -22,13 +30,30 @@ export default function SettingPeopleContent() {
       return
     }
 
+    if (orgMembers.length >= 25) {
+      confirmWarning({
+        title: 'Reached To Limit',
+        message:
+          'Your plan has a maximum of 25 member each organization. Please contact to admin to upgrade.',
+        yes: () => {
+          console.log(1)
+        }
+      })
+      return
+    }
+
+    if (orgMembers.find(orgm => orgm.email === email)) {
+      messageError(`${email} already exist in your organization !`)
+      return
+    }
+
     setLoading(true)
     addNewMemberToOrg({
       orgId: orgID,
       email
     })
       .then(res => {
-        messageSuccess('Doine')
+        messageSuccess('Invited to organization')
         setEmail('')
         setLoading(false)
       })
