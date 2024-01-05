@@ -175,7 +175,7 @@ export default function ProjectNav() {
       </div>
 
       <div className="task bg-indigo-50/50 dark:bg-[#182031] w-full">
-        <ProjectTabContent />
+        {/* <ProjectTabContent /> */}
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="hidden sm:flex items-center gap-2 ">
