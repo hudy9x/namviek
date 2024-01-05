@@ -76,7 +76,7 @@ router.post('/org', async (req: AuthRequest, res) => {
 
     const ownedOrgs = await mdOrgGetOwned(id)
 
-    if (ownedOrgs.length > 1) {
+    if (ownedOrgs.length >= 1) {
       return res.status(500).send('REACHED_MAX_ORGANIZATION')
     }
 
@@ -114,7 +114,10 @@ router.post('/org', async (req: AuthRequest, res) => {
 
 router.put('/org', async (req: AuthRequest, res) => {
   try {
-    const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover' | 'id'>
+    const body = req.body as Pick<
+      Organization,
+      'name' | 'desc' | 'cover' | 'id'
+    >
     const { id } = req.authen
     const key = [CKEY.USER_ORGS, id]
 
