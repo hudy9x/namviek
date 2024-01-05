@@ -55,7 +55,7 @@ router.post('/org/member/invite', async (req: AuthRequest, res) => {
 
     const members = await mdOrgMemberGetAll(orgId)
 
-    if (members.length > MAX_ORGANIZATION_MEMBER) {
+    if (members.length >= MAX_ORGANIZATION_MEMBER) {
       return res.status(500).send('MAX_ORGANIZATION_MEMBER')
     }
 
