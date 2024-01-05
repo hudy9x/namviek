@@ -8,11 +8,14 @@ import { Project } from '@prisma/client'
 import ProjectNavItem from './ProjectNavItem'
 import { useProjectPinUnpin } from '@/hooks/useProjectPinUnPin'
 import { useTodoCounter } from '@/hooks/useTodoCounter'
+import { Loading } from '@shared/ui'
 
 export default function ProjectList() {
   const { todoCounter } = useTodoCounter()
   const { extractPinNUnpinProjects } = useProjectPinUnpin()
   const {
+    loading,
+    setLoading,
     projects,
     addAllProject,
     selectProject,
@@ -26,6 +29,7 @@ export default function ProjectList() {
   }
 
   useEffect(() => {
+    setLoading(true)
     projectPinGetList().then(result => {
       const { data } = result.data
       const pinnedProjects = data as PinnedProjectSetting[]
@@ -41,6 +45,7 @@ export default function ProjectList() {
 
       if (status !== 200) return
 
+      setLoading(false)
       addAllProject(data)
       // active project item
       projects.some(p => {
@@ -56,40 +61,42 @@ export default function ProjectList() {
 
   return (
     <nav className="nav">
+      <Loading enabled={loading} className="px-5" title="Loading ..." />
       {pin.length ? <h2 className="section">Pinned</h2> : null}
-      {pin.map(project => {
-        const { id, name, icon, projectViewId } = project
-        const counter = todoCounter[id]
+      {!loading &&
+        pin.map(project => {
+          const { id, name, icon, projectViewId } = project
+          const counter = todoCounter[id]
 
-
-        return (
-          <ProjectNavItem
-            pinned={true}
-            badge={counter}
-            view={projectViewId || ''}
-            key={id}
-            id={id}
-            name={name || ''}
-            icon={icon || ''}
-          />
-        )
-      })}
+          return (
+            <ProjectNavItem
+              pinned={true}
+              badge={counter}
+              view={projectViewId || ''}
+              key={id}
+              id={id}
+              name={name || ''}
+              icon={icon || ''}
+            />
+          )
+        })}
       {pin.length ? <h2 className="section">All project</h2> : null}
-      {unpin.map(project => {
-        const { id, name, icon, projectViewId } = project
-        const counter = todoCounter[id]
+      {!loading &&
+        unpin.map(project => {
+          const { id, name, icon, projectViewId } = project
+          const counter = todoCounter[id]
 
-        return (
-          <ProjectNavItem
-            badge={counter}
-            key={id}
-            view={projectViewId || ''}
-            id={id}
-            name={name || ''}
-            icon={icon || ''}
-          />
-        )
-      })}
+          return (
+            <ProjectNavItem
+              badge={counter}
+              key={id}
+              view={projectViewId || ''}
+              id={id}
+              name={name || ''}
+              icon={icon || ''}
+            />
+          )
+        })}
     </nav>
   )
 }
