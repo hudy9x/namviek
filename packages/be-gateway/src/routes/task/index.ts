@@ -370,21 +370,19 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
     console.time('reassign-task-data')
     const newTasks: Task[] = []
     for (let i = 0; i < tasks.length; i++) {
-      const task = tasks[i];
+      const task = tasks[i]
       const order = await incrCache(counterKey)
-      newTasks.push(
-        {
-          ...task,
-          order,
-          startDate: null,
-          tagIds: [],
-          parentTaskId: null,
-          createdBy: id,
-          createdAt: new Date(),
-          updatedAt: null,
-          updatedBy: null
-        }
-      )
+      newTasks.push({
+        ...task,
+        order,
+        startDate: null,
+        tagIds: [],
+        parentTaskId: null,
+        createdBy: id,
+        createdAt: new Date(),
+        updatedAt: null,
+        updatedBy: null
+      })
     }
 
     console.timeEnd('reassign-task-data')
@@ -645,6 +643,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       )
 
       notifyToWebUsers(result.assigneeIds, {
+        title: 'Task update',
         body: `Status changed to ${newStatus.name} on "${result.title}"`,
         deep_link: taskLink
       })
