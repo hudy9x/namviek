@@ -1,5 +1,4 @@
-import loadable from '@loadable/component'
-import { Suspense, memo } from 'react'
+import { memo } from 'react'
 import { IconBaseProps, IconType } from 'react-icons/lib'
 
 import {
