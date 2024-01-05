@@ -5,12 +5,14 @@ import {
   mdOrgMemberAdd,
   mdOrgMemberExist,
   mdOrgMemberGet,
+  mdOrgMemberGetAll,
   mdOrgMemberSeach,
   mdUserFindEmail
 } from '@shared/models'
 import { InvitationStatus, OrganizationRole } from '@prisma/client'
 
 const router = Router()
+const MAX_ORGANIZATION_MEMBER = 25
 
 router.get('/org/members/:orgId', (req: AuthRequest, res) => {
   // const { projectId } = req.query as { projectId: string }
@@ -50,6 +52,12 @@ router.post('/org/member/invite', async (req: AuthRequest, res) => {
     })
 
     if (isAlreadyExist) return res.status(400).json({ error: 'ALREADY_EXIST' })
+
+    const members = await mdOrgMemberGetAll(orgId)
+
+    if (members.length >= MAX_ORGANIZATION_MEMBER) {
+      return res.status(500).send('MAX_ORGANIZATION_MEMBER')
+    }
 
     console.log('founded', foundUser)
 

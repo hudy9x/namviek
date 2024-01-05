@@ -20,6 +20,14 @@ export const mdOrgMemberExist = async ({
   })
 }
 
+export const mdOrgMemberGetAll = async (organizationId: string) => {
+  return orgMemberModel.findMany({
+    where: {
+      organizationId
+    }
+  })
+}
+
 export const mdOrgMemberSeach = async ({
   orgId,
   term,
