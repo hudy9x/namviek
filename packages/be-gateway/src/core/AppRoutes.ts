@@ -29,8 +29,8 @@ export const AppRoutes = (routeControllers: any[]) => {
 
     const controllerRouter = Router()
     const methodRouter = Router()
-    console.log(prefix)
-    console.log('middleware:', controllerMiddleware)
+    // console.log(prefix)
+    // console.log('middleware:', controllerMiddleware)
 
     // mainRouter.use(`${prefix}`)
 
@@ -50,8 +50,8 @@ export const AppRoutes = (routeControllers: any[]) => {
       if (!func) return
 
       if (params && params.length) {
-        console.log('path', path, r.methodName)
-        console.log(params)
+        console.log(method.toUpperCase(), `${prefix}${path}`, '==>', r.methodName)
+        // console.log(params)
 
         methodRouter[method](path, async (req, res, next) => {
           const paramDatas = []
@@ -94,7 +94,7 @@ export const AppRoutes = (routeControllers: any[]) => {
           }
         })
       } else {
-        console.log('path', path, r.methodName, func)
+        console.log(method.toUpperCase(), `${prefix}${path}`, '==>', r.methodName)
         methodRouter[method](path, async (req, res, next) => {
           instance.req = req
           instance.res = res

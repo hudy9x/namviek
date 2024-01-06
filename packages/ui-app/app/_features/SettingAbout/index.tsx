@@ -6,6 +6,7 @@ import { orgGetById, orgUpdate } from "@/services/organization"
 import { Button, Form, FormGroup, messageError, messageSuccess } from "@shared/ui"
 import { useFormik } from "formik"
 import { useParams } from "next/navigation"
+import SettingStorageConfiguration from "./SettingStorageConfiguration"
 
 export default function SettingAboutContent() {
   const { orgID } = useParams()
@@ -57,22 +58,18 @@ export default function SettingAboutContent() {
     })
   }, [orgID])
 
-  return <div className="pt-12 w-[500px] mx-auto">
+  return <div className="pt-12 w-[850px] ml-12">
 
-    <form onSubmit={formik.handleSubmit}>
-      <div className="org">
-        <div className="org-setup">
-          {/* <section className="setup-step mb-4"><span>Step 1/</span>6</section> */}
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
-            🖖 Hey,
-            <br /> Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
-          </h2>
-          <p className="text-xs sm:text-sm text-gray-400">
-            Tell us more about your organization so we can provide personalized
-            experience tailored to your needs and preferences
-          </p>
+    <div className="org">
+      <div className="org-setup space-y-8">
 
-          <div className="org-form mt-4 space-y-4">
+        <form onSubmit={formik.handleSubmit} className="flex items-start gap-12">
+          <aside className="w-[300px] shrink-0">
+            <h2 className="font-bold text-lg dark:text-gray-300 mb-2">Information</h2>
+            <p className="text-sm text-gray-500">All your organization information here</p>
+          </aside>
+
+          <main className="w-full space-y-4 bg-white dark:bg-gray-900/70 px-6 py-8 border rounded-lg dark:border-gray-700 shadow-md dark:shadow-gray-900" >
             <FormGroup title='Organization name'>
               <EmojiInput value={formik.values.cover} onChange={val => {
                 formik.setFieldValue('cover', val)
@@ -83,16 +80,22 @@ export default function SettingAboutContent() {
                 {...registerForm('name', formik)}
               />
             </FormGroup>
+
             <Form.Textarea
               title="Description"
               {...registerForm('desc', formik)}
             />
-            <div>
+            <div className="org-form mt-4 space-y-4 text-right">
               <Button type="submit" title="Save it" primary />{' '}
             </div>
-          </div>
-        </div>
+          </main>
+
+        </form>
+
+
+        <SettingStorageConfiguration />
+
       </div>
-    </form>
+    </div>
   </div>
 }

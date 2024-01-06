@@ -94,6 +94,22 @@ model Organization {
   updatedBy      String?
 }
 
+enum OrgStorageType {
+  AWS_S3
+  DIGITAL_OCEAN_S3
+}
+
+model OrganizationStorage {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  type           OrgStorageType
+  config         Json
+  organizationId String         @db.ObjectId
+  createdAt      DateTime?
+  createdBy      String?
+  updatedAt      DateTime?
+  updatedBy      String?
+}
+
 model OrganizationMembers {
   id             String           @id @default(auto()) @map("_id") @db.ObjectId
   uid            String           @db.ObjectId

@@ -5,7 +5,7 @@ import {
   storageSaveToDrive
 } from '@/services/storage'
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { IFileItem, IFileUploadItem, useFileKitContext } from './context'
 import {
   confirmAlert,
@@ -19,6 +19,7 @@ import { AxiosError } from 'axios'
 export default function useFileUpload() {
   const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
   const { orgID, projectId } = useParams()
+  const { push } = useRouter()
   const sp = useSearchParams()
   const taskId = sp.get('taskId')
 
@@ -72,6 +73,33 @@ export default function useFileUpload() {
     } catch (err) {
       console.log('hehheeh', err)
       const error = err as AxiosError
+      if (error.code === 'ERR_NETWORK') {
+        confirmWarning({
+          title: 'Network error',
+          message:
+            'This error occurs as your network has problems or incorrect storage configuration. Go to Setting > About to make sure that Storage configuration is correct.',
+          yes: () => {
+            push(`${orgID}/setting/about`)
+          }
+        })
+        return null
+      }
+
+
+      if (error.response && error.response.data === 'STORAGE_CONFIG_NOT_FOUND') {
+        confirmWarning({
+          title: 'Missing Storage Integration',
+          message:
+            'Please go to Settings > About to integrate your configuration or use the default limited storage.',
+          yes: () => {
+            console.log('1')
+            push(`${orgID}/setting/about`)
+
+          }
+        })
+        return null
+
+      }
       if (error.response && error.response.data === 'MAX_SIZE_STORAGE') {
         // messageWarning(
         //   'Your organization has reached to max storage limit. Please contact to admin to upgrade the plan.'
@@ -84,7 +112,22 @@ export default function useFileUpload() {
             console.log('1')
           }
         })
+
+        return null
       }
+
+      if (error.response && error.response.statusText === 'Forbidden') {
+        confirmAlert({
+          title: 'Something went wrong',
+          message:
+            'Make sure that your storage configuration in Setting > About is correct.',
+          yes: () => {
+            console.log('1')
+          }
+        })
+        return null
+      }
+
       return null
     }
   }

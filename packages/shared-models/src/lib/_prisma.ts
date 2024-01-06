@@ -12,6 +12,7 @@ export const taskModel = pmClient.task
 export const memberModel = pmClient.members
 export const userModel = pmClient.user
 export const orgModel = pmClient.organization
+export const orgStorage = pmClient.organizationStorage
 export const orgMemberModel = pmClient.organizationMembers
 export const dboardModel = pmClient.dashboard
 export const dboardComponentModal = pmClient.dashboardComponent
