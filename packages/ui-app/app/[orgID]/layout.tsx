@@ -1,6 +1,7 @@
 'use client'
 import HamburgerMenu from '@/components/HamburgerMenu'
 import ProjectSidebar from './ProjectSidebar'
+import UserPermission from '@/features/UserPermission'
 
 export default function ProjectLayout({
   children
@@ -14,6 +15,7 @@ export default function ProjectLayout({
         <HamburgerMenu />
         {children}
       </main>
+      <UserPermission />
     </>
   )
 }

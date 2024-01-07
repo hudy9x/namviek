@@ -20,6 +20,7 @@ import ActivityRouter from './activity'
 import AdminController from './test2'
 import ProjectController from './project/project.controller'
 import ProjectViewController from './project/view'
+import PermissionController from "./auth/permission.controller";
 
 import { AppRoutes } from '../core/AppRoutes'
 import { TestRouter } from './test'
@@ -37,7 +38,8 @@ router.use(
     ProjectController,
     ActivityRouter,
     TestRouter,
-    ProjectViewController
+    ProjectViewController,
+    PermissionController
   ])
 )
 // middlewares
