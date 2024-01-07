@@ -1,24 +1,23 @@
 import { Router } from 'express'
 import {
-  createPresignedUrlWithClient,
-  deleteObject,
-  getObject,
   getObjectURL,
-  randomObjectKeyName
 } from '@be/storage'
 import {
   mdOrgGetOne,
-  mdProjectGetOrgId,
   mdStorageAdd,
   mdStorageGet,
   mdStorageGetByOwner,
-  mdStorageGetOne
+  mdStorageGetOne,
+  mdTaskGetOne,
+  mdTaskUpdate
 } from '@shared/models'
 import { FileOwnerType, FileStorage } from '@prisma/client'
 import { AuthRequest } from '../../types'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { fileStorageModel, pmClient } from 'packages/shared-models/src/lib/_prisma'
 import { CKEY, findNDelCaches } from '../../lib/redis'
 import StorageCache from '../../caches/StorageCache'
+import { StorageService } from '../../services/storage.service'
+import MaxStorageSizeException from '../../exceptions/MaxStorageSizeException'
 
 const router = Router()
 
@@ -44,6 +43,7 @@ router.get('/current-storage-size', async (req, res) => {
 })
 
 router.post('/create-presigned-url', async (req, res, next) => {
+
   const { name, type, orgId, projectId } = req.body as {
     name: string
     type: string
@@ -51,115 +51,64 @@ router.post('/create-presigned-url', async (req, res, next) => {
     orgId: string
   }
 
-  const randName = `${orgId}/${projectId}/` + randomObjectKeyName(name)
-  const presignedUrl = await createPresignedUrlWithClient(randName, type)
-  const { organizationId } = await mdProjectGetOrgId(projectId)
-  const storageCache = new StorageCache(organizationId)
-  const totalSize = await storageCache.getTotalSize()
-  const { maxStorageSize } = await mdOrgGetOne(organizationId)
+  try {
+    const storageService = new StorageService(orgId)
 
-  console.log('totalSize', totalSize)
-  console.log('maxStorageSize', maxStorageSize)
-
-  if (maxStorageSize && totalSize > maxStorageSize) {
-    res.status(500).send('MAX_SIZE_STORAGE')
-    return
-  }
-
-  if (totalSize > MAX_STORAGE_SIZE) {
-    res.status(500).send('MAX_SIZE_STORAGE')
-    return
-  }
-
-  res.status(200).json({
-    data: {
-      name: randName,
-      presignedUrl,
-      url: getObjectURL(randName)
+    const isExceed = await storageService.exceedMaxStorageSize()
+    if (isExceed) {
+      throw new MaxStorageSizeException()
     }
-  })
+
+    const { presignedUrl, randName } = await storageService.createPresignedUrl({
+      projectId,
+      name,
+      type
+    })
+
+    console.log('generate presigned', presignedUrl)
+
+    res.status(200).json({
+      data: {
+        name: randName,
+        presignedUrl,
+        url: getObjectURL(randName)
+      }
+    })
+
+
+  } catch (error) {
+    console.log(error)
+    res.status(error.status).send(error.message)
+  }
+
 })
 
 router.delete('/del-file', async (req: AuthRequest, res) => {
-  const { id, projectId } = req.query as { id: string; projectId: string }
+  const { id, projectId, orgId } = req.query as { id: string; projectId: string, orgId: string }
   try {
     const key = [CKEY.TASK_QUERY, projectId]
+    const storageService = new StorageService(orgId)
 
-    const { organizationId } = await mdProjectGetOrgId(projectId)
-    const storageCache = new StorageCache(organizationId)
+    // 1. find file's owner inside storage collection
+    const { id: fileId, owner, ownerType, keyName } = await fileStorageModel.findFirst({
+      where: {
+        id
+      }
+    })
 
-    pmClient
-      .$transaction(async tx => {
-        const result = await tx.fileStorage.findFirst({
-          where: {
-            id
-          }
-        })
 
-        const { id: fileId, owner, ownerType, keyName } = result
+    if (ownerType === FileOwnerType.TASK) {
+      // 2. remove the file from it's owner
+      storageService.removeFileFromOwner(owner, fileId)
 
-        if (ownerType === FileOwnerType.TASK) {
-          const task = await tx.task.findFirst({
-            where: {
-              id: owner
-            }
-          })
+      // 3. delete file from s3, clear cache and decrease current volume
+      await storageService.removeFileFromStorage(keyName, key, fileId)
 
-          const { fileIds } = task
-
-          if (!fileIds.includes(fileId)) {
-            // return 'FILE_NOT_EXIST_IN_TASK'
-            throw new Error('FILE_NOT_EXIST_IN_TASK')
-          }
-
-          task.fileIds = fileIds.filter(f => f !== fileId)
-
-          delete task.id
-
-          const promises = []
-          promises.push(
-            tx.fileStorage.delete({
-              where: { id: fileId }
-            })
-          )
-
-          promises.push(
-            tx.task.update({
-              where: {
-                id: owner
-              },
-              data: task
-            })
-          )
-
-          await Promise.all(promises)
-          await deleteObject(keyName)
-          await findNDelCaches(key)
-
-          // decrease storage size
-          const file = await mdStorageGetOne(fileId)
-          if (file && file.size) {
-            storageCache.decrSize(file.size)
-          }
-
-          return {
-            deletedFileId: fileId,
-            remainFileIds: task.fileIds
-          }
-        }
-
-        // FIXME: this case only occurs as user create a new file in drive directly
-        // so, if it is not belong to no one, delete it
-        return 'CANNOT_DELETE_NO_OWNER'
+      res.json({
+        status: 200,
       })
-      .then(message => {
-        console.log('delete file result: ', message)
-        res.json({ status: 200, data: message })
-      })
-      .catch(err => {
-        console.log('error delete file', err)
-        res.status(500).send(err)
-      })
+    }
+
   } catch (error) {
     res.status(500).send(error)
   }
@@ -167,7 +116,6 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
 router.get('/get-files', async (req: AuthRequest, res) => {
   const { ids } = req.query as { ids: string[] }
-  console.log('get files')
 
   try {
     const results = await mdStorageGet(ids)
@@ -241,27 +189,14 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
   }
 })
 
-router.get('/get-object-url', async (req, res, next) => {
-  try {
-    const { name } = req.query as { name: string }
-    const url = await getObject(name)
-    res.json({ data: url })
-  } catch (error) {
-    res.status(500).send(error)
-  }
-})
-
-router.delete('/delete-obeject', async (req, res, next) => {
-  try {
-    const { name } = req.query as { name: string }
-    const result = await deleteObject(name)
-    res.json({
-      status: 200,
-      data: result
-    })
-  } catch (error) {
-    res.status(500).send(error)
-  }
-})
+// router.get('/get-object-url', async (req, res, next) => {
+//   try {
+//     const { name } = req.query as { name: string }
+//     const url = await getObject(name)
+//     res.json({ data: url })
+//   } catch (error) {
+//     res.status(500).send(error)
+//   }
+// })
 
 export const storageRouter = router

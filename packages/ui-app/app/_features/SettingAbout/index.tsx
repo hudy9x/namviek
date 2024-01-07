@@ -1,98 +1,52 @@
 'use client'
 
-import EmojiInput from "@/components/EmojiInput"
-import { useDebounce } from "@/hooks/useDebounce"
-import { orgGetById, orgUpdate } from "@/services/organization"
-import { Button, Form, FormGroup, messageError, messageSuccess } from "@shared/ui"
-import { useFormik } from "formik"
-import { useParams } from "next/navigation"
+import SettingStorageConfiguration from "./SettingStorageConfiguration"
+import SettingAbout from "./SettingAbout"
+import './style.css'
+import { useState } from "react"
+import { HiOutlineFolderOpen, HiOutlineNewspaper, HiOutlineSquare3Stack3D } from "react-icons/hi2"
 
 export default function SettingAboutContent() {
-  const { orgID } = useParams()
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      desc: '',
-      cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
+  const [active, setActive] = useState(0)
+  const asides = [
+    {
+      title: "Information",
+      icon: HiOutlineNewspaper,
+      content: SettingAbout,
+      desc: "Share as much information about your organization as you'd like, or stick with the essentials and utilize our streamlined default settings."
     },
-    onSubmit: values => {
-      console.log(values)
-      orgUpdate({
-        id: orgID,
-        name: values.name,
-        cover: values.cover,
-        desc: values.desc
-      }).then(res => {
-        messageSuccess('Updated successully')
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
+    {
+      title: "Storage configuration",
+      icon: HiOutlineFolderOpen,
+      content: SettingStorageConfiguration,
+      desc: "Choose between your own cloud storage (AWS S3 or DigitalOcean) for unlimited capacity or utilize our default storage with a fixed limit."
+    },
+  ]
 
-    }
-  })
+  const Content = asides[active].content
 
-  const registerForm = (
-    name: keyof typeof formik.values,
-    handler: typeof formik
-  ) => {
-    return {
-      name,
-      error: handler.errors[name],
-      value: handler.values[name],
-      onChange: handler.handleChange
-    }
-  }
-
-
-  useDebounce(() => {
-    orgGetById(orgID).then(res => {
-      const { data } = res.data
-
-      formik.setValues({
-        name: data.name,
-        cover: data.cover,
-        desc: data.desc
-      })
-    })
-  }, [orgID])
-
-  return <div className="pt-12 w-[500px] mx-auto">
-
-    <form onSubmit={formik.handleSubmit}>
-      <div className="org">
-        <div className="org-setup">
-          {/* <section className="setup-step mb-4"><span>Step 1/</span>6</section> */}
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
-            🖖 Hey,
-            <br /> Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
-          </h2>
-          <p className="text-xs sm:text-sm text-gray-400">
-            Tell us more about your organization so we can provide personalized
-            experience tailored to your needs and preferences
-          </p>
-
-          <div className="org-form mt-4 space-y-4">
-            <FormGroup title='Organization name'>
-              <EmojiInput value={formik.values.cover} onChange={val => {
-                formik.setFieldValue('cover', val)
-              }} />
-
-              <Form.Input
-                className='w-full'
-                {...registerForm('name', formik)}
-              />
-            </FormGroup>
-            <Form.Textarea
-              title="Description"
-              {...registerForm('desc', formik)}
-            />
-            <div>
-              <Button type="submit" title="Save it" primary />{' '}
-            </div>
-          </div>
-        </div>
+  return <div className="pt-12 w-[900px] ml-12">
+    <div className="org">
+      <div className="aside-content">
+        <aside className="aside-menu">
+          {asides.map((aside, aIndex) => {
+            const isActive = aIndex === active ? 'active' : ''
+            const Icon = aside.icon
+            return <section key={aIndex}
+              onClick={() => setActive(aIndex)}
+              className={`${isActive}`}>
+              <h2>
+                <Icon />
+                {aside.title}</h2>
+              <p>{aside.desc}</p>
+            </section>
+          })}
+        </aside>
+        <main className="w-full">
+          <Content />
+        </main>
       </div>
-    </form>
+    </div>
   </div>
 }
+

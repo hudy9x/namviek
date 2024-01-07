@@ -1,12 +1,15 @@
 import {
   InvitationStatus,
+  OrgStorageType,
   Organization,
-  OrganizationRole
+  OrganizationRole,
+  OrganizationStorage
 } from '@prisma/client'
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
+  OrgStorageRepository,
   mdOrgAdd,
   mdOrgGet,
   mdOrgGetOne,
@@ -18,6 +21,8 @@ import {
 import orgMembers from './members'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 import { MAX_STORAGE_SIZE } from '../storage'
+import { IStorageAWSConfig } from '../../services/organizationStorage.service'
+import { access } from 'fs'
 
 const router = Router()
 
@@ -111,6 +116,63 @@ router.post('/org', async (req: AuthRequest, res) => {
     res.json({ status: 500, error })
   }
 })
+
+router.get('/org-storage', async (req: AuthRequest, res) => {
+  try {
+
+    const { orgId } = req.query as { orgId: string }
+    const orgRepo = new OrgStorageRepository()
+    const data = await orgRepo.getAwsConfig(orgId)
+
+    res.json({
+      data: data.config
+    })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
+})
+
+router.put('/org-storage', async (req: AuthRequest, res) => {
+  try {
+    const { orgId, config } = req.body as {
+      orgId: string
+      config: IStorageAWSConfig
+    }
+
+    const { id } = req.authen
+
+    const { bucketName, region, secretKey, accessKey } = config
+
+    console.log('update org storage 2')
+
+    if (!bucketName || !region || !secretKey || !access) {
+      throw new Error('Invalid AWS S3 configuration ')
+    }
+
+    const orgRepo = new OrgStorageRepository()
+    const result = await orgRepo.updateOrCreateAwsConfig(orgId, {
+      organizationId: orgId,
+      config: {
+        bucketName,
+        region,
+        secretKey,
+        accessKey
+      },
+      type: OrgStorageType.AWS_S3,
+      createdAt: new Date(),
+      createdBy: id,
+      updatedAt: null,
+      updatedBy: null
+    })
+
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    console.log('create or update  org storage error', error)
+    res.json({ status: 500, error })
+  }
+})
+
 
 router.put('/org', async (req: AuthRequest, res) => {
   try {

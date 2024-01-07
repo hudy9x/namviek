@@ -13,7 +13,7 @@ export const storageCreatePresignedUrl = ({
   name: string
   type: string
 }) => {
-  console.log('name:', name, type)
+  console.log('name: 1', name, type)
   return httpPost('/api/storage/create-presigned-url', {
     orgId,
     projectId,
@@ -29,9 +29,13 @@ export const storageGetFiles = (ids: string[]) => {
     }
   })
 }
-export const storageDelFile = (id: string, projectId: string) => {
+export const storageDelFile = ({ id, projectId, orgId }: {
+  id: string,
+  projectId: string,
+  orgId: string
+}) => {
   return httpDel('/api/storage/del-file', {
-    params: { id, projectId }
+    params: { id, orgId, projectId }
   })
 }
 
@@ -43,16 +47,8 @@ export const storageSaveToDrive = (data: Partial<FileStorage>) => {
   return httpPost('/api/storage/save-to-drive', data)
 }
 
-export const storageDeleteFile = (name: string) => {
-  return httpDel('/api/storage/delete-object', {
-    params: {
-      name
-    }
-  })
-}
-
-export const storageGetObjectUrl = (name: string) => {
-  return httpGet('/api/storage/get-object-url', {
-    params: { name }
-  })
-}
+// export const storageGetObjectUrl = (name: string) => {
+//   return httpGet('/api/storage/get-object-url', {
+//     params: { name }
+//   })
+// }

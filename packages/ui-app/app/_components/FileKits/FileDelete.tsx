@@ -10,7 +10,7 @@ export default function FileDelete({ id }: { id: string }) {
 
   const { user } = useUser()
   const { updateTask } = useTaskStore()
-  const { projectId } = useParams()
+  const { projectId, orgID } = useParams()
   const sp = useSearchParams()
   const taskId = sp.get('taskId')
 
@@ -40,7 +40,11 @@ export default function FileDelete({ id }: { id: string }) {
       }
     })
 
-    storageDelFile(id, projectId).then(res => {
+    storageDelFile({
+      id,
+      orgId: orgID,
+      projectId
+    }).then(res => {
       // const { data } = res.data
       messageSuccess('delete file successfully')
     })
