@@ -44,20 +44,16 @@ export default class AwsS3StorageProvider {
       accessKey
     }
 
-    console.log('this.config', this.config)
-
     if (clientMapper.has(orgId)) {
       const cachedClient = clientMapper.get(orgId)
       const config = cachedClient.config
 
-      console.log('old', config)
-      console.log('new', this.config)
       if (this.isConfigChanged(config)) {
-        console.log('changed')
+        console.log('s3 storage changes')
         this.createClient()
       } else {
         this.client = cachedClient.client
-        console.log('no change')
+        console.log('s3 storage does not change')
       }
 
     } else {

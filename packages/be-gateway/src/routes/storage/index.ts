@@ -139,82 +139,91 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
     const storageCache = new StorageCache(orgId)
 
-    pmClient
-      .$transaction(async tx => {
-        // 1. find file's owner inside storage collection
-        const result = await tx.fileStorage.findFirst({
-          where: {
-            id
-          }
-        })
+    // pmClient
+    //   .$transaction(async tx => {
+    // 1. find file's owner inside storage collection
+    const result = await pmClient.fileStorage.findFirst({
+      where: {
+        id
+      }
+    })
 
-        const { id: fileId, owner, ownerType, keyName } = result
+    const { id: fileId, owner, ownerType, keyName } = result
 
-        if (ownerType === FileOwnerType.TASK) {
-          // 2. remove the file from it's owner
-          const task = await tx.task.findFirst({
-            where: {
-              id: owner
-            }
-          })
-
-          const { fileIds } = task
-
-          if (!fileIds.includes(fileId)) {
-            // return 'FILE_NOT_EXIST_IN_TASK'
-            throw new Error('FILE_NOT_EXIST_IN_TASK')
-          }
-
-          task.fileIds = fileIds.filter(f => f !== fileId)
-
-          delete task.id
-
-          const promises = []
-          promises.push(
-            tx.fileStorage.delete({
-              where: { id: fileId }
-            })
-          )
-
-          promises.push(
-            tx.task.update({
-              where: {
-                id: owner
-              },
-              data: task
-            })
-          )
-
-          await Promise.all(promises)
-
-          // 3. delete file from s3, clear cache and decrease current volume
-          await storageService.deleteFile(keyName)
-          await findNDelCaches(key)
-
-          // decrease storage size
-          const file = await mdStorageGetOne(fileId)
-          if (file && file.size) {
-            storageCache.decrSize(file.size)
-          }
-
-          return {
-            deletedFileId: fileId,
-            remainFileIds: task.fileIds
-          }
+    if (ownerType === FileOwnerType.TASK) {
+      // 2. remove the file from it's owner
+      const task = await pmClient.task.findFirst({
+        where: {
+          id: owner
         }
+      })
 
-        // FIXME: this case only occurs as user create a new file in drive directly
-        // so, if it is not belong to no one, delete it
-        return 'CANNOT_DELETE_NO_OWNER'
+      const { fileIds } = task
+
+      if (!fileIds.includes(fileId)) {
+        // return 'FILE_NOT_EXIST_IN_TASK'
+        throw new Error('FILE_NOT_EXIST_IN_TASK')
+      }
+
+      task.fileIds = fileIds.filter(f => f !== fileId)
+
+      delete task.id
+
+      const promises = []
+      promises.push(
+        pmClient.fileStorage.delete({
+          where: { id: fileId }
+        })
+      )
+
+      promises.push(
+        pmClient.task.update({
+          where: {
+            id: owner
+          },
+          data: task
+        })
+      )
+
+      await Promise.all(promises)
+
+      // 3. delete file from s3, clear cache and decrease current volume
+      await storageService.deleteFile(keyName)
+      await findNDelCaches(key)
+
+      // decrease storage size
+      const file = await mdStorageGetOne(fileId)
+      if (file && file.size) {
+        storageCache.decrSize(file.size)
+      }
+      // return {
+      //   deletedFileId: fileId,
+      //   remainFileIds: task.fileIds
+      // }
+      res.json({
+        status: 200,
+        data: {
+          deletedFileId: fileId,
+          remainFileIds: task.fileIds
+        }
       })
-      .then(message => {
-        console.log('delete file result: ', message)
-        res.json({ status: 200, data: message })
-      })
-      .catch(err => {
-        console.log('error delete file', err)
-        res.status(500).send(err)
-      })
+    }
+
+    // FIXME: this case only occurs as user create a new file in drive directly
+    // so, if it is not belong to no one, delete it
+    //
+    // return 'CANNOT_DELETE_NO_OWNER'
+
+
+    // })
+    // .then(message => {
+    //   console.log('delete file result: ', message)
+    //   res.json({ status: 200, data: message })
+    // })
+    // .catch(err => {
+    //   console.log('error delete file', err)
+    //   res.status(500).send(err)
+    // })
   } catch (error) {
     res.status(500).send(error)
   }
