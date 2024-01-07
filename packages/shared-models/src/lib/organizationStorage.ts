@@ -20,6 +20,9 @@ export class OrgStorageRepository {
       }
     })
 
+    if (!data.config) return null
+    const config = data.config as { [key: string]: string }
+
     const TB = 1024 * 1024 * 1024 * 1024 // 1TB
     await mdOrgUpdate(orgId, {
       maxStorageSize: 9999 * TB
@@ -31,16 +34,25 @@ export class OrgStorageRepository {
           id: result.id
         },
         data: {
-          config: data.config,
+          config: config,
           updatedAt: data.updatedAt,
           updatedBy: data.updatedBy
         }
       })
     }
 
-
+    // FIXME: prisma throw an error if only data provided
+    // it's stupid orm =.=!
+    // must re-define config object then it works
     return orgStorage.create({
-      data
+      data: {
+        ...data, config: {
+          bucketName: config.bucketName,
+          region: config.region,
+          secretKey: config.secretKey,
+          accessKey: config.accessKey
+        }
+      }
     })
   }
 
