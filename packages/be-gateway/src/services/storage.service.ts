@@ -2,10 +2,12 @@ import { StorageAws } from "@be/storage"
 import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
 import OrganizationStorageService from "./organizationStorage.service"
 import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdProjectGetOrgId } from "@shared/models"
+import { mdOrgGetOne, mdProjectGetOrgId, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
 import StorageCache from "../caches/StorageCache"
 import MaxStorageSizeException from "../exceptions/MaxStorageSizeException"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
+import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
+import { findNDelCaches } from "../lib/redis"
 
 export const MAX_STORAGE_SIZE = 100 * 1024 * 1024 // 100Mb
 export class StorageService {
@@ -33,9 +35,52 @@ export class StorageService {
     return s3Store
   }
 
-  async deleteFile(name: string) {
+  async removeFileFromOwner(owner: string, fileId: string) {
+
+    const task = await mdTaskGetOne(owner)
+
+    const { fileIds } = task
+
+    if (!fileIds.includes(fileId)) {
+      // return 'FILE_NOT_EXIST_IN_TASK'
+      throw new Error('FILE_NOT_EXIST_IN_TASK')
+    }
+
+    task.fileIds = fileIds.filter(f => f !== fileId)
+
+    delete task.id
+
+    const promises = []
+    promises.push(
+      fileStorageModel.delete({
+        where: { id: fileId }
+      })
+    )
+
+    promises.push(
+      mdTaskUpdate({
+        id: owner,
+        ...task
+      })
+    )
+
+    await Promise.all(promises)
+
+  }
+
+  async removeFileFromStorage(name: string, key: string[], fileId: string) {
+
+    const storageCache = new StorageCache(this.orgId)
     const s3Store = await this.initS3Client()
     await s3Store.deleteObject(name)
+
+    await findNDelCaches(key)
+
+    // decrease storage size
+    const file = await mdStorageGetOne(fileId)
+    if (file && file.size) {
+      storageCache.decrSize(file.size)
+    }
   }
 
 

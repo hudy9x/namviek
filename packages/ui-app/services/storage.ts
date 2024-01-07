@@ -13,7 +13,7 @@ export const storageCreatePresignedUrl = ({
   name: string
   type: string
 }) => {
-  console.log('name:', name, type)
+  console.log('name: 1', name, type)
   return httpPost('/api/storage/create-presigned-url', {
     orgId,
     projectId,

@@ -144,6 +144,8 @@ router.put('/org-storage', async (req: AuthRequest, res) => {
 
     const { bucketName, region, secretKey, accessKey } = config
 
+    console.log('update org storage 2')
+
     if (!bucketName || !region || !secretKey || !access) {
       throw new Error('Invalid AWS S3 configuration ')
     }
@@ -163,7 +165,6 @@ router.put('/org-storage', async (req: AuthRequest, res) => {
       updatedAt: null,
       updatedBy: null
     })
-    console.log(result)
 
     res.json({ status: 200, data: result })
   } catch (error) {

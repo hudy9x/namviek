@@ -1,5 +1,6 @@
 import { OrgStorageType, OrganizationStorage } from '@prisma/client';
 import { orgStorage } from './_prisma';
+import { mdOrgUpdate } from './organization';
 
 export class OrgStorageRepository {
   async getAwsConfig(orgId: string) {
@@ -19,6 +20,11 @@ export class OrgStorageRepository {
       }
     })
 
+    const TB = 1024 * 1024 * 1024 * 1024 // 1TB
+    await mdOrgUpdate(orgId, {
+      maxStorageSize: 9999 * TB
+    })
+
     if (result) {
       return orgStorage.update({
         where: {
@@ -31,6 +37,7 @@ export class OrgStorageRepository {
         }
       })
     }
+
 
     return orgStorage.create({
       data
