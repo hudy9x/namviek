@@ -9,6 +9,17 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
   })
 }
 
+export const mdProjectGetOrgId = async (projectId: string) => {
+  return projectModel.findFirst({
+    where: {
+      id: projectId
+    },
+    select: {
+      organizationId: true
+    }
+  })
+}
+
 export const mdProjectArchive = async ({
   projectId,
   isArchived,
@@ -45,13 +56,18 @@ export const mdProjectUpdate = async (data: Partial<Project>) => {
 export const mdProjectGetAllByIds = async (
   ids: string[],
   cond: {
-    isArchived: boolean
+    isArchived: boolean,
+    orgId: string
   }
 ) => {
-  const { isArchived } = cond
+  const { isArchived, orgId } = cond
   const where: {
     [key: string]: unknown
   } = {}
+
+  if (orgId) {
+    where.organizationId = orgId
+  }
 
   if (!isArchived) {
     where.OR = [

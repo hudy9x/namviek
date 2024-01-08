@@ -16,7 +16,7 @@ export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className="calendar-task-item">
-          <div className="flex items-center gap-1" title={title}>
+          <div className="flex items-center justify-between gap-1" title={title}>
             <span className="truncate dark:text-gray-400">{title}</span>
             <TaskAssignee noName={true} taskId={id} uids={assigneeIds} />
           </div>

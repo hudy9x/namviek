@@ -1,15 +1,17 @@
 import { useProjectStore } from '@/store/project'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { HiChevronRight } from 'react-icons/hi2'
 import ProjectPin from '../Pin'
 import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 import Badge from '@/components/Badge'
 import Tooltip from 'packages/shared-ui/src/components/Tooltip'
+import { useProjectViewStore } from '@/store/projectView'
 
 export default function ProjectNavItem({
   pinned = false,
   id,
+  view,
   name,
   badge,
   icon
@@ -17,15 +19,18 @@ export default function ProjectNavItem({
   pinned?: boolean
   badge?: number
   id: string
+  view: string
   name: string
   icon: string
 }) {
   const [visible, setVisible] = useState(false)
   const { setVisible: setMenuVisible } = useMenuStore()
+  const { setLoading: setProjectViewLoading } = useProjectViewStore()
   const params = useParams()
+  const pathName = usePathname()
   const { push } = useRouter()
   const active = params.projectId === id
-  const href = `${params.orgID}/project/${id}?mode=task`
+  const href = `${params.orgID}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
   const onSelectProject = (id: string) => {
     selectProject(id)
@@ -38,6 +43,12 @@ export default function ProjectNavItem({
   }, [])
 
   const onSelectItem = (link: string) => {
+    const p = `${params.orgID}/project/${id}`
+
+    if (!pathName.includes(p)) {
+      setProjectViewLoading(true)
+    }
+
     onSelectProject(id)
     setMenuVisible(false)
     push(link)
@@ -64,11 +75,12 @@ export default function ProjectNavItem({
       } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
-      }}>
+      }}
+      title={name}>
       <div className="left">
-        <HiChevronRight className="text-gray-400" />
+        <HiChevronRight className="text-gray-400 shrink-0" />
         <img className="w-5 h-5" src={icon || ''} />
-        <span className="whitespace-nowrap">{name}</span>
+        <span className="whitespace-nowrap truncate">{name}</span>
         {showBadges()}
       </div>
       <div className="right relative group-hover:opacity-100 opacity-0 transition-all">

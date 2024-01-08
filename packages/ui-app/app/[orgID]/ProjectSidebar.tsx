@@ -86,7 +86,7 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Settings',
-      href: `/${orgID}/setting/export-import`,
+      href: `/${orgID}/setting/people`,
       icon: HiOutlineCog6Tooth,
       active: pathname.includes(`${orgID}/setting`)
     }
@@ -98,7 +98,7 @@ export default function ProjectSidebar() {
         <RootSidebar />
         <nav className="secondary-sidebar">
           <UserSection />
-          <Scrollbar style={{ height: `calc(100vh - 74px)` }}>
+          <Scrollbar style={{ height: `calc(100vh - 75px)` }}>
             <section className="side-nav">
               {menus.map((menu, mindex) => {
                 const Icon = menu.icon

@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import authRouter from './auth'
-import orgRouter from './organization'
 import projectRouter from './project'
 import projectMemberRouter from './member'
 import taskRouter from './task'
@@ -20,20 +19,40 @@ import ActivityRouter from './activity'
 // import "./test";
 import AdminController from './test2'
 import ProjectController from './project/project.controller'
+
 import SchedulerController from './scheduler/index.controller'
+import ProjectViewController from './project/view'
+import PermissionController from './auth/permission.controller'
+
 import { AppRoutes } from '../core/AppRoutes'
+import { TestRouter } from './test'
+import { OrganizationStorageController } from './organization/storage.controller'
+import { OrganizationController } from './organization/index.controller'
+import { OrganizationMemberController } from './organization/member.controller'
 
 const router = Router()
 
-router.use(AppRoutes([AdminController, ProjectController, SchedulerController]))
-
-
-// middlewares
-// router.use([])
 router.use((req, res, next) => {
   console.log('\x1b[0m', `🥝 ${req.method}: ${req.url}`, '\x1b[90m')
   next()
 })
+
+router.use(
+  AppRoutes([
+    AdminController,
+    ProjectController,
+    ActivityRouter,
+    TestRouter,
+    SchedulerController,
+    ProjectViewController,
+    PermissionController,
+    OrganizationController,
+    OrganizationStorageController,
+    OrganizationMemberController
+  ])
+)
+// middlewares
+// router.use([])
 router.use(meetingRouter)
 router.use(buzzerRouter)
 router.use('/storage', [authMiddleware, storageRouter])
@@ -43,7 +62,7 @@ router.use(authRouter)
 router.use(favRouter)
 router.use(automationRouter)
 router.use(dboardRouter)
-router.use(orgRouter)
+// router.use(orgRouter)
 router.use(projectRouter)
 router.use(projectMemberRouter)
 router.use(taskRouter)

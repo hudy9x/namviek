@@ -21,6 +21,7 @@ enum MemberRole {
 
 enum OrganizationRole {
   ADMIN
+  MANAGER
   MEMBER
 }
 
@@ -82,15 +83,32 @@ model Favorites {
 }
 
 model Organization {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String    @unique
-  cover     String?
-  avatar    String?
-  desc      String?
-  createdAt DateTime?
-  createdBy String?
-  updatedAt DateTime?
-  updatedBy String?
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String    @unique
+  cover          String?
+  avatar         String?
+  maxStorageSize Int?
+  desc           String?
+  createdAt      DateTime?
+  createdBy      String?
+  updatedAt      DateTime?
+  updatedBy      String?
+}
+
+enum OrgStorageType {
+  AWS_S3
+  DIGITAL_OCEAN_S3
+}
+
+model OrganizationStorage {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  type           OrgStorageType
+  config         Json
+  organizationId String         @db.ObjectId
+  createdAt      DateTime?
+  createdBy      String?
+  updatedAt      DateTime?
+  updatedBy      String?
 }
 
 model OrganizationMembers {
@@ -106,11 +124,30 @@ model OrganizationMembers {
   updatedBy      String?
 }
 
+enum CounterType {
+  TASK
+  PROJECT
+  ORGANIZATION
+}
+
+model Counter {
+  id      String      @id @default(auto()) @map("_id") @db.ObjectId
+  type    CounterType
+  counter Int
+}
+
+model Test {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  order Int
+}
+
 model Task {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   desc    String?
   dueDate DateTime?
+  order   Int
 
   cover            String?
   plannedStartDate DateTime?
@@ -218,6 +255,7 @@ model FileStorage {
 model Project {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String
+  projectViewId  String?   @db.ObjectId
   desc           String?
   cover          String?
   icon           String?
@@ -227,6 +265,32 @@ model Project {
   organizationId String
   updatedBy      String?
   updatedAt      DateTime?
+}
+
+enum ProjectViewType {
+  DASHBOARD
+  LIST
+  BOARD
+  CALENDAR
+  TIMELINE
+  GOAL
+  TEAM
+  ACTIVITY
+}
+
+model ProjectView {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  type      ProjectViewType
+  icon      String?
+  projectId String?         @db.ObjectId
+  order     Int?
+  data      Json?
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
 }
 
 model Vision {

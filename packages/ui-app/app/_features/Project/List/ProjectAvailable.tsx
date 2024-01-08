@@ -2,13 +2,16 @@ import { projectGet } from '@/services/project'
 import { useProjectStore } from '@/store/project'
 import { useEffect } from 'react'
 import ProjectItem from './ProjectItem'
+import { useParams } from 'next/navigation'
 
 export default function ProjectAvailable() {
   const { projects, addAllProject } = useProjectStore(state => state)
+  const {orgID} = useParams()
 
   useEffect(() => {
     if (!projects.length) {
       projectGet({
+        orgId: orgID, 
         isArchive: false
       }).then(result => {
         const { data, status } = result.data

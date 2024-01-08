@@ -17,6 +17,7 @@ export enum CKEY {
   PROJECT_MEMBER = 'PROJECT_MEMBER',
   PROJECT_POINT = 'PROJECT_POINT',
   PROJECT_VISION = 'PROJECT_VISION',
+  PROJECT_TASK_COUNTER = 'PROJECT_TASK_COUNTER',
 
   // count the number of undone tasks
   TODO_COUNTER = 'TODO_COUNTER',
@@ -27,7 +28,11 @@ export enum CKEY {
   FAV_QUERY = 'FAV_QUERY',
 
   // save task by setting
-  TASK_SUMMARY = 'TASK_SUMMARY'
+  TASK_SUMMARY = 'TASK_SUMMARY',
+
+  ORG_STORAGE_SIZE = 'ORG_STORAGE_SIZE',
+  ORG_MAX_STORAGE_SIZE = 'ORG_MAX_STORAGE_SIZE',
+
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
@@ -204,15 +209,34 @@ export const getCache = async (key: CACHE_KEY) => {
 
 export const incrCache = async (key: CACHE_KEY) => {
   try {
-    await redis.incr(genKey(key))
+    return await redis.incr(genKey(key))
   } catch (error) {
     console.log(error)
+    return null
+  }
+}
+
+export const incrByCache = async (key: CACHE_KEY, val: number) => {
+  try {
+    return await redis.incrby(genKey(key), val)
+  } catch (error) {
+    console.log(error)
+    return null
   }
 }
 
 export const decrCache = async (key: CACHE_KEY) => {
   try {
-    await redis.decr(genKey(key))
+    return await redis.decr(genKey(key))
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const decrByCache = async (key: CACHE_KEY, val: number) => {
+  try {
+    return await redis.decrby(genKey(key), val)
   } catch (error) {
     console.log(error)
     return null

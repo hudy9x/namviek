@@ -1,28 +1,43 @@
 'use client'
 
-import { Button, Form, messageError } from '@shared/ui'
+import { Button, Form, FormGroup, messageError, messageWarning } from '@shared/ui'
 import { useFormik } from 'formik'
 import { orgCreate } from '../../../services/organization'
 import { Organization } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import EmojiInput from '@/components/EmojiInput'
+import { AxiosError } from 'axios'
 
 export default function CreateOrganization() {
   const { push } = useRouter()
   const formik = useFormik({
     initialValues: {
       name: '',
-      desc: ''
+      desc: '',
+      cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
     },
     onSubmit: values => {
+      if (!values.name) {
+        messageError('Title is required !')
+        return
+      }
+
       orgCreate(values).then(res => {
         const { status } = res
         const { data } = res.data
         const org = data as Organization
         if (status !== 200) {
-          messageError('Can not create organization')
+          messageError('Cannot create organization')
           return
         }
         push(`/${org.id}`)
+      }).catch(err => {
+        const error = err as AxiosError
+        if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {
+          messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade')
+
+          console.log(err)
+        }
       })
     }
   })
@@ -44,7 +59,7 @@ export default function CreateOrganization() {
       <div className="org">
         <div className="org-setup">
           {/* <section className="setup-step mb-4"><span>Step 1/</span>6</section> */}
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             🖖 Hey,
             <br /> Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
           </h2>
@@ -54,24 +69,16 @@ export default function CreateOrganization() {
           </p>
 
           <div className="org-form mt-4 space-y-4">
-            <div className="flex items-center gap-4">
-              <img
-                className="h-[50px] w-[50px] rounded-md border"
-                src={
-                  'https://www.freepnglogos.com/uploads/company-logo-png/company-logo-transparent-png-19.png'
-                }
+            <FormGroup title='Organization name'>
+              <EmojiInput value={formik.values.cover} onChange={val => {
+                formik.setFieldValue('cover', val)
+              }} />
+
+              <Form.Input
+                className='w-full'
+                {...registerForm('name', formik)}
               />
-              <div>
-                <Button title="Upload image" size="sm" />
-                <p className="text-gray-400 text-[11px] sm:text-xs mt-1">
-                  .png, .jpeg files up to 4mb. Recommended size is 256x256
-                </p>
-              </div>
-            </div>
-            <Form.Input
-              title="Organization name"
-              {...registerForm('name', formik)}
-            />
+            </FormGroup>
             <Form.Textarea
               title="Description"
               {...registerForm('desc', formik)}

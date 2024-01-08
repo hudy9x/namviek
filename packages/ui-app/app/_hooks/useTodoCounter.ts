@@ -16,7 +16,6 @@ export const useTodoCounter = () => {
     if (projects.length) {
       const projectIds = projects.map(p => p.id)
       taskCounterByUser(projectIds, abortController.signal).then(res => {
-        console.log(res)
         const { data } = res.data
 
         if (!data || !data.length) return

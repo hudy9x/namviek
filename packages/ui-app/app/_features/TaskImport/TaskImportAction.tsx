@@ -98,6 +98,7 @@ export default function TaskImportAction() {
         title,
         desc: null,
         cover: null,
+        order: -1,
         plannedStartDate: null,
         fileIds: [],
         visionId: null,

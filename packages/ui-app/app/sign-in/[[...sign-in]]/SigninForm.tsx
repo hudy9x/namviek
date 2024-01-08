@@ -6,6 +6,7 @@ import {
   messageError,
   messageSuccess,
   messageWarning,
+  setFixLoading,
   useForm
 } from '@shared/ui'
 import { validateLoginUser } from '@shared/validation'
@@ -14,9 +15,16 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Logo from '../../../components/Logo'
 
-import { ISignin, getGoalieUser, resendVerifyEmail, signin, useUser } from '@goalie/nextjs'
+import {
+  ISignin,
+  getGoalieUser,
+  resendVerifyEmail,
+  signin,
+  useUser
+} from '@goalie/nextjs'
 import { BsMailbox } from 'react-icons/bs'
 import { getRecentVisit } from '@shared/libs'
+import { signinWithGoogle } from 'packages/ui-app/libs/firebase'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -32,44 +40,74 @@ export default function SigninForm() {
       password: ''
     },
     validateFn: values => {
-
       return validateLoginUser(values)
     },
     onSubmit: values => {
-      if (loading) return
-      setLoading(true)
-
-      setEmail(values.email)
-      signin(values as ISignin)
-        .then(res => {
-          const recentVisit = getRecentVisit()
-          setUser(getGoalieUser())
-
-          if (recentVisit) {
-            const location = window.location
-            location.href = `${location.protocol}//${location.host}${recentVisit}`
-          } else {
-            push('/organization')
-          }
-
-          // messageSuccess('Success')
-        })
-        .catch(err => {
-          if (err.response.status === 403) {
-            messageError(
-              "You haven't activated your account yet. Please check your email for the activation link."
-            )
-            setIsUserInactive(true)
-          } else {
-            messageError('Your email or password are invalid')
-          }
-          console.log(err)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+      submitHandler({
+        email: values.email,
+        password: values.password,
+        provider: 'EMAIL_PASSWORD'
+      })
     }
   })
+
+  const signInWithThirdParty = async () => {
+    try {
+      const result = await signinWithGoogle()
+      const { user } = result
+      const idToken = await user.getIdToken()
+
+      submitHandler({
+        email: user.email || '',
+        password: idToken,
+        provider: 'GOOGLE'
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const submitHandler = (values: ISignin) => {
+    if (loading) return
+    setLoading(true)
+
+    setEmail(values.email)
+    signin(values)
+      .then(res => {
+        const recentVisit = getRecentVisit()
+        setUser(getGoalieUser())
+
+        setFixLoading(true, {
+          title: 'Redirecting to main screen ...'
+        })
+        if (recentVisit) {
+          const location = window.location
+          location.href = `${location.protocol}//${location.host}${recentVisit}`
+        } else {
+          push('/organization')
+          setTimeout(() => {
+            setFixLoading(false)
+          }, 500)
+
+        }
+
+        // messageSuccess('Success')
+      })
+      .catch(err => {
+        if (err.response.status === 403) {
+          messageError(
+            "You haven't activated your account yet. Please check your email for the activation link."
+          )
+          setIsUserInactive(true)
+        } else {
+          messageError('Your email or password are invalid')
+        }
+        console.log(err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
   const onResend = async () => {
     if (sending) return
@@ -102,7 +140,9 @@ export default function SigninForm() {
 
   return (
     <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex border-4 border-white/30 dark:border-gray-800/50 " style={{ borderRadius: `calc(0.375rem + 4px)` }}>
+      <div
+        className="flex border-4 border-white/30 dark:border-gray-800/50 "
+        style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
           onSubmit={regHandleSubmit}
           className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md">
@@ -123,13 +163,23 @@ export default function SigninForm() {
               type="password"
               {...regField('password')}
             />
-            <Button
-              loading={loading}
-              title="Sign in"
-              type="submit"
-              block
-              primary
-            />
+
+            <div className="space-y-3 mt-2">
+              <Button
+                loading={loading}
+                title="Sign in"
+                type="submit"
+                block
+                primary
+              />
+
+              <Button
+                onClick={signInWithThirdParty}
+                block
+                leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
+                title="Sign in with google"
+              />
+            </div>
           </div>
 
           <div className="mt-6 text-sm text-center text-gray-400">

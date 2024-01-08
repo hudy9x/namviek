@@ -1,8 +1,10 @@
 import { create } from 'zustand'
-import { InvitationStatus, MemberRole, User } from '@prisma/client'
+import { InvitationStatus, MemberRole, OrganizationRole, User } from '@prisma/client'
 import { produce } from 'immer'
 
-type OrgMember = User
+type OrgMember = User & {
+  role: OrganizationRole
+}
 
 interface OrgMemberState {
   orgMembers: OrgMember[]

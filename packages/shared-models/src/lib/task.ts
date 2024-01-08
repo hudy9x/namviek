@@ -241,6 +241,10 @@ export const mdTaskGetOne = async (taskId: string) => {
   })
 }
 
+export const mdTaskCounter = () => {
+  console.log(1)
+}
+
 export const mdTaskAdd = async (data: Omit<Task, 'id'>) => {
   return taskModel.create({
     data

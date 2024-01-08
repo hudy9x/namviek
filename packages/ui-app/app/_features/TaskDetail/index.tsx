@@ -279,7 +279,7 @@ export default function TaskDetail({
             </div>
           </div>
         </section>
-        <section className="mt-3 task-tab-section">
+        <section className="task-tab-section">
           <Tab defaultValue="task-attachment">
             <Tab.List>
               <Tab.Trigger value="task-attachment">

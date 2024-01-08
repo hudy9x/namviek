@@ -10,12 +10,15 @@ import { Popover } from 'packages/shared-ui/src/components/Controls'
 import { colors } from './type'
 import { IoIosClose } from 'react-icons/io'
 import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { useUserRole } from '@/features/UserPermission/useUserRole'
+import HasRole from '@/features/UserPermission/HasRole'
 
 interface IStatusItemProps {
   status: TaskStatus
 }
 
 export const StatusItem = ({ status }: IStatusItemProps) => {
+  const { projectRole } = useUserRole()
   const { updateStatus, delStatus } = useProjectStatusStore()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -83,6 +86,8 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     }
   }
 
+  const readOnly = projectRole === 'MEMBER' || projectRole === 'GUEST'
+
   return (
     <>
       <div className="flex items-center gap-3">
@@ -108,19 +113,22 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
           }
         />
         <input
+          readOnly={readOnly}
           ref={inputRef}
           className="outline-none bg-transparent w-full text-gray-500 text-sm pr-8 py-3"
           onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
-        {status.type}
+        {/* {status.type} */}
       </div>
-      <div className="absolute right-3 gap-2 hidden group-hover:flex ">
-        <IoIosClose
-          onClick={() => onDeleteHandler(status)}
-          className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
-        />
-      </div>
+      <HasRole projectRoles={['LEADER', 'MANAGER']}>
+        <div className="absolute right-3 gap-2 hidden group-hover:flex ">
+          <IoIosClose
+            onClick={() => onDeleteHandler(status)}
+            className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
+          />
+        </div>
+      </HasRole>
     </>
   )
 }

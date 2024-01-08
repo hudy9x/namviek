@@ -1,27 +1,11 @@
-import { DragDropContext } from 'react-beautiful-dnd'
-import { useBoardAction } from './useBoardAction'
-import { BoardColumnList } from './BoardColumnList'
-import './style.css'
 import TaskFilter from '@/features/TaskFilter'
-import TaskMultipleActions from '@/features/TaskMultipleActions'
-export const SIDEBAR_WIDTH = 308
+import BoardContainer from './BoardContainer'
 
-export default function Board() {
-  const { onDragEnd } = useBoardAction()
+export default function BoardRoot() {
   return (
-    <div className="">
+    <div>
       <TaskFilter />
-      <div
-        className="board-wrapper"
-        style={{
-          width: `calc(100vw - ${SIDEBAR_WIDTH}px)`,
-          height: `calc(100vh - 125px)`
-        }}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <BoardColumnList />
-        </DragDropContext>
-      </div>
-      <TaskMultipleActions />
+      <BoardContainer />
     </div>
   )
 }

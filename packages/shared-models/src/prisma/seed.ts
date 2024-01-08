@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { dummyAutomation } from './seeder/automation'
-import { dummyTask } from './seeder/task'
+import { dummyTask, updateTaskCounter } from './seeder/task'
 import { dummyMemberToAllProject } from './seeder/member'
 import { dummyProjectSetting } from './seeder/setting'
 
@@ -11,6 +11,7 @@ async function main() {
   dummyTask()
   dummyMemberToAllProject()
   dummyProjectSetting()
+
 }
 main()
   .then(async () => {
