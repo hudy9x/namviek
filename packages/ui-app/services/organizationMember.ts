@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useOrgMemberStore } from '../store/orgMember'
 
 export const orgMemberGet = (projectId: string, orgId: string) => {
-  return httpGet(`/api/org/members/${orgId}?projectId=${projectId}`)
+  return httpGet(`/api/org/member/${orgId}?projectId=${projectId}`)
 }
 
 export const orgMemberSearch = ({

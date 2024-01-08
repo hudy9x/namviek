@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import authRouter from './auth'
-import orgRouter from './organization'
 import projectRouter from './project'
 import projectMemberRouter from './member'
 import taskRouter from './task'
@@ -20,9 +19,13 @@ import ActivityRouter from './activity'
 import AdminController from './test2'
 import ProjectController from './project/project.controller'
 import ProjectViewController from './project/view'
+import PermissionController from './auth/permission.controller'
 
 import { AppRoutes } from '../core/AppRoutes'
 import { TestRouter } from './test'
+import { OrganizationStorageController } from './organization/storage.controller'
+import { OrganizationController } from './organization/index.controller'
+import { OrganizationMemberController } from './organization/member.controller'
 
 const router = Router()
 
@@ -37,7 +40,11 @@ router.use(
     ProjectController,
     ActivityRouter,
     TestRouter,
-    ProjectViewController
+    ProjectViewController,
+    PermissionController,
+    OrganizationController,
+    OrganizationStorageController,
+    OrganizationMemberController
   ])
 )
 // middlewares
@@ -51,7 +58,7 @@ router.use(authRouter)
 router.use(favRouter)
 router.use(automationRouter)
 router.use(dboardRouter)
-router.use(orgRouter)
+// router.use(orgRouter)
 router.use(projectRouter)
 router.use(projectMemberRouter)
 router.use(taskRouter)

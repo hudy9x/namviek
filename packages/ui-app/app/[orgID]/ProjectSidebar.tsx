@@ -86,7 +86,7 @@ export default function ProjectSidebar() {
     },
     {
       title: 'Settings',
-      href: `/${orgID}/setting/about`,
+      href: `/${orgID}/setting/people`,
       icon: HiOutlineCog6Tooth,
       active: pathname.includes(`${orgID}/setting`)
     }

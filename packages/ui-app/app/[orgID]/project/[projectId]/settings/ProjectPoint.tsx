@@ -3,7 +3,7 @@ import { TaskPoint } from '@prisma/client'
 import { AiOutlinePlus, AiOutlineStar } from 'react-icons/ai'
 
 import { IoIosClose } from 'react-icons/io'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useProjectPointStore } from '@/store/point'
 import {
   projectPointCreate,
@@ -11,6 +11,8 @@ import {
   projectPointUpdate
 } from '@/services/point'
 import { messageError, messageSuccess } from '@shared/ui'
+import HasRole from '@/features/UserPermission/HasRole'
+import { useUserRole } from '@/features/UserPermission/useUserRole'
 
 interface ITaskPointInput {
   initPoint: TaskPoint
@@ -23,6 +25,7 @@ const PointInput = ({
   handleSumit,
   handleDelete
 }: ITaskPointInput) => {
+  const { projectRole } = useUserRole()
   const onSubmitKeyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       try {
@@ -38,23 +41,27 @@ const PointInput = ({
   return (
     <div className="relative flex items-center group">
       <AiOutlineStar className="absolute left-4 text-gray-400 top-3.5 group-hover:text-orange-400 transition-all" />
+
       <input
+        readOnly={projectRole === 'GUEST' || projectRole === 'MEMBER'}
         className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 border-b dark:border-gray-800 outline-none"
         defaultValue={`${initPoint.point}`}
         onKeyDown={e => onSubmitKeyPressed(e)}
       />
-      <div className="absolute right-3 gap-2 hidden group-hover:flex ">
-        <div className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500">
-          Enter to update
+      <HasRole projectRoles={['MANAGER', 'LEADER']}>
+        <div className="absolute right-3 gap-2 hidden group-hover:flex ">
+          <div className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500">
+            Enter to update
+          </div>
+          <IoIosClose
+            className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
+            onClick={() => handleDelete(initPoint.id)}
+          />
         </div>
-        <IoIosClose
-          className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
-          onClick={() => handleDelete(initPoint.id)}
-        />
-      </div>
-      <p className="absolute right-0 translate-x-full invisible peer-invalid:visible text-red-600">
-        Invalid input!
-      </p>
+        <p className="absolute right-0 translate-x-full invisible peer-invalid:visible text-red-600">
+          Invalid input!
+        </p>
+      </HasRole>
     </div>
   )
 }
@@ -64,6 +71,8 @@ export default function ProjectPoint() {
   const inputAddRef = useRef<HTMLInputElement>(null)
   const { points, addPoint, updatePoint, deletePoint } = useProjectPointStore()
   const { projectId } = useParams()
+
+  const { projectRole } = useUserRole()
 
   useEffect(() => {
     // const cloned = JSON.parse(JSON.stringify(points)) as TaskPoint[]
@@ -132,6 +141,14 @@ export default function ProjectPoint() {
     [projectId, addPoint, updatePoint]
   )
 
+  const placeholder = useMemo(() => {
+    return !projectRole
+      ? ''
+      : projectRole === 'MANAGER' || projectRole === 'LEADER'
+      ? 'Hit `Enter` to add a new point'
+      : 'Only your boss can add new point'
+  }, [projectRole])
+
   return (
     <div className="setting-container">
       <div className="rounded-lg border dark:border-gray-700">
@@ -150,8 +167,9 @@ export default function ProjectPoint() {
             <AiOutlinePlus className="absolute top-3.5 left-4 text-gray-500" />
             <input
               ref={inputAddRef}
+              readOnly={projectRole === 'MEMBER' || projectRole === 'GUEST'}
               className="bg-transparent w-full pl-12 text-gray-500 text-sm pr-8 py-3 outline-none"
-              placeholder="Hit `Enter` to add a new point"
+              placeholder={placeholder}
               onKeyDown={e => {
                 if (e.key !== 'Enter') {
                   return

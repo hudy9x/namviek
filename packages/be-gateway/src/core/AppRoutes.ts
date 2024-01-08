@@ -50,7 +50,12 @@ export const AppRoutes = (routeControllers: any[]) => {
       if (!func) return
 
       if (params && params.length) {
-        console.log(method.toUpperCase(), `${prefix}${path}`, '==>', r.methodName)
+        console.log(
+          method.toUpperCase(),
+          `${prefix}${path}`,
+          '==>',
+          r.methodName
+        )
         // console.log(params)
 
         methodRouter[method](path, async (req, res, next) => {
@@ -85,28 +90,44 @@ export const AppRoutes = (routeControllers: any[]) => {
           instance.res = res
           instance.next = next
 
-          const result = await func.apply(instance, paramDatas)
-          // console.log('result app route', result)
-          if (result !== undefined) {
-            res.json({
-              data: result
-            })
+          try {
+            const result = await func.apply(instance, paramDatas)
+            // console.log('result app route', result)
+            if (result !== undefined) {
+              res.json({
+                status: 200,
+                data: result
+              })
+            }
+          } catch (error) {
+            console.log('AppRoute', error)
+            res.status(500).send(error)
           }
         })
       } else {
-        console.log(method.toUpperCase(), `${prefix}${path}`, '==>', r.methodName)
+        console.log(
+          method.toUpperCase(),
+          `${prefix}${path}`,
+          '==>',
+          r.methodName
+        )
         methodRouter[method](path, async (req, res, next) => {
           instance.req = req
           instance.res = res
           instance.next = next
 
-          const result = await func.apply(instance, [])
+          try {
+            const result = await func.apply(instance, [])
 
-          // console.log('result app route else:', result, typeof result)
-          if (result !== undefined) {
-            res.json({
-              data: result
-            })
+            if (result !== undefined) {
+              res.json({
+                status: 200,
+                data: result
+              })
+            }
+          } catch (error) {
+            console.log('AppRoute2', error)
+            res.status(500).send(error)
           }
         })
       }
