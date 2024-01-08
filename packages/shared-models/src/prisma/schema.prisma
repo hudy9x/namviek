@@ -21,6 +21,7 @@ enum MemberRole {
 
 enum OrganizationRole {
   ADMIN
+  MANAGER
   MEMBER
 }
 

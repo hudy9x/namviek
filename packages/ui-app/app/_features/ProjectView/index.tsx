@@ -12,6 +12,7 @@ import { IBoardFilter } from './context'
 import { useEffect } from 'react'
 import { useDebounce } from '@/hooks/useDebounce'
 import DynamicIcon from '@/components/DynamicIcon'
+import HasRole from '../UserPermission/HasRole'
 
 export default function ProjectView() {
   const searchParams = useSearchParams()
@@ -29,11 +30,19 @@ export default function ProjectView() {
     const viewId = mode
     const view = views.find(v => v.id === viewId)
 
-    if (view && view.data && !Object.keys(view.data as { [key: string]: unknown }).length) {
+    if (
+      view &&
+      view.data &&
+      !Object.keys(view.data as { [key: string]: unknown }).length
+    ) {
       setDefaultFilter()
     }
 
-    if (view && view.data && Object.keys(view.data as { [key: string]: unknown }).length) {
+    if (
+      view &&
+      view.data &&
+      Object.keys(view.data as { [key: string]: unknown }).length
+    ) {
       const data = view.data as unknown as IBoardFilter
       setFilter(filter => ({
         ...filter,
@@ -44,14 +53,12 @@ export default function ProjectView() {
           point: data.point
         }
       }))
-
     }
   }, [mode, views.toString()])
 
   return (
     <div className="project-view pl-1 relative">
-
-      <Loading.Absolute title='' enabled={loading} />
+      <Loading.Absolute title="" enabled={loading} />
       {views.map((view, index) => {
         const active = mode === view.id
         const { icon } = view
@@ -59,19 +66,31 @@ export default function ProjectView() {
         return (
           <div
             onClick={() => clickOnView(view.id)}
-            className={`project-view-item group relative ${active ? 'active' : ''}`}
+            className={`project-view-item group relative ${
+              active ? 'active' : ''
+            }`}
             key={index}>
-            {icon ? <DynamicIcon name={icon} /> :
-              <ProjectViewIcon type={view.type} />}
+            {icon ? (
+              <DynamicIcon name={icon} />
+            ) : (
+              <ProjectViewIcon type={view.type} />
+            )}
             <span>{view.name}</span>
-            <ProjectViewItemDropdown id={view.id} name={view.name || ''} type={view.type} />
+            <ProjectViewItemDropdown
+              id={view.id}
+              name={view.name || ''}
+              type={view.type}
+            />
           </div>
         )
       })}
 
-      {views.length ?
-        <div className="w-[1px] h-[20px] bg-gray-300 dark:bg-gray-700 mx-2 my-2"></div> : null}
-      <ProjectViewCreate />
+      <HasRole projectRoles={['MANAGER', 'LEADER']}>
+        {views.length ? (
+          <div className="w-[1px] h-[20px] bg-gray-300 dark:bg-gray-700 mx-2 my-2"></div>
+        ) : null}
+        <ProjectViewCreate />
+      </HasRole>
     </div>
   )
 }

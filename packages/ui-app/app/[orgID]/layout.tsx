@@ -1,13 +1,15 @@
 'use client'
 import HamburgerMenu from '@/components/HamburgerMenu'
 import ProjectSidebar from './ProjectSidebar'
-import UserPermission from '@/features/UserPermission'
+import { useOrgMemberGet } from '@/services/organizationMember'
 
 export default function ProjectLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  useOrgMemberGet()
+
   return (
     <>
       <ProjectSidebar />
@@ -15,7 +17,6 @@ export default function ProjectLayout({
         <HamburgerMenu />
         {children}
       </main>
-      <UserPermission />
     </>
   )
 }

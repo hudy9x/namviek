@@ -6,10 +6,13 @@ import ProjectMemberAdd from './ProjectMemberAdd'
 import ProjectMemberRole from './ProjectMemberRole'
 import ProjectMemberDel from './ProjectMemberDel'
 import { useState } from 'react'
+import HasRole from '@/features/UserPermission/HasRole'
+import { useUser } from '@goalie/nextjs'
 
 export default function ProjectMemberManager() {
   const { members } = useMemberStore()
   const [term, setTerm] = useState('')
+  const { user } = useUser()
   useOrgMemberGet()
 
   return (
@@ -34,6 +37,8 @@ export default function ProjectMemberManager() {
             if (!member.email.includes(term) && !member.name?.includes(term))
               return null
 
+            const isMe = member.id === user?.id
+
             return (
               <div key={member.id} className="relative px-4 py-3">
                 <div className="flex items-center gap-3">
@@ -51,16 +56,22 @@ export default function ProjectMemberManager() {
                     </span>
                   </div>
                 </div>
-                <div className="absolute top-3 right-4 flex items-center gap-3">
-                  <ProjectMemberRole uid={member.id} role={member.role} />
-                  <ProjectMemberDel uid={member.id} />
-                </div>
+                {isMe ? null : (
+                  <HasRole projectRoles={['MANAGER', 'LEADER']}>
+                    <div className="absolute top-3 right-4 flex items-center gap-3">
+                      <ProjectMemberRole uid={member.id} role={member.role} />
+                      <ProjectMemberDel uid={member.id} />
+                    </div>
+                  </HasRole>
+                )}
               </div>
             )
           })}
         </div>
       </div>
-      <ProjectMemberAdd />
+      <HasRole projectRoles={['LEADER', 'MANAGER']}>
+        <ProjectMemberAdd />
+      </HasRole>
     </>
   )
 }

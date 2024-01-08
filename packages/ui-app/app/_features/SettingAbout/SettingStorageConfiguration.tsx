@@ -1,12 +1,20 @@
 'use client'
 
-import { orgStorageGet, orgUpdateStorageConfig } from "@/services/organization";
-import { Button, Form, messageError, messageSuccess } from "@shared/ui";
-import { useFormik } from "formik";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { orgStorageGet, orgUpdateStorageConfig } from '@/services/organization'
+import {
+  Button,
+  Form,
+  confirmAlert,
+  messageError,
+  messageSuccess
+} from '@shared/ui'
+import { useFormik } from 'formik'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useUserRole } from '../UserPermission/useUserRole'
 
 export default function SettingStorageConfiguration() {
+  const { orgRole } = useUserRole()
   const { orgID } = useParams()
   const [loading, setLoading] = useState(false)
   const formik = useFormik({
@@ -17,32 +25,31 @@ export default function SettingStorageConfiguration() {
       secretKey: ''
     },
     onSubmit: values => {
-
+      if (orgRole !== 'ADMIN') {
+        confirmAlert({
+          title: 'Restrict Action !',
+          message:
+            'Sorry, you do not have permission to do this action. Please contact to admin.',
+          yes: () => {
+            console.log(1)
+          }
+        })
+        return
+      }
       setLoading(true)
-      orgUpdateStorageConfig(orgID, values).then(res => {
-        console.log(res)
-        messageSuccess('Save it !')
-        setLoading(false)
-      }).catch(err => {
-        console.log(err)
-        messageError('Cannot save configuration')
-        setLoading(false)
-      })
-      // orgUpdate({
-      //   id: orgID,
-      //   name: values.name,
-      //   cover: values.cover,
-      //   desc: values.desc
-      // }).then(res => {
-      //   messageSuccess('Updated successully')
-      //   console.log(res)
-      // }).catch(err => {
-      //   console.log(err)
-      // })
-
+      orgUpdateStorageConfig(orgID, values)
+        .then(res => {
+          console.log(res)
+          messageSuccess('Save it !')
+          setLoading(false)
+        })
+        .catch(err => {
+          console.log(err)
+          messageError('Cannot save configuration')
+          setLoading(false)
+        })
     }
   })
-
 
   const registerForm = (
     name: keyof typeof formik.values,
@@ -56,38 +63,26 @@ export default function SettingStorageConfiguration() {
     }
   }
 
-  useEffect(() => {
-    // orgStorageGet(orgID).then(res => {
-    //   console.log(res)
-    //   const { data } = res.data
-    //   const config = data as {
-    //     bucketName: string
-    //     region: string
-    //     secretKey: string
-    //     accessKey: string
-    //   }
-    //   formik.setValues(config)
-    // })
-  }, [orgID])
-
-  return <>
-    <form onSubmit={formik.handleSubmit} className="">
-
-      <Form.Input title="Aws access key"
-        {...registerForm('accessKey', formik)}
-      />
-      <Form.Input title="Aws secret key"
-        {...registerForm('secretKey', formik)}
-      />
-      <Form.Input title="Aws region"
-        {...registerForm('region', formik)}
-      />
-      <Form.Input title="Aws bucket"
-        {...registerForm('bucketName', formik)}
-      />
-      <div className="mt-4 text-right">
-        <Button loading={loading} type="submit" title="Save it" primary />{' '}
-      </div>
-    </form>
-  </>
+  return (
+    <>
+      <form onSubmit={formik.handleSubmit} className="">
+        <Form.Input
+          title="Aws access key"
+          {...registerForm('accessKey', formik)}
+        />
+        <Form.Input
+          title="Aws secret key"
+          {...registerForm('secretKey', formik)}
+        />
+        <Form.Input title="Aws region" {...registerForm('region', formik)} />
+        <Form.Input
+          title="Aws bucket"
+          {...registerForm('bucketName', formik)}
+        />
+        <div className="mt-4 text-right">
+          <Button loading={loading} type="submit" title="Save it" primary />{' '}
+        </div>
+      </form>
+    </>
+  )
 }
