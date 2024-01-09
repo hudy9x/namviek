@@ -72,7 +72,7 @@ const TeamMemberProcess = ({ datas }: { datas: Task[] }) => {
             <ApexCharts
               height={120}
               options={options}
-              series={[percent]}
+              series={[+percent]}
               type="radialBar"
             />
           )}
