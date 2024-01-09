@@ -21,7 +21,7 @@ const TeamMemberProcess = ({ datas }: { datas: Task[] }) => {
     }
   })
 
-  const percent = !total ? 0 : (done / total) * 100
+  const percent = (!total ? 0 : (done / total) * 100).toPrecision(2)
 
   const options: ApexCharts.ApexOptions = useMemo(() => {
     return {
