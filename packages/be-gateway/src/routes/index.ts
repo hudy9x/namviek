@@ -26,6 +26,7 @@ import { TestRouter } from './test'
 import { OrganizationStorageController } from './organization/storage.controller'
 import { OrganizationController } from './organization/index.controller'
 import { OrganizationMemberController } from './organization/member.controller'
+import { SchedulerController } from './scheduler/index.controller'
 
 const router = Router()
 
@@ -44,7 +45,8 @@ router.use(
     PermissionController,
     OrganizationController,
     OrganizationStorageController,
-    OrganizationMemberController
+    OrganizationMemberController,
+    SchedulerController,
   ])
 )
 // middlewares

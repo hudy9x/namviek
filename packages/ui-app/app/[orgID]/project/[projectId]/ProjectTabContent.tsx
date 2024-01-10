@@ -33,8 +33,8 @@ const Automation = dynamic(() => import('@/features/Automation'), {
   loading: () => <ProjectContentLoading />
 })
 
-const AutomateList = dynamic(
-  () => import('@/features/Automation/AutomateList'),
+const AutomateMenu = dynamic(
+  () => import('@/features/Automation/AutomateMenu'),
   {
     loading: () => <ProjectContentLoading />
   }
@@ -67,7 +67,7 @@ export default function ProjectTabContent() {
       {isView(ProjectViewType.GOAL) ? <Vision /> : null}
       {mode === 'setting' && <Settings />}
       {mode === 'automation-create' ? <Automation /> : null}
-      {mode === 'automation' ? <AutomateList /> : null}
+      {mode === 'automation' ? <AutomateMenu /> : null}
     </div>
   )
 }

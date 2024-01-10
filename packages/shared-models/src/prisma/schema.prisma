@@ -226,9 +226,8 @@ model Scheduler {
   organizationId String @db.ObjectId
   projectId      String @db.ObjectId
 
-  trigger   Json
-  condition Json
-  action    Json
+  trigger Json
+  action  Json
 
   createdBy String?
   createdAt DateTime?
