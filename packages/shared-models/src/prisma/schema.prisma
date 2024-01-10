@@ -225,6 +225,7 @@ model Scheduler {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
   organizationId String @db.ObjectId
   projectId      String @db.ObjectId
+  cronId         String?
 
   trigger Json
   action  Json

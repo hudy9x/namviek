@@ -1,4 +1,4 @@
-import { HiOutlineCalendarDays, HiOutlineCog8Tooth } from "react-icons/hi2"
+import { HiOutlineBolt, HiOutlineCalendarDays, HiOutlineCog8Tooth } from "react-icons/hi2"
 import AutomationScheduler from "../AutomationScheduler"
 import AutomateRuleList from "./AutomateRuleList"
 import { useState } from "react"
@@ -8,16 +8,16 @@ export default function AutomateMenu() {
   const [active, setActive] = useState(0)
   const asides = [
     {
-      title: "Information",
-      icon: HiOutlineCog8Tooth,
+      title: "Rules",
+      icon: HiOutlineBolt,
       content: AutomateRuleList,
-      desc: "Share as much information about your organization as you'd like, or stick with the essentials and utilize our streamlined default settings."
+      desc: "Create rules that automatically respond to actions, schedules, or a card's due date."
     },
     {
       title: "Scheduler",
       icon: HiOutlineCalendarDays,
       content: AutomationScheduler,
-      desc: "Choose between your own cloud storage (AWS S3 or DigitalOcean) for unlimited capacity or utilize our default storage with a fixed limit."
+      desc: "Scheduled automations make things automatically happen on your board based on a schedule."
     },
   ]
 

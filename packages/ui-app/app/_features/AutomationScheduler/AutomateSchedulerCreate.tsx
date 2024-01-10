@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ISchedulerTrigger, SchedulerProvider } from "./context";
 import TriggerPresent from "./TriggerPresent";
 
-export default function AutomateSchedulerCreate() {
+export default function AutomateSchedulerCreate({ backToList }: { backToList: () => void }) {
   const today = new Date()
   const [trigger, setTrigger] = useState<ISchedulerTrigger>({
     every: '',

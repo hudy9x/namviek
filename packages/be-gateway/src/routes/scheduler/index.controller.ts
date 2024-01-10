@@ -1,5 +1,6 @@
 import { SchedulerRepository } from '@shared/models'
 import { BaseController, Body, Controller, Get, Post } from '../../core'
+import { publish } from '@shared/pubsub'
 
 interface IObject {
   [key: string]: unknown
@@ -35,12 +36,12 @@ export class SchedulerController extends BaseController {
     const title = config.title as string
     const content = config.content as string
 
-    console.log(body)
 
     const result = await repo.create({
       organizationId,
       projectId,
       trigger,
+      cronId: null,
       action: {
         group,
         config: {
@@ -55,9 +56,10 @@ export class SchedulerController extends BaseController {
       updatedBy: null
     })
 
-    console.log(result)
+    console.log('published')
+    publish('scheduler:create', result)
+
     return result
-    // console.log(1)
   }
 
   @Get('')
