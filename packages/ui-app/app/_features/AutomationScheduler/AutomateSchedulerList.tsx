@@ -3,11 +3,11 @@ import { schedulerService } from '@/services/scheduler'
 import { Scheduler } from '@prisma/client'
 import { dateFormat } from '@shared/libs'
 import { Button, Loading, confirmWarning } from '@shared/ui'
-import Link from 'next/link'
+
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi2'
-import { ISchedulerTrigger, ISchedulerTriggerEveryField } from './context'
+import { ISchedulerTrigger } from './context'
 
 const useSchedulerList = () => {
   const [loading, setLoading] = useState(false)
@@ -80,7 +80,7 @@ export default function AutomateSchedulerList({
 
             return (
               <div className="box-2" key={id}>
-                <span>
+                <span className='text-sm'>
                   Trigger event every {every} {time}
                 </span>
                 <Button

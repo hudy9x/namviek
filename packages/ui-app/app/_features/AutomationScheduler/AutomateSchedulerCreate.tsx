@@ -4,6 +4,8 @@ import ActionList from './ActionList'
 import { useState } from 'react'
 import { ISchedulerTrigger, SchedulerProvider } from './context'
 import TriggerPresent from './TriggerPresent'
+import { Button } from '@shared/ui'
+import { HiOutlineChevronLeft } from 'react-icons/hi2'
 
 export default function AutomateSchedulerCreate({
   backToList
@@ -19,26 +21,14 @@ export default function AutomateSchedulerCreate({
       period: 'am'
     }
   })
-  // const [action, setActions] = useState<IScheduleAction>({
-  //   group: '',
-  //   config: {
-  //     title: '',
-  //     content: ''
-  //   }
-  // })
 
   const _setTrigger = (trigger: ISchedulerTrigger) => {
     const clonedTrigger = structuredClone(trigger)
     setTrigger(clonedTrigger)
   }
 
-  const onCreate = () => {
-    console.log(trigger)
-  }
-
   const noTrigger = !trigger.every
   const hasTrigger = trigger.every
-  // const showCreateBtn = trigger.every && action.group
 
   return (
     <SchedulerProvider
@@ -48,8 +38,11 @@ export default function AutomateSchedulerCreate({
         // action
       }}>
       <div className="px-2">
-        <h2 className="text-2xl font-bold mb-2">
-          Create a scheduled automation
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-3">
+          <Button size='sm' onClick={backToList} leadingIcon={<HiOutlineChevronLeft />} />
+          <span>
+            Create a scheduled automation
+          </span>
         </h2>
         <p className="text-sm text-gray-500 mb-3">
           Scheduled automations make things automatically happen on your board

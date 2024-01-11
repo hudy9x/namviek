@@ -1,9 +1,5 @@
 import { connectSubClient } from '@shared/pubsub'
-import { notifyToWebUsers } from '../lib/buzzer'
-import {
-  mdMemberBelongToProject,
-  mdMemberGetAllByProjectId
-} from '@shared/models'
+import { NotificationEvent } from './notification.event'
 
 export const CHANNEL_SCHEDULER_ACTION_NOTIFY = 'scheduler:action-notify'
 export const CHANNEL_SCHEDULER_CREATE = 'scheduler:create'
@@ -21,28 +17,8 @@ connectSubClient((err, redis) => {
 
   redis.on('message', async (channel: string, data: string) => {
     if (channel === CHANNEL_SCHEDULER_ACTION_NOTIFY) {
-      try {
-        const dataObject = JSON.parse(data)
-        const { title, content, to, projectId } = dataObject as {
-          title: string
-          content: string
-          to: string[]
-          projectId: string
-        }
-
-        let members: string[] = to
-        if (to && to.includes('ALL') && projectId) {
-          const projectMembers = await mdMemberGetAllByProjectId(projectId)
-          members = projectMembers.map(m => m.id)
-        }
-
-        notifyToWebUsers(members, {
-          title: title,
-          body: content
-        })
-      } catch (error) {
-        console.log('event index.js', error)
-      }
+      const event = new NotificationEvent()
+      event.run(data)
     }
   })
 })
