@@ -1,24 +1,42 @@
 import { SchedulerRepository } from '@shared/models'
-import { BaseController, Body, Controller, Get, Post } from '../../core'
+import {
+  BaseController,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post
+} from '../../core'
 import { publish } from '@shared/pubsub'
+import { CHANNEL_SCHEDULER_CREATE, EVENT } from '../../events'
 
 interface IObject {
   [key: string]: unknown
 }
 
 interface IScheduler {
-  organizationId: string,
-  projectId: string,
+  organizationId: string
+  projectId: string
   trigger: {
-    every: 'day' | 'weekday' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
-    at: { hour: number, minute: number, period: 'am' | 'pm' }
-  },
+    every:
+    | 'day'
+    | 'weekday'
+    | 'mon'
+    | 'tue'
+    | 'wed'
+    | 'thu'
+    | 'fri'
+    | 'sat'
+    | 'sun'
+    at: { hour: number; minute: number; period: 'am' | 'pm' }
+  }
   action: {
-    group: string,
+    group: string
     config: IObject
+    to: string[]
   }
 }
-
 
 @Controller('/scheduler')
 export class SchedulerController extends BaseController {
@@ -27,6 +45,27 @@ export class SchedulerController extends BaseController {
     super()
     this.scheduleRepo = new SchedulerRepository()
   }
+  @Get('/:projectId')
+  async getSchedulerByProjectId(@Param() params: { projectId: string }) {
+    const { projectId } = params
+
+    const schedulers = await this.scheduleRepo.findAllByProjectId(projectId)
+    return schedulers
+  }
+
+  @Delete('/:schedulerId')
+  async deleteScheduler(@Param() params: { schedulerId: string }) {
+    const { schedulerId } = params
+    console.log('aaaaa', schedulerId)
+
+    const deleted = await this.scheduleRepo.delete(schedulerId)
+
+    publish(EVENT.SCHEDULER_DELETE, deleted.cronId)
+
+    console.log(1)
+    return deleted
+  }
+
   @Post('')
   async createScheduler(@Body() body: IScheduler) {
     const repo = this.scheduleRepo
@@ -35,7 +74,7 @@ export class SchedulerController extends BaseController {
 
     const title = config.title as string
     const content = config.content as string
-
+    const to = config.to as string[]
 
     const result = await repo.create({
       organizationId,
@@ -46,7 +85,8 @@ export class SchedulerController extends BaseController {
         group,
         config: {
           title: title,
-          content: content
+          content: content,
+          to
         }
       },
 
@@ -56,8 +96,7 @@ export class SchedulerController extends BaseController {
       updatedBy: null
     })
 
-    console.log('published')
-    publish('scheduler:create', result)
+    publish(CHANNEL_SCHEDULER_CREATE, result)
 
     return result
   }

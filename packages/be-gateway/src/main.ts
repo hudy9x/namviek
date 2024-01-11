@@ -4,10 +4,11 @@
  */
 import 'dotenv/config'
 import express, { Application } from 'express'
-import { connectPubClient } from "@shared/pubsub";
+import { connectPubClient } from '@shared/pubsub'
 import cors from 'cors'
 import './lib/redis'
 import './lib/firebase-admin'
+import './events'
 import Routes from './routes'
 
 connectPubClient()

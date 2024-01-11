@@ -336,7 +336,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       )
 
       notifyToWebUsers(result.assigneeIds, {
-        body: `[New task]: ${result.title} - assigned to you`,
+        title: 'Got a new task',
+        body: `${result.title}`,
         deep_link: taskLink
       })
     }

@@ -16,7 +16,6 @@ import { authMiddleware } from '../middlewares'
 import ActivityRouter from './activity'
 
 // import "./test";
-import AdminController from './test2'
 import ProjectController from './project/project.controller'
 import ProjectViewController from './project/view'
 import PermissionController from './auth/permission.controller'
@@ -37,7 +36,6 @@ router.use((req, res, next) => {
 
 router.use(
   AppRoutes([
-    AdminController,
     ProjectController,
     ActivityRouter,
     TestRouter,
@@ -46,7 +44,7 @@ router.use(
     OrganizationController,
     OrganizationStorageController,
     OrganizationMemberController,
-    SchedulerController,
+    SchedulerController
   ])
 )
 // middlewares

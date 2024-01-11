@@ -7,6 +7,22 @@ export class SchedulerRepository {
     return mdScheduler.findMany({})
   }
 
+  async delete(id: string) {
+    return mdScheduler.delete({
+      where: {
+        id
+      }
+    })
+  }
+
+  async findAllByProjectId(projectId: string) {
+    return mdScheduler.findMany({
+      where: {
+        projectId
+      }
+    })
+  }
+
   async updateCronId(id: string, cronId: string) {
     return mdScheduler.update({
       where: {
@@ -23,6 +39,4 @@ export class SchedulerRepository {
       data
     })
   }
-
-
 }
