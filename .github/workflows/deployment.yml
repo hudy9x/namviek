@@ -14,7 +14,7 @@ jobs:
           
       - name: create pm2.json file
         run: |
-          echo '{"apps":[{"name":"kampuni-be","script":"npm","args":"run prod:be"}]}' > pm2.json
+          echo '{"apps":[{"name":"kampuni-be","script":"npm","args":"run prod:be"}, {"name":"kampuni-se","script":"npm","args":"run prod:se"}]}' > pm2.json
 
       - uses: actions/setup-node@v4
         with:
@@ -30,6 +30,7 @@ jobs:
       - name: build backend source
         run: |
           npm run build:be
+          npm run build:se
           
       - name: add environment variables
         run: |
@@ -68,4 +69,3 @@ jobs:
           pm2 start pm2.json &
       - name: finish deployment
         run: echo 'done2'
-

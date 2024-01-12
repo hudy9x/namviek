@@ -25,6 +25,7 @@
       "@goalie/nextjs/server": ["packages/goalie-nextjs/src/server.ts"],
       "@shared/libs": ["packages/shared-libs/src/index.ts"],
       "@shared/models": ["packages/shared-models/src/index.ts"],
+      "@shared/pubsub": ["packages/shared-pubsub/src/index.ts"],
       "@shared/ui": ["packages/shared-ui/src/index.ts"],
       "@shared/ui/server": ["packages/shared-ui/src/server.ts"],
       "@shared/validation": ["packages/shared-validation/src/index.ts"]

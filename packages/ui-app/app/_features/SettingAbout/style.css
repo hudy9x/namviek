@@ -1,46 +1,46 @@
-.aside-content {
-  @apply flex items-start gap-12
-}
-.aside-menu {
-  @apply w-[350px] shrink-0 space-y-6;
-
-  h2 {
-    @apply font-bold text-base dark:text-gray-300 mb-2;
-    @apply flex items-center gap-2;
-  }
-
-  p {
-    @apply text-xs leading-5 text-gray-500
-  }
-}
-
-.aside-menu section {
-  @apply bg-transparent rounded-md px-6 py-5;
-  @apply border border-transparent;
-  @apply shadow-lg shadow-transparent cursor-pointer;
-  @apply transition-all;
-
-  @apply hover:bg-gray-50/70 hover:border-gray-200 hover:shadow-indigo-100;
-  @apply dark:hover:bg-gray-900/50 dark:hover:shadow-gray-900 dark:hover:border-gray-700;
-
-
-  &.active{
-    @apply bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700;
-    @apply shadow-indigo-100 dark:shadow-gray-900;
-
-    svg {
-      @apply rounded-md bg-gray-50;
-    }
-  }
-  
-}
-
-.aside-menu section h2 svg {
-    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
-    @apply w-7 h-7 p-1 rounded-md text-gray-500 dark:text-gray-400;
-  }
-
-
-.aside-content main form {
-  @apply w-full space-y-4 bg-white dark:bg-gray-900/70 px-6 py-8 border rounded-lg dark:border-gray-700 shadow-md shadow-indigo-100 dark:shadow-gray-900;
-}
+/* .aside-content { */
+/*   @apply flex items-start gap-12 */
+/* } */
+/* .aside-menu { */
+/*   @apply w-[350px] shrink-0 space-y-6; */
+/**/
+/*   h2 { */
+/*     @apply font-bold text-base dark:text-gray-300 mb-2; */
+/*     @apply flex items-center gap-2; */
+/*   } */
+/**/
+/*   p { */
+/*     @apply text-xs leading-5 text-gray-500 */
+/*   } */
+/* } */
+/**/
+/* .aside-menu section { */
+/*   @apply bg-transparent rounded-md px-6 py-5; */
+/*   @apply border border-transparent; */
+/*   @apply shadow-lg shadow-transparent cursor-pointer; */
+/*   @apply transition-all; */
+/**/
+/*   @apply hover:bg-gray-50/70 hover:border-gray-200 hover:shadow-indigo-100; */
+/*   @apply dark:hover:bg-gray-900/50 dark:hover:shadow-gray-900 dark:hover:border-gray-700; */
+/**/
+/**/
+/*   &.active{ */
+/*     @apply bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700; */
+/*     @apply shadow-indigo-100 dark:shadow-gray-900; */
+/**/
+/*     svg { */
+/*       @apply rounded-md bg-gray-50; */
+/*     } */
+/*   } */
+/*    */
+/* } */
+/**/
+/* .aside-menu section h2 svg { */
+/*     @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700; */
+/*     @apply w-7 h-7 p-1 rounded-md text-gray-500 dark:text-gray-400; */
+/*   } */
+/**/
+/**/
+/* .aside-content main form { */
+/*   @apply w-full space-y-4 bg-white dark:bg-gray-900/70 px-6 py-8 border rounded-lg dark:border-gray-700 shadow-md shadow-indigo-100 dark:shadow-gray-900; */
+/* } */

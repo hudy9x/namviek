@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { HiOutlinePlus } from 'react-icons/hi2'
 import AutomateDesc from './AutomateDesc'
 
-export default function AutomateList() {
+export default function AutomateRuleList() {
   const { orgID, projectId } = useParams()
   const { automations } = useAutomationStore()
 

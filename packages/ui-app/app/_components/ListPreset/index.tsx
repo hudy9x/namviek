@@ -1,5 +1,6 @@
 import { Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState, memo } from 'react'
+import './style.css'
 
 const List = Form.List
 interface IListPresetProps {
@@ -82,3 +83,4 @@ function ListPreset({
 }
 
 export default memo(ListPreset)
+

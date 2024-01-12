@@ -1,0 +1,6 @@
+.no-clear-icon .select-clear-icon {
+  @apply hidden;
+}
+.no-clear-icon .select-button {
+  @apply pr-8
+}
