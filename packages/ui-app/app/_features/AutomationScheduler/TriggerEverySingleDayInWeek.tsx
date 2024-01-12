@@ -20,9 +20,9 @@ export default function TriggerEverySingleDayInWeek() {
     setTrigger({ every, at })
   }
 
-  const hours = new Array(12).fill(1).map((v, i) => ({
-    id: i + 1 + '',
-    title: i + 1 + ''
+  const hours = new Array(13).fill(1).map((v, i) => ({
+    id: i + '',
+    title: i + ''
   }))
 
   const minutes = new Array(60).fill(1).map((v, i) => ({

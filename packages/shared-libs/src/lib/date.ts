@@ -73,7 +73,7 @@ export function getFirstDateOfMonth(d: Date) {
   return d
 }
 
-function genAWeekOfDate(date: Date) {
+export function genAWeekOfDate(date: Date) {
   const day = date.getDay()
 
   const week = []
