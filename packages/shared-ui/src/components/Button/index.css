@@ -18,6 +18,10 @@
   @apply text-white w-4 h-4;
 }
 
+.btn.has-leading-icon:not(.notitle) {
+  @apply pr-6;
+}
+
 .btn.notitle svg {
   margin: 0px;
 }

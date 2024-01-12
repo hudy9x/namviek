@@ -50,11 +50,11 @@ const PointInput = ({
       />
       <HasRole projectRoles={['MANAGER', 'LEADER']}>
         <div className="absolute right-3 gap-2 hidden group-hover:flex ">
-          <div className="h-5 text-[9px] bg-gray-100 rounded-md p-1 px-2 text-gray-500">
+          <div className="h-5 text-[9px] bg-gray-100 dark:bg-gray-800 dark:text-gray-400 rounded-md p-1 px-2 text-gray-500">
             Enter to update
           </div>
           <IoIosClose
-            className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
+            className="cursor-pointer w-5 h-5 bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-red-100 hover:text-red-400 dark:hover:bg-red-100 dark:hover:text-red-500 rounded-md text-gray-500"
             onClick={() => handleDelete(initPoint.id)}
           />
         </div>
