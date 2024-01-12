@@ -10,7 +10,7 @@ import { HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi2'
 import { ISchedulerTrigger } from './context'
 
 const useSchedulerList = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const { projectId } = useParams()
   const [schedulers, setScheduler] = useState<Scheduler[]>([])
 
@@ -65,6 +65,8 @@ export default function AutomateSchedulerList({
           />
         </h2>
         <div className="space-y-3">
+          {loading ?
+            <div className="box-2 text-sm">Loading ...</div> : null}
           {!loading && !schedulers.length ? (
             <div className="box-2 text-sm">
               No scheduled automation found !
