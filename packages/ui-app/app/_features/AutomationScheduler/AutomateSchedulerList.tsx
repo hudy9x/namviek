@@ -10,7 +10,7 @@ import { HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi2'
 import { ISchedulerTrigger } from './context'
 
 const useSchedulerList = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const { projectId } = useParams()
   const [schedulers, setScheduler] = useState<Scheduler[]>([])
 
@@ -53,9 +53,9 @@ export default function AutomateSchedulerList({
   return (
     <>
       <div className=" relative">
-        <Loading.Absolute enabled={loading} />
+        {/* <Loading.Absolute enabled={loading} /> */}
 
-        <h2 className="text-xl mb-3 flex items-center justify-between">
+        <h2 className="text-xl font-bold mb-3 flex items-center justify-between">
           <span>Scheduled Automation List</span>
           <Button
             title="Create new"
@@ -65,8 +65,12 @@ export default function AutomateSchedulerList({
           />
         </h2>
         <div className="space-y-3">
+          {loading ?
+            <div className="box-2 text-sm">Loading ...</div> : null}
           {!loading && !schedulers.length ? (
-            <div className="box-2">No scheduled automation created !</div>
+            <div className="box-2 text-sm">
+              No scheduled automation found !
+            </div>
           ) : null}
           {schedulers.map(scheduler => {
             const { id, cronId, trigger, createdAt } = scheduler
@@ -80,7 +84,7 @@ export default function AutomateSchedulerList({
 
             return (
               <div className="box-2" key={id}>
-                <span className='text-sm'>
+                <span className="text-sm">
                   Trigger event every {every} {time}
                 </span>
                 <Button

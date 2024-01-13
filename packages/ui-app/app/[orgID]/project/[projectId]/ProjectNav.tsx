@@ -100,6 +100,10 @@ export default function ProjectNav() {
     push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
   }
 
+  const onMoveTabAdvance = (name: string, tab: string) => {
+    push(`${params.orgID}/project/${params.projectId}?mode=${name}&tab=${tab}`)
+  }
+
   return (
     <div className="project-nav">
       <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
@@ -162,7 +166,7 @@ export default function ProjectNav() {
                       ? 'active'
                       : ''
                   }`}
-                  onClick={() => onMoveTab('automation')}>
+                  onClick={() => onMoveTabAdvance('automation', 'rule')}>
                   <HiOutlineCpuChip />
                   <span>Automation</span>
                 </div>

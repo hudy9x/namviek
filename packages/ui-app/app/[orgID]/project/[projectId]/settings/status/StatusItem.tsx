@@ -125,7 +125,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
         <div className="absolute right-3 gap-2 hidden group-hover:flex ">
           <IoIosClose
             onClick={() => onDeleteHandler(status)}
-            className="cursor-pointer w-5 h-5 bg-gray-100 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
+            className="cursor-pointer w-5 h-5 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 hover:text-red-400 rounded-md text-gray-500"
           />
         </div>
       </HasRole>

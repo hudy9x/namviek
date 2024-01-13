@@ -62,10 +62,10 @@ const Setting = () => {
 
   return (
     <div className="sm:flex gap-8 sm:mx-5 sm:ml-8 sm:mt-8">
-      <div className="flex px-4 py-2 sm:block sm:w-[350px] sm:space-y-6">
+      <div className="flex px-4 sm:block sm:w-[350px] sm:space-y-6">
         {settings.map(setting => {
           const activeClass = setting.active
-            ? 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-lg shadow-lg shadow-indigo-100 dark:shadow-gray-900'
+            ? 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-lg shadow-lg shadow-indigo-100 dark:shadow-gray-900'
             : ''
           const hover =
             'hover:bg-white dark:hover:bg-gray-900/70 hover:rounded-lg hover:shadow-lg hover:shadow-indigo-100 dark:hover:shadow-gray-900'
