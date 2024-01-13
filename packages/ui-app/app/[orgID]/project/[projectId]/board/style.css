@@ -4,7 +4,7 @@
 
 .board {
   @apply w-[280px] shrink-0 relative;
-  @apply pb-8 border-x rounded-b-lg border-b bg-gray-50;
+  @apply border-x bg-gray-50;
   @apply dark:bg-gray-800 dark:border-gray-700;
 }
 
@@ -18,7 +18,8 @@
 
 .board-header {
   @apply px-3 py-2 sticky top-[41px] left-0 w-full;
-  @apply bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm;
+  @apply bg-white/30 dark:bg-gray-900/30;
+  @apply border-b dark:border-gray-700;
 }
 
 .board-header-section {
@@ -27,7 +28,10 @@
 
 .board-list {
   /* @apply space-y-3 h-full; */
-  min-height: 400px;
+  @apply overflow-x-hidden overflow-y-auto;
+  @apply pb-8 pt-3;
+  height: calc(100vh - 163px);
+  
 }
 
 .board-item-container {

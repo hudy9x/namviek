@@ -11,6 +11,8 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import CalendarModeFilter from './CalendarModeFilter'
 import { ETaskFilterGroupByType, useTaskFilter } from './context'
 import './style.css'
+import { useProjectViewList } from '../ProjectView/useProjectViewList'
+import { ProjectViewType } from '@prisma/client'
 
 let timeout = 0
 interface ITaskFilterProps {
@@ -27,8 +29,7 @@ export default function TaskFilter({
 }: ITaskFilterProps) {
   const [txt, setTxt] = useState('')
   const { filter, setFilterValue, updateGroupByFilter } = useTaskFilter()
-  const search = useSearchParams()
-  const mode = search.get('mode')
+  const { currentViewType } = useProjectViewList()
 
   const {
     groupBy,
@@ -43,7 +44,7 @@ export default function TaskFilter({
   } = filter
 
   const isDateRange = date === 'date-range'
-  const isCalendarMode = mode === 'calendar'
+  const isCalendarMode = currentViewType === ProjectViewType.CALENDAR
   const showOperator = ['this-month', 'this-week', 'today']
 
   useEffect(() => {
