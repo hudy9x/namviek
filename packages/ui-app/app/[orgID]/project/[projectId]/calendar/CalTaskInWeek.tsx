@@ -15,9 +15,11 @@ function CalTaskInWeek({
     <div
       className='absolute left-0 top-0 h-full w-[3px]'
       style={{ backgroundColor: color }}></div>
-    <div className="flex items-center justify-between gap-1" title={title}>
+    <div className="flex items-center justify-between gap-1 px-3 py-2" title={title}>
       <span className="dark:text-gray-400">{title}</span>
-      <MemberAvatar noName={true} uid={assigneeId} />
+    </div>
+    <div className="px-3 pb-2">
+      <MemberAvatar size="sm" noName={true} uid={assigneeId} />
     </div>
   </>
 }

@@ -3,13 +3,14 @@ import { useUrl } from '@/hooks/useUrl'
 import { projectView } from '@/services/projectView'
 import { useProjectViewStore } from '@/store/projectView'
 import { useParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 export const useProjectViewList = () => {
 
   const { getSp } = useUrl()
   const { projectId } = useParams()
-  const { views, addAllView, loading, setLoading } = useProjectViewStore()
+  const { views, addAllView } = useProjectViewStore()
+  const [loading, setLoading] = useState(true)
 
   const mode = getSp('mode')
   const currentViewType = useMemo(() => {

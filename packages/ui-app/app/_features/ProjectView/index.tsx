@@ -55,6 +55,7 @@ export default function ProjectView() {
     }
   }, [mode, views.toString()])
 
+  console.log('view loading', loading)
   return (
     <div className="project-view pl-1 relative">
       <Loading.Absolute title="" enabled={loading} />
