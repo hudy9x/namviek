@@ -1,9 +1,37 @@
+.calendar-wrapper {
+  @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
+  height: calc(100vh - 153px)
+}
+
+.week-view.calendar-wrapper {
+  height: calc(100vh - 181px)
+}
+
+.calendar-week {
+  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700
+}
+
 .calendar-day {
   @apply relative text-gray-400 text-sm;
+  @apply overflow-y-auto max-h-[200px]
+}
+
+.calendar-day.in-month {
+  @apply  bg-white dark:bg-gray-800;
+}
+
+.week-view .calendar-day {
+  max-height: calc(100vh - 183px);
 }
 
 .calendar-day .day-display {
-  @apply absolute top-1 left-1 w-7 h-7 rounded-full p-1 text-center;
+  @apply sticky top-1 left-1 w-7 h-7 p-1 rounded-md text-center;
+  @apply backdrop-blur-sm bg-gray-50/40 dark:bg-gray-700/40;
+  @apply dark:text-gray-500 z-10;
+}
+
+.week-view .day-display {
+  @apply hidden;
 }
 
 .calendar-create-task {
@@ -17,13 +45,15 @@
 
 .calendar-day.today .day-display {
   @apply text-indigo-500 font-bold;
+  @apply dark:text-indigo-400;
 }
 
 .calendar-month-tasks {
-  @apply pt-8 pb-3 flex flex-col gap-2;
+  @apply pt-4 pb-3 flex flex-col gap-2;
 }
 
 .calendar-task-item {
+  @apply relative overflow-hidden;
   @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
   @apply dark:bg-gray-900 dark:border-gray-700;
 }
@@ -31,3 +61,8 @@
 .calendar-task-item .no-name .selected-member-name {
   @apply hidden;
 }
+
+.week-view .calendar-task-item {
+  @apply whitespace-pre-wrap;
+}
+

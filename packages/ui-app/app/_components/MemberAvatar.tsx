@@ -1,6 +1,6 @@
 import { Avatar } from '@shared/ui'
-import { UserMember, useMemberStore } from '../../store/member'
-import { useEffect, useState } from 'react'
+import { useMemberStore } from '../../store/member'
+import { useMemo } from 'react'
 
 export default function MemberAvatar({
   uid,
@@ -12,16 +12,17 @@ export default function MemberAvatar({
   noName?: boolean
 }) {
   const { members } = useMemberStore(state => state)
-  const [user, setUser] = useState<UserMember | null>()
 
-  useEffect(() => {
+
+  const user = useMemo(() => {
     if (members.length && uid) {
       const matchedUser = members.find(m => m.id === uid)
-      setUser(matchedUser)
+      return matchedUser
     } else {
-      setUser(null)
+
+      return null
     }
-  }, [members, uid])
+  }, [JSON.stringify(members), uid])
 
   if (!user) {
     return (

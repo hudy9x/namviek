@@ -4,7 +4,6 @@ import PointSelect from '@/components/PointSelect'
 import PrioritySelect from '@/components/PrioritySelect'
 import TaskImport from '@/features/TaskImport'
 import { DatePicker } from '@shared/ui'
-import { useSearchParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -32,8 +31,6 @@ export default function TaskFilter({
   const { currentViewType } = useProjectViewList()
 
   const {
-    groupBy,
-    term,
     dateOperator,
     date,
     startDate,
