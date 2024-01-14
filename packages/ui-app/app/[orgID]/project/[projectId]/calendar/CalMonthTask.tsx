@@ -1,25 +1,42 @@
 import { Task } from '@prisma/client'
 import TaskAssignee from '../views/TaskAssignee'
 import { Draggable } from 'react-beautiful-dnd'
+import { useStatusData } from '@/hooks/useStatusData'
+import CalTaskInMonth from './CalTaskInMonth'
+import { ICalendarView, useCalendarContext } from './context'
+import CalTaskInWeek from './CalTaskInWeek'
+import { useTaskFilter } from '@/features/TaskFilter/context'
 
 interface ICalMonthTaskProps {
-  task: Task
+  id: string
+  title: string
+  assigneeId: string
+  taskStatusId: string
   index: number
 }
-export default function CalMonthTask({ task, index }: ICalMonthTaskProps) {
-  const { title, id, assigneeIds } = task
+
+
+export default function CalMonthTask({ index, id, title, assigneeId, taskStatusId }: ICalMonthTaskProps) {
+
+  const { filter } = useTaskFilter()
+  const { status: filterStatus } = filter
+  const { color, type } = useStatusData(taskStatusId || '')
+  const { calendarView } = useCalendarContext()
+
+  if (filterStatus !== 'ALL' && filterStatus !== type) {
+    return null
+  }
+
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable draggableId={id} index={index}>
       {provided => (
         <div
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className="calendar-task-item">
-          <div className="flex items-center justify-between gap-1" title={title}>
-            <span className="truncate dark:text-gray-400">{title}</span>
-            <TaskAssignee noName={true} taskId={id} uids={assigneeIds} />
-          </div>
+          className="calendar-task-item relative">
+          {calendarView === ICalendarView.WEEK ? <CalTaskInWeek color={color} title={title} assigneeId={assigneeId} /> :
+            <CalTaskInMonth color={color} title={title} assigneeId={assigneeId} />}
         </div>
       )}
     </Draggable>

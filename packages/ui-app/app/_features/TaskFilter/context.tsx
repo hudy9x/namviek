@@ -34,6 +34,7 @@ interface ITaskFilterFields {
   point: string
   priority: TaskPriority | 'ALL'
   assigneeIds: string[]
+  status: 'TODO' | 'INPROCESS' | 'DONE' | 'ALL'
 }
 
 export interface ITaskFilterGroupbyItem {
@@ -71,7 +72,8 @@ const TaskFilterContext = createContext<ITaskFilterContextProps>({
     endDate: new Date(),
     point: 'INFINITE',
     priority: 'ALL',
-    assigneeIds: []
+    assigneeIds: [],
+    status: 'ALL'
   },
   setFilter: () => {
     console.log('1')
@@ -90,7 +92,8 @@ const defaultFilter: ITaskFilterFields = {
   endDate: lastDate,
   point: '-1',
   priority: 'ALL',
-  assigneeIds: ['ALL']
+  assigneeIds: ['ALL'],
+  status: 'ALL'
 }
 
 export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {

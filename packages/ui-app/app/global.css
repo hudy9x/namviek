@@ -56,12 +56,12 @@
 
 /* Handle */
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-gray-400;
+  @apply bg-gray-300 dark:bg-gray-600;
 }
 
 /* Handle on hover */
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
+  @apply bg-gray-400 dark:bg-gray-500;
 }
 
 .root-container {

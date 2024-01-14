@@ -14,10 +14,10 @@ export default function CalMonthDay({ day }: ICalMonthDay) {
 
   const notInMonth = month !== dMonth
   const isToday = day.getDate() === today.getDate() && month === dMonth
-  const classes = ['calendar-day']
+  const classes = ['calendar-day custom-scrollbar']
 
   !notInMonth
-    ? classes.push('bg-white dark:bg-gray-800')
+    ? classes.push('in-month')
     : classes.push('not-in-month')
   isToday && classes.push('today')
 

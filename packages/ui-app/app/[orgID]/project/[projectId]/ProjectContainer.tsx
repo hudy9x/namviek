@@ -45,7 +45,7 @@ export default function ProjectContainer() {
     setRecentVist(`/${orgID}/project/${projectId}?mode=${getSp('mode')}`)
   })
 
-  const { groupBy, ...filterWithoutGroupBy } = filter
+  const { groupBy, status, ...filterWithoutGroupBy } = filter
   useEffect(() => {
     const controller = new AbortController()
     const {

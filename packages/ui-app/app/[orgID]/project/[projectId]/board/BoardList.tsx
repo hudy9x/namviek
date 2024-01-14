@@ -17,7 +17,7 @@ export default function BoardList({
     <Droppable droppableId={groupId} type="task">
       {provided => (
         <div
-          className="board-list"
+          className="board-list custom-scrollbar"
           ref={provided.innerRef}
           {...provided.droppableProps}>
 
