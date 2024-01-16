@@ -22,7 +22,7 @@
 }
 
 .week-view .calendar-day {
-  max-height: calc(100vh - 183px);
+  height: calc(100vh - 183px);
 }
 
 .calendar-day .day-display {

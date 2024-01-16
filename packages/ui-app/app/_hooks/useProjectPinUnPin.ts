@@ -42,7 +42,7 @@ export const useProjectPinUnpin = () => {
     const unpin: Project[] = []
     const pin: Project[] = []
 
-    if (!projects.length)
+    if (!projects || !projects.length)
       return {
         unpin,
         pin

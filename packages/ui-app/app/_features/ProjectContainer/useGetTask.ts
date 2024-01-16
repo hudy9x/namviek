@@ -8,9 +8,10 @@ import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 
 export default function useGetTask() {
-  const { projectId, orgID } = useParams()
+  const { projectId } = useParams()
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { filter } = useTaskFilter()
+
   const { groupBy, status, ...filterWithoutGroupBy } = filter
   const key = `TASKLIST_${projectId}`
 
@@ -25,7 +26,6 @@ export default function useGetTask() {
     localforage
       .getItem(key)
       .then(val => {
-        console.log('fill cache data time', new Date().getTime())
         if (val) {
           addAllTasks(val as ExtendedTask[])
         }
@@ -80,7 +80,6 @@ export default function useGetTask() {
 
         localforage.setItem(key, data)
         setTimeout(() => {
-          console.log('fill new data', new Date().getTime())
           addAllTasks(data)
         }, 300)
       })
