@@ -1,19 +1,19 @@
 .calendar-wrapper {
   @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
-  height: calc(100vh - 153px)
+  height: calc(100vh - 153px);
 }
 
 .week-view.calendar-wrapper {
-  height: calc(100vh - 181px)
+  height: calc(100vh - 181px);
 }
 
 .calendar-week {
-  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700
+  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700;
 }
 
 .calendar-day {
   @apply relative text-gray-400 text-sm;
-  @apply overflow-y-auto max-h-[200px];
+  @apply overflow-y-auto h-[160px];
 }
 
 .calendar-day.in-month {
@@ -67,4 +67,3 @@
 .week-view .calendar-task-item {
   @apply whitespace-pre-wrap;
 }
-

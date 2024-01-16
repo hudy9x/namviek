@@ -10,7 +10,7 @@ export const setLocalJSONCache = (name: LCK | string, value: string) => {
   try {
     localStorage.setItem(name, JSON.stringify(value))
   } catch (error) {
-    throw new Error(error)
+    console.log(error)
   }
 }
 
@@ -38,6 +38,3 @@ export const setRecentVist = (value: string) => {
 export const getRecentVisit = () => {
   return localStorage.getItem(LCK.RECENT_VISIT)
 }
-
-
-
