@@ -29,7 +29,9 @@ export const useServiceProject = () => {
     localForage
       .getItem(keyList)
       .then(val => {
-        addAllProject(val as Project[])
+        if (val) {
+          addAllProject(val as Project[])
+        }
       })
       .catch(err => {
         console.log('error get item', err)
