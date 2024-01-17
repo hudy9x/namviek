@@ -1,16 +1,9 @@
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import './style.css'
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable
-} from 'react-beautiful-dnd'
-import BoardList from './BoardList'
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
 import { useBoardDndAction } from './useBoardDndAction'
 import BoardColumnDraggable from './BoardColumnDraggable'
-import { useEffect } from 'react'
 
 export default function BoardContainer() {
   const { groupByItems, setGroupbyItems } = useTaskFilter()
@@ -19,21 +12,6 @@ export default function BoardContainer() {
     dragItemToAnotherPosition,
     dragItemToAnotherColumn
   } = useBoardDndAction()
-
-  // const addNewStatus = () => {
-  //   console.log('a')
-  //
-  //   setGroupbyItems(prev => {
-  //     return [
-  //       ...prev,
-  //       {
-  //         id: new Date().getMilliseconds().toString(),
-  //         name: 'New Status ' + new Date(),
-  //         items: []
-  //       }
-  //     ]
-  //   })
-  // }
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result

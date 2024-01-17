@@ -20,7 +20,6 @@ export const useProjectViewList = () => {
 
   const getCachedViewType = useCallback(() => {
     const cached = getLocalCache(currentViewKey) || ''
-
     return cached as TCurrentViewType
   }, [])
 

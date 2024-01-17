@@ -32,9 +32,10 @@ export const useTodoCounter = () => {
 
   const updateTodoCounter = (dataCounters: ITodoCounterResult[]) => {
     const newCounter: ITodoCounter = {}
-    dataCounters.forEach(dt => {
-      newCounter[dt.projectId] = dt.total
-    })
+    dataCounters &&
+      dataCounters.forEach(dt => {
+        newCounter[dt.projectId] = dt.total
+      })
 
     setTodoCounter(newCounter)
   }
@@ -46,7 +47,7 @@ export const useTodoCounter = () => {
   useDebounce(() => {
     const abortController = new AbortController()
 
-    if (projects.length) {
+    if (projects && projects.length) {
       const projectIds = projects.map(p => p.id)
       taskCounterByUser(projectIds, abortController.signal).then(res => {
         const { data } = res.data
