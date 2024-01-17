@@ -9,53 +9,35 @@ import ProjectNavItem from './ProjectNavItem'
 import { useProjectPinUnpin } from '@/hooks/useProjectPinUnPin'
 import { useTodoCounter } from '@/hooks/useTodoCounter'
 import { Loading } from '@shared/ui'
+import { useServiceProject } from '@/services/hooks/useServiceProject'
 
 export default function ProjectList() {
   const { todoCounter } = useTodoCounter()
   const { extractPinNUnpinProjects } = useProjectPinUnpin()
   const {
     loading,
-    setLoading,
     projects,
-    addAllProject,
     selectProject,
     pinnedProjects,
-    addPinnedProjects
   } = useProjectStore(state => state)
   const params = useParams()
+
+  useServiceProject()
 
   const onSelectProject = (id: string) => {
     selectProject(id)
   }
 
   useEffect(() => {
-    setLoading(true)
-    projectPinGetList().then(result => {
-      const { data } = result.data
-      const pinnedProjects = data as PinnedProjectSetting[]
-
-      addPinnedProjects(pinnedProjects)
+    // active project item on sidebar
+    // as the url contains projectID
+    projects.some(p => {
+      if (p.id === params.projectId) {
+        onSelectProject(p.id)
+        return true
+      }
     })
-    projectGet({
-      orgId: params.orgID,
-      isArchive: false
-    }).then(result => {
-      const { data, status } = result.data
-      const projects = data as Project[]
-
-      if (status !== 200) return
-
-      setLoading(false)
-      addAllProject(data)
-      // active project item
-      projects.some(p => {
-        if (p.id === params.projectId) {
-          onSelectProject(p.id)
-          return true
-        }
-      })
-    })
-  }, [])
+  }, [projects])
 
   const { pin, unpin } = extractPinNUnpinProjects(projects, pinnedProjects)
 

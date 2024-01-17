@@ -6,10 +6,13 @@ import { useSearchParams } from 'next/navigation'
 import ProjectContentLoading from './ProjectContentLoading'
 import TaskList from './TaskList'
 import { useProjectViewStore } from '@/store/projectView'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ProjectViewType } from '@prisma/client'
 import AbsoluteLoading from 'packages/shared-ui/src/components/Loading/AbsoluteLoading'
 import { Loading } from '@shared/ui'
+import { useDebounce } from '@/hooks/useDebounce'
+import { getLocalCache, setLocalCache } from '@shared/libs'
+import { useProjectStatusStore } from '@/store/status'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -40,23 +43,43 @@ const AutomateMenu = dynamic(
   }
 )
 
+type TProjectView = ProjectViewType | 'NONE'
+
 export default function ProjectTabContent() {
   const { views, loading } = useProjectViewStore()
+  const { statusLoading } = useProjectStatusStore()
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
   const ignored = ['setting', 'automation', 'automation-create']
   const isIgnored = () => ignored.includes(mode || '')
 
-  const type = useMemo(() => {
+  const key = `VIEW_MODE_${mode}`
+  const getCacheViewMode = () => {
+    const cached = getLocalCache(key) || 'NONE'
+    return cached as TProjectView
+  }
+
+  const [type, setType] = useState<TProjectView>(getCacheViewMode())
+
+  // const type = useMemo(() => {
+  //   const view = views.find(v => v.id === mode)
+  //   return view ? view.type : 'NONE'
+  // }, [mode, JSON.stringify(views)])
+
+  useEffect(() => {
     const view = views.find(v => v.id === mode)
-    return view ? view.type : 'NONE'
-  }, [mode, JSON.stringify(views)])
+    const t = view ? view.type : 'NONE'
+    setType(t)
+    setLocalCache(key, t)
+  }, [mode, views])
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
 
   return (
-    <div className="overflow-y-auto relative" style={{ height: 'calc(100vh - 83px)' }}>
-      <Loading.Absolute enabled={loading} />
+    <div
+      className="overflow-y-auto relative"
+      style={{ height: 'calc(100vh - 83px)' }}>
+      <Loading.Absolute enabled={loading || statusLoading} />
       {type === 'NONE' && !isIgnored() && <TaskList />}
       {isView(ProjectViewType.BOARD) && <Board />}
       {/* {mode === 'board2' && <Board2 />} */}

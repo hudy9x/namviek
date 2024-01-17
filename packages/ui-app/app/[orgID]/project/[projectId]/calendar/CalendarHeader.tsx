@@ -17,13 +17,13 @@ export default function CalendarHeader() {
     })}
 
     {headerWeek?.map(d => {
-      const active = isToday(d) ? 'text-indigo-500' : ''
+      const active = isToday(d) ? 'text-indigo-500 dark:text-pink-400' : ''
       return (
         <div className="cal-header-day" key={d.getTime()}>
-          <span>
+          <span className={active ? 'text-gray-900 dark:text-gray-300' : ''}>
             {dayHeaders[d.getDay()]}
           </span>
-          <div className={`text-xl font-bold ${active}`}>
+          <div className={`text-xl font-bold text-gray-800 dark:text-gray-400 ${active}`}>
             {d.getDate()}
           </div>
         </div>

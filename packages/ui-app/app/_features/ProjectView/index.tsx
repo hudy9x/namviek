@@ -57,7 +57,8 @@ export default function ProjectView() {
 
   return (
     <div className="project-view pl-1 relative">
-      <Loading.Absolute title="" enabled={loading} />
+      {/* <Loading.Absolute title="" enabled={loading} /> */}
+      <Loading enabled={!views.length} />
       {views.map((view, index) => {
         const active = mode === view.id
         const { icon } = view
@@ -65,9 +66,8 @@ export default function ProjectView() {
         return (
           <div
             onClick={() => clickOnView(view.id)}
-            className={`project-view-item group relative ${
-              active ? 'active' : ''
-            }`}
+            className={`project-view-item group relative ${active ? 'active' : ''
+              }`}
             key={index}>
             {icon ? (
               <DynamicIcon name={icon} />

@@ -46,7 +46,7 @@ export default function ProjectNavItem({
     const p = `${params.orgID}/project/${id}`
 
     if (!pathName.includes(p)) {
-      setProjectViewLoading(true)
+      // setProjectViewLoading(true)
     }
 
     onSelectProject(id)
@@ -70,9 +70,8 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${
-        visible ? 'opacity-100' : 'opacity-0'
-      } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+        } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
       }}

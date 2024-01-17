@@ -1,27 +1,28 @@
 .calendar-wrapper {
   @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
-  height: calc(100vh - 153px)
+  height: calc(100vh - 153px);
 }
 
 .week-view.calendar-wrapper {
-  height: calc(100vh - 181px)
+  height: calc(100vh - 181px);
 }
 
 .calendar-week {
-  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700
+  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700;
 }
 
 .calendar-day {
   @apply relative text-gray-400 text-sm;
-  @apply overflow-y-auto max-h-[200px]
+  @apply overflow-y-auto h-[160px];
 }
 
 .calendar-day.in-month {
-  @apply  bg-white dark:bg-gray-800;
+  @apply bg-white dark:bg-gray-800;
+  @apply dark:hover:bg-gray-800/50 hover:bg-gray-50;
 }
 
 .week-view .calendar-day {
-  max-height: calc(100vh - 183px);
+  height: calc(100vh - 183px);
 }
 
 .calendar-day .day-display {
@@ -55,7 +56,8 @@
 .calendar-task-item {
   @apply relative overflow-hidden;
   @apply text-gray-500 mx-2 rounded-md bg-white border shadow-sm text-sm px-2 py-1;
-  @apply dark:bg-gray-900 dark:border-gray-700;
+  @apply dark:bg-gray-900 dark:border-gray-700 transition-all;
+  @apply active:scale-95;
 }
 
 .calendar-task-item .no-name .selected-member-name {
@@ -65,4 +67,3 @@
 .week-view .calendar-task-item {
   @apply whitespace-pre-wrap;
 }
-
