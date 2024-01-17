@@ -58,7 +58,11 @@ export default function ProjectView() {
   return (
     <div className="project-view pl-1 relative">
       {/* <Loading.Absolute title="" enabled={loading} /> */}
-      <Loading enabled={!views.length} />
+      {!views.length ? (
+        <div className="px-3 py-3 flex items-center justify-center">
+          <Loading enabled={true} title='Loading views ...' />
+        </div>
+      ) : null}
       {views.map((view, index) => {
         const active = mode === view.id
         const { icon } = view

@@ -6,11 +6,14 @@ import {
   ExpressResponse,
   Post,
   Req,
-  Res
+  Res,
+  UseMiddleware
 } from '../../core'
 import { AuthRequest } from '../../types'
+import { authMiddleware } from '../../middlewares'
 
 @Controller('/project')
+@UseMiddleware([authMiddleware])
 class Project extends BaseController {
   @Post('/archive')
   async archive(

@@ -126,6 +126,7 @@ export const useTaskFilter = () => {
   const { statuses } = useProjectStatusStore()
   const { members } = useMemberStore()
   const { tasks } = useTaskStore()
+  const { projectId } = useParams()
 
   const oldGroupByType = useRef('')
   const oldStatusList = useRef(statuses)
@@ -244,7 +245,6 @@ export const useTaskFilter = () => {
   }
 
   const updateGroupbyItems = () => {
-
     let groupItems: ITaskFilterGroupbyItem[] = []
 
     switch (filter.groupBy) {
@@ -361,6 +361,10 @@ export const useTaskFilter = () => {
       }
     }
   }, [tasks])
+
+  useEffect(() => {
+    updateGroupbyItems()
+  }, [projectId, tasks])
 
   const isGroupbyStatus = filter.groupBy === ETaskFilterGroupByType.STATUS
   const isGroupbyAssignee = filter.groupBy === ETaskFilterGroupByType.ASSIGNEE

@@ -14,12 +14,9 @@ import { useServiceProject } from '@/services/hooks/useServiceProject'
 export default function ProjectList() {
   const { todoCounter } = useTodoCounter()
   const { extractPinNUnpinProjects } = useProjectPinUnpin()
-  const {
-    loading,
-    projects,
-    selectProject,
-    pinnedProjects,
-  } = useProjectStore(state => state)
+  const { loading, projects, selectProject, pinnedProjects } = useProjectStore(
+    state => state
+  )
   const params = useParams()
 
   useServiceProject()
@@ -31,12 +28,13 @@ export default function ProjectList() {
   useEffect(() => {
     // active project item on sidebar
     // as the url contains projectID
-    projects.some(p => {
-      if (p.id === params.projectId) {
-        onSelectProject(p.id)
-        return true
-      }
-    })
+    projects &&
+      projects.some(p => {
+        if (p.id === params.projectId) {
+          onSelectProject(p.id)
+          return true
+        }
+      })
   }, [projects])
 
   const { pin, unpin } = extractPinNUnpinProjects(projects, pinnedProjects)

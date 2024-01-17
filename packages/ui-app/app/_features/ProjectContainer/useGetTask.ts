@@ -30,6 +30,9 @@ export default function useGetTask() {
           addAllTasks(val as ExtendedTask[])
         }
       })
+      .catch(err => {
+        console.log('errpr loading cached task', err)
+      })
       .finally(() => {
         console.log('finnally')
       })

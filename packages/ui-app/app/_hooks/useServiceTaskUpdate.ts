@@ -7,6 +7,7 @@ import { Task, TaskPriority } from '@prisma/client'
 import { useTaskAutomation } from './useTaskAutomation'
 import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
 import { useProjectStatusStore } from '@/store/status'
+import localforage from 'localforage'
 
 export const useServiceTaskUpdate = () => {
   const { user } = useUser()
@@ -57,6 +58,8 @@ export const useServiceTaskUpdate = () => {
       updatedBy: user?.id,
       ...updatedData
     })
+
+    localforage.removeItem(`TASKLIST_${projectId}`)
 
     taskUpdateMany(ids, { projectId, ...updatedData })
       .then(res => {

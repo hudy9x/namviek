@@ -66,12 +66,14 @@ export default function ProjectTabContent() {
   //   return view ? view.type : 'NONE'
   // }, [mode, JSON.stringify(views)])
 
-  useEffect(() => {
-    const view = views.find(v => v.id === mode)
-    const t = view ? view.type : 'NONE'
-    setType(t)
-    setLocalCache(key, t)
-  }, [mode, views])
+  useDebounce(() => {
+    if (views.length) {
+      const view = views.find(v => v.id === mode)
+      const t = view ? view.type : 'NONE'
+      setType(t)
+      setLocalCache(key, t)
+    }
+  }, [mode, JSON.stringify(views)])
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
 
@@ -79,7 +81,11 @@ export default function ProjectTabContent() {
     <div
       className="overflow-y-auto relative"
       style={{ height: 'calc(100vh - 83px)' }}>
-      <Loading.Absolute enabled={loading || statusLoading} />
+      {loading || statusLoading ? (
+        <div className="px-3">
+          <Loading.Absolute enabled={true} />
+        </div>
+      ) : null}
       {type === 'NONE' && !isIgnored() && <TaskList />}
       {isView(ProjectViewType.BOARD) && <Board />}
       {/* {mode === 'board2' && <Board2 />} */}
