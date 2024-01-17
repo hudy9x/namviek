@@ -3,7 +3,11 @@ export enum LCK {
   PROJECT_BADGE = 'PROJECT_BADGE'
 }
 export const setLocalCache = (name: LCK | string, value: string) => {
-  localStorage.setItem(name, value)
+  try {
+    localStorage.setItem(name, value)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const setLocalJSONCache = (name: LCK | string, value: string) => {
@@ -15,7 +19,12 @@ export const setLocalJSONCache = (name: LCK | string, value: string) => {
 }
 
 export const getLocalCache = (name: LCK | string) => {
-  return localStorage.getItem(name)
+  try {
+    return localStorage.getItem(name)
+  } catch (error) {
+    console.log('localStorage is not defined on server')
+    return null
+  }
 }
 
 export const getLocalJSONCache = (name: LCK | string) => {
@@ -32,9 +41,17 @@ export const getLocalJSONCache = (name: LCK | string) => {
 // cache recent visit
 
 export const setRecentVist = (value: string) => {
-  localStorage.setItem(LCK.RECENT_VISIT, value)
+  try {
+    localStorage.setItem(LCK.RECENT_VISIT, value)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const getRecentVisit = () => {
-  return localStorage.getItem(LCK.RECENT_VISIT)
+  try {
+    return localStorage.getItem(LCK.RECENT_VISIT)
+  } catch (error) {
+    return null
+  }
 }
