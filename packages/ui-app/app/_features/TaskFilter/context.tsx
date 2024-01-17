@@ -263,6 +263,7 @@ export const useTaskFilter = () => {
 
     setGroupbyLoading(false)
     setGroupbyItems(groupItems)
+
   }
 
   const updateGroupByFilter = (val: ETaskFilterGroupByType) => {

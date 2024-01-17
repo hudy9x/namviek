@@ -4,6 +4,7 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
 import { useBoardDndAction } from './useBoardDndAction'
 import BoardColumnDraggable from './BoardColumnDraggable'
+import { useEffect } from 'react'
 
 export default function BoardContainer() {
   const { groupByItems, setGroupbyItems } = useTaskFilter()

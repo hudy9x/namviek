@@ -70,9 +70,8 @@ export default function ProjectView() {
         return (
           <div
             onClick={() => clickOnView(view.id)}
-            className={`project-view-item group relative ${
-              active ? 'active' : ''
-            }`}
+            className={`project-view-item group relative ${active ? 'active' : ''
+              }`}
             key={index}>
             {icon ? (
               <DynamicIcon name={icon} />
