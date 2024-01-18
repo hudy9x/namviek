@@ -4,7 +4,11 @@ import {
   ActivityType,
   Task
 } from '@prisma/client'
-import { ActivityLogData, mdActivityAddMany, mdStorageGet } from '@shared/models'
+import {
+  ActivityLogData,
+  mdActivityAddMany,
+  mdStorageGet
+} from '@shared/models'
 import { isSameDay } from 'date-fns'
 
 export default class ActivityService {
@@ -17,7 +21,6 @@ export default class ActivityService {
     taskData: Task
     userId: string
   }) {
-
     const activityTemplate = {
       objectId: taskData.id,
       objectType: ActivityObjectType.TASK,
@@ -56,7 +59,7 @@ export default class ActivityService {
       }
 
       if (desc && taskData.desc !== desc) {
-        console.log('desc changed', desc, taskData.desc)
+        console.log('desc changed')
         const newActivity = structuredClone(activityTemplate)
         newActivity.type = ActivityType.TASK_DESC_CHANGED
         newActivity.data = {
@@ -176,8 +179,7 @@ export default class ActivityService {
           newFilesActivity.data = results.map(r => ({
             name: r.name,
             url: r.url,
-            type: r.mimeType,
-
+            type: r.mimeType
           }))
           updatingActivities.push(newFilesActivity)
         }
@@ -218,8 +220,7 @@ export default class ActivityService {
     }
   }
 
-  async createTask({ id, userId }: { id: string, userId: string }) {
-
+  async createTask({ id, userId }: { id: string; userId: string }) {
     const activityTemplate = {
       objectId: id,
       objectType: ActivityObjectType.TASK,
