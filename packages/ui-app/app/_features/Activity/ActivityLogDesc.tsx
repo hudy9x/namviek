@@ -14,10 +14,9 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
     createdBy,
     data,
     createdAt,
-    type,
+    type
     // id: activityId
   } = activity as Activity
-
 
   let changeFrom = ''
   let changeTo = ''
@@ -49,11 +48,13 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
   switch (type) {
     case ActivityType.TASK_TITLE_CHANGED:
       title = 'changed title 📋'
-      break;
+      break
 
     default:
-      title = !changeFrom ? 'wrote new description 📝' : 'changed description 📝'
-      break;
+      title = !changeFrom
+        ? 'wrote new description 📝'
+        : 'changed description 📝'
+      break
   }
 
   return (
@@ -61,11 +62,11 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
       <div className="flex items-start gap-2">
         <MemberAvatar uid={createdBy} noName={true} />
         <div className="mt-0.5">
-          <p className="text-sm text-gray-400">
+          <div className="text-xs text-gray-400 w-full">
             <MemberName uid={createdBy} />
             {title} -
             <Time date={new Date(createdAt)} />
-          </p>
+          </div>
         </div>
       </div>
       <p
@@ -73,5 +74,4 @@ export default function ActivityLogDesc({ activity }: IActivityLog) {
         dangerouslySetInnerHTML={{ __html: content || '' }}></p>
     </div>
   )
-
 }

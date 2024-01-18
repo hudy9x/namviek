@@ -31,7 +31,7 @@ export default function ActivityCardAttach({
       <div className="flex items-start gap-2">
         <MemberAvatar uid={createdBy} noName={true} />
         <div className="mt-0.5">
-          <p className="text-sm text-gray-400">
+          <p className="text-xs text-gray-400">
             <MemberName uid={createdBy} />
             attached {len} file{len > 1 ? 's' : ''} -
             <Time date={new Date(createdAt)} />

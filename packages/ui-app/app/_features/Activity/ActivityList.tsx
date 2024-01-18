@@ -37,7 +37,7 @@ const ActivityList = () => {
       {activities.slice(0, 7).map((activity, i) => (
         <div key={activity.id || i}>
           {/* <ActivitySectionTime visible={i !== 0} time={activity.createdAt} /> */}
-          <ActivitySectionTime time={activity.createdAt} />
+          <ActivitySectionTime time={activity.createdAt} firstItem={i === 0} />
           {renderActivity(activity)}
         </div>
       ))}

@@ -6,7 +6,7 @@
   @apply flex items-center gap-2;
 }
 
-.activity-item .member-name{
+.activity-item .member-name {
   @apply mr-1 dark:text-gray-400;
 }
 
@@ -15,11 +15,11 @@
 }
 
 .activity-comment {
-  @apply text-sm text-gray-900 pl-8;
+  @apply text-xs text-gray-900 dark:text-gray-500 pl-8;
 }
 
 .activity-info {
-  @apply text-sm text-gray-500 pl-8
+  @apply text-xs text-gray-500 pl-8;
 }
 
 .activity-time {
@@ -43,9 +43,9 @@
 }
 
 .diff .t-remove {
-  @apply bg-red-100 line-through
+  @apply bg-red-100 select-none dark:bg-red-400 dark:text-red-50 px-0.5;
 }
 
 .diff .t-add {
-  @apply bg-green-100
+  @apply bg-green-100 dark:bg-green-600 dark:text-green-50 px-0.5;
 }
