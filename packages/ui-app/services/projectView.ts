@@ -13,9 +13,10 @@ export const projectView = {
       params: { id }
     })
   },
-  get: (projectId: string) => {
+  get: (projectId: string, signal: AbortSignal) => {
     return httpGet('/api/project-view', {
-      params: { projectId }
+      params: { projectId },
+      signal
     })
   }
 }

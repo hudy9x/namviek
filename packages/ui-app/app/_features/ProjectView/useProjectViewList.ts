@@ -53,8 +53,9 @@ export const useProjectViewList = () => {
 
   useDebounce(() => {
     // setLoading(true)
+    const controller = new AbortController()
     projectView
-      .get(projectId)
+      .get(projectId, controller.signal)
       .then(res => {
         const { data } = res.data
         addAllView(data)
@@ -63,6 +64,10 @@ export const useProjectViewList = () => {
       .finally(() => {
         setLoading(false)
       })
+
+    return () => {
+      controller.abort()
+    }
   }, [projectId])
 
   // useEffect(() => {
