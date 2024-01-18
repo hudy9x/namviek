@@ -32,7 +32,7 @@ export default function BoardList({
             )
           })}
 
-          <div className="mx-3">
+          <div className="px-3 pb-4 bg-white/30 backdrop-blur-sm sticky -bottom-8 z-10">
             <BoardActionCreateTask groupId={groupId} />
           </div>
           {provided.placeholder}

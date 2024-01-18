@@ -1,4 +1,4 @@
-import { Button, Modal, messageError, messageSuccess } from '@shared/ui'
+import { Button, Form, Modal, messageError, messageSuccess } from '@shared/ui'
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskForm, { ITaskDefaultValues, defaultFormikValues } from '../TaskForm'
@@ -6,6 +6,7 @@ import { useTaskStore } from '@/store/task'
 import { taskAdd } from '@/services/task'
 import { Task, TaskPriority } from '@prisma/client'
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import { useParams } from 'next/navigation'
 
 export const BoardActionCreateTaskWithIcon = ({
   groupId
@@ -91,8 +92,9 @@ export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
   const { isGroupbyPriority, isGroupbyAssignee, isGroupbyStatus } =
     useTaskFilter()
   const [visible, setVisible] = useState(false)
+  const { projectId } = useParams()
   const { handleSubmit } = useHandleSubmit(() => {
-    setVisible(false)
+    // setVisible(false)
   })
 
   const defaultData: ITaskDefaultValues = { ...defaultFormikValues }
@@ -110,25 +112,26 @@ export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
   }
 
   return (
-    <Modal
-      visible={visible}
-      onVisibleChange={setVisible}
-      title="Add a new task"
-      triggerBy={
-        <div>
-          <Button block={true} leadingIcon={<AiOutlinePlus />} />
-        </div>
-      }
-      content={
-        <>
-          <TaskForm
-            defaultValue={defaultData}
-            onSubmit={v => {
-              handleSubmit(v)
-            }}
-          />
-        </>
-      }
-    />
+    <div>
+      <div className={`${visible ? 'hidden' : ''}`}>
+        <Button
+          onClick={() => setVisible(true)}
+          block={true}
+          leadingIcon={<AiOutlinePlus />}
+        />
+      </div>
+      <Form.Input
+        focus={visible}
+        onBlur={() => setVisible(false)}
+        onEsc={() => setVisible(false)}
+        onEnter={(val, target) => {
+          handleSubmit({ ...defaultData, ...{ title: val, projectId } })
+          target.value = ''
+        }}
+        placeholder="Create new task"
+        icon={<AiOutlinePlus />}
+        className={`${visible ? '' : 'hidden'}`}
+      />
+    </div>
   )
 }
