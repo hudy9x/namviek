@@ -22,7 +22,6 @@
   @apply opacity-0 transition-all absolute -right-1 top-1.5 p-1 hover:bg-gray-100 rounded;
   @apply w-[23px] h-[23px];
   @apply dark:hover:bg-gray-700;
-
 }
 
 .project-view-item.active {
@@ -49,8 +48,8 @@
     @apply w-5 h-5;
   }
 
-  .icon-select-trigger  {
-    @apply flex
+  .icon-select-trigger {
+    @apply flex;
   }
 }
 

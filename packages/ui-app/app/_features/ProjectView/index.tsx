@@ -59,7 +59,7 @@ export default function ProjectView() {
     <div className="project-view pl-1 relative">
       {/* <Loading.Absolute title="" enabled={loading} /> */}
       {!views.length ? (
-        <div className="px-3 py-3 flex items-center justify-center">
+        <div className="px-3 pt-2 pb-2.5 flex items-center justify-center">
           <Loading enabled={true} title='Loading views ...' />
         </div>
       ) : null}

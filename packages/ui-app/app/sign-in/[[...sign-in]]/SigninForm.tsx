@@ -88,7 +88,6 @@ export default function SigninForm() {
           setTimeout(() => {
             setFixLoading(false)
           }, 500)
-
         }
 
         // messageSuccess('Success')
@@ -153,10 +152,22 @@ export default function SigninForm() {
             </h2>
           </div>
           <p className="text-gray-400 text-sm mt-3">
-            Enter your email and password to access to your worksppace.
+            Enter your email and password to access to your workspace.
           </p>
 
           <div className="flex flex-col gap-4 mt-6">
+            <Button
+              onClick={signInWithThirdParty}
+              block
+              leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
+              title="Sign in with google"
+            />
+            <div className="relative mt-2 pb-1">
+              <span className="text-sm bg-white/95 px-1 rounded-md absolute -top-[10px] left-1/2 z-10 text-gray-400">
+                or
+              </span>
+              <div className="absolute top-0 w-full border-b"></div>
+            </div>
             <Form.Input title="Email" {...regField('email')} />
             <Form.Input
               title="Password"
@@ -172,18 +183,11 @@ export default function SigninForm() {
                 block
                 primary
               />
-
-              <Button
-                onClick={signInWithThirdParty}
-                block
-                leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
-                title="Sign in with google"
-              />
             </div>
           </div>
 
           <div className="mt-6 text-sm text-center text-gray-400">
-            Do not have any account ?{' '}
+            {`Don't have any account ? `}
             <Link className="text-indigo-600 hover:underline" href={'/sign-up'}>
               Register
             </Link>
