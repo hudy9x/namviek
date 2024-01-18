@@ -25,6 +25,7 @@ import {
 import './style.css'
 import TaskCover from './TaskCover'
 import TaskComments from '../TaskComments'
+import TaskDescUpdate from './TaskDescUpdate'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -267,15 +268,12 @@ export default function TaskDetail({
               <HiOutlineBriefcase /> <span>Description</span>
             </div>
             <div className="task-info-content w-full mt-4">
-              <div
-                className="text-sm ProseMirror border-y dark:border-gray-700 px-6 py-3 -mx-6 bg-gray-50 dark:bg-gray-800"
-                dangerouslySetInnerHTML={{ __html: formik.values.desc }}></div>
-              {/* <Form.TextEditor */}
-              {/*   value={formik.values.desc} */}
-              {/*   onChange={v => { */}
-              {/*     formik.setFieldValue('desc', v) */}
-              {/*   }} */}
-              {/* /> */}
+              <TaskDescUpdate
+                defaultValue={formik.values.desc}
+                onChange={v => {
+                  formik.setFieldValue('desc', v)
+                }}
+              />
             </div>
           </div>
         </section>
