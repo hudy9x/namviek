@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FocusEvent } from 'react'
+import { useState, useEffect, ChangeEvent, FocusEvent, useRef } from 'react'
 import Addon from './Addon'
 import InputIcon from './InputIcon'
 import './style.css'
@@ -10,6 +10,7 @@ export default function InputControl({
   onChange,
   onEnter,
   onBlur,
+  onEsc,
   type = 'text',
   name,
   placeholder,
@@ -18,12 +19,14 @@ export default function InputControl({
   error,
   disabled,
   readOnly,
+  focus = false,
   icon,
   addon,
   className
 }: InputProps) {
   const classes = ['form-control']
   // const [val, setVal] = useState(value)
+  const ref = useRef<HTMLInputElement>(null)
 
   const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(ev)
@@ -37,6 +40,13 @@ export default function InputControl({
   //   console.log(value)
   //   setVal(value)
   // }, [value])
+
+  useEffect(() => {
+    const inpRef = ref.current
+    if (inpRef) {
+      focus ? inpRef.focus() : inpRef.blur()
+    }
+  }, [focus])
 
   if (icon && addon) {
     throw new Error('Only accept lading icon or leading addon !')
@@ -58,6 +68,7 @@ export default function InputControl({
         {addon ? <Addon text={addon} /> : null}
 
         <input
+          ref={ref}
           type={type}
           value={value}
           name={name}
@@ -65,10 +76,14 @@ export default function InputControl({
           readOnly={readOnly}
           onChange={onInputChange}
           onBlur={onBlur}
-          onKeyUp={(ev) => {
+          onKeyUp={ev => {
             const target = ev.target as HTMLInputElement
             if (ev.key === 'Enter' && !ev.shiftKey) {
               onEnter && onEnter(target.value, target)
+            }
+
+            if (ev.key === 'Escape') {
+              onEsc && onEsc(target)
             }
           }}
           placeholder={placeholder}

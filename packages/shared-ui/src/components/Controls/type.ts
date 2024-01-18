@@ -9,8 +9,10 @@ interface InputBaseProps {
   onChange: (ev: ChangeEvent<HTMLInputElement>) => void
   onBlur: (ev: FocusEvent<HTMLInputElement>) => void
   onEnter: (val: string, target: HTMLInputElement) => void
+  onEsc: (target: HTMLInputElement) => void
   placeholder: string
   helper: string
+  focus: boolean
   error: string
   required: boolean
   disabled: boolean
@@ -19,7 +21,10 @@ interface InputBaseProps {
   addon: string
 }
 
-type RangerSliderBaseProps = Omit<InputBaseProps, 'onChange' | 'value' | 'onBlur' | 'onEnter'> & {
+type RangerSliderBaseProps = Omit<
+  InputBaseProps,
+  'onChange' | 'value' | 'onBlur' | 'onEnter'
+> & {
   onChange: (v: number) => void
   value: number
   maxValue: number
