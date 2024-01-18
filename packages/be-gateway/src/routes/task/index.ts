@@ -330,16 +330,20 @@ router.post('/project/task', async (req: AuthRequest, res) => {
     await Promise.allSettled(processes)
 
     if (result.assigneeIds && result.assigneeIds.length) {
-      const project = await mdProjectGet(result.projectId)
-      const taskLink = genFrontendUrl(
-        `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-      )
+      // if created user and assigned user are the same person
+      // do not send notification
+      if (result.assigneeIds[0] !== id) {
+        const project = await mdProjectGet(result.projectId)
+        const taskLink = genFrontendUrl(
+          `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+        )
 
-      notifyToWebUsers(result.assigneeIds, {
-        title: 'Got a new task',
-        body: `${result.title}`,
-        deep_link: taskLink
-      })
+        notifyToWebUsers(result.assigneeIds, {
+          title: 'Got a new task',
+          body: `${result.title}`,
+          deep_link: taskLink
+        })
+      }
     }
 
     res.json({ status: 200, data: result })
