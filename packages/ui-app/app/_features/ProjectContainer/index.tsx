@@ -13,11 +13,13 @@ import useGetProjectStatus from './useGetProjectStatus'
 import useGetTask from './useGetTask'
 import { useGetMembers } from './useGetMembers'
 import useGetProjectPoint from './useGetProjectPoint'
+import { useUser } from '@goalie/nextjs'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
   const { getAutomationByProject } = useServiceAutomation()
   const { getSp } = useUrl()
+  const { user } = useUser()
 
   useTodoFilter()
   useGetProjectStatus()
@@ -27,8 +29,13 @@ export default function ProjectContainer() {
 
   useDebounce(() => {
     console.log('save lastest visit url')
-    setRecentVist(`/${orgID}/project/${projectId}?mode=${getSp('mode')}`)
-  })
+    if (user && user.id) {
+      setRecentVist(
+        user.id,
+        `/${orgID}/project/${projectId}?mode=${getSp('mode')}`
+      )
+    }
+  }, [user])
 
   useEffect(() => {
     if (projectId) {

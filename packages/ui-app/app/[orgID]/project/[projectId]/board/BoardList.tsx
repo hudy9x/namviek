@@ -20,11 +20,11 @@ export default function BoardList({
           className="board-list custom-scrollbar"
           ref={provided.innerRef}
           {...provided.droppableProps}>
-          <Loading.Absolute
-            className="px-3 py-3"
-            title="Loading ..."
-            enabled={taskLoading}
-          />
+          {/* <Loading.Absolute */}
+          {/*   className="px-3 py-3" */}
+          {/*   title="Loading ..." */}
+          {/*   enabled={taskLoading} */}
+          {/* /> */}
 
           {items.map((item, itemIndex) => {
             return (

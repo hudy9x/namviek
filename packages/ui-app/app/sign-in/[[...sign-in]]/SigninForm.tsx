@@ -74,23 +74,33 @@ export default function SigninForm() {
     setEmail(values.email)
     signin(values)
       .then(res => {
-        const recentVisit = getRecentVisit()
-        setUser(getGoalieUser())
+        try {
+          const user = getGoalieUser()
+          setUser(user)
 
-        setFixLoading(true, {
-          title: 'Redirecting to main screen ...'
-        })
-        if (recentVisit) {
-          const location = window.location
-          location.href = `${location.protocol}//${location.host}${recentVisit}`
-        } else {
-          push('/organization')
-          setTimeout(() => {
-            setFixLoading(false)
-          }, 500)
+          if (!user) {
+            messageError('Something went wrong')
+            return
+          }
+
+          const recentVisit = getRecentVisit(user.id)
+
+          setFixLoading(true, {
+            title: 'Redirecting to main screen ...'
+          })
+          if (recentVisit) {
+            const location = window.location
+            location.href = `${location.protocol}//${location.host}${recentVisit}`
+          } else {
+            push('/organization')
+            setTimeout(() => {
+              setFixLoading(false)
+            }, 500)
+          }
+        } catch (error) {
+          messageError('Something went wrong as getting user')
+          console.log(error)
         }
-
-        // messageSuccess('Success')
       })
       .catch(err => {
         if (err.response.status === 403) {
