@@ -4,15 +4,15 @@ import { useTheme } from 'next-themes'
 export default function ThemeSelection() {
   const { setTheme, theme } = useTheme()
   return (
-    <section className="relative">
+    <section className="">
       {theme === 'dark' ? (
         <HiOutlineSun
-          className="w-6 h-6 p-0.5 hover:scale-110 border border-yellow-800 bg-yellow-400/10 cursor-pointer rounded-md text-yellow-400"
+          className="main-nav-icon"
           onClick={() => setTheme('light')}
         />
       ) : (
         <HiOutlineMoon
-          className="w-6 h-6 p-1 hover:scale-110 border cursor-pointer rounded-md text-indigo-600 bg-gray-50"
+          className="main-nav-icon"
           onClick={() => setTheme('dark')}
         />
       )}

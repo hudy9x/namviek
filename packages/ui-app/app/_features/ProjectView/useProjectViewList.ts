@@ -10,6 +10,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type TCurrentViewType = ProjectViewType | ''
 
+export const projectViewMap = new Map<string, TCurrentViewType>()
+
 export const useProjectViewList = () => {
   const { getSp } = useUrl()
   const { projectId } = useParams()
@@ -47,7 +49,11 @@ export const useProjectViewList = () => {
   // set all view to caches
   useEffect(() => {
     localforage.getItem(key).then(val => {
-      val && addAllView(val as ProjectView[])
+      if (val) {
+        const views = val as ProjectView[]
+        views.forEach(v => projectViewMap.set(v.id, v.type))
+        addAllView(views)
+      }
     })
   }, [])
 
@@ -58,8 +64,11 @@ export const useProjectViewList = () => {
       .get(projectId, controller.signal)
       .then(res => {
         const { data } = res.data
-        addAllView(data)
-        localforage.setItem(key, data)
+        const views = data as ProjectView[]
+
+        addAllView(views)
+        localforage.setItem(key, views)
+        views.forEach(v => projectViewMap.set(v.id, v.type))
       })
       .finally(() => {
         setLoading(false)
@@ -70,13 +79,5 @@ export const useProjectViewList = () => {
     }
   }, [projectId])
 
-  // useEffect(() => {
-  //   projectView.get(projectId).then(res => {
-  //     const { data } = res.data
-  //     console.log('projectview', data)
-  //     addAllView(data)
-  //   })
-  // }, [projectId])
-  //
   return { views, loading, setLoading, currentViewType }
 }

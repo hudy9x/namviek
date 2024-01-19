@@ -13,6 +13,7 @@ import { Loading } from '@shared/ui'
 import { useDebounce } from '@/hooks/useDebounce'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import { useProjectStatusStore } from '@/store/status'
+import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -43,37 +44,15 @@ const AutomateMenu = dynamic(
   }
 )
 
-type TProjectView = ProjectViewType | 'NONE'
-
 export default function ProjectTabContent() {
-  const { views, loading } = useProjectViewStore()
+  const { loading } = useProjectViewStore()
   const { statusLoading } = useProjectStatusStore()
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
   const ignored = ['setting', 'automation', 'automation-create']
   const isIgnored = () => ignored.includes(mode || '')
 
-  const key = `VIEW_MODE_${mode}`
-  const getCacheViewMode = () => {
-    const cached = getLocalCache(key) || 'NONE'
-    return cached as TProjectView
-  }
-
-  const [type, setType] = useState<TProjectView>(getCacheViewMode())
-
-  // const type = useMemo(() => {
-  //   const view = views.find(v => v.id === mode)
-  //   return view ? view.type : 'NONE'
-  // }, [mode, JSON.stringify(views)])
-
-  useDebounce(() => {
-    if (views.length) {
-      const view = views.find(v => v.id === mode)
-      const t = view ? view.type : 'NONE'
-      setType(t)
-      setLocalCache(key, t)
-    }
-  }, [mode, JSON.stringify(views)])
+  const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
 
@@ -83,7 +62,7 @@ export default function ProjectTabContent() {
       style={{ height: 'calc(100vh - 83px)' }}>
       {loading || statusLoading ? (
         <div className="px-3">
-          <Loading.Absolute enabled={true} />
+          <Loading.Absolute title="Preparing view ..." enabled={true} />
         </div>
       ) : null}
       {type === 'NONE' && !isIgnored() && <TaskList />}

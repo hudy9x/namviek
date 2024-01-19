@@ -1,6 +1,8 @@
 import { useUser } from '@goalie/nextjs'
 import { Avatar } from '@shared/ui'
 import ThemeSelection from './ThemeSelection'
+import { HiOutlineCog, HiOutlineCog6Tooth } from 'react-icons/hi2'
+import Link from 'next/link'
 
 export default function UserSection() {
   const { user } = useUser()
@@ -16,7 +18,12 @@ export default function UserSection() {
           </span>
         </div>
       </div>
-      <ThemeSelection />
+
+      <div>
+        <Link href={`/profile/${user?.id}`}>
+          <HiOutlineCog6Tooth className="w-6 h-6 p-0.5 border border-transparent bg-transparent dark:hover:bg-gray-800 dark:hover:border-gray-700 hover:bg-gray-50 hover:border-gray-100 cursor-pointer rounded-md text-gray-500" />
+        </Link>
+      </div>
     </section>
   )
 }

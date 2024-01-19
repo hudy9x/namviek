@@ -7,6 +7,7 @@ import { useMenuStore } from '@/store/menu'
 import Badge from '@/components/Badge'
 import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 import { useProjectViewStore } from '@/store/projectView'
+import { useTaskStore } from '@/store/task'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -32,6 +33,7 @@ export default function ProjectNavItem({
   const active = params.projectId === id
   const href = `${params.orgID}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
+  const { addAllTasks } = useTaskStore()
   const onSelectProject = (id: string) => {
     selectProject(id)
   }
@@ -48,6 +50,7 @@ export default function ProjectNavItem({
     if (!pathName.includes(p)) {
       // setProjectViewLoading(true)
     }
+    addAllTasks([])
 
     onSelectProject(id)
     setMenuVisible(false)
@@ -70,8 +73,9 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
-        } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${
+        visible ? 'opacity-100' : 'opacity-0'
+      } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
       }}

@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { HiOutlineUserPlus } from 'react-icons/hi2'
 import { FcBriefcase, FcOrganization, FcVideoCall } from 'react-icons/fc'
 import { Tooltip } from '@shared/ui'
+import ThemeSelection from './ThemeSelection'
 
 export default function RootSidebar() {
   const { orgID } = useParams()
@@ -50,6 +51,7 @@ export default function RootSidebar() {
         </Link>
       </section>
       <section>
+        <ThemeSelection />
         <Link href={`/${orgID}/setting/people`}>
           <HiOutlineUserPlus className="main-nav-icon" />
         </Link>

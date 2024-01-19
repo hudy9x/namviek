@@ -42,7 +42,7 @@ export default function CalMonthContainer({ date, type }: ICalMonthContainerProp
       <CalendarHeader />
       <div
         className={`calendar-wrapper ${isWeekView ? 'week-view' : ''}`}>
-        <Loading.Absolute enabled={taskLoading} border />
+        {/* <Loading.Absolute enabled={taskLoading} border /> */}
         {calendars.map((week, weekIndex) => {
           return (
             <div
