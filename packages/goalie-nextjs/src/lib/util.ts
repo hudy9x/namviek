@@ -28,7 +28,7 @@ export const clearGoalieUser = () => {
 
 export const getGoalieUser = () => {
   try {
-    return JSON.parse(window.localStorage.getItem(GOALIE_USER) || '{}')
+    return JSON.parse(window.localStorage.getItem(GOALIE_USER) || '{}') as GoalieUser
   } catch (error) {
     return null
   }

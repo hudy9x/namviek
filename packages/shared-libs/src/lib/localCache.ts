@@ -1,5 +1,5 @@
 export enum LCK {
-  RECENT_VISIT = 'RECENT_VISIT',
+  RECENT_VISIT = 'RECENT_VISIT_',
   PROJECT_BADGE = 'PROJECT_BADGE'
 }
 export const setLocalCache = (name: LCK | string, value: string) => {
@@ -40,17 +40,17 @@ export const getLocalJSONCache = (name: LCK | string) => {
 
 // cache recent visit
 
-export const setRecentVist = (value: string) => {
+export const setRecentVist = (uid: string, value: string) => {
   try {
-    localStorage.setItem(LCK.RECENT_VISIT, value)
+    localStorage.setItem(LCK.RECENT_VISIT + uid, value)
   } catch (error) {
     console.log(error)
   }
 }
 
-export const getRecentVisit = () => {
+export const getRecentVisit = (uid: string) => {
   try {
-    return localStorage.getItem(LCK.RECENT_VISIT)
+    return localStorage.getItem(LCK.RECENT_VISIT + uid)
   } catch (error) {
     return null
   }
