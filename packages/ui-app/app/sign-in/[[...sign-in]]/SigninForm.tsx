@@ -173,10 +173,10 @@ export default function SigninForm() {
               title="Sign in with google"
             />
             <div className="relative mt-2 pb-1">
-              <span className="text-sm bg-white/95 px-1 rounded-md absolute -top-[10px] left-1/2 -translate-x-1/2 z-10 text-gray-400">
+              <span className="text-sm bg-white/95 dark:bg-gray-900/80 px-1 rounded-md absolute -top-[10px] left-1/2 -translate-x-1/2 z-10 text-gray-400">
                 or
               </span>
-              <div className="absolute top-0 w-full border-b"></div>
+              <div className="absolute top-0 w-full border-b dark:border-gray-700"></div>
             </div>
             <Form.Input title="Email" {...regField('email')} />
             <Form.Input
