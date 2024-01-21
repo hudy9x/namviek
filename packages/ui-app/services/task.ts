@@ -94,11 +94,9 @@ export const taskMakeCover = (data: {
 }
 
 export const serviceTask = {
-  reorderPosition: (data: {
-    sourceIndex: string
-    destinationIndex: string
+  reorder: (data: {
+    updatedOrder: [string, number][]
     projectId: string
-
   }) => {
     return httpPost('/api/task/reorder', data)
   }

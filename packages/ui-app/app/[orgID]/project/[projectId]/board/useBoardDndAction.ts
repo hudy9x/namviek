@@ -1,13 +1,25 @@
-import { useTaskFilter } from '@/features/TaskFilter/context'
+import { ITaskFilterGroupbyItem, useTaskFilter } from '@/features/TaskFilter/context'
 import { useBoardAction } from './useBoardAction'
+import { useBoardItemReorder } from './useBoardItemReorder'
 
 export const useBoardDndAction = () => {
   const { moveTaskToAnotherGroup, rearrangeColumn } = useBoardAction()
   const { setGroupbyItems } = useTaskFilter()
+  const { reorderTask } = useBoardItemReorder()
 
-  const reorderTask = ({ sourceId, destId }: { sourceId: string, destId: string }) => {
-    console.log('sourceid', sourceId)
-    console.log('destId', destId)
+  const moveItemByIndex = ({
+    column,
+    sourceIndex,
+    destIndex
+  }: {
+    column: ITaskFilterGroupbyItem,
+    sourceIndex: number,
+    destIndex: number
+  }) => {
+    const sourceItem = column.items[sourceIndex]
+
+    column.items.splice(sourceIndex, 1)
+    column.items.splice(destIndex, 0, sourceItem)
   }
 
   const dragItemToAnotherPosition = ({
@@ -24,21 +36,32 @@ export const useBoardDndAction = () => {
 
       const column = cloned.find(c => c.id === sourceColId)
 
+      // the column var will be updated as the below logic implemented
+      // so we must save it first
+      // cuz it will be used for scanning items that between source's index and dest's index
+      const initialColumn = structuredClone(column)
+      const isMovedUp = sourceIndex > destIndex
+
       if (!column) {
         console.log('empoty column')
         return cloned
       }
 
-      const sourceItem = column.items[sourceIndex]
-      const destItem = column.items[destIndex]
-
-      column.items.splice(sourceIndex, 1)
-      column.items.splice(destIndex, 0, sourceItem)
-
-      reorderTask({
-        sourceId: sourceItem,
-        destId: destItem
+      moveItemByIndex({
+        column,
+        sourceIndex,
+        destIndex
       })
+
+      if (initialColumn) {
+        reorderTask({
+          isMovedUp,
+          sourceIndex,
+          destIndex,
+          initialColumn
+        })
+      }
+
 
       return cloned
     })

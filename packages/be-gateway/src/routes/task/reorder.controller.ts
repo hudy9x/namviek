@@ -3,8 +3,7 @@ import { BaseController, Body, Controller, Post } from "../../core";
 import { CKEY, findNDelCaches } from "../../lib/redis";
 
 interface IReorderData {
-  sourceId: string
-  destinationId: string
+  updatedOrder: [string, string][]
   projectId: string
 }
 
@@ -19,21 +18,24 @@ export default class TaskReorderController extends BaseController {
 
   @Post('')
   async reorder(@Body() body: IReorderData) {
-    const { sourceId, destinationId, projectId } = body
+    const { updatedOrder, projectId } = body
 
+    if (!updatedOrder.length) {
+      return null
+    }
+
+    console.log('updateorder', updatedOrder)
     const result = await this.taskRepo.reorder({
-      sourceId: parseInt(sourceId, 10),
-      destinationId: parseInt(destinationId, 10),
-      projectId
+      updatedOrder
     })
 
     const key = [CKEY.TASK_QUERY, projectId]
     await findNDelCaches(key)
 
-    console.log('result 13')
-    console.log(result)
+    console.log('result 15')
 
-    return 1
+
+    return result
   }
 }
 
