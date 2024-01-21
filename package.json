@@ -67,6 +67,7 @@
     "next": "13.4.1",
     "next-themes": "^0.2.1",
     "node-cron": "^3.0.3",
+    "pusher-js": "^8.4.0-rc2",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-beautiful-dnd": "^13.1.1",

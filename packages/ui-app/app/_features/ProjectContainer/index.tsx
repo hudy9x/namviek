@@ -15,6 +15,7 @@ import { useGetMembers } from './useGetMembers'
 import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@goalie/nextjs'
 import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
+import useChannelTeamCollab from './useChannelTeamCollab'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -27,6 +28,10 @@ export default function ProjectContainer() {
   useGetTask()
   useGetMembers()
   useGetProjectPoint()
+
+  // this hook used for team collaboration
+  // such as: task update, reorder
+  useChannelTeamCollab()
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible
