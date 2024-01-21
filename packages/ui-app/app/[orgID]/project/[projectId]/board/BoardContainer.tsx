@@ -35,6 +35,7 @@ export default function BoardContainer() {
       return
     }
 
+    // reorder task
     if (sourceColId === destColId) {
       dragItemToAnotherPosition({
         sourceIndex,

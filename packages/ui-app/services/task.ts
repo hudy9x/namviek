@@ -92,3 +92,14 @@ export const taskMakeCover = (data: {
 }) => {
   return httpPost('/api/project/task/make-cover', data)
 }
+
+export const serviceTask = {
+  reorderPosition: (data: {
+    sourceIndex: string
+    destinationIndex: string
+    projectId: string
+
+  }) => {
+    return httpPost('/api/task/reorder', data)
+  }
+}

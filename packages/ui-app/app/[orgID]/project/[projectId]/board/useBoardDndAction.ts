@@ -5,6 +5,11 @@ export const useBoardDndAction = () => {
   const { moveTaskToAnotherGroup, rearrangeColumn } = useBoardAction()
   const { setGroupbyItems } = useTaskFilter()
 
+  const reorderTask = ({ sourceId, destId }: { sourceId: string, destId: string }) => {
+    console.log('sourceid', sourceId)
+    console.log('destId', destId)
+  }
+
   const dragItemToAnotherPosition = ({
     sourceColId,
     sourceIndex,
@@ -25,10 +30,15 @@ export const useBoardDndAction = () => {
       }
 
       const sourceItem = column.items[sourceIndex]
+      const destItem = column.items[destIndex]
+
       column.items.splice(sourceIndex, 1)
       column.items.splice(destIndex, 0, sourceItem)
-      // column.items[sourceIndex] = column.items[destIndex]
-      // column.items[destIndex] = sourceItem
+
+      reorderTask({
+        sourceId: sourceItem,
+        destId: destItem
+      })
 
       return cloned
     })
