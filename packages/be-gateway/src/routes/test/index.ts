@@ -16,7 +16,7 @@ import {
 } from '../../queues/TaskReorderQueue'
 
 @Controller('/test')
-class TestController extends BaseController {
+export class TestController extends BaseController {
   taskReorderQueue: TaskReorderQueue
   constructor() {
     super()
@@ -198,4 +198,4 @@ class TestController extends BaseController {
   }
 }
 
-export const TestRouter = TestController
+

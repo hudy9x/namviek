@@ -15,9 +15,13 @@ export class TaskReorderQueue {
   worker: Worker
   constructor() {
     const name = 'TaskReorder'
+
+    console.log('register queue:', name)
     this.queue = new Queue(name, {
       connection: redis
     })
+
+    console.log('register worker for queu:', name)
     this.worker = new Worker(
       name,
       async job => {
@@ -30,7 +34,7 @@ export class TaskReorderQueue {
   }
 
   addJob(name: string, data: IReorderData) {
-    this.queue.add(name, data)
+    return this.queue.add(name, data)
   }
 
   async workerHandler(data: IReorderData) {
