@@ -1,6 +1,7 @@
 import { Queue, Worker } from 'bullmq'
 
 import { Redis } from 'ioredis'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 const redis = new Redis(process.env.REDIS_HOST, {
   maxRetriesPerRequest: null
 })
@@ -38,7 +39,27 @@ export class TaskReorderQueue {
   }
 
   async workerHandler(data: IReorderData) {
-    console.log(data)
+    console.log('data', data)
+    await pmClient.$transaction(async tx => {
+      const id = '6584551e5a57aa1cec4e64f6'
+      const { order } = await tx.test.findFirst({
+        where: {
+          id
+        },
+        select: {
+          order: true
+        }
+      })
+
+      await tx.test.update({
+        where: {
+          id
+        },
+        data: {
+          order: order + 1
+        }
+      })
+    })
   }
 
   watch() {

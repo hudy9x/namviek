@@ -30,10 +30,11 @@ export class TestController extends BaseController {
       updatedOrder: [['oijoisdf', '2']],
       projectId: '102938019283'
     })
-    await this.taskReorderQueue.addJob('name', {
-      updatedOrder: [['oijoisdf', '3']],
-      projectId: 'project-2'
-    })
+    // await this.taskReorderQueue.addJob('name', {
+    //   updatedOrder: [['oijoisdf', '3']],
+    //   projectId: 'project-2'
+    // })
+    return 1
   }
 
   @Get('/check-task-order')
