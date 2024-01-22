@@ -27,6 +27,7 @@ import { OrganizationController } from './organization/index.controller'
 import { OrganizationMemberController } from './organization/member.controller'
 import { SchedulerController } from './scheduler/index.controller'
 import TaskReorderController from './task/reorder.controller'
+import { EventController } from './event/index.controller'
 
 const router = Router()
 
@@ -39,6 +40,7 @@ router.use(
   AppRoutes([
     ProjectController,
     ActivityRouter,
+    EventController,
     TestRouter,
     ProjectViewController,
     PermissionController,

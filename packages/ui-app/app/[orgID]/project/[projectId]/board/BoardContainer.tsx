@@ -5,14 +5,48 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 import { useBoardDndAction } from './useBoardDndAction'
 import BoardColumnDraggable from './BoardColumnDraggable'
 import { useEffect } from 'react'
+import {
+  triggerEventTaskReorder,
+  useEventTaskReorder
+} from '@/events/useEventTaskReorder'
+import { useUrl } from '@/hooks/useUrl'
+import { useUser } from '@goalie/nextjs'
 
 export default function BoardContainer() {
+  const { projectId } = useUrl()
+  const { user } = useUser()
   const { groupByItems, setGroupbyItems } = useTaskFilter()
   const {
     dragColumnToAnotherPosition,
     dragItemToAnotherPosition,
     dragItemToAnotherColumn
   } = useBoardDndAction()
+
+  useEventTaskReorder(data => {
+    if (!user || !user.id) return
+
+    const message = data as {
+      triggerBy: string
+      sourceColId: string
+      sourceIndex: number
+      destIndex: number
+    }
+
+    if (user.id === message.triggerBy) {
+      console.log('ignored re order')
+      return
+    }
+
+    const { sourceIndex, destIndex, sourceColId } = message
+    // just update item position on board view
+    dragItemToAnotherPosition({
+      sourceIndex,
+      destIndex,
+      sourceColId,
+      syncServerDataAsWell: false
+    })
+    console.log(message, user)
+  })
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result
@@ -37,6 +71,15 @@ export default function BoardContainer() {
 
     // reorder task
     if (sourceColId === destColId) {
+      // realtime update to another users in project
+      triggerEventTaskReorder({
+        projectId,
+        sourceIndex,
+        destIndex,
+        sourceColId
+      })
+
+      // just update item position on board view
       dragItemToAnotherPosition({
         sourceIndex,
         destIndex,

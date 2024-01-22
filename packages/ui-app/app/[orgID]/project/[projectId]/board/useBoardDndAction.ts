@@ -1,19 +1,25 @@
-import { ITaskFilterGroupbyItem, useTaskFilter } from '@/features/TaskFilter/context'
+import {
+  ITaskFilterGroupbyItem,
+  useTaskFilter
+} from '@/features/TaskFilter/context'
 import { useBoardAction } from './useBoardAction'
 import { useBoardItemReorder } from './useBoardItemReorder'
+import { serviceTask } from '@/services/task'
+import { useUrl } from '@/hooks/useUrl'
 
 export const useBoardDndAction = () => {
   const { moveTaskToAnotherGroup, rearrangeColumn } = useBoardAction()
   const { setGroupbyItems } = useTaskFilter()
   const { reorderTask } = useBoardItemReorder()
+  const { projectId } = useUrl()
 
   const moveItemByIndex = ({
     column,
     sourceIndex,
     destIndex
   }: {
-    column: ITaskFilterGroupbyItem,
-    sourceIndex: number,
+    column: ITaskFilterGroupbyItem
+    sourceIndex: number
     destIndex: number
   }) => {
     const sourceItem = column.items[sourceIndex]
@@ -25,11 +31,13 @@ export const useBoardDndAction = () => {
   const dragItemToAnotherPosition = ({
     sourceColId,
     sourceIndex,
-    destIndex
+    destIndex,
+    syncServerDataAsWell = true
   }: {
     sourceColId: string
     sourceIndex: number
     destIndex: number
+    syncServerDataAsWell?: boolean
   }) => {
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
@@ -54,14 +62,25 @@ export const useBoardDndAction = () => {
       })
 
       if (initialColumn) {
-        reorderTask({
+        const updatedTaskItems = reorderTask({
           isMovedUp,
           sourceIndex,
           destIndex,
           initialColumn
         })
-      }
 
+        // syncServerDataAsWell used for triggering an http request to update task's order
+        // on server side
+
+        syncServerDataAsWell &&
+          updatedTaskItems &&
+          serviceTask
+            .reorder({ updatedOrder: updatedTaskItems, projectId })
+            .then(res => {
+              console.log('reorder success')
+              console.log(res)
+            })
+      }
 
       return cloned
     })
@@ -71,14 +90,15 @@ export const useBoardDndAction = () => {
     sourceIndex,
     destIndex,
     sourceColId,
-    destColId
+    destColId,
+    syncServerDataAsWell = true
   }: {
     sourceIndex: number
     destIndex: number
     sourceColId: string
     destColId: string
+    syncServerDataAsWell?: boolean
   }) => {
-
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
 
@@ -94,11 +114,12 @@ export const useBoardDndAction = () => {
       column.items.splice(sourceIndex, 1)
       destColumn.items.splice(destIndex, 0, sourceItem)
 
-      // delay update for 200ms 
-      // otherwise it causes a 
-      setTimeout(() => {
-        moveTaskToAnotherGroup(sourceItem, destColumn.id)
-      }, 200);
+      // delay update for 200ms
+      // otherwise it causes a
+      syncServerDataAsWell &&
+        setTimeout(() => {
+          moveTaskToAnotherGroup(sourceItem, destColumn.id)
+        }, 200)
 
       return cloned
     })
@@ -106,10 +127,12 @@ export const useBoardDndAction = () => {
 
   const dragColumnToAnotherPosition = ({
     sourceIndex,
-    destIndex
+    destIndex,
+    syncServerDataAsWell = true
   }: {
     sourceIndex: number
     destIndex: number
+    syncServerDataAsWell?: boolean
   }) => {
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
@@ -118,9 +141,10 @@ export const useBoardDndAction = () => {
       cloned.splice(sourceIndex, 1)
       cloned.splice(destIndex, 0, currentColumn)
 
-      setTimeout(() => {
-        rearrangeColumn(sourceIndex, destIndex)
-      }, 200);
+      syncServerDataAsWell &&
+        setTimeout(() => {
+          rearrangeColumn(sourceIndex, destIndex)
+        }, 200)
 
       return cloned
     })

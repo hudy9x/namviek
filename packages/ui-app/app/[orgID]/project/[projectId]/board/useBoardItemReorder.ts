@@ -1,14 +1,16 @@
-import { ITaskFilterGroupbyItem } from "@/features/TaskFilter/context"
-import { taskIdMap, updateTaskOrderInMap } from "@/hooks/useGenTaskMappingObject"
-import { serviceTask } from "@/services/task"
-import { useTaskStore } from "@/store/task"
-import localforage from "localforage"
-import { useParams } from "next/navigation"
+import { ITaskFilterGroupbyItem } from '@/features/TaskFilter/context'
+import {
+  taskIdMap,
+  updateTaskOrderInMap
+} from '@/hooks/useGenTaskMappingObject'
+import localforage from 'localforage'
+import { useParams } from 'next/navigation'
+
 
 export const useBoardItemReorder = () => {
-
   const { projectId } = useParams()
-  const { updateMultiTaskOrder } = useTaskStore()
+
+
 
   const getUpdatedTaskOrderItem = ({
     isMovedUp,
@@ -23,7 +25,9 @@ export const useBoardItemReorder = () => {
   }) => {
     console.log('=======================')
     const colItems = initialColumn.items
-    const [from, to] = isMovedUp ? [destIndex, sourceIndex] : [sourceIndex, destIndex]
+    const [from, to] = isMovedUp
+      ? [destIndex, sourceIndex]
+      : [sourceIndex, destIndex]
 
     const items = colItems.slice(from, to + 1)
     const updatedItems: [string, number][] = []
@@ -31,7 +35,6 @@ export const useBoardItemReorder = () => {
     const addUpdateItem = (id: string, order: number) => {
       updatedItems.push([id, order])
     }
-
 
     // update task's order as moving up
     if (isMovedUp) {
@@ -50,7 +53,7 @@ export const useBoardItemReorder = () => {
       const lastIndexItem = items.length - 1
       console.log('items', items)
       for (let i = 0; i < lastIndexItem; i++) {
-        const item = items[i];
+        const item = items[i]
         const nextItem = items[i + 1]
         const nextTask = taskIdMap.get(nextItem)
 
@@ -60,10 +63,7 @@ export const useBoardItemReorder = () => {
         }
 
         addUpdateItem(item, nextTask.order)
-
       }
-
-
 
       // update task's order as moving down
     } else {
@@ -77,11 +77,10 @@ export const useBoardItemReorder = () => {
         return
       }
 
-
       addUpdateItem(firstTaskId, lastTask.order)
 
       for (let i = 1; i < items.length; i++) {
-        const item = items[i];
+        const item = items[i]
         const prevItem = items[i - 1]
         const prevTask = taskIdMap.get(prevItem)
 
@@ -91,14 +90,10 @@ export const useBoardItemReorder = () => {
         }
 
         addUpdateItem(item, prevTask.order)
-
       }
-
-
     }
 
     return updatedItems
-
   }
 
   const clearCachedTaskData = () => {
@@ -111,14 +106,12 @@ export const useBoardItemReorder = () => {
     sourceIndex,
     destIndex,
     initialColumn
-  }:
-    {
-      isMovedUp: boolean
-      initialColumn: ITaskFilterGroupbyItem
-      sourceIndex: number
-      destIndex: number
-    }) => {
-
+  }: {
+    isMovedUp: boolean
+    initialColumn: ITaskFilterGroupbyItem
+    sourceIndex: number
+    destIndex: number
+  }) => {
     const updatedTaskItems = getUpdatedTaskOrderItem({
       isMovedUp,
       sourceIndex,
@@ -130,15 +123,15 @@ export const useBoardItemReorder = () => {
     if (updatedTaskItems) {
       clearCachedTaskData()
       updateTaskOrderInMap(updatedTaskItems)
-      serviceTask.reorder({ updatedOrder: updatedTaskItems, projectId })
-        .then(res => {
-          console.log('reorder success')
-          console.log(res)
-        })
-
-
+      // serviceTask
+      //   .reorder({ updatedOrder: updatedTaskItems, projectId })
+      //   .then(res => {
+      //     console.log('reorder success')
+      //     console.log(res)
+      //   })
     }
 
+    return updatedTaskItems
   }
 
   return {

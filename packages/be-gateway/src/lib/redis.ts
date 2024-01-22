@@ -33,7 +33,7 @@ export enum CKEY {
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
 
-let redis: Redis
+export let redis: Redis
 
 const MIN = 60
 const HOUR = 60 * MIN
