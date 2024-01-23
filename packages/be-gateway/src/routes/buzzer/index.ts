@@ -20,22 +20,26 @@ router.get('/pusher-authentication', async (req, res) => {
 })
 
 router.post('/channel-auth', async (req, res) => {
-  const socketId = req.body.socket_id
-  const channel = req.body.channel_name
-  // const presenceData = {
-  //   user_id: 'unique_user_id',
-  //   user_info: { name: 'Mr Channels', twitter_id: '@pusher' }
-  // }
-  // This authenticates every user. Don't do this in production!
+  try {
+    const socketId = req.body.socket_id
+    const channel = req.body.channel_name
+    // const presenceData = {
+    //   user_id: 'unique_user_id',
+    //   user_info: { name: 'Mr Channels', twitter_id: '@pusher' }
+    // }
+    // This authenticates every user. Don't do this in production!
 
-  console.log('authorize channel')
+    console.log('authorize channel')
 
-  const authResponse = pusherServer.authorizeChannel(
-    socketId,
-    channel
-    // presenceData
-  )
-  res.send(authResponse)
+    const authResponse = pusherServer.authorizeChannel(
+      socketId,
+      channel
+      // presenceData
+    )
+    res.send(authResponse)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 
 router.get('/pusher/test', [authMiddleware], async (req: AuthRequest, res) => {

@@ -18,6 +18,7 @@ export const useEventTaskReorder = (cb: (data: unknown) => void) => {
   useEffect(() => {
     const eventName = `event-task-reorder-${projectId}`
 
+    console.log('binding pusher event', eventName)
     channelTeamCollab.bind(eventName, (data: unknown) => {
       cb && cb(data)
     })
