@@ -15,7 +15,6 @@ import { useGetMembers } from './useGetMembers'
 import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@goalie/nextjs'
 import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
-import { useEventTaskReorder } from '../../_events/useEventTaskReorder'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -34,9 +33,6 @@ export default function ProjectContainer() {
   // by using task'id
   // Ex: tasks[id] or task[order]
   useGenTaskMappingObject()
-
-  // register some events
-  useEventTaskReorder()
 
   useDebounce(() => {
     console.log('save lastest visit url')

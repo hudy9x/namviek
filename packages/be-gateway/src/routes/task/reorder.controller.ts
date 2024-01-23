@@ -1,6 +1,5 @@
-import { TaskRepository } from "@shared/models";
-import { BaseController, Body, Controller, Post } from "../../core";
-import { CKEY, findNDelCaches } from "../../lib/redis";
+import { BaseController, Body, Controller, Post } from '../../core'
+import { TaskQueue, getTaskQueueInstance } from '../../queues'
 
 interface IReorderData {
   updatedOrder: [string, string][]
@@ -9,33 +8,20 @@ interface IReorderData {
 
 @Controller('/task/reorder')
 export default class TaskReorderController extends BaseController {
-
-  taskRepo: TaskRepository
+  taskQueue: TaskQueue
   constructor() {
     super()
-    this.taskRepo = new TaskRepository()
+
+    this.taskQueue = getTaskQueueInstance()
   }
 
   @Post('')
   async reorder(@Body() body: IReorderData) {
-    const { updatedOrder, projectId } = body
+    console.log('add reorder job')
+    await this.taskQueue.addJob('reorder', body)
 
-    if (!updatedOrder.length) {
-      return null
-    }
+    return 1
 
-    console.log('updateorder', updatedOrder)
-    const result = await this.taskRepo.reorder({
-      updatedOrder
-    })
-
-    const key = [CKEY.TASK_QUERY, projectId]
-    await findNDelCaches(key)
-
-    console.log('result 15')
-
-
-    return result
+    // return result
   }
 }
-

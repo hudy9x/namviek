@@ -116,10 +116,10 @@ export const useBoardDndAction = () => {
 
       // delay update for 200ms
       // otherwise it causes a
-      syncServerDataAsWell &&
-        setTimeout(() => {
-          moveTaskToAnotherGroup(sourceItem, destColumn.id)
-        }, 200)
+
+      setTimeout(() => {
+        moveTaskToAnotherGroup(sourceItem, destColumn.id, syncServerDataAsWell)
+      }, 200)
 
       return cloned
     })

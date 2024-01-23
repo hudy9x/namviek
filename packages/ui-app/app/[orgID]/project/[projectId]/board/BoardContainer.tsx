@@ -4,54 +4,24 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
 import { useBoardDndAction } from './useBoardDndAction'
 import BoardColumnDraggable from './BoardColumnDraggable'
-import { useEffect } from 'react'
-import {
-  triggerEventTaskReorder,
-  useEventTaskReorder
-} from '@/events/useEventTaskReorder'
+import { triggerEventTaskReorder } from '@/events/useEventTaskReorder'
 import { useUrl } from '@/hooks/useUrl'
-import { useUser } from '@goalie/nextjs'
+import { useBoardRealtimeUpdate } from './useBoardRealtimeUpdate'
+import { triggerEventMoveTaskToOtherBoard } from '@/events/useEventMoveTaskToOtherBoard'
 
 export default function BoardContainer() {
   const { projectId } = useUrl()
-  const { user } = useUser()
-  const { groupByItems, setGroupbyItems } = useTaskFilter()
+  const { groupByItems } = useTaskFilter()
   const {
     dragColumnToAnotherPosition,
     dragItemToAnotherPosition,
     dragItemToAnotherColumn
   } = useBoardDndAction()
 
-  useEventTaskReorder(data => {
-    if (!user || !user.id) return
-
-    const message = data as {
-      triggerBy: string
-      sourceColId: string
-      sourceIndex: number
-      destIndex: number
-    }
-
-    if (user.id === message.triggerBy) {
-      console.log('ignored re order')
-      return
-    }
-
-    const { sourceIndex, destIndex, sourceColId } = message
-    // just update item position on board view
-    dragItemToAnotherPosition({
-      sourceIndex,
-      destIndex,
-      sourceColId,
-      syncServerDataAsWell: false
-    })
-    console.log(message, user)
-  })
+  useBoardRealtimeUpdate()
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result
-
-    console.log('-----------------------')
 
     if (!source || !destination) return
     if (source.droppableId === 'all-column') return
@@ -88,6 +58,13 @@ export default function BoardContainer() {
     }
 
     if (sourceColId !== destColId) {
+      triggerEventMoveTaskToOtherBoard({
+        projectId,
+        sourceColId,
+        destColId,
+        sourceIndex,
+        destIndex
+      })
       dragItemToAnotherColumn({
         sourceColId,
         destColId,

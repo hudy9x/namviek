@@ -10,29 +10,23 @@ import {
 } from '../../core'
 import { CounterType } from '@prisma/client'
 import { CKEY, incrCache, setCache } from '../../lib/redis'
-import {
-  TaskReorderQueue,
-  getTaskReorderQueueInstance
-} from '../../queues/TaskReorderQueue'
+
+import { TaskQueue, getTaskQueueInstance } from '../../queues'
 
 @Controller('/test')
 export class TestController extends BaseController {
-  taskReorderQueue: TaskReorderQueue
+  taskQueue: TaskQueue
   constructor() {
     super()
 
-    this.taskReorderQueue = getTaskReorderQueueInstance()
+    this.taskQueue = getTaskQueueInstance()
   }
 
   @Get('/bullmq')
   async runQueue() {
-    await this.taskReorderQueue.addJob('name', {
-      updatedOrder: [['oijoisdf', '2']],
-      projectId: '102938019283'
-    })
-    // await this.taskReorderQueue.addJob('name', {
-    //   updatedOrder: [['oijoisdf', '3']],
-    //   projectId: 'project-2'
+    // await this.taskQueue.addJob('name', {
+    //   updatedOrder: [['oijoisdf', '2']],
+    //   projectId: '102938019283'
     // })
     return 1
   }
@@ -198,5 +192,3 @@ export class TestController extends BaseController {
     }
   }
 }
-
-

@@ -28,7 +28,7 @@ export enum CKEY {
   FAV_QUERY = 'FAV_QUERY',
 
   ORG_STORAGE_SIZE = 'ORG_STORAGE_SIZE',
-  ORG_MAX_STORAGE_SIZE = 'ORG_MAX_STORAGE_SIZE',
+  ORG_MAX_STORAGE_SIZE = 'ORG_MAX_STORAGE_SIZE'
 }
 
 type CACHE_KEY = CKEY | (CKEY | string)[]
@@ -41,7 +41,10 @@ const HOUR = 60 * MIN
 const DAY = 23 * HOUR
 
 try {
-  redis = new Redis(process.env.REDIS_HOST)
+  redis = new Redis(process.env.REDIS_HOST, {
+    // required by npm package: bullmq
+    maxRetriesPerRequest: null
+  })
   redis.once('connect', () => {
     connected = true
     error = false
