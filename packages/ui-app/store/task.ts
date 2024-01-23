@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { Task } from '@prisma/client'
 import { produce } from 'immer'
+import { taskIndexMap } from '@/hooks/useGenTaskMappingObject'
 
 export type PartialTask = Partial<Task>
 export type ExtendedTask = Task & {
@@ -17,6 +18,7 @@ interface TaskState {
   tasks: ExtendedTask[]
   addOneTask: (data: PartialTask) => void
   updateMultipleTask: (data: PartialTask) => void
+  // updateMultiTaskOrder: (datas: [string, number][]) => void
   updateTask: (data: PartialTask) => void
   syncRemoteTaskById: (id: string, data: Task) => void
   addAllTasks: (data: Task[]) => void
@@ -137,6 +139,39 @@ export const useTaskStore = create<TaskState>(set => ({
         })
       })
     ),
+
+  // updateMultiTaskOrder: (taskOrders: [string, number][]) => set(
+  //   produce((state: TaskState) => {
+  //
+  //     if (!taskOrders.length) {
+  //       return
+  //     }
+  //
+  //     const tasks = state.tasks
+  //
+  //     taskOrders.forEach(t => {
+  //       const [id, order] = t
+  //
+  //       if (!taskIndexMap.has(id)) {
+  //         return
+  //       }
+  //
+  //       const index = taskIndexMap.get(id)
+  //
+  //       if (!index) {
+  //         return
+  //       }
+  //
+  //       console.log(tasks[index].id, tasks[index].order, order)
+  //       const task = tasks[index]
+  //       tasks[index] = { ...task, order }
+  //
+  //       // tasks[index] = { ...tasks[index], order }
+  //
+  //     })
+  //
+  //   })),
+
   updateTask: (data: Partial<Task>) =>
     set(
       produce((state: TaskState) => {

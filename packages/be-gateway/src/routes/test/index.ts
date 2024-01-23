@@ -1,21 +1,47 @@
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
-import { Controller, ExpressRequest, ExpressResponse, Get, Req, Res } from '../../core'
+import {
+  BaseController,
+  Controller,
+  ExpressRequest,
+  ExpressResponse,
+  Get,
+  Req,
+  Res
+} from '../../core'
 import { CounterType } from '@prisma/client'
 import { CKEY, incrCache, setCache } from '../../lib/redis'
 
+import { TaskQueue, getTaskQueueInstance } from '../../queues'
+
 @Controller('/test')
-class TestController {
+export class TestController extends BaseController {
+  taskQueue: TaskQueue
+  constructor() {
+    super()
+
+    this.taskQueue = getTaskQueueInstance()
+  }
+
+  @Get('/bullmq')
+  async runQueue() {
+    // await this.taskQueue.addJob('name', {
+    //   updatedOrder: [['oijoisdf', '2']],
+    //   projectId: '102938019283'
+    // })
+    return 1
+  }
 
   @Get('/check-task-order')
-  async getTaskWithoutOrder(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
-
+  async getTaskWithoutOrder(
+    @Req() req: ExpressRequest,
+    @Res() res: ExpressResponse
+  ) {
     const { isSet } = req.query as { isSet: string }
-
 
     // const tasks = await pmClient.task.findMany({
     //   where: {
     //     order: {
-    //       
+    //
     //     }
     //   },
     //   select: {
@@ -43,10 +69,9 @@ class TestController {
 
     const projects = await pmClient.project.findMany({})
 
-
     console.log('reset all project counter')
     for (let j = 0; j < projects.length; j++) {
-      const p = projects[j];
+      const p = projects[j]
 
       const counterKey = [CKEY.PROJECT_TASK_COUNTER, p.id]
       await setCache(counterKey, 0)
@@ -55,26 +80,27 @@ class TestController {
     console.log('start updating order by each project')
     const updateData = []
     for (let index = 0; index < tasks.length; index++) {
-      const task = tasks[index];
+      const task = tasks[index]
       if (!task.projectId) continue
 
       const counterKey = [CKEY.PROJECT_TASK_COUNTER, task.projectId]
       const order = await incrCache(counterKey)
 
-      updateData.push(pmClient.task.update({
-        where: {
-          id: task.id
-        },
-        data: {
-          order
-        },
-        select: {
-          id: true,
-          order: true,
-          title: true
-        },
-      }))
-
+      updateData.push(
+        pmClient.task.update({
+          where: {
+            id: task.id
+          },
+          data: {
+            order
+          },
+          select: {
+            id: true,
+            order: true,
+            title: true
+          }
+        })
+      )
     }
 
     console.log('waiting for all updates done')
@@ -90,7 +116,6 @@ class TestController {
     const d = new Date()
     try {
       const counter = await pmClient.$transaction(async tx => {
-
         const result = await tx.counter.findFirst({
           where: {
             type: CounterType.TASK
@@ -115,7 +140,6 @@ class TestController {
         })
 
         return counter
-
       })
 
       const result = await pmClient.test.create({
@@ -131,7 +155,6 @@ class TestController {
         result,
         counter
       })
-
     } catch (error) {
       console.log('failed', d.toString())
       res.status(500).send(error)
@@ -140,7 +163,6 @@ class TestController {
 
   @Get('/create-counter')
   async createCounter(@Res() res: ExpressResponse) {
-
     const result = await pmClient.counter.create({
       data: {
         type: CounterType.TASK,
@@ -156,7 +178,6 @@ class TestController {
   @Get('/cache-counter')
   async generateCounterFromRedis(@Res() res: ExpressResponse) {
     try {
-
       const counter = await incrCache([CKEY.PROJECT_TASK_COUNTER])
       const result = await pmClient.test.create({
         data: {
@@ -171,5 +192,3 @@ class TestController {
     }
   }
 }
-
-export const TestRouter = TestController

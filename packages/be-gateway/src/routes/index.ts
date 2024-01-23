@@ -21,11 +21,14 @@ import ProjectViewController from './project/view'
 import PermissionController from './auth/permission.controller'
 
 import { AppRoutes } from '../core/AppRoutes'
-import { TestRouter } from './test'
+
 import { OrganizationStorageController } from './organization/storage.controller'
 import { OrganizationController } from './organization/index.controller'
 import { OrganizationMemberController } from './organization/member.controller'
 import { SchedulerController } from './scheduler/index.controller'
+import TaskReorderController from './task/reorder.controller'
+import { EventController } from './event/index.controller'
+import { TestController } from './test'
 
 const router = Router()
 
@@ -36,15 +39,17 @@ router.use((req, res, next) => {
 
 router.use(
   AppRoutes([
+    TestController,
     ProjectController,
     ActivityRouter,
-    TestRouter,
+    EventController,
     ProjectViewController,
     PermissionController,
     OrganizationController,
     OrganizationStorageController,
     OrganizationMemberController,
-    SchedulerController
+    SchedulerController,
+    TaskReorderController
   ])
 )
 // middlewares

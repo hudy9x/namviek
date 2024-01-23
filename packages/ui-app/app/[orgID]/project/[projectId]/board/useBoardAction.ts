@@ -24,7 +24,11 @@ export const useBoardAction = () => {
     setUpdateSttCounter(stt => stt + 1)
   }
 
-  const moveTaskToAnotherGroup = (taskId: string, groupId: string) => {
+  const moveTaskToAnotherGroup = (
+    taskId: string,
+    groupId: string,
+    syncServerDataAsWell = true
+  ) => {
     console.log('move task to another group', taskId, groupId)
     if (!groupId) return
 
@@ -56,15 +60,16 @@ export const useBoardAction = () => {
     if (update) {
       updateTask(data)
       // timeout.current = setTimeout(() => {
-      taskUpdate(data).then(res => {
-        const { data, status } = res.data
-        if (status !== 200) {
-          messageError('Can not update status')
-          return
-        }
+      syncServerDataAsWell &&
+        taskUpdate(data).then(res => {
+          const { data, status } = res.data
+          if (status !== 200) {
+            messageError('Can not update status')
+            return
+          }
 
-        messageSuccess('Updated')
-      })
+          messageSuccess('Updated')
+        })
       // }, 300) as unknown as number
     }
   }

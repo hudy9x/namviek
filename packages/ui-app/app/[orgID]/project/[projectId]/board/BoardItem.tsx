@@ -26,6 +26,10 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
       <h2 className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal cursor-pointer flex items-center gap-2">
         {data.title}
       </h2>
+      <div>
+        {data.id}
+      </div>
+      <div>{data.order}</div>
 
       <div className="board-item-action">
         {data.dueDate ? (

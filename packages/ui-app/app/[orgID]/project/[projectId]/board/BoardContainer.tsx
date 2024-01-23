@@ -4,20 +4,24 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
 import { useBoardDndAction } from './useBoardDndAction'
 import BoardColumnDraggable from './BoardColumnDraggable'
-import { useEffect } from 'react'
+import { triggerEventTaskReorder } from '@/events/useEventTaskReorder'
+import { useUrl } from '@/hooks/useUrl'
+import { useBoardRealtimeUpdate } from './useBoardRealtimeUpdate'
+import { triggerEventMoveTaskToOtherBoard } from '@/events/useEventMoveTaskToOtherBoard'
 
 export default function BoardContainer() {
-  const { groupByItems, setGroupbyItems } = useTaskFilter()
+  const { projectId } = useUrl()
+  const { groupByItems } = useTaskFilter()
   const {
     dragColumnToAnotherPosition,
     dragItemToAnotherPosition,
     dragItemToAnotherColumn
   } = useBoardDndAction()
 
+  useBoardRealtimeUpdate()
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result
-
-    console.log('-----------------------')
 
     if (!source || !destination) return
     if (source.droppableId === 'all-column') return
@@ -35,7 +39,17 @@ export default function BoardContainer() {
       return
     }
 
+    // reorder task
     if (sourceColId === destColId) {
+      // realtime update to another users in project
+      triggerEventTaskReorder({
+        projectId,
+        sourceIndex,
+        destIndex,
+        sourceColId
+      })
+
+      // just update item position on board view
       dragItemToAnotherPosition({
         sourceIndex,
         destIndex,
@@ -44,6 +58,13 @@ export default function BoardContainer() {
     }
 
     if (sourceColId !== destColId) {
+      triggerEventMoveTaskToOtherBoard({
+        projectId,
+        sourceColId,
+        destColId,
+        sourceIndex,
+        destIndex
+      })
       dragItemToAnotherColumn({
         sourceColId,
         destColId,

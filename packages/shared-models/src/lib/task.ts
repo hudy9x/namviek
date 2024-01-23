@@ -191,7 +191,10 @@ export const mdTaskGetAll = (query: ITaskQuery) => {
   return taskModel.findMany({
     skip,
     take,
-    where
+    where,
+    orderBy: {
+      order: 'asc'
+    }
   })
 }
 

@@ -14,6 +14,7 @@ import useGetTask from './useGetTask'
 import { useGetMembers } from './useGetMembers'
 import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@goalie/nextjs'
+import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -26,6 +27,12 @@ export default function ProjectContainer() {
   useGetTask()
   useGetMembers()
   useGetProjectPoint()
+
+  // this hook generates objects in Map object
+  // that helps to get task item as quickly as possible
+  // by using task'id
+  // Ex: tasks[id] or task[order]
+  useGenTaskMappingObject()
 
   useDebounce(() => {
     console.log('save lastest visit url')

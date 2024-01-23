@@ -1,34 +1,86 @@
-import { useTaskFilter } from '@/features/TaskFilter/context'
+import {
+  ITaskFilterGroupbyItem,
+  useTaskFilter
+} from '@/features/TaskFilter/context'
 import { useBoardAction } from './useBoardAction'
+import { useBoardItemReorder } from './useBoardItemReorder'
+import { serviceTask } from '@/services/task'
+import { useUrl } from '@/hooks/useUrl'
 
 export const useBoardDndAction = () => {
   const { moveTaskToAnotherGroup, rearrangeColumn } = useBoardAction()
   const { setGroupbyItems } = useTaskFilter()
+  const { reorderTask } = useBoardItemReorder()
+  const { projectId } = useUrl()
+
+  const moveItemByIndex = ({
+    column,
+    sourceIndex,
+    destIndex
+  }: {
+    column: ITaskFilterGroupbyItem
+    sourceIndex: number
+    destIndex: number
+  }) => {
+    const sourceItem = column.items[sourceIndex]
+
+    column.items.splice(sourceIndex, 1)
+    column.items.splice(destIndex, 0, sourceItem)
+  }
 
   const dragItemToAnotherPosition = ({
     sourceColId,
     sourceIndex,
-    destIndex
+    destIndex,
+    syncServerDataAsWell = true
   }: {
     sourceColId: string
     sourceIndex: number
     destIndex: number
+    syncServerDataAsWell?: boolean
   }) => {
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
 
       const column = cloned.find(c => c.id === sourceColId)
 
+      // the column var will be updated as the below logic implemented
+      // so we must save it first
+      // cuz it will be used for scanning items that between source's index and dest's index
+      const initialColumn = structuredClone(column)
+      const isMovedUp = sourceIndex > destIndex
+
       if (!column) {
         console.log('empoty column')
         return cloned
       }
 
-      const sourceItem = column.items[sourceIndex]
-      column.items.splice(sourceIndex, 1)
-      column.items.splice(destIndex, 0, sourceItem)
-      // column.items[sourceIndex] = column.items[destIndex]
-      // column.items[destIndex] = sourceItem
+      moveItemByIndex({
+        column,
+        sourceIndex,
+        destIndex
+      })
+
+      if (initialColumn) {
+        const updatedTaskItems = reorderTask({
+          isMovedUp,
+          sourceIndex,
+          destIndex,
+          initialColumn
+        })
+
+        // syncServerDataAsWell used for triggering an http request to update task's order
+        // on server side
+
+        syncServerDataAsWell &&
+          updatedTaskItems &&
+          serviceTask
+            .reorder({ updatedOrder: updatedTaskItems, projectId })
+            .then(res => {
+              console.log('reorder success')
+              console.log(res)
+            })
+      }
 
       return cloned
     })
@@ -38,14 +90,15 @@ export const useBoardDndAction = () => {
     sourceIndex,
     destIndex,
     sourceColId,
-    destColId
+    destColId,
+    syncServerDataAsWell = true
   }: {
     sourceIndex: number
     destIndex: number
     sourceColId: string
     destColId: string
+    syncServerDataAsWell?: boolean
   }) => {
-
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
 
@@ -61,11 +114,12 @@ export const useBoardDndAction = () => {
       column.items.splice(sourceIndex, 1)
       destColumn.items.splice(destIndex, 0, sourceItem)
 
-      // delay update for 200ms 
-      // otherwise it causes a 
+      // delay update for 200ms
+      // otherwise it causes a
+
       setTimeout(() => {
-        moveTaskToAnotherGroup(sourceItem, destColumn.id)
-      }, 200);
+        moveTaskToAnotherGroup(sourceItem, destColumn.id, syncServerDataAsWell)
+      }, 200)
 
       return cloned
     })
@@ -73,10 +127,12 @@ export const useBoardDndAction = () => {
 
   const dragColumnToAnotherPosition = ({
     sourceIndex,
-    destIndex
+    destIndex,
+    syncServerDataAsWell = true
   }: {
     sourceIndex: number
     destIndex: number
+    syncServerDataAsWell?: boolean
   }) => {
     setGroupbyItems(prev => {
       const cloned = structuredClone(prev)
@@ -85,9 +141,10 @@ export const useBoardDndAction = () => {
       cloned.splice(sourceIndex, 1)
       cloned.splice(destIndex, 0, currentColumn)
 
-      setTimeout(() => {
-        rearrangeColumn(sourceIndex, destIndex)
-      }, 200);
+      syncServerDataAsWell &&
+        setTimeout(() => {
+          rearrangeColumn(sourceIndex, destIndex)
+        }, 200)
 
       return cloned
     })
