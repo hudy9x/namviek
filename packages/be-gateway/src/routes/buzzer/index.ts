@@ -3,6 +3,7 @@ import { AuthRequest } from '../../types'
 
 import { authMiddleware } from '../../middlewares'
 import { generateBuzzerToken, notifyToUsers } from '../../lib/buzzer'
+import { pusherServer } from '../../lib/pusher-server'
 
 const router = Router()
 const mainRouter = Router()
@@ -16,6 +17,29 @@ router.get('/pusher-authentication', async (req, res) => {
   console.log(`pusher user: ${userId} generated`)
 
   res.send(JSON.stringify(generateBuzzerToken(userId)))
+})
+
+router.post('/channel-auth', async (req, res) => {
+  try {
+    const socketId = req.body.socket_id
+    const channel = req.body.channel_name
+    // const presenceData = {
+    //   user_id: 'unique_user_id',
+    //   user_info: { name: 'Mr Channels', twitter_id: '@pusher' }
+    // }
+    // This authenticates every user. Don't do this in production!
+
+    console.log('authorize channel')
+
+    const authResponse = pusherServer.authorizeChannel(
+      socketId,
+      channel
+      // presenceData
+    )
+    res.send(authResponse)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 
 router.get('/pusher/test', [authMiddleware], async (req: AuthRequest, res) => {

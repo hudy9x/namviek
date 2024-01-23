@@ -1,7 +1,8 @@
 import { useUrl } from '@/hooks/useUrl'
 import { httpPost } from '@/services/_req'
-import { channelTeamCollab } from '@shared/libs'
+// import { channelTeamCollab } from '@shared/libs'
 import { useEffect } from 'react'
+import { usePusher } from './usePusher'
 
 export const triggerEventMoveTaskToOtherBoard = (data: {
   sourceColId: string
@@ -16,16 +17,17 @@ export const triggerEventMoveTaskToOtherBoard = (data: {
 
 export const useEventMoveTaskToOtherBoard = (cb: (data: unknown) => void) => {
   const { projectId } = useUrl()
+  const { channelTeamCollab } = usePusher()
 
   useEffect(() => {
     const eventName = `event-move-task-to-other-board-${projectId}`
 
-    channelTeamCollab.bind(eventName, (data: unknown) => {
+    channelTeamCollab && channelTeamCollab.bind(eventName, (data: unknown) => {
       cb && cb(data)
     })
 
     return () => {
-      channelTeamCollab.unbind(eventName)
+      channelTeamCollab && channelTeamCollab.unbind(eventName)
     }
-  }, [])
+  }, [channelTeamCollab])
 }

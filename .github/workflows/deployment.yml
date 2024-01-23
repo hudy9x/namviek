@@ -54,12 +54,25 @@ jobs:
            AWS_S3_BUCKET=${{ vars.AWS_S3_BUCKET }}
            REPLICATE_API_TOKEN=${{ vars.REPLICATE_API_TOKEN }}
            OPEN_API_KEY=${{ vars.OPEN_API_KEY }}
+
+           # Pusher beam
            NEXT_PUBLIC_PUSHER_INSTANCE_ID=
            PUSHER_INSTANCE_ID=${{ vars.PUSHER_INSTANCE_ID }}
            PUSHER_SECRET_KEY=${{ vars.PUSHER_SECRET_KEY }}
+
+           # Pusher channel
+           NEXT_PUBLIC_PUSHER_CHANNEL_APP_KEY=${{ vars.NEXT_PUBLIC_PUSHER_CHANNEL_APP_KEY }}
+           NEXT_PUBLIC_PUSHER_CHANNEL_APP_CLUSTER=${{ vars.NEXT_PUBLIC_PUSHER_CHANNEL_APP_CLUSTER }}
+
+           PUSHER_CHANNEL_APP_ID=${{ vars.PUSHER_CHANNEL_APP_ID }}
+           PUSHER_CHANNEL_SECRET=${{ vars.PUSHER_CHANNEL_SECRET }}
+
+           # Livekit
            LIVEKIT_API_KEY=${{ vars.LIVEKIT_API_KEY }}
            LIVEKIT_API_SECRET=${{ vars.LIVEKIT_API_SECRET }}
            NEXT_PUBLIC_LIVEKIT_URL=${{ vars.NEXT_PUBLIC_LIVEKIT_URL }}
+
+           # Firebase
            FIREBASE_PROJECT_ID=${{vars.FIREBASE_PROJECT_ID}}
            FIREBASE_CLIENT_EMAIL=${{vars.FIREBASE_CLIENT_EMAIL}}
            FIREBASE_PRIVATE_KEY=${{vars.FIREBASE_PRIVATE_KEY}}
