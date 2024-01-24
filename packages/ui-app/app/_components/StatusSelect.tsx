@@ -74,7 +74,7 @@ export default function StatusSelect({
             </span>
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options minWidth={170}>
           {options.map(option => {
             const stt = statuses.find(st => st.id === option.id)
             return (
