@@ -6,7 +6,7 @@ export default function ListOptions({
   children
 }: {
   width?: number
-  minWidth: number
+  minWidth?: number
   children: ReactNode
 }) {
   return (
