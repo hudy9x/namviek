@@ -18,6 +18,10 @@
 
 .task-desc .form-input {
   padding: 0px;
+  background: transparent !important;
+}
+
+.task-desc .form-input .ProseMirror {
   background: transparent;
 }
 

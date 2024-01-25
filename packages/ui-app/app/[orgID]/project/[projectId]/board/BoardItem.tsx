@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { dateFormat } from '@shared/libs'
 import MemberAvatar from '@/components/MemberAvatar'
 import { useUrl } from '@/hooks/useUrl'
+import PriorityText from '@/components/PriorityText'
 
 export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
@@ -25,6 +26,7 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
           <img alt="task cover" src={data.cover} />
         </div>
       ) : null}
+      <PriorityText type={data.priority || 'LOW'} />
       <h2 className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal cursor-pointer flex items-center gap-2">
         {data.title}
       </h2>
