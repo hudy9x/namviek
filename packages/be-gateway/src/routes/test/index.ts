@@ -58,10 +58,11 @@ export class TestController extends BaseController {
   }
   @Get('/update-task-order')
   async updateTaskOrder(@Res() res: ExpressResponse) {
+    const { projectId } = this.req.query as { projectId: string }
     const tasks = await pmClient.task.findMany({
-      // where: {
-      //   order: { isSet: false }
-      // },
+      where: {
+        projectId
+      },
       orderBy: {
         createdAt: 'asc'
       }
