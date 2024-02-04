@@ -20,3 +20,4 @@ export const taskAutomation = pmClient.taskAutomation
 export const fileStorageModel = pmClient.fileStorage
 export const visionModel = pmClient.vision
 export const activityModel = pmClient.activity
+export const commentModel = pmClient.comment

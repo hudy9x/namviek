@@ -14,6 +14,7 @@ import buzzerRouter from './buzzer'
 import meetingRouter from './meeting'
 import { authMiddleware } from '../middlewares'
 import ActivityRouter from './activity'
+import CommentRouer from './comment'
 
 // import "./test";
 import ProjectController from './project/project.controller'
@@ -42,6 +43,7 @@ router.use(
     TestController,
     ProjectController,
     ActivityRouter,
+    CommentRouer,
     EventController,
     ProjectViewController,
     PermissionController,

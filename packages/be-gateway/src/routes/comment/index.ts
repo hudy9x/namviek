@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import {
   mdCommentAdd,
-  mdCommentDel,
   mdCommentGetAllByTask,
   mdCommentUpdate
 } from '@shared/models'
@@ -31,15 +30,16 @@ export default class TaskComment extends BaseController {
   }
 
   @Get('')
-  async getCommentByTaskId(
+  async getCommentByObjectId(
     @Res() res: Response,
     @Req() req: Request,
     @Next() next
   ) {
-    const { taskId } = req.query as { taskId: string }
+    const { objectId } = req.query as { objectId: string }
 
     try {
-      const results = await mdCommentGetAllByTask(taskId)
+      console.log('2')
+      const results = await mdCommentGetAllByTask(objectId)
       // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
       res.json({ status: 200, data: results })
     } catch (error) {
@@ -87,11 +87,10 @@ export default class TaskComment extends BaseController {
   }
 
   @Delete('')
-  async deleteComment(@Param() params, @Res() res: Response) {
+  async adminDelete(@Param() params, @Res() res: Response) {
     try {
       const { id } = params
-      const result = await mdCommentDel(id)
-      // const result = await mdCommentAdd(id)
+      const result = await mdCommentAdd(id)
       res.json({ status: 200, data: result })
     } catch (error) {
       res.json({

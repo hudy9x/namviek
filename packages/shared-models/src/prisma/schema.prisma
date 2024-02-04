@@ -403,3 +403,15 @@ model Activity {
   updatedAt  DateTime?
   updatedBy  String?
 }
+
+model Comment {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  taskId      String     @db.ObjectId
+  projectId   String     @db.ObjectId
+
+  content     String
+
+  createdBy  String
+  createdAt  DateTime
+  updatedAt  DateTime
+}
