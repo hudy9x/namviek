@@ -24,7 +24,7 @@ export default function TaskComment({
   }, [initValue])
 
   const onEnter = (value: string, target: HTMLTextAreaElement) => {
-    console.log(value, target)
+    // console.log(value, target)
     onValueSubmit(target.value)
     setValue('')
     // addNewContent(value)
@@ -32,7 +32,7 @@ export default function TaskComment({
   }
 
   const handleValueChanged = useCallback((inputValue: string) => {
-    console.log({ inputValue })
+    // console.log({ inputValue })
     setValue(inputValue)
   }, [])
 

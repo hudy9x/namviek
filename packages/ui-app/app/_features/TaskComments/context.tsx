@@ -1,3 +1,4 @@
+import { useEventSendTaskComment } from '@/events/useEventSendTaskComment'
 import { useUrl } from '@/hooks/useUrl'
 import {
   commentCreate,
@@ -5,7 +6,6 @@ import {
   commentGetAllByTask,
   commentUpdate
 } from '@/services/comment'
-import { useProjectStore } from '@/store/project'
 import { useUser } from '@goalie/nextjs'
 import { Comment } from '@prisma/client'
 import { messageError } from '@shared/ui'
@@ -44,6 +44,11 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
   const { user } = useUser()
   const userId = user?.id
   const { projectId } = useUrl()
+
+  useEventSendTaskComment(comment => {
+    const newComment = comment as Comment
+    setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
+  })
 
   const loadComments = useCallback(() => {
     taskId &&
@@ -88,7 +93,7 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
             return false
           }
 
-          setComments(prev => (prev?.length ? [...prev, data] : [data]))
+          // setComments(prev => (prev?.length ? [...prev, data] : [data]))
           return true
         })
         .catch(error => messageError(error))
@@ -117,22 +122,28 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
       .catch(error => messageError(error))
   }, [])
 
-  const removeComment = useCallback((commentId: string) => {
-    commentDelete(commentId)
-      .then(res => {
-        const { status, error } = res.data
-        if (status !== 200) {
-          messageError(error)
-          return false
-        }
+  const removeComment = useCallback(
+    (commentId: string) => {
+      userId &&
+        commentDelete(commentId, taskId, userId)
+          .then(res => {
+            const { status, error } = res.data
+            if (status !== 200) {
+              messageError(error)
+              return false
+            }
 
-        setComments(prev =>
-          prev?.length ? [...prev.filter(({ id }) => id != commentId)] : prev
-        )
-        return true
-      })
-      .catch(error => messageError(error))
-  }, [])
+            setComments(prev =>
+              prev?.length
+                ? [...prev.filter(({ id }) => id != commentId)]
+                : prev
+            )
+            return true
+          })
+          .catch(error => messageError(error))
+    },
+    [userId, taskId]
+  )
 
   return (
     <CommentContext.Provider

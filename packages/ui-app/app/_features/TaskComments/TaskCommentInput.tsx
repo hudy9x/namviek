@@ -5,7 +5,7 @@ import { useCommentContext } from './context'
 export default function TaskCommentInput() {
   const { user } = useUser()
   const { addComment } = useCommentContext()
-  const userId = user?.id
+  const userId = user?.id as string
 
   const handleCommentSubmit = (content: string) => {
     addComment(content)

@@ -4,7 +4,7 @@ import { Comment } from '@prisma/client'
 export const commentGetAllByTask = (taskId: string) => {
   return httpGet(`/api/comment`, {
     params: {
-      objectId: taskId
+      taskId
     }
   })
 }
@@ -17,10 +17,16 @@ export const commentUpdate = (comment: Comment) => {
   return httpPut('/api/comment', comment)
 }
 
-export const commentDelete = (id: string) => {
+export const commentDelete = (
+  id: string,
+  taskId: string,
+  updatedBy: string
+) => {
   return httpDel('/api/comment', {
     params: {
-      id
+      id,
+      taskId,
+      updatedBy
     }
   })
 }

@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
 import {
-  mdCommentAdd,
-  mdCommentDel,
-  mdCommentGetAllByTask,
-  mdCommentUpdate
+  mdActivityAdd,
+  mdActivityGetAllByTask,
+  mdActivityUpdate
 } from '@shared/models'
-import { Comment } from '@prisma/client'
+import { Activity } from '@prisma/client'
 import {
   BaseController,
   Controller,
@@ -22,24 +21,25 @@ import {
   Delete
 } from '../../core'
 
-@Controller('/comment')
-export default class TaskComment extends BaseController {
+@Controller('/activity')
+export default class TaskActivity extends BaseController {
   name: string
   constructor() {
     super()
-    this.name = 'comment'
+    this.name = 'activity'
   }
 
   @Get('')
-  async getCommentByTaskId(
+  async getActivityByObjectId(
     @Res() res: Response,
     @Req() req: Request,
     @Next() next
   ) {
-    const { taskId } = req.query as { taskId: string }
+    const { objectId } = req.query as { objectId: string }
 
     try {
-      const results = await mdCommentGetAllByTask(taskId)
+      console.log('2')
+      const results = await mdActivityGetAllByTask(objectId)
       // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
       res.json({ status: 200, data: results })
     } catch (error) {
@@ -52,11 +52,11 @@ export default class TaskComment extends BaseController {
   }
 
   @Post('')
-  createComment(
-    @Body() body: Omit<Comment, 'id'>,
+  createActivity(
+    @Body() body: Omit<Activity, 'id'>,
     @Res() res: ExpressResponse
   ) {
-    mdCommentAdd(body)
+    mdActivityAdd(body)
       .then(result => {
         res.json({ status: 200, data: result })
       })
@@ -70,10 +70,10 @@ export default class TaskComment extends BaseController {
   }
 
   @Put('')
-  updateComment(@Res() res: Response, @Req() req: Request, @Next() next) {
-    const body = req.body as Comment
+  updateActivity(@Res() res: Response, @Req() req: Request, @Next() next) {
+    const body = req.body as Activity
     const { id, ...dataUpdate } = body
-    mdCommentUpdate(id, dataUpdate)
+    mdActivityUpdate(id, dataUpdate)
       .then(result => {
         res.json({ status: 200, data: result })
       })
@@ -87,11 +87,10 @@ export default class TaskComment extends BaseController {
   }
 
   @Delete('')
-  async deleteComment(@Param() params, @Res() res: Response) {
+  async adminDelete(@Param() params, @Res() res: Response) {
     try {
       const { id } = params
-      const result = await mdCommentDel(id)
-      // const result = await mdCommentAdd(id)
+      const result = await mdActivityAdd(id)
       res.json({ status: 200, data: result })
     } catch (error) {
       res.json({
