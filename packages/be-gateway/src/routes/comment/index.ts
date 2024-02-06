@@ -62,14 +62,13 @@ export default class TaskComment extends BaseController {
   ) {
     mdCommentAdd(body)
       .then(result => {
-        const { taskId, createdBy, ...rest } = body as Comment
+        const { taskId } = body as Comment
         const eventName = `event-send-task-comment-${taskId}`
 
         console.log(`trigger event ${eventName} `, body)
 
         pusherServer.trigger('team-collab', eventName, {
-          ...rest,
-          triggerBy: createdBy
+          ...result
         })
 
         res.json({ status: 200, data: result })
@@ -89,15 +88,13 @@ export default class TaskComment extends BaseController {
     const { id, ...rest } = body
     mdCommentUpdate(id, rest)
       .then(result => {
-        const { id: updatedBy } = req.authen
-        const { taskId, ...rest } = body as Comment
+        const { taskId } = result as Comment
         const eventName = `event-update-task-comment-${taskId}`
 
         console.log(`trigger event ${eventName} `, body)
 
         pusherServer.trigger('team-collab', eventName, {
-          ...rest,
-          triggerBy: updatedBy
+          ...result
         })
 
         res.json({ status: 200, data: result })
@@ -112,11 +109,16 @@ export default class TaskComment extends BaseController {
   }
 
   @Delete('')
-  async adminDelete(@Param() params, @Res() res: Response) {
+  async commentDelete(@Req() req: Request, @Res() res: Response) {
     try {
-      const { id, taskId, updatedBy } = params
+      const { id, taskId, updatedBy } = req.query as {
+        id: string
+        taskId: string
+        updatedBy: string
+      }
+      console.log({ id, taskId, updatedBy })
       const result = await mdCommentDel(id)
-      const eventName = `event-update-task-comment-${taskId}`
+      const eventName = `event-delete-task-comment-${taskId}`
 
       console.log(`trigger event ${eventName} `, id)
 

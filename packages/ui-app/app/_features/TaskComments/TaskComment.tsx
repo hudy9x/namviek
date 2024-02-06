@@ -1,22 +1,26 @@
-import { Form } from '@shared/ui'
+import { Button, Form } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
 import { useUser } from '@goalie/nextjs'
 import './style.css'
-import { useCallback, useEffect, useState } from 'react'
+import { ReactNode, forwardRef, useCallback, useEffect, useState } from 'react'
 
 interface ITaskCommentInputProps {
   userId: string
   initValue: string
   readOnly: boolean
   onValueSubmit: (s: string) => void
+  onCancel?: () => void
+  eraseAfterSubmit?: boolean
 }
 
-export default function TaskComment({
+const TaskComment = ({
   userId,
   initValue,
   readOnly = false,
-  onValueSubmit
-}: ITaskCommentInputProps) {
+  onValueSubmit,
+  onCancel,
+  eraseAfterSubmit = false
+}: ITaskCommentInputProps) => {
   const [value, setValue] = useState(initValue)
 
   useEffect(() => {
@@ -24,17 +28,19 @@ export default function TaskComment({
   }, [initValue])
 
   const onEnter = (value: string, target: HTMLTextAreaElement) => {
-    // console.log(value, target)
     onValueSubmit(target.value)
     setValue('')
-    // addNewContent(value)
     target.value = ''
   }
 
   const handleValueChanged = useCallback((inputValue: string) => {
-    // console.log({ inputValue })
     setValue(inputValue)
   }, [])
+
+  const handleCancelClick = () => {
+    setValue(initValue)
+    onCancel && onCancel()
+  }
 
   return (
     <div className="flex items-start gap-2 mb-3">
@@ -48,7 +54,23 @@ export default function TaskComment({
           onEnter={onEnter}
           rows={1}
         />
+
+        {!readOnly ? (
+          <div>
+            <Button
+              title="Save"
+              onClick={() => {
+                onValueSubmit(value)
+                eraseAfterSubmit && setValue('')
+              }}
+            />
+            <Button title="Cancel" onClick={handleCancelClick} />
+          </div>
+        ) : null}
       </div>
     </div>
   )
 }
+
+// TaskComment.displayName = 'TaskComment'
+export default TaskComment

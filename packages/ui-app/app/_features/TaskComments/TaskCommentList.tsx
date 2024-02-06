@@ -17,8 +17,11 @@ export default function TaskCommentList({ taskId }: TaskCommentListProps) {
   return (
     <div className="flex flex-col">
       {comments?.length
-        ? comments.map(comment => (
-            <TaskCommentListItem key={comment.id} {...comment} />
+        ? comments.map((comment, index) => (
+            <TaskCommentListItem
+              key={comment.id + index.toString()}
+              {...comment}
+            />
           ))
         : null}
     </div>

@@ -1,4 +1,8 @@
-import { useEventSendTaskComment } from '@/events/useEventSendTaskComment'
+import {
+  useEventDeleteTaskComment,
+  useEventSendTaskComment,
+  useEventUpdateTaskComment
+} from '@/events/useEventTaskComment'
 import { useUrl } from '@/hooks/useUrl'
 import {
   commentCreate,
@@ -15,6 +19,8 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
+  useLayoutEffect,
   useState
 } from 'react'
 
@@ -47,7 +53,21 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
 
   useEventSendTaskComment(comment => {
     const newComment = comment as Comment
+    console.log({ newComment })
     setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
+  })
+
+  useEventUpdateTaskComment(comment => {
+    setComments(prev => {
+      const idx = prev.findIndex(({ id }) => id === comment.id)
+      prev[idx] = comment
+      return [...prev]
+    })
+  })
+
+  useEventDeleteTaskComment(({ id: idx }) => {
+    console.log({ idx })
+    setComments(prev => prev.filter(({ id }) => id !== idx))
   })
 
   const loadComments = useCallback(() => {
@@ -93,7 +113,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
             return false
           }
 
-          // setComments(prev => (prev?.length ? [...prev, data] : [data]))
           return true
         })
         .catch(error => messageError(error))
@@ -111,12 +130,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
           return false
         }
 
-        setComments(prev => {
-          const newComments = [...prev]
-          const idx = newComments.findIndex(({ id }) => id === comment.id)
-          newComments[idx] = { ...comment }
-          return newComments
-        })
         return true
       })
       .catch(error => messageError(error))
@@ -133,14 +146,11 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
               return false
             }
 
-            setComments(prev =>
-              prev?.length
-                ? [...prev.filter(({ id }) => id != commentId)]
-                : prev
-            )
             return true
           })
-          .catch(error => messageError(error))
+          .catch(error => {
+            messageError(error)
+          })
     },
     [userId, taskId]
   )

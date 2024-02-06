@@ -19,10 +19,9 @@ badd +27 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_eve
 badd +6 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardRealtimeUpdate.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/BoardContainer.tsx
 badd +11 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardDndAction.ts
-badd +19 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts
-badd +25 packages/be-gateway/src/routes/comment/index.ts
+badd +35 /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventTaskComment.ts
+badd +115 packages/be-gateway/src/routes/comment/index.ts
 badd +3 packages/be-gateway/src/routes/event/index.controller.ts
-badd +11 packages/ui-app/services/comment.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/routes/auth/index.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/middlewares/authMiddleware.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/middlewares/beProjectMemberMiddleware.ts
@@ -45,9 +44,9 @@ badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/r
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/providers/auth/EmailAuthProvider.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/comments/packages/be-gateway/src/providers/auth/GoogleAuthProvider.ts
 badd +1 /mnt/Data/code/fullstack/kampuni-area/kampuni/node_modules/.prisma/client/index.d.ts
-badd +11 packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx
+badd +4 packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx
 badd +8 packages/ui-app/app/\[orgID]/project/\[projectId]/board/index.tsx
-badd +68 packages/ui-app/app/_features/TaskComments/context.tsx
+badd +60 packages/ui-app/app/_features/TaskComments/context.tsx
 badd +19 /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-models/src/lib/comment.ts
 badd +16 /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-models/src/lib/member.ts
 badd +2 packages/shared-models/src/index.ts
@@ -55,9 +54,20 @@ badd +14 packages/be-gateway/src/routes/activity/index.ts
 badd +21 packages/shared-models/src/lib/index.ts
 badd +5 packages/be-gateway/src/types.ts
 badd +56 packages/shared-models/src/prisma/schema.prisma
-badd +0 packages/ui-app/app/_features/TaskComments/TaskComment.tsx
+badd +63 packages/ui-app/app/_features/TaskComments/TaskComment.tsx
 badd +10 packages/be-gateway/src/routes/project/status.ts
-badd +72 packages/ui-app/services/task.ts
+badd +77 packages/ui-app/services/task.ts
+badd +1 .env.example
+badd +52 .env
+badd +1 packages/ui-app/services/comment.ts
+badd +8 packages/ui-app/app/_features/ProjectContainer/index.tsx
+badd +24 packages/ui-app/app/_features/TaskComments/TaskCommentList.tsx
+badd +20 packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx
+badd +4 /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-ui/src/components/Controls/TextareaControl/index.tsx
+badd +17 /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-models/src/lib/message.ts
+badd +12 packages/be-gateway/src/routes/index.ts
+badd +17 packages/be-gateway/src/routes/test/index.ts
+badd +26 packages/be-gateway/src/main.ts
 argglobal
 %argdel
 tabnew +setlocal\ bufhidden=wipe
@@ -88,13 +98,13 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 31 + 32) / 65)
+exe '1resize ' . ((&lines * 32 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 120 + 120) / 240)
-exe '2resize ' . ((&lines * 30 + 32) / 65)
+exe '2resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
-exe '3resize ' . ((&lines * 31 + 32) / 65)
+exe '3resize ' . ((&lines * 32 + 32) / 65)
 exe 'vert 3resize ' . ((&columns * 119 + 120) / 240)
-exe '4resize ' . ((&lines * 30 + 32) / 65)
+exe '4resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 4resize ' . ((&columns * 119 + 120) / 240)
 argglobal
 balt /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardDndAction.ts
@@ -108,12 +118,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 12 - ((11 * winheight(0) + 15) / 30)
+let s:l = 10 - ((9 * winheight(0) + 15) / 31)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 042|
+keepjumps 10
+normal! 039|
 wincmd w
 argglobal
 if bufexists(fnamemodify("/mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardRealtimeUpdate.ts", ":p")) | buffer /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardRealtimeUpdate.ts | else | edit /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/useBoardRealtimeUpdate.ts | endif
@@ -131,7 +141,7 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 15 - ((14 * winheight(0) + 15) / 30)
+let s:l = 15 - ((0 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -154,7 +164,7 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 29 - ((28 * winheight(0) + 15) / 31)
+let s:l = 29 - ((28 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -162,9 +172,9 @@ keepjumps 29
 normal! 03|
 wincmd w
 argglobal
-if bufexists(fnamemodify("/mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts", ":p")) | buffer /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts | else | edit /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts | endif
+if bufexists(fnamemodify("/mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventTaskComment.ts", ":p")) | buffer /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventTaskComment.ts | else | edit /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventTaskComment.ts | endif
 if &buftype ==# 'terminal'
-  silent file /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts
+  silent file /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventTaskComment.ts
 endif
 balt /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/\[orgID]/project/\[projectId]/board/BoardContainer.tsx
 setlocal fdm=manual
@@ -177,37 +187,40 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 19 - ((11 * winheight(0) + 15) / 30)
+let s:l = 3 - ((0 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
-normal! 03|
+keepjumps 3
+normal! 0
 wincmd w
-exe '1resize ' . ((&lines * 31 + 32) / 65)
+exe '1resize ' . ((&lines * 32 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 120 + 120) / 240)
-exe '2resize ' . ((&lines * 30 + 32) / 65)
+exe '2resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
-exe '3resize ' . ((&lines * 31 + 32) / 65)
+exe '3resize ' . ((&lines * 32 + 32) / 65)
 exe 'vert 3resize ' . ((&columns * 119 + 120) / 240)
-exe '4resize ' . ((&lines * 30 + 32) / 65)
+exe '4resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 4resize ' . ((&columns * 119 + 120) / 240)
 tabnext
-edit /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts
+edit /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-ui/src/components/Controls/TextareaControl/index.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
+split
+1wincmd k
+wincmd _ | wincmd |
 vsplit
 1wincmd h
-wincmd _ | wincmd |
-split
-1wincmd k
 wincmd w
 wincmd w
 wincmd _ | wincmd |
-split
-1wincmd k
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -218,16 +231,18 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 31 + 32) / 65)
+exe '1resize ' . ((&lines * 30 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 119 + 120) / 240)
 exe '2resize ' . ((&lines * 30 + 32) / 65)
-exe 'vert 2resize ' . ((&columns * 119 + 120) / 240)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
 exe '3resize ' . ((&lines * 31 + 32) / 65)
-exe 'vert 3resize ' . ((&columns * 120 + 120) / 240)
-exe '4resize ' . ((&lines * 30 + 32) / 65)
-exe 'vert 4resize ' . ((&columns * 120 + 120) / 240)
+exe 'vert 3resize ' . ((&columns * 79 + 120) / 240)
+exe '4resize ' . ((&lines * 31 + 32) / 65)
+exe 'vert 4resize ' . ((&columns * 80 + 120) / 240)
+exe '5resize ' . ((&lines * 31 + 32) / 65)
+exe 'vert 5resize ' . ((&columns * 79 + 120) / 240)
 argglobal
-balt packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx
+balt packages/ui-app/app/_features/TaskComments/TaskComment.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -238,40 +253,40 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 29 - ((21 * winheight(0) + 15) / 30)
+let s:l = 52 - ((27 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 29
-normal! 025|
-wincmd w
-argglobal
-if bufexists(fnamemodify("packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx", ":p")) | buffer packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx | else | edit packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx | endif
-if &buftype ==# 'terminal'
-  silent file packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx
-endif
-balt /mnt/Data/code/fullstack/kampuni-area/comments/packages/ui-app/app/_events/useEventSendTaskComment.ts
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 11 - ((10 * winheight(0) + 14) / 29)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 11
-normal! 05|
+keepjumps 52
+normal! 03|
 wincmd w
 argglobal
 if bufexists(fnamemodify("packages/ui-app/app/_features/TaskComments/TaskComment.tsx", ":p")) | buffer packages/ui-app/app/_features/TaskComments/TaskComment.tsx | else | edit packages/ui-app/app/_features/TaskComments/TaskComment.tsx | endif
 if &buftype ==# 'terminal'
   silent file packages/ui-app/app/_features/TaskComments/TaskComment.tsx
+endif
+balt /mnt/Data/code/fullstack/kampuni-area/comments/packages/shared-ui/src/components/Controls/TextareaControl/index.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 64 - ((17 * winheight(0) + 14) / 29)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 64
+normal! 017|
+wincmd w
+argglobal
+if bufexists(fnamemodify("packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx", ":p")) | buffer packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx | else | edit packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx | endif
+if &buftype ==# 'terminal'
+  silent file packages/ui-app/app/_features/TaskComments/TaskCommentInput.tsx
 endif
 balt packages/ui-app/app/_features/TaskComments/context.tsx
 setlocal fdm=manual
@@ -284,19 +299,45 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 35 - ((19 * winheight(0) + 15) / 30)
+let s:l = 10 - ((9 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
-normal! 019|
+keepjumps 10
+normal! 09|
 wincmd w
 argglobal
 if bufexists(fnamemodify("packages/ui-app/app/_features/TaskComments/context.tsx", ":p")) | buffer packages/ui-app/app/_features/TaskComments/context.tsx | else | edit packages/ui-app/app/_features/TaskComments/context.tsx | endif
 if &buftype ==# 'terminal'
   silent file packages/ui-app/app/_features/TaskComments/context.tsx
 endif
-balt packages/ui-app/app/_features/TaskComments/TaskComment.tsx
+balt packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+74,92fold
+97,118fold
+124,135fold
+let &fdl = &fdl
+let s:l = 60 - ((11 * winheight(0) + 15) / 30)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 60
+normal! 025|
+wincmd w
+argglobal
+if bufexists(fnamemodify("packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx", ":p")) | buffer packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx | else | edit packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx | endif
+if &buftype ==# 'terminal'
+  silent file packages/ui-app/app/_features/TaskComments/TaskCommentListItem.tsx
+endif
+balt packages/ui-app/app/_features/TaskComments/context.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -307,29 +348,36 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 66 - ((16 * winheight(0) + 14) / 29)
+let s:l = 19 - ((17 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 66
-normal! 03|
+keepjumps 19
+normal! 028|
 wincmd w
-exe '1resize ' . ((&lines * 31 + 32) / 65)
+4wincmd w
+exe '1resize ' . ((&lines * 30 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 119 + 120) / 240)
 exe '2resize ' . ((&lines * 30 + 32) / 65)
-exe 'vert 2resize ' . ((&columns * 119 + 120) / 240)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
 exe '3resize ' . ((&lines * 31 + 32) / 65)
-exe 'vert 3resize ' . ((&columns * 120 + 120) / 240)
-exe '4resize ' . ((&lines * 30 + 32) / 65)
-exe 'vert 4resize ' . ((&columns * 120 + 120) / 240)
+exe 'vert 3resize ' . ((&columns * 79 + 120) / 240)
+exe '4resize ' . ((&lines * 31 + 32) / 65)
+exe 'vert 4resize ' . ((&columns * 80 + 120) / 240)
+exe '5resize ' . ((&lines * 31 + 32) / 65)
+exe 'vert 5resize ' . ((&columns * 79 + 120) / 240)
 tabnext
-edit packages/ui-app/services/task.ts
+edit packages/ui-app/services/comment.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 1wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -340,10 +388,14 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
+exe '1resize ' . ((&lines * 61 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 120 + 120) / 240)
+exe '2resize ' . ((&lines * 30 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 119 + 120) / 240)
+exe '3resize ' . ((&lines * 30 + 32) / 65)
+exe 'vert 3resize ' . ((&columns * 119 + 120) / 240)
 argglobal
-balt packages/be-gateway/src/lib/pusher-server.ts
+balt packages/ui-app/services/task.ts
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -354,12 +406,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 73 - ((48 * winheight(0) + 30) / 61)
+let s:l = 15 - ((14 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 73
-normal! 013|
+keepjumps 15
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("packages/be-gateway/src/routes/comment/index.ts", ":p")) | buffer packages/be-gateway/src/routes/comment/index.ts | else | edit packages/be-gateway/src/routes/comment/index.ts | endif
@@ -377,17 +429,43 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 63 - ((10 * winheight(0) + 30) / 61)
+let s:l = 121 - ((16 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 63
-normal! 019|
+keepjumps 121
+normal! 037|
 wincmd w
-2wincmd w
+argglobal
+if bufexists(fnamemodify("packages/be-gateway/src/routes/test/index.ts", ":p")) | buffer packages/be-gateway/src/routes/test/index.ts | else | edit packages/be-gateway/src/routes/test/index.ts | endif
+if &buftype ==# 'terminal'
+  silent file packages/be-gateway/src/routes/test/index.ts
+endif
+balt packages/be-gateway/src/main.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 195 - ((28 * winheight(0) + 14) / 29)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 195
+normal! 0
+wincmd w
+exe '1resize ' . ((&lines * 61 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 120 + 120) / 240)
+exe '2resize ' . ((&lines * 30 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 119 + 120) / 240)
-tabnext 3
+exe '3resize ' . ((&lines * 30 + 32) / 65)
+exe 'vert 3resize ' . ((&columns * 119 + 120) / 240)
+tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
