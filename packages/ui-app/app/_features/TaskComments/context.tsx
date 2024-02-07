@@ -19,8 +19,6 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
-  useEffect,
-  useLayoutEffect,
   useState
 } from 'react'
 
@@ -53,7 +51,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
 
   useEventSendTaskComment(comment => {
     const newComment = comment as Comment
-    console.log({ newComment })
     setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
   })
 
@@ -66,7 +63,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
   })
 
   useEventDeleteTaskComment(({ id: idx }) => {
-    console.log({ idx })
     setComments(prev => prev.filter(({ id }) => id !== idx))
   })
 

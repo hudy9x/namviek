@@ -31,7 +31,6 @@ export default function TaskCommentListItem(
   }
 
   const handleDeleteButtonClick = () => {
-    // console.log('impl delete')
     removeComment(id)
   }
 

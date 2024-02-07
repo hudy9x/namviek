@@ -3,6 +3,8 @@ import MemberAvatar from '@/components/MemberAvatar'
 import { useUser } from '@goalie/nextjs'
 import './style.css'
 import { ReactNode, forwardRef, useCallback, useEffect, useState } from 'react'
+import Mention from '@tiptap/extension-mention'
+import { useMemberStore } from '@/store/member'
 
 interface ITaskCommentInputProps {
   userId: string
@@ -22,6 +24,8 @@ const TaskComment = ({
   eraseAfterSubmit = false
 }: ITaskCommentInputProps) => {
   const [value, setValue] = useState(initValue)
+
+  const { members } = useMemberStore()
 
   useEffect(() => {
     setValue(initValue)
@@ -46,13 +50,42 @@ const TaskComment = ({
     <div className="flex items-start gap-2 mb-3">
       <MemberAvatar uid={userId || ''} noName={true} />
       <div className="w-full">
-        <Form.Textarea
-          placeholder="Write your comments"
-          value={value}
+        {/* <Form.Textarea */}
+        {/*   placeholder="Write your comments" */}
+        {/*   value={value} */}
+        {/*   readOnly={readOnly} */}
+        {/*   onChange={ev => handleValueChanged(ev.currentTarget.value)} */}
+        {/*   onEnter={onEnter} */}
+        {/*   rows={1} */}
+        {/* /> */}
+
+        <Form.RichTextEditor
           readOnly={readOnly}
-          onChange={ev => handleValueChanged(ev.currentTarget.value)}
-          onEnter={onEnter}
-          rows={1}
+          extensions={[
+            // Link,
+            Mention.extend({
+              addAttributes() {
+                return {
+                  ...this.parent(),
+                  value: {
+                    default: ''
+                  }
+                }
+              }
+            }).configure({
+              HTMLAttributes: {
+                class: 'mention'
+              },
+              suggestion: Form.getMentionSuggestion(
+                members.map(({ id, name }) => ({ id, label: name || id }))
+              )
+            })
+          ]}
+          value={value}
+          onChange={v => {
+            // console.log({ v })
+            setValue(v)
+          }}
         />
 
         {!readOnly ? (
@@ -67,6 +100,7 @@ const TaskComment = ({
             <Button title="Cancel" onClick={handleCancelClick} />
           </div>
         ) : null}
+        <Form.RichTextEditor />
       </div>
     </div>
   )
