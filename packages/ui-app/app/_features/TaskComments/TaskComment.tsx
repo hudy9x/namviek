@@ -31,12 +31,12 @@ const TaskComment = ({
     setValue(initValue)
   }, [initValue])
 
-  const onEnter = (value: string, target: HTMLTextAreaElement) => {
-    onValueSubmit(target.value)
-    setValue('')
-    target.value = ''
-  }
-
+  // const onEnter = (value: string, target: HTMLTextAreaElement) => {
+  //   onValueSubmit(target.value)
+  //   setValue('')
+  //   target.value = ''
+  // }
+  //
   const handleValueChanged = useCallback((inputValue: string) => {
     setValue(inputValue)
   }, [])
@@ -50,15 +50,6 @@ const TaskComment = ({
     <div className="flex items-start gap-2 mb-3">
       <MemberAvatar uid={userId || ''} noName={true} />
       <div className="w-full">
-        {/* <Form.Textarea */}
-        {/*   placeholder="Write your comments" */}
-        {/*   value={value} */}
-        {/*   readOnly={readOnly} */}
-        {/*   onChange={ev => handleValueChanged(ev.currentTarget.value)} */}
-        {/*   onEnter={onEnter} */}
-        {/*   rows={1} */}
-        {/* /> */}
-
         <Form.RichTextEditor
           readOnly={readOnly}
           extensions={[
@@ -83,11 +74,9 @@ const TaskComment = ({
           ]}
           value={value}
           onChange={v => {
-            // console.log({ v })
             setValue(v)
           }}
         />
-
         {!readOnly ? (
           <div>
             <Button
@@ -100,11 +89,9 @@ const TaskComment = ({
             <Button title="Cancel" onClick={handleCancelClick} />
           </div>
         ) : null}
-        <Form.RichTextEditor />
       </div>
     </div>
   )
 }
 
-// TaskComment.displayName = 'TaskComment'
 export default TaskComment

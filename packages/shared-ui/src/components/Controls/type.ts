@@ -32,14 +32,12 @@ type RangerSliderBaseProps = Omit<
   step: number
 }
 type TextareaBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
-  // onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
   onChange: (val: string) => void
   onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
-  onEnter: (val: string, target: HTMLTextAreaElement) => void
+  onEnter?: (val: string, target: HTMLTextAreaElement) => void
   rows: number
   cols: number
   extensions?: (Node | Mark)[]
-
 }
 
 type TexteditorBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {

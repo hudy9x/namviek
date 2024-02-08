@@ -36,6 +36,7 @@ export const useEventUpdateTaskComment = (cb: (data: Comment) => void) => {
       })
 
     return () => {
+      console.log('unbine ' + eventName)
       channelTeamCollab && channelTeamCollab.unbind(eventName)
     }
   }, [channelTeamCollab, taskId, cb])

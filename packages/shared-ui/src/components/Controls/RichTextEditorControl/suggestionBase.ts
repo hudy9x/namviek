@@ -6,21 +6,23 @@ import MentionList from './MentionList'
 import { type TRichTextEditorMention } from '../type'
 import { SuggestionOptions } from '@tiptap/suggestion'
 
-export const getMentionSuggestion = <T,>(items: (TRichTextEditorMention & T)[]): Partial<SuggestionOptions> => ({
+export const getMentionSuggestion = <T>(
+  items: (TRichTextEditorMention & T)[]
+): Partial<SuggestionOptions> => ({
   items: ({ query }): TRichTextEditorMention[] => {
     return (
       items
         // .map((item, i) => ({ id: i.toString(), label: item }))
         .filter(({ label }) =>
-          label.toLowerCase().startsWith(query.toLowerCase())
+          label.toLowerCase().replace(' ', '').startsWith(query.toLowerCase())
         )
-        // .slice(0, 5)
+      // .slice(0, 5)
     )
   },
 
   render: () => {
-      let component: ReactRenderer
-      let popup: Instance[]
+    let component: ReactRenderer
+    let popup: Instance[]
 
     return {
       onStart: props => {

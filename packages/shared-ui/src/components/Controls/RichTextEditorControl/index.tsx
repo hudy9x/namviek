@@ -4,10 +4,9 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 
-export default function TextareaControl({
+export default function RichTextEditor({
   title,
   value,
-  name,
   onChange,
   onEnter,
   helper,
@@ -18,11 +17,6 @@ export default function TextareaControl({
   extensions = []
 }: TextareaProps) {
   const classes = ['form-control']
-  const [val, setValue] = useState(value)
-
-  // const onInputChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {
-  //   onChange && onChange(ev)
-  // }
 
   disabled && classes.push('disabled')
   required && classes.push('required')
@@ -37,15 +31,20 @@ export default function TextareaControl({
     ],
     editable: !readOnly,
     onUpdate: ({ editor }) => {
-      onChange && !disabled && onChange(editor.getHTML()) // TODO: need to update parent value?
+      const newContent = editor.getHTML()
+      onChange && !disabled && onChange(newContent) // TODO: need to update parent value?
     },
-    content: val
+    content: value
   })
 
   useEffect(() => {
-    setValue(value)
-    editor && value && editor.commands.setContent(value)
+    value &&
+      editor?.commands.setContent(value, false, { preserveWhitespace: 'full' })
   }, [value, editor])
+
+  useEffect(() => {
+    editor?.setEditable(!readOnly, true)
+  }, [readOnly, editor])
 
   if (!editor) {
     return null
@@ -55,8 +54,8 @@ export default function TextareaControl({
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
       <div className="relative form-control-wrapper inline-flex w-full">
-        <div className="w-full ">
-          <EditorContent className="text-editor" editor={editor} />
+        <div className="form-input">
+          <EditorContent editor={editor} />
         </div>
         {/* <textarea */}
         {/*   value={val} */}

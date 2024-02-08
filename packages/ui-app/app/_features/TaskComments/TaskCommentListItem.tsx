@@ -17,7 +17,6 @@ export default function TaskCommentListItem(
 
   const handleValueSubmit = (s: string) => {
     const updatedAt = new Date()
-    console.log({ updatecomment: comment })
     updateComment({ ...comment, content: s, updatedAt })
     setEditable(false)
   }

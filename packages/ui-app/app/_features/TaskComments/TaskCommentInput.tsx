@@ -17,6 +17,7 @@ export default function TaskCommentInput() {
       initValue=""
       readOnly={false}
       onValueSubmit={handleCommentSubmit}
+      eraseAfterSubmit
     />
   ) : null
 }
