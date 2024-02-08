@@ -1,8 +1,3 @@
-import {
-  useEventDeleteTaskComment,
-  useEventSendTaskComment,
-  useEventUpdateTaskComment
-} from '@/events/useEventTaskComment'
 import { useUrl } from '@/hooks/useUrl'
 import {
   commentCreate,
@@ -16,7 +11,9 @@ import { messageError } from '@shared/ui'
 import compareAsc from 'date-fns/compareAsc'
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useCallback,
   useContext,
   useState
@@ -30,6 +27,7 @@ interface ICommentContext {
   addComment: (content: string) => void
   updateComment: (comment: Comment) => void
   removeComment: (commentId: string) => void
+  setComments: Dispatch<SetStateAction<Comment[]>>
 }
 
 const CommentContext = createContext<ICommentContext>({
@@ -39,7 +37,8 @@ const CommentContext = createContext<ICommentContext>({
   loadComments: () => console.log(1),
   addComment: () => console.log(1),
   removeComment: () => console.log(1),
-  updateComment: () => console.log(1)
+  updateComment: () => console.log(1),
+  setComments: () => console.log(1)
 })
 
 export const CommentContextProvider = ({ children }: PropsWithChildren) => {
@@ -48,23 +47,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
   const { user } = useUser()
   const userId = user?.id
   const { projectId } = useUrl()
-
-  useEventSendTaskComment(comment => {
-    const newComment = comment as Comment
-    setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
-  })
-
-  useEventUpdateTaskComment(comment => {
-    setComments(prev => {
-      const idx = prev.findIndex(({ id }) => id === comment.id)
-      prev[idx] = comment
-      return [...prev]
-    })
-  })
-
-  useEventDeleteTaskComment(({ id: idx }) => {
-    setComments(prev => prev.filter(({ id }) => id !== idx))
-  })
 
   const loadComments = useCallback(() => {
     taskId &&
