@@ -31,29 +31,18 @@ const TaskComment = ({
     setValue(initValue)
   }, [initValue])
 
-  // const onEnter = (value: string, target: HTMLTextAreaElement) => {
-  //   onValueSubmit(target.value)
-  //   setValue('')
-  //   target.value = ''
-  // }
-  //
-  const handleValueChanged = useCallback((inputValue: string) => {
-    setValue(inputValue)
-  }, [])
-
   const handleCancelClick = () => {
     setValue(initValue)
     onCancel && onCancel()
   }
 
   return (
-    <div className="flex items-start gap-2 mb-3">
+    <div className="flex items-start gap-2">
       <MemberAvatar uid={userId || ''} noName={true} />
       <div className="w-full">
         <Form.RichTextEditor
           readOnly={readOnly}
           extensions={[
-            // Link,
             Mention.extend({
               addAttributes() {
                 return {
@@ -78,15 +67,17 @@ const TaskComment = ({
           }}
         />
         {!readOnly ? (
-          <div>
+          <div className="flex gap-2 m-2">
             <Button
+              primary
+              size="base"
               title="Save"
               onClick={() => {
                 onValueSubmit(value)
                 eraseAfterSubmit && setValue('')
               }}
             />
-            <Button title="Cancel" onClick={handleCancelClick} />
+            <Button title="Cancel" size="base" onClick={handleCancelClick} />
           </div>
         ) : null}
       </div>

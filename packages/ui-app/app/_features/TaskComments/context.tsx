@@ -142,7 +142,8 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
         loadComments,
         addComment,
         updateComment,
-        removeComment
+        removeComment,
+        setComments
       }}>
       {children}
     </CommentContext.Provider>

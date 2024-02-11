@@ -8,7 +8,6 @@ export default function RichTextEditor({
   title,
   value,
   onChange,
-  onEnter,
   helper,
   error,
   required,
@@ -57,24 +56,6 @@ export default function RichTextEditor({
         <div className="form-input">
           <EditorContent editor={editor} />
         </div>
-        {/* <textarea */}
-        {/*   value={val} */}
-        {/*   name={name} */}
-        {/*   cols={cols} */}
-        {/*   rows={rows} */}
-        {/*   disabled={disabled} */}
-        {/*   readOnly={readOnly} */}
-        {/*   onChange={onInputChange} */}
-        {/*   onKeyUp={ev => { */}
-        {/*     const target = ev.target as HTMLTextAreaElement */}
-        {/*     if (ev.key === 'Enter' && !ev.shiftKey) { */}
-        {/*       onEnter && onEnter(target.value, target) */}
-        {/*       console.log('pressed Enter') */}
-        {/*     } */}
-        {/*   }} */}
-        {/*   placeholder={placeholder} */}
-        {/*   className="form-input" */}
-        {/* /> */}
       </div>
       {helper && !error ? (
         <p className="mt-2 text-sm text-gray-500">{helper}</p>

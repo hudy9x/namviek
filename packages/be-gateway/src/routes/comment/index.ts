@@ -13,8 +13,6 @@ import {
   Req,
   Body,
   Next,
-  Param,
-  Query,
   ExpressResponse,
   Get,
   Post,
@@ -33,15 +31,10 @@ export default class TaskComment extends BaseController {
   }
 
   @Get('')
-  async getCommentByObjectId(
-    @Res() res: Response,
-    @Req() req: Request,
-    @Next() next
-  ) {
+  async getCommentByObjectId(@Res() res: Response, @Req() req: Request) {
     const { taskId } = req.query as { taskId: string }
 
     try {
-      console.log('2')
       const results = await mdCommentGetAllByTask(taskId)
       // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
       res.json({ status: 200, data: results })
@@ -116,7 +109,6 @@ export default class TaskComment extends BaseController {
         taskId: string
         updatedBy: string
       }
-      console.log({ id, taskId, updatedBy })
       const result = await mdCommentDel(id)
       const eventName = `event-delete-task-comment-${taskId}`
 

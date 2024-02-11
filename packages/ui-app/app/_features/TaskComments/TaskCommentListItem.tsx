@@ -34,7 +34,7 @@ export default function TaskCommentListItem(
   }
 
   return (
-    <div className="my-2">
+    <div className="mt-4">
       <TaskComment
         userId={createdBy}
         initValue={content}
@@ -43,9 +43,11 @@ export default function TaskCommentListItem(
         onCancel={handleCancelEvent}
       />
       <div className="flex justify-start gap-2 ">
-        <div className="hover:underline cursor-pointer">
-          {new Date(createdAt).toLocaleString()}
-        </div>
+        {!editable ? (
+          <div className="hover:underline cursor-pointer">
+            {new Date(createdAt).toLocaleString()}
+          </div>
+        ) : null}
         {!editable && userId === createdBy ? (
           <>
             <div

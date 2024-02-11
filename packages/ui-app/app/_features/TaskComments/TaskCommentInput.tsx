@@ -1,6 +1,7 @@
 import { useUser } from '@goalie/nextjs'
 import TaskComment from './TaskComment'
 import { useCommentContext } from './context'
+import { useState } from 'react'
 
 export default function TaskCommentInput() {
   const { user } = useUser()
