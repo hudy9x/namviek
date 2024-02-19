@@ -42,7 +42,7 @@ export default function TaskCommentListItem(
         onValueSubmit={handleValueSubmit}
         onCancel={handleCancelEvent}
       />
-      <div className="flex justify-start gap-2 ">
+      <div className="flex justify-start gap-2">
         {!editable ? (
           <div className="hover:underline cursor-pointer">
             {new Date(createdAt).toLocaleString()}

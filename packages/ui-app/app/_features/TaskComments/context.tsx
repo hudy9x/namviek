@@ -72,6 +72,7 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
 
   const addComment = useCallback(
     (content: string) => {
+      // console.log({ addComment: content })
       if (!userId) return false
       const now = new Date()
       const comment: Omit<Comment, 'id'> = {
