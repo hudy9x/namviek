@@ -1,10 +1,5 @@
 import { Request, Response } from 'express'
-import {
-  mdCommentAdd,
-  mdCommentDel,
-  mdCommentGetAllByTask,
-  mdCommentUpdate
-} from '@shared/models'
+import { CommentRepository } from '@shared/models'
 import { Comment } from '@prisma/client'
 import {
   BaseController,
@@ -25,9 +20,11 @@ import { AuthRequest } from '../../types'
 @Controller('/comment')
 export default class TaskComment extends BaseController {
   name: string
+  commentRepo: CommentRepository
   constructor() {
     super()
     this.name = 'comment'
+    this.commentRepo = new CommentRepository()
   }
 
   @Get('')
@@ -35,7 +32,7 @@ export default class TaskComment extends BaseController {
     const { taskId } = req.query as { taskId: string }
 
     try {
-      const results = await mdCommentGetAllByTask(taskId)
+      const results = await this.commentRepo.mdCommentGetAllByTask(taskId)
       // results.sort((a, b) => (a.createdAt < b.createdAt ? 1 : 0))
       res.json({ status: 200, data: results })
     } catch (error) {
@@ -53,7 +50,8 @@ export default class TaskComment extends BaseController {
     @Res() res: ExpressResponse,
     @Req() req: AuthRequest
   ) {
-    mdCommentAdd(body)
+    this.commentRepo
+      .mdCommentAdd(body)
       .then(result => {
         const { taskId } = body as Comment
         const eventName = `event-send-task-comment-${taskId}`
@@ -79,7 +77,8 @@ export default class TaskComment extends BaseController {
   updateComment(@Res() res: Response, @Req() req: AuthRequest, @Next() next) {
     const body = req.body as Comment
     const { id, ...rest } = body
-    mdCommentUpdate(id, rest)
+    this.commentRepo
+      .mdCommentUpdate(id, rest)
       .then(result => {
         const { taskId } = result as Comment
         const eventName = `event-update-task-comment-${taskId}`
@@ -109,7 +108,7 @@ export default class TaskComment extends BaseController {
         taskId: string
         updatedBy: string
       }
-      const result = await mdCommentDel(id)
+      const result = await this.commentRepo.mdCommentDel(id)
       const eventName = `event-delete-task-comment-${taskId}`
 
       console.log(`trigger event ${eventName} `, id)
