@@ -6,7 +6,13 @@ import {
   messageError,
   messageInfo
 } from '@shared/ui'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import {
+  ChangeEvent,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState
+} from 'react'
 import { HiOutlinePlus, HiX } from 'react-icons/hi'
 import { orgMemberSearch } from '../../../../services/organizationMember'
 import { useParams } from 'next/navigation'
@@ -92,14 +98,18 @@ const SearchStatus = ({ status }: { status: boolean }) => {
     <>
       {status ? (
         <div className="px-6 py-3">
-          <Loading title='Searching ...'/>
+          <Loading title="Searching ..." />
         </div>
       ) : null}
     </>
   )
 }
 
-export default function ProjectMemberAdd() {
+export default function ProjectMemberAdd({
+  triggerBtn
+}: {
+  triggerBtn?: ReactNode
+}) {
   const { orgID, projectId } = useParams()
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -174,18 +184,24 @@ export default function ProjectMemberAdd() {
   )
 
   return (
-    <div className="mt-4 flex justify-end">
+    <div className="project-member-add flex justify-end">
       <Modal
         visible={visible}
         onVisibleChange={setVisible}
         title="Add new member"
         triggerBy={
           <div>
-            <Button
-              title="New member"
-              leadingIcon={<HiOutlinePlus />}
-              primary
-            />
+            {triggerBtn ? (
+              triggerBtn
+            ) : (
+              <div className="mt-4">
+                <Button
+                  title="New member"
+                  leadingIcon={<HiOutlinePlus />}
+                  primary
+                />
+              </div>
+            )}
           </div>
         }
         content={
