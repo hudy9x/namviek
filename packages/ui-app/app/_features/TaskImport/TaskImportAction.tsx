@@ -64,7 +64,7 @@ export default function TaskImportAction() {
     const newTasks: ITaskWithoutId[] = []
     data.forEach(row => {
       const [
-        _projectId,
+        // _projectId,
         _title,
         _assigneeIds,
         _dueDate,

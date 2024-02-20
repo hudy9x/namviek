@@ -9,24 +9,35 @@ import { TaskImportProvider } from './context'
 import TaskImportCsvFormat from './TaskImportCsvFormat'
 import './style.css'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
+import DataRemap from './DataRemap'
 
 export default function TaskImport() {
   const [visible, setVisible] = useState(false)
   const [csvVisible, setCsvVisible] = useState(false)
+  const [originRows, setOriginRows] = useState<Row[]>([])
   const [rows, setRows] = useState<Row[]>([])
+  const [heading, setHeading] = useState<string[]>([])
   const [step, setStep] = useState(0)
   const isPreview = !!rows.length
+  const isRemapingData = originRows.length
+
+  console.log(isRemapingData)
 
   useEffect(() => {
-    if (!visible && rows.length) {
+    if (!visible && (rows.length || originRows.length)) {
       setRows([])
+      setOriginRows([])
       setStep(0)
     }
-  }, [visible, rows])
+  }, [visible, rows, originRows])
 
   return (
     <TaskImportProvider
       value={{
+        originRows,
+        setOriginRows,
+        heading,
+        setHeading,
         step,
         setStep,
         setVisible,
@@ -70,7 +81,8 @@ export default function TaskImport() {
           className={isPreview ? 'task-import-modal' : ''}
           content={
             <div>
-              {!isPreview ? <TaskImportArea /> : null}
+              {!isPreview || !isRemapingData ? <TaskImportArea /> : null}
+              {isRemapingData ? <DataRemap /> : null}
               {isPreview ? <TaskImportPreview /> : null}
             </div>
           }

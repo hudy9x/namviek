@@ -15,7 +15,6 @@ export default function DropFileZone({
   const onDrop = (ev: DragEvent<HTMLDivElement>) => {
     ev.preventDefault()
 
-    alert('dropped')
     setEnable(false)
 
     const results: File[] = []
