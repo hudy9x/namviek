@@ -23,6 +23,7 @@ import PromptGenerator from '@/features/PromptGenerator'
 import { DropdownMenu } from '@shared/ui'
 import ProjectView from '@/features/ProjectView'
 import HasRole from '@/features/UserPermission/HasRole'
+import ProjectMemberView from '@/features/ProjectMember/View'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -127,6 +128,7 @@ export default function ProjectNav() {
               </span>
             )}
           </div>
+          <ProjectMemberView />
           <div className="sm:hidden">
             <DropdownMenu>
               <DropdownMenu.Trigger
