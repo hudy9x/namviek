@@ -5,7 +5,7 @@ import DropFileZone from '@/components/DropFileZone'
 import { messageError } from '@shared/ui'
 
 export default function TaskImportArea() {
-  const { setRows } = useTaskImport()
+  const { setRows, setHeading, setOriginRows } = useTaskImport()
 
   const readImportFile = (file: File) => {
     const fileTypes = ['xlsx']
@@ -21,7 +21,11 @@ export default function TaskImportArea() {
     readXlsxFile(file)
       .then(rows => {
         if (!rows.length) return
+
+        setHeading(rows[0] as string[])
         rows.shift()
+
+        setOriginRows(rows)
         setRows(rows)
       })
       .catch(error => error)

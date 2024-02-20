@@ -24,7 +24,7 @@ export default function TaskImportPreview() {
           <thead className="border-b dark:border-gray-700 text-sm">
             <tr className="divide-x dark:divide-gray-700 dark:text-gray-400">
               <th className="icell">#</th>
-              <th className="icell">Project</th>
+              {/* <th className="icell">Project</th> */}
               <th className="icell">Task name</th>
               <th className="icell">Assignee</th>
               <th className="icell">Due date</th>
@@ -36,7 +36,6 @@ export default function TaskImportPreview() {
           <tbody className="divide-y dark:divide-gray-700">
             {currentPageData.map((row, idx) => {
               const [
-                project,
                 title,
                 assignee,
                 duedate,
@@ -49,7 +48,7 @@ export default function TaskImportPreview() {
                   key={idx}
                   className="irow divide-x dark:divide-gray-700 text-xs text-gray-600 dark:text-gray-400">
                   <td className="icell">{startIndex + idx + 1}</td>
-                  <td className="icell">{project}</td>
+                  {/* <td className="icell">{project}</td> */}
                   <td className="icell">{title}</td>
                   <td className="icell">{assignee}</td>
                   <td className="icell">{duedate}</td>
