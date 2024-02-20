@@ -22,15 +22,15 @@ jobs:
           
       - name: install node_modules
         run: |
-          npm install
-          npm run generate2
+          yarn install
+          yarn generate2
       - name: install pm2 for starting nodejs app forever
         run: npm install pm2 -g
           
       - name: build backend source
         run: |
-          npm run build:be
-          npm run build:se
+          yarn build:be
+          yarn build:se
           
       - name: add environment variables
         run: |
@@ -81,4 +81,4 @@ jobs:
         run: |
           pm2 start pm2.json &
       - name: finish deployment
-        run: echo 'done2'
+        run: echo 'finish deployment'
