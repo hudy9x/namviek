@@ -55,6 +55,7 @@ export default function ProjectView() {
     }
   }, [mode, views.toString()])
 
+
   return (
     <div className="project-view pl-1 relative">
       {/* <Loading.Absolute title="" enabled={loading} /> */}

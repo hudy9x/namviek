@@ -1,13 +1,13 @@
 'use client'
 
-import { Form, Button, messageError } from '@shared/ui'
+import { Form, Button, messageError, setFixLoading, messageSuccess } from '@shared/ui'
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
 import { validateQuickAddProject } from '@shared/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
-import EmojiInput from '@/components/EmojiInput'
+import EmojiInput, { randIcon } from '@/components/EmojiInput'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 
 import FormMember from './FormMembers'
@@ -23,7 +23,7 @@ export default function ProjectAddForm({
 
   const formik = useFormik({
     initialValues: {
-      icon: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f375.png',
+      icon: randIcon(),
       name: '',
       views: [],
       members: [],
@@ -31,19 +31,18 @@ export default function ProjectAddForm({
     },
     onSubmit: values => {
       const { error, errorArr, data } = validateQuickAddProject(values)
-      console.log(values)
 
       if (!params.orgID) {
         return messageError('Organization ID is not exist')
       }
 
       if (error) {
-        console.log('error')
         formik.setErrors(errorArr)
         return
       }
 
       setVisible(false)
+      setFixLoading(true, { title: `Creating project ${values.name}` })
       projectQuickAdd({
         ...values,
         ...{
@@ -52,12 +51,19 @@ export default function ProjectAddForm({
       }).then(res => {
         const { status, data } = res.data
         console.log('done')
+        setFixLoading(false)
         if (status !== 200) {
+          messageError('Create project failed')
           return
         }
 
+        messageSuccess('Create project successfully')
         console.log('add new project to store')
         addProject(data)
+
+      }).catch(err => {
+        setFixLoading(false)
+        console.log('err', err)
       })
     }
   })

@@ -39,6 +39,7 @@ export default function FormMember({
 
   const removeMember = (id: string) => {
     if (id === user?.id) {
+      messageWarning('Please do not remove yourself =.=!! ')
       return
     }
     setSelected(prev => {
@@ -82,7 +83,7 @@ export default function FormMember({
   return (
     <div className="form-control">
       <label>Invite members</label>
-      <div className="border p-2 rounded-md bg-gray-100 space-y-2space-y-2">
+      <div className="border p-2 rounded-md bg-gray-100 dark:bg-gray-800 dark:border-gray-700 space-y-2">
         <div>
           <Form.Input
             onChange={ev => {
@@ -93,7 +94,7 @@ export default function FormMember({
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[11px] uppercase text-gray-600">
+          <span className="text-[11px] uppercase text-gray-600 dark:text-gray-400">
             Invited {added.length} members
           </span>
           <div className="py-2 flex items-center justify-end">
@@ -108,13 +109,13 @@ export default function FormMember({
             })}
 
             {added.length > 3 ? (
-              <div className="flex items-center justify-center bg-gray-200 text-[10px] w-6 h-6 -ml-2 shadow rounded-full">
+              <div className="flex items-center justify-center bg-gray-200 dark:bg-gray-900 text-[10px] w-6 h-6 -ml-2 shadow rounded-full">
                 +{added.length - 3}
               </div>
             ) : null}
           </div>
         </div>
-        <div className="border-t space-y-2 pt-2">
+        <div className="border-t dark:border-gray-700 space-y-2 pt-2">
           {selection.slice(0, 10).map(m => {
             const isAdded = selected.includes(m.id)
             return (
@@ -125,10 +126,10 @@ export default function FormMember({
                 }}
                 className="flex items-center gap-2 cursor-pointer">
                 <Avatar size="md" src={m.photo} name={m.name} />
-                <div className="text-gray-700 flex items-center justify-between w-full">
+                <div className="text-gray-700 dark:text-gray-400 flex items-center justify-between w-full">
                   <div>
                     <h2 className="text-sm">{m.name}</h2>
-                    <p className="text-xs text-gray-400">{m.email}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-600">{m.email}</p>
                   </div>
                   {isAdded ? <HiOutlineCheck /> : null}
                 </div>

@@ -3,6 +3,39 @@ import EmojiPicker, { EmojiStyle, Categories } from 'emoji-picker-react'
 import { useEffect, useRef, useState } from 'react'
 import './style.css'
 
+export const randIcon = () => {
+  const icons = [
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f98d.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f9a7.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f437.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f418.png',
+
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f438.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f426.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f33b.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f332.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f341.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f951.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f955.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f96f.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f354.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f35f.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f36c.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f45b.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f451.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1fa73.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1fa95.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f941.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f4d5.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f4f0.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f4b5.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f4bc.png',
+    'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f4c1.png',
+  ]
+
+  return icons[Math.round(Math.random() * icons.length - 1)]
+}
 export interface IEmojiInputProps {
   className?: string
   size?: 'sm' | 'base' | 'lg'
