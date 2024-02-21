@@ -1,4 +1,9 @@
-import { MemberRole, Project, ProjectViewType, StatusType } from '@prisma/client'
+import {
+  MemberRole,
+  Project,
+  ProjectViewType,
+  StatusType
+} from '@prisma/client'
 import {
   mdMemberAdd,
   mdMemberGetProject,
@@ -18,6 +23,7 @@ import PointRouter from './point'
 import StatusRouter from './status'
 import TagRouter from './tag'
 import PinRouter from './pin'
+import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 
 const router = Router()
 
@@ -28,7 +34,10 @@ router.use([StatusRouter, TagRouter, PointRouter, PinRouter])
 // It means GET:/api/project
 router.get('/project', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
-  const { isArchived, orgId } = req.query as { isArchived: string, orgId: string }
+  const { isArchived, orgId } = req.query as {
+    isArchived: string
+    orgId: string
+  }
   const key = [CKEY.USER_PROJECT, userId]
 
   console.log('orgId', orgId)
@@ -65,7 +74,7 @@ router.get('/project', async (req: AuthRequest, res) => {
     // res.setHeader('Cache-Control', 'max-age=20, public')
     res.json({
       status: 200,
-      data: projects,
+      data: projects
     })
   } catch (error) {
     console.log('get project by member error', error)
@@ -83,12 +92,36 @@ router.post('/project', async (req: AuthRequest, res) => {
     icon: string
     name: string
     desc: string
+    views: string[]
+    members: string[]
     organizationId: string
   }
   const { id: userId } = req.authen
 
-  console.log('project data:', body)
+  console.log('project data:', body.views, body.members)
   try {
+    const views = body.views
+    const members = body.members
+
+    pmClient.$transaction(async tx => {
+      console.log(1)
+      const  result = await tx.project.create({
+        data: {
+          cover: null,
+          icon: body.icon || '',
+          projectViewId: null,
+          name: body.name,
+          desc: body.desc,
+          createdBy: userId,
+          isArchived: false,
+          createdAt: new Date(),
+          organizationId: body.organizationId,
+          updatedAt: null,
+          updatedBy: null
+        }
+      })
+    })
+
     const result = await mdProjectAdd({
       cover: null,
       icon: body.icon || '',
@@ -149,7 +182,7 @@ router.post('/project', async (req: AuthRequest, res) => {
       updatedAt: null
     }
 
-    const defaultView = await mdProjectView.add(initialProjectView);
+    const defaultView = await mdProjectView.add(initialProjectView)
     await mdProjectUpdate({ id: result.id, projectViewId: defaultView.id })
 
     const promise = [

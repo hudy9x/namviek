@@ -9,7 +9,9 @@ import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
 import EmojiInput from '@/components/EmojiInput'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
-import ListPreset from '@/components/ListPreset'
+
+import FormMember from './FormMembers'
+import FormProjectView from './FormProjectView'
 
 export default function ProjectAddForm({
   setVisible
@@ -23,6 +25,8 @@ export default function ProjectAddForm({
     initialValues: {
       icon: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f375.png',
       name: '',
+      views: [],
+      members: [],
       desc: ''
     },
     onSubmit: values => {
@@ -80,14 +84,26 @@ export default function ProjectAddForm({
           />
         </FormGroup>
 
-
-
-        <Form.Textarea
-          title="Desciption"
-          name="desc"
-          onChange={formik.handleChange}
-          value={formik.values.desc}
+        <FormProjectView
+          onChange={views => {
+            console.log('project view changed', views)
+            formik.setFieldValue('views', views)
+          }}
         />
+
+        <FormMember
+          onChange={uids => {
+            console.log(uids)
+            formik.setFieldValue('members', uids)
+          }}
+        />
+
+        {/* <Form.Textarea */}
+        {/*   title="Desciption" */}
+        {/*   name="desc" */}
+        {/*   onChange={formik.handleChange} */}
+        {/*   value={formik.values.desc} */}
+        {/* /> */}
 
         <div className="flex justify-end">
           <Button type="submit" title="Create new" block primary />

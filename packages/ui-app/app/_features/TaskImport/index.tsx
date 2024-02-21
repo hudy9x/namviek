@@ -21,8 +21,6 @@ export default function TaskImport() {
   const isPreview = !!rows.length
   const isRemapingData = originRows.length
 
-  console.log(isRemapingData)
-
   useEffect(() => {
     if (!visible && (rows.length || originRows.length)) {
       setRows([])

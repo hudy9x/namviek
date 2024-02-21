@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { InvitationStatus, MemberRole, OrganizationRole, User } from '@prisma/client'
 import { produce } from 'immer'
 
-type OrgMember = User & {
+export type OrgMember = User & {
   role: OrganizationRole
 }
 
