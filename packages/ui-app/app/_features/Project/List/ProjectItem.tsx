@@ -35,8 +35,8 @@ export default function ProjectItem({
       }}>
       <div className="project-item group relative">
         <ProjectIconPicker icon={project.icon || ''} projectId={project.id} />
-        <div>
-          <h2 className="text-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">
+        <div className="overflow-hidden">
+          <h2 className="text-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 truncate">
             {project.name}
           </h2>
 

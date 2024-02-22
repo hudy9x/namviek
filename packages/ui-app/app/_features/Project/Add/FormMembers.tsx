@@ -1,21 +1,76 @@
 import { OrgMember, useOrgMemberStore } from '@/store/orgMember'
 import { useUser } from '@goalie/nextjs'
-import { User } from '@prisma/client'
 import { Avatar, Form, messageWarning } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { HiOutlineCheck } from 'react-icons/hi2'
 
-export default function FormMember({
-  onChange
-}: {
-  onChange?: (uids: string[]) => void
-}) {
-  const { user } = useUser()
-  const { orgMembers } = useOrgMemberStore()
-  const [term, setTerm] = useState('')
-  const [selected, setSelected] = useState<string[]>([])
+function AddedMembers({ members }: { members: OrgMember[] }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-[11px] uppercase text-gray-600 dark:text-gray-400">
+        Invited {members.length} members
+      </span>
+      <div className="py-2 flex items-center justify-end">
+        {members.slice(0, 3).map(m => {
+          return (
+            <div
+              key={m.id}
+              className="flex items-center -ml-2 shadow rounded-full">
+              <Avatar size="md" src={m.photo} name={m.name} />
+            </div>
+          )
+        })}
 
+        {members.length > 3 ? (
+          <div className="flex items-center justify-center bg-gray-200 dark:bg-gray-900 text-[10px] w-6 h-6 -ml-2 shadow rounded-full">
+            +{members.length - 3}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+function SelectMemberSection({
+  selection,
+  selected,
+  onClick
+}: {
+  selected: string[]
+  selection: OrgMember[]
+  onClick: (isAlreadyAdded: boolean, m: OrgMember) => void
+}) {
+  return (
+    <div className="border-t dark:border-gray-700 space-y-2 pt-2">
+      {selection.slice(0, 10).map(m => {
+        const isAdded = selected.includes(m.id)
+        return (
+          <div
+            key={m.id}
+            onClick={() => {
+              onClick(isAdded, m)
+            }}
+            className="flex items-center gap-2 cursor-pointer">
+            <Avatar size="md" src={m.photo} name={m.name} />
+            <div className="text-gray-700 dark:text-gray-400 flex items-center justify-between w-full">
+              <div>
+                <h2 className="text-sm">{m.name}</h2>
+                <p className="text-xs text-gray-400 dark:text-gray-600">
+                  {m.email}
+                </p>
+              </div>
+              {isAdded ? <HiOutlineCheck /> : null}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const useExtractAddedNSelection = (term: string, selected: string[]) => {
+  const { orgMembers } = useOrgMemberStore()
   const added = orgMembers.filter(m => selected.includes(m.id))
   const selection = orgMembers.filter(m => {
     if (!term) return true
@@ -33,8 +88,34 @@ export default function FormMember({
     return false
   })
 
+  return {
+    added,
+    selection
+  }
+}
+
+export default function FormMember({
+  onChange
+}: {
+  onChange?: (uids: string[]) => void
+}) {
+  const { user } = useUser()
+  const [term, setTerm] = useState('')
+  const [selected, setSelected] = useState<string[]>([])
+
+  const { added, selection } = useExtractAddedNSelection(term, selected)
+
   const triggerOnChange = (users: string[]) => {
     onChange && onChange(users)
+  }
+
+  const addMember = (id: string) => {
+    setSelected(prev => {
+      const newMembers = [...prev, id]
+
+      triggerOnChange(newMembers)
+      return newMembers
+    })
   }
 
   const removeMember = (id: string) => {
@@ -61,12 +142,8 @@ export default function FormMember({
       removeMember(m.id)
       return
     }
-    setSelected(prev => {
-      const newMembers = [...prev, m.id]
 
-      triggerOnChange(newMembers)
-      return newMembers
-    })
+    addMember(m.id)
   }
 
   useEffect(() => {
@@ -75,10 +152,6 @@ export default function FormMember({
       setSelected(prev => [user.id, ...prev])
     }
   }, [user?.id])
-
-  // useDebounce(() => {
-  //
-  // }, [term])
 
   return (
     <div className="form-control">
@@ -93,50 +166,13 @@ export default function FormMember({
             icon={<HiOutlineSearch className="text-gray-500" />}
           />
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] uppercase text-gray-600 dark:text-gray-400">
-            Invited {added.length} members
-          </span>
-          <div className="py-2 flex items-center justify-end">
-            {added.slice(0, 3).map(m => {
-              return (
-                <div
-                  key={m.id}
-                  className="flex items-center -ml-2 shadow rounded-full">
-                  <Avatar size="md" src={m.photo} name={m.name} />
-                </div>
-              )
-            })}
 
-            {added.length > 3 ? (
-              <div className="flex items-center justify-center bg-gray-200 dark:bg-gray-900 text-[10px] w-6 h-6 -ml-2 shadow rounded-full">
-                +{added.length - 3}
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <div className="border-t dark:border-gray-700 space-y-2 pt-2">
-          {selection.slice(0, 10).map(m => {
-            const isAdded = selected.includes(m.id)
-            return (
-              <div
-                key={m.id}
-                onClick={() => {
-                  onClick(isAdded, m)
-                }}
-                className="flex items-center gap-2 cursor-pointer">
-                <Avatar size="md" src={m.photo} name={m.name} />
-                <div className="text-gray-700 dark:text-gray-400 flex items-center justify-between w-full">
-                  <div>
-                    <h2 className="text-sm">{m.name}</h2>
-                    <p className="text-xs text-gray-400 dark:text-gray-600">{m.email}</p>
-                  </div>
-                  {isAdded ? <HiOutlineCheck /> : null}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <AddedMembers members={added} />
+        <SelectMemberSection
+          onClick={onClick}
+          selection={selection}
+          selected={selected}
+        />
       </div>
     </div>
   )

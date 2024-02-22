@@ -1,6 +1,12 @@
 'use client'
 
-import { Form, Button, messageError, setFixLoading, messageSuccess } from '@shared/ui'
+import {
+  Form,
+  Button,
+  messageError,
+  setFixLoading,
+  messageSuccess
+} from '@shared/ui'
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
@@ -48,23 +54,24 @@ export default function ProjectAddForm({
         ...{
           organizationId: params.orgID
         }
-      }).then(res => {
-        const { status, data } = res.data
-        console.log('done')
-        setFixLoading(false)
-        if (status !== 200) {
-          messageError('Create project failed')
-          return
-        }
-
-        messageSuccess('Create project successfully')
-        console.log('add new project to store')
-        addProject(data)
-
-      }).catch(err => {
-        setFixLoading(false)
-        console.log('err', err)
       })
+        .then(res => {
+          const { status, data } = res.data
+          console.log('done')
+          setFixLoading(false)
+          if (status !== 200) {
+            messageError('Create project failed')
+            return
+          }
+
+          messageSuccess('Create project successfully')
+          console.log('add new project to store')
+          addProject(data)
+        })
+        .catch(err => {
+          setFixLoading(false)
+          console.log('err', err)
+        })
     }
   })
 
@@ -90,6 +97,14 @@ export default function ProjectAddForm({
           />
         </FormGroup>
 
+        <Form.Textarea
+          rows={2}
+          title="Desciption"
+          name="desc"
+          onChange={formik.handleChange}
+          value={formik.values.desc}
+        />
+
         <FormProjectView
           onChange={views => {
             console.log('project view changed', views)
@@ -103,13 +118,6 @@ export default function ProjectAddForm({
             formik.setFieldValue('members', uids)
           }}
         />
-
-        {/* <Form.Textarea */}
-        {/*   title="Desciption" */}
-        {/*   name="desc" */}
-        {/*   onChange={formik.handleChange} */}
-        {/*   value={formik.values.desc} */}
-        {/* /> */}
 
         <div className="flex justify-end">
           <Button type="submit" title="Create new" block primary />
