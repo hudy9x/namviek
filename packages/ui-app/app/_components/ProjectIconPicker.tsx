@@ -26,7 +26,7 @@ export default function ProjectIconPicker({
   }
 
   return (
-    <div title="Click me to change icon">
+    <div className="shrink-0" title="Click me to change icon">
       <EmojiInput
         value={icon}
         onChange={val => {

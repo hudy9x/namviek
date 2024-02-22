@@ -1,15 +1,23 @@
 'use client'
 
-import { Form, Button, messageError } from '@shared/ui'
+import {
+  Form,
+  Button,
+  messageError,
+  setFixLoading,
+  messageSuccess
+} from '@shared/ui'
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
 import { validateQuickAddProject } from '@shared/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
-import EmojiInput from '@/components/EmojiInput'
+import EmojiInput, { randIcon } from '@/components/EmojiInput'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
-import ListPreset from '@/components/ListPreset'
+
+import FormMember from './FormMembers'
+import FormProjectView from './FormProjectView'
 
 export default function ProjectAddForm({
   setVisible
@@ -21,40 +29,49 @@ export default function ProjectAddForm({
 
   const formik = useFormik({
     initialValues: {
-      icon: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f375.png',
+      icon: randIcon(),
       name: '',
+      views: [],
+      members: [],
       desc: ''
     },
     onSubmit: values => {
       const { error, errorArr, data } = validateQuickAddProject(values)
-      console.log(values)
 
       if (!params.orgID) {
         return messageError('Organization ID is not exist')
       }
 
       if (error) {
-        console.log('error')
         formik.setErrors(errorArr)
         return
       }
 
       setVisible(false)
+      setFixLoading(true, { title: `Creating project ${values.name}` })
       projectQuickAdd({
         ...values,
         ...{
           organizationId: params.orgID
         }
-      }).then(res => {
-        const { status, data } = res.data
-        console.log('done')
-        if (status !== 200) {
-          return
-        }
-
-        console.log('add new project to store')
-        addProject(data)
       })
+        .then(res => {
+          const { status, data } = res.data
+          console.log('done')
+          setFixLoading(false)
+          if (status !== 200) {
+            messageError('Create project failed')
+            return
+          }
+
+          messageSuccess('Create project successfully')
+          console.log('add new project to store')
+          addProject(data)
+        })
+        .catch(err => {
+          setFixLoading(false)
+          console.log('err', err)
+        })
     }
   })
 
@@ -80,13 +97,26 @@ export default function ProjectAddForm({
           />
         </FormGroup>
 
-
-
         <Form.Textarea
+          rows={2}
           title="Desciption"
           name="desc"
           onChange={formik.handleChange}
           value={formik.values.desc}
+        />
+
+        <FormProjectView
+          onChange={views => {
+            console.log('project view changed', views)
+            formik.setFieldValue('views', views)
+          }}
+        />
+
+        <FormMember
+          onChange={uids => {
+            console.log(uids)
+            formik.setFieldValue('members', uids)
+          }}
         />
 
         <div className="flex justify-end">

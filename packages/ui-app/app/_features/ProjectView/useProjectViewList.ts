@@ -51,6 +51,8 @@ export const useProjectViewList = () => {
     localforage.getItem(key).then(val => {
       if (val) {
         const views = val as ProjectView[]
+
+
         views.forEach(v => projectViewMap.set(v.id, v.type))
         addAllView(views)
       }
@@ -66,7 +68,18 @@ export const useProjectViewList = () => {
         const { data } = res.data
         const views = data as ProjectView[]
 
-        addAllView(views)
+        let sortedViews
+        if (views && views.length) {
+          sortedViews = views.sort((a, b) => {
+            const a1 = a.order || 1
+            const b1 = b.order || 1
+            return a1 - b1
+          })
+          addAllView(sortedViews)
+        } else {
+          addAllView(views)
+        }
+
         localforage.setItem(key, views)
         views.forEach(v => projectViewMap.set(v.id, v.type))
       })

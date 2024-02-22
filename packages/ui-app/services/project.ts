@@ -3,8 +3,11 @@ import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 type IProjectProps = Pick<Project, 'name' | 'desc' | 'organizationId' | 'icon'>
 
-export const projectGet = ({ orgId, isArchive = false }: {
-  isArchive?: boolean,
+export const projectGet = ({
+  orgId,
+  isArchive = false
+}: {
+  isArchive?: boolean
   orgId: string
 }) => {
   return httpGet('/api/project', {
@@ -15,7 +18,12 @@ export const projectGet = ({ orgId, isArchive = false }: {
   })
 }
 
-export const projectQuickAdd = (data: IProjectProps) => {
+export const projectQuickAdd = (
+  data: IProjectProps & {
+    views: string[]
+    members: string[]
+  }
+) => {
   console.log('project add data', data)
   return httpPost('/api/project', data)
 }
