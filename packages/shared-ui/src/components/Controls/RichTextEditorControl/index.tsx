@@ -3,17 +3,39 @@ import { TextareaProps } from '../type'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
+// import { Extension } from '@tiptap/core'
+// import { keymap } from '@tiptap/pm/keymap'
+// import { baseKeymap } from '@tiptap/pm/commands'
+
+import { Text } from '@tiptap/extension-text'
+
+// const KeyEventHandler = Extension.create({
+//   name: 'KeyEventHandler',
+//
+//   addProseMirrorPlugins() {
+//     return [
+//       keymap(baseKeymap),
+//       keymap({
+//         'Shift-a': () => {
+//           console.log('Shift-a pressed')
+//           return true
+//         }
+//       })
+//     ]
+//   }
+// })
 
 export default function RichTextEditor({
   title,
   value,
-  onChange,
   helper,
   error,
   required,
   disabled,
   readOnly,
-  extensions = []
+  extensions = [],
+  onCtrlEnter,
+  onCtrlEsc
 }: TextareaProps) {
   const classes = ['form-control']
 
@@ -26,13 +48,28 @@ export default function RichTextEditor({
     extensions: [
       StarterKit,
       Link.configure({ openOnClick: false }),
+      // KeyEventHandler,
+      Text.extend({
+        addKeyboardShortcuts() {
+          return {
+            'Control-Enter': () => {
+              console.log('Control-enter pressed')
+              const text = this.editor.getText()
+              console.log({ text })
+              text && onCtrlEnter && onCtrlEnter(text)
+              return true
+            },
+            'Control-Escape': () => {
+              console.log('Control-escape pressed')
+              onCtrlEsc && onCtrlEsc()
+              return true
+            }
+          }
+        }
+      }),
       ...extensions
     ],
     editable: !readOnly,
-    onUpdate: ({ editor }) => {
-      const newContent = editor.getHTML()
-      onChange && !disabled && onChange(newContent) // TODO: need to update parent value?
-    },
     content: value
   })
 

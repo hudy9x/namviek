@@ -2,17 +2,12 @@ import { useEffect } from 'react'
 import TaskCommentListItem from './TaskCommentListItem'
 import { useCommentContext } from './context'
 
-interface TaskCommentListProps {
-  taskId: string
-}
-
-export default function TaskCommentList({ taskId }: TaskCommentListProps) {
-  const { loadComments, comments, setTaskId } = useCommentContext()
+export default function TaskCommentList() {
+  const { loadComments, comments } = useCommentContext()
 
   useEffect(() => {
-    setTaskId(taskId)
     loadComments()
-  }, [loadComments, taskId, setTaskId])
+  }, [loadComments])
 
   return (
     <div className="flex flex-col">

@@ -4,7 +4,6 @@ import {
   useEventUpdateTaskComment
 } from '@/events/useEventTaskComment'
 import { useCommentContext } from './context'
-import { useSearchParams } from 'next/navigation'
 
 import TaskCommentList from './TaskCommentList'
 import TaskCommentInput from './TaskCommentInput'
@@ -13,8 +12,6 @@ import './style.css'
 
 export default function TaskCommentContainer() {
   const { setComments } = useCommentContext()
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
 
   useEventSendTaskComment(comment => {
     const newComment = comment
@@ -36,7 +33,7 @@ export default function TaskCommentContainer() {
   return (
     <div className="task-comments">
       <TaskCommentInput />
-      {taskId && <TaskCommentList taskId={taskId} />}
+      <TaskCommentList />
     </div>
   )
 }

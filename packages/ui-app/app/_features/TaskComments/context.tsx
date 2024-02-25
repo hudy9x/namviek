@@ -9,6 +9,7 @@ import { useUser } from '@goalie/nextjs'
 import { Comment } from '@prisma/client'
 import { messageError } from '@shared/ui'
 import compareAsc from 'date-fns/compareAsc'
+import { useSearchParams } from 'next/navigation'
 import {
   createContext,
   Dispatch,
@@ -16,13 +17,14 @@ import {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useState
 } from 'react'
 
 interface ICommentContext {
   comments: Comment[]
-  taskId: string
-  setTaskId: (taskId: string) => void
+  // taskId: string
+  // setTaskId: (taskId: string) => void
   loadComments: () => void
   addComment: (content: string) => void
   updateComment: (comment: Comment) => void
@@ -31,8 +33,8 @@ interface ICommentContext {
 }
 
 const CommentContext = createContext<ICommentContext>({
-  taskId: '',
-  setTaskId: () => console.log(1),
+  // taskId: '',
+  // setTaskId: () => console.log(1),
   comments: [] as Comment[],
   loadComments: () => console.log(1),
   addComment: () => console.log(1),
@@ -42,11 +44,42 @@ const CommentContext = createContext<ICommentContext>({
 })
 
 export const CommentContextProvider = ({ children }: PropsWithChildren) => {
-  const [taskId, setTaskId] = useState<string>('')
+  const sp = useSearchParams()
+  const taskId = sp.get('taskId')
+
   const [comments, setComments] = useState<Comment[]>([] as Comment[])
   const { user } = useUser()
   const userId = user?.id
   const { projectId } = useUrl()
+
+  const addComment = useCallback(
+    (content: string) => {
+      if (!userId || !taskId) return false
+      const now = new Date()
+      const comment: Omit<Comment, 'id'> = {
+        content,
+        createdBy: userId,
+        taskId,
+        projectId,
+        createdAt: now,
+        updatedAt: now
+      }
+
+      commentCreate(comment)
+        .then(res => {
+          const { status, error, data } = res.data
+          if (status !== 200) {
+            messageError(error)
+            return false
+          }
+
+          return true
+        })
+        .catch(error => messageError(error))
+      return true
+    },
+    [projectId, taskId, userId]
+  )
 
   const loadComments = useCallback(() => {
     taskId &&
@@ -70,36 +103,13 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
         })
   }, [taskId])
 
-  const addComment = useCallback(
-    (content: string) => {
-      // console.log({ addComment: content })
-      if (!userId) return false
-      const now = new Date()
-      const comment: Omit<Comment, 'id'> = {
-        content,
-        createdBy: userId,
-        taskId,
-        projectId,
-        createdAt: now,
-        updatedAt: now
-      }
-
-      commentCreate(comment)
-        .then(res => {
-          const { status, error, data } = res.data
-          if (status !== 200) {
-            messageError(error)
-            return false
-          }
-
-          return true
-        })
-        .catch(error => messageError(error))
-    },
-    [projectId, taskId, userId]
-  )
-
   const updateComment = useCallback((comment: Comment) => {
+    setComments(prev => {
+      const idx = prev.findIndex(({ id }) => id === comment.id)
+      prev[idx] = comment
+      return [...prev]
+    })
+
     commentUpdate(comment)
       .then(res => {
         const { status, error } = res.data
@@ -116,7 +126,9 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
 
   const removeComment = useCallback(
     (commentId: string) => {
+      setComments(prev => prev.filter(({ id }) => id !== commentId))
       userId &&
+        taskId &&
         commentDelete(commentId, taskId, userId)
           .then(res => {
             const { status, error } = res.data
@@ -137,8 +149,6 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
   return (
     <CommentContext.Provider
       value={{
-        taskId,
-        setTaskId,
         comments,
         loadComments,
         addComment,

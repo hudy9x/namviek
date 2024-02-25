@@ -1,17 +1,21 @@
 import { useUser } from '@goalie/nextjs'
 import TaskComment from './TaskComment'
 import { useCommentContext } from './context'
+import { useCallback } from 'react'
 
 export default function TaskCommentInput() {
   const { user } = useUser()
   const { addComment } = useCommentContext()
   const userId = user?.id as string
 
-  const handleCommentSubmit = (content: string) => {
-    addComment(content)
-  }
+  const handleCommentSubmit = useCallback(
+    (content: string) => {
+      addComment(content)
+    },
+    [addComment]
+  )
 
-  return userId ? (
+  return (
     <TaskComment
       userId={userId}
       initValue=""
@@ -19,5 +23,5 @@ export default function TaskCommentInput() {
       onValueSubmit={handleCommentSubmit}
       eraseAfterSubmit
     />
-  ) : null
+  )
 }

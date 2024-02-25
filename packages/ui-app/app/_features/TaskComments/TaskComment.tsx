@@ -1,8 +1,7 @@
-import { Button, Form } from '@shared/ui'
+import { Form } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
-import { useUser } from '@goalie/nextjs'
 import './style.css'
-import { ReactNode, forwardRef, useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Mention from '@tiptap/extension-mention'
 import { useMemberStore } from '@/store/member'
 
@@ -37,10 +36,17 @@ const TaskComment = ({
   }
 
   return (
-    <div className="flex gap-2 items-center">
-      <MemberAvatar uid={userId || ''} noName={true} />
+    <div className="flex gap-2 items-start">
+      <div className="mt-2">
+        <MemberAvatar uid={userId || ''} noName={true} />
+      </div>
       <div className="w-full">
         <Form.RichTextEditor
+          onCtrlEnter={v => {
+            onValueSubmit(v)
+            eraseAfterSubmit && setValue('')
+          }}
+          onCtrlEsc={handleCancelClick}
           readOnly={readOnly}
           extensions={[
             Mention.extend({
@@ -62,24 +68,7 @@ const TaskComment = ({
             })
           ]}
           value={value}
-          onChange={v => {
-            setValue(v)
-          }}
         />
-        {!readOnly ? (
-          <div className="flex gap-2 m-2">
-            <Button
-              primary
-              size="base"
-              title="Save"
-              onClick={() => {
-                onValueSubmit(value)
-                eraseAfterSubmit && setValue('')
-              }}
-            />
-            <Button title="Cancel" size="base" onClick={handleCancelClick} />
-          </div>
-        ) : null}
       </div>
     </div>
   )
