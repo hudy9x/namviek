@@ -1,23 +1,21 @@
 import { ReactRenderer } from '@tiptap/react'
 import tippy, { Instance } from 'tippy.js'
-
 import MentionList from './MentionList'
-
 import { type TRichTextEditorMention } from '../type'
 import { SuggestionOptions } from '@tiptap/suggestion'
+import Fuse from 'fuse.js'
 
 export const getMentionSuggestion = <T>(
   items: (TRichTextEditorMention & T)[]
 ): Partial<SuggestionOptions> => ({
   items: ({ query }): TRichTextEditorMention[] => {
-    return (
-      items
-        // .map((item, i) => ({ id: i.toString(), label: item }))
-        .filter(({ label }) =>
-          label.toLowerCase().replace(' ', '').startsWith(query.toLowerCase())
-        )
-      // .slice(0, 5)
-    )
+    if (!query) return items
+
+    const fuse = new Fuse(items, {
+      keys: ['label', 'email']
+    })
+    const searchResults = fuse.search(query.toLowerCase())
+    return searchResults.map(({ item }) => item)
   },
 
   render: () => {

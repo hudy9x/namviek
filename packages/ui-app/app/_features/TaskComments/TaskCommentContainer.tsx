@@ -15,7 +15,11 @@ export default function TaskCommentContainer() {
 
   useEventSendTaskComment(comment => {
     const newComment = comment
-    setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
+    setComments(prev =>
+      (prev?.length ? [newComment, ...prev] : [newComment]).filter(({ id }) =>
+        Boolean(id)
+      )
+    )
   })
 
   useEventUpdateTaskComment(comment => {

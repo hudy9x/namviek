@@ -65,6 +65,9 @@ export const CommentContextProvider = ({ children }: PropsWithChildren) => {
         updatedAt: now
       }
 
+      const newComment = { ...comment, id: '' }
+      setComments(prev => (prev?.length ? [newComment, ...prev] : [newComment]))
+
       commentCreate(comment)
         .then(res => {
           const { status, error, data } = res.data

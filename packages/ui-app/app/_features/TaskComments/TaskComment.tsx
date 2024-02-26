@@ -3,7 +3,7 @@ import MemberAvatar from '@/components/MemberAvatar'
 import './style.css'
 import { useEffect, useState } from 'react'
 import Mention from '@tiptap/extension-mention'
-import { useMemberStore } from '@/store/member'
+import { UserMember, useMemberStore } from '@/store/member'
 
 interface ITaskCommentInputProps {
   userId: string
@@ -62,8 +62,16 @@ const TaskComment = ({
               HTMLAttributes: {
                 class: 'mention'
               },
-              suggestion: Form.getMentionSuggestion(
-                members.map(({ id, name }) => ({ id, label: name || id }))
+              suggestion: Form.getMentionSuggestion<{
+                id: string
+                label: string
+                email: string
+              }>(
+                members.map(({ id, name, email }) => ({
+                  id,
+                  label: name || id,
+                  email
+                }))
               )
             })
           ]}

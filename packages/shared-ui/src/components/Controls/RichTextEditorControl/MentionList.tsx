@@ -1,4 +1,3 @@
-
 import { SuggestionProps } from '@tiptap/suggestion'
 import {
   ReactElement,
@@ -10,6 +9,7 @@ import {
 } from 'react'
 
 import './MentionList.css'
+import MemberAvatar from '@/components/MemberAvatar'
 
 export type TItemBase = {
   id: string
@@ -78,8 +78,19 @@ const Mention = <I,>(
           <button
             className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
             key={index}
-            onClick={() => selectItem(index)}>
-            {item.label}
+            onClick={() => {
+              selectItem(index)
+              console.log({ clicked: index })
+            }}>
+            <div className="flex gap-3 items-start">
+              <MemberAvatar uid={item.id || ''} noName={true} />
+              <div className="flex flex-col">
+                {item.label}
+                <span className="italic text-gray-600 text-xs">
+                  {item?.email}
+                </span>
+              </div>
+            </div>
           </button>
         ))
       ) : (

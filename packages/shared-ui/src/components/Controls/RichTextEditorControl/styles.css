@@ -10,3 +10,14 @@
   box-decoration-break: clone;
   padding: 0.1rem 0.3rem;
 }
+
+.mark {
+  min-width: 2rem;
+  border: 0.5px solid #bfbfbf;
+  border-radius: 5px;
+  padding: 1px;
+}
+
+.mark-active {
+  background-color: #bfbfbf;
+}
