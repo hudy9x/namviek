@@ -4,13 +4,14 @@ import (
 	"errors"
 	"log"
 	"os"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var ACCESS_KEY = os.Getenv("JWT_SECRET_KEY")
 var REFRESH_KEY = os.Getenv("JWT_REFRESH_KEY")
-var SECRET_EXPIRED = os.Getenv("JWT_TOKEN_EXPIRED")
+var ACCESS_EXPIRED = os.Getenv("JWT_TOKEN_EXPIRED")
 var REFRESH_EXPIRED = os.Getenv("JWT_REFRESH_EXPIRED")
 
 type UserClaim struct {
@@ -23,11 +24,22 @@ type UserClaim struct {
 
 func GenAccessToken(id string, email string, name string, photo string) (string, error) {
 
+	// min, err := strconv.Atoi(ACCESS_EXPIRED)
+	//
+	// if err != nil {
+	// 	log.Println("convert access expired to number error: ", err)
+	// 	return "", err
+	// }
+	//
+	// log.Println("expired time is: ", min)
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    id,
 		"name":  name,
 		"email": email,
 		"photo": photo,
+		"iat":   time.Now().Unix(),
+		"exp":   time.Now().Add(time.Minute * time.Duration(30)).Unix(),
 	})
 
 	return _createJwtSignedString("ACCESS_KEY", token)
@@ -38,6 +50,8 @@ func GenRefreshToken(email string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,
+		"iat":   time.Now().Unix(),
+		"exp":   time.Now().Add(time.Hour * time.Duration(4)).Unix(),
 	})
 
 	return _createJwtSignedString("REFRESH_KEY", token)
@@ -89,8 +103,25 @@ func ParseToken(tokenType string, token string) (jwt.MapClaims, error) {
 		return nil, err
 	}
 
-	var claims = jwtToken.Claims.(jwt.MapClaims)
+	// extract data inside token
+	claims := jwtToken.Claims.(jwt.MapClaims)
+	expTime, err := claims.GetExpirationTime()
 
+	if err != nil {
+		return nil, err
+	}
+
+	// check expiration time
+	now := time.Now().Unix()
+	exp := expTime.Unix()
+
+	log.Println(now, exp, now > exp)
+
+	if now > exp {
+		return nil, errors.New("Token expired")
+	}
+
+	// output claims for verification
 	log.Println("================================================")
 	log.Println(claims["email"], claims["photo"], claims["id"])
 

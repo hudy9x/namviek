@@ -86,6 +86,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@nx-go/nx-go": "^2.8.0",
     "@nx/cypress": "16.2.2",
     "@nx/esbuild": "16.2.2",
     "@nx/eslint-plugin": "16.2.2",
