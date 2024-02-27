@@ -10,9 +10,10 @@ import (
 func Get(c *gin.Context) {
 
 	user, exist := c.Get("user")
-	uid := c.Params.ByName("uid")
+	// uid := c.Params.ByName("uid")
 
-	log.Println("user id after authentication", uid)
+	// log.Println("user id after authentication", uid)
+	log.Println("user data:", user)
 
 	if exist == false {
 		c.AbortWithStatus(http.StatusBadRequest)

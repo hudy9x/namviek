@@ -1,7 +1,6 @@
 package libs
 
 import (
-	"errors"
 	"log"
 	"os"
 	"time"
@@ -82,10 +81,6 @@ func _createJwtSignedString(t string, token *jwt.Token) (string, error) {
 
 func ParseToken(tokenType string, token string) (jwt.MapClaims, error) {
 
-	if token == "" {
-		return nil, errors.New("Token is empty")
-	}
-
 	// parse token to get jwt token
 	jwtToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if tokenType == "ACCESS_KEY" {
@@ -93,37 +88,38 @@ func ParseToken(tokenType string, token string) (jwt.MapClaims, error) {
 			return []byte(ACCESS_KEY), nil
 		}
 
-		log.Println("access key", REFRESH_KEY)
+		log.Println("refresh key", REFRESH_KEY)
 		return []byte(REFRESH_KEY), nil
 	})
 
-	// if jwtToken is expired or invalid
+	// err returned as token is invalid or expired
 	if err != nil {
-		log.Println("Parsing jwt error, check whether secret key is correct or not")
+		log.Println("Error:", err)
 		return nil, err
 	}
 
 	// extract data inside token
 	claims := jwtToken.Claims.(jwt.MapClaims)
-	expTime, err := claims.GetExpirationTime()
+	// expTime, err := claims.GetExpirationTime()
 
 	if err != nil {
 		return nil, err
 	}
 
-	// check expiration time
-	now := time.Now().Unix()
-	exp := expTime.Unix()
+	// checking expiration time is unnecessary
 
-	log.Println(now, exp, now > exp)
-
-	if now > exp {
-		return nil, errors.New("Token expired")
-	}
+	// // check expiration time
+	// now := time.Now().Unix()
+	// exp := expTime.Unix()
+	//
+	// log.Println(now, exp, now > exp)
+	//
+	// if now > exp {
+	// 	return nil, errors.New("Token expired")
+	// }
 
 	// output claims for verification
 	log.Println("================================================")
-	log.Println(claims["email"], claims["photo"], claims["id"])
 
 	return claims, nil
 
