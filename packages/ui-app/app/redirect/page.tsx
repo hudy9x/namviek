@@ -4,7 +4,7 @@ import UserChecking from './UserChecking'
 const LoadingSpinnerIcon = () => {
   return (
     <svg
-      className="animate-spin w-[15px] h-[15px]"
+      className="animate-spin duration-100 w-[15px] h-[15px]"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24">
@@ -26,15 +26,15 @@ const LoadingSpinnerIcon = () => {
 export default async function Index() {
   // redirect('/organization')
   return (
-    <div className="h-screen w-screen text-7xl flex items-center justify-center uppercase">
+    <div className="h-screen w-screen bg-white dark:bg-gray-900 text-7xl flex items-center justify-center uppercase">
       <UserChecking />
       <div className="text-center">
-        <h2 className="logo -mt-10 w-16 h-16 inline-flex items-center justify-center">
+        <h2 className="logo -mt-10 w-16 h-16 inline-flex items-center justify-center mb-5">
           <Image src={'/logo71x71.png'} width={70} height={70} alt="Logo" />
         </h2>
-        <div className="text-sm flex items-center gap-2">
+        <div className="text-xs flex flex-col items-center gap-5">
+          <p>Authenticating your session</p>
           <LoadingSpinnerIcon />
-          <p>Authenticating your session ...</p>
         </div>
       </div>
     </div>
