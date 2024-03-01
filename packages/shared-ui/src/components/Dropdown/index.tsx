@@ -27,17 +27,29 @@ const DropdownTrigger = ({
 }) => {
   return (
     <DropdownMenu.Trigger className={className} asChild>
-      <div className='dropdown-trigger-btn'>
-        {children ? children : <Button leadingIcon={icon} title={title} size={size} />}
+      <div className="dropdown-trigger-btn">
+        {children ? (
+          children
+        ) : (
+          <Button leadingIcon={icon} title={title} size={size} />
+        )}
       </div>
     </DropdownMenu.Trigger>
   )
 }
 
-const DropdownContent = ({ children, className }: { children: ReactNode, className?: string }) => {
+const DropdownContent = ({
+  children,
+  className
+}: {
+  children: ReactNode
+  className?: string
+}) => {
   return (
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className={`dropdown-menu-content ${className || ''}`} sideOffset={5}>
+      <DropdownMenu.Content
+        className={`dropdown-menu-content ${className || ''}`}
+        sideOffset={5}>
         {children}
         {/* <DropdownMenu.Arrow className="dropdown-arrow" /> */}
       </DropdownMenu.Content>
@@ -60,16 +72,17 @@ const DropdownItem = ({
   disabled?: boolean
   onClick?: () => void
 }) => {
-
   return (
     <DropdownMenu.Item
-      onClick={(ev) => {
+      onClick={ev => {
         ev.stopPropagation()
-        onClick && onClick()
+        setTimeout(() => {
+          onClick && onClick()
+        }, 200)
       }}
       disabled={disabled}
       className={`dropdown-item ${active ? 'dropdown-item-active' : ''}`}>
-      {icon ? <span className='mr-2'>{icon}</span> : null}
+      {icon ? <span className="mr-2">{icon}</span> : null}
       {title} {right ? <div className="right-slot">{right}</div> : null}
     </DropdownMenu.Item>
   )
