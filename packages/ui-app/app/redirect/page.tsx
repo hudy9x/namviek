@@ -24,7 +24,6 @@ const LoadingSpinnerIcon = () => {
 }
 
 export default async function Index() {
-  // redirect('/organization')
   return (
     <div className="h-screen w-screen bg-white dark:bg-gray-900 text-7xl flex items-center justify-center uppercase">
       <UserChecking />
@@ -32,7 +31,7 @@ export default async function Index() {
         <h2 className="logo -mt-10 w-16 h-16 inline-flex items-center justify-center mb-5">
           <Image src={'/logo71x71.png'} width={70} height={70} alt="Logo" />
         </h2>
-        <div className="text-xs flex flex-col items-center gap-5">
+        <div className="text-xs flex flex-col items-center gap-5 text-gray-900 dark:text-gray-400">
           <p>Authenticating your session</p>
           <LoadingSpinnerIcon />
         </div>
