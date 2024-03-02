@@ -28,7 +28,6 @@ const Mention = <I,>(
     const item = props.items[index]
 
     if (item) {
-      console.log({ item, command: props.command })
       const { id, label } = item
       props.command({ id, label })
     }
@@ -80,7 +79,6 @@ const Mention = <I,>(
             key={index}
             onClick={() => {
               selectItem(index)
-              console.log({ clicked: index })
             }}>
             <div className="flex gap-3 items-start">
               <MemberAvatar uid={item.id || ''} noName={true} />
