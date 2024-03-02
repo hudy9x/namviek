@@ -8,7 +8,6 @@ import {
   useState
 } from 'react'
 
-import './MentionList.css'
 import MemberAvatar from '@/components/MemberAvatar'
 
 export type TItemBase = {
@@ -71,7 +70,7 @@ const Mention = <I,>(
   }))
 
   return (
-    <div className="items">
+    <div className="items border-gray-200">
       {props.items?.length ? (
         props.items?.map((item, index) => (
           <button

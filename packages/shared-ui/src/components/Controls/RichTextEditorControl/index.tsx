@@ -7,16 +7,22 @@ import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
 import Underline from '@tiptap/extension-underline'
 import Image from '@tiptap/extension-image'
-import PopoverControl from '../PopoverControl'
-import FileControl from '@/components/FileKits/FileControl'
 
 import { RiImageAddFill } from 'react-icons/ri'
-// import { Extension } from '@tiptap/core'
+import { Extension } from '@tiptap/core'
 // import { keymap } from '@tiptap/pm/keymap'
 // import { baseKeymap } from '@tiptap/pm/commands'
 
-import './styles.css'
+import './style.css'
 import { Text } from '@tiptap/extension-text'
+
+const DisableEscape = Extension.create({
+  addKeyboardShortcuts() {
+    return {
+      Escape: () => true
+    }
+  }
+})
 
 // const KeyEventHandler = Extension.create({
 //   name: 'KeyEventHandler',
@@ -61,12 +67,13 @@ export default function RichTextEditor({
       Italic,
       Underline,
       Image,
+      ...extensions,
+      DisableEscape,
       // KeyEventHandler,
       Text.extend({
         addKeyboardShortcuts() {
           return {
             'Control-Enter': () => {
-              console.log('Control-enter pressed')
               const html = this.editor.getHTML()
               html && onCtrlEnter && onCtrlEnter(html)
               this.editor.commands.clearContent()
@@ -79,8 +86,7 @@ export default function RichTextEditor({
             }
           }
         }
-      }),
-      ...extensions
+      })
     ],
     editable: !readOnly,
     content: value
@@ -101,7 +107,7 @@ export default function RichTextEditor({
 
   const marks = () => {
     return (
-      <div className="flex gap-2 mb-3 ml-1 mr-1 pb-3 border-b border-b-gray-400 ">
+      <div className="flex gap-2 mb-3 ml-1 mr-1 pb-3 border-b border-b-gray-400 color">
         <button
           className={`mark ${editor.isActive('bold') ? 'mark-active' : ''}`}
           style={{ fontStyle: 'bold' }}
@@ -148,7 +154,7 @@ export default function RichTextEditor({
   return (
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
-      <div className="relative form-control-wrapper inline-flex w-full">
+      <div className="relative form-control-wrapper inline-flex w-full ">
         <div className="form-input">
           {!readOnly ? marks() : null}
           <EditorContent editor={editor} />
