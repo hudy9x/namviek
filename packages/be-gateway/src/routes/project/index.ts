@@ -191,8 +191,9 @@ router.post('/project', async (req: AuthRequest, res) => {
       }))
 
 
-      console.log('create rest views but the first one')
-      await tx.projectView.createMany({
+      console.log('create rest views but the first one', restViewDatas.length)
+
+      restViewDatas.length && await tx.projectView.createMany({
         data: restViewDatas
       })
 

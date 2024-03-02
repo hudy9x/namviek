@@ -69,7 +69,8 @@ export class OrganizationController extends BaseController {
   @Post('')
   async createOrganization() {
     const req = this.req as AuthRequest
-    const res = this.res
+    const isProd = process.env.DEV_MODE === 'true'
+
     try {
       const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover'>
       const { id } = req.authen
@@ -77,8 +78,8 @@ export class OrganizationController extends BaseController {
 
       const ownedOrgs = await mdOrgGetOwned(id)
 
-      if (ownedOrgs.length >= 1) {
-        return res.status(500).send('REACHED_MAX_ORGANIZATION')
+      if (isProd && ownedOrgs.length >= 1) {
+        throw new Error('REACHED_MAX_ORGANIZATION')
       }
 
       const result = await mdOrgAdd({
@@ -92,6 +93,8 @@ export class OrganizationController extends BaseController {
         updatedAt: null,
         updatedBy: null
       })
+
+      console.log('created new organization')
 
       delCache(key)
 
