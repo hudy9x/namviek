@@ -127,7 +127,7 @@ export const AppRoutes = (routeControllers: any[]) => {
             }
           } catch (error) {
             console.log('AppRoute2', error)
-            res.status(500).send(error)
+            res.status(500).send(JSON.stringify(error))
           }
         })
       }

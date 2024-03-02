@@ -59,7 +59,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
       throw new MaxStorageSizeException()
     }
 
-    const { presignedUrl, randName } = await storageService.createPresignedUrl({
+    const { presignedUrl, randName, url } = await storageService.createPresignedUrl({
       projectId,
       name,
       type
@@ -71,7 +71,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
       data: {
         name: randName,
         presignedUrl,
-        url: getObjectURL(randName)
+        url: url
       }
     })
 

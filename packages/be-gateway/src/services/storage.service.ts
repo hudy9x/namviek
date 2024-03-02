@@ -28,6 +28,10 @@ export class StorageService {
 
   }
 
+  protected getObjectUrl() {
+    return ''
+  }
+
   protected async initS3Client() {
     const awsConfig = await this.getStorageConfig()
     const s3Store = new AwsS3StorageProvider({ orgId: this.orgId, ...awsConfig })
@@ -93,7 +97,8 @@ export class StorageService {
       const presignedUrl = await s3Store.createPresignedUrlWithClient(randName, type)
       return {
         randName,
-        presignedUrl
+        presignedUrl,
+        url: s3Store.getObjectURL(randName)
       }
     } catch (error) {
       console.log(error)
