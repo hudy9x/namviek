@@ -162,8 +162,6 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
       await storageCache.incrSize(size)
     }
 
-    console.log('url', url)
-
     const result = await mdStorageAdd({
       organizationId,
       projectId,
