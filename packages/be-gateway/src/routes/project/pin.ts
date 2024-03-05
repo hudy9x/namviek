@@ -28,7 +28,7 @@ router.post('/project/pin', async (req: AuthRequest, res) => {
   try {
     const { id: uid } = req.authen
     const { projectId } = req.body as { projectId: string }
-    console.log('pin a project')
+    console.log('pin a project 1')
 
     const result = await mdProjectPinAdd({
       uid,
