@@ -51,8 +51,13 @@ const TaskComment = ({
           extensions={[
             Mention.extend({
               addAttributes() {
+                // return {
+                //   ...this.parent(),
+                //   value: {
+                //     default: ''
+                //   }
+                // }
                 return {
-                  ...this.parent(),
                   value: {
                     default: ''
                   }

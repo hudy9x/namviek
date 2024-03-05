@@ -28,7 +28,7 @@ const Mention = <I,>(
 
     if (item) {
       const { id, label } = item
-      props.command({ id, label })
+      props.command(item)
     }
   }
 
@@ -72,24 +72,29 @@ const Mention = <I,>(
   return (
     <div className="items border-gray-200">
       {props.items?.length ? (
-        props.items?.map((item, index) => (
-          <button
-            className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
-            key={index}
-            onClick={() => {
-              selectItem(index)
-            }}>
-            <div className="flex gap-3 items-start">
-              <MemberAvatar uid={item.id || ''} noName={true} />
-              <div className="flex flex-col">
-                {item.label}
-                <span className="italic text-gray-600 text-xs">
-                  {item?.email}
-                </span>
+        props.items?.map((item, index) => {
+          let email = ''
+          if ('email' in item) {
+            email = item['email'] as string
+          }
+
+          return (
+            <button
+              className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
+              key={index}
+              onClick={() => {
+                selectItem(index)
+              }}>
+              <div className="flex gap-3 items-start">
+                <MemberAvatar uid={item.id || ''} noName={true} />
+                <div className="flex flex-col">
+                  {item.label}
+                  <span className="italic text-gray-600 text-xs">{email}</span>
+                </div>
               </div>
-            </div>
-          </button>
-        ))
+            </button>
+          )
+        })
       ) : (
         <div className="item">No result</div>
       )}

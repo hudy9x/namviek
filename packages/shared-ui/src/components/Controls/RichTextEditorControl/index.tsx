@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { TextareaProps } from '../type'
+import { RichTextEditorProps, TextareaProps } from '../type'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
@@ -51,7 +51,7 @@ export default function RichTextEditor({
   extensions = [],
   onCtrlEnter,
   onCtrlEsc
-}: TextareaProps) {
+}: RichTextEditorProps) {
   const classes = ['form-control']
 
   disabled && classes.push('disabled')

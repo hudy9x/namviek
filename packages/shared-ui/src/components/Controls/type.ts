@@ -32,7 +32,14 @@ type RangerSliderBaseProps = Omit<
   step: number
 }
 type TextareaBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
-  // onChange: (val: string) => void
+  onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
+  onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
+  onEnter: (val: string, target: HTMLTextAreaElement) => void
+  rows: number
+  cols: number
+}
+
+type RichTextEditorBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
   onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
   onCtrlEnter?: (val: string) => void
   onCtrlEsc?: () => void
@@ -54,3 +61,4 @@ export type RangerSlider = Partial<RangerSliderBaseProps>
 export type InputProps = Partial<InputBaseProps>
 export type TextareaProps = Partial<TextareaBaseProps>
 export type TexteditorProps = Partial<TexteditorBaseProps>
+export type RichTextEditorProps = Partial<RichTextEditorBaseProps>

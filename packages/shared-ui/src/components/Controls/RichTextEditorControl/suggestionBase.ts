@@ -33,15 +33,15 @@ export const getMentionSuggestion = <T>(
           return
         }
 
-        popup = tippy('body', {
-          getReferenceClientRect: props.clientRect,
-          appendTo: () => document.body,
-          content: component.element,
-          showOnCreate: true,
-          interactive: true,
-          trigger: 'manual',
-          placement: 'bottom-start'
-        })
+        // popup = tippy('body', {
+        //   getReferenceClientRect: props.clientRect,
+        //   appendTo: () => document.body,
+        //   content: component.element,
+        //   showOnCreate: true,
+        //   interactive: true,
+        //   trigger: 'manual',
+        //   placement: 'bottom-start'
+        // })
       },
 
       onUpdate(props) {
@@ -51,9 +51,9 @@ export const getMentionSuggestion = <T>(
           return
         }
 
-        popup[0].setProps({
-          getReferenceClientRect: props.clientRect
-        })
+        // popup[0].setProps({
+        //   getReferenceClientRect: props.clientRect
+        // })
       },
 
       onKeyDown(props) {
@@ -63,7 +63,8 @@ export const getMentionSuggestion = <T>(
           return true
         }
 
-        return component.ref?.onKeyDown(props)
+        // return component.ref?.onKeyDown(props)
+        return true
       },
 
       onExit() {
