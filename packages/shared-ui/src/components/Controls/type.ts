@@ -1,4 +1,5 @@
 import { ChangeEvent, FocusEvent } from 'react'
+import { Node, Mark } from '@tiptap/core'
 
 interface InputBaseProps {
   title: string
@@ -31,15 +32,22 @@ type RangerSliderBaseProps = Omit<
   step: number
 }
 type TextareaBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
-  onChange: (ev: ChangeEvent<HTMLTextAreaElement>) => void
+  // onChange: (val: string) => void
   onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
-  onEnter: (val: string, target: HTMLTextAreaElement) => void
+  onCtrlEnter?: (val: string) => void
+  onCtrlEsc?: () => void
   rows: number
   cols: number
+  extensions?: (Node | Mark)[]
 }
 
 type TexteditorBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
   onChange: (ev: string) => void
+}
+
+export type TRichTextEditorMention = {
+  id: string
+  label: string
 }
 
 export type RangerSlider = Partial<RangerSliderBaseProps>

@@ -5062,6 +5062,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.0.3.tgz"
   integrity sha512-SZRUSh07b/M0kJHNKnfBwBMWrZBEm/E2LrK1NbluwT3DBhE+gvwiEdBxgB32zKHNxaDEXUJwUIPNC3JSbKvPUA==
 
+"@tiptap/extension-image@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.2.4.tgz#55c267e9ff77e2bf3c514896331ad91d18da08c3"
+  integrity sha512-xOnqZpnP/fAfmK5AKmXplVQdXBtY5AoZ9B+qllH129aLABaDRzl3e14ZRHC8ahQawOmCe6AOCCXYUBXDOlY5Jg==
+
 "@tiptap/extension-italic@^2.0.3":
   version "2.0.3"
   resolved "https://registry.npmjs.org/@tiptap/extension-italic/-/extension-italic-2.0.3.tgz"
@@ -5078,6 +5083,11 @@
   version "2.0.3"
   resolved "https://registry.npmjs.org/@tiptap/extension-list-item/-/extension-list-item-2.0.3.tgz"
   integrity sha512-p7cUsk0LpM1PfdAuFE8wYBNJ3gvA0UhNGR08Lo++rt9UaCeFLSN1SXRxg97c0oa5+Ski7SrCjIJ5Ynhz0viTjQ==
+
+"@tiptap/extension-mention@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-mention/-/extension-mention-2.2.1.tgz#9b12831abf263e59d1627b3967a33e027e61db0b"
+  integrity sha512-6MIYlqHtjJSbKIKi8RvXZOGAHw/7Z+t+jTVy6QhYhVKyqcKsHBF5gNlFhsBEq/w6/iL3RKP3vSk5Jzyia5Ga+A==
 
 "@tiptap/extension-ordered-list@^2.0.3":
   version "2.0.3"
@@ -5098,6 +5108,11 @@
   version "2.0.3"
   resolved "https://registry.npmjs.org/@tiptap/extension-text/-/extension-text-2.0.3.tgz"
   integrity sha512-LvzChcTCcPSMNLUjZe/A9SHXWGDHtvk73fR7CBqAeNU0MxhBPEBI03GFQ6RzW3xX0CmDmjpZoDxFMB+hDEtW1A==
+
+"@tiptap/extension-underline@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.2.4.tgz#7be1a616e16452dd17a9c6fd03e40636bc676972"
+  integrity sha512-jCHgIJMwtXlGHVy/j3L8/QvglHCikkHJw7YS5yf8E/8HlPh1tZfVy/IxdgacDOpUN30X+UPJZQDdVKymafgwdA==
 
 "@tiptap/pm@^2.0.3":
   version "2.0.3"
@@ -5155,6 +5170,11 @@
     "@tiptap/extension-paragraph" "^2.0.3"
     "@tiptap/extension-strike" "^2.0.3"
     "@tiptap/extension-text" "^2.0.3"
+
+"@tiptap/suggestion@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.2.1.tgz#9201480a2f2944865cfd267b4c3fd0991921e925"
+  integrity sha512-DIT4zR5CoP0Q5n9BJj68EqmbFGzdyDgDon8yfX1NkynW8PtDrcfGhe5/31tcH6YuM6ZijqNV3fdCt+LPrVr/Nw==
 
 "@tokenizer/token@^0.3.0":
   version "0.3.0"
@@ -9065,6 +9085,11 @@ functions-have-names@^1.2.2, functions-have-names@^1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
+
+fuse.js@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-7.0.0.tgz#6573c9fcd4c8268e403b4fc7d7131ffcf99a9eb2"
+  integrity sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==
 
 gaxios@^6.0.0, gaxios@^6.0.2, gaxios@^6.1.1:
   version "6.1.1"
@@ -14164,7 +14189,7 @@ tiny-warning@^1.0.2:
 
 tippy.js@^6.3.7:
   version "6.3.7"
-  resolved "https://registry.npmjs.org/tippy.js/-/tippy.js-6.3.7.tgz"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
   integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
   dependencies:
     "@popperjs/core" "^2.9.0"

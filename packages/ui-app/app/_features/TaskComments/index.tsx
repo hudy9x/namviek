@@ -1,10 +1,10 @@
-import './style.css'
-import TaskCommentInput from './TaskCommentInput'
+import { CommentContextProvider } from './context'
+import TaskCommentContainer from './TaskCommentContainer'
 
 export default function TaskComments() {
   return (
-    <div className="task-comments">
-      <TaskCommentInput />
-    </div>
+    <CommentContextProvider>
+      <TaskCommentContainer />
+    </CommentContextProvider>
   )
 }
