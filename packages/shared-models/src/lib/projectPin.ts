@@ -43,7 +43,15 @@ const _updatePinSetting = async ({
 
     if (!user) return
 
-    const settings = user.settings as unknown as UserSetting
+    let settings = user.settings as unknown as UserSetting
+
+    // set a default setting for pinned projects
+    console.log('settings', settings)
+    if (type === 'pin' && !settings) {
+      settings = {
+        pinnedProjects: []
+      }
+    }
 
     if (!settings || !settings.pinnedProjects) {
       return

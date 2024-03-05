@@ -28,6 +28,7 @@ router.post('/project/pin', async (req: AuthRequest, res) => {
   try {
     const { id: uid } = req.authen
     const { projectId } = req.body as { projectId: string }
+    console.log('pin a project')
 
     const result = await mdProjectPinAdd({
       uid,
@@ -41,7 +42,7 @@ router.post('/project/pin', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/pin', async (req: AuthRequest, res) => {
-  console.log('removed')
+  console.log('unpin')
   try {
     const { id: uid } = req.authen
     const { projectId } = req.query as { projectId: string }
