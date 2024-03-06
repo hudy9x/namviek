@@ -53,22 +53,14 @@ export default function TaskCommentListItem(comment: Comment) {
         <div className="opacity-0 group-hover:opacity-100 absolute right-4 top-2 space-x-1">
           <Button
             size="sm"
-            // title="Edit"
             leadingIcon={<HiOutlinePencil />}
             onClick={handleEditButtonClick}
           />
           <Button
             size="sm"
             leadingIcon={<HiOutlineTrash />}
-            // title="Delete"
             onClick={handleDeleteButtonClick}
           />
-          {/* <div className="cursor-pointer" onClick={handleEditButtonClick}> */}
-          {/*   Edit */}
-          {/* </div> */}
-          {/* <div className=" cursor-pointer" onClick={handleDeleteButtonClick}> */}
-          {/*   Delete */}
-          {/* </div> */}
         </div>
       ) : null}
     </div>
