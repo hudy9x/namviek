@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
   useState
 } from 'react'
+import './MentionList.css'
 
 import MemberAvatar from '@/components/MemberAvatar'
 
@@ -50,6 +51,12 @@ const Mention = <I,>(
 
   useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }) => {
+      const key = event.key
+      if (key === 'Tab') {
+        downHandler()
+        return true
+      }
+
       if (event.key === 'ArrowUp') {
         upHandler()
         return true
@@ -70,7 +77,7 @@ const Mention = <I,>(
   }))
 
   return (
-    <div className="items border-gray-200">
+    <div className="mention-list">
       {props.items?.length ? (
         props.items?.map((item, index) => {
           let email = ''
@@ -79,20 +86,21 @@ const Mention = <I,>(
           }
 
           return (
-            <button
-              className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
+            <div
+              className={`mention-item ${index === selectedIndex ? 'is-selected' : ''
+                }`}
               key={index}
               onClick={() => {
                 selectItem(index)
               }}>
-              <div className="flex gap-3 items-start">
+              <div className="flex gap-3 items-center">
                 <MemberAvatar uid={item.id || ''} noName={true} />
-                <div className="flex flex-col">
-                  {item.label}
-                  <span className="italic text-gray-600 text-xs">{email}</span>
+                <div className="text-left">
+                  <h2 className="mb-0 text-sm">{item.label}</h2>
+                  <p className="text-gray-400 text-xs">{email}</p>
                 </div>
               </div>
-            </button>
+            </div>
           )
         })
       ) : (

@@ -1,0 +1,7 @@
+.task-comment {
+  @apply overflow-hidden;
+}
+
+.task-comment .ProseMirror {
+  @apply dark:text-gray-400;
+}
