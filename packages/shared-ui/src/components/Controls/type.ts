@@ -40,7 +40,7 @@ type TextareaBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
 }
 
 type RichTextEditorBaseProps = Omit<InputBaseProps, 'onChange' | 'onEnter'> & {
-  onBlur: (ev: FocusEvent<HTMLTextAreaElement>) => void
+  onBlur: () => void
   onCtrlEnter?: (val: string) => void
   onCtrlEsc?: () => void
   rows: number

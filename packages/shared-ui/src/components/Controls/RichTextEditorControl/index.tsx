@@ -15,6 +15,13 @@ import { Extension } from '@tiptap/core'
 
 import './style.css'
 import { Text } from '@tiptap/extension-text'
+import Button from '../../Button'
+import {
+  AiOutlineBold,
+  AiOutlineItalic,
+  AiOutlineUnderline
+} from 'react-icons/ai'
+import { IoImageOutline } from 'react-icons/io5'
 
 const DisableEscape = Extension.create({
   addKeyboardShortcuts() {
@@ -50,7 +57,8 @@ export default function RichTextEditor({
   readOnly,
   extensions = [],
   onCtrlEnter,
-  onCtrlEsc
+  onCtrlEsc,
+  onBlur
 }: RichTextEditorProps) {
   const classes = ['form-control']
 
@@ -60,6 +68,9 @@ export default function RichTextEditor({
   error && classes.push('error')
 
   const editor = useEditor({
+    onBlur: () => {
+      onBlur && onBlur()
+    },
     extensions: [
       StarterKit,
       Link.configure({ openOnClick: false }),
@@ -73,7 +84,7 @@ export default function RichTextEditor({
       Text.extend({
         addKeyboardShortcuts() {
           return {
-            'Control-Enter': () => {
+            Enter: () => {
               const html = this.editor.getHTML()
               html && onCtrlEnter && onCtrlEnter(html)
               this.editor.commands.clearContent()
@@ -107,38 +118,37 @@ export default function RichTextEditor({
 
   const marks = () => {
     return (
-      <div className="flex gap-2 mb-3 ml-1 mr-1 pb-3 border-b border-b-gray-400 color">
-        <button
+      <div className="flex gap-2 pt-3">
+        <Button
+          size="sm"
           className={`mark ${editor.isActive('bold') ? 'mark-active' : ''}`}
-          style={{ fontStyle: 'bold' }}
           onClick={() => {
             editor.chain().focus().toggleBold().run()
           }}
-          type="button">
-          B
-        </button>
-        <button
+          leadingIcon={<AiOutlineBold />}
+        />
+
+        <Button
+          size="sm"
           className={`mark ${editor.isActive('italic') ? 'mark-active' : ''}`}
           onClick={() => {
             editor.chain().focus().toggleItalic().run()
           }}
-          type="button"
-          style={{ fontStyle: 'italic' }}>
-          I
-        </button>
-        <button
-          className={`mark ${
-            editor.isActive('underline') ? 'mark-active' : ''
-          }`}
-          type="button"
+          leadingIcon={<AiOutlineItalic />}
+        />
+
+        <Button
+          size="sm"
+          className={`mark ${editor.isActive('underline') ? 'mark-active' : ''
+            }`}
           onClick={() => {
             editor.chain().focus().toggleUnderline().run()
           }}
-          style={{ textDecoration: 'underline' }}>
-          U
-        </button>
-        <RiImageAddFill
-          size={24}
+          leadingIcon={<AiOutlineUnderline />}
+        />
+
+        <Button
+          size="sm"
           onClick={() => {
             const url = window.prompt('URL')
 
@@ -146,6 +156,7 @@ export default function RichTextEditor({
               editor.chain().focus().setImage({ src: url }).run()
             }
           }}
+          leadingIcon={<IoImageOutline />}
         />
       </div>
     )
@@ -156,8 +167,8 @@ export default function RichTextEditor({
       {title ? <label>{title}</label> : null}
       <div className="relative form-control-wrapper inline-flex w-full ">
         <div className="form-input">
-          {!readOnly ? marks() : null}
           <EditorContent editor={editor} />
+          {!readOnly ? marks() : null}
         </div>
       </div>
       {helper && !error ? (

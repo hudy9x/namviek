@@ -1,8 +1,8 @@
 import { ReactRenderer } from '@tiptap/react'
-import tippy, { Instance } from 'tippy.js'
+import tippy, { Instance, GetReferenceClientRect } from 'tippy.js'
 import MentionList from './MentionList'
 import { type TRichTextEditorMention } from '../type'
-import { SuggestionOptions } from '@tiptap/suggestion'
+import { SuggestionKeyDownProps, SuggestionOptions } from '@tiptap/suggestion'
 import Fuse from 'fuse.js'
 
 export const getMentionSuggestion = <T>(
@@ -19,7 +19,9 @@ export const getMentionSuggestion = <T>(
   },
 
   render: () => {
-    let component: ReactRenderer
+    let component: ReactRenderer<{
+      onKeyDown: (props: SuggestionKeyDownProps) => boolean
+    }>
     let popup: Instance[]
 
     return {
@@ -33,15 +35,15 @@ export const getMentionSuggestion = <T>(
           return
         }
 
-        // popup = tippy('body', {
-        //   getReferenceClientRect: props.clientRect,
-        //   appendTo: () => document.body,
-        //   content: component.element,
-        //   showOnCreate: true,
-        //   interactive: true,
-        //   trigger: 'manual',
-        //   placement: 'bottom-start'
-        // })
+        popup = tippy('body', {
+          getReferenceClientRect: props.clientRect as GetReferenceClientRect,
+          appendTo: () => document.body,
+          content: component.element,
+          showOnCreate: true,
+          interactive: true,
+          trigger: 'manual',
+          placement: 'bottom-start'
+        })
       },
 
       onUpdate(props) {
@@ -51,9 +53,9 @@ export const getMentionSuggestion = <T>(
           return
         }
 
-        // popup[0].setProps({
-        //   getReferenceClientRect: props.clientRect
-        // })
+        popup[0].setProps({
+          getReferenceClientRect: props.clientRect as GetReferenceClientRect
+        })
       },
 
       onKeyDown(props) {
@@ -63,8 +65,7 @@ export const getMentionSuggestion = <T>(
           return true
         }
 
-        // return component.ref?.onKeyDown(props)
-        return true
+        return !!component.ref?.onKeyDown(props)
       },
 
       onExit() {

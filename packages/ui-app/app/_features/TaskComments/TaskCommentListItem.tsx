@@ -3,12 +3,11 @@ import TaskComment from './TaskComment'
 import { useState } from 'react'
 import { useUser } from '@goalie/nextjs'
 import { useCommentContext } from './context'
+import { dateFormat } from '@shared/libs'
+import { Button } from '@shared/ui'
+import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi2'
 
-interface ITaskCommentListItemProps extends Comment {}
-
-export default function TaskCommentListItem(
-  comment: ITaskCommentListItemProps
-) {
+export default function TaskCommentListItem(comment: Comment) {
   const { id, createdBy, content, createdAt } = comment
   const [editable, setEditable] = useState(false)
   const { user } = useUser()
@@ -33,36 +32,37 @@ export default function TaskCommentListItem(
     removeComment(id)
   }
 
+  const dateString = dateFormat(new Date(createdAt), 'iiii, dd MMM yy')
+
   return (
-    <div className="mt-4">
+    <div className="mt-4 group relative">
       <TaskComment
         userId={createdBy}
         initValue={content}
         readOnly={!editable}
         onValueSubmit={handleValueSubmit}
         onCancel={handleCancelEvent}
+        onBlur={handleCancelEvent}
       />
-      <div className="flex justify-start gap-2">
+      <div className="pl-9 flex text-xs pt-1 justify-start gap-2">
         {!editable ? (
-          <div className="hover:underline cursor-pointer">
-            {new Date(createdAt).toLocaleString()}
-          </div>
-        ) : null}
-        {!editable && userId === createdBy ? (
-          <>
-            <div
-              className="underline cursor-pointer"
-              onClick={handleEditButtonClick}>
-              Edit
-            </div>
-            <div
-              className="underline cursor-pointer"
-              onClick={handleDeleteButtonClick}>
-              Delete
-            </div>
-          </>
+          <div className="cursor-pointer dark:text-gray-500">{dateString}</div>
         ) : null}
       </div>
+      {!editable && userId === createdBy ? (
+        <div className="opacity-0 group-hover:opacity-100 absolute right-4 top-2 space-x-1">
+          <Button
+            size="sm"
+            leadingIcon={<HiOutlinePencil />}
+            onClick={handleEditButtonClick}
+          />
+          <Button
+            size="sm"
+            leadingIcon={<HiOutlineTrash />}
+            onClick={handleDeleteButtonClick}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }

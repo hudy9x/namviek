@@ -3,7 +3,7 @@ import MemberAvatar from '@/components/MemberAvatar'
 import './style.css'
 import { useEffect, useState } from 'react'
 import Mention from '@tiptap/extension-mention'
-import { UserMember, useMemberStore } from '@/store/member'
+import { useMemberStore } from '@/store/member'
 
 interface ITaskCommentInputProps {
   userId: string
@@ -11,6 +11,7 @@ interface ITaskCommentInputProps {
   readOnly: boolean
   onValueSubmit: (s: string) => void
   onCancel?: () => void
+  onBlur?: () => void
   eraseAfterSubmit?: boolean
 }
 
@@ -20,6 +21,7 @@ const TaskComment = ({
   readOnly = false,
   onValueSubmit,
   onCancel,
+  onBlur,
   eraseAfterSubmit = false
 }: ITaskCommentInputProps) => {
   const [value, setValue] = useState(initValue)
@@ -40,28 +42,28 @@ const TaskComment = ({
       <div className="mt-2">
         <MemberAvatar uid={userId || ''} noName={true} />
       </div>
-      <div className="w-full">
+      <div className="w-full task-comment">
         <Form.RichTextEditor
           onCtrlEnter={v => {
             onValueSubmit(v)
             eraseAfterSubmit && setValue('')
+          }}
+          onBlur={() => {
+            onBlur && onBlur()
           }}
           onCtrlEsc={handleCancelClick}
           readOnly={readOnly}
           extensions={[
             Mention.extend({
               addAttributes() {
-                // return {
-                //   ...this.parent(),
-                //   value: {
-                //     default: ''
-                //   }
-                // }
-                return {
-                  value: {
-                    default: ''
+                return this.parent && this.parent instanceof Function
+                  ? {
+                    ...this.parent(),
+                    value: {
+                      default: ''
+                    }
                   }
-                }
+                  : {}
               }
             }).configure({
               HTMLAttributes: {
