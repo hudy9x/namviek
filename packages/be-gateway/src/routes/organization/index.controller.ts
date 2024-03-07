@@ -46,11 +46,11 @@ export class OrganizationController extends BaseController {
       const { id } = req.authen
 
       const key = [CKEY.USER_ORGS, id]
-      const cached = await getJSONCache(key)
-      if (cached) {
-        console.log('return cached org list 2')
-        return cached
-      }
+      // const cached = await getJSONCache(key)
+      // if (cached) {
+      //   console.log('return cached org list 2')
+      //   return cached
+      // }
 
       const orgIds = await mdOrgMemGetByUid(id)
       const orgs = await mdOrgGet(orgIds.map(org => org.organizationId))
