@@ -213,8 +213,10 @@ export default class ActivityService {
         }
       }
 
-      console.log('update activity >>>>>>>>>>>>>>>>')
-      await mdActivityAddMany(updatingActivities)
+      if (updatingActivities.length) {
+        console.log('update activity >>>>>>>>>>>>>>>>')
+        await mdActivityAddMany(updatingActivities)
+      }
     } catch (err) {
       console.log('update activity failed', err)
     }

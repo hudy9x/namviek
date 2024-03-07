@@ -39,8 +39,11 @@ export default function StatusSelect({
   useEffect(() => {
     if (statuses.length) {
       const selectedStatus = statuses.find(opt => opt.id === value)
-      selectedStatus &&
+      if (selectedStatus) {
         setVal({ id: selectedStatus.id, title: selectedStatus.name })
+      } else {
+        setVal({ id: '', title: '' })
+      }
     }
   }, [statuses, value])
 

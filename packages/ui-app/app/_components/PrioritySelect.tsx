@@ -12,13 +12,15 @@ colors.set(TaskPriority.HIGH, '#ffce37')
 colors.set(TaskPriority.NORMAL, '#13cfff')
 colors.set(TaskPriority.LOW, '#ababab')
 colors.set('ALL', 'rgb(223 223 223)')
+colors.set('NONE', 'rgb(223 223 223)')
 
 const options: ListItemValue[] = [
   { id: TaskPriority.URGENT, title: 'Urgent' },
   { id: TaskPriority.HIGH, title: 'High' },
   { id: TaskPriority.NORMAL, title: 'Normal' },
   { id: TaskPriority.LOW, title: 'Low' },
-  { id: 'ALL', title: 'All' }
+  { id: 'ALL', title: 'All' },
+  { id: 'NONE', title: 'None' }
 ]
 
 export const priorityColors = colors
@@ -26,7 +28,7 @@ export const priorityOptions = options
 
 interface IPriorityProps {
   all?: boolean
-  value?: TaskPriority | 'ALL'
+  value?: TaskPriority | 'ALL' | 'NONE'
   width?: number
   className?: string
   onChange?: (v: TaskPriority) => void

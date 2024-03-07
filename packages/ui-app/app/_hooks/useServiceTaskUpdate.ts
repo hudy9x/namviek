@@ -32,7 +32,10 @@ export const useServiceTaskUpdate = () => {
       data.done = data.taskStatusId === statusDoneId
     }
 
+    console.log('first', JSON.stringify(data))
+
     refactorTaskFieldByAutomationConfig('task', data as ITaskDefaultValues)
+    console.log('next', JSON.stringify(data))
 
     return data
   }
@@ -43,16 +46,18 @@ export const useServiceTaskUpdate = () => {
       return
     }
 
-    const handledData = _handleTaskData(data)
-    console.log('handledData', handledData)
-    const updatedData = {
-      progress: handledData?.progress,
-      dueDate: handledData?.dueDate,
-      taskPoint: handledData?.taskPoint,
-      priority: handledData?.priority,
-      assigneeIds: handledData?.assigneeIds,
-      taskStatusId: handledData?.taskStatusId
-    }
+    const updatedData = _handleTaskData(data)
+
+    // const handledData = _handleTaskData(data)
+    // const updatedData = {
+    //   progress: handledData?.progress,
+    //   dueDate: handledData?.dueDate,
+    //   taskPoint: handledData?.taskPoint,
+    //   priority: handledData?.priority,
+    //   assigneeIds: handledData?.assigneeIds,
+    //   taskStatusId: handledData?.taskStatusId
+    // }
+    console.log('handledData', updatedData)
 
     updateMultipleTask({
       updatedBy: user?.id,
@@ -67,6 +72,7 @@ export const useServiceTaskUpdate = () => {
         console.log(res)
       })
       .catch(err => {
+        messageError('Opps! Something went wrong')
         console.log(err)
       })
   }

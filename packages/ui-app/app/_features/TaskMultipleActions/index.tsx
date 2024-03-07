@@ -6,15 +6,15 @@ import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
-import { TaskPriority } from '@prisma/client'
+import { Task, TaskPriority } from '@prisma/client'
 import { Button, DatePicker } from '@shared/ui'
 import { useCallback, useEffect, useState } from 'react'
 
 const defaultData = {
-  date: new Date(),
-  point: '1',
+  date: undefined,
+  point: '',
   status: '',
-  priority: TaskPriority.LOW,
+  priority: 'NONE' as TaskPriority,
   assignee: ''
 }
 export default function TaskMultipleActions() {
@@ -22,9 +22,7 @@ export default function TaskMultipleActions() {
   const { user } = useUser()
   const { selected, clearAllSelected } = useTaskStore()
   const { updateMultiTaskData } = useServiceTaskUpdate()
-  const [data, setData] = useState(
-    structuredClone({ ...defaultData, status: statusDoneId })
-  )
+  const [data, setData] = useState(structuredClone({ ...defaultData }))
   const hasSelected = selected.length
   const { date, point, priority, assignee, status } = data
 
@@ -36,26 +34,48 @@ export default function TaskMultipleActions() {
   }
 
   const onUpdate = () => {
-    hasSelected &&
-      updateMultiTaskData(selected, {
-        dueDate: data.date,
-        taskPoint: parseInt(data.point, 10),
-        taskStatusId: data.status,
-        priority: data.priority,
-        assigneeIds: [data.assignee]
-      })
+    const dt: Partial<Task> = {}
+    const { date, point, status, priority, assignee } = data
+
+    if (date) {
+      dt.dueDate = date
+    }
+
+    if (point) {
+      dt.taskPoint = parseInt(point, 10)
+    }
+
+    if (!priority.includes('NONE')) {
+      dt.priority = priority
+    }
+
+    if (status) {
+      dt.taskStatusId = status
+    }
+
+    if (assignee) {
+      dt.assigneeIds = [assignee]
+    }
+
+    if (Object.keys(dt).length) {
+      console.log('updated', dt)
+      hasSelected && updateMultiTaskData(selected, dt)
+    } else {
+      console.log('nothing to update')
+    }
 
     clearAllSelected()
+    setData(structuredClone({ ...defaultData }))
   }
 
   // fill default user
   useEffect(() => {
     if (user) {
-      updateData('assignee', user.id)
+      // updateData('assignee', user.id)
     }
 
     if (statusDoneId) {
-      updateData('status', statusDoneId)
+      // updateData('status', statusDoneId)
     }
 
     // eslint-disable-next-line
@@ -72,7 +92,7 @@ export default function TaskMultipleActions() {
   useEffect(() => {
     const handler = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
-        clearAllSelected()
+        onClose()
       }
     }
 
@@ -80,11 +100,16 @@ export default function TaskMultipleActions() {
 
     return () => {
       document.removeEventListener('keyup', handler)
-      clearAllSelected()
+      onClose()
     }
 
     // eslint-disable-next-line
   }, [])
+
+  const onClose = () => {
+    clearAllSelected()
+    setData(structuredClone({ ...defaultData }))
+  }
 
   return (
     <div
@@ -97,6 +122,7 @@ export default function TaskMultipleActions() {
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
           value={date}
+          placeholder="--/--/--"
           onChange={val => {
             // setFilterValue('startDate', val)
             updateData('date', val)
@@ -134,7 +160,7 @@ export default function TaskMultipleActions() {
           className="task-filter-member-picker"
         />
         <Button title="Update" primary onClick={onUpdate} />
-        <Button title="Close" onClick={() => clearAllSelected()} />
+        <Button title="Close" onClick={onClose} />
       </div>
     </div>
   )

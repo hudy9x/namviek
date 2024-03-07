@@ -66,7 +66,7 @@ export default function DataRemap() {
     const value = mapped[col as keyof typeof mapped]
     return (
       <div className="flex items-center gap-2">
-        <span>{col}</span>
+        <span className='capitalize'>{col}</span>
         <HiOutlineArrowRight />
         <ListPreset
           width={150}

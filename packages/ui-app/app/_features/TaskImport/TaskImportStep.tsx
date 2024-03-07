@@ -9,10 +9,10 @@ export default function TaskImportStep() {
   }
 
   const steps = [
-    'Normalizing data',
-    'Importing data to project',
-    'Waiting for the import process complete',
-    'Trying to fill data into task list'
+    'Normalizing the data',
+    'Importing data into the project',
+    'Waiting for the import process to complete',
+    'Trying to add data to the task list'
   ]
 
   return (
