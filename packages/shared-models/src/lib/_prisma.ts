@@ -1,5 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 
+import { Logtail } from '@logtail/node'
+
+const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN)
+
+export const Log = logtail
+
 export const pmClient = new PrismaClient()
 export const pmTrans = pmClient.$transaction
 export const projectModel = pmClient.project
