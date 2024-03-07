@@ -28,6 +28,7 @@
     "@dnd-kit/core": "^6.0.8",
     "@livekit/components-react": "^1.3.0",
     "@livekit/components-styles": "^1.0.6",
+    "@logtail/node": "^0.4.19",
     "@prisma/client": "5.2.0",
     "@pusher/push-notifications-server": "^1.2.6",
     "@pusher/push-notifications-web": "^1.1.0",

@@ -1,7 +1,6 @@
 'use client'
 
 import { useUser } from '@goalie/nextjs'
-import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
 import { getRecentVisit } from '@shared/libs'
 
@@ -14,6 +13,8 @@ export default function UserChecking() {
       if (recentVisit) {
         const location = window.location
         location.href = `${location.protocol}//${location.host}${recentVisit}`
+      } else {
+        location.href = `${location.protocol}//${location.host}/organization`
       }
     }
 

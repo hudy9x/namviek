@@ -25,6 +25,8 @@ import {
   OrganizationRole
 } from '@prisma/client'
 import { MAX_STORAGE_SIZE } from '../storage'
+import { isProdMode } from '../../lib/utils'
+import { Log } from '../../lib/log'
 
 @Controller('/org')
 @UseMiddleware([authMiddleware])
@@ -52,16 +54,21 @@ export class OrganizationController extends BaseController {
       //   return cached
       // }
 
+      Log.info('Getting org list of ', { id })
       const orgIds = await mdOrgMemGetByUid(id)
       const orgs = await mdOrgGet(orgIds.map(org => org.organizationId))
+      Log.debug(`Returned org list: ${orgs.length}`, { id, orgs, orgIds })
 
       setJSONCache(key, orgs)
+      Log.flush()
 
-      res.setHeader('Cache-Control', 'max-age=20, public')
+      // res.setHeader('Cache-Control', 'max-age=20, public')
 
       return orgs
     } catch (error) {
       console.log(error)
+      Log.debug('Getting org list error', { error })
+      Log.flush()
       throw new InternalServerException()
     }
   }
@@ -69,7 +76,7 @@ export class OrganizationController extends BaseController {
   @Post('')
   async createOrganization() {
     const req = this.req as AuthRequest
-    const isProd = process.env.DEV_MODE === 'true'
+    const isProd = isProdMode()
 
     try {
       const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover'>

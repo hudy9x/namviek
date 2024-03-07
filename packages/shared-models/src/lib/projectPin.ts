@@ -1,5 +1,5 @@
 import { PinnedProjectSetting, UserSetting } from '../type'
-import { pmClient } from './_prisma'
+import { Log, pmClient } from './_prisma'
 import { mdUserFindFirst, mdUserUpdateSetting } from './user'
 
 const _getPinnedProjectList = async (
@@ -47,11 +47,15 @@ const _updatePinSetting = async ({
 
     // set a default setting for pinned projects
     console.log('settings', settings)
+    Log.info(`Get user's settings: ${user.id}`, { settings })
     if (type === 'pin' && !settings.pinnedProjects) {
       settings.pinnedProjects = []
+      Log.debug('Fill default pinnedProjects', { settings })
     }
 
     if (!settings || !settings.pinnedProjects) {
+      Log.debug('Setting still empty', { settings })
+      Log.flush()
       return
     }
 
@@ -63,12 +67,15 @@ const _updatePinSetting = async ({
         createdAt: new Date()
       })
 
-      await tx.user.update({
+      const result = await tx.user.update({
         where: { id: uid },
         data: {
           settings: { ...settings, ...{ pinnedProjects } }
         }
       })
+
+      Log.info('Pin a project in user settings', { result })
+      Log.flush()
 
       // unpin project
     } else {
@@ -76,7 +83,7 @@ const _updatePinSetting = async ({
         p => p.id !== projectId
       )
 
-      await tx.user.update({
+      const result = await tx.user.update({
         where: { id: uid },
         data: {
           settings: {
@@ -85,6 +92,8 @@ const _updatePinSetting = async ({
           }
         }
       })
+      Log.info('Unpin project from user setting', { result })
+      Log.flush()
     }
   })
 }

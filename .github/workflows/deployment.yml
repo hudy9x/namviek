@@ -81,6 +81,9 @@ jobs:
            FIREBASE_PROJECT_ID=${{vars.FIREBASE_PROJECT_ID}}
            FIREBASE_CLIENT_EMAIL=${{vars.FIREBASE_CLIENT_EMAIL}}
            FIREBASE_PRIVATE_KEY=${{vars.FIREBASE_PRIVATE_KEY}}
+
+           # Logtail
+           LOGTAIL_SOURCE_TOKEN=${{vars.LOGTAIL_SOURCE_TOKEN}}
            " > .env
       - name: run app
         run: |
