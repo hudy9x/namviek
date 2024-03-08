@@ -396,6 +396,9 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
     const result = await mdTaskAddMany(newTasks)
     console.timeEnd('import')
 
+    const key = [CKEY.TASK_QUERY, projectId]
+    await findNDelCaches(key)
+
     console.log('import success')
     res.json({ status: 200, data: result })
   } catch (error) {

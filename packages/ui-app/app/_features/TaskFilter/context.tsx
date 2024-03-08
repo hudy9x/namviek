@@ -169,12 +169,13 @@ export const useTaskFilter = () => {
         if (taskStatusId === id) {
           items.push(t.id)
           ignored.push(t.id)
+          return
         }
 
-        if (!taskStatusId || !statusIds.includes(taskStatusId)) {
+        if (!statusIds.includes(taskStatusId || '')) {
           noneItems.push(t.id)
-
           ignored.push(t.id)
+          return
         }
       })
 
