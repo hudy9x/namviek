@@ -148,7 +148,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
       const cached = await getJSONCache(key)
       if (cached) {
-        console.log('return cached tasks', key)
         return res.json({
           status: 200,
           data: cached.data,
@@ -158,10 +157,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
     }
 
     const tasks = await mdTaskGetAll(rest)
-    console.log(
-      'fetched latest tasks 1:',
-      Array.isArray(tasks) ? tasks.length : ''
-    )
     if (counter) {
       const total = await mdTaskGetAll(req.query)
       if (ableToCache) {
@@ -439,7 +434,6 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
   const key = [CKEY.TASK_QUERY, data.projectId]
 
-  console.log('start updating', data)
   Log.info(`Update multiple task by uid: ${userId}`, { data })
   try {
     data.updatedAt = new Date()
