@@ -2,89 +2,42 @@ import MemberPicker from '@/components/MemberPicker'
 import PointSelect from '@/components/PointSelect'
 import PrioritySelect from '@/components/PrioritySelect'
 import StatusSelect from '@/components/StatusSelect'
-import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
-import { useProjectStatusStore } from '@/store/status'
-import { useTaskStore } from '@/store/task'
-import { useUser } from '@goalie/nextjs'
 import { TaskPriority } from '@prisma/client'
 import { Button, DatePicker } from '@shared/ui'
-import { useCallback, useEffect, useState } from 'react'
+import { useMultipleUpdate, defaultData } from './useMultipleUpdate'
+import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
 
-const defaultData = {
-  date: new Date(),
-  point: '1',
-  status: '',
-  priority: TaskPriority.LOW,
-  assignee: ''
-}
 export default function TaskMultipleActions() {
-  const { statusDoneId } = useProjectStatusStore()
-  const { user } = useUser()
-  const { selected, clearAllSelected } = useTaskStore()
-  const { updateMultiTaskData } = useServiceTaskUpdate()
-  const [data, setData] = useState(
-    structuredClone({ ...defaultData, status: statusDoneId })
-  )
-  const hasSelected = selected.length
-  const { date, point, priority, assignee, status } = data
+  const { onUpdate, hasSelected, selected, clearAllSelected, data, setData } =
+    useMultipleUpdate()
+  // const { onDeleteMany } = useMultipleDelete()
+  const { date, point, assignee, status, priority } = data
 
-  const updateData = (
+  const updateFieldValue = (
     name: keyof typeof data,
     val: string | Date | TaskPriority
   ) => {
     setData(dt => ({ ...dt, [name]: val }))
   }
 
-  const onUpdate = () => {
-    hasSelected &&
-      updateMultiTaskData(selected, {
-        dueDate: data.date,
-        taskPoint: parseInt(data.point, 10),
-        taskStatusId: data.status,
-        priority: data.priority,
-        assigneeIds: [data.assignee]
-      })
+  useEscapeKeyPressed(
+    () => {
+      onClose()
+    },
+    function unmount() {
+      onClose()
+    }
+  )
 
+  // const onDeleteAction = () => {
+  //   onDeleteMany()
+  //   onClose()
+  // }
+
+  const onClose = () => {
     clearAllSelected()
+    setData(structuredClone({ ...defaultData }))
   }
-
-  // fill default user
-  useEffect(() => {
-    if (user) {
-      updateData('assignee', user.id)
-    }
-
-    if (statusDoneId) {
-      updateData('status', statusDoneId)
-    }
-
-    // eslint-disable-next-line
-  }, [user?.id, statusDoneId])
-
-  // // clear filled data
-  // useEffect(() => {
-  //   if (!hasSelected && user) {
-  //     defaultData.assignee = user.id
-  //     setData(defaultData)
-  //   }
-  // }, [hasSelected, user])
-
-  useEffect(() => {
-    const handler = (ev: KeyboardEvent) => {
-      if (ev.key === 'Escape') {
-        clearAllSelected()
-      }
-    }
-
-    document.addEventListener('keyup', handler)
-
-    return () => {
-      document.removeEventListener('keyup', handler)
-      clearAllSelected()
-    }
-
-    // eslint-disable-next-line
-  }, [])
 
   return (
     <div
@@ -97,16 +50,17 @@ export default function TaskMultipleActions() {
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
           value={date}
+          placeholder="--/--/--"
           onChange={val => {
             // setFilterValue('startDate', val)
-            updateData('date', val)
+            updateFieldValue('date', val)
           }}
         />
 
         <StatusSelect
           value={status}
           onChange={val => {
-            updateData('status', val)
+            updateFieldValue('status', val)
           }}
           className="sm:w-[150px]"
         />
@@ -114,7 +68,7 @@ export default function TaskMultipleActions() {
         <PointSelect
           value={point}
           onChange={val => {
-            updateData('point', val)
+            updateFieldValue('point', val)
           }}
         />
 
@@ -122,19 +76,20 @@ export default function TaskMultipleActions() {
           width={130}
           value={priority}
           onChange={val => {
-            updateData('priority', val)
+            updateFieldValue('priority', val)
           }}
         />
 
         <MemberPicker
           value={assignee}
           onChange={val => {
-            updateData('assignee', val)
+            updateFieldValue('assignee', val)
           }}
           className="task-filter-member-picker"
         />
         <Button title="Update" primary onClick={onUpdate} />
-        <Button title="Close" onClick={() => clearAllSelected()} />
+        {/* <Button title="Delete" danger onClick={onDeleteAction} /> */}
+        <Button title="Close" onClick={onClose} />
       </div>
     </div>
   )

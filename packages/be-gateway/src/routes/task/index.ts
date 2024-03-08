@@ -39,6 +39,7 @@ import {
 } from '../../services/todo.counter'
 import ActivityService from '../../services/activity.service'
 import { pmClient, pmTrans } from 'packages/shared-models/src/lib/_prisma'
+import { Log } from '../../lib/log'
 
 const router = Router()
 
@@ -147,7 +148,6 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
       const cached = await getJSONCache(key)
       if (cached) {
-        console.log('return cached tasks')
         return res.json({
           status: 200,
           data: cached.data,
@@ -431,16 +431,16 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
 
 router.put('/project/task-many', async (req: AuthRequest, res) => {
   const { ids, data } = req.body as { ids: string[]; data: Task }
-  const { dueDate, assigneeIds, priority, taskStatusId, taskPoint, projectId } =
-    data
   const { id: userId } = req.authen
   const key = [CKEY.TASK_QUERY, data.projectId]
 
-  console.log('start updating')
+  Log.info(`Update multiple task by uid: ${userId}`, { data })
   try {
     data.updatedAt = new Date()
     data.updatedBy = userId
-    data.dueDate = new Date(data.dueDate)
+    if (data.dueDate) {
+      data.dueDate = new Date(data.dueDate)
+    }
 
     await mdTaskUpdateMany(ids, data)
     await findNDelCaches(key)
@@ -450,79 +450,10 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
       result: 1
     })
   } catch (error) {
+    console.log('update multiple task error', error)
+    Log.debug('Update multiple task error failed', { error })
     res.status(500).send(error)
   }
-
-  // try {
-  //   const taskData = await mdTaskGetOne(id)
-  //   const oldStatusId = taskData.taskStatusId
-  //   const key = [CKEY.TASK_QUERY, taskData.projectId]
-  //
-  //   if (title) {
-  //     taskData.title = title
-  //   }
-  //
-  //   if (desc) {
-  //     taskData.desc = desc
-  //   }
-  //
-  //   if (taskStatusId) {
-  //     const doneStatus = await mdTaskStatusWithDoneType(projectId)
-  //
-  //     taskData.taskStatusId = taskStatusId
-  //     if (doneStatus && doneStatus.id === taskStatusId) {
-  //       taskData.done = true
-  //     }
-  //   } else {
-  //     taskData.done = false
-  //   }
-  //
-  //
-  //   if (assigneeIds) {
-  //     taskData.assigneeIds = assigneeIds
-  //   }
-  //
-  //   if (priority) {
-  //     taskData.priority = priority
-  //   }
-  //
-  //   if (taskPoint) {
-  //     taskData.taskPoint = taskPoint
-  //   }
-  //
-  //   if (dueDate) {
-  //     taskData.dueDate = dueDate
-  //   }
-  //
-  //
-  //   taskData.updatedAt = new Date()
-  //   taskData.updatedBy = userId
-  //
-  //   // delete taskData.id
-  //   // const { id: tid, ...rest } = taskData
-  //
-  //   const result = await mdTaskUpdate(taskData)
-  //
-  //   if (oldStatusId !== result.taskStatusId) {
-  //     const newStatus = await serviceGetStatusById(result.taskStatusId)
-  //     const pinfo = await serviceGetProjectById(result.projectId)
-  //     const taskLink = genFrontendUrl(
-  //       `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-  //     )
-  //
-  //     notifyToWebUsers(result.assigneeIds, {
-  //       body: `Status changed to ${newStatus.name} on "${result.title}"`,
-  //       deep_link: taskLink
-  //     })
-  //   }
-  //
-  //   await findNDelCaches(key)
-  //   res.json({ status: 200, data: result })
-  //   // })
-  // } catch (error) {
-  //   console.log(error)
-  //   res.status(500).send(error)
-  // }
 })
 
 // It means POST:/api/example

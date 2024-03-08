@@ -30,7 +30,8 @@ export default function DatePicker({
 
   // fill default value
   useEffect(() => {
-    value && setSelected(value)
+    setSelected(value)
+    // value && setSelected(value)
   }, [value])
 
   const onDatepickerChange = (d: Date) => {

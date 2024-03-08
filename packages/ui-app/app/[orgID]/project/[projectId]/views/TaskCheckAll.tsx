@@ -12,8 +12,15 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
 
   const taskIds = useMemo(() => {
     const ids: string[] = []
-    tasks.map(task => {
-      if (isGroupbyStatus && task.taskStatusId !== groupId) return null
+    tasks.forEach(task => {
+      if (isGroupbyStatus && task.taskStatusId !== groupId) {
+        if (groupId === 'NONE') {
+          ids.push(task.id)
+          return
+        }
+
+        return null
+      }
 
       if (isGroupbyAssignee) {
         if (task.assigneeIds.length && !task.assigneeIds.includes(groupId)) {
@@ -40,10 +47,8 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
   }
 
   useEffect(() => {
-
     // uncheck/check if one of items uncheck
     if (!selected.length) {
-
       setChecked(false)
     }
 

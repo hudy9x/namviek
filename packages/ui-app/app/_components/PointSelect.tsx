@@ -38,11 +38,22 @@ export default function PointSelect({
   //
   //
   useEffect(() => {
-    if (value && options.length) {
+    if (options.length) {
       const newOption = options.find(opt => opt.id === value)
       newOption && setVal(newOption)
     }
   }, [value, options])
+
+  // CASE: set value to empty
+  useEffect(() => {
+    setVal(prev => {
+      if (prev && !value) {
+        return { id: '', title: '' }
+      }
+
+      return prev
+    })
+  }, [value])
 
   useEffect(() => {
     if (points.length) {

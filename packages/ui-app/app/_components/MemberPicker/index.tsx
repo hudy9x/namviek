@@ -42,6 +42,17 @@ export default function MemberPicker({
     }
   }, [value])
 
+  // CASE: set an empty value
+  useEffect(() => {
+    setVal(prev => {
+      if (prev && !value) {
+        return { id: '', title: '' }
+      }
+
+      return prev
+    })
+  }, [value])
+
   useEffect(() => {
     const selectedMember = options.find(m => value === m.id)
     if (selectedMember) {
@@ -96,7 +107,7 @@ export default function MemberPicker({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>{getSelectedMember(val)}</List.Button>
-        <List.Options>
+        <List.Options minWidth={200}>
           {options.map(option => {
             const member = members.find(m => m.id === option.id)
             return (

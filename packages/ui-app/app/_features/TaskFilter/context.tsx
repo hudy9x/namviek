@@ -154,16 +154,26 @@ export const useTaskFilter = () => {
 
   const _groupByStatus = (): ITaskFilterGroupbyItem[] => {
     const ignored: string[] = []
+    const statusIds = statuses.map(s => s.id)
+    const noneItems: string[] = []
 
-    return statuses.map(stt => {
+    const groupStatuses = statuses.map(stt => {
       const { id, name, color } = stt
       const items: string[] = []
 
       tasks.forEach(t => {
         if (ignored.includes(t.id)) return
 
-        if (t.taskStatusId === id) {
+        const { taskStatusId } = t
+
+        if (taskStatusId === id) {
           items.push(t.id)
+          ignored.push(t.id)
+        }
+
+        if (!taskStatusId || !statusIds.includes(taskStatusId)) {
+          noneItems.push(t.id)
+
           ignored.push(t.id)
         }
       })
@@ -175,6 +185,18 @@ export const useTaskFilter = () => {
         items
       }
     })
+
+
+    if (noneItems.length) {
+      groupStatuses.push({
+        id: 'NONE',
+        color: '#cecece',
+        name: 'None',
+        items: noneItems
+      })
+    }
+
+    return groupStatuses
   }
 
   const _groupByPriority = (): ITaskFilterGroupbyItem[] => {
@@ -263,7 +285,6 @@ export const useTaskFilter = () => {
 
     setGroupbyLoading(false)
     setGroupbyItems(groupItems)
-
   }
 
   const updateGroupByFilter = (val: ETaskFilterGroupByType) => {
