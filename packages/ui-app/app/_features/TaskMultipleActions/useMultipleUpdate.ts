@@ -1,7 +1,7 @@
-import { useServiceTaskUpdate } from "@/hooks/useServiceTaskUpdate"
-import { useTaskStore } from "@/store/task"
-import { Task, TaskPriority } from "@prisma/client"
-import { useState } from "react"
+import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
+import { useTaskStore } from '@/store/task'
+import { Task, TaskPriority } from '@prisma/client'
+import { useState } from 'react'
 
 export const defaultData = {
   date: undefined,
@@ -41,6 +41,8 @@ export const useMultipleUpdate = () => {
       dt.assigneeIds = [assignee]
     }
 
+    console.log(data)
+
     if (Object.keys(dt).length) {
       console.log('updated', dt)
       hasSelected && updateMultiTaskData(selected, dt)
@@ -53,6 +55,8 @@ export const useMultipleUpdate = () => {
   }
 
   return {
+    data,
+    setData,
     onUpdate,
     hasSelected,
     clearAllSelected,

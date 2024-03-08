@@ -173,9 +173,9 @@ export const useTaskFilter = () => {
 
         if (!taskStatusId || !statusIds.includes(taskStatusId)) {
           noneItems.push(t.id)
+
           ignored.push(t.id)
         }
-
       })
 
       return {
@@ -186,14 +186,14 @@ export const useTaskFilter = () => {
       }
     })
 
+
     if (noneItems.length) {
       groupStatuses.push({
-        id: "None",
-        color: "#cecece",
-        name: "None",
+        id: 'NONE',
+        color: '#cecece',
+        name: 'None',
         items: noneItems
       })
-
     }
 
     return groupStatuses
@@ -285,7 +285,6 @@ export const useTaskFilter = () => {
 
     setGroupbyLoading(false)
     setGroupbyItems(groupItems)
-
   }
 
   const updateGroupByFilter = (val: ETaskFilterGroupByType) => {
