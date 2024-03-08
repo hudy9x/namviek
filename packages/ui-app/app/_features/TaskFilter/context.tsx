@@ -177,6 +177,12 @@ export const useTaskFilter = () => {
           ignored.push(t.id)
           return
         }
+
+        if (!taskStatusId || !statusIds.includes(taskStatusId)) {
+          noneItems.push(t.id)
+
+          ignored.push(t.id)
+        }
       })
 
       return {
