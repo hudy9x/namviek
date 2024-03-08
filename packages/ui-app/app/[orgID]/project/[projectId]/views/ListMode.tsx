@@ -62,9 +62,8 @@ export default function ListMode() {
                 className="flex gap-2 items-center text-xs uppercase font-bold">
                 <TaskCheckAll groupId={group.id} />
                 <div
-                  className={`status-name flex items-center ${
-                    groupByLoading ? 'loading' : ''
-                  }`}>
+                  className={`status-name flex items-center ${groupByLoading ? 'loading' : ''
+                    }`}>
                   {isGroupbyAssignee ? (
                     <div className="mr-2 inline-block">
                       <Avatar
@@ -97,7 +96,7 @@ export default function ListMode() {
               {!taskLoading &&
                 tasks.map(task => {
                   if (isGroupbyStatus && task.taskStatusId !== group.id) {
-                    if (group.id === 'NONE') {
+                    if (group.id === 'NONE' && group.items.includes(task.id)) {
                       return <ListRow key={task.id} task={task} />
                     }
                     return null
