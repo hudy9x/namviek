@@ -14,11 +14,10 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany,
-  mdTaskCounterByProject
+  mdTaskUpdateMany
 } from '@shared/models'
 
-import { Prisma, Task, TaskStatus } from '@prisma/client'
+import { Task, TaskStatus } from '@prisma/client'
 import {
   CKEY,
   findNDelCaches,
@@ -38,7 +37,9 @@ import {
   updateTodoCounter
 } from '../../services/todo.counter'
 import ActivityService from '../../services/activity.service'
-import { pmClient, pmTrans } from 'packages/shared-models/src/lib/_prisma'
+import { createModuleLog } from '../../lib/log'
+
+const logging = createModuleLog('ProjectTask')
 // import { Log } from '../../lib/log'
 
 const router = Router()
@@ -437,7 +438,8 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
   const key = [CKEY.TASK_QUERY, data.projectId]
 
-  // Log.info(`Update multiple task by uid: ${userId}`, { data })
+  logging.info('TaskUpdateMany - start updating !')
+
   try {
     data.updatedAt = new Date()
     data.updatedBy = userId
@@ -445,17 +447,19 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
       data.dueDate = new Date(data.dueDate)
     }
 
+    logging.debug('TaskUpdateMany - task data', data, ids)
+
     await mdTaskUpdateMany(ids, data)
     await findNDelCaches(key)
-    console.log('updated already 2')
+    logging.info('TaskUpdateMany - successfully')
 
     res.json({
       result: 1
     })
   } catch (error) {
-    console.log('update multiple task error', error)
+    logging.error('TaskUpdateMany - update multiple task error', { error })
     // Log.debug('Update multiple task error failed', { error })
-    res.status(500).send(error)
+    res.status(500).send(JSON.stringify(error))
   }
 })
 
