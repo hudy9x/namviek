@@ -3,10 +3,10 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - packages/ui-app/**
-      - packages/shared-ui/**
-      - packages/goalie-nextjs/**
+    # paths-ignore:
+    #   - packages/ui-app/**
+    #   - packages/shared-ui/**
+    #   - packages/goalie-nextjs/**
 
 jobs:
   build-backend-api:
