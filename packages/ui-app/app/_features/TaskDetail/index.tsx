@@ -153,6 +153,7 @@ export default function TaskDetail({
                 }
               }, 200)
             }}
+            style={{width: 'calc(100% - 40px)'}}
             className={`cursor-pointer font-bold text-2xl select-none ${
               titleVisible ? '' : 'hidden'
             }`}>

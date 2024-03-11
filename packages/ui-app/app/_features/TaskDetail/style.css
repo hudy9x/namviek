@@ -8,7 +8,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   height: 32px;
-  width: 100%;
+  width: calc(100% - 50px);
   /* outline: none; */
 }
 
