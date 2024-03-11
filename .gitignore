@@ -44,3 +44,4 @@ Thumbs.db
 .env
 pm2.json
 
+logs/*
