@@ -437,7 +437,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
   const key = [CKEY.TASK_QUERY, data.projectId]
 
-  Log.info(`Update multiple task by uid: ${userId}`, { data })
+  // Log.info(`Update multiple task by uid: ${userId}`, { data })
   try {
     data.updatedAt = new Date()
     data.updatedBy = userId
@@ -454,7 +454,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
     })
   } catch (error) {
     console.log('update multiple task error', error)
-    Log.debug('Update multiple task error failed', { error })
+    // Log.debug('Update multiple task error failed', { error })
     res.status(500).send(error)
   }
 })

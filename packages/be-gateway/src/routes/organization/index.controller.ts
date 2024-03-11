@@ -54,21 +54,21 @@ export class OrganizationController extends BaseController {
       //   return cached
       // }
 
-      Log.info('Getting org list of ', { id })
+      // Log.info('Getting org list of ', { id })
       const orgIds = await mdOrgMemGetByUid(id)
       const orgs = await mdOrgGet(orgIds.map(org => org.organizationId))
-      Log.debug(`Returned org list: ${orgs.length}`, { id, orgs, orgIds })
+      // Log.debug(`Returned org list: ${orgs.length}`, { id, orgs, orgIds })
 
       setJSONCache(key, orgs)
-      Log.flush()
+      // Log.flush()
 
       // res.setHeader('Cache-Control', 'max-age=20, public')
 
       return orgs
     } catch (error) {
       console.log(error)
-      Log.debug('Getting org list error', { error })
-      Log.flush()
+      // Log.debug('Getting org list error', { error })
+      // Log.flush()
       throw new InternalServerException()
     }
   }

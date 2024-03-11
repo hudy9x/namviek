@@ -47,15 +47,15 @@ const _updatePinSetting = async ({
 
     // set a default setting for pinned projects
     console.log('settings', settings)
-    Log.info(`Get user's settings: ${user.id}`, { settings })
+    // Log.info(`Get user's settings: ${user.id}`, { settings })
     if (type === 'pin' && !settings.pinnedProjects) {
       settings.pinnedProjects = []
-      Log.debug('Fill default pinnedProjects', { settings })
+      // Log.debug('Fill default pinnedProjects', { settings })
     }
 
     if (!settings || !settings.pinnedProjects) {
-      Log.debug('Setting still empty', { settings })
-      Log.flush()
+      // Log.debug('Setting still empty', { settings })
+      // Log.flush()
       return
     }
 
@@ -74,8 +74,8 @@ const _updatePinSetting = async ({
         }
       })
 
-      Log.info('Pin a project in user settings', { result })
-      Log.flush()
+      // Log.info('Pin a project in user settings', { result })
+      // Log.flush()
 
       // unpin project
     } else {
@@ -92,8 +92,8 @@ const _updatePinSetting = async ({
           }
         }
       })
-      Log.info('Unpin project from user setting', { result })
-      Log.flush()
+      // Log.info('Unpin project from user setting', { result })
+      // Log.flush()
     }
   })
 }
