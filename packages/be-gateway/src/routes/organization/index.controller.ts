@@ -26,7 +26,7 @@ import {
 } from '@prisma/client'
 import { MAX_STORAGE_SIZE } from '../storage'
 import { isProdMode } from '../../lib/utils'
-import { Log } from '../../lib/log'
+// import { Log } from '../../lib/log'
 
 @Controller('/org')
 @UseMiddleware([authMiddleware])

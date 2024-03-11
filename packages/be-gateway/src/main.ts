@@ -10,14 +10,14 @@ import './lib/redis'
 import './lib/firebase-admin'
 import './events'
 import Routes from './routes'
-import { Log } from './lib/log'
+// import { Log } from './lib/log'
 
 connectPubClient()
 const app: Application = express()
 
 app.get('/check-health', (req, res) => {
-  Log.info('Heelo')
-  Log.flush()
+  // Log.info('Heelo')
+  // Log.flush()
   res.send(`🚀🎃🎃🎨🎨:e Site available ${new Date()} `)
 })
 
