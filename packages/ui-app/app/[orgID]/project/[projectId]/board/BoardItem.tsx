@@ -21,10 +21,10 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
     <div
       className="board-item relative"
       onClick={() => {
-        // if (isRand) {
-        //   messageWarning('This task has been creating by server !')
-        //   return
-        // }
+        if (isRand) {
+          messageWarning('This task has been creating by server !')
+          return
+        }
         replace(link)
       }}>
       {data.cover ? (

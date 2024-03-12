@@ -9,12 +9,13 @@ import TaskPriorityCell from './TaskPriorityCell'
 import TaskPoint from './TaskPoint'
 import TaskDate from './TaskDate'
 import ProgressBar from '@/components/ProgressBar'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
-import { Loading } from '@shared/ui'
+import { Loading, messageWarning } from '@shared/ui'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const params = useParams()
+  const { replace } = useRouter()
   const { getSp } = useUrl()
   const isRandomId = task.id.includes('TASK-ID-RAND')
 
@@ -28,13 +29,26 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
 
         {isRandomId ? <Loading enabled={true} spinnerSpeed="fast" /> : null}
-        <Link
+        <div
+          className="cursor-pointer"
           key={task.id}
-          href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
-            'mode'
-          )}&taskId=${task.id}`}>
+          onClick={() => {
+            if (isRandomId) {
+              messageWarning('This task has been creating by server !')
+              return
+            }
+            replace(
+              `${params.orgID}/project/${task.projectId}?mode=${getSp(
+                'mode'
+              )}&taskId=${task.id}`
+            )
+          }}
+          // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
+          //   'mode'
+          // )}&taskId=${task.id}`}
+        >
           <div className="w-full">{task.title}</div>
-        </Link>
+        </div>
         <TaskActions
           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
           taskId={task.id}
