@@ -5,6 +5,7 @@ import { dateFormat } from '@shared/libs'
 import MemberAvatar from '@/components/MemberAvatar'
 import { useUrl } from '@/hooks/useUrl'
 import PriorityText from '@/components/PriorityText'
+import { Loading, messageWarning } from '@shared/ui'
 
 export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
@@ -14,11 +15,16 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
   const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${
     data.id
   }`
+  const isRand = data.id.includes('TASK-ID-RAND')
 
   return (
     <div
-      className="board-item"
+      className="board-item relative"
       onClick={() => {
+        if (isRand) {
+          messageWarning('This task has been creating by server !')
+          return
+        }
         replace(link)
       }}>
       {data.cover ? (
@@ -27,6 +33,7 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
         </div>
       ) : null}
       <PriorityText type={data.priority || 'LOW'} />
+      <Loading.Absolute enabled={isRand} />
       <h2 className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal cursor-pointer flex items-center gap-2">
         {data.title}
       </h2>

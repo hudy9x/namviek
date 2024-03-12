@@ -9,7 +9,9 @@ export default function TaskDeleteAction({ id }: { id: string }) {
   const { deleteTask } = useServiceTaskDel()
   const onDelete = () => {
     confirmAlert({
-      message: 'Are you sure you want to delete this task ?',
+      title: 'Delete task',
+      message:
+        'This action cannot be undone. Are you sure you want to delete this task permanently ?',
       yes: () => {
         const key = `TASKLIST_${projectId}`
         deleteTask(id)
