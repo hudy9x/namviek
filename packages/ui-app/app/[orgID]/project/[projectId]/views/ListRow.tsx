@@ -11,10 +11,12 @@ import TaskDate from './TaskDate'
 import ProgressBar from '@/components/ProgressBar'
 import { useParams } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
+import { Loading } from '@shared/ui'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const params = useParams()
   const { getSp } = useUrl()
+  const isRandomId = task.id.includes('TASK-ID-RAND')
 
   return (
     <div
@@ -24,7 +26,8 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <TaskCheckbox id={task.id} selected={task.selected} />
         {/* <StatusItem id={stt.id} /> */}
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
-        {/* {task.id} */}
+
+        {isRandomId ? <Loading enabled={true} spinnerSpeed="fast" /> : null}
         <Link
           key={task.id}
           href={`${params.orgID}/project/${task.projectId}?mode=${getSp(

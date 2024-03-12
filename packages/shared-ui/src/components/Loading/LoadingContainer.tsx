@@ -6,6 +6,7 @@ export interface ILoadingProps {
   title?: string
   icon?: ReactNode
   size?: 'base' | 'sm' | 'lg'
+  spinnerSpeed?: 'normal' | 'fast' | 'vfast'
   className?: string
   enabled?: boolean
   border?: boolean
@@ -17,7 +18,8 @@ const LoadingContainer = ({
   icon,
   size = 'base',
   className = '',
-  border = false,
+  spinnerSpeed,
+  border = false
 }: ILoadingProps) => {
   if (!enabled) return null
   const loadingBorder = border ? 'loading-border' : ''
@@ -25,9 +27,11 @@ const LoadingContainer = ({
   return (
     <div className={`loading-icon-container ${className} ${loadingBorder}`}>
       <div className={`loading-icon ${size}`}>
-        {icon || <LoadingSpinnerIcon />}
+        {icon || <LoadingSpinnerIcon speed={spinnerSpeed} />}
       </div>
-      {title && <p className="text-sm text-gray-500 dark:text-gray-300">{title}</p>}
+      {title && (
+        <p className="text-sm text-gray-500 dark:text-gray-300">{title}</p>
+      )}
     </div>
   )
 }
