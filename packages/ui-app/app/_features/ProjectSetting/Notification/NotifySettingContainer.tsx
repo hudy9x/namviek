@@ -57,6 +57,8 @@ export default function NotifySettingContainer({ taskChanges, overdue, remind }:
     }
   }
 
+  console.log('taskChages', taskChanges)
+
   return (
     <div className="setting-container border dark:border-gray-700">
       <form className=" p-4 space-y-6">

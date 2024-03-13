@@ -23,8 +23,10 @@ class ProjectSetting extends BaseController {
   @Get('/notification')
   async getAllNotificationSetting(@Req() req: AuthRequest) {
     const { id } = req.authen
-    const { projectId } = this.req.params as { projectId: string }
+    const { projectId } = this.req.query as { projectId: string }
     try {
+
+      console.log('projectid', projectId)
 
       const settings = await this.settingRepo.getMyNotifySettings({
         uid: id,

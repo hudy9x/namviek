@@ -20,31 +20,36 @@ export default function ProjectNotificationSetting() {
 
 
   useEffect(() => {
-    setLoading(true)
     const abortCtrl = new AbortController()
-    projectSettingNotify.get(projectId, abortCtrl.signal).then(res => {
+
+    if (projectId) {
+      setLoading(true)
+      console.log('get projectId', projectId)
+      projectSettingNotify.get(projectId, abortCtrl.signal).then(res => {
 
 
-      const { data } = res.data
-      const { overdue, taskChanges, remind } = data as ProjectSettingNotification
+        const { data } = res.data
+        const { overdue, taskChanges, remind } = data as ProjectSettingNotification
 
 
-      setData({
-        overdue: !!overdue,
-        taskChanges: !!taskChanges,
-        remind: !!remind,
-        loading: false
+        setData({
+          overdue: !!overdue,
+          taskChanges: !!taskChanges,
+          remind: !!remind,
+          loading: false
+        })
+
+        console.log('project notify setting', data)
+      }).catch(err => {
+        setLoading(false)
       })
 
-      console.log('project notify setting', data)
-    }).catch(err => {
-      setLoading(false)
-    })
+    }
     return () => {
       setLoading(false)
       abortCtrl.abort()
     }
-  }, [])
+  }, [projectId])
 
   if (data.loading) {
     return (
