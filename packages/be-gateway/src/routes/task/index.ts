@@ -14,7 +14,8 @@ import {
   mdTaskDelete,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  ProjectSettingRepository
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -487,6 +488,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
 
   const activityService = new ActivityService()
+  const projectSettingRepo = new ProjectSettingRepository()
 
   try {
     // await pmClient.$transaction(async tx => {
@@ -494,6 +496,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     const oldTaskData = structuredClone(taskData)
     const isDoneBefore = taskData.done
     const oldStatusId = taskData.taskStatusId
+    const oldProgress = taskData.progress
     const oldAssigneeId = taskData?.assigneeIds[0]
 
     const key = [CKEY.TASK_QUERY, taskData.projectId]
@@ -577,6 +580,13 @@ router.put('/project/task', async (req: AuthRequest, res) => {
 
     await Promise.allSettled(processes)
 
+    const getWatchers = async () => {
+      const watchers = await projectSettingRepo.getAllNotifySettings(result.projectId)
+      // merge watchers and make sure that do not send it to user who updated this task
+      const watcherList = [...result.assigneeIds, ...watchers].filter(uid => uid !== userId)
+      return watcherList
+    }
+
     // send notification as status changed
     if (oldStatusId !== result.taskStatusId) {
       const newStatus = await serviceGetStatusById(result.taskStatusId)
@@ -585,11 +595,29 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
       )
 
-      notifyToWebUsers(result.assigneeIds, {
-        title: 'Task update',
+      const watcherList = await getWatchers()
+
+      notifyToWebUsers(watcherList, {
+        title: 'Status update',
         body: `Status changed to ${newStatus.name} on "${result.title}"`,
         deep_link: taskLink
       })
+    }
+
+    if (oldProgress !== result.progress) {
+      const pinfo = await serviceGetProjectById(result.projectId)
+      const taskLink = genFrontendUrl(
+        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
+      )
+
+      const watcherList = await getWatchers()
+
+      notifyToWebUsers(watcherList, {
+        title: 'Progress update',
+        body: `From ${oldProgress} => ${result.progress} on "${result.title}"`,
+        deep_link: taskLink
+      })
+
     }
 
     res.json({ status: 200, data: result })

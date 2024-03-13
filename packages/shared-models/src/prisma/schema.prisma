@@ -222,9 +222,9 @@ model TaskAutomation {
 }
 
 model Scheduler {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String @db.ObjectId
-  projectId      String @db.ObjectId
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String  @db.ObjectId
+  projectId      String  @db.ObjectId
   cronId         String?
 
   trigger Json
@@ -280,6 +280,19 @@ model Project {
   organizationId String
   updatedBy      String?
   updatedAt      DateTime?
+}
+
+model ProjectSettingNotification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  uid         String   @db.ObjectId
+  projectId   String   @db.ObjectId
+  taskChanges Boolean? @default(false)
+  remind      Boolean? @default(false)
+  overdue     Boolean? @default(false)
+
+  createdBy String?
+  createdAt DateTime?
 }
 
 enum ProjectViewType {
@@ -405,13 +418,13 @@ model Activity {
 }
 
 model Comment {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  taskId      String     @db.ObjectId
-  projectId   String     @db.ObjectId
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  taskId    String @db.ObjectId
+  projectId String @db.ObjectId
 
-  content     String
+  content String
 
-  createdBy  String
-  createdAt  DateTime
-  updatedAt  DateTime
+  createdBy String
+  createdAt DateTime
+  updatedAt DateTime
 }

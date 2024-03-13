@@ -30,6 +30,7 @@ import { SchedulerController } from './scheduler/index.controller'
 import TaskReorderController from './task/reorder.controller'
 import { EventController } from './event/index.controller'
 import { TestController } from './test'
+import ProjectSetting from './project/setting.controller'
 
 const router = Router()
 
@@ -46,6 +47,7 @@ router.use(
     CommentRouer,
     EventController,
     ProjectViewController,
+    ProjectSetting,
     PermissionController,
     OrganizationController,
     OrganizationStorageController,

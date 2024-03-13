@@ -1,0 +1,30 @@
+.switch-root {
+  @apply bg-gray-300 dark:bg-gray-800 rounded-full relative;
+  width: 37px;
+  height: 21px;
+}
+
+.switch-root:focus {
+  /* box-shadow: 0 0 0 2px black; */
+}
+
+.switch-root[data-state='checked'] {
+  @apply bg-indigo-500;
+}
+
+.switch-root[data-state='checked'] .switch-thumb {
+  @apply shadow-indigo-800;
+}
+
+.switch-thumb {
+  @apply rounded-full bg-white dark:bg-gray-300 shadow shadow-gray-500 block;
+  width: 17px;
+  height: 17px;
+  border-radius: 9999px;
+  transition: transform 100ms;
+  transform: translateX(2px);
+  will-change: transform;
+}
+.switch-thumb[data-state='checked'] {
+  transform: translateX(18px);
+}

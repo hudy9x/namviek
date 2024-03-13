@@ -43,6 +43,12 @@ class Project extends BaseController {
       res.status(error)
     }
   }
+
+  @Post('/toggle-tracker')
+  async toggleProjectTracker(@Body() body: { uid: string; projectId: string }) {
+    console.log(body)
+    return 1
+  }
 }
 
 export default Project
