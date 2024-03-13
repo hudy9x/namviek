@@ -7,11 +7,11 @@ let t1 = 0
 let t2 = 0
 let t3 = 0
 
-export default function NotifySettingContainer() {
+export default function NotifySettingContainer({ taskChanges, overdue, remind }: { taskChanges: boolean, remind: boolean, overdue: boolean }) {
   const { projectId } = useUrl()
-  const [checkTaskChange, setCheckTaskChange] = useState(false)
-  const [checkReminder, setCheckReminder] = useState(false)
-  const [checkOverdues, setCheckOverdue] = useState(false)
+  const [checkTaskChange, setCheckTaskChange] = useState(taskChanges)
+  const [checkReminder, setCheckReminder] = useState(remind)
+  const [checkOverdues, setCheckOverdue] = useState(overdue)
 
   const delay = (t: number, cb: () => void) => {
     if (t) clearTimeout(t)

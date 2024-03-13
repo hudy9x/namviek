@@ -1,5 +1,5 @@
 .switch-root {
-  @apply bg-gray-300 rounded-full relative;
+  @apply bg-gray-300 dark:bg-gray-800 rounded-full relative;
   width: 37px;
   height: 21px;
 }
@@ -17,10 +17,9 @@
 }
 
 .switch-thumb {
-  @apply rounded-full shadow shadow-gray-500 block;
+  @apply rounded-full bg-white dark:bg-gray-300 shadow shadow-gray-500 block;
   width: 17px;
   height: 17px;
-  background-color: white;
   border-radius: 9999px;
   transition: transform 100ms;
   transform: translateX(2px);

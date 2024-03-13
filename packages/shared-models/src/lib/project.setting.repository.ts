@@ -16,12 +16,21 @@ export class ProjectSettingRepository {
       }
     })
   }
-  async getAllProjectNotifySettings({ projectId }: { projectId: string }) {
-    return projectNotifyModel.findFirst({
+  async getAllNotifySettings(projectId: string) {
+    const settings = await projectNotifyModel.findMany({
       where: {
-        projectId
+        projectId,
+        taskChanges: true
+      },
+      select: {
+        uid: true
       }
     })
+
+    if (settings.length) return settings.map(st => st.uid)
+
+
+    return []
   }
 
   async updateOrCreateNotifySetting(

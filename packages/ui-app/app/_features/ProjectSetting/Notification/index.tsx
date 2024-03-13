@@ -3,26 +3,56 @@ import NotifySettingContainer from './NotifySettingContainer'
 import { useEffect, useState } from 'react'
 import { projectSettingNotify } from '@/services/projectSettingNotify'
 import { Loading } from '@shared/ui'
+import { ProjectSettingNotification } from '@prisma/client'
 
 export default function ProjectNotificationSetting() {
   const { projectId } = useUrl()
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState({
+    loading: true,
+    overdue: false,
+    taskChanges: false,
+    remind: false
+  })
+
+  const setLoading = (stt: boolean) => {
+    setData(prev => ({ ...prev, loading: stt }))
+  }
+
 
   useEffect(() => {
+    setLoading(true)
     const abortCtrl = new AbortController()
     projectSettingNotify.get(projectId, abortCtrl.signal).then(res => {
-      console.log(res)
+
+
+      const { data } = res.data
+      const { overdue, taskChanges, remind } = data as ProjectSettingNotification
+
+
+      setData({
+        overdue: !!overdue,
+        taskChanges: !!taskChanges,
+        remind: !!remind,
+        loading: false
+      })
+
+      console.log('project notify setting', data)
+    }).catch(err => {
+      setLoading(false)
     })
     return () => {
+      setLoading(false)
       abortCtrl.abort()
     }
-  })
-  if (loading) {
+  }, [])
+
+  if (data.loading) {
     return (
-      <div className="setting-container border dark:border-gray-700">
-        <Loading />
+      <div className="setting-container p-4 border dark:border-gray-700">
+        <Loading title='Getting your settings ...' />
       </div>
     )
   }
-  return <NotifySettingContainer />
+
+  return <NotifySettingContainer taskChanges={data.taskChanges} overdue={data.overdue} remind={data.remind} />
 }
