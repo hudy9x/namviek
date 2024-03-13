@@ -51,12 +51,12 @@ export default function ProjectTabContent() {
   const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
-  const isList = isView(ProjectViewType.LIST)
+  const isNotBoard = !isView(ProjectViewType.BOARD)
 
-  // Note: enable overflow for List view
+  // Note: only enable overflow-y to Board view
   // to keep the scrollbar inside tabcontent
   // not the whole page
-  const cls = `relative ${isList ? 'overflow-y-auto' : null}`
+  const cls = `relative ${isNotBoard ? 'overflow-y-auto' : null}`
 
   return (
     <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
