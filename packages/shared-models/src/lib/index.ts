@@ -1,6 +1,7 @@
 export * from './project'
 export * from './projectPin'
 export * from './projectView'
+export * from './project.setting.repository'
 export * from './taskPoint'
 export * from './vision'
 export * from './taskStatus'

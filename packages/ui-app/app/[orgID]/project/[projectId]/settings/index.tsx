@@ -2,12 +2,13 @@
 
 import { AiOutlineStar } from 'react-icons/ai'
 import ProjectPoint from './ProjectPoint'
-import { HiOutlineRectangleStack } from 'react-icons/hi2'
+import { HiOutlineBellAlert, HiOutlineRectangleStack } from 'react-icons/hi2'
 import { ProjectStatus } from './status/index'
 import { HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
+import ProjectNotificationSetting from '@/features/ProjectSetting/Notification'
 
 const Setting = () => {
   const { push } = useRouter()
@@ -55,6 +56,16 @@ const Setting = () => {
       href: `${orgID}/project/${projectId}?mode=setting&tab=members`,
       content: <ProjectMemberManager />,
       desc: 'Where you can send add users to the projects. It also helps you to grant access to a specific member.'
+    },
+    {
+      icon: (
+        <HiOutlineBellAlert className="shrink-0 text-pink-600 w-6 h-6 bg-pink-100/80 rounded-full p-1.5" />
+      ),
+      title: 'Notification',
+      active: tab === 'notification',
+      href: `${orgID}/project/${projectId}?mode=setting&tab=notification`,
+      content: <ProjectNotificationSetting />,
+      desc: 'Enable automatic notifications to stay on top of important tasks'
     }
   ]
 
