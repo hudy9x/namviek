@@ -6,12 +6,8 @@ import { useSearchParams } from 'next/navigation'
 import ProjectContentLoading from './ProjectContentLoading'
 import TaskList from './TaskList'
 import { useProjectViewStore } from '@/store/projectView'
-import { useEffect, useMemo, useState } from 'react'
 import { ProjectViewType } from '@prisma/client'
-import AbsoluteLoading from 'packages/shared-ui/src/components/Loading/AbsoluteLoading'
 import { Loading } from '@shared/ui'
-import { useDebounce } from '@/hooks/useDebounce'
-import { getLocalCache, setLocalCache } from '@shared/libs'
 import { useProjectStatusStore } from '@/store/status'
 import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
 
@@ -55,11 +51,15 @@ export default function ProjectTabContent() {
   const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
+  const isList = isView(ProjectViewType.LIST)
+
+  // Note: enable overflow for List view
+  // to keep the scrollbar inside tabcontent
+  // not the whole page
+  const cls = `relative ${isList ? 'overflow-y-auto' : null}`
 
   return (
-    <div
-      className="overflow-y-auto relative"
-      style={{ height: 'calc(100vh - 83px)' }}>
+    <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
       {loading || statusLoading ? (
         <div className="px-3">
           <Loading.Absolute title="Preparing view ..." enabled={true} />

@@ -80,7 +80,8 @@ export default function BoardContainer() {
         {provided => {
           return (
             <div
-              className="board-container"
+              className="board-container overflow-y-auto custom-scrollbar"
+              style={{ width: 'calc(100vw - 309px)' }}
               {...provided.droppableProps}
               ref={provided.innerRef}>
               {groupByItems.map((group, groupIndex) => {

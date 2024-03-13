@@ -47,6 +47,7 @@
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 8px;
 }
 
 /* Track */
