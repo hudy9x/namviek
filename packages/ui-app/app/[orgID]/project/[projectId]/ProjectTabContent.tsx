@@ -51,9 +51,15 @@ export default function ProjectTabContent() {
   const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
+  const isList = isView(ProjectViewType.LIST)
+
+  // Note: enable overflow for List view
+  // to keep the scrollbar inside tabcontent
+  // not the whole page
+  const cls = `relative ${isList ? 'overflow-y-auto' : null}`
 
   return (
-    <div className="relative" style={{ height: 'calc(100vh - 83px)' }}>
+    <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
       {loading || statusLoading ? (
         <div className="px-3">
           <Loading.Absolute title="Preparing view ..." enabled={true} />

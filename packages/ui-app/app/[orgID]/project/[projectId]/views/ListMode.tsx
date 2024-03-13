@@ -62,8 +62,9 @@ export default function ListMode() {
                 className="flex gap-2 items-center text-xs uppercase font-bold">
                 <TaskCheckAll groupId={group.id} />
                 <div
-                  className={`status-name flex items-center ${groupByLoading ? 'loading' : ''
-                    }`}>
+                  className={`status-name flex items-center ${
+                    groupByLoading ? 'loading' : ''
+                  }`}>
                   {isGroupbyAssignee ? (
                     <div className="mr-2 inline-block">
                       <Avatar
