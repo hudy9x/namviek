@@ -32,15 +32,21 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
           return null
         }
 
+        const h = dueDate.getHours()
+        const m = dueDate.getMinutes()
+        const time = `${h > 9 ? h : '0' + h}:${m > 9 ? m : '0' + m}`
+
         return (
-          <Link key={task.id} href={`${orgID}/project/${projectId}?mode=${mode}&taskId=${task.id}`}>
-            <CalMonthTask key={task.id}
-              index={++index}
-              title={task.title}
-              id={task.id}
-              assigneeId={task.assigneeIds[0]}
-              taskStatusId={task.taskStatusId || ''} />
-          </Link>
+          <CalMonthTask
+            link={`${orgID}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
+            key={task.id}
+            time={time}
+            index={++index}
+            title={task.title}
+            id={task.id}
+            assigneeId={task.assigneeIds[0]}
+            taskStatusId={task.taskStatusId || ''}
+          />
         )
       })}
     </div>
