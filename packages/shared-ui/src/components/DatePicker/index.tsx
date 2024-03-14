@@ -102,7 +102,7 @@ export default function DatePicker({
   const showTimer = () => {
     if (!enableTimer) return null
     const { hour, min } = extractHourNMin(time)
-    const suffix = +hour > 12 ? 'PM' : 'AM'
+    const suffix = +hour >= 12 ? 'PM' : 'AM'
     return (
       <span className="pl-1">
         at {+hour > 12 ? +hour - 12 : hour}:{min} {suffix}
