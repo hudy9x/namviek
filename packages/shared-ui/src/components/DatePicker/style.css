@@ -10,18 +10,25 @@
   fill: white;
 }
 
+.rdp-timer-container {
+  @apply flex items-center py-3 px-4 justify-between border-t dark:border-gray-700;
+}
+.rdp-timer {
+  @apply border-none text-sm bg-white dark:bg-gray-900 p-0;
+}
+
 .rdp-caption_label {
   @apply text-gray-800;
 }
 .rdp-nav {
-  @apply space-x-2
+  @apply space-x-2;
 }
 .rdp-nav_button svg {
-  @apply w-2.5 h-2.5
+  @apply w-2.5 h-2.5;
 }
 
-.rdp-nav_button{
-  @apply border  border-gray-200 w-7 h-7
+.rdp-nav_button {
+  @apply border  border-gray-200 w-7 h-7;
 }
 
 .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
@@ -29,6 +36,6 @@
 }
 
 .rdp-day,
-.rdp-nav_button{
-  @apply rounded
+.rdp-nav_button {
+  @apply rounded;
 }

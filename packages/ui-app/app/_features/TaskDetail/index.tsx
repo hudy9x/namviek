@@ -14,6 +14,7 @@ import {
   HiOutlineBattery50,
   HiOutlineBeaker,
   HiOutlineBriefcase,
+  HiOutlineCalendar,
   HiOutlineChatBubbleLeft,
   HiOutlineClock,
   HiOutlineFlag,
@@ -153,10 +154,9 @@ export default function TaskDetail({
                 }
               }, 200)
             }}
-            style={{width: 'calc(100% - 40px)'}}
-            className={`cursor-pointer font-bold text-2xl select-none ${
-              titleVisible ? '' : 'hidden'
-            }`}>
+            style={{ width: 'calc(100% - 40px)' }}
+            className={`cursor-pointer font-bold text-2xl select-none ${titleVisible ? '' : 'hidden'
+              }`}>
             {formik.values.title}
           </h2>
 
@@ -217,10 +217,11 @@ export default function TaskDetail({
           </div>
           <div className="task-info-item">
             <div className="task-info-label">
-              <HiOutlineBeaker /> <span>Actual Timeline</span>
+              <HiOutlineClock /> <span>Due date</span>
             </div>
             <div className="task-info-content">
               <DatePicker
+                enableTimer={true}
                 value={formik.values.dueDate}
                 onChange={d => {
                   formik.setFieldValue('dueDate', d)
@@ -230,7 +231,7 @@ export default function TaskDetail({
           </div>
           <div className="task-info-item">
             <div className="task-info-label">
-              <HiOutlineClock /> <span>Timeline</span>
+              <HiOutlineCalendar /> <span>Planned date</span>
             </div>
             <div className="task-info-content">
               <div className="flex items-center gap-2">
@@ -318,89 +319,6 @@ export default function TaskDetail({
           </div>
         </section>
       </div>
-
-      {/* <div */}
-      {/*   className={`sm:flex items-start gap-3 ${isCreate ? 'flex-col' : ''}`}> */}
-      {/*   <div className="task-form-detail hidden space-y-3 w-full"> */}
-      {/*     <Form.Input */}
-      {/*       title="Task name" */}
-      {/*       name="title" */}
-      {/*       value={formik.values.title} */}
-      {/*       onChange={formik.handleChange} */}
-      {/*       placeholder="Enter your task name here !" */}
-      {/*     /> */}
-      {/*     <Form.Range */}
-      {/*       title="Progress" */}
-      {/*       step={5} */}
-      {/*       value={formik.values.progress} */}
-      {/*       onChange={v => { */}
-      {/*         formik.setFieldValue('progress', v) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <Form.TextEditor */}
-      {/*       title="Description" */}
-      {/*       value={formik.values.desc} */}
-      {/*       onChange={v => { */}
-      {/*         formik.setFieldValue('desc', v) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     {isUpdate ? <FileControl /> : null} */}
-      {/*     {isUpdate ? <Activity /> : null} */}
-      {/*   </div> */}
-      {/*   <div */}
-      {/*     className={`task-form-right-actions hidden space-y-3 ${ */}
-      {/*       isCreate ? 'w-full' : 'sm:w-[200px]' */}
-      {/*     }  shrink-0`}> */}
-      {/*     <MemberPicker */}
-      {/*       title="Assignees" */}
-      {/*       value={formik.values.assigneeIds[0]} */}
-      {/*       onChange={val => { */}
-      {/*         console.log('assignee:', val) */}
-      {/*         formik.setFieldValue('assigneeIds', val) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <StatusSelect */}
-      {/*       title="Status" */}
-      {/*       value={formik.values.taskStatusId} */}
-      {/*       onChange={val => { */}
-      {/*         formik.setFieldValue('taskStatusId', val) */}
-      {/*         console.log('status', val) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <PrioritySelect */}
-      {/*       title="Priority" */}
-      {/*       value={formik.values.priority} */}
-      {/*       onChange={val => { */}
-      {/*         formik.setFieldValue('priority', val) */}
-      {/*         console.log('alo', val) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <DatePicker */}
-      {/*       title="Due date" */}
-      {/*       value={formik.values.dueDate} */}
-      {/*       onChange={d => { */}
-      {/*         formik.setFieldValue('dueDate', d) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <DatePicker */}
-      {/*       title="Planned Start date" */}
-      {/*       value={formik.values.planedStartDate} */}
-      {/*       onChange={d => { */}
-      {/*         formik.setFieldValue('plannedStartDate', d) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <DatePicker */}
-      {/*       title="Planned Due date" */}
-      {/*       value={formik.values.plannedDueDate} */}
-      {/*       onChange={d => { */}
-      {/*         formik.setFieldValue('plannedDueDate', d) */}
-      {/*       }} */}
-      {/*     /> */}
-      {/*     <div className="text-right"> */}
-      {/*       <Button type="submit" loading={loading} title="Submit" primary /> */}
-      {/*     </div> */}
-      {/*   </div> */}
-      {/* </div> */}
     </form>
   )
 }

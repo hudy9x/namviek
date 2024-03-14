@@ -1,7 +1,7 @@
 import { format, formatDistanceToNowStrict, isValid } from 'date-fns'
 import * as Popover from '@radix-ui/react-popover'
-import { useEffect, useState } from 'react'
-import { DayPicker } from 'react-day-picker'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import 'react-day-picker/dist/style.css'
 import './style.css'
@@ -9,6 +9,7 @@ import './style.css'
 export interface IDatePicker {
   className?: string
   disabled?: boolean
+  enableTimer?: boolean
   title?: string
   value?: Date
   onChange?: (d: Date) => void
@@ -20,6 +21,7 @@ export default function DatePicker({
   title,
   className,
   disabled,
+  enableTimer,
   value,
   onChange,
   toNow = false,
@@ -27,15 +29,66 @@ export default function DatePicker({
 }: IDatePicker) {
   const [selected, setSelected] = useState<Date>()
   const [visible, setVisible] = useState(false)
+  const [time, setTime] = useState(
+    `${selected?.getHours()}:${selected?.getMinutes()}`
+  )
 
   // fill default value
   useEffect(() => {
     setSelected(value)
+    if (value) {
+      const h = value.getHours()
+      const m = value.getMinutes()
+
+      setTime(`${h > 9 ? h : '0' + h}:${m > 9 ? m : '0' + m}`)
+    }
     // value && setSelected(value)
   }, [value])
 
+  const extractHourNMin = (time: string) => {
+    const [hour, min] = time.split(':')
+    return { hour, min }
+  }
+
+  const onDatepickerChangeHandler: SelectSingleEventHandler = value => {
+    setVisible(false)
+    setSelected(value)
+    if (value) {
+      const [hour, min] = time.split(':')
+
+      onDatepickerChange(
+        new Date(
+          value.getFullYear(),
+          value.getMonth(),
+          value.getDate(),
+          +hour,
+          +min
+        )
+      )
+    }
+  }
+
   const onDatepickerChange = (d: Date) => {
     onChange && onChange(d)
+  }
+
+  const onTimerChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+    const time = ev.target.value
+    const [hour, min] = time.split(':')
+
+    if (selected) {
+      onDatepickerChange(
+        new Date(
+          selected.getFullYear(),
+          selected.getMonth(),
+          selected.getDate(),
+          +hour,
+          +min
+        )
+      )
+    }
+
+    setTime(time)
   }
 
   const showDateStr = (d: Date) => {
@@ -44,6 +97,17 @@ export default function DatePicker({
     }
 
     return format(d, 'PP')
+  }
+
+  const showTimer = () => {
+    if (!enableTimer) return null
+    const { hour, min } = extractHourNMin(time)
+    const suffix = +hour > 12 ? 'PM' : 'AM'
+    return (
+      <span className="pl-1">
+        at {+hour > 12 ? +hour - 12 : hour}:{min} {suffix}
+      </span>
+    )
   }
 
   return (
@@ -57,7 +121,10 @@ export default function DatePicker({
                 className="form-input cursor-pointer whitespace-nowrap pr-8"
                 tabIndex={-1}>
                 {selected && isValid(selected) ? (
-                  showDateStr(selected)
+                  <>
+                    {showDateStr(selected)}
+                    {showTimer()}
+                  </>
                 ) : placeholder ? (
                   <span className="text-gray-400">{placeholder}</span>
                 ) : (
@@ -74,12 +141,18 @@ export default function DatePicker({
                 selected={selected}
                 showOutsideDays
                 fixedWeeks
-                onSelect={value => {
-                  setVisible(false)
-                  setSelected(value)
-                  value && onDatepickerChange(value)
-                }}
+                onSelect={onDatepickerChangeHandler}
               />
+
+              <div className="rdp-timer-container">
+                <span>Pick a time:</span>
+                <input
+                  className="rdp-timer"
+                  type="time"
+                  value={time}
+                  onChange={onTimerChangeHandler}
+                />
+              </div>
               {/* <Popover.Arrow className="popover-arrow" /> */}
             </Popover.Content>
           </Popover.Portal>
