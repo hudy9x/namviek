@@ -111,6 +111,7 @@ export default class TaskService {
     }
 
     const expired = (d1.getTime() - now.getTime()) / 1000
+    const more5min = 5 * 60
 
     const y = d1.getFullYear()
     const m = d1.getMonth()
@@ -120,13 +121,13 @@ export default class TaskService {
     const pZero = n => (n < 10 ? '0' + n : n)
 
     const key = [
-      `remind-${y}-${pZero(m)}-${pZero(d)}-${pZero(hour)}:${pZero(min)}-${
-        task.id
+      `remind-${y}-${pZero(m)}-${pZero(d)}-${pZero(hour)}:${pZero(min)}-${task.id
       }`
     ]
     console.log(key)
 
-    setJSONCache(key, task, Math.ceil(expired))
+    // setJSONCache(key, task, Math.ceil(expired + more5min))
+    setJSONCache(key, task)
   }
 
   async notifyNewTaskToAssignee({ uid, task }: { uid: string; task: Task }) {

@@ -14,8 +14,8 @@ export class ReminderEvent {
     console.log('keys list', results)
     if (!results.length) return
 
-    results.forEach(k => {
-      const res = getJSONCache([k])
+    results.forEach(async k => {
+      const res = await getJSONCache([k])
       console.log(res)
     })
   }

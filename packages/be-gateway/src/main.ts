@@ -12,7 +12,7 @@ import './events'
 import Routes from './routes'
 // import { Log } from './lib/log'
 
-connectPubClient(err => {
+connectPubClient((err) => {
   console.log(err)
 })
 const app: Application = express()
