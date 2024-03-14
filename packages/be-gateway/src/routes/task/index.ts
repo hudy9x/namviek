@@ -39,6 +39,7 @@ import {
 } from '../../services/todo.counter'
 import ActivityService from '../../services/activity.service'
 import { createModuleLog } from '../../lib/log'
+import TaskService from '../../services/task.service'
 
 const logging = createModuleLog('ProjectTask')
 // import { Log } from '../../lib/log'
@@ -258,100 +259,17 @@ router.post('/project/task/make-cover', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
-  const body = req.body as Task
-  const activityService = new ActivityService()
-  const {
-    desc,
-    visionId,
-    assigneeIds,
-    title,
-    dueDate,
-    projectId,
-    priority,
-    progress
-  } = req.body as Task
-  let taskStatusId = body.taskStatusId
-  const { id } = req.authen
-
-  const key = [CKEY.TASK_QUERY, projectId]
-  const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
-
   try {
-    const doneStatus = await mdTaskStatusWithDoneType(projectId)
-
-    const done = doneStatus && doneStatus.id === taskStatusId ? true : false
-
-    if (!taskStatusId) {
-      const todoStatus = await mdTaskStatusWithTodoType(projectId)
-      taskStatusId = todoStatus.id
-    }
-
-    const order = await incrCache(counterKey)
-    const result = await mdTaskAdd({
-      title,
-      cover: null,
-      order: order,
-      startDate: null,
-      dueDate: dueDate || null,
-      plannedStartDate: dueDate || null,
-      plannedDueDate: dueDate || null,
-      assigneeIds,
-      desc,
-      done,
-      fileIds: [],
-      projectId,
-      priority,
-      taskStatusId: taskStatusId,
-      tagIds: [],
-      visionId: visionId || null,
-      parentTaskId: null,
-      taskPoint: null,
-      createdBy: id,
-      createdAt: new Date(),
-      updatedAt: null,
-      updatedBy: null,
-      progress
+    const taskService = new TaskService()
+    const result = await taskService.createNewTask({
+      uid: req.authen.id,
+      body: req.body
     })
-
-    activityService.createTask({
-      id: result.id,
-      userId: id
-    })
-
-    const processes = []
-
-    // delete todo counter
-    if (assigneeIds && assigneeIds[0]) {
-      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
-    }
-
-    // delete all cached tasks
-    processes.push(findNDelCaches(key))
-
-    // run all process
-    await Promise.allSettled(processes)
-
-    if (result.assigneeIds && result.assigneeIds.length) {
-      // if created user and assigned user are the same person
-      // do not send notification
-      if (result.assigneeIds[0] !== id) {
-        const project = await mdProjectGet(result.projectId)
-        const taskLink = genFrontendUrl(
-          `${project.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-        )
-
-        notifyToWebUsers(result.assigneeIds, {
-          title: 'Got a new task',
-          body: `${result.title}`,
-          deep_link: taskLink
-        })
-      }
-    }
 
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
-    res.json({ status: 500, error })
+    res.status(500).send(error)
   }
 })
 
@@ -581,9 +499,13 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     await Promise.allSettled(processes)
 
     const getWatchers = async () => {
-      const watchers = await projectSettingRepo.getAllNotifySettings(result.projectId)
+      const watchers = await projectSettingRepo.getAllNotifySettings(
+        result.projectId
+      )
       // merge watchers and make sure that do not send it to user who updated this task
-      const watcherList = [...result.assigneeIds, ...watchers].filter(uid => uid !== userId)
+      const watcherList = [...result.assigneeIds, ...watchers].filter(
+        uid => uid !== userId
+      )
       return watcherList
     }
 
@@ -617,7 +539,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
         body: `From ${oldProgress} => ${result.progress} on "${result.title}"`,
         deep_link: taskLink
       })
-
     }
 
     res.json({ status: 200, data: result })

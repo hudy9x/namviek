@@ -68,6 +68,7 @@ export class SchedulerAction {
     const rd = this.rd
     const repo = this.repo
 
+    // after subscribing channels, now we can listen from them
     rd.on('message', (channel, message) => {
       if (channel === EVENT.SCHEDULER_CREATE) {
         const data = JSON.parse(message) as Scheduler
@@ -90,6 +91,7 @@ export class SchedulerAction {
   subscribeChannel() {
     const rd = this.rd
 
+    // just subscribe channel by name, and do nothing
     rd.subscribe(EVENT.SCHEDULER_DELETE)
     rd.subscribe(EVENT.SCHEDULER_CREATE, (err, count) => {
       if (err) {
@@ -100,8 +102,12 @@ export class SchedulerAction {
   }
 
   run() {
+    // get all scheduler from databases
     this.fetchNRunAllScheduler()
+    // create channels first
     this.subscribeChannel()
+    // after create channels, now we can listen from them
+    // note: you must create channels first then listeners must work
     this.listenMessage()
   }
 }

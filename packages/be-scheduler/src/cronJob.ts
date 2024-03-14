@@ -1,9 +1,10 @@
 import cron, { ScheduledTask } from 'node-cron'
 import { randomUUID } from 'crypto'
-import { Scheduler } from '@prisma/client'
 
 export type TTrigger = {
   every:
+  | 'minute'
+  | 'hour'
   | 'day'
   | 'weekday'
   | 'mon'
@@ -13,20 +14,19 @@ export type TTrigger = {
   | 'fri'
   | 'sat'
   | 'sun'
-  at: { hour: number; minute: number; period: 'am' | 'pm' }
-}
-
-type TActionNotifyConfig = {
-  [key: string]: unknown
+  at?: { hour: number; minute: number; period: 'am' | 'pm' }
 }
 
 const cronList = new Map<string, ScheduledTask>()
 
 const generateCronPattern = (trigger: TTrigger) => {
   const { every, at } = trigger
-  const { hour, minute, period } = at
+  const { hour, minute, period } = at || { hour: 1, minute: 1, period: 'am' }
 
   let time: string[] = []
+
+  if (every === 'minute') return '* * * * *'
+  if (every === 'hour') return '0 * * * *'
 
   if (hour && minute && period) {
     time.push(minute + '')
