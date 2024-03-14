@@ -69,15 +69,12 @@ export default function DatePicker({
   }
 
   const onDatepickerChange = (d: Date) => {
-    console.log(d)
     onChange && onChange(d)
   }
 
   const onTimerChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
     const time = ev.target.value
     const [hour, min] = time.split(':')
-
-    console.log(hour, min, selected)
 
     if (selected) {
       onDatepickerChange(
