@@ -101,9 +101,14 @@ export default class TaskService {
   }
 
   async createTaskReminder(task: Task) {
-    const dueDate = task.dueDate
+    const dueDate = new Date(task.dueDate)
     const d1 = new Date(dueDate)
     const now = new Date()
+
+    // TODO: if user want set an reminder at the exact time, do not substract the dueDate
+
+    // Set a remind before 15p
+    // dueDate.setMinutes(dueDate.getMinutes() - 15)
 
     if (d1 < now) {
       console.log('can not create reminder for past tasks')
@@ -119,6 +124,7 @@ export default class TaskService {
     const hour = d1.getHours()
     const min = d1.getMinutes()
     const pZero = n => (n < 10 ? '0' + n : n)
+
 
     const key = [
       `remind-${y}-${pZero(m)}-${pZero(d)}-${pZero(hour)}:${pZero(min)}-${task.id
