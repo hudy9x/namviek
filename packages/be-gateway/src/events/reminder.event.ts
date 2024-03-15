@@ -2,15 +2,22 @@ import { Task } from '@prisma/client'
 import { notifyToWebUsers } from '../lib/buzzer'
 import { findCache, getJSONCache } from '../lib/redis'
 import { extracDatetime, padZero } from '@shared/libs'
+
+type RemindPayload = {
+  message: string
+  link: string
+  receivers: string[]
+}
+
 export class ReminderEvent {
   async run() {
     const now = new Date()
     const { y, m, d, hour, min } = extracDatetime(now)
 
-    console.log('remnider.event called', new Date())
     const key = [
-      `remind-${y}-${padZero(m)}-${padZero(d)}-${padZero(hour)}:${padZero(min)}`
+      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}`
     ]
+    console.log('remnider.event called', new Date())
 
     const results = await findCache(key)
 
@@ -20,12 +27,14 @@ export class ReminderEvent {
       const data = await getJSONCache([k])
       if (!data) return
 
-      const { assigneeIds, title, dueDate } = data as Task
-      if (!assigneeIds || !assigneeIds.length) return
+      const { receivers, message, link } = data as RemindPayload
+      if (!receivers || !receivers.length) return
 
-      notifyToWebUsers(assigneeIds, {
+      console.log('assigneeIds', receivers)
+      notifyToWebUsers(receivers, {
         title: 'Reminder ⏰',
-        body: "It's 15m to your meeting"
+        body: message,
+        deep_link: link
       })
     })
   }

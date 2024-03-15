@@ -165,6 +165,15 @@ export const findCache = async (key: CACHE_KEY, abs = false) => {
   }
 }
 
+export const findCacheByTerm = async (term: string) => {
+  try {
+    const results = await redis.keys(term)
+    return results
+  } catch (error) {
+    console.log('find cache key error', error)
+  }
+}
+
 export const findNDelCaches = async (key: CACHE_KEY) => {
   try {
     const keys = await findCache(key)

@@ -13,6 +13,7 @@ import {
   CKEY,
   delCache,
   findCache,
+  findCacheByTerm,
   incrCache,
   setCache,
   setJSONCache
@@ -52,7 +53,7 @@ export class TestController extends BaseController {
       this.calculateSecondBetween2Date()
     )
 
-    const key = [`remind-${taskId}-24-03-14-14:45`]
+    const key = [`remind-24-03-14-14:45-${taskId}`]
     const result = await findCache(key, true)
 
     console.log('result:', result)
@@ -67,6 +68,14 @@ export class TestController extends BaseController {
     }
 
     return 1111
+  }
+
+  @Get('/find-reminder')
+  async findReminder() {
+    const { term } = this.req.query as { term: string }
+    console.log('111', term)
+    const results = await findCacheByTerm(term)
+    return results
   }
 
   @Get('/bullmq')
