@@ -33,6 +33,22 @@ export class ProjectSettingRepository {
     return []
   }
 
+  async getAllRemindSettings(projectId: string) {
+    const settings = await projectNotifyModel.findMany({
+      where: {
+        projectId,
+        remind: true
+      },
+      select: {
+        uid: true
+      }
+    })
+
+    if (settings.length) return settings.map(st => st.uid)
+
+    return []
+  }
+
   async updateOrCreateNotifySetting(
     data: Omit<ProjectSettingNotification, 'id'>
   ) {

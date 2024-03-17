@@ -2,9 +2,7 @@ import { Router } from 'express'
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
-  mdTaskAdd,
   mdTaskGetAll,
-  mdTaskGetOne,
   mdTaskUpdate,
   mdTaskAddMany,
   mdProjectGet,
@@ -12,10 +10,7 @@ import {
   mdTaskStatusQuery,
   mdMemberGetProject,
   mdTaskDelete,
-  mdTaskStatusWithDoneType,
-  mdTaskStatusWithTodoType,
   mdTaskUpdateMany,
-  ProjectSettingRepository
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -28,18 +23,14 @@ import {
   setJSONCache
 } from '../../lib/redis'
 
-import { notifyToWebUsers } from '../../lib/buzzer'
-import { genFrontendUrl } from '../../lib/url'
-import { serviceGetStatusById } from '../../services/status'
-import { serviceGetProjectById } from '../../services/project'
 import {
   deleteTodoCounter,
   getTodoCounter,
   updateTodoCounter
 } from '../../services/todo.counter'
-import ActivityService from '../../services/activity.service'
 import { createModuleLog } from '../../lib/log'
-import TaskService from '../../services/task.service'
+import TaskCreateService from '../../services/task/create.service'
+import TaskUpdateService from '../../services/task/update.service'
 
 const logging = createModuleLog('ProjectTask')
 // import { Log } from '../../lib/log'
@@ -260,7 +251,7 @@ router.post('/project/task/make-cover', async (req: AuthRequest, res) => {
 // It means POST:/api/example
 router.post('/project/task', async (req: AuthRequest, res) => {
   try {
-    const taskService = new TaskService()
+    const taskService = new TaskCreateService()
     const result = await taskService.createNewTask({
       uid: req.authen.id,
       body: req.body
@@ -384,169 +375,23 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
 
 // It means POST:/api/example
 router.put('/project/task', async (req: AuthRequest, res) => {
-  const body = req.body as Task
-  const {
-    id,
-    title,
-    startDate,
-    dueDate,
-    assigneeIds,
-    fileIds,
-    desc,
-    projectId,
-    priority,
-    taskStatusId,
-    plannedDueDate,
-    tagIds,
-    parentTaskId,
-    visionId,
-    progress,
-    taskPoint
-  } = body
+  const taskUpdateService = new TaskUpdateService()
   const { id: userId } = req.authen
-
-  const activityService = new ActivityService()
-  const projectSettingRepo = new ProjectSettingRepository()
-
   try {
-    // await pmClient.$transaction(async tx => {
-    const taskData = await mdTaskGetOne(id)
-    const oldTaskData = structuredClone(taskData)
-    const isDoneBefore = taskData.done
-    const oldStatusId = taskData.taskStatusId
-    const oldProgress = taskData.progress
-    const oldAssigneeId = taskData?.assigneeIds[0]
-
-    const key = [CKEY.TASK_QUERY, taskData.projectId]
-
-    if (title) {
-      taskData.title = title
-    }
-
-    if (desc) {
-      taskData.desc = desc
-    }
-
-    if (taskStatusId) {
-      const doneStatus = await mdTaskStatusWithDoneType(projectId)
-
-      taskData.taskStatusId = taskStatusId
-      if (doneStatus && doneStatus.id === taskStatusId) {
-        taskData.done = true
-      }
-    } else {
-      taskData.done = false
-    }
-
-    if (plannedDueDate) {
-      taskData.plannedDueDate = plannedDueDate
-    }
-
-    if (assigneeIds) {
-      taskData.assigneeIds = assigneeIds
-    }
-
-    if (priority) {
-      taskData.priority = priority
-    }
-
-    if (taskPoint) {
-      taskData.taskPoint = taskPoint
-    }
-
-    if (dueDate) {
-      taskData.dueDate = dueDate
-    }
-
-    if (progress) {
-      taskData.progress = progress
-    }
-
-    if (fileIds && fileIds.length) {
-      const oldFileIds = taskData.fileIds || []
-      taskData.fileIds = [...fileIds, ...oldFileIds]
-    }
-
-    if (visionId) {
-      taskData.visionId = visionId
-    }
-
-    taskData.updatedAt = new Date()
-    taskData.updatedBy = userId
-
-    const result = await mdTaskUpdate(taskData)
-
-    activityService.updateTaskActivity({
-      taskData: oldTaskData,
-      updatedTaskData: body,
-      userId
+    const result = await taskUpdateService.doUpdate({
+      userId,
+      body: req.body as Task
     })
 
-    const processes = []
+    res.json({
+      status: 200,
+      data: result
+    })
 
-    // delete todo counter
-    if (oldAssigneeId) {
-      processes.push(deleteTodoCounter([oldAssigneeId, projectId]))
-    }
-
-    if (assigneeIds && assigneeIds[0] && assigneeIds[0] !== oldAssigneeId) {
-      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
-    }
-
-    // delete cached tasks
-    processes.push(findNDelCaches(key))
-
-    await Promise.allSettled(processes)
-
-    const getWatchers = async () => {
-      const watchers = await projectSettingRepo.getAllNotifySettings(
-        result.projectId
-      )
-      // merge watchers and make sure that do not send it to user who updated this task
-      const watcherList = [...result.assigneeIds, ...watchers].filter(
-        uid => uid !== userId
-      )
-      return watcherList
-    }
-
-    // send notification as status changed
-    if (oldStatusId !== result.taskStatusId) {
-      const newStatus = await serviceGetStatusById(result.taskStatusId)
-      const pinfo = await serviceGetProjectById(result.projectId)
-      const taskLink = genFrontendUrl(
-        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-      )
-
-      const watcherList = await getWatchers()
-
-      notifyToWebUsers(watcherList, {
-        title: 'Status update',
-        body: `Status changed to ${newStatus.name} on "${result.title}"`,
-        deep_link: taskLink
-      })
-    }
-
-    if (oldProgress !== result.progress) {
-      const pinfo = await serviceGetProjectById(result.projectId)
-      const taskLink = genFrontendUrl(
-        `${pinfo.organizationId}/project/${projectId}?mode=task&taskId=${result.id}`
-      )
-
-      const watcherList = await getWatchers()
-
-      notifyToWebUsers(watcherList, {
-        title: 'Progress update',
-        body: `From ${oldProgress} => ${result.progress} on "${result.title}"`,
-        deep_link: taskLink
-      })
-    }
-
-    res.json({ status: 200, data: result })
-    // })
   } catch (error) {
-    console.log(error)
     res.status(500).send(error)
   }
+
 })
 
 export default router

@@ -1,5 +1,5 @@
 import { TaskRepository } from '@shared/models'
-import { CKEY, findNDelCaches } from '../lib/redis'
+import { CKEY, findNDelCaches } from '../../lib/redis'
 
 interface IReorderData {
   updatedOrder: [string, string][]

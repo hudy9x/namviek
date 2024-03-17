@@ -1,4 +1,4 @@
-import { TaskReorderService } from '../../services/taskReorder.service'
+import { TaskReorderService } from '../../services/task/order.service'
 import { BaseJob } from '../BaseJob'
 
 interface IReorderData {

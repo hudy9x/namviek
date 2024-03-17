@@ -1,5 +1,5 @@
 import { Task } from '@prisma/client'
-import ActivityService from './activity.service'
+import ActivityService from '../activity.service'
 import {
   CKEY,
   delCache,
@@ -7,24 +7,34 @@ import {
   findNDelCaches,
   incrCache,
   setJSONCache
-} from '../lib/redis'
+} from '../../lib/redis'
 import {
+  ProjectSettingRepository,
   mdProjectGet,
   mdTaskAdd,
   mdTaskStatusWithDoneType,
   mdTaskStatusWithTodoType
 } from '@shared/models'
-import { deleteTodoCounter } from './todo.counter'
-import { genFrontendUrl } from '../lib/url'
-import { notifyToWebUsers } from '../lib/buzzer'
-import InternalErrorException from '../exceptions/InternalErrorException'
-import { extracDatetime, padZero } from '@shared/libs'
+import { deleteTodoCounter } from '../todo.counter'
+import { genFrontendUrl } from '../../lib/url'
+import { notifyToWebUsers } from '../../lib/buzzer'
+import InternalErrorException from '../../exceptions/InternalErrorException'
+import { padZero } from '@shared/libs'
+import TaskReminderJob from '../../jobs/reminder.job'
 
-export default class TaskService {
+
+
+export default class TaskCreateService {
   activityService: ActivityService
+  taskReminderJob: TaskReminderJob
+  projectSettingRepo: ProjectSettingRepository
+
   constructor() {
     this.activityService = new ActivityService()
+    this.projectSettingRepo = new ProjectSettingRepository()
+    this.taskReminderJob = new TaskReminderJob()
   }
+
   async createNewTask({ uid, body }: { uid: string; body: Task }) {
     {
       const activityService = this.activityService
@@ -100,6 +110,7 @@ export default class TaskService {
         this.notifyNewTaskToAssignee({ uid, task: result })
         this.createTaskReminder(result)
 
+
         return result
       } catch (error) {
         console.log(error)
@@ -109,68 +120,44 @@ export default class TaskService {
   }
 
   async createTaskReminder(task: Task) {
-    const dueDate = task.dueDate
-    const d1 = new Date(dueDate) // clone the dueDate to prevent unneccessary updates
-    const now = new Date()
-    const beforeDate = new Date(dueDate)
 
-    // TODO: if user want set an reminder at the exact time, do not substract the dueDate
+    const reminders = await this.getReminders({
+      assigneeIds: task.assigneeIds,
+      projectId: task.projectId
+    })
 
-    // Set a remind before 15p
-    // dueDate.setMinutes(dueDate.getMinutes() - 15)
+    const receivers = [...task.assigneeIds, ...reminders]
 
-    if (d1 <= now) {
-      console.log('can not create reminder for past tasks')
+    if (!receivers.length) {
       return
     }
 
-    // create reminder key and save this key to redis
-    const y = d1.getFullYear()
-    const m = d1.getMonth()
-    const d = d1.getDate()
-    const hour = d1.getHours()
-    const min = d1.getMinutes()
+    // remind at due date
+    this.taskReminderJob.create({
+      remindAt: task.dueDate,
+      taskId: task.id,
+      projectId: task.projectId,
+      message: task.title,
+      receivers
+    })
 
-    // key syntax: remind-ddddmmyy-hh-mm-task-<taskID>
-    const key = [
-      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(
-        min
-      )}-task-${task.id}`
-    ]
+    // remind before 60 minutes
+    this.taskReminderJob.create({
+      remindAt: task.dueDate,
+      remindBefore: 60,
+      taskId: task.id,
+      projectId: task.projectId,
+      message: task.title,
+      receivers
+    })
 
-    // the reminder key should have an expired time
-    // so it can delete itself automatically
-    // after the reminder run for 5 minutes, it will be expired
-    const expired = (d1.getTime() - now.getTime()) / 1000
-    const more5min = 5 * 60
-
-    // generate data for reminder
-    const project = await mdProjectGet(task.projectId)
-    const taskLink = genFrontendUrl(
-      `${project.organizationId}/project/${task.projectId}?mode=task&taskId=${task.id}`
-    )
-
-    // save the key with expired time and data
-    setJSONCache(
-      key,
-      {
-        receivers: task.assigneeIds,
-        message: task.title,
-        link: taskLink
-      },
-      Math.ceil(expired + more5min)
-    )
   }
 
-  async deleteTaskReminderById(taskId: string) {
-    const key = `remind*task-${taskId}`
-    const results = await findCacheByTerm(key)
-
-    if (!results.length) return
-
-    results.forEach(k => {
-      delCache([k])
-    })
+  async getReminders({ assigneeIds, projectId }: { assigneeIds: string[], projectId: string }) {
+    const watchers = await this.projectSettingRepo.getAllRemindSettings(
+      projectId
+    )
+    return [...assigneeIds, ...watchers]
   }
 
   async notifyNewTaskToAssignee({ uid, task }: { uid: string; task: Task }) {

@@ -2,6 +2,7 @@ import { Task } from '@prisma/client'
 import { notifyToWebUsers } from '../lib/buzzer'
 import { findCache, getJSONCache } from '../lib/redis'
 import { extracDatetime, padZero } from '@shared/libs'
+import { sendEmail } from '../lib/email'
 
 type RemindPayload = {
   message: string
@@ -36,6 +37,12 @@ export class ReminderEvent {
         body: message,
         deep_link: link
       })
+
+      // sendEmail({
+      //   emails,
+      //   subject,
+      //   html,
+      // })
     })
   }
 }

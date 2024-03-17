@@ -11,7 +11,8 @@ export default function ProjectNotificationSetting() {
     loading: true,
     overdue: false,
     taskChanges: false,
-    remind: false
+    remind: false,
+    remindBeforeAt: ''
   })
 
   const setLoading = (stt: boolean) => {
@@ -29,13 +30,14 @@ export default function ProjectNotificationSetting() {
 
 
         const { data } = res.data
-        const { overdue, taskChanges, remind } = data as ProjectSettingNotification
+        const { overdue, taskChanges, remind, remindBeforeAt } = data as ProjectSettingNotification
 
 
         setData({
           overdue: !!overdue,
           taskChanges: !!taskChanges,
           remind: !!remind,
+          remindBeforeAt: remindBeforeAt || '',
           loading: false
         })
 
@@ -59,5 +61,5 @@ export default function ProjectNotificationSetting() {
     )
   }
 
-  return <NotifySettingContainer taskChanges={data.taskChanges} overdue={data.overdue} remind={data.remind} />
+  return <NotifySettingContainer taskChanges={data.taskChanges} overdue={data.overdue} remind={data.remind} remindBeforeAt={data.remindBeforeAt} />
 }
