@@ -12,7 +12,9 @@ import './events'
 import Routes from './routes'
 // import { Log } from './lib/log'
 
-connectPubClient()
+connectPubClient((err) => {
+  console.log(err)
+})
 const app: Application = express()
 
 app.get('/check-health', (req, res) => {

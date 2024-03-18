@@ -283,8 +283,7 @@ model Project {
 }
 
 model ProjectSettingNotification {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   uid         String   @db.ObjectId
   projectId   String   @db.ObjectId
   taskChanges Boolean? @default(false)

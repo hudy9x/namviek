@@ -9,7 +9,15 @@ import {
   Res
 } from '../../core'
 import { CounterType } from '@prisma/client'
-import { CKEY, incrCache, setCache } from '../../lib/redis'
+import {
+  CKEY,
+  delCache,
+  findCache,
+  findCacheByTerm,
+  incrCache,
+  setCache,
+  setJSONCache
+} from '../../lib/redis'
 
 import { TaskQueue, getTaskQueueInstance } from '../../queues'
 
@@ -20,6 +28,54 @@ export class TestController extends BaseController {
     super()
 
     this.taskQueue = getTaskQueueInstance()
+  }
+
+  calculateSecondBetween2Date() {
+    const d1 = new Date()
+    const d2 = new Date(
+      d1.getFullYear(),
+      d1.getMonth(),
+      d1.getDate(),
+      d1.getHours(),
+      d1.getMinutes() + 2
+    )
+
+    return (d2.getTime() - d1.getTime()) / 1000
+  }
+
+  @Get('/hello')
+  async sayHello() {
+    const { taskId } = this.req.query as { taskId: string }
+    console.log('hello to test/ api ')
+
+    console.log(
+      'calculate second between 2 dates',
+      this.calculateSecondBetween2Date()
+    )
+
+    const key = [`remind-24-03-14-14:45-${taskId}`]
+    const result = await findCache(key, true)
+
+    console.log('result:', result)
+
+    if (!result.length) {
+      await setJSONCache(key, {
+        title: 'Just 15p to this meeting'
+      })
+    } else {
+      console.log('delete cache')
+      delCache(key)
+    }
+
+    return 1111
+  }
+
+  @Get('/find-reminder')
+  async findReminder() {
+    const { term } = this.req.query as { term: string }
+    console.log('111', term)
+    const results = await findCacheByTerm(term)
+    return results
   }
 
   @Get('/bullmq')

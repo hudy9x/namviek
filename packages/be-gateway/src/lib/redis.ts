@@ -93,18 +93,25 @@ export const genKeyFromSource = (source: { [key: string]: unknown }) => {
 
 export const setJSONCache = (
   key: CACHE_KEY,
-  value: RedisJSONValue | RedisJSONValue[]
+  value: RedisJSONValue | RedisJSONValue[],
+  expired?: number
 ) => {
   if (!connected) {
     return null
   }
   try {
     const cacheKey = genKey(key)
+    console.log('cachekey', cacheKey, expired)
     redis.set(cacheKey, JSON.stringify(value))
-    redis.expire(cacheKey, DAY)
+    redis.expire(cacheKey, expired || DAY)
   } catch (error) {
     console.log('set redis cache error')
   }
+}
+
+export const setCacheExpire = (key: CACHE_KEY, expired: number) => {
+  const cacheKey = genKey(key)
+  redis.expire(cacheKey, expired)
 }
 
 export const getJSONCache = async (key: CACHE_KEY) => {
@@ -147,10 +154,20 @@ export const delMultiCache = async (keys: CACHE_KEY[]) => {
   await pipeline.exec()
 }
 
-export const findCache = async (key: CACHE_KEY) => {
+export const findCache = async (key: CACHE_KEY, abs = false) => {
   try {
     const newKey = genKey(key)
-    const results = await redis.keys(newKey + '*')
+    const asterisk = abs ? '' : '*'
+    const results = await redis.keys(newKey + asterisk)
+    return results
+  } catch (error) {
+    console.log('find cache key error', error)
+  }
+}
+
+export const findCacheByTerm = async (term: string) => {
+  try {
+    const results = await redis.keys(term)
     return results
   } catch (error) {
     console.log('find cache key error', error)

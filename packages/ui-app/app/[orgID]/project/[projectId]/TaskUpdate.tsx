@@ -32,7 +32,7 @@ export const TaskUpdate = () => {
     setVisible(true)
   }, [taskId])
 
-  const onClose = () => {
+  const closeTheModal = () => {
     setVisible(false)
     router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
@@ -48,7 +48,7 @@ export const TaskUpdate = () => {
     }
 
     updateTask(dataUpdate)
-    onClose()
+    closeTheModal()
     refactorTaskFieldByAutomationConfig('task', dataUpdate)
 
     // clear fileIds cuz we've updated fileIds already

@@ -18,32 +18,33 @@ export default function ProjectNotificationSetting() {
     setData(prev => ({ ...prev, loading: stt }))
   }
 
-
   useEffect(() => {
     const abortCtrl = new AbortController()
 
     if (projectId) {
       setLoading(true)
       console.log('get projectId', projectId)
-      projectSettingNotify.get(projectId, abortCtrl.signal).then(res => {
+      projectSettingNotify
+        .get(projectId, abortCtrl.signal)
+        .then(res => {
+          const { data } = res.data
+          const { overdue, taskChanges, remind } =
+            data as ProjectSettingNotification
 
+            console.log('remind', remind)
 
-        const { data } = res.data
-        const { overdue, taskChanges, remind } = data as ProjectSettingNotification
+          setData({
+            overdue: !!overdue,
+            taskChanges: !!taskChanges,
+            remind: !!remind,
+            loading: false
+          })
 
-
-        setData({
-          overdue: !!overdue,
-          taskChanges: !!taskChanges,
-          remind: !!remind,
-          loading: false
+          console.log('project notify setting', data)
         })
-
-        console.log('project notify setting', data)
-      }).catch(err => {
-        setLoading(false)
-      })
-
+        .catch(err => {
+          setLoading(false)
+        })
     }
     return () => {
       setLoading(false)
@@ -54,10 +55,16 @@ export default function ProjectNotificationSetting() {
   if (data.loading) {
     return (
       <div className="setting-container p-4 border dark:border-gray-700">
-        <Loading title='Getting your settings ...' />
+        <Loading title="Getting your settings ..." />
       </div>
     )
   }
 
-  return <NotifySettingContainer taskChanges={data.taskChanges} overdue={data.overdue} remind={data.remind} />
+  return (
+    <NotifySettingContainer
+      taskChanges={data.taskChanges}
+      overdue={data.overdue}
+      remind={data.remind}
+    />
+  )
 }

@@ -1,4 +1,4 @@
-import { format } from "date-fns"
+import { format } from 'date-fns'
 
 export function getDatesInMonth(date: Date) {
   console.log('a')
@@ -6,6 +6,20 @@ export function getDatesInMonth(date: Date) {
 
 export function dateFormat(date: number | Date, formatString: string) {
   return format(date, formatString)
+}
+
+export function padZero(n: number) {
+  return n < 10 ? '0' + n : n
+}
+
+export function extracDatetime(dt: Date) {
+  const y = dt.getFullYear()
+  const m = dt.getMonth()
+  const d = dt.getDate()
+  const hour = dt.getHours()
+  const min = dt.getMinutes()
+
+  return { y, m, d, hour, min }
 }
 
 export function isDateEqual(dateLeft: Date, dateRight: Date): boolean {
