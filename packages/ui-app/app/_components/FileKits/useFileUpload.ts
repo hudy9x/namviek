@@ -6,7 +6,7 @@ import {
 } from '@/services/storage'
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { IFileItem, IFileUploadItem, useFileKitContext } from './context'
+import { IFileItem, IFileUploadItem, isImage, useFileKitContext } from './context'
 import {
   confirmAlert,
   confirmWarning,
@@ -15,9 +15,11 @@ import {
   randomId
 } from '@shared/ui'
 import { AxiosError } from 'axios'
+import { useSetDefaultCover } from './useSetDefaultCover'
 
 export default function useFileUpload() {
   const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
+  const { setDefaultCover } = useSetDefaultCover()
   const { orgID, projectId } = useParams()
   const { push } = useRouter()
   const sp = useSearchParams()
@@ -154,7 +156,7 @@ export default function useFileUpload() {
       }
     })
 
-    console.log(fileIds)
+    console.log('files items', fileItems)
 
     taskId &&
       fileIds.length &&
@@ -162,6 +164,8 @@ export default function useFileUpload() {
         id: taskId,
         fileIds
       })
+
+
 
     return fileItems
   }
@@ -221,6 +225,15 @@ export default function useFileUpload() {
       )
 
       setUploading(false)
+
+      for (let i = 0; i < result.length; i++) {
+        const file = result[i];
+        if (isImage(file.mimeType)) {
+          setDefaultCover(file.url)
+          break
+        }
+
+      }
     })
   }
 
