@@ -19,10 +19,9 @@ import { deleteTodoCounter } from '../todo.counter'
 import { genFrontendUrl } from '../../lib/url'
 import { notifyToWebUsers } from '../../lib/buzzer'
 import InternalErrorException from '../../exceptions/InternalErrorException'
-import { padZero } from '@shared/libs'
+
 import TaskReminderJob from '../../jobs/reminder.job'
-
-
+import { isSameDay } from 'date-fns'
 
 export default class TaskCreateService {
   activityService: ActivityService
@@ -50,11 +49,10 @@ export default class TaskCreateService {
       } = body
       let taskStatusId = body.taskStatusId
 
-      const key = [CKEY.TASK_QUERY, projectId]
-      const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
-
       try {
+        // get done status by project id
         const doneStatus = await mdTaskStatusWithDoneType(projectId)
+        // and update `done` field
         const done = doneStatus && doneStatus.id === taskStatusId ? true : false
 
         if (!taskStatusId) {
@@ -62,7 +60,7 @@ export default class TaskCreateService {
           taskStatusId = todoStatus.id
         }
 
-        const order = await incrCache(counterKey)
+        const order = await this._getTaskOrder(projectId)
         const result = await mdTaskAdd({
           title,
           cover: null,
@@ -94,22 +92,13 @@ export default class TaskCreateService {
           userId: uid
         })
 
-        const processes = []
-
-        // delete todo counter
-        if (assigneeIds && assigneeIds[0]) {
-          processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
-        }
-
-        // delete all cached tasks
-        processes.push(findNDelCaches(key))
-
-        // run all process
-        await Promise.allSettled(processes)
+        await this._deleteRelativeCaches(assigneeIds, projectId)
 
         this.notifyNewTaskToAssignee({ uid, task: result })
-        this.createTaskReminder(result)
 
+        if (!done) {
+          this.createTaskReminder(result)
+        }
 
         return result
       } catch (error) {
@@ -119,8 +108,33 @@ export default class TaskCreateService {
     }
   }
 
-  async createTaskReminder(task: Task) {
+  private async _getTaskOrder(projectId: string) {
+    const counterKey = [CKEY.PROJECT_TASK_COUNTER, projectId]
 
+    const order = await incrCache(counterKey)
+    return order
+  }
+
+  private async _deleteRelativeCaches(
+    assigneeIds: string[],
+    projectId: string
+  ) {
+    const key = [CKEY.TASK_QUERY, projectId]
+    const processes = []
+
+    // delete todo counter
+    if (assigneeIds && assigneeIds[0]) {
+      processes.push(deleteTodoCounter([assigneeIds[0], projectId]))
+    }
+
+    // delete all cached tasks
+    processes.push(findNDelCaches(key))
+
+    // run all process
+    await Promise.allSettled(processes)
+  }
+
+  async createTaskReminder(task: Task) {
     const reminders = await this.getReminders({
       assigneeIds: task.assigneeIds,
       projectId: task.projectId
@@ -150,10 +164,15 @@ export default class TaskCreateService {
       message: task.title,
       receivers
     })
-
   }
 
-  async getReminders({ assigneeIds, projectId }: { assigneeIds: string[], projectId: string }) {
+  async getReminders({
+    assigneeIds,
+    projectId
+  }: {
+    assigneeIds: string[]
+    projectId: string
+  }) {
     const watchers = await this.projectSettingRepo.getAllRemindSettings(
       projectId
     )

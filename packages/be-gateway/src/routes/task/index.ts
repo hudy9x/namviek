@@ -10,7 +10,7 @@ import {
   mdTaskStatusQuery,
   mdMemberGetProject,
   mdTaskDelete,
-  mdTaskUpdateMany,
+  mdTaskUpdateMany
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -31,10 +31,12 @@ import {
 import { createModuleLog } from '../../lib/log'
 import TaskCreateService from '../../services/task/create.service'
 import TaskUpdateService from '../../services/task/update.service'
+import TaskReminderJob from '../../jobs/reminder.job'
 
 const logging = createModuleLog('ProjectTask')
 // import { Log } from '../../lib/log'
 
+const taskReminderJob = new TaskReminderJob()
 const router = Router()
 
 router.use([authMiddleware, beProjectMemberMiddleware])
@@ -326,6 +328,7 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
     const result = await mdTaskDelete(id)
     const key = [CKEY.TASK_QUERY, projectId]
 
+    taskReminderJob.delete(id)
     if (!result.done && result.assigneeIds && result.assigneeIds[0]) {
       console.log('delete todo counter')
       await deleteTodoCounter([result.assigneeIds[0], projectId])
@@ -387,11 +390,9 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       status: 200,
       data: result
     })
-
   } catch (error) {
     res.status(500).send(error)
   }
-
 })
 
 export default router

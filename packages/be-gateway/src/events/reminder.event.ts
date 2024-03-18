@@ -12,37 +12,43 @@ type RemindPayload = {
 
 export class ReminderEvent {
   async run() {
-    const now = new Date()
-    const { y, m, d, hour, min } = extracDatetime(now)
+    try {
+      const now = new Date()
+      const { y, m, d, hour, min } = extracDatetime(now)
 
-    const key = [
-      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}`
-    ]
-    console.log('remnider.event called', new Date())
+      const key = [
+        `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}`
+      ]
+      console.log('remnider.event called', new Date())
 
-    const results = await findCache(key)
+      const results = await findCache(key)
 
-    if (!results.length) return
+      if (!results.length) return
 
-    results.forEach(async k => {
-      const data = await getJSONCache([k])
-      if (!data) return
+      results.forEach(async k => {
+        const data = await getJSONCache([k])
+        if (!data) return
 
-      const { receivers, message, link } = data as RemindPayload
-      if (!receivers || !receivers.length) return
+        const { receivers, message, link } = data as RemindPayload
+        if (!receivers || !receivers.length) return
 
-      console.log('assigneeIds', receivers)
-      notifyToWebUsers(receivers, {
-        title: 'Reminder ⏰',
-        body: message,
-        deep_link: link
+        const receiverSets = new Set(receivers)
+        const filteredReceivers = Array.from(receiverSets)
+
+        notifyToWebUsers(filteredReceivers, {
+          title: 'Reminder ⏰',
+          body: message,
+          deep_link: link
+        })
+
+        // sendEmail({
+        //   emails,
+        //   subject,
+        //   html,
+        // })
       })
-
-      // sendEmail({
-      //   emails,
-      //   subject,
-      //   html,
-      // })
-    })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

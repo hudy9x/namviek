@@ -1,24 +1,21 @@
-import { extracDatetime, padZero } from "@shared/libs"
-import { mdProjectGet } from "@shared/models"
-import { genFrontendUrl } from "../lib/url"
-import { delCache, findCacheByTerm, setJSONCache } from "../lib/redis"
+import { extracDatetime, padZero } from '@shared/libs'
+import { mdProjectGet } from '@shared/models'
+import { genFrontendUrl } from '../lib/url'
+import { delCache, findCacheByTerm, setJSONCache } from '../lib/redis'
 
 type TaskReminderParams = {
-  remindAt: Date,
-  remindBefore?: number,
-  taskId?: string,
-  projectId?: string,
-  title?: string,
-  link?: string,
-  message: string,
+  remindAt: Date
+  remindBefore?: number
+  taskId?: string
+  projectId?: string
+  title?: string
+  link?: string
+  message: string
   receivers: string[]
-
 }
 
 export default class TaskReminderJob {
-
   private async _createTaskLink(projectId: string, taskId: string) {
-
     const project = await mdProjectGet(projectId)
     const taskLink = genFrontendUrl(
       `${project.organizationId}/project/${projectId}?mode=task&taskId=${taskId}`
@@ -33,9 +30,8 @@ export default class TaskReminderJob {
 
     // key syntax: remind-ddddmmyy-hh-mm-task-<taskID>
     const key = [
-      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(
-        min
-      )}${suffix ? '-task-' + suffix : ''}`
+      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}${suffix ? '-task-' + suffix : ''
+      }`
     ]
 
     return key
@@ -71,7 +67,6 @@ export default class TaskReminderJob {
     message,
     receivers
   }: TaskReminderParams) {
-
     // clone the dueDate to prevent unneccessary updates
     const d1 = new Date(remindAt)
     const now = new Date()
@@ -80,6 +75,8 @@ export default class TaskReminderJob {
     if (remindBefore) {
       d1.setMinutes(d1.getMinutes() - remindBefore)
       message = `It's ${remindBefore} minutes to: ${message}`
+    } else {
+      message = `It's time to: ${message}`
     }
 
     if (d1 <= now) {
@@ -94,7 +91,9 @@ export default class TaskReminderJob {
     // so it can delete itself automatically
     // after the reminder run for 5 minutes, it will be expired
     const expired = this._createExpiredTime(d1, 5)
-    const link = this._createTaskLink(projectId, taskId)
+    const link = await this._createTaskLink(projectId, taskId)
+
+    console.log('link', link)
 
     // save the key with expired time and data
     setJSONCache(
@@ -106,6 +105,5 @@ export default class TaskReminderJob {
       },
       Math.ceil(expired)
     )
-
   }
 }

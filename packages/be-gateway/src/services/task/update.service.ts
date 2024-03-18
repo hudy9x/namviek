@@ -1,4 +1,3 @@
-
 import { Task } from '@prisma/client'
 import ActivityService from '../activity.service'
 import {
@@ -27,8 +26,6 @@ import { serviceGetStatusById } from '../status'
 import { serviceGetProjectById } from '../project'
 import TaskReminderJob from '../../jobs/reminder.job'
 
-
-
 export default class TaskUpdateService {
   activityService: ActivityService
   projectSettingRepo: ProjectSettingRepository
@@ -53,6 +50,8 @@ export default class TaskUpdateService {
       } = await this._genUpdateData({ body, userId })
       const result = await mdTaskUpdate(taskData)
 
+      const isDone = result.done
+
       activityService.updateTaskActivity({
         taskData: oldTaskData,
         updatedTaskData: body,
@@ -62,9 +61,8 @@ export default class TaskUpdateService {
       await this._clearRelativeCaches({
         assigneeIds: result.assigneeIds,
         oldAssigneeId,
-        projectId: result.projectId,
+        projectId: result.projectId
       })
-
 
       // send notification as status changed
       if (oldStatusId !== result.taskStatusId) {
@@ -82,11 +80,15 @@ export default class TaskUpdateService {
         })
       }
 
-      if (isDueDateChanged) {
+      if (isDueDateChanged && !isDone) {
         // delete reminders in caches
         this._deleteTaskReminderById(result.id)
         // and create new reminder
         this._createTaskReminder(result)
+      }
+
+      if (isDone) {
+        this._deleteTaskReminderById(result.id)
       }
 
       return result
@@ -96,8 +98,13 @@ export default class TaskUpdateService {
     }
   }
 
-  private async _genUpdateData({ body, userId }: { body: Task, userId: string }) {
-
+  private async _genUpdateData({
+    body,
+    userId
+  }: {
+    body: Task
+    userId: string
+  }) {
     const {
       id,
       title,
@@ -189,7 +196,15 @@ export default class TaskUpdateService {
     }
   }
 
-  private async _clearRelativeCaches({ oldAssigneeId, projectId, assigneeIds }: { oldAssigneeId: string, projectId: string, assigneeIds: string[] }) {
+  private async _clearRelativeCaches({
+    oldAssigneeId,
+    projectId,
+    assigneeIds
+  }: {
+    oldAssigneeId: string
+    projectId: string
+    assigneeIds: string[]
+  }) {
     console.log('clear relative caches')
 
     const processes = []
@@ -210,7 +225,7 @@ export default class TaskUpdateService {
     await Promise.allSettled(processes)
   }
 
-  async getWatchers({ userId, task }: { userId: string, task: Task }) {
+  async getWatchers({ userId, task }: { userId: string; task: Task }) {
     const watchers = await this.projectSettingRepo.getAllNotifySettings(
       task.projectId
     )
@@ -221,7 +236,13 @@ export default class TaskUpdateService {
     return watcherList
   }
 
-  private async _sendNotificationAsStatusChanges({ userId, task }: { userId: string, task: Task }) {
+  private async _sendNotificationAsStatusChanges({
+    userId,
+    task
+  }: {
+    userId: string
+    task: Task
+  }) {
     const newStatus = await serviceGetStatusById(task.taskStatusId)
     const pinfo = await serviceGetProjectById(task.projectId)
     const taskLink = genFrontendUrl(
@@ -235,16 +256,17 @@ export default class TaskUpdateService {
       body: `Status changed to ${newStatus.name} on "${task.title}"`,
       deep_link: taskLink
     })
-
   }
 
   private async _sendNotificationAsProgressChanges({
-    oldProgress, userId, task }: {
-      oldProgress: number,
-      userId: string,
-      task: Task
-    }) {
-
+    oldProgress,
+    userId,
+    task
+  }: {
+    oldProgress: number
+    userId: string
+    task: Task
+  }) {
     const pinfo = await serviceGetProjectById(task.projectId)
     const taskLink = genFrontendUrl(
       `${pinfo.organizationId}/project/${task.projectId}?mode=task&taskId=${task.id}`
@@ -259,7 +281,13 @@ export default class TaskUpdateService {
     })
   }
 
-  async getReminders({ assigneeIds, projectId }: { assigneeIds: string[], projectId: string }) {
+  async getReminders({
+    assigneeIds,
+    projectId
+  }: {
+    assigneeIds: string[]
+    projectId: string
+  }) {
     const watchers = await this.projectSettingRepo.getAllRemindSettings(
       projectId
     )
@@ -267,7 +295,6 @@ export default class TaskUpdateService {
   }
 
   private async _createTaskReminder(task: Task) {
-
     const reminders = await this.getReminders({
       assigneeIds: task.assigneeIds,
       projectId: task.projectId
@@ -299,7 +326,6 @@ export default class TaskUpdateService {
       message: task.title,
       receivers
     })
-
 
     // const d1 = new Date(dueDate) // clone the dueDate to prevent unneccessary updates
     // const now = new Date()
