@@ -163,9 +163,18 @@ export default function useFileUpload() {
       updateTaskData({
         id: taskId,
         fileIds
+      }).then(() => {
+
+        // set default cover image
+        for (let i = 0; i < fileItems.length; i++) {
+          const file = fileItems[i];
+          if (isImage(file.mimeType)) {
+            setDefaultCover(file.url)
+            break
+          }
+
+        }
       })
-
-
 
     return fileItems
   }
@@ -226,14 +235,6 @@ export default function useFileUpload() {
 
       setUploading(false)
 
-      for (let i = 0; i < result.length; i++) {
-        const file = result[i];
-        if (isImage(file.mimeType)) {
-          setDefaultCover(file.url)
-          break
-        }
-
-      }
     })
   }
 
