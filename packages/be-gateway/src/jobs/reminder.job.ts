@@ -1,7 +1,12 @@
 import { extracDatetime, padZero } from '@shared/libs'
 import { mdProjectGet } from '@shared/models'
 import { genFrontendUrl } from '../lib/url'
-import { delCache, findCacheByTerm, setJSONCache } from '../lib/redis'
+import {
+  delCache,
+  findCache,
+  findCacheByTerm,
+  setJSONCache
+} from '../lib/redis'
 
 type TaskReminderParams = {
   remindAt: Date
@@ -30,7 +35,8 @@ export default class TaskReminderJob {
 
     // key syntax: remind-ddddmmyy-hh-mm-task-<taskID>
     const key = [
-      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}${suffix ? '-task-' + suffix : ''
+      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}${
+        suffix ? '-task-' + suffix : ''
       }`
     ]
 
@@ -80,7 +86,7 @@ export default class TaskReminderJob {
     }
 
     if (d1 <= now) {
-      console.log('can not create reminder for past tasks')
+      console.log('Can not create reminder, because remind time less than now')
       return
     }
 
@@ -93,8 +99,6 @@ export default class TaskReminderJob {
     const expired = this._createExpiredTime(d1, 5)
     const link = await this._createTaskLink(projectId, taskId)
 
-    console.log('link', link)
-
     // save the key with expired time and data
     setJSONCache(
       key,
@@ -105,5 +109,17 @@ export default class TaskReminderJob {
       },
       Math.ceil(expired)
     )
+  }
+
+  async findByTime(date: Date) {
+    const { y, m, d, hour, min } = extracDatetime(date)
+
+    const key = [
+      `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}`
+    ]
+
+    const results = await findCache(key)
+
+    return results
   }
 }

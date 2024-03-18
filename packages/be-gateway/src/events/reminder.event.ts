@@ -1,7 +1,7 @@
-import { Task } from '@prisma/client'
 import { notifyToWebUsers } from '../lib/buzzer'
-import { findCache, getJSONCache } from '../lib/redis'
-import { extracDatetime, padZero } from '@shared/libs'
+import { getJSONCache } from '../lib/redis'
+import TaskReminderJob from '../jobs/reminder.job'
+import { mdUserFindEmailsByUids } from '@shared/models'
 import { sendEmail } from '../lib/email'
 
 type RemindPayload = {
@@ -11,17 +11,16 @@ type RemindPayload = {
 }
 
 export class ReminderEvent {
+  taskReminderJob: TaskReminderJob
+  constructor() {
+    this.taskReminderJob = new TaskReminderJob()
+  }
   async run() {
     try {
       const now = new Date()
-      const { y, m, d, hour, min } = extracDatetime(now)
+      console.log('reminder.event called', now)
 
-      const key = [
-        `remind-${y}${padZero(m)}${padZero(d)}-${padZero(hour)}:${padZero(min)}`
-      ]
-      console.log('remnider.event called', new Date())
-
-      const results = await findCache(key)
+      const results = await this.taskReminderJob.findByTime(now)
 
       if (!results.length) return
 
@@ -29,17 +28,19 @@ export class ReminderEvent {
         const data = await getJSONCache([k])
         if (!data) return
 
-        const { receivers, message, link } = data as RemindPayload
-        if (!receivers || !receivers.length) return
-
-        const receiverSets = new Set(receivers)
-        const filteredReceivers = Array.from(receiverSets)
-
-        notifyToWebUsers(filteredReceivers, {
-          title: 'Reminder ⏰',
-          body: message,
-          deep_link: link
-        })
+        this.sendNotification(data as RemindPayload)
+        this.sendEmailReminder(data as RemindPayload)
+        // const { receivers, message, link } = data as RemindPayload
+        // if (!receivers || !receivers.length) return
+        //
+        // const receiverSets = new Set(receivers)
+        // const filteredReceivers = Array.from(receiverSets)
+        //
+        // notifyToWebUsers(filteredReceivers, {
+        //   title: 'Reminder ⏰',
+        //   body: message,
+        //   deep_link: link
+        // })
 
         // sendEmail({
         //   emails,
@@ -50,5 +51,38 @@ export class ReminderEvent {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  async sendNotification(data: RemindPayload) {
+    const { receivers, message, link } = data
+    if (!receivers || !receivers.length) return
+
+    const receiverSets = new Set(receivers)
+    const filteredReceivers = Array.from(receiverSets)
+
+    notifyToWebUsers(filteredReceivers, {
+      title: 'Reminder ⏰',
+      body: message,
+      deep_link: link
+    })
+  }
+
+  async sendEmailReminder(data: RemindPayload) {
+    const { receivers, message, link } = data
+    if (!receivers || !receivers.length) return
+
+    const emails = await mdUserFindEmailsByUids(receivers)
+
+    console.log(emails)
+    if (!emails.length) return
+
+    sendEmail({
+      emails,
+      subject: 'Reminder ⏰',
+      html: `
+${message}
+Link: ${link}
+`
+    })
   }
 }

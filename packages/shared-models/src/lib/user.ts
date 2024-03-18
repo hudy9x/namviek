@@ -20,6 +20,26 @@ export const mdUserAdd = async (data: Omit<User, 'id'>) => {
   })
 }
 
+export const mdUserFindEmailsByUids = async (uids: string[]) => {
+  const result = await userModel.findMany({
+    where: {
+      id: { in: uids },
+      status: 'ACTIVE'
+    },
+    select: {
+      email: true
+    }
+  })
+
+  if (!result || !result.length) return []
+
+  const emails = result.map(r => r.email).filter(Boolean)
+
+  if (!emails.length) return []
+
+  return emails
+}
+
 export const mdUserUpdate = async (
   id: string,
   data: Partial<Omit<User, 'id'>>
