@@ -15,8 +15,6 @@ function FileCarouselDisplay({ file }: { file: IFileItem }) {
   const isPdf = file.ext.toLowerCase() === 'pdf'
   const url = isImage(file.mimeType) ? file.url : getIconUrl(file.ext)
 
-  console.log(file.url)
-
   return (
     <div className={`flex flex-col items-center ${isPdf ? 'h-screen' : ''}`}>
       {isPdf && file.url ? (
