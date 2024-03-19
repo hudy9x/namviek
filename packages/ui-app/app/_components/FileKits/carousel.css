@@ -1,0 +1,12 @@
+.carousel-btn {
+  @apply w-14 h-14 p-3 rounded-full bg-white/10 cursor-pointer hover:text-gray-400 text-white;
+  @apply absolute top-1/2;
+
+  &.left {
+    @apply left-[30px];
+  }
+
+  &.right {
+    @apply right-[30px];
+  }
+}

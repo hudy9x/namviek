@@ -1,28 +1,11 @@
 import { Button, Loading, messageSuccess } from '@shared/ui'
 import FileThumb from './FileThumb'
-import { IFileItem } from './context'
+import { IFileItem, isImage } from './context'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useParams, useSearchParams } from 'next/navigation'
 import { taskMakeCover } from '@/services/task'
 import { useTaskStore } from '@/store/task'
-
-const generateSizeStr = (size: number) => {
-  const n = size / 1024
-  if (n < 1000) {
-    return `${n.toFixed(2)} Kb`
-  }
-
-  const m = n / 1024
-
-  if (m < 1000) {
-    return `${m.toFixed(2)} Mb`
-  }
-
-  const l = m / 1024
-
-  return `${l.toFixed(2)} Gb`
-}
 
 export default function FileItem({ data }: { data: IFileItem }) {
   const { name, url, ext, mimeType, uploading, id, createdAt } = data
@@ -81,11 +64,13 @@ export default function FileItem({ data }: { data: IFileItem }) {
           <a href={url} target="_blank" className="btn sm">
             Download
           </a>
-          <Button
-            title="Turn this into cover"
-            size="sm"
-            onClick={makeThisCover}
-          />
+          {isImage(mimeType) ? (
+            <Button
+              title="Turn this into cover"
+              size="sm"
+              onClick={makeThisCover}
+            />
+          ) : null}
         </div>
       </div>
     </div>

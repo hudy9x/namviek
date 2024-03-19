@@ -6,16 +6,25 @@ import {
 import { IFileItem, getIconUrl, isImage, useFileKitContext } from './context'
 import { HiOutlineDownload } from 'react-icons/hi'
 import { useEffect } from 'react'
+import PdfViewer from '../PdfViewer'
+import './carousel.css'
 
 function FileCarouselDisplay({ file }: { file: IFileItem }) {
   if (!file) return null
 
+  const isPdf = file.ext.toLowerCase() === 'pdf'
   const url = isImage(file.mimeType) ? file.url : getIconUrl(file.ext)
 
   return (
-    <div className="flex flex-col items-center">
-      <img src={url} className="max-h-[70vh]" />
-      <h2 className="text-xl text-gray-200 mt-4 max-w-[450px] text-center">
+    <div className={`flex flex-col items-center ${isPdf ? 'h-screen' : ''}`}>
+      {isPdf && file.url ? (
+        <div className="pt-[50px]">
+          <PdfViewer src={file.url} />
+        </div>
+      ) : (
+        <img src={url} className="max-h-[70vh]" />
+      )}
+      <h2 className="text-xl text-gray-200 mt-4 max-w-[450px] text-center pb-[50px]">
         {file.name}
       </h2>
     </div>
@@ -79,15 +88,17 @@ export default function FileCarousel() {
           />
         </div>
       </div>
-      <div className="flex items-center justify-between px-8 h-full">
+      <div className="flex items-center overflow-y-auto justify-between px-8 h-full">
         <HiOutlineChevronLeft
           onClick={prevImage}
-          className="w-14 h-14 p-3 rounded-full bg-white/10 cursor-pointer hover:text-gray-400 text-white"
+          className="carousel-btn left"
         />
-        <FileCarouselDisplay file={found} />
+        <div className="w-full mx-auto">
+          <FileCarouselDisplay file={found} />
+        </div>
         <HiOutlineChevronRight
           onClick={nextImage}
-          className="w-14 h-14 p-3 rounded-full bg-white/10 cursor-pointer hover:text-gray-400 text-white"
+          className="carousel-btn right"
         />
       </div>
       {/* <div onClick={onClose} className="w-full h-full"></div> */}

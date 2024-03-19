@@ -86,6 +86,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.44.3",
     "react-icons": "^4.9.0",
+    "react-pdf": "^7.7.1",
     "read-excel-file": "^5.6.1",
     "resend": "^1.0.0",
     "tippy.js": "^6.3.7",
