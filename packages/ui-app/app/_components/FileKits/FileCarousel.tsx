@@ -13,17 +13,42 @@ function FileCarouselDisplay({ file }: { file: IFileItem }) {
   if (!file) return null
 
   const isPdf = file.ext.toLowerCase() === 'pdf'
+  const isVideo = file.ext.toLowerCase() === 'mp4'
   const url = isImage(file.mimeType) ? file.url : getIconUrl(file.ext)
 
-  return (
-    <div className={`flex flex-col items-center ${isPdf ? 'h-screen' : ''}`}>
-      {isPdf && file.url ? (
+  const getPreview = () => {
+    if (isPdf && file.url) {
+      return (
         <div className="pt-[50px]">
           <PdfViewer src={file.url} />
         </div>
-      ) : (
-        <img src={url} className="max-h-[70vh]" />
-      )}
+      )
+    }
+
+    if (isVideo) {
+      console.log(file)
+      return (
+        <div>
+          <video
+            style={{
+              width: 'calc(100vw - 200px)',
+              minWidth: 300,
+              maxWidth: 1300
+            }}
+            controls>
+            <source src={file.url} type={file.mimeType} />
+            Your browser does not support HTML video.
+          </video>
+        </div>
+      )
+    }
+
+    return <img src={url} className="max-h-[70vh]" />
+  }
+
+  return (
+    <div className={`flex flex-col items-center ${isPdf ? 'h-screen' : ''}`}>
+      {getPreview()}
       <h2 className="text-xl text-gray-200 mt-4 max-w-[450px] text-center pb-[50px]">
         {file.name}
       </h2>
