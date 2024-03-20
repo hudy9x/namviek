@@ -15,7 +15,7 @@ func init() {
 }
 
 func main() {
-	var r = gin.Default()
+	r := gin.Default()
 
 	v2 := r.Group("/api/v2")
 
@@ -23,6 +23,7 @@ func main() {
 
 	v2.GET("/profile/:uid", middlewares.VerifyAuth, profileController.Get)
 
-	r.Run()
+	v2.POST("/profile", middlewares.VerifyAuth, profileController.Post)
 
+	r.Run()
 }
