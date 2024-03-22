@@ -4,6 +4,7 @@ import CredentialInvalidException from '../../exceptions/CredentialInvalidExcept
 import { BaseAuthProvider } from './BaseAuthProvider'
 import { getAuth } from 'firebase-admin/auth'
 import { mdUserAdd } from '@shared/models'
+import InactiveAccountException from '../../exceptions/InactiveAccountException'
 
 export default class GoogleAuthProvider extends BaseAuthProvider {
   constructor({ email, password }: { email: string; password: string }) {
@@ -33,6 +34,13 @@ export default class GoogleAuthProvider extends BaseAuthProvider {
         })
       }
 
+      // in case users was deleted or removed
+      // stop them from logging in the app
+      // contact to admin to re-active the account
+      if (user.status === UserStatus.INACTIVE) {
+        throw new InactiveAccountException()
+      }
+
       this.user = {
         id: user.id,
         email: user.email,
@@ -43,5 +51,4 @@ export default class GoogleAuthProvider extends BaseAuthProvider {
       throw new CredentialInvalidException()
     }
   }
-
 }
