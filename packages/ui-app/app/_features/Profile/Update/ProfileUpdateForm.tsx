@@ -1,42 +1,37 @@
+import FileKitContainer from '@/components/FileKits'
+import { useFileKitContext } from '@/components/FileKits/context'
+import useFileUpload from '@/components/FileKits/useFileUpload'
 import MemberAvatar from '@/components/MemberAvatar'
+import { profileUpdate } from '@/services/profile'
+import { useMemberStore } from '@/store/member'
+import { useUser } from '@goalie/nextjs'
+import { User } from '@prisma/client'
 import { Form, Button, messageError, messageSuccess, useForm } from '@shared/ui'
 
 import { validateProfileUser } from '@shared/validation'
-import { useState } from 'react'
+import Avatar from 'packages/shared-ui/src/components/Avatar'
+import { useEffect, useRef, useState } from 'react'
 
-interface IProfile {
-  name: string
-  location: string
-  bio: string
-  oldPassword: string
+interface IProfile extends Partial<User> {
   newPassword: string
-  uid: string
 }
 
 interface ProjectUpdateFormProps {
   userId: string
 }
 
-const httpPost = (data: any) =>
-  fetch('http://localhost:8080/api/v2/profile', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    mode: 'no-cors',
-    body: JSON.stringify(data)
-  }).then(res => res.json())
-
 export default function ProfileUpdateForm({ userId }: ProjectUpdateFormProps) {
+  const { user, setUser } = useUser()
+  const photo = user?.photo
   const [loading, setLoading] = useState(false)
   const { regField, regHandleSubmit } = useForm({
     values: {
       name: '',
-      location: '',
+      country: '',
       bio: '',
-      oldPassword: '',
+      password: '',
       newPassword: '',
-      uid: userId
+      id: userId
     },
     validateFn: values => {
       return validateProfileUser(values)
@@ -44,18 +39,18 @@ export default function ProfileUpdateForm({ userId }: ProjectUpdateFormProps) {
     onSubmit: values => {
       submitHandler({
         name: values.name,
-        location: values.location,
+        country: values.country,
         bio: values.bio,
-        oldPassword: values.oldPassword,
+        password: values.password,
         newPassword: values.newPassword,
-        uid: userId
+        id: userId
       })
     }
   })
 
   const submitHandler = (profile: IProfile) => {
     setLoading(true)
-    httpPost(profile)
+    profileUpdate(profile)
       .then(res => {
         console.log({ res })
         messageSuccess('Update profile successfully!')
@@ -71,12 +66,45 @@ export default function ProfileUpdateForm({ userId }: ProjectUpdateFormProps) {
       .finally(() => setLoading(false))
   }
 
+  const { onFileHandler } = useFileUpload()
+  const { previewFiles } = useFileKitContext()
+
+  useEffect(() => {
+    const lastFileUrl = previewFiles?.[-1]?.url
+    user && lastFileUrl && setUser({ ...user, photo: lastFileUrl })
+  }, [previewFiles, user, setUser])
+
+  const onInputChange = (files: FileList) => {
+    onFileHandler(files)
+  }
+
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+
   return (
-    <div className="w-[100vw] h-[100vh] flex flex-col items-center justify-center ">
-      <div className="flex gap-4">
-        <MemberAvatar uid={userId} size="lg" noName />
-        <Button title="Upload new picture" />
-      </div>
+    <div className="w-[100vw] h-[100vh] flex flex-col items-center justify-center">
+      <FileKitContainer fileIds={photo ? [photo] : []}>
+        <div className="flex gap-4">
+          {photo ? (
+            <Avatar size="lg" src={photo} name={user?.name || 'None'} />
+          ) : (
+            <MemberAvatar uid={userId} size="lg" noName />
+          )}
+          <Button
+            title="Upload new picture"
+            onClick={() => avatarInputRef.current?.click()}
+          />
+          <input
+            ref={avatarInputRef}
+            multiple={false}
+            className="hidden"
+            type="file"
+            onChange={ev => {
+              const files = ev.target.files
+              files && files.length && onInputChange(files)
+            }}
+          />
+        </div>
+      </FileKitContainer>
       <form
         onSubmit={regHandleSubmit}
         className="flex flex-col mb-6 gap-4 w-1/2 lg:w-3/4">
@@ -86,7 +114,7 @@ export default function ProfileUpdateForm({ userId }: ProjectUpdateFormProps) {
           className="w-full"
           {...regField('name')}
         />
-        <Form.Input title="Location" {...regField('location')} />
+        <Form.Input title="Location" {...regField('country')} />
         <Form.Textarea rows={3} title="Bio" {...regField('bio')} />
         <Form.Input
           title="Old password"
