@@ -4,17 +4,20 @@ import "namviek-backend/packages/be-ver2/models"
 
 type UserDao interface {
 	Create(u *models.User) error
-	// Get() error
+	Get() error
 }
 
-type UserImpl struct {
-}
+type UserImpl struct{}
 
 func (user UserImpl) Create(u *models.User) error {
 	return nil
 }
 
 func (user UserImpl) Get() error {
+	return nil
+}
+
+func (user UserImpl) Update() error {
 	return nil
 }
 
@@ -25,6 +28,5 @@ func Test() {
 	u := models.User{}
 
 	userDao.Create(&u)
-	userDao.Get() // if interface not defined => this will throw an error 
-
+	userDao.Get() // if interface not defined => this will throw an error
 }

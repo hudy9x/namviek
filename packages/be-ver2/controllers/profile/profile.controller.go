@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"namviek-backend/packages/be-ver2/daos"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,10 +29,11 @@ func Get(c *gin.Context) {
 }
 
 type Profile struct {
+	daos.UserImpl
 	Name        string `json:"name"`
 	Location    string `json:"location"`
 	Bio         string `json:"bio"`
-	OldPassword string `json:"oldPassword"`
+	Password    string `json:"password"`
 	NewPassword string `json:"newPassword"`
 	Uid         string `json:"uid"`
 }
@@ -43,9 +46,11 @@ func Post(c *gin.Context) {
 		return
 	}
 
-	if profile.OldPassword == "" { // check password valid
+	if profile.Password == "" { // check password valid
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
+
+	profile.Update()
 
 	log.Printf("user profile: %v", profile)
 	c.JSON(http.StatusOK, gin.H{
