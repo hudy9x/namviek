@@ -4,12 +4,14 @@ import PrioritySelect from "@/components/PrioritySelect";
 import { Form } from "@shared/ui";
 import { ETaskFilterGroupByType } from "../TaskFilter/context";
 import { useProjectViewContext } from "../ProjectView/context";
+import StatusSelectMultiple from "@/components/StatusSelectMultiple";
+import { ProjectViewType } from "@prisma/client";
 
-export default function FilterForm() {
+export default function FilterForm({ type }: { type?: ProjectViewType }) {
 
   const { customView, setCustomView, filter, setFilterValue } = useProjectViewContext()
   const hidden = customView ? '' : 'hidden'
-  const { date, point, priority, groupBy } = filter
+  const { date, point, priority, groupBy, statusIds } = filter
 
   return <>
     <div className="flex items-center gap-2 mb-3">
@@ -59,6 +61,12 @@ export default function FilterForm() {
           setFilterValue('priority', val)
         }}
       />
+      {type === ProjectViewType.CALENDAR ?
+        <StatusSelectMultiple value={statusIds} onChange={val => {
+          setFilterValue('statusIds', val)
+
+        }} />
+        : null}
     </div>
 
     <div className={`mb-6 ${hidden}`}>

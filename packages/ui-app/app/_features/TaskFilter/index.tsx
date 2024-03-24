@@ -12,6 +12,8 @@ import { ETaskFilterGroupByType, useTaskFilter } from './context'
 import './style.css'
 import { useProjectViewList } from '../ProjectView/useProjectViewList'
 import { ProjectViewType } from '@prisma/client'
+import StatusSelect from '@/components/StatusSelect'
+import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 
 let timeout = 0
 interface ITaskFilterProps {
@@ -37,7 +39,8 @@ export default function TaskFilter({
     endDate,
     point,
     priority,
-    assigneeIds
+    assigneeIds,
+    statusIds
   } = filter
 
   const isDateRange = date === 'date-range'
@@ -142,6 +145,10 @@ export default function TaskFilter({
             infinite={true}
           />
         ) : null}
+
+        {isCalendarMode ? <StatusSelectMultiple maxDisplay={2} value={statusIds} onChange={val => {
+          setFilterValue('statusIds', val)
+        }} /> : null}
 
         <PrioritySelect
           all={true}

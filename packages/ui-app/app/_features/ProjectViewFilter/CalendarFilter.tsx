@@ -15,7 +15,7 @@ export default function ProjectViewFilterByCalendar({ type, desc, onAdd }: {
     <div className="">
       <h2 className="text-xl mb-3">Calendar</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
-      <FilterForm />
+      <FilterForm type={type} />
       <div className="text-right">
         <Button
           onClick={onAdd}

@@ -39,6 +39,8 @@ export default function ListItem({
     if (multiple && onMultiChange) {
       onMultiChange(prev => {
         // clear others selected, but itself
+        // when set `true` and in multiple mode, it will clear all value but itself
+        // Ex: user select an ALL item, then the others should be cleared
         if (keepMeOnly) {
           return [value]
         }
@@ -50,7 +52,7 @@ export default function ListItem({
           }
 
           // click on a unselected item, select it
-          return [...prev.filter(p => p.id !== 'ALL'), value]
+          return [...prev.filter(p => p.id !== 'ALL'), value].reverse()
         } else {
           return prev
         }

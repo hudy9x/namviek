@@ -1,28 +1,27 @@
 import { Form, ListItemValue } from '@shared/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useProjectStatusStore } from '../../store/status'
 
 const List = Form.List
 
 interface IStatusSelectProps {
   value?: string[]
+  noName?: boolean
   className?: string
   onChange?: (v: string[]) => void
   title?: string
   placeholder?: string
-}
-
-const defaultOption: ListItemValue = {
-  id: '0',
-  title: 'None'
+  maxDisplay?: number
 }
 
 export default function StatusSelectMultiple({
   title,
   className,
+  noName = false,
   value,
   onChange,
-  placeholder
+  placeholder,
+  maxDisplay = 3
 }: IStatusSelectProps) {
   // const selectOption = options.find(opt => opt.id === value);
   const { statuses } = useProjectStatusStore()
@@ -38,16 +37,33 @@ export default function StatusSelectMultiple({
   // update options list
   useEffect(() => {
     const statusList = statuses.map(stt => ({ id: stt.id, title: stt.name }))
+    statusList.push({
+      id: 'ALL',
+      title: 'All statuses'
+    })
     setOptions(statusList as ListItemValue[])
   }, [statuses])
 
   // fill selectetd value after statues list updated
   useEffect(() => {
-    if (options.length) {
-      const selectedOption = options.filter(
-        opt => value && value.some(v => v === opt.id)
-      )
-      setVal(selectedOption)
+    if (options.length && value?.length) {
+
+      const newVal: ListItemValue[] = []
+      const optionMap = new Map<string, ListItemValue>()
+
+      options.forEach(opt => {
+        optionMap.set(opt.id, opt)
+      })
+
+      value.forEach(item => {
+        const value = optionMap.get(item)
+        if (value) {
+          newVal.push(value)
+        }
+      })
+
+      setVal(newVal)
+
     }
   }, [options, value])
 
@@ -59,6 +75,10 @@ export default function StatusSelectMultiple({
   }, [updateCounter])
 
   const selectedList = val
+  const slicedList = val.slice(0, maxDisplay)
+  const rest = val.slice(maxDisplay).length
+
+  const bgOfAll = 'linear-gradient(45deg, rgba(226,40,130,1) 0%, rgba(226,40,142,1) 50%, rgba(30,235,107,1) 50%, rgba(30,235,213,1) 100%)'
 
   return (
     <div className={className}>
@@ -72,32 +92,37 @@ export default function StatusSelectMultiple({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          {!selectedList || !selectedList.length ? <span className='text-transparent'>Option</span>: null}
+          {!selectedList || !selectedList.length ? <span className='text-transparent'>Option</span> : null}
           <div className="flex flex-wrap items-center gap-2">
-            {selectedList.map(item => {
+            {slicedList.map(item => {
               const stt = statuses.find(stt => stt.id === item.id)
+              const isAllOption = item.id === 'ALL' ? bgOfAll : stt?.color
+
               return (
                 <div key={item.id} className="flex items-center gap-1">
                   <div
                     className="w-4 h-4 rounded cursor-pointer"
                     style={{
-                      backgroundColor: stt ? stt.color : '#e5e5e5'
+                      backgroundColor: stt ? stt.color : isAllOption,
+                      background: isAllOption
                     }}></div>
-                  <span className="status-title">{item.title}</span>
+                  {noName ? null : <span className="status-title">{item.title}</span>}
                 </div>
               )
             })}
+            {rest ? <div>+{rest}</div> : null}
           </div>
         </List.Button>
-        <List.Options>
+        <List.Options width={200}>
           {options.map(option => {
             const stt = statuses.find(st => st.id === option.id)
+            const isAllOption = option.id === 'ALL' ? bgOfAll : stt?.color
             return (
-              <List.Item key={option.id} value={option}>
+              <List.Item key={option.id} value={option} keepMeOnly={option.id === 'ALL'} >
                 <div className="flex items-center gap-2">
                   <div
                     className="w-4 h-4 rounded cursor-pointer"
-                    style={{ backgroundColor: stt?.color }}></div>
+                    style={{ backgroundColor: stt?.color, background: isAllOption }}></div>
                   <span>{option.title}</span>
                 </div>
               </List.Item>

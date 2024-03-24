@@ -28,6 +28,7 @@ export interface ITaskQuery {
 }
 
 export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
+  console.log('task get by cond', query)
   return httpGet(`/api/project/task/query`, {
     params: query,
     signal: signal

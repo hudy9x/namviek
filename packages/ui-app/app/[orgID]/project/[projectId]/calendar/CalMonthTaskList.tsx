@@ -34,9 +34,8 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
         const h = dueDate.getHours()
         const m = dueDate.getMinutes()
-        const time = `${h > 9 ? (h > 12 ? h - 12 : h) : '0' + h}:${
-          m > 9 ? m : '0' + m
-        } ${h >= 12 ? 'PM' : 'AM'}`
+        const time = `${h > 9 ? (h > 12 ? h - 12 : h) : '0' + h}:${m > 9 ? m : '0' + m
+          } ${h >= 12 ? 'PM' : 'AM'}`
 
         return (
           <CalMonthTask
