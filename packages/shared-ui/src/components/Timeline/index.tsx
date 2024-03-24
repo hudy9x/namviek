@@ -104,7 +104,7 @@ export default function Timeline({
     <div className="timeline-container">
       <div
         className={`flex items-start bg-white dark:bg-gray-900 border dark:border-gray-700 p-0.5 rounded-md`}>
-        <TimelineList items={items} height={colHeight} />
+        {/* <TimelineList items={items} height={colHeight} /> */}
         <section className="timeline">
           <header
             className="grid divide-x"

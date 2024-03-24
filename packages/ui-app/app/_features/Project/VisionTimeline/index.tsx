@@ -13,11 +13,10 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
 
   return (
     <div
-      className={`vision-timeline-container mx-auto relative ${
-        visible ? '' : 'hidden'
-      }`}
-      style={{ maxWidth: `calc(100vw - 340px)` }}>
-      <Loading.Absolute enabled={loading} border/>
+      className={`vision-timeline-container px-3 relative ${visible ? '' : 'hidden'
+        }`}
+      style={{ maxWidth: `calc(100vw - 740px)` }}>
+      <Loading.Absolute enabled={loading} border />
       <div className="py-3 flex items-center justify-between">
         <div>
           <VisionMonthNavigator />
