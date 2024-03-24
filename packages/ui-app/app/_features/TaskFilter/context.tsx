@@ -35,6 +35,7 @@ interface ITaskFilterFields {
   point: string
   priority: TaskPriority | 'ALL'
   assigneeIds: string[]
+  statusIds: string[]
   status: 'TODO' | 'INPROCESS' | 'DONE' | 'ALL'
 }
 
@@ -74,6 +75,7 @@ const TaskFilterContext = createContext<ITaskFilterContextProps>({
     point: 'INFINITE',
     priority: 'ALL',
     assigneeIds: [],
+    statusIds: ['ALL'],
     status: 'ALL'
   },
   setFilter: () => {
@@ -94,6 +96,7 @@ const defaultFilter: ITaskFilterFields = {
   point: '-1',
   priority: 'ALL',
   assigneeIds: ['ALL'],
+  statusIds: ['ALL'],
   status: 'ALL'
 }
 

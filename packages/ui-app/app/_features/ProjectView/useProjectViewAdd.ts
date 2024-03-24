@@ -24,6 +24,7 @@ export const useProjectViewAdd = () => {
       date: data.date,
       priority: data.priority,
       point: data.point,
+      statusIds: data.statusIds,
       groupBy: data.groupBy
     } : null
 

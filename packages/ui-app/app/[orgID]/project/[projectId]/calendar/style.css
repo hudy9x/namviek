@@ -1,6 +1,7 @@
 .calendar-wrapper {
   @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
-  height: calc(100vh - 153px);
+  /* height: calc(100vh - 153px); */
+  height: 800px
 }
 
 .week-view.calendar-wrapper {

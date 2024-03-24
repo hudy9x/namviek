@@ -60,6 +60,7 @@ export default function useGetTask() {
     })
 
     setTaskLoading(true)
+    console.log('before getting task =======================', point)
     taskGetByCond(
       {
         title: term || undefined,
@@ -74,6 +75,7 @@ export default function useGetTask() {
     )
       .then(res => {
         const { data, status, error } = res.data
+        console.log('fetch task data', data)
         if (status !== 200) {
           addAllTasks([])
           localforage.removeItem(key)
@@ -83,6 +85,7 @@ export default function useGetTask() {
 
         localforage.setItem(key, data)
         setTimeout(() => {
+          console.log('update all task', data)
           addAllTasks(data)
         }, 300)
       })

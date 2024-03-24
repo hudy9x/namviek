@@ -1,5 +1,5 @@
 import { Modal } from '@shared/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewProvider } from './context'
@@ -13,9 +13,17 @@ export default function ProjectViewCreate() {
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
     priority: 'ALL',
-    point: "INFINITE",
+    point: "-1",
+    statusIds: ['ALL'],
     groupBy: ETaskFilterGroupByType.STATUS
   })
+
+  useEffect(() => {
+    if (visible === false) {
+      setCustomView(false)
+    }
+
+  }, [visible])
 
   return (
     <ProjectViewProvider

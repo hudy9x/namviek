@@ -7,6 +7,7 @@ export interface IBoardFilter {
   priority: TaskPriority | 'ALL',
   point: string
   groupBy: ETaskFilterGroupByType
+  statusIds: string[]
 }
 
 interface IProjectViewContextProps {
@@ -39,7 +40,8 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
   filter: {
     date: "this-month",
     priority: 'ALL',
-    point: "INFINITE",
+    point: "-1",
+    statusIds: ['ALL'],
     groupBy: ETaskFilterGroupByType.STATUS
   },
   setFilter: () => { console.log(1) }
@@ -55,7 +57,7 @@ export const useProjectViewContext = () => {
 
   const setFilterValue = (
     name: keyof IBoardFilter,
-    val: string | ETaskFilterGroupByType
+    val: string | string[] | ETaskFilterGroupByType
   ) => {
     setFilter(filter => ({ ...filter, [name]: val }))
   }

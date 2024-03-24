@@ -52,7 +52,6 @@ export const useProjectViewList = () => {
       if (val) {
         const views = val as ProjectView[]
 
-
         views.forEach(v => projectViewMap.set(v.id, v.type))
         addAllView(views)
       }

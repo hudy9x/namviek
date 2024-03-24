@@ -1,19 +1,5 @@
 import { ProjectViewType } from '@prisma/client'
 import { useState } from 'react'
-import { HiOutlineMenuAlt1 } from 'react-icons/hi'
-import {
-  HiMiniBars4,
-  HiOutlineBars2,
-  HiOutlineBars3,
-  HiOutlineBars3BottomLeft,
-  HiOutlineBars3BottomRight,
-  HiOutlineCalendar,
-  HiOutlineListBullet,
-  HiOutlineRectangleGroup,
-  HiOutlineRocketLaunch,
-  HiOutlineUserGroup,
-  HiOutlineViewColumns
-} from 'react-icons/hi2'
 
 import ProjectViewModalForm from './ProjectViewModalForm'
 import { useProjectViewContext } from './context'

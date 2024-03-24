@@ -32,6 +32,7 @@ export default class ProjectViewController extends BaseController {
         priority: string
         point: string
         groupBy: string
+        statusIds: string[]
       }
     }
 
@@ -49,7 +50,8 @@ export default class ProjectViewController extends BaseController {
         date: data.date,
         priority: data.priority,
         point: data.point,
-        groupBy: data.groupBy
+        groupBy: data.groupBy,
+        statusIds: data.statusIds
       } : {},
 
       type,
