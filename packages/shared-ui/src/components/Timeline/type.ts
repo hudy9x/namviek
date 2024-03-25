@@ -8,6 +8,7 @@ export interface ITimelineItem {
 }
 
 export interface ITimelineProps {
+  height?: string
   year: number
   month: number
   children: (data: ITimelineItem) => ReactNode

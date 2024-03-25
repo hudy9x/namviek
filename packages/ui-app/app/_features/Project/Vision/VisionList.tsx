@@ -39,7 +39,7 @@ export default function VisionList() {
               <div className="py-4 flex items-center justify-center text-gray-400 text-sm">
                 <div className="text-center">
                   <HiOutlineInbox className="inline-block w-6 h-6" />
-                  <h2>No vision found !</h2>
+                  <h2>No goal found !</h2>
                 </div>
               </div>
             ) : null}

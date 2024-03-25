@@ -1,9 +1,12 @@
 interface IProgressBar {
   progress: number
+  variant?: 'rounded' | 'square'
   color?: 'red' | 'green' | 'blue' | 'yellow' | 'dark' | 'indigo'
 }
+
 export default function ProgressBar({
   progress,
+  variant = 'rounded',
   color = 'blue'
 }: IProgressBar) {
   const colors = {
@@ -16,14 +19,15 @@ export default function ProgressBar({
   }
 
   const c = colors[color as keyof typeof colors]
+  const shape = variant === 'rounded' ? 'rounded-full' : 'rounded'
 
   return (
     <div
       title={`${progress || 0}%`}
-      className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+      className={`progressbar w-full bg-gray-200 ${shape} dark:bg-gray-700`}>
       <div
         className={`${c[0]} text-[10px] font-medium ${c[1]} text-center ${progress > 0 ? 'p-0.5' : 'py-0.5'
-          } leading-none rounded-full`}
+          } leading-none ${shape}`}
         style={{ width: `${progress || 0}%` }}>
         {progress >= 20 ? (
           <>{progress + '%'}</>

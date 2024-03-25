@@ -3,6 +3,7 @@ import VisionListTask from './VisionListTask'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import VisionCalendarContainer from './VisionCalendaContainer'
+import VisionTimeline from '../VisionTimeline'
 
 export default function VisionContainer({ visible }: { visible: boolean }) {
   const { updateTaskData } = useServiceTaskUpdate()
@@ -30,7 +31,8 @@ export default function VisionContainer({ visible }: { visible: boolean }) {
           <VisionListTask />
           <VisionList />
         </DndContext>
-        <VisionCalendarContainer />
+        {/* <VisionCalendarContainer /> */}
+        <VisionTimeline visible={true} />
       </div>
     </div>
   )

@@ -37,21 +37,29 @@ const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
   const { tasks } = useTaskStore()
   const { statusDoneId } = useProjectStatusStore()
   //
-  const visionProgress: { [key: string]: { total: number; done: number } } = {}
+  const visionProgress: {
+    [key: string]: { total: number; done: number; assigneeIds: string[] }
+  } = {}
 
   let taskTotal = 0
   let taskDone = 0
 
   visions.forEach(v => {
-    visionProgress[v.id] = { total: 0, done: 0 }
+    visionProgress[v.id] = { total: 0, done: 0, assigneeIds: [] }
   })
 
   tasks.forEach(task => {
-    const { visionId, done, taskStatusId } = task
+    const { visionId, done, taskStatusId, assigneeIds } = task
     if (!visionId || !visionProgress[visionId]) return
 
     taskTotal += 1
     visionProgress[visionId].total += 1
+
+    if (assigneeIds.length) {
+      assigneeIds.forEach(assigneeId => {
+        visionProgress[visionId].assigneeIds.push(assigneeId)
+      })
+    }
 
     if (taskStatusId === statusDoneId) {
       visionProgress[visionId].done += 1
@@ -148,7 +156,7 @@ export default function ProjectVision() {
         setSelected
       }}>
       <VisionContainer visible={mode === EVisionViewMode.CALENDAR} />
-      <VisionTimeline visible={mode === EVisionViewMode.TIMELINE} />
+      {/* <VisionTimeline visible={mode === EVisionViewMode.TIMELINE} /> */}
     </VisionProvider>
   )
 }
