@@ -19,7 +19,7 @@ export default function VisionListHeader({
       <div className="flex items-center justify-between px-3 py-2 text-xs">
         <div className="">
           <span className="uppercase text-[11px] font-bold text-gray-600">
-            All visions: {total}
+            All goals: {total}
           </span>
           <div className="text-[11px] space-x-2 text-gray-400">
             <span className="capitalize">Done: {done}</span>

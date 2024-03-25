@@ -23,7 +23,13 @@ interface IVisionContextProps {
   taskDone: number
   taskTotal: number
   visionByDays: VisionByDays
-  visionProgress: { [key: string]: { total: number; done: number } }
+  visionProgress: {
+    [key: string]: {
+      total: number
+      done: number
+      assigneeIds: string[]
+    }
+  }
   filter: IVisionFilter
   setFilter: Dispatch<SetStateAction<IVisionFilter>>
   setSelected: Dispatch<SetStateAction<string>>
@@ -88,11 +94,16 @@ export const useVisionContext = () => {
 
   const getVisionProgress = (id: string) => {
     const progress = visionProgress[id]
+    console.log(visionProgress)
     if (!progress) {
       return 0
     }
 
     return convertToProgress(progress.done, progress.total)
+  }
+
+  const getVisionData = (id: string) => {
+    return visionProgress[id]
   }
 
   const getVisionByDay = (key: string) => {
@@ -176,6 +187,7 @@ export const useVisionContext = () => {
     mode,
     setMode,
     setSelected,
-    getVisionProgress
+    getVisionProgress,
+    getVisionData,
   }
 }

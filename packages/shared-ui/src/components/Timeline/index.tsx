@@ -10,6 +10,7 @@ export default function Timeline({
   month,
   year,
   items,
+  height = '2.75rem',
   children,
   onChange
 }: ITimelineProps) {
@@ -24,7 +25,7 @@ export default function Timeline({
 
   let totalDates = 0
   const colWidth = '2rem'
-  const colHeight = '2.75rem'
+  const colHeight = height
 
   // calculate month columns - start
   let startMonth = 1
@@ -107,7 +108,7 @@ export default function Timeline({
         {/* <TimelineList items={items} height={colHeight} /> */}
         <section className="timeline">
           <header
-            className="grid divide-x"
+            className="timeline-month-headers grid divide-x"
             style={{
               gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
             }}>
@@ -131,7 +132,7 @@ export default function Timeline({
             })}
           </header>
           <header
-            className="grid divide-x"
+            className="timeline-week-headers grid divide-x"
             style={{
               gridTemplateColumns: `repeat(${totalDates}, minmax(${colWidth}, 1fr)) auto`
             }}>
@@ -151,7 +152,7 @@ export default function Timeline({
               })
             })}
           </header>
-          <main className="grid flex-auto grid-cols-1 grid-rows-1 min-h-[100px]">
+          <main className="timeline-goal-container grid flex-auto grid-cols-1 grid-rows-1 min-h-[100px]">
             <div
               className="timeline-columns"
               style={{

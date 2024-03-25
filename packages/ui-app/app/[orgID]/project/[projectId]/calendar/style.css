@@ -1,7 +1,7 @@
 .calendar-wrapper {
   @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
   /* height: calc(100vh - 153px); */
-  height: 800px
+  height: 800px;
 }
 
 .week-view.calendar-wrapper {
@@ -68,3 +68,41 @@
 .week-view .calendar-task-item {
   @apply whitespace-pre-wrap;
 }
+
+/* Copy from /components/calendar/style.css - considers to remove one of them */
+.calendar-container {
+  @apply flex flex-col justify-between divide-y dark:divide-gray-700 relative;
+  @apply border bg-white rounded-md shadow-lg shadow-indigo-100;
+  @apply dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900;
+}
+
+.cal-header-day {
+  @apply px-3 py-1 text-sm text-gray-700 dark:text-gray-500;
+}
+
+.cal-week {
+  @apply grid grid-cols-7 h-full divide-x dark:divide-gray-700 dark:text-gray-400;
+}
+
+.cal-day {
+  @apply absolute top-1 left-2;
+}
+
+.cal-day-in-week {
+  @apply bg-white dark:bg-gray-900 relative;
+  @apply text-xs text-gray-600 dark:text-gray-400;
+}
+
+.cal-day-in-week.today .cal-day {
+  @apply text-indigo-500 font-bold;
+}
+
+.cal-day-in-week.is-sunsat {
+  @apply bg-gray-50 dark:bg-black/40;
+}
+
+.cal-day-in-week.not-in-month {
+  @apply bg-indigo-50/50 text-gray-400;
+  @apply dark:bg-gray-800;
+}
+/* Copy from components/calendar/style.css */

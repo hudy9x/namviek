@@ -59,5 +59,5 @@ export default function VisionCreate() {
 
     createNewVision(visionData)
   }
-  return <ListBoxCreate placeholder="Create new vision" onEnter={onEnter} />
+  return <ListBoxCreate placeholder="Create new goal" onEnter={onEnter} />
 }
