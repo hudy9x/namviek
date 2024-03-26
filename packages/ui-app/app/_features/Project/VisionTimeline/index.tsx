@@ -9,6 +9,7 @@ import { HiOutlineFlag } from 'react-icons/hi2'
 import { dateFormat } from '@shared/libs'
 import ProgressBar from '@/components/ProgressBar'
 import { isSameDay } from 'date-fns'
+import VisionCreate from '../Vision/VisionCreate'
 
 export default function VisionTimeline({ visible }: { visible: boolean }) {
   const {
@@ -113,6 +114,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
           )
         }}
       </Timeline>
+      <VisionCreate />
     </div>
   )
 }
