@@ -67,7 +67,7 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
           return (
             <div className="flex items-center justify-between">
               <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
-                <section className="flex items-center justify-between">
+                <section className="flex items-center gap-4 justify-between">
                   <div>
                     <span>{data.title}</span>
                     <div className="flex items-center gap-1 text-[11px] text-gray-400">

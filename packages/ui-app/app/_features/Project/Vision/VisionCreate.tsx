@@ -27,8 +27,8 @@ export default function VisionCreate() {
       projectId,
       parentId: null,
       organizationId: orgID,
-      startDate: new Date(y, m, 1),
-      dueDate: new Date(y, m, 3)
+      startDate: new Date(y, m, 2),
+      dueDate: new Date(y, m, 5)
     }
 
     // ex: goal 12 /start-2
