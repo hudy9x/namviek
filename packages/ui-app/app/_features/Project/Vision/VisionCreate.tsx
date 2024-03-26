@@ -28,9 +28,10 @@ export default function VisionCreate() {
       parentId: null,
       organizationId: orgID,
       startDate: new Date(y, m, 1),
-      dueDate: new Date(y, m, 1)
+      dueDate: new Date(y, m, 3)
     }
 
+    // ex: goal 12 /start-2
     if (matchStart) {
       startDate = new Date(y, m, parseInt(matchStart[2], 10))
       visionData.name = visionData.name
@@ -40,6 +41,7 @@ export default function VisionCreate() {
       visionData.startDate = startDate
     }
 
+    // ex: goal 14 /start-4 /end-15
     if (matchEnd) {
       endDate = new Date(y, m, parseInt(matchEnd[2], 10))
       const endOfDate = endOfMonth(new Date(y, m, 1))
