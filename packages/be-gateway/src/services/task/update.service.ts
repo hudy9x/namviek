@@ -25,6 +25,7 @@ import { extracDatetime, padZero } from '@shared/libs'
 import { serviceGetStatusById } from '../status'
 import { serviceGetProjectById } from '../project'
 import TaskReminderJob from '../../jobs/reminder.job'
+import { boolean } from 'zod'
 
 export default class TaskUpdateService {
   activityService: ActivityService
@@ -153,7 +154,11 @@ export default class TaskUpdateService {
     }
 
     if (assigneeIds) {
-      taskData.assigneeIds = assigneeIds
+      if (!assigneeIds.filter(Boolean).length) {
+        taskData.assigneeIds = []
+      } else {
+        taskData.assigneeIds = assigneeIds
+      }
     }
 
     if (priority) {

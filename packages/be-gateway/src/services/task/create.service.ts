@@ -1,13 +1,6 @@
 import { Task } from '@prisma/client'
 import ActivityService from '../activity.service'
-import {
-  CKEY,
-  delCache,
-  findCacheByTerm,
-  findNDelCaches,
-  incrCache,
-  setJSONCache
-} from '../../lib/redis'
+import { CKEY, findNDelCaches, incrCache } from '../../lib/redis'
 import {
   ProjectSettingRepository,
   mdProjectGet,
@@ -21,7 +14,6 @@ import { notifyToWebUsers } from '../../lib/buzzer'
 import InternalErrorException from '../../exceptions/InternalErrorException'
 
 import TaskReminderJob from '../../jobs/reminder.job'
-import { isSameDay } from 'date-fns'
 
 export default class TaskCreateService {
   activityService: ActivityService
