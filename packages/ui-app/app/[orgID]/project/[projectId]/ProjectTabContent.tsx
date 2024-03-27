@@ -10,6 +10,8 @@ import { ProjectViewType } from '@prisma/client'
 import { Loading } from '@shared/ui'
 import { useProjectStatusStore } from '@/store/status'
 import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
+import { AnimatePresence, motion } from 'framer-motion'
+import React, { useId } from 'react'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -40,6 +42,29 @@ const AutomateMenu = dynamic(
   }
 )
 
+function AnimateView({
+  visible,
+  children
+}: {
+  visible: boolean
+  children: React.ReactNode
+}) {
+  const id = useId()
+  return (
+    <AnimatePresence>
+      {visible ? (
+        <motion.div
+          key={id}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}>
+          {children}
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  )
+}
+
 export default function ProjectTabContent() {
   const { loading } = useProjectViewStore()
   const { statusLoading } = useProjectStatusStore()
@@ -65,14 +90,34 @@ export default function ProjectTabContent() {
           <Loading.Absolute title="Preparing view ..." enabled={true} />
         </div>
       ) : null}
-      {type === 'NONE' && !isIgnored() && <TaskList />}
-      {isView(ProjectViewType.BOARD) && <Board />}
-      {/* {mode === 'board2' && <Board2 />} */}
-      {isView(ProjectViewType.LIST) && <TaskList />}
-      {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null}
-      {isView(ProjectViewType.CALENDAR) ? <Calendar /> : null}
-      {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null}
-      {isView(ProjectViewType.GOAL) ? <Vision /> : null}
+      <AnimateView visible={type === 'NONE' && !isIgnored()}>
+        <TaskList />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.BOARD)}>
+        <Board />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.LIST)}>
+        <TaskList />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.CALENDAR)}>
+        <Calendar />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.GOAL)}>
+        <Vision />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.DASHBOARD)}>
+        <ProjectOverview />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.TEAM)}>
+        <DynamicTeamView />
+      </AnimateView>
+      {/* {type === 'NONE' && !isIgnored() && <TaskList />} */}
+      {/* {isView(ProjectViewType.BOARD) && <Board />} */}
+      {/* {isView(ProjectViewType.LIST) && <TaskList />} */}
+      {/* {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null} */}
+      {/* {isView(ProjectViewType.CALENDAR) ? <Calendar /> : null} */}
+      {/* {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null} */}
+      {/* {isView(ProjectViewType.GOAL) ? <Vision /> : null} */}
       {mode === 'setting' && <Settings />}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateMenu /> : null}

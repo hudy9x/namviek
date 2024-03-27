@@ -106,7 +106,7 @@ export default function Timeline({
       <div
         className={`flex items-start bg-white dark:bg-gray-900 border dark:border-gray-700 p-0.5 rounded-md`}>
         {/* <TimelineList items={items} height={colHeight} /> */}
-        <section className="timeline">
+        <section className="timeline custom-scrollbar">
           <header
             className="timeline-month-headers grid divide-x"
             style={{

@@ -30,8 +30,18 @@
 }
 
 .timeline {
-  @apply w-full overflow-x-auto overflow-y-hidden;
+  @apply w-full overflow-x-hidden overflow-y-auto;
   @apply dark:border-gray-700;
+  @apply relative;
+  height: calc(100vh - 200px);
+
+  .timeline-month-headers {
+    @apply sticky top-0 left-0 z-10 bg-white dark:bg-gray-900;
+  }
+
+  .timeline-week-headers {
+    @apply sticky top-[28px] left-0 z-10 bg-white dark:bg-gray-900;
+  }
 }
 
 .timeline-columns {
