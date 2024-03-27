@@ -45,6 +45,7 @@ export default function TaskFilter({
 
   const isDateRange = date === 'date-range'
   const isCalendarMode = currentViewType === ProjectViewType.CALENDAR
+  const isTeamMode = currentViewType === ProjectViewType.TEAM
   const isShowStatusFilter =
     currentViewType === ProjectViewType.CALENDAR ||
     currentViewType === ProjectViewType.BOARD
@@ -179,7 +180,7 @@ export default function TaskFilter({
           />
         ) : null}
 
-        {isCalendarMode ? null : (
+        {isCalendarMode || isTeamMode ? null : (
           <ListPreset
             value={filter.groupBy}
             onChange={val => {

@@ -11,6 +11,7 @@ export default function BoardItemDraggable({
   index: number
 }) {
   const { tasks } = useTaskStore()
+
   const task = useMemo(() => {
     return tasks.find(t => t.id === item)
   }, [JSON.stringify(tasks), item])

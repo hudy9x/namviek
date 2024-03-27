@@ -11,29 +11,6 @@ import DynamicIcon from '@/components/DynamicIcon'
 import HasRole from '../UserPermission/HasRole'
 import useSetViewFilter from './useSetViewFilter'
 
-// function ProjectViewItem({view}: {view: }) {
-//   const clickOnView = (name: string) => {
-//     push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
-//   }
-//   return <div
-//     onClick={() => clickOnView(view.id)}
-//     className={`project-view-item group relative ${active ? 'active' : ''
-//       }`}
-//     key={index}>
-//     {icon ? (
-//       <DynamicIcon name={icon} />
-//     ) : (
-//       <ProjectViewIcon type={view.type} />
-//     )}
-//     <span>{view.name}</span>
-//     <ProjectViewItemDropdown
-//       id={view.id}
-//       name={view.name || ''}
-//       type={view.type}
-//     />
-//   </div>
-// }
-
 export default function ProjectView() {
   const searchParams = useSearchParams()
   const { push } = useRouter()

@@ -1,4 +1,4 @@
-import { useTaskFilter } from '@/features/TaskFilter/context'
+import { EGroupByType, ETaskFilterGroupByType, useTaskFilter } from '@/features/TaskFilter/context'
 import './style.css'
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
@@ -11,12 +11,14 @@ import { triggerEventMoveTaskToOtherBoard } from '@/events/useEventMoveTaskToOth
 
 export default function BoardContainer() {
   const { projectId } = useUrl()
-  const { groupByItems } = useTaskFilter()
+  const { groupByItems, filter, groupBy } = useTaskFilter()
   const {
     dragColumnToAnotherPosition,
     dragItemToAnotherPosition,
     dragItemToAnotherColumn
   } = useBoardDndAction()
+
+  const { statusIds } = filter
 
   useBoardRealtimeUpdate()
 
@@ -93,11 +95,6 @@ export default function BoardContainer() {
                   />
                 )
               })}
-              {/* <div className="board"> */}
-              {/*   <h2 className="btn" onClick={addNewStatus}> */}
-              {/*     Create new status */}
-              {/*   </h2> */}
-              {/* </div> */}
               {provided.placeholder}
             </div>
           )
