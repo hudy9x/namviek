@@ -50,7 +50,7 @@ const CalendarFilter = () => {
             { id: ICalendarView.WEEK, title: 'Week view' },
             { id: ICalendarView.MONTH, title: 'Month view' },
           ]} />
-        <div className='w-[1px] h-[20px] bg-gray-200 dark:bg-gray-700 mx-3'></div>
+        {/* <div className='w-[1px] h-[20px] bg-gray-200 dark:bg-gray-700 mx-3'></div> */}
         {/* <ListPreset */}
         {/*   className='no-clear-icon' */}
         {/*   value={status} */}
