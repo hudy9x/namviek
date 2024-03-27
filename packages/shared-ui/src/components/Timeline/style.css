@@ -33,7 +33,7 @@
   @apply w-full overflow-x-hidden overflow-y-auto;
   @apply dark:border-gray-700;
   @apply relative;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 260px);
 
   .timeline-month-headers {
     @apply sticky top-0 left-0 z-10 bg-white dark:bg-gray-900;
