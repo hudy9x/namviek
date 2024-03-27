@@ -29,10 +29,10 @@ export default function VisionContainer({ visible }: { visible: boolean }) {
         style={{ height: `calc(100vh - 83px)` }}>
         <DndContext onDragEnd={onDragEnd}>
           <VisionListTask />
-          <VisionList />
+          {/* <VisionList /> */}
+          <VisionTimeline visible={true} />
         </DndContext>
         {/* <VisionCalendarContainer /> */}
-        <VisionTimeline visible={true} />
       </div>
     </div>
   )

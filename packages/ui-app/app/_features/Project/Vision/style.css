@@ -1,10 +1,10 @@
 .vision-dropzone.is-dragging-over {
-  @apply relative;
+  @apply relative px-2.5 -mx-2.5 py-2 -my-2;
 }
 
 .vision-dropzone.is-dragging-over:before {
   @apply absolute top-0 left-0 right-0 bottom-0 rounded-md;
-  @apply border border-dashed border-indigo-400;
+  @apply border-2 border-dashed border-indigo-400;
   content: '';
 }
 

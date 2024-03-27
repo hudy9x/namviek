@@ -14,7 +14,6 @@ import './style.css'
 import { Vision } from '@prisma/client'
 import { useTaskStore } from '@/store/task'
 import { useProjectStatusStore } from '@/store/status'
-import VisionTimeline from '../VisionTimeline'
 
 const useVisionByDates = (visions: VisionField[]) => {
   const visionByDays: VisionByDays = {}
@@ -156,7 +155,6 @@ export default function ProjectVision() {
         setSelected
       }}>
       <VisionContainer visible={mode === EVisionViewMode.CALENDAR} />
-      {/* <VisionTimeline visible={mode === EVisionViewMode.TIMELINE} /> */}
     </VisionProvider>
   )
 }

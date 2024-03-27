@@ -6,6 +6,7 @@ import VisionCreate from '../Vision/VisionCreate'
 import TimelineItem from './TimelineItem'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useId } from 'react'
+import VisionMonthNavigator from '../Vision/VisionMonthNavigator'
 
 function AnimateView({
   visible,
@@ -40,10 +41,16 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         visible ? '' : 'hidden'
       }`}>
       {/* <Loading.Absolute enabled={loading} border /> */}
+      <div className="z-20 relative mb-3">
+        <div className="w-[120px]">
+          <VisionMonthNavigator />
+        </div>
+      </div>
 
       <Timeline
         height="5.75rem"
         month={filter.month}
+        year={ed.getFullYear()}
         onChange={({ id, start, end }) => {
           updateVision({
             id,
@@ -51,7 +58,6 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
             dueDate: end
           })
         }}
-        year={ed.getFullYear()}
         items={visions.map(vision => {
           return {
             id: vision.id || '',
