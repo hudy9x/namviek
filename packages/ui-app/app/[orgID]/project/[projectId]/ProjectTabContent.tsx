@@ -105,12 +105,18 @@ export default function ProjectTabContent() {
       <AnimateView visible={isView(ProjectViewType.GOAL)}>
         <Vision />
       </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.DASHBOARD)}>
+        <ProjectOverview />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.TEAM)}>
+        <DynamicTeamView />
+      </AnimateView>
       {/* {type === 'NONE' && !isIgnored() && <TaskList />} */}
       {/* {isView(ProjectViewType.BOARD) && <Board />} */}
       {/* {isView(ProjectViewType.LIST) && <TaskList />} */}
-      {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null}
+      {/* {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null} */}
       {/* {isView(ProjectViewType.CALENDAR) ? <Calendar /> : null} */}
-      {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null}
+      {/* {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null} */}
       {/* {isView(ProjectViewType.GOAL) ? <Vision /> : null} */}
       {mode === 'setting' && <Settings />}
       {mode === 'automation-create' ? <Automation /> : null}
