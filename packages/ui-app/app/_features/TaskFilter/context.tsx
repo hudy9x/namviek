@@ -169,6 +169,16 @@ export const useTaskFilter = () => {
 
         const { taskStatusId } = t
 
+        const { statusIds: filteredByStatusIds } = filter
+
+        // if (
+        //   taskStatusId &&
+        //   filteredByStatusIds.length &&
+        //   !filteredByStatusIds.includes(taskStatusId)
+        // ) {
+        //   return
+        // }
+
         if (taskStatusId === id) {
           items.push(t.id)
           ignored.push(t.id)
@@ -195,7 +205,6 @@ export const useTaskFilter = () => {
         items
       }
     })
-
 
     if (noneItems.length) {
       groupStatuses.push({

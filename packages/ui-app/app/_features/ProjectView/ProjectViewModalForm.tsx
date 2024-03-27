@@ -52,6 +52,8 @@ export default function ProjectViewModalForm({
       })
   }
 
+  console.log('type', type)
+
   return (
     <div className="min-h-[500px]">
       <ProjectViewFilterByBoard type={type} desc={desc} onAdd={onAdd} />

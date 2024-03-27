@@ -45,6 +45,9 @@ export default function TaskFilter({
 
   const isDateRange = date === 'date-range'
   const isCalendarMode = currentViewType === ProjectViewType.CALENDAR
+  const isShowStatusFilter =
+    currentViewType === ProjectViewType.CALENDAR ||
+    currentViewType === ProjectViewType.BOARD
   const showOperator = ['this-month', 'this-week', 'today']
 
   useEffect(() => {
@@ -53,7 +56,6 @@ export default function TaskFilter({
     }
 
     timeout = setTimeout(() => {
-
       setFilterValue('term', txt)
     }, 250) as unknown as number
   }, [txt])
@@ -146,9 +148,15 @@ export default function TaskFilter({
           />
         ) : null}
 
-        {isCalendarMode ? <StatusSelectMultiple maxDisplay={2} value={statusIds} onChange={val => {
-          setFilterValue('statusIds', val)
-        }} /> : null}
+        {isShowStatusFilter ? (
+          <StatusSelectMultiple
+            maxDisplay={2}
+            value={statusIds}
+            onChange={val => {
+              setFilterValue('statusIds', val)
+            }}
+          />
+        ) : null}
 
         <PrioritySelect
           all={true}
