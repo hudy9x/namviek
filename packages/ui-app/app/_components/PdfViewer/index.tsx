@@ -16,14 +16,22 @@ export default function PdfViewer({ src }: { src: string }) {
     setLoading(false)
   }
 
+  const pages = new Array(numPages).fill(1).map((v, i) => i + 1)
+
   return (
     <div>
       <Loading enabled={loading} title="Parsing..." />
-      <Document file={src} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page width={800} pageNumber={pageNumber} />
+      <Document
+        file={src}
+        className="space-y-2"
+        onLoadSuccess={onDocumentLoadSuccess}>
+        {pages.map(p => {
+          return <Page key={p} width={800} pageNumber={p} />
+        })}
       </Document>
-      <p>
-        Page {pageNumber} of {numPages}
+      <p className="text-white">
+        Total: {numPages} pages
+        {/* Page {pageNumber} of {numPages} */}
       </p>
     </div>
   )
