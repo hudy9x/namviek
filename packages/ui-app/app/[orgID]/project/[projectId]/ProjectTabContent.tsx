@@ -50,7 +50,7 @@ function AnimateView({
   children: React.ReactNode
 }) {
   if (!visible) return null
-  return children
+  return <>{children}</>
   // const id = useId()
   // return (
   //   <AnimatePresence>
