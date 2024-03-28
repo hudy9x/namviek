@@ -11,6 +11,7 @@ export default function ProjectLayout({
 }) {
   useOrgMemberGet()
   useEventUserProjectUpdate()
+  console.log('re-render project layour')
 
   return (
     <>
