@@ -6,7 +6,7 @@ import { ProjectView, ProjectViewType } from '@prisma/client'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 type TCurrentViewType = ProjectViewType | ''
 
@@ -45,18 +45,6 @@ export const useProjectViewList = () => {
       }
     }
   }, [views, mode])
-
-  // set all view to caches
-  useEffect(() => {
-    localforage.getItem(key).then(val => {
-      if (val) {
-        const views = val as ProjectView[]
-
-        views.forEach(v => projectViewMap.set(v.id, v.type))
-        addAllView(views)
-      }
-    })
-  }, [])
 
   useDebounce(() => {
     // setLoading(true)
