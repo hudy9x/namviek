@@ -13,7 +13,6 @@ export const useGetMembers = () => {
   useEffect(() => {
     localforage.getItem(key).then(val => {
       if (val) {
-        console.log('set cached member as projectId changed')
         addAllMember(val as UserMember[])
       }
     })

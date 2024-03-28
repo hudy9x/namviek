@@ -15,6 +15,7 @@ import {
   getJSONCache,
   setJSONCache
 } from '../../lib/redis'
+import { pusherServer } from '../../lib/pusher-server'
 
 const router = Router()
 
@@ -63,9 +64,12 @@ router.post('/project/member', async (req: AuthRequest, res) => {
   const key = [CKEY.PROJECT_MEMBER, projectId]
   const userProjectKeys = []
 
+  const userProjectUpdateKeys: string[] = []
   mdMemberAddMany(
     members.map(m => {
       userProjectKeys.push([CKEY.USER_PROJECT, m.id])
+      userProjectUpdateKeys.push(`userProject:update.${m.id}`)
+
       return {
         projectId,
         role: MemberRole.MEMBER,
@@ -81,6 +85,13 @@ router.post('/project/member', async (req: AuthRequest, res) => {
       // delCache(key)
       userProjectKeys.push(key)
       delMultiCache(userProjectKeys)
+
+      userProjectUpdateKeys.forEach(k => {
+        pusherServer.trigger('team-collab', k, {
+          triggerBy: userId
+        })
+      })
+
       res.json({ status: 200, data: result })
     })
     .catch(error => {

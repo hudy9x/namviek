@@ -6,7 +6,6 @@ import TaskCheckAll from './TaskCheckAll'
 import ListCell from './ListCell'
 import { Avatar, Loading } from '@shared/ui'
 import ListCreateTask from './ListCreateTask'
-import { useTaskFilter } from '@/features/TaskFilter/context'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
@@ -22,10 +21,6 @@ export default function ListMode() {
   } = useTaskFilterContext()
 
   const { tasks, taskLoading } = useTaskStore()
-  console.log('listmode render', taskLoading)
-  // const { groupedByStatusButNotMeetCondition } = useListFilterCondition({
-  //   isGroupbyStatus
-  // })
 
   return (
     <div className="pb-[300px]">
@@ -40,9 +35,8 @@ export default function ListMode() {
                 className="flex gap-2 items-center text-xs uppercase font-bold">
                 <TaskCheckAll groupId={group.id} />
                 <div
-                  className={`status-name flex items-center ${
-                    groupByLoading ? 'loading' : ''
-                  }`}>
+                  className={`status-name flex items-center ${groupByLoading ? 'loading' : ''
+                    }`}>
                   {isGroupbyAssignee ? (
                     <div className="mr-2 inline-block">
                       <Avatar

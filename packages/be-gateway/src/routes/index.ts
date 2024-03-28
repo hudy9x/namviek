@@ -31,6 +31,7 @@ import TaskReorderController from './task/reorder.controller'
 import { EventController } from './event/index.controller'
 import { TestController } from './test'
 import ProjectSetting from './project/setting.controller'
+import RealtimeController from './realtime'
 
 const router = Router()
 
@@ -44,6 +45,7 @@ router.use(
     TestController,
     ProjectController,
     ActivityRouter,
+    RealtimeController,
     CommentRouer,
     EventController,
     ProjectViewController,

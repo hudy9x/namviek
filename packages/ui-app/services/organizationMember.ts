@@ -47,5 +47,5 @@ export const useOrgMemberGet = () => {
       .catch(err => {
         messageError(err)
       })
-  }, [projectId])
+  }, [projectId, orgID, addAllOrgMember])
 }
