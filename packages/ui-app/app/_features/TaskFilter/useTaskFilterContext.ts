@@ -1,10 +1,15 @@
-import { useContext } from "react"
-import { ETaskFilterGroupByType, ITaskFilterFields, TaskFilterContext } from "./context"
-import { getLastDateOfMonth } from "@shared/libs"
+import { useContext } from 'react'
+import {
+  ETaskFilterGroupByType,
+  ITaskFilterFields,
+  TaskFilterContext
+} from './context'
+import { getLastDateOfMonth } from '@shared/libs'
 
 const d = new Date()
 const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)
 const lastDate = getLastDateOfMonth(new Date())
+
 const defaultFilter: ITaskFilterFields = {
   term: '',
   groupBy: ETaskFilterGroupByType.STATUS,
@@ -20,7 +25,6 @@ const defaultFilter: ITaskFilterFields = {
 }
 
 export default function useTaskFilterContext() {
-
   const {
     filter,
     setFilter,
@@ -42,6 +46,7 @@ export default function useTaskFilterContext() {
   }
 
   const updateGroupByFilter = (val: ETaskFilterGroupByType) => {
+    if (val === filter.groupBy) return
     setGroupbyLoading(true)
     setFilterValue('groupBy', val)
   }

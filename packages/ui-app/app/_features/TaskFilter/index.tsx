@@ -14,6 +14,7 @@ import { useProjectViewList } from '../ProjectView/useProjectViewList'
 import { ProjectViewType } from '@prisma/client'
 import StatusSelect from '@/components/StatusSelect'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
+import useTaskFilterContext from './useTaskFilterContext'
 
 let timeout = 0
 interface ITaskFilterProps {
@@ -29,7 +30,7 @@ export default function TaskFilter({
   importEnable = true
 }: ITaskFilterProps) {
   const [txt, setTxt] = useState('')
-  const { filter, setFilterValue, updateGroupByFilter } = useTaskFilter()
+  const { filter, setFilterValue, updateGroupByFilter } = useTaskFilterContext()
   const { currentViewType } = useProjectViewList()
 
   const {

@@ -1,10 +1,14 @@
-import { TaskPriority } from "@prisma/client"
-import { ETaskFilterGroupByType, ITaskFilterGroupbyItem, TaskFilterContext } from "./context"
-import { useProjectStatusStore } from "@/store/status"
-import { useMemberStore } from "@/store/member"
-import { useTaskStore } from "@/store/task"
-import { useParams } from "next/navigation"
-import { useContext, useEffect, useRef } from "react"
+import { TaskPriority } from '@prisma/client'
+import {
+  ETaskFilterGroupByType,
+  ITaskFilterGroupbyItem,
+  TaskFilterContext
+} from './context'
+import { useProjectStatusStore } from '@/store/status'
+import { useMemberStore } from '@/store/member'
+import { useTaskStore } from '@/store/task'
+import { useParams } from 'next/navigation'
+import { useContext, useEffect, useRef } from 'react'
 
 let timeout = 0
 export default function useUpdateGroupbyItem() {
@@ -17,11 +21,8 @@ export default function useUpdateGroupbyItem() {
   const oldStatusList = useRef(statuses)
   const oldTaskList = useRef(tasks)
 
-  const {
-    filter,
-    setGroupbyItems,
-    setGroupbyLoading
-  } = useContext(TaskFilterContext)
+  const { filter, setGroupbyItems, setGroupbyLoading } =
+    useContext(TaskFilterContext)
 
   const _groupByStatus = (): ITaskFilterGroupbyItem[] => {
     const ignored: string[] = []
@@ -84,12 +85,24 @@ export default function useUpdateGroupbyItem() {
       [TaskPriority.URGENT, '#ff1345']
     ]
 
+    const filteredStatusIds = filter.statusIds
+
     const ignored: string[] = []
     return priorities.map(p => {
       const items: string[] = []
 
       tasks.forEach(t => {
         if (ignored.includes(t.id)) return
+
+        if (
+          filteredStatusIds.length &&
+          t.taskStatusId &&
+          !filteredStatusIds.includes('ALL')
+        ) {
+          if (!filteredStatusIds.includes(t.taskStatusId)) {
+            return
+          }
+        }
 
         if (t.priority === p[0]) {
           items.push(t.id)
@@ -109,11 +122,23 @@ export default function useUpdateGroupbyItem() {
   const _groupByAssignee = (): ITaskFilterGroupbyItem[] => {
     const ignored: string[] = []
     const taskWithoutAssignee: string[] = []
+    const filteredStatusIds = filter.statusIds
+
     const newMembers = members.map(mem => {
       const items: string[] = []
 
       tasks.forEach(t => {
         if (ignored.includes(t.id)) return
+
+        if (
+          t.taskStatusId &&
+          filteredStatusIds.length &&
+          !filteredStatusIds.includes('ALL')
+        ) {
+          if (!filteredStatusIds.includes(t.taskStatusId)) {
+            return
+          }
+        }
 
         if (!t.assigneeIds.length && !taskWithoutAssignee.includes(t.id)) {
           taskWithoutAssignee.push(t.id)
@@ -173,7 +198,6 @@ export default function useUpdateGroupbyItem() {
 
     timeout = setTimeout(() => {
       if (oldGroupByType.current !== filter.groupBy) {
-        console.log('called groupby')
         updateGroupbyItems()
         oldGroupByType.current = filter.groupBy
       }
@@ -184,6 +208,10 @@ export default function useUpdateGroupbyItem() {
     JSON.stringify(statuses),
     JSON.stringify(tasks)
   ])
+
+  useEffect(() => {
+    updateGroupbyItems()
+  }, [filter.statusIds.toString()])
 
   useEffect(() => {
     if (oldStatusList.current) {
@@ -214,5 +242,4 @@ export default function useUpdateGroupbyItem() {
   useEffect(() => {
     updateGroupbyItems()
   }, [projectId, tasks])
-
 }

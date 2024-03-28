@@ -1,4 +1,4 @@
-import { EGroupByType, ETaskFilterGroupByType, useTaskFilter } from '@/features/TaskFilter/context'
+import { ETaskFilterGroupByType } from '@/features/TaskFilter/context'
 import './style.css'
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
@@ -8,10 +8,11 @@ import { triggerEventTaskReorder } from '@/events/useEventTaskReorder'
 import { useUrl } from '@/hooks/useUrl'
 import { useBoardRealtimeUpdate } from './useBoardRealtimeUpdate'
 import { triggerEventMoveTaskToOtherBoard } from '@/events/useEventMoveTaskToOtherBoard'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
 export default function BoardContainer() {
   const { projectId } = useUrl()
-  const { groupByItems, filter, groupBy } = useTaskFilter()
+  const { groupByItems, filter, groupBy } = useTaskFilterContext()
   const {
     dragColumnToAnotherPosition,
     dragItemToAnotherPosition,
@@ -87,6 +88,18 @@ export default function BoardContainer() {
               {...provided.droppableProps}
               ref={provided.innerRef}>
               {groupByItems.map((group, groupIndex) => {
+                if (
+                  groupBy === ETaskFilterGroupByType.STATUS &&
+                  statusIds.length
+                ) {
+                  if (
+                    !statusIds.includes('ALL') &&
+                    !statusIds.includes(group.id)
+                  ) {
+                    return null
+                  }
+                }
+
                 return (
                   <BoardColumnDraggable
                     group={group}

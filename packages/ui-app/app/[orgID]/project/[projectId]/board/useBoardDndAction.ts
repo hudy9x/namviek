@@ -6,10 +6,11 @@ import { useBoardAction } from './useBoardAction'
 import { useBoardItemReorder } from './useBoardItemReorder'
 import { serviceTask } from '@/services/task'
 import { useUrl } from '@/hooks/useUrl'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
 export const useBoardDndAction = () => {
   const { moveTaskToAnotherGroup, rearrangeColumn } = useBoardAction()
-  const { setGroupbyItems } = useTaskFilter()
+  const { setGroupbyItems } = useTaskFilterContext()
   const { reorderTask } = useBoardItemReorder()
   const { projectId } = useUrl()
 

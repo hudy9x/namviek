@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react'
-import { useTaskFilter } from '../TaskFilter/context'
+import { useEffect } from 'react'
 import { extractDueDate } from '@shared/libs'
 import { ExtendedTask, useTaskStore } from '@/store/task'
 import { taskGetByCond } from '@/services/task'
 import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
+import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 
 export default function useGetTask() {
   const { projectId } = useParams()
   const { addAllTasks, setTaskLoading } = useTaskStore()
-  const { filter } = useTaskFilter()
+  const { filter } = useTaskFilterContext()
 
-  const { groupBy, status, ...filterWithoutGroupBy } = filter
+  const { groupBy, status, statusIds, ...filterWithoutGroupBy } = filter
+  // const { groupBy, status,...filterWithoutGroupBy } = filter
   const key = `TASKLIST_${projectId}`
 
   const getAssigneeIds = (assigneeIds: string[]) => {
@@ -27,6 +28,7 @@ export default function useGetTask() {
       .getItem(key)
       .then(val => {
         if (val) {
+          console.log('appied caches from indexdb')
           addAllTasks(val as ExtendedTask[])
         }
       })
@@ -75,6 +77,7 @@ export default function useGetTask() {
     )
       .then(res => {
         const { data, status, error } = res.data
+        console.log('fetched task from server')
 
         if (status !== 200) {
           addAllTasks([])
@@ -85,7 +88,6 @@ export default function useGetTask() {
 
         localforage.setItem(key, data)
         setTimeout(() => {
-
           addAllTasks(data)
         }, 300)
       })

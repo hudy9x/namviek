@@ -15,6 +15,7 @@ import { useGetMembers } from './useGetMembers'
 import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@goalie/nextjs'
 import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
+import useUpdateGroupbyItem from '../TaskFilter/useUpdateGroupbyItem'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -22,6 +23,7 @@ export default function ProjectContainer() {
   const { getSp } = useUrl()
   const { user } = useUser()
 
+  useUpdateGroupbyItem()
   useTodoFilter()
   useGetProjectStatus()
   useGetTask()

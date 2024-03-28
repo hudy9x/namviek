@@ -1,11 +1,11 @@
 import { useSearchParams } from 'next/navigation'
-import { useTaskFilter } from './context'
 
 import { useUser } from '@goalie/nextjs'
 import { useDebounce } from '@/hooks/useDebounce'
+import useTaskFilterContext from './useTaskFilterContext'
 
 export const useTodoFilter = () => {
-  const { setFilter } = useTaskFilter()
+  const { setFilter } = useTaskFilterContext()
   const sp = useSearchParams()
   const { user } = useUser()
 

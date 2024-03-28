@@ -28,7 +28,6 @@ export interface ITaskQuery {
 }
 
 export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
-  console.log('task get by cond', query)
   return httpGet(`/api/project/task/query`, {
     params: query,
     signal: signal
@@ -95,10 +94,7 @@ export const taskMakeCover = (data: {
 }
 
 export const serviceTask = {
-  reorder: (data: {
-    updatedOrder: [string, number][]
-    projectId: string
-  }) => {
+  reorder: (data: { updatedOrder: [string, number][]; projectId: string }) => {
     return httpPost('/api/task/reorder', data)
   }
 }

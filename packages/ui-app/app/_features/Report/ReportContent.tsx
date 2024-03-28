@@ -5,13 +5,13 @@ import { useOrgMemberStore } from '@/store/orgMember'
 import { useProjectStore } from '@/store/project'
 import { extractDueDate } from '@shared/libs'
 import { useEffect, useState } from 'react'
-import { useTaskFilter } from '../TaskFilter/context'
 import { ReportProvider } from './context'
 import { Task } from '@prisma/client'
 import ReportLayout from './ReportLayout'
+import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 
 export default function ReportContent() {
-  const { filter } = useTaskFilter()
+  const { filter } = useTaskFilterContext()
   const { projects } = useProjectStore()
   const { orgMembers } = useOrgMemberStore()
   const [tasks, setTasks] = useState<Task[]>([])

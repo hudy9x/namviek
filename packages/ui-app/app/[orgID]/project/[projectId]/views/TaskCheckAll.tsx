@@ -1,4 +1,5 @@
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { useTaskStore } from '@/store/task'
 import { Form } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
@@ -8,7 +9,7 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
   const { tasks, selected, taskLoading, toggleMultipleSelected } =
     useTaskStore()
   const { groupBy, isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
-    useTaskFilter()
+    useTaskFilterContext()
 
   const taskIds = useMemo(() => {
     const ids: string[] = []
