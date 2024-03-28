@@ -1,13 +1,13 @@
-import { useDebounce } from "@/hooks/useDebounce"
-import { useSearchParams } from "next/navigation"
-import { useProjectViewList } from "./useProjectViewList"
-import { useTaskFilter } from "../TaskFilter/context"
-import { IBoardFilter } from "./context"
+import { useDebounce } from '@/hooks/useDebounce'
+import { useSearchParams } from 'next/navigation'
+import { useProjectViewList } from './useProjectViewList'
+import { IBoardFilter } from './context'
+import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 
 export default function useSetViewFilter() {
   const searchParams = useSearchParams()
   const { views } = useProjectViewList()
-  const { setFilter, setDefaultFilter } = useTaskFilter()
+  const { setFilter, setDefaultFilter } = useTaskFilterContext()
   const mode = searchParams.get('mode')
 
   // update task filter once user change to another view

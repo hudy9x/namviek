@@ -3,11 +3,15 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
 import { useTaskFilter } from './context'
-import { ICalendarView, useCalendarContext } from '../../[orgID]/project/[projectId]/calendar/context'
+import {
+  ICalendarView,
+  useCalendarContext
+} from '../../[orgID]/project/[projectId]/calendar/context'
 import { getMonthList } from '@shared/libs'
+import useTaskFilterContext from './useTaskFilterContext'
 
 const CalendarFilter = () => {
-  const { filter, setFilterValue } = useTaskFilter()
+  const { filter, setFilterValue } = useTaskFilterContext()
   const { month, setMonth } = useCalendarContext()
   const search = useSearchParams()
   const { setCalendarView } = useCalendarContext()
@@ -36,20 +40,19 @@ const CalendarFilter = () => {
 
   return (
     <>
-
-      <div className='flex items-center gap-2'>
+      <div className="flex items-center gap-2">
         <ListPreset
-          className='no-clear-icon'
+          className="no-clear-icon"
           value={ICalendarView.MONTH}
-
           onChange={val => {
             setCalendarView(val as ICalendarView)
           }}
           width={150}
           options={[
             { id: ICalendarView.WEEK, title: 'Week view' },
-            { id: ICalendarView.MONTH, title: 'Month view' },
-          ]} />
+            { id: ICalendarView.MONTH, title: 'Month view' }
+          ]}
+        />
         {/* <div className='w-[1px] h-[20px] bg-gray-200 dark:bg-gray-700 mx-3'></div> */}
         {/* <ListPreset */}
         {/*   className='no-clear-icon' */}
@@ -65,7 +68,7 @@ const CalendarFilter = () => {
         {/*     { id: 'ALL', title: 'All Task' }, */}
         {/*   ]} /> */}
       </div>
-      <div className='w-[1px] h-[20px] bg-gray-200 dark:bg-gray-700 mx-3'></div>
+      <div className="w-[1px] h-[20px] bg-gray-200 dark:bg-gray-700 mx-3"></div>
       <div className="calendar-filter flex justify-center items-center gap-2">
         <HiChevronLeft
           className="cal-btn"

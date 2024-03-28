@@ -14,6 +14,7 @@ import { useProjectViewList } from '../ProjectView/useProjectViewList'
 import { ProjectViewType } from '@prisma/client'
 import StatusSelect from '@/components/StatusSelect'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
+import useTaskFilterContext from './useTaskFilterContext'
 
 let timeout = 0
 interface ITaskFilterProps {
@@ -29,7 +30,7 @@ export default function TaskFilter({
   importEnable = true
 }: ITaskFilterProps) {
   const [txt, setTxt] = useState('')
-  const { filter, setFilterValue, updateGroupByFilter } = useTaskFilter()
+  const { filter, setFilterValue, updateGroupByFilter } = useTaskFilterContext()
   const { currentViewType } = useProjectViewList()
 
   const {
@@ -45,6 +46,10 @@ export default function TaskFilter({
 
   const isDateRange = date === 'date-range'
   const isCalendarMode = currentViewType === ProjectViewType.CALENDAR
+  const isTeamMode = currentViewType === ProjectViewType.TEAM
+  const isShowStatusFilter =
+    currentViewType === ProjectViewType.CALENDAR ||
+    currentViewType === ProjectViewType.BOARD
   const showOperator = ['this-month', 'this-week', 'today']
 
   useEffect(() => {
@@ -53,7 +58,6 @@ export default function TaskFilter({
     }
 
     timeout = setTimeout(() => {
-
       setFilterValue('term', txt)
     }, 250) as unknown as number
   }, [txt])
@@ -146,9 +150,15 @@ export default function TaskFilter({
           />
         ) : null}
 
-        {isCalendarMode ? <StatusSelectMultiple maxDisplay={2} value={statusIds} onChange={val => {
-          setFilterValue('statusIds', val)
-        }} /> : null}
+        {isShowStatusFilter ? (
+          <StatusSelectMultiple
+            maxDisplay={2}
+            value={statusIds}
+            onChange={val => {
+              setFilterValue('statusIds', val)
+            }}
+          />
+        ) : null}
 
         <PrioritySelect
           all={true}
@@ -171,7 +181,7 @@ export default function TaskFilter({
           />
         ) : null}
 
-        {isCalendarMode ? null : (
+        {isCalendarMode || isTeamMode ? null : (
           <ListPreset
             value={filter.groupBy}
             onChange={val => {

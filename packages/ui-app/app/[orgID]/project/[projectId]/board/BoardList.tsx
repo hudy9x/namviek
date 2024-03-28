@@ -2,7 +2,6 @@ import { Droppable } from 'react-beautiful-dnd'
 
 import BoardItemDraggable from './BoardItemDraggable'
 import { BoardActionCreateTask } from './BoardActionCreateTask'
-import { useTaskStore } from '@/store/task'
 
 export default function BoardList({
   items,

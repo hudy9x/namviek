@@ -7,6 +7,7 @@ import { ICalendarView, useCalendarContext } from './context'
 import CalTaskInWeek from './CalTaskInWeek'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import Link from 'next/link'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
 interface ICalMonthTaskProps {
   id: string
@@ -27,44 +28,45 @@ export default function CalMonthTask({
   assigneeId,
   taskStatusId
 }: ICalMonthTaskProps) {
-  const { filter } = useTaskFilter()
+  const { filter } = useTaskFilterContext()
   const { status: filterStatus, statusIds: filterStatusIds } = filter
   const { color, type } = useStatusData(taskStatusId || '')
   const { calendarView } = useCalendarContext()
 
-  const view = () => <Link href={link}>
-    <Draggable draggableId={id} index={index}>
-      {provided => (
-        <div
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          className="calendar-task-item relative">
-          {calendarView === ICalendarView.WEEK ? (
-            <CalTaskInWeek
-              color={color}
-              title={title}
-              assigneeId={assigneeId}
-            />
-          ) : (
-            <CalTaskInMonth
-              time={time}
-              color={color}
-              title={title}
-              assigneeId={assigneeId}
-            />
-          )}
-        </div>
-      )}
-    </Draggable>
-  </Link>
+  const view = () => (
+    <Link href={link}>
+      <Draggable draggableId={id} index={index}>
+        {provided => (
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            className="calendar-task-item relative">
+            {calendarView === ICalendarView.WEEK ? (
+              <CalTaskInWeek
+                color={color}
+                title={title}
+                assigneeId={assigneeId}
+              />
+            ) : (
+              <CalTaskInMonth
+                time={time}
+                color={color}
+                title={title}
+                assigneeId={assigneeId}
+              />
+            )}
+          </div>
+        )}
+      </Draggable>
+    </Link>
+  )
 
   // if statusIds contain ALL or nothing
   // display view
   if (filterStatusIds.includes('ALL') || !filterStatusIds.length) {
     return view()
   }
-
 
   // if statusIds have some
   // display tasks that have the same status id

@@ -9,30 +9,7 @@ import ListCreateTask from './ListCreateTask'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
-
-// const useListFilterCondition = ({
-//   isGroupbyStatus
-// }: {
-//   isGroupbyStatus: boolean
-// }) => {
-//   const groupedByStatusButNotMeetCondition = (
-//     task: ExtendedTask,
-//     groupStatusId: string
-//   ) => {
-//     if (isGroupbyStatus && task.taskStatusId !== groupStatusId) {
-//       if (groupStatusId === 'NONE') {
-//         return <ListRow key={task.id} task={task} />
-//       }
-//       return null
-//     }
-//
-//     return null
-//   }
-//
-//   return {
-//     groupedByStatusButNotMeetCondition
-//   }
-// }
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
 export default function ListMode() {
   const {
@@ -42,9 +19,10 @@ export default function ListMode() {
     isGroupbyPriority,
     isGroupbyAssignee,
     isGroupbyStatus
-  } = useTaskFilter()
+  } = useTaskFilterContext()
 
   const { tasks, taskLoading } = useTaskStore()
+  console.log('listmode render', taskLoading)
   // const { groupedByStatusButNotMeetCondition } = useListFilterCondition({
   //   isGroupbyStatus
   // })
@@ -90,7 +68,7 @@ export default function ListMode() {
               </div>
             </div>
             <div className="divide-y dark:divide-gray-800">
-              {taskLoading || groupByLoading ? (
+              {taskLoading ? (
                 <Loading className="px-3 py-2 text-sm" title="Loading ..." />
               ) : null}
 

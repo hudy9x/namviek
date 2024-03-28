@@ -4,6 +4,7 @@ import { MdDragIndicator } from 'react-icons/md'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { Avatar } from '@shared/ui'
 import Badge from '@/components/Badge'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 // import TaskCheckAll from '../views/TaskCheckAll'
 
 interface IBoardHeaderProps {
@@ -22,17 +23,20 @@ export default function BoardHeader({
   id,
   provided
 }: IBoardHeaderProps) {
-  const { isGroupbyAssignee, isGroupbyStatus, groupByLoading } = useTaskFilter()
+  const { isGroupbyAssignee, isGroupbyStatus, groupByLoading } =
+    useTaskFilterContext()
 
   return (
     <div className="board-header">
       <div
-        className={`board-header-loading ${groupByLoading ? 'visible' : 'invisible '
-          }`}></div>
+        className={`board-header-loading ${
+          groupByLoading ? 'visible' : 'invisible '
+        }`}></div>
       <div className="board-col-header">
         <div
-          className={`board-header-section ${groupByLoading ? 'opacity-0' : 'opacity-100'
-            }`}>
+          className={`board-header-section ${
+            groupByLoading ? 'opacity-0' : 'opacity-100'
+          }`}>
           {isGroupbyStatus ? (
             <div
               className="w-3 h-4 text-gray-400"

@@ -24,7 +24,7 @@ export enum ETaskFilterGroupByType {
   // WEEK = 'WEEK'
 }
 
-interface ITaskFilterFields {
+export interface ITaskFilterFields {
   groupBy: ETaskFilterGroupByType
   term?: string
   dateOperator: string
@@ -56,7 +56,7 @@ interface ITaskFilterContextProps {
   setFilter: Dispatch<SetStateAction<ITaskFilterFields>>
 }
 
-const TaskFilterContext = createContext<ITaskFilterContextProps>({
+export const TaskFilterContext = createContext<ITaskFilterContextProps>({
   groupByItems: [],
   groupByLoading: false,
   setGroupbyItems: () => {
@@ -196,7 +196,6 @@ export const useTaskFilter = () => {
       }
     })
 
-
     if (noneItems.length) {
       groupStatuses.push({
         id: 'NONE',
@@ -248,7 +247,7 @@ export const useTaskFilter = () => {
       tasks.forEach(t => {
         if (ignored.includes(t.id)) return
 
-        if (!t.assigneeIds.length) {
+        if (!t.assigneeIds.length && !taskWithoutAssignee.includes(t.id)) {
           taskWithoutAssignee.push(t.id)
           return
         }
@@ -356,6 +355,7 @@ export const useTaskFilter = () => {
 
     timeout = setTimeout(() => {
       if (oldGroupByType.current !== filter.groupBy) {
+        console.log('called groupby')
         updateGroupbyItems()
         oldGroupByType.current = filter.groupBy
       }

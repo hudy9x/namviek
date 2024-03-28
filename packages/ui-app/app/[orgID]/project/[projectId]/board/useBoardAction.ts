@@ -1,4 +1,5 @@
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { projectStatusUpdateOrder } from '@/services/status'
 import { taskUpdate } from '@/services/task'
 import { useProjectStatusStore } from '@/store/status'
@@ -12,7 +13,7 @@ import { useEffect, useState } from 'react'
 export const useBoardAction = () => {
   const { updateTask } = useTaskStore()
   const { isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
-    useTaskFilter()
+    useTaskFilterContext()
   const { projectId } = useParams()
   const [updateSttCounter, setUpdateSttCounter] = useState(0)
   const { statuses, swapOrder } = useProjectStatusStore()

@@ -1,9 +1,10 @@
 import ListPreset from '@/components/ListPreset'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { useVisionContext } from './context'
+import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
 export default function VisionMonthNavigator() {
-  const { setDateRangeByMonth } = useTaskFilter()
+  const { setDateRangeByMonth } = useTaskFilterContext()
   const { filter, setFilter } = useVisionContext()
   const { month } = filter
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
