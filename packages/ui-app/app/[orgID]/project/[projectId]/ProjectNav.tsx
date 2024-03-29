@@ -191,8 +191,8 @@ export default function ProjectNav() {
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="hidden sm:flex items-center gap-2 ">
-          <PromptGenerator />
-          <FavoriteAddModal />
+          {/* <PromptGenerator /> */}
+          {/* <FavoriteAddModal /> */}
           <TaskCreate />
         </div>
       </div>
