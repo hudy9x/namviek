@@ -18,6 +18,7 @@ import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
 import useUpdateGroupbyItem from '../TaskFilter/useUpdateGroupbyItem'
 import useSetProjectViewCache from './useSetProjectViewCache'
 import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
+import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -27,6 +28,7 @@ export default function ProjectContainer() {
 
   // realtime events
   useEventSyncProjectMember(projectId)
+  useEventSyncProjectView(projectId)
 
   useSetProjectViewCache()
   useUpdateGroupbyItem()

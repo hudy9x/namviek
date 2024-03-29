@@ -12,14 +12,56 @@ type TCurrentViewType = ProjectViewType | ''
 
 export const projectViewMap = new Map<string, TCurrentViewType>()
 
+export const useProjectViewListHandler = (
+  projectId: string,
+  cb?: () => void
+) => {
+  const { addAllView } = useProjectViewStore()
+  const key = `PROJECT_VIEW_${projectId}`
+  const fetchNCache = () => {
+    const controller = new AbortController()
+
+    projectView
+      .get(projectId, controller.signal)
+      .then(res => {
+        const { data } = res.data
+        const views = data as ProjectView[]
+
+        let sortedViews
+        if (views && views.length) {
+          sortedViews = views.sort((a, b) => {
+            const a1 = a.order || 1
+            const b1 = b.order || 1
+            return a1 - b1
+          })
+          addAllView(sortedViews)
+        } else {
+          addAllView(views)
+        }
+
+        localforage.setItem(key, views)
+        views.forEach(v => projectViewMap.set(v.id, v.type))
+      })
+      .finally(() => {
+        cb && cb()
+      })
+    return { abortController: controller }
+  }
+
+  return {
+    fetchNCache
+  }
+}
+
 export const useProjectViewList = () => {
   const { getSp } = useUrl()
   const { projectId } = useParams()
-  const { views, addAllView } = useProjectViewStore()
+  const { views } = useProjectViewStore()
   const [loading, setLoading] = useState(true)
-  const key = `PROJECT_VIEW_${projectId}`
+  const { fetchNCache } = useProjectViewListHandler(projectId, () => {
+    setLoading(false)
+  })
   const currentViewKey = `CURRENT_VIEW_TYPE_${projectId}`
-  const oldProjectId = useRef(null)
 
   const getCachedViewType = useCallback(() => {
     const cached = getLocalCache(currentViewKey) || ''
@@ -48,39 +90,37 @@ export const useProjectViewList = () => {
   }, [views, mode])
 
   useDebounce(() => {
-    // setLoading(true)
-    if (oldProjectId.current === projectId) {
-      console.log('same')
-    }
-    const controller = new AbortController()
-    console.log('get views', projectId)
-    projectView
-      .get(projectId, controller.signal)
-      .then(res => {
-        const { data } = res.data
-        const views = data as ProjectView[]
+    // const controller = new AbortController()
+    // console.log('get views', projectId)
+    // projectView
+    //   .get(projectId, controller.signal)
+    //   .then(res => {
+    //     const { data } = res.data
+    //     const views = data as ProjectView[]
+    //
+    //     let sortedViews
+    //     if (views && views.length) {
+    //       sortedViews = views.sort((a, b) => {
+    //         const a1 = a.order || 1
+    //         const b1 = b.order || 1
+    //         return a1 - b1
+    //       })
+    //       addAllView(sortedViews)
+    //     } else {
+    //       addAllView(views)
+    //     }
+    //
+    //     localforage.setItem(key, views)
+    //     views.forEach(v => projectViewMap.set(v.id, v.type))
+    //   })
+    //   .finally(() => {
+    //     setLoading(false)
+    //   })
 
-        let sortedViews
-        if (views && views.length) {
-          sortedViews = views.sort((a, b) => {
-            const a1 = a.order || 1
-            const b1 = b.order || 1
-            return a1 - b1
-          })
-          addAllView(sortedViews)
-        } else {
-          addAllView(views)
-        }
-
-        localforage.setItem(key, views)
-        views.forEach(v => projectViewMap.set(v.id, v.type))
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    const { abortController } = fetchNCache()
 
     return () => {
-      controller.abort()
+      abortController.abort()
     }
   }, [projectId])
 

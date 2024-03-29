@@ -15,6 +15,7 @@ import {
 import { ProjectViewType } from '@prisma/client'
 import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
+import { pusherServer } from '../../lib/pusher-server'
 
 @Controller('/project-view')
 @UseMiddleware([authMiddleware])
@@ -46,13 +47,15 @@ export default class ProjectViewController extends BaseController {
       icon,
       name,
       order: null,
-      data: data ? {
-        date: data.date,
-        priority: data.priority,
-        point: data.point,
-        groupBy: data.groupBy,
-        statusIds: data.statusIds
-      } : {},
+      data: data
+        ? {
+          date: data.date,
+          priority: data.priority,
+          point: data.point,
+          groupBy: data.groupBy,
+          statusIds: data.statusIds
+        }
+        : {},
 
       type,
       projectId,
@@ -60,6 +63,10 @@ export default class ProjectViewController extends BaseController {
       createdAt: new Date(),
       updatedAt: null,
       updatedBy: null
+    })
+
+    pusherServer.trigger('team-collab', `projectView:update-${projectId}`, {
+      triggerBy: uid
     })
 
     console.log('added new project view', result.id)
@@ -78,7 +85,7 @@ export default class ProjectViewController extends BaseController {
   @Put('/')
   async updateView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, id } = req.body as { id: string, name: string }
+    const { name, id } = req.body as { id: string; name: string }
 
     const result = await mdProjectView.update(id, {
       name: name,
@@ -86,14 +93,30 @@ export default class ProjectViewController extends BaseController {
       updatedBy: uid
     })
 
+    pusherServer.trigger(
+      'team-collab',
+      `projectView:update-${result.projectId}`,
+      {
+        triggerBy: uid
+      }
+    )
+
     return result
   }
 
   @Delete('/')
-
-  async deleteView(@Res() res: ExpressResponse, @Req() req: ExpressRequest) {
+  async deleteView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
+    const { id: uid } = req.authen
     const { id } = req.query as { id: string }
     const result = await mdProjectView.delete(id)
+
+    pusherServer.trigger(
+      'team-collab',
+      `projectView:update-${result.projectId}`,
+      {
+        triggerBy: uid
+      }
+    )
 
     return result
   }
