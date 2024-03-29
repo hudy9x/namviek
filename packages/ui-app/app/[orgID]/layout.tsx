@@ -2,7 +2,7 @@
 import HamburgerMenu from '@/components/HamburgerMenu'
 import ProjectSidebar from './ProjectSidebar'
 import { useOrgMemberGet } from '@/services/organizationMember'
-import { useEventUserProjectUpdate } from '@/events/useEventUserProject'
+import EventUserProjectUpdate from '@/features/Events/EventUserProjectUpdate'
 
 export default function ProjectLayout({
   children
@@ -10,11 +10,13 @@ export default function ProjectLayout({
   children: React.ReactNode
 }) {
   useOrgMemberGet()
-  useEventUserProjectUpdate()
   console.log('re-render project layour')
 
   return (
     <>
+      <div>
+        <EventUserProjectUpdate />
+      </div>
       <ProjectSidebar />
       <main
         className="main-content w-full"
