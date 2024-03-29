@@ -1,4 +1,4 @@
-import { useEventUserProjectUpdate } from "@/events/useEventUserProject"
+import { useEventUserProjectUpdate } from '@/events/useEventUserProject'
 
 export default function EventUserProjectUpdate() {
   useEventUserProjectUpdate()

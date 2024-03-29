@@ -17,12 +17,16 @@ import { useUser } from '@goalie/nextjs'
 import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
 import useUpdateGroupbyItem from '../TaskFilter/useUpdateGroupbyItem'
 import useSetProjectViewCache from './useSetProjectViewCache'
+import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
   const { getAutomationByProject } = useServiceAutomation()
   const { getSp } = useUrl()
   const { user } = useUser()
+
+  // realtime events
+  useEventSyncProjectMember(projectId)
 
   useSetProjectViewCache()
   useUpdateGroupbyItem()

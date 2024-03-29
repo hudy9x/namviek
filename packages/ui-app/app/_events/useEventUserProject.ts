@@ -1,7 +1,5 @@
-
 import { useEffect } from 'react'
 import { usePusher } from './usePusher'
-import { useSearchParams } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
 import { projectGet } from '@/services/project'
 import { useUrl } from '@/hooks/useUrl'
@@ -9,10 +7,8 @@ import { useProjectStore } from '@/store/project'
 import localforage from 'localforage'
 
 export const useEventUserProjectUpdate = () => {
-  const searchParams = useSearchParams()
   const { orgID } = useUrl()
   const { user } = useUser()
-  const taskId = searchParams.get('taskId')
   const { channelTeamCollab } = usePusher()
   const { setLoading, addAllProject } = useProjectStore()
   const keyList = `PROJECT_LIST_${orgID}`
@@ -23,8 +19,8 @@ export const useEventUserProjectUpdate = () => {
 
     console.log('bind event:', eventName)
     channelTeamCollab &&
-      channelTeamCollab.bind(eventName, (data: unknown) => {
-
+      channelTeamCollab.bind(eventName, (data: { triggerBy: string }) => {
+        if (data.triggerBy === user.id) return
         console.log('data:', eventName, data)
 
         projectGet({
@@ -45,5 +41,5 @@ export const useEventUserProjectUpdate = () => {
     return () => {
       channelTeamCollab && channelTeamCollab.unbind(eventName)
     }
-  }, [channelTeamCollab, taskId, user])
+  }, [channelTeamCollab, user])
 }

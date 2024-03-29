@@ -68,7 +68,10 @@ router.post('/project/member', async (req: AuthRequest, res) => {
   mdMemberAddMany(
     members.map(m => {
       userProjectKeys.push([CKEY.USER_PROJECT, m.id])
-      userProjectUpdateKeys.push(`userProject:update.${m.id}`)
+
+      if (userId !== m.id) {
+        userProjectUpdateKeys.push(`userProject:update.${m.id}`)
+      }
 
       return {
         projectId,
@@ -91,6 +94,15 @@ router.post('/project/member', async (req: AuthRequest, res) => {
           triggerBy: userId
         })
       })
+
+      // add new user to other members in same project
+      pusherServer.trigger(
+        'team-collab',
+        `userProject.sync-to-project-${projectId}`,
+        {
+          triggerBy: userId
+        }
+      )
 
       res.json({ status: 200, data: result })
     })
@@ -126,6 +138,7 @@ router.put('/project/member/role', async (req: AuthRequest, res) => {
 })
 
 router.delete('/project/member', async (req: AuthRequest, res) => {
+  const { id: userId } = req.authen
   const { uid, projectId } = req.query as { uid: string; projectId: string }
   const key = [CKEY.PROJECT_MEMBER, projectId]
   const userProjectKey = [CKEY.USER_PROJECT, uid]
@@ -134,6 +147,13 @@ router.delete('/project/member', async (req: AuthRequest, res) => {
     .then(result => {
       // delCache(key)
       delMultiCache([key, userProjectKey])
+      pusherServer.trigger(
+        'team-collab',
+        `userProject.sync-to-project-${projectId}`,
+        {
+          triggerBy: userId
+        }
+      )
       res.json({ status: 200, data: result })
     })
     .catch(error => {

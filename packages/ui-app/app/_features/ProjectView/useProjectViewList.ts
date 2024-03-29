@@ -6,7 +6,7 @@ import { ProjectView, ProjectViewType } from '@prisma/client'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 type TCurrentViewType = ProjectViewType | ''
 
@@ -19,6 +19,7 @@ export const useProjectViewList = () => {
   const [loading, setLoading] = useState(true)
   const key = `PROJECT_VIEW_${projectId}`
   const currentViewKey = `CURRENT_VIEW_TYPE_${projectId}`
+  const oldProjectId = useRef(null)
 
   const getCachedViewType = useCallback(() => {
     const cached = getLocalCache(currentViewKey) || ''
@@ -48,7 +49,11 @@ export const useProjectViewList = () => {
 
   useDebounce(() => {
     // setLoading(true)
+    if (oldProjectId.current === projectId) {
+      console.log('same')
+    }
     const controller = new AbortController()
+    console.log('get views', projectId)
     projectView
       .get(projectId, controller.signal)
       .then(res => {
