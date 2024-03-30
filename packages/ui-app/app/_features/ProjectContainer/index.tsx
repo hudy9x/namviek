@@ -20,6 +20,7 @@ import useSetProjectViewCache from './useSetProjectViewCache'
 import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
 import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
+import { useGetProjectViewList } from './useGetProjectViewList'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -39,6 +40,7 @@ export default function ProjectContainer() {
   useGetTask()
   useGetMembers()
   useGetProjectPoint()
+  useGetProjectViewList()
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible

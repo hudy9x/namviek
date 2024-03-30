@@ -75,6 +75,8 @@ export default function ProjectTabContent() {
   const ignored = ['setting', 'automation', 'automation-create']
   const isIgnored = () => ignored.includes(mode || '')
 
+  console.log('mode', mode)
+
   const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = (t: ProjectViewType) => !isIgnored() && type === t
