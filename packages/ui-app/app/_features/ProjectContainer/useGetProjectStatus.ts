@@ -5,25 +5,15 @@ import localforage from 'localforage'
 import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function useGetProjectStatus() {
-  const { projectId } = useParams()
+export const useGetStatusHandler = (projectId: string, cb?: () => void) => {
   const { addAllStatuses, setStatusLoading } = useProjectStatusStore()
-
   const key = `PROJECT_STATUS_${projectId}`
   const setCache = (data: TaskStatus[]) => {
     localforage.setItem(key, data)
   }
-
-  useEffect(() => {
-    localforage.getItem(key).then(val => {
-      if (val) {
-        addAllStatuses(val as TaskStatus[])
-      }
-    })
-  }, [])
-
-  useEffect(() => {
+  const fetchNCache = () => {
     const statusController = new AbortController()
+
     setStatusLoading(true)
     projectStatusGet(projectId, statusController.signal)
       .then(res => {
@@ -49,8 +39,35 @@ export default function useGetProjectStatus() {
         setStatusLoading(false)
       })
 
+    return {
+      controller: statusController
+    }
+  }
+
+  return {
+    fetchNCache
+  }
+}
+
+export default function useGetProjectStatus() {
+  const { projectId } = useParams()
+  const { addAllStatuses } = useProjectStatusStore()
+  const { fetchNCache } = useGetStatusHandler(projectId)
+
+  const key = `PROJECT_STATUS_${projectId}`
+
+  useEffect(() => {
+    localforage.getItem(key).then(val => {
+      if (val) {
+        addAllStatuses(val as TaskStatus[])
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    const { controller } = fetchNCache()
     return () => {
-      statusController.abort()
+      controller.abort()
     }
   }, [projectId])
 }

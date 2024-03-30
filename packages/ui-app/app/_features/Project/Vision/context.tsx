@@ -94,7 +94,6 @@ export const useVisionContext = () => {
 
   const getVisionProgress = (id: string) => {
     const progress = visionProgress[id]
-    console.log(visionProgress)
     if (!progress) {
       return 0
     }
@@ -188,6 +187,6 @@ export const useVisionContext = () => {
     setMode,
     setSelected,
     getVisionProgress,
-    getVisionData,
+    getVisionData
   }
 }

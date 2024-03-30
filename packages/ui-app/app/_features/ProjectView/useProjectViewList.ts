@@ -6,61 +6,21 @@ import { ProjectView, ProjectViewType } from '@prisma/client'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 type TCurrentViewType = ProjectViewType | ''
 
 export const projectViewMap = new Map<string, TCurrentViewType>()
 
-export const useProjectViewList = () => {
-  const { getSp } = useUrl()
-  const { projectId } = useParams()
-  const { views, addAllView } = useProjectViewStore()
-  const [loading, setLoading] = useState(true)
+export const useProjectViewListHandler = (
+  projectId: string,
+  cb?: () => void
+) => {
+  const { addAllView } = useProjectViewStore()
   const key = `PROJECT_VIEW_${projectId}`
-  const currentViewKey = `CURRENT_VIEW_TYPE_${projectId}`
-
-  const getCachedViewType = useCallback(() => {
-    const cached = getLocalCache(currentViewKey) || ''
-    return cached as TCurrentViewType
-  }, [])
-
-  const setCachedViewType = useCallback((type: TCurrentViewType) => {
-    setLocalCache(currentViewKey, type)
-  }, [])
-
-  const [currentViewType, setCurrentViewType] = useState<TCurrentViewType>(
-    getCachedViewType()
-  )
-
-  const mode = getSp('mode')
-
-  // get type of current view
-  useDebounce(() => {
-    if (views.length) {
-      const view = views.find(v => v.id === mode)
-      if (view) {
-        setCurrentViewType(view.type)
-        setCachedViewType(view.type)
-      }
-    }
-  }, [views, mode])
-
-  // set all view to caches
-  useEffect(() => {
-    localforage.getItem(key).then(val => {
-      if (val) {
-        const views = val as ProjectView[]
-
-        views.forEach(v => projectViewMap.set(v.id, v.type))
-        addAllView(views)
-      }
-    })
-  }, [])
-
-  useDebounce(() => {
-    // setLoading(true)
+  const fetchNCache = () => {
     const controller = new AbortController()
+
     projectView
       .get(projectId, controller.signal)
       .then(res => {
@@ -83,13 +43,60 @@ export const useProjectViewList = () => {
         views.forEach(v => projectViewMap.set(v.id, v.type))
       })
       .finally(() => {
-        setLoading(false)
+        cb && cb()
       })
+    return { abortController: controller }
+  }
 
-    return () => {
-      controller.abort()
-    }
-  }, [projectId])
+  return {
+    fetchNCache
+  }
+}
 
-  return { views, loading, setLoading, currentViewType }
+export const useProjectViewList = () => {
+  // const { getSp } = useUrl()
+  const { projectId } = useParams()
+  const { views } = useProjectViewStore()
+  const [loading, setLoading] = useState(true)
+  // const { fetchNCache } = useProjectViewListHandler(projectId, () => {
+  //   setLoading(false)
+  // })
+  const currentViewKey = `CURRENT_VIEW_TYPE_${projectId}`
+
+  const getCachedViewType = useCallback(() => {
+    const cached = getLocalCache(currentViewKey) || ''
+    return cached as TCurrentViewType
+  }, [])
+
+  const setCachedViewType = useCallback((type: TCurrentViewType) => {
+    setLocalCache(currentViewKey, type)
+  }, [])
+
+  const [currentViewType, setCurrentViewType] = useState<TCurrentViewType>(
+    getCachedViewType()
+  )
+
+  // const mode = getSp('mode')
+
+  // // get type of current view
+  // useDebounce(() => {
+  //   if (views.length) {
+  //     const view = views.find(v => v.id === mode)
+  //     if (view) {
+  //       setCurrentViewType(view.type)
+  //       setCachedViewType(view.type)
+  //     }
+  //   }
+  // }, [views, mode])
+  //
+  // useDebounce(() => {
+  //
+  //   const { abortController } = fetchNCache()
+  //
+  //   return () => {
+  //     abortController.abort()
+  //   }
+  // }, [projectId])
+
+  return { views, loading, setLoading, currentViewType, setCurrentViewType, setCachedViewType }
 }

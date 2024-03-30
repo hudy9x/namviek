@@ -1,11 +1,8 @@
-import { Task } from '@prisma/client'
-import TaskAssignee from '../views/TaskAssignee'
 import { Draggable } from 'react-beautiful-dnd'
 import { useStatusData } from '@/hooks/useStatusData'
 import CalTaskInMonth from './CalTaskInMonth'
 import { ICalendarView, useCalendarContext } from './context'
 import CalTaskInWeek from './CalTaskInWeek'
-import { useTaskFilter } from '@/features/TaskFilter/context'
 import Link from 'next/link'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 
@@ -41,21 +38,23 @@ export default function CalMonthTask({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className="calendar-task-item relative">
-            {calendarView === ICalendarView.WEEK ? (
-              <CalTaskInWeek
-                color={color}
-                title={title}
-                assigneeId={assigneeId}
-              />
-            ) : (
-              <CalTaskInMonth
-                time={time}
-                color={color}
-                title={title}
-                assigneeId={assigneeId}
-              />
-            )}
+            className="relative">
+            <div className="calendar-task-item">
+              {calendarView === ICalendarView.WEEK ? (
+                <CalTaskInWeek
+                  color={color}
+                  title={title}
+                  assigneeId={assigneeId}
+                />
+              ) : (
+                <CalTaskInMonth
+                  time={time}
+                  color={color}
+                  title={title}
+                  assigneeId={assigneeId}
+                />
+              )}
+            </div>
           </div>
         )}
       </Draggable>

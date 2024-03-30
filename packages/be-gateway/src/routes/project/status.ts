@@ -8,10 +8,14 @@ import {
 } from '@shared/models'
 import { StatusType, TaskStatus } from '@prisma/client'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
+import StatusPusherJob from '../../jobs/status.pusher.job'
 
 const router = Router()
 
+const statusPusherJob = new StatusPusherJob()
+
 router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
   const projectId = req.params.projectId
   const body = req.body as TaskStatus
   const key = [CKEY.PROJECT_STATUS, projectId]
@@ -26,6 +30,12 @@ router.post('/project/status/:projectId', async (req: AuthRequest, res) => {
     .then(result => {
       console.log(result)
       delCache(key)
+
+      statusPusherJob.triggerUpdateEvent({
+        projectId,
+        uid
+      })
+
       res.json({ status: 200, data: result })
     })
     .catch(err => {
@@ -77,11 +87,16 @@ router.get('/project/status/:projectId', async (req: AuthRequest, res) => {
 })
 
 router.put('/project/status', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
   const body = req.body as Partial<TaskStatus>
   const key = [CKEY.PROJECT_STATUS, body.projectId]
   mdTaskStatusUpdate(body)
     .then(result => {
       delCache(key)
+      statusPusherJob.triggerUpdateEvent({
+        projectId: result.projectId,
+        uid
+      })
       res.json({ status: 200, data: result })
     })
     .catch(err => {
@@ -95,6 +110,7 @@ interface NewStatusOrder {
 }
 
 router.put('/project/status/order', async (req: AuthRequest, res) => {
+  const { id: uid } = req.authen
   const { newOrders: newStatusOrders } = req.body as {
     newOrders: NewStatusOrder[]
   }
@@ -129,6 +145,10 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
       if (result[0] && result[0].projectId) {
         const key = [CKEY.PROJECT_STATUS, result[0].projectId]
         delCache(key)
+        statusPusherJob.triggerUpdateEvent({
+          projectId: result[0].projectId,
+          uid
+        })
       }
       res.json({ status: 200, data: result })
     })
@@ -140,11 +160,16 @@ router.put('/project/status/order', async (req: AuthRequest, res) => {
 
 router.delete('/project/status/:id', async (req: AuthRequest, res) => {
   const id = req.params.id
+  const { id: uid } = req.authen
 
   mdTaskStatusDel(id)
     .then(result => {
       const key = [CKEY.PROJECT_STATUS, result.projectId]
       delCache(key)
+      statusPusherJob.triggerUpdateEvent({
+        projectId: result.projectId,
+        uid
+      })
       res.json({ status: 200, data: result })
     })
     .catch(err => {

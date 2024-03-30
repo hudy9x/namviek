@@ -12,7 +12,6 @@ import { ETaskFilterGroupByType, useTaskFilter } from './context'
 import './style.css'
 import { useProjectViewList } from '../ProjectView/useProjectViewList'
 import { ProjectViewType } from '@prisma/client'
-import StatusSelect from '@/components/StatusSelect'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import useTaskFilterContext from './useTaskFilterContext'
 

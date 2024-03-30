@@ -4,8 +4,8 @@ import { messageError } from '@shared/ui'
 import { useParams } from 'next/navigation'
 import { useOrgMemberStore } from '../store/orgMember'
 
-export const orgMemberGet = (projectId: string, orgId: string) => {
-  return httpGet(`/api/org/member/${orgId}?projectId=${projectId}`)
+export const orgMemberGet = (orgId: string) => {
+  return httpGet(`/api/org/member/${orgId}`)
 }
 
 export const orgMemberSearch = ({
@@ -29,11 +29,11 @@ export const orgMemberAdd = (datas: { orgId: string; email: string }) => {
 }
 
 export const useOrgMemberGet = () => {
-  const { projectId, orgID } = useParams()
+  const { orgID } = useParams()
 
   const { addAllOrgMember } = useOrgMemberStore()
   useEffect(() => {
-    orgMemberGet(projectId, orgID)
+    orgMemberGet(orgID)
       .then(res => {
         const { data, status } = res.data
 
@@ -47,5 +47,5 @@ export const useOrgMemberGet = () => {
       .catch(err => {
         messageError(err)
       })
-  }, [projectId])
+  }, [orgID, addAllOrgMember])
 }

@@ -101,8 +101,6 @@ export default function ProjectVision() {
         const { data } = res.data
         const visionData = data as Vision[]
 
-        console.log('data', data)
-
         setVisions(
           visionData.map(v => {
             const {

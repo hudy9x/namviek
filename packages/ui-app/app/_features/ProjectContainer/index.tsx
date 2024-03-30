@@ -16,6 +16,11 @@ import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@goalie/nextjs'
 import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
 import useUpdateGroupbyItem from '../TaskFilter/useUpdateGroupbyItem'
+import useSetProjectViewCache from './useSetProjectViewCache'
+import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
+import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
+import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
+import { useGetProjectViewList } from './useGetProjectViewList'
 
 export default function ProjectContainer() {
   const { projectId, orgID } = useParams()
@@ -23,12 +28,19 @@ export default function ProjectContainer() {
   const { getSp } = useUrl()
   const { user } = useUser()
 
+  // realtime events
+  useEventSyncProjectMember(projectId)
+  useEventSyncProjectView(projectId)
+  useEventSyncProjectStatus(projectId)
+
+  useSetProjectViewCache()
   useUpdateGroupbyItem()
   useTodoFilter()
   useGetProjectStatus()
   useGetTask()
   useGetMembers()
   useGetProjectPoint()
+  useGetProjectViewList()
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible
