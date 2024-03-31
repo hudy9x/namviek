@@ -15,11 +15,12 @@ import { useParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useState } from 'react'
 import { HiOutlineMail } from 'react-icons/hi'
+import { HiOutlineTrash } from 'react-icons/hi2'
 
 export default function SettingPeopleContent() {
   const { orgID } = useParams()
   const { orgMembers } = useOrgMemberStore()
-  const { addNewMemberToOrg } = useServiceOrgMember()
+  const { addNewMemberToOrg, removeMemberFromOrg } = useServiceOrgMember()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   useOrgMemberGet()
@@ -99,6 +100,11 @@ export default function SettingPeopleContent() {
                   {mem.email}
                 </div>
               </section>
+              <div>
+                <Button leadingIcon={<HiOutlineTrash />} onClick={() => {
+                  removeMemberFromOrg(mem.id)
+                }} />
+              </div>
             </div>
           )
         })}
