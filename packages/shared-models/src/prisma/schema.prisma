@@ -142,12 +142,20 @@ model Test {
   order Int
 }
 
+enum TaskType {
+  TASK
+  BUG
+  NEW_FEATURE
+  IMPROVEMENT
+}
+
 model Task {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   desc    String?
   dueDate DateTime?
   order   Int
+  type    TaskType?
 
   cover            String?
   plannedStartDate DateTime?
