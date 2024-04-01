@@ -30,7 +30,7 @@ export default function DatePicker({
   const [selected, setSelected] = useState<Date>()
   const [visible, setVisible] = useState(false)
   const [time, setTime] = useState(
-    `${selected?.getHours()}:${selected?.getMinutes()}`
+    `${selected?.getHours() || '18'}:${selected?.getMinutes() || '00'}`
   )
 
   // fill default value
@@ -56,19 +56,21 @@ export default function DatePicker({
     if (value) {
       const [hour, min] = time.split(':')
 
+
       onDatepickerChange(
         new Date(
           value.getFullYear(),
           value.getMonth(),
           value.getDate(),
-          +hour,
-          +min
+          parseInt(hour, 10),
+          parseInt(min, 10)
         )
       )
     }
   }
 
   const onDatepickerChange = (d: Date) => {
+
     onChange && onChange(d)
   }
 
@@ -77,13 +79,14 @@ export default function DatePicker({
     const [hour, min] = time.split(':')
 
     if (selected) {
+
       onDatepickerChange(
         new Date(
           selected.getFullYear(),
           selected.getMonth(),
           selected.getDate(),
-          +hour,
-          +min
+          parseInt(hour, 10),
+          parseInt(min, 10)
         )
       )
     }
