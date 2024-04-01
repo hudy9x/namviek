@@ -54,7 +54,7 @@ export const useProjectViewListHandler = (
 }
 
 export const useProjectViewList = () => {
-  // const { getSp } = useUrl()
+  const { getSp } = useUrl()
   const { projectId } = useParams()
   const { views } = useProjectViewStore()
   const [loading, setLoading] = useState(true)
@@ -76,18 +76,18 @@ export const useProjectViewList = () => {
     getCachedViewType()
   )
 
-  // const mode = getSp('mode')
+  const mode = getSp('mode')
 
-  // // get type of current view
-  // useDebounce(() => {
-  //   if (views.length) {
-  //     const view = views.find(v => v.id === mode)
-  //     if (view) {
-  //       setCurrentViewType(view.type)
-  //       setCachedViewType(view.type)
-  //     }
-  //   }
-  // }, [views, mode])
+  // get type of current view
+  useDebounce(() => {
+    if (views.length) {
+      const view = views.find(v => v.id === mode)
+      if (view) {
+        setCurrentViewType(view.type)
+        setCachedViewType(view.type)
+      }
+    }
+  }, [views, mode])
   //
   // useDebounce(() => {
   //
@@ -98,5 +98,12 @@ export const useProjectViewList = () => {
   //   }
   // }, [projectId])
 
-  return { views, loading, setLoading, currentViewType, setCurrentViewType, setCachedViewType }
+  return {
+    views,
+    loading,
+    setLoading,
+    currentViewType,
+    setCurrentViewType,
+    setCachedViewType
+  }
 }
