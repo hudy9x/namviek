@@ -1,8 +1,10 @@
-import { orgMemberAdd } from '@/services/organizationMember'
+import { orgMemberAdd, orgMemberRemove } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
+import { useUrl } from './useUrl'
 
 export const useServiceOrgMember = () => {
-  const { addToOrg } = useOrgMemberStore()
+  const { orgID } = useUrl()
+  const { addToOrg, removeFromOrg } = useOrgMemberStore()
 
   const addNewMemberToOrg = (data: { orgId: string; email: string }) => {
     return new Promise((resolve, reject) => {
@@ -18,7 +20,16 @@ export const useServiceOrgMember = () => {
     })
   }
 
+  const removeMemberFromOrg = (uid: string) => {
+    removeFromOrg(uid)
+    return orgMemberRemove({
+      uid,
+      orgId: orgID
+    })
+  }
+
   return {
-    addNewMemberToOrg
+    addNewMemberToOrg,
+    removeMemberFromOrg
   }
 }

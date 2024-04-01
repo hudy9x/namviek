@@ -2,30 +2,22 @@ import { Task } from '@prisma/client'
 import ActivityService from '../activity.service'
 import {
   CKEY,
-  delCache,
-  findCacheByTerm,
   findNDelCaches,
-  incrCache,
-  setJSONCache
 } from '../../lib/redis'
 import {
   ProjectSettingRepository,
   mdProjectGet,
-  mdTaskAdd,
   mdTaskGetOne,
   mdTaskStatusWithDoneType,
-  mdTaskStatusWithTodoType,
   mdTaskUpdate
 } from '@shared/models'
 import { deleteTodoCounter } from '..//todo.counter'
 import { genFrontendUrl } from '../../lib/url'
 import { notifyToWebUsers } from '../../lib/buzzer'
 import InternalErrorException from '../../exceptions/InternalErrorException'
-import { extracDatetime, padZero } from '@shared/libs'
 import { serviceGetStatusById } from '../status'
 import { serviceGetProjectById } from '../project'
 import TaskReminderJob from '../../jobs/reminder.job'
-import { boolean } from 'zod'
 
 export default class TaskUpdateService {
   activityService: ActivityService
@@ -49,6 +41,7 @@ export default class TaskUpdateService {
         isDoneBefore,
         isDueDateChanged
       } = await this._genUpdateData({ body, userId })
+
       const result = await mdTaskUpdate(taskData)
 
       const isDone = result.done

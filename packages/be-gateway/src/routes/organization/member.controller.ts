@@ -10,9 +10,9 @@ import {
 import {
   BaseController,
   Controller,
+  Delete,
   Get,
   Post,
-  Put,
   UseMiddleware
 } from '../../core'
 import { authMiddleware } from '../../middlewares'
@@ -20,12 +20,18 @@ import { AuthRequest } from '../../types'
 import InternalServerException from '../../exceptions/InternalServerException'
 import { InvitationStatus, OrganizationRole } from '@prisma/client'
 import BadRequestException from '../../exceptions/BadRequestException'
+import OrgMemberRemoveService from '../../services/orgMember/remove.service'
 
 const MAX_ORGANIZATION_MEMBER = 25
 
 @Controller('/org/member')
 @UseMiddleware([authMiddleware])
 export class OrganizationMemberController extends BaseController {
+  orgMemberRemoveService: OrgMemberRemoveService
+  constructor() {
+    super()
+    this.orgMemberRemoveService = new OrgMemberRemoveService()
+  }
   @Get('/:orgId')
   async getMembersByOrgId() {
     const req = this.req
@@ -89,6 +95,21 @@ export class OrganizationMemberController extends BaseController {
     })
 
     return foundUser
+  }
+
+  @Delete('/remove/:orgId/:uid')
+  async removeMember() {
+    const { uid, orgId } = this.req.params as { uid: string, orgId: string }
+
+    try {
+      console.log('run 5')
+      const result = await this.orgMemberRemoveService.implement(uid, orgId)
+      return result
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerException(error)
+    }
+
   }
 
   @Post('/search')

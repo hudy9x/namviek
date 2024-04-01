@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { httpGet, httpPost } from './_req'
+import { httpDel, httpGet, httpPost } from './_req'
 import { messageError } from '@shared/ui'
 import { useParams } from 'next/navigation'
 import { useOrgMemberStore } from '../store/orgMember'
@@ -48,4 +48,8 @@ export const useOrgMemberGet = () => {
         messageError(err)
       })
   }, [orgID, addAllOrgMember])
+}
+
+export const orgMemberRemove = ({ orgId, uid }: { orgId: string, uid: string }) => {
+  return httpDel(`/api/org/member/remove/${orgId}/${uid}`)
 }
