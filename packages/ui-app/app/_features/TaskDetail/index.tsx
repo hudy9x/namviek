@@ -2,7 +2,7 @@ import { Button, DatePicker, Form, Tab, messageWarning } from '@shared/ui'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
 import StatusSelect from '@/components/StatusSelect'
-import { TaskPriority, TaskStatus } from '@prisma/client'
+import { TaskPriority, TaskStatus, TaskType } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
@@ -27,9 +27,11 @@ import './style.css'
 import TaskCover from './TaskCover'
 import TaskComments from '../TaskComments'
 import TaskDescUpdate from './TaskDescUpdate'
+import TaskTypeSelect from '@/components/TaskTypeSelect'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
+  type: TaskType.TASK,
   cover: '',
   assigneeIds: [],
   fileIds: [],
@@ -45,6 +47,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 export interface ITaskDefaultValues {
   title: string
   cover: string
+  type: TaskType
   assigneeIds: string[]
   fileIds: string[]
   taskStatusId: string
@@ -173,6 +176,21 @@ export default function TaskDetail({
           )}
         </div>
         <section className="task-infos">
+          <div className="task-info-item">
+            <div className="task-info-label">
+              <HiOutlineSquare2Stack /> <span>Type</span>
+            </div>
+            <div className="task-info-content">
+              <TaskTypeSelect
+                width={200}
+                value={formik.values.type}
+                onChange={val => {
+                  console.log('assignee:', val)
+                  formik.setFieldValue('type', val)
+                }}
+              />
+            </div>
+          </div>
           <div className="task-info-item">
             <div className="task-info-label">
               <HiOutlineUser /> <span>Assignees</span>

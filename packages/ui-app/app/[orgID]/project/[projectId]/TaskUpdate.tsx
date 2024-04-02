@@ -89,6 +89,7 @@ export const TaskUpdate = () => {
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
+        type: currentTask.type || defaultFormikValues.type,
         fileIds: currentTask.fileIds || [],
         cover: currentTask.cover || '',
         taskStatusId:

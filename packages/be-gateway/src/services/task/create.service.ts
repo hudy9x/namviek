@@ -81,6 +81,8 @@ export default class TaskCreateService {
           progress
         })
 
+        console.log('result task', result)
+
         activityService.createTask({
           id: result.id,
           userId: uid

@@ -41,6 +41,8 @@ export default class TaskUpdateService {
 
       const result = await mdTaskUpdate(taskData)
 
+      console.log('task update', result)
+
       const isDone = result.done
 
       activityService.updateTaskActivity({

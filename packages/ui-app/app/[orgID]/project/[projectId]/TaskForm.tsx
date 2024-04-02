@@ -2,7 +2,7 @@ import { Button, DatePicker, Form, messageWarning } from '@shared/ui'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
 import StatusSelect from '@/components/StatusSelect'
-import { TaskPriority, TaskStatus } from '@prisma/client'
+import { TaskPriority, TaskStatus, TaskType } from '@prisma/client'
 import { useFormik } from 'formik'
 import { validateTask } from '@shared/validation'
 import { useParams } from 'next/navigation'
@@ -16,6 +16,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
   cover: '',
   assigneeIds: [],
+  type: TaskType.TASK,
   fileIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
@@ -29,6 +30,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
 export interface ITaskDefaultValues {
   title: string
   assigneeIds: string[]
+  type: TaskType
   cover: string
   fileIds: string[]
   taskStatusId: string
@@ -153,7 +155,9 @@ export default function TaskForm({
         <div
           className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'sm:w-[200px]'
             }  shrink-0`}>
-          <TaskTypeSelect title="Task types" />
+          <TaskTypeSelect value={formik.values.type} onChange={val => {
+            formik.setFieldValue('type', val)
+          }} title="Task types" />
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}
