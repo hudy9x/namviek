@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
+import TaskTypeSelect from '@/components/TaskTypeSelect'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -152,6 +153,7 @@ export default function TaskForm({
         <div
           className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'sm:w-[200px]'
             }  shrink-0`}>
+          <TaskTypeSelect title="Task types" />
           <MemberPicker
             title="Assignees"
             value={formik.values.assigneeIds[0]}
