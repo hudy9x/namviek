@@ -42,6 +42,7 @@ export default function CalMonthTask({
             <div className="calendar-task-item">
               {calendarView === ICalendarView.WEEK ? (
                 <CalTaskInWeek
+                  time={time}
                   color={color}
                   title={title}
                   assigneeId={assigneeId}

@@ -1,0 +1,3 @@
+.task-type-icon {
+  @apply inline-flex shrink-0 rounded p-[1px] bg-gray-100 dark:bg-gray-800 border dark:border-gray-700;
+}
