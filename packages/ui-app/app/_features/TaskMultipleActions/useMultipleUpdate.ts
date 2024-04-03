@@ -1,12 +1,13 @@
 import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import { useTaskStore } from '@/store/task'
-import { Task, TaskPriority } from '@prisma/client'
+import { Task, TaskPriority, TaskType } from '@prisma/client'
 import { useState } from 'react'
 
 export const defaultData = {
   date: undefined,
   point: '',
   status: '',
+  type: 'NONE' as TaskType,
   priority: 'NONE' as TaskPriority,
   assignee: ''
 }
@@ -19,7 +20,7 @@ export const useMultipleUpdate = () => {
 
   const onUpdate = () => {
     const dt: Partial<Task> = {}
-    const { date, point, status, priority, assignee } = data
+    const { date, point, status, priority, assignee, type } = data
 
     if (date) {
       dt.dueDate = date
@@ -31,6 +32,10 @@ export const useMultipleUpdate = () => {
 
     if (!priority.includes('NONE')) {
       dt.priority = priority
+    }
+
+    if (!type.includes('NONE')) {
+      dt.type = type
     }
 
     if (status) {

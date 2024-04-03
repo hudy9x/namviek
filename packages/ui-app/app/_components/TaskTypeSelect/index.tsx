@@ -1,7 +1,6 @@
 import { TaskType } from '@prisma/client'
 import { Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState } from 'react'
-import { RiFlag2Fill } from 'react-icons/ri'
 import TaskTypeIcon from './Icon'
 
 const List = Form.List
@@ -11,16 +10,17 @@ const options: ListItemValue[] = [
   { id: TaskType.BUG, title: 'Bug' },
   { id: TaskType.NEW_FEATURE, title: 'New feature' },
   { id: TaskType.IMPROVEMENT, title: 'Improvement' },
-  { id: 'ALL', title: 'All' }
-  // { id: 'NONE', title: 'None' }
+  { id: 'ALL', title: 'All' },
+  { id: 'NONE', title: 'None' }
 ]
 
 const colors = new Map()
 
 colors.set(
   TaskType.TASK,
-  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f358.png'
-) // 🍘
+  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f340.png'
+  // 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f33a.png'
+) // 🍚
 colors.set(
   TaskType.BUG,
   'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f41e.png'
@@ -31,19 +31,23 @@ colors.set(
 ) // ⭐
 colors.set(
   TaskType.IMPROVEMENT,
-  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f916.png'
+  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/2692-fe0f.png'
 ) // 🤖
 colors.set(
   'ALL',
   'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f38f.png'
 ) // 🎏
+colors.set(
+  'NONE',
+  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f6ab.png'
+) // 🚫
 
 export const taskTypeColors = colors
 export const taskTypeOptions = options
 
 interface ITaskTypeProps {
   all?: boolean
-  value?: TaskType | 'ALL'
+  value?: TaskType | 'ALL' | 'NONE'
   width?: number
   className?: string
   onChange?: (v: TaskType) => void
@@ -90,11 +94,7 @@ export default function TaskTypeSelect({
           setUpdateCounter(updateCounter + 1)
         }}>
         <List.Button>
-          <div className="flex items-center gap-2">
-            {/* <RiFlag2Fill */}
-            {/*   className="text-gray-200" */}
-            {/*   style={{ color: selectedColor }} */}
-            {/* /> */}
+          <div title={val.title} className="flex items-center gap-2">
             <TaskTypeIcon icon={selectedColor} />
             <span>{val.title ? val.title : 'None'}</span>
           </div>
