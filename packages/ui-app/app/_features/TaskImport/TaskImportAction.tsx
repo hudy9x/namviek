@@ -1,6 +1,6 @@
 import { Button, messageError, messageWarning } from '@shared/ui'
 import { useTaskImport } from './context'
-import { Task, TaskPriority } from '@prisma/client'
+import { Task, TaskPriority, TaskType } from '@prisma/client'
 import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
 import { Row } from 'read-excel-file'
@@ -97,6 +97,7 @@ export default function TaskImportAction() {
       const newTask: ITaskWithoutId = {
         title,
         desc: null,
+        type: TaskType.TASK,
         cover: null,
         order: -1,
         plannedStartDate: null,

@@ -9,6 +9,7 @@ import {
 import MultiProjectPicker from '@/components/ProjectSelectMultiple'
 import { ITaskExport, columns } from '.'
 import { format } from 'date-fns'
+import { TaskType } from '@prisma/client'
 
 export default function ExportFilter({ data }: { data: ITaskExport[] }) {
   const { filter, setFilterValue } = useExportFilter()
@@ -31,6 +32,10 @@ export default function ExportFilter({ data }: { data: ITaskExport[] }) {
         let val = dt[col.name as keyof ITaskExport]
         if (typeof val === 'string') {
           val = val.replace(/,/g, ';')
+        }
+
+        if (col.name === 'type') {
+          val = val || TaskType.TASK
         }
 
         row.push(val ? val : '-')

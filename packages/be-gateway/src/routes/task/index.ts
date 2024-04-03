@@ -254,6 +254,7 @@ router.post('/project/task/make-cover', async (req: AuthRequest, res) => {
 router.post('/project/task', async (req: AuthRequest, res) => {
   try {
     const taskService = new TaskCreateService()
+    console.log('created')
     const result = await taskService.createNewTask({
       uid: req.authen.id,
       body: req.body
@@ -381,6 +382,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   const taskUpdateService = new TaskUpdateService()
   const { id: userId } = req.authen
   try {
+    console.log('do update ')
     const result = await taskUpdateService.doUpdate({
       userId,
       body: req.body as Task

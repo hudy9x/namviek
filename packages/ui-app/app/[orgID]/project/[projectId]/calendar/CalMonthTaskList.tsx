@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import { TaskType } from '@prisma/client'
 
 let index = 0
 
@@ -34,13 +35,15 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
         const h = dueDate.getHours()
         const m = dueDate.getMinutes()
-        const time = `${h > 9 ? (h > 12 ? h - 12 : h) : '0' + h}:${m > 9 ? m : '0' + m
-          } ${h >= 12 ? 'PM' : 'AM'}`
+        const time = `${h > 9 ? (h > 12 ? h - 12 : h) : '0' + h}:${
+          m > 9 ? m : '0' + m
+        } ${h >= 12 ? 'PM' : 'AM'}`
 
         return (
           <CalMonthTask
             link={`${orgID}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
             key={task.id}
+            type={task.type || TaskType.TASK}
             time={time}
             index={++index}
             title={task.title}

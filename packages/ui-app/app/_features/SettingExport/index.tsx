@@ -7,7 +7,7 @@ import './style.css'
 import { taskExportByCond } from '@/services/task'
 import { fromDateStringToDateObject, to23h59m } from '@shared/libs'
 import { useProjectStore } from '@/store/project'
-import { Task } from '@prisma/client'
+import { Task, TaskType } from '@prisma/client'
 import { format } from 'date-fns'
 import { useOrgMemberStore } from '@/store/orgMember'
 import { useOrgMemberGet } from '@/services/organizationMember'
@@ -29,6 +29,7 @@ export interface ITaskExport {
 export const columns = [
   { title: 'Project', name: 'projectName' },
   { title: 'Task name', name: 'title' },
+  { title: 'Type', name: 'type' },
   { title: 'Assignee', name: 'assignee' },
   { title: 'Due date', name: 'dueDate' },
   { title: 'Priority', name: 'priority' },
@@ -158,7 +159,10 @@ export default function SettingExport() {
                   {columns.map(col => {
                     const key = col.name as keyof ITaskExport
                     const align = col.name === 'title' ? '' : 'text-center'
-                    const value = task[key]
+                    let value = task[key]
+                    if (col.name === 'type') {
+                      value = value || TaskType.TASK
+                    }
                     return (
                       <td className={`${align}`} key={col.name}>
                         {key === 'projectName' ? (

@@ -177,6 +177,7 @@ export const useTaskStore = create<TaskState>(set => ({
       produce((state: TaskState) => {
         const {
           id,
+          type,
           cover,
           order,
           title,
@@ -201,6 +202,10 @@ export const useTaskStore = create<TaskState>(set => ({
         const task = state.tasks[taskIndex]
 
         task.done = !!done
+
+        if (type) {
+          task.type = type
+        }
 
         if (title) {
           task.title = title

@@ -6,12 +6,13 @@ import { TaskPriority } from '@prisma/client'
 import { Button, DatePicker } from '@shared/ui'
 import { useMultipleUpdate, defaultData } from './useMultipleUpdate'
 import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
+import TaskTypeSelect from '@/components/TaskTypeSelect'
 
 export default function TaskMultipleActions() {
   const { onUpdate, hasSelected, selected, clearAllSelected, data, setData } =
     useMultipleUpdate()
   // const { onDeleteMany } = useMultipleDelete()
-  const { date, point, assignee, status, priority } = data
+  const { date, point, assignee, status, priority, type } = data
 
   const updateFieldValue = (
     name: keyof typeof data,
@@ -41,11 +42,10 @@ export default function TaskMultipleActions() {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg transition-all z-40 ${
-        hasSelected
+      className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg transition-all z-40 ${hasSelected
           ? '-translate-y-0 shadow-color-base'
           : '-translate-y-full shadow-transparent'
-      }`}>
+        }`}>
       <div className="w-full grid grid-cols-2 px-4 sm:flex sm:items-center justify-center gap-2 text-sm">
         <span className="btn">Selected: {selected.length}</span>
         <DatePicker
@@ -63,6 +63,14 @@ export default function TaskMultipleActions() {
             updateFieldValue('status', val)
           }}
           className="sm:w-[150px]"
+        />
+
+        <TaskTypeSelect
+          width={180}
+          value={type}
+          onChange={val => {
+            updateFieldValue('type', val)
+          }}
         />
 
         <PointSelect
