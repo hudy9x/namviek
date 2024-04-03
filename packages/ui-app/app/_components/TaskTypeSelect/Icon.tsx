@@ -3,11 +3,10 @@ import './icon.css'
 
 const colors = new Map()
 
-colors.set(
-  TaskType.TASK,
-  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f340.png'
-  // 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f33a.png'
-) // 🍚
+const defaultIcon =
+  'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f418.png'
+// 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f438.png'
+colors.set(TaskType.TASK, defaultIcon) // 🍚
 colors.set(
   TaskType.BUG,
   'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f41e.png'
@@ -46,13 +45,7 @@ export default function TaskTypeIcon({
   if (!icon) {
     return (
       <div className={`task-type-icon ${width}`}>
-        <img
-          src={
-            'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f340.png'
-          }
-          alt="Task type icon"
-          className="w-full h-full"
-        />
+        <img src={defaultIcon} alt="Task type icon" className="w-full h-full" />
       </div>
     )
   }
