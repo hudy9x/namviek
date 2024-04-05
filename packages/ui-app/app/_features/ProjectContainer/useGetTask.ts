@@ -30,7 +30,6 @@ export default function useGetTask() {
       .getItem(key)
       .then(val => {
         if (val) {
-          console.log('appied caches from indexdb')
           addAllTasks(val as ExtendedTask[])
         }
       })
@@ -38,7 +37,7 @@ export default function useGetTask() {
         console.log('errpr loading cached task', err)
       })
       .finally(() => {
-        console.log('finnally')
+
       })
   }, [projectId])
 

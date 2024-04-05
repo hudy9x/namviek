@@ -28,11 +28,13 @@ export const useProjectViewAdd = () => {
       groupBy: data.groupBy
     } : null
 
-    // addView({ name, type, projectId })
-    return projectView.add({ icon, name, type, projectId, data: filter }).then(res => {
-      const { data } = res.data
-      addView(data)
-    })
+
+    return projectView
+      .add({ icon, name, type, projectId, data: filter })
+      .then(res => {
+        const { data } = res.data
+        addView(data)
+      })
   }
 
   return { addProjectView }

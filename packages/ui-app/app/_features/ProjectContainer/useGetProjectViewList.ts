@@ -14,6 +14,7 @@ export const useGetProjectViewList = () => {
 
   // fetch project's views everytime the project id changed
   useDebounce(() => {
+    console.log('fetch project view n acache')
     const { abortController } = fetchNCache()
 
     return () => {

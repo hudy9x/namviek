@@ -6,7 +6,7 @@ import { ProjectView, ProjectViewType } from '@prisma/client'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 type TCurrentViewType = ProjectViewType | ''
 
@@ -34,6 +34,7 @@ export const useProjectViewListHandler = (
             const b1 = b.order || 1
             return a1 - b1
           })
+
           addAllView(sortedViews)
         } else {
           addAllView(views)
@@ -88,15 +89,11 @@ export const useProjectViewList = () => {
       }
     }
   }, [views, mode])
-  //
-  // useDebounce(() => {
-  //
-  //   const { abortController } = fetchNCache()
-  //
-  //   return () => {
-  //     abortController.abort()
-  //   }
-  // }, [projectId])
+
+  // update cached views as creating/deleting view
+  useEffect(() => {
+    views.length && views.forEach(v => projectViewMap.set(v.id, v.type))
+  }, [views.toString()])
 
   return {
     views,
