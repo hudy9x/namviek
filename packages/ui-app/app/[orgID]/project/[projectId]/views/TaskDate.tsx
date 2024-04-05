@@ -36,14 +36,18 @@ export default function TaskDate({
     })
   }
 
+  console.log('---------------')
   const taskStatusType = getStatusTypeByTaskId(taskId)
   const classes: string[] = []
 
   className && classes.push(className)
 
   if (date && taskStatusType !== StatusType.DONE && differenceInDays(new Date(date), new Date()) < 0) {
+    console.log('matches condition', taskStatusType)
     classes.push('overdue')
   }
+
+  console.log(classes)
 
   return (
     <div className={`task-date ${classes.join(' ')}`}>
