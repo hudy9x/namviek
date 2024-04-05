@@ -2,8 +2,6 @@ import { genAWeekOfDate, genCalendarArr } from '@shared/libs'
 import CalMonthCell from './CalMonthCell'
 import { DragDropContext } from 'react-beautiful-dnd'
 import useCalendarAction from './useCalendarAction'
-import { useTaskStore } from '@/store/task'
-import { Loading } from '@shared/ui'
 import { ICalendarView } from './context'
 import CalendarHeader from './CalendarHeader'
 
@@ -14,13 +12,10 @@ interface ICalMonthContainerProps {
 
 export default function CalMonthContainer({ date, type }: ICalMonthContainerProps) {
   const { onDragEnd } = useCalendarAction()
-  const { taskLoading } = useTaskStore()
 
-  // let calendars:Date[][] = genCalendarArr(date)
   let calendars: Date[][] = []
   let isWeekView = false
 
-  // let calendars: Date[][]
   if (type === ICalendarView.WEEK) {
     isWeekView = true
     const d = new Date()

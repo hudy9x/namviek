@@ -64,6 +64,10 @@
   @apply text-xs sm:text-sm;
 }
 
+.task-date.overdue .form-input {
+  @apply text-red-400
+}
+
 .project-member-permission {
   @apply w-[100px];
 }

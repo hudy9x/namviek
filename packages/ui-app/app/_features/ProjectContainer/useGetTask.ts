@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
+import differenceInDays from 'date-fns/differenceInDays'
+import { Task } from '@prisma/client'
 
 export default function useGetTask() {
   const { projectId } = useParams()
@@ -90,6 +92,7 @@ export default function useGetTask() {
         setTimeout(() => {
           addAllTasks(data)
         }, 300)
+
       })
       .finally(() => {
         setTaskLoading(false)

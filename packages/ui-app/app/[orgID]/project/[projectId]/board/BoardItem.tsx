@@ -6,6 +6,11 @@ import MemberAvatar from '@/components/MemberAvatar'
 import { useUrl } from '@/hooks/useUrl'
 import PriorityText from '@/components/PriorityText'
 import { Loading, messageWarning } from '@shared/ui'
+
+import differenceInDays from 'date-fns/differenceInDays'
+import { useStatusUtils } from '@/hooks/useStatusUtils'
+import { StatusType } from '@prisma/client'
+
 import TaskTypeIcon from '@/components/TaskTypeSelect/Icon'
 
 function BoardItemCover({ cover }: { cover: string | null }) {
@@ -18,21 +23,28 @@ function BoardItemCover({ cover }: { cover: string | null }) {
   )
 }
 
+
 export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
   const { replace } = useRouter()
+  const { getStatusTypeByTaskId } = useStatusUtils()
   const { getSp } = useUrl()
-  // return <div className="">{data.title}</div>
-  const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${
-    data.id
-  }`
-  const isRand = data.id.includes('TASK-ID-RAND')
+  const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${data.id
+    }`
+  const includeRandID = data.id.includes('TASK-ID-RAND')
+  const dateClasses: string[] = []
+  const taskStatusType = getStatusTypeByTaskId(data.id)
+  const { dueDate } = data
+
+  if (dueDate && taskStatusType !== StatusType.DONE && differenceInDays(new Date(dueDate), new Date()) < 0) {
+    dateClasses.push('text-red-400')
+  }
 
   return (
     <div
       className="board-item relative"
       onClick={() => {
-        if (isRand) {
+        if (includeRandID) {
           messageWarning('This task has been creating by server !')
           return
         }
@@ -40,15 +52,17 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
       }}>
       <BoardItemCover cover={data.cover} />
       <PriorityText type={data.priority || 'LOW'} />
-      <Loading.Absolute enabled={isRand} />
+      <Loading.Absolute enabled={includeRandID} />
+
       <h2 className="text-sm dark:text-gray-400 text-gray-600 whitespace-normal cursor-pointer space-x-1">
         <span>{data.title}</span>
         <TaskTypeIcon size="sm" type={data.type || ''} />
+
       </h2>
 
       <div className="board-item-action">
         {data.dueDate ? (
-          <span className="text-gray-400 text-xs">
+          <span className={`text-gray-400 text-xs ${dateClasses.join(' ')}`}>
             {dateFormat(new Date(data.dueDate), 'PP')}
           </span>
         ) : null}

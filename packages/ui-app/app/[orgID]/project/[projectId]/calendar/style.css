@@ -46,8 +46,8 @@
 }
 
 .calendar-day.today .day-display {
-  @apply text-indigo-500 font-bold;
-  @apply dark:text-indigo-400;
+  @apply text-indigo-500 bg-indigo-100 font-bold;
+  @apply dark:text-indigo-900 dark:bg-indigo-400;
 }
 
 .calendar-month-tasks {
@@ -63,6 +63,10 @@
 
 .calendar-task-item .no-name .selected-member-name {
   @apply hidden;
+}
+
+.overdue-task {
+  @apply text-red-500;
 }
 
 .week-view .calendar-task-item {
