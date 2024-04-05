@@ -2,6 +2,8 @@ import { DatePickerBorderless } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { useTaskUpdate } from './useTaskUpdate'
 import { differenceInDays } from 'date-fns'
+import { useStatusUtils } from '@/hooks/useStatusUtils'
+import { StatusType } from '@prisma/client'
 
 export default function TaskDate({
   date,
@@ -15,6 +17,7 @@ export default function TaskDate({
   toNow?: boolean
 }) {
   const [value, setValue] = useState(date)
+  const { getStatusTypeByTaskId } = useStatusUtils()
   const { updateTaskData } = useTaskUpdate()
 
   useEffect(() => {
@@ -33,11 +36,12 @@ export default function TaskDate({
     })
   }
 
+  const taskStatusType = getStatusTypeByTaskId(taskId)
   const classes: string[] = []
 
   className && classes.push(className)
 
-  if (date && differenceInDays(new Date(date), new Date()) < 0) {
+  if (date && taskStatusType !== StatusType.DONE && differenceInDays(new Date(date), new Date()) < 0) {
     classes.push('overdue')
   }
 
