@@ -9,7 +9,8 @@ import IncorrectConfigurationException from "../exceptions/IncorrectConfiguratio
 import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
 
-export const MAX_STORAGE_SIZE = 100 * 1024 * 1024 // 100Mb
+const mb = 1024 * 1024
+export const MAX_STORAGE_SIZE = 1024 * mb // 1Gb
 export class StorageService {
   protected orgId: string
   constructor(orgId: string) {

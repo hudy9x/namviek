@@ -1,4 +1,4 @@
-import { Task } from '@prisma/client'
+import { Task, TaskType } from '@prisma/client'
 import ActivityService from '../activity.service'
 import { CKEY, findNDelCaches, incrCache } from '../../lib/redis'
 import {
@@ -33,6 +33,7 @@ export default class TaskCreateService {
         desc,
         visionId,
         assigneeIds,
+        type,
         title,
         dueDate,
         projectId,
@@ -57,6 +58,7 @@ export default class TaskCreateService {
           title,
           cover: null,
           order: order,
+          type: type || TaskType.TASK,
           startDate: null,
           dueDate: dueDate || null,
           plannedStartDate: dueDate || null,
@@ -78,6 +80,8 @@ export default class TaskCreateService {
           updatedBy: null,
           progress
         })
+
+        console.log('result task', result)
 
         activityService.createTask({
           id: result.id,

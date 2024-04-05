@@ -5,11 +5,13 @@ import { ICalendarView, useCalendarContext } from './context'
 import CalTaskInWeek from './CalTaskInWeek'
 import Link from 'next/link'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
+import { TaskType } from '@prisma/client'
 
 interface ICalMonthTaskProps {
   id: string
   link: string
   title: string
+  type: TaskType
   time: string
   assigneeId: string
   taskStatusId: string
@@ -20,6 +22,7 @@ interface ICalMonthTaskProps {
 export default function CalMonthTask({
   index,
   link,
+  type: taskType,
   time,
   id,
   title,
@@ -28,8 +31,8 @@ export default function CalMonthTask({
   classes = []
 }: ICalMonthTaskProps) {
   const { filter } = useTaskFilterContext()
-  const { status: filterStatus, statusIds: filterStatusIds } = filter
-  const { color, type } = useStatusData(taskStatusId || '')
+  const { statusIds: filterStatusIds } = filter
+  const { color } = useStatusData(taskStatusId || '')
   const { calendarView } = useCalendarContext()
 
   const taskClasses = ['calendar-task-item']
@@ -47,12 +50,15 @@ export default function CalMonthTask({
             <div className={taskClasses.join(' ')}>
               {calendarView === ICalendarView.WEEK ? (
                 <CalTaskInWeek
+                  type={taskType}
+                  time={time}
                   color={color}
                   title={title}
                   assigneeId={assigneeId}
                 />
               ) : (
                 <CalTaskInMonth
+                  type={taskType}
                   time={time}
                   color={color}
                   title={title}

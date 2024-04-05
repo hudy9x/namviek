@@ -1,7 +1,6 @@
 import TaskCheckbox from '@/components/TaskCheckbox'
 import { ExtendedTask } from '@/store/task'
 import TaskStatus from './TaskStatus'
-import Link from 'next/link'
 import TaskActions from '@/features/TaskActions'
 import ListCell from './ListCell'
 import TaskAssignee from './TaskAssignee'
@@ -13,6 +12,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
 import { Loading, messageWarning } from '@shared/ui'
 import differenceInDays from 'date-fns/differenceInDays'
+import TaskTypeCell from './TaskTypeCell'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const params = useParams()
@@ -50,9 +50,9 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
               )}&taskId=${task.id}`
             )
           }}
-          // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
-          //   'mode'
-          // )}&taskId=${task.id}`}
+        // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
+        //   'mode'
+        // )}&taskId=${task.id}`}
         >
           <div className="w-full">{task.title}</div>
         </div>
@@ -69,6 +69,9 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
             uids={task.assigneeIds}
           />
         </ListCell>
+        <ListCell width={115}>
+          <TaskTypeCell type={task.type} taskId={task.id} />
+        </ListCell>
         <ListCell width={75} className="hidden sm:block">
           <TaskPriorityCell taskId={task.id} value={task.priority} />
         </ListCell>
@@ -83,7 +86,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
             date={task.dueDate ? new Date(task.dueDate) : null}
           />
         </ListCell>
-        <ListCell className="hidden sm:block" width={110}>
+        <ListCell className="hidden sm:block" width={70}>
           <ProgressBar color="green" progress={task.progress || 0} />
         </ListCell>
       </div>

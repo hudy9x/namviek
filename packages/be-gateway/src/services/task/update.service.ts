@@ -1,9 +1,6 @@
 import { Task } from '@prisma/client'
 import ActivityService from '../activity.service'
-import {
-  CKEY,
-  findNDelCaches,
-} from '../../lib/redis'
+import { CKEY, findNDelCaches } from '../../lib/redis'
 import {
   ProjectSettingRepository,
   mdProjectGet,
@@ -43,6 +40,8 @@ export default class TaskUpdateService {
       } = await this._genUpdateData({ body, userId })
 
       const result = await mdTaskUpdate(taskData)
+
+      console.log('task update', result)
 
       const isDone = result.done
 
@@ -106,6 +105,7 @@ export default class TaskUpdateService {
       assigneeIds,
       fileIds,
       desc,
+      type,
 
       priority,
       taskStatusId,
@@ -144,6 +144,10 @@ export default class TaskUpdateService {
 
     if (plannedDueDate) {
       taskData.plannedDueDate = plannedDueDate
+    }
+
+    if (type) {
+      taskData.type = type
     }
 
     if (assigneeIds) {

@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import differenceInDays from 'date-fns/differenceInDays'
+import { TaskType } from '@prisma/client'
+
 
 let index = 0
 
@@ -16,7 +18,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
   const mode = getSp('mode')
 
-  const dateClasses : string[] = []
+  const dateClasses: string[] = []
   if (day && differenceInDays(new Date(day), new Date()) < 0) {
     dateClasses.push('overdue-task')
   }
@@ -47,6 +49,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
           <CalMonthTask
             link={`${orgID}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
             key={task.id}
+            type={task.type || TaskType.TASK}
             time={time}
             index={++index}
             title={task.title}
