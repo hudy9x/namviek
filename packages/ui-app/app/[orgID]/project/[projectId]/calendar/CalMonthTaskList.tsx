@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
 import { useTaskFilter } from '@/features/TaskFilter/context'
+import differenceInDays from 'date-fns/differenceInDays'
 
 let index = 0
 
@@ -15,8 +16,13 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
   const mode = getSp('mode')
 
+  const dateClasses : string[] = []
+  if (day && differenceInDays(new Date(day), new Date()) < 0) {
+    dateClasses.push('overdue-task')
+  }
+
   return (
-    <div className="calendar-month-tasks ">
+    <div className='calendar-month-tasks'>
       {tasks.map(task => {
         if (!task.dueDate) return null
         const dueDate = new Date(task.dueDate)
@@ -47,6 +53,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
             id={task.id}
             assigneeId={task.assigneeIds[0]}
             taskStatusId={task.taskStatusId || ''}
+            classes={dateClasses}
           />
         )
       })}

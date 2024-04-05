@@ -12,12 +12,19 @@ import ProgressBar from '@/components/ProgressBar'
 import { useParams, useRouter } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
 import { Loading, messageWarning } from '@shared/ui'
+import differenceInDays from 'date-fns/differenceInDays'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const params = useParams()
   const { replace } = useRouter()
   const { getSp } = useUrl()
   const isRandomId = task.id.includes('TASK-ID-RAND')
+
+  const dateClasses: string[] = []
+  const { dueDate } = task
+  if (dueDate && differenceInDays(new Date(dueDate), new Date()) < 0) {
+    dateClasses.push('text-red-500')
+  }
 
   return (
     <div
@@ -68,7 +75,8 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <ListCell className="hidden sm:w-[50px] sm:block">
           <TaskPoint taskId={task.id} value={task.taskPoint} />
         </ListCell>
-        <ListCell className="ml-6 sm:ml-0 sm:w-[110px]">
+        <ListCell
+          className={`ml-6 sm:ml-0 sm:w-[110px] ${dateClasses.join(' ')}`}>
           <TaskDate
             toNow={true}
             taskId={task.id}

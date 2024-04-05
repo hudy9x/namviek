@@ -6,6 +6,7 @@ import MemberAvatar from '@/components/MemberAvatar'
 import { useUrl } from '@/hooks/useUrl'
 import PriorityText from '@/components/PriorityText'
 import { Loading, messageWarning } from '@shared/ui'
+import differenceInDays from 'date-fns/differenceInDays'
 
 export default function BoardItem({ data }: { data: ExtendedTask }) {
   const { orgID, projectId } = useParams()
@@ -16,6 +17,12 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
     data.id
   }`
   const isRand = data.id.includes('TASK-ID-RAND')
+
+  const dateClasses: string[] = []
+  const { dueDate } = data
+  if (dueDate && differenceInDays(new Date(dueDate), new Date()) < 0) {
+    dateClasses.push('text-red-500')
+  }
 
   return (
     <div
@@ -40,7 +47,7 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
 
       <div className="board-item-action">
         {data.dueDate ? (
-          <span className="text-gray-400 text-xs">
+          <span className={`text-gray-400 text-xs ${dateClasses.join(' ')}`}>
             {dateFormat(new Date(data.dueDate), 'PP')}
           </span>
         ) : null}

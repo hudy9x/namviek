@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
+import differenceInDays from 'date-fns/differenceInDays'
+import { Task } from '@prisma/client'
 
 export default function useGetTask() {
   const { projectId } = useParams()
@@ -90,6 +92,19 @@ export default function useGetTask() {
         setTimeout(() => {
           addAllTasks(data)
         }, 300)
+        const outdatedTask: Task[] = []
+        for (const task of data as Task[]) {
+          const { dueDate } = task
+          if (dueDate && differenceInDays(new Date(dueDate), new Date()) < 0) {
+            outdatedTask.push(task)
+          }
+        }
+
+        const overdueNum = outdatedTask.length
+        overdueNum &&
+          messageError(
+            `There are ${overdueNum} overdue tasks, update immediately!`
+          )
       })
       .finally(() => {
         setTaskLoading(false)

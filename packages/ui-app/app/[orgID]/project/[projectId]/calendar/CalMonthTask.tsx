@@ -14,6 +14,7 @@ interface ICalMonthTaskProps {
   assigneeId: string
   taskStatusId: string
   index: number
+  classes?: Array<string>
 }
 
 export default function CalMonthTask({
@@ -23,12 +24,16 @@ export default function CalMonthTask({
   id,
   title,
   assigneeId,
-  taskStatusId
+  taskStatusId,
+  classes = []
 }: ICalMonthTaskProps) {
   const { filter } = useTaskFilterContext()
   const { status: filterStatus, statusIds: filterStatusIds } = filter
   const { color, type } = useStatusData(taskStatusId || '')
   const { calendarView } = useCalendarContext()
+
+  const taskClasses = ['calendar-task-item']
+  classes?.length && taskClasses.push(...classes)
 
   const view = () => (
     <Link href={link}>
@@ -39,7 +44,7 @@ export default function CalMonthTask({
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             className="relative">
-            <div className="calendar-task-item">
+            <div className={taskClasses.join(' ')}>
               {calendarView === ICalendarView.WEEK ? (
                 <CalTaskInWeek
                   color={color}

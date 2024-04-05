@@ -65,6 +65,10 @@
   @apply hidden;
 }
 
+.overdue-task {
+  @apply text-red-500;
+}
+
 .week-view .calendar-task-item {
   @apply whitespace-pre-wrap;
 }
