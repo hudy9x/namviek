@@ -1,6 +1,7 @@
 import { DatePickerBorderless } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { useTaskUpdate } from './useTaskUpdate'
+import { differenceInDays } from 'date-fns'
 
 export default function TaskDate({
   date,
@@ -32,8 +33,16 @@ export default function TaskDate({
     })
   }
 
+  const classes: string[] = []
+
+  className && classes.push(className)
+
+  if (date && differenceInDays(new Date(date), new Date()) < 0) {
+    classes.push('overdue')
+  }
+
   return (
-    <div className={`task-date ${className}`}>
+    <div className={`task-date ${classes.join(' ')}`}>
       <DatePickerBorderless
         toNow={toNow}
         value={value || undefined}
