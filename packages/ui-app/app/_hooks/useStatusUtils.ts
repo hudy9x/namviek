@@ -31,8 +31,6 @@ export const useStatusUtils = () => {
 
     const foundStatus = statuses.find(stt => stt.id === found.taskStatusId)
 
-    console.log('foundStatus', found.title, foundStatus?.type)
-
     if (!foundStatus) return StatusType.TODO
 
     return foundStatus.type
