@@ -22,31 +22,10 @@ import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
 
-export default function ProjectContainer() {
+function SaveRecentVisitPage() {
   const { projectId, orgID } = useParams()
-  const { getAutomationByProject } = useServiceAutomation()
-  const { getSp } = useUrl()
   const { user } = useUser()
-
-  // realtime events
-  useEventSyncProjectMember(projectId)
-  useEventSyncProjectView(projectId)
-  useEventSyncProjectStatus(projectId)
-
-  useSetProjectViewCache()
-  useUpdateGroupbyItem()
-  useTodoFilter()
-  useGetProjectStatus()
-  useGetTask()
-  useGetMembers()
-  useGetProjectPoint()
-  useGetProjectViewList()
-
-  // this hook generates objects in Map object
-  // that helps to get task item as quickly as possible
-  // by using task'id
-  // Ex: tasks[id] or task[order]
-  useGenTaskMappingObject()
+  const { getSp } = useUrl()
 
   useDebounce(() => {
     console.log('save lastest visit url')
@@ -56,13 +35,54 @@ export default function ProjectContainer() {
         `/${orgID}/project/${projectId}?mode=${getSp('mode')}`
       )
     }
-  }, [user])
+  }, [user, projectId, orgID])
 
+  return <></>
+}
+
+function useRegisterEvents() {
+
+  const { projectId } = useParams()
+
+  // realtime events
+  useEventSyncProjectMember(projectId)
+  useEventSyncProjectView(projectId)
+  useEventSyncProjectStatus(projectId)
+}
+
+function useGetAutomationRulesByProject() {
+  const { projectId } = useParams()
+  const { getAutomationByProject } = useServiceAutomation()
   useEffect(() => {
     if (projectId) {
       getAutomationByProject(projectId)
     }
   }, [projectId])
 
-  return <ProjectNav />
+}
+
+export default function ProjectContainer() {
+
+  // realtime events
+  useRegisterEvents()
+
+  useSetProjectViewCache()
+  useUpdateGroupbyItem()
+  useTodoFilter()
+  useGetProjectStatus()
+  useGetTask()
+  useGetMembers()
+  useGetProjectPoint()
+  useGetProjectViewList()
+  useGetAutomationRulesByProject()
+
+  // this hook generates objects in Map object
+  // that helps to get task item as quickly as possible
+  // by using task'id
+  // Ex: tasks[id] or task[order]
+  useGenTaskMappingObject()
+
+  return <>
+    <SaveRecentVisitPage />
+    <ProjectNav /></>
 }

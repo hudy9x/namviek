@@ -22,7 +22,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
 
   return (
     <div
-      className="px-3 py-2 text-sm sm:flex items-center justify-between group relative"
+      className="px-3 py-2 text-sm sm:flex items-center justify-between group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-700"
       key={task.id}>
       <div className="flex items-center gap-2 dark:text-gray-300">
         <TaskCheckbox id={task.id} selected={task.selected} />
