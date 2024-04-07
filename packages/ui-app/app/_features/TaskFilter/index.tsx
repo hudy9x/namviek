@@ -22,6 +22,7 @@ interface ITaskFilterProps {
   assigneeEnable?: boolean
   importEnable?: boolean
 }
+
 export default function TaskFilter({
   searchEnabled = true,
   pointEnabled = true,
@@ -51,15 +52,26 @@ export default function TaskFilter({
     currentViewType === ProjectViewType.BOARD
   const showOperator = ['this-month', 'this-week', 'today']
 
-  useEffect(() => {
+  const onSearch = (val: string) => {
     if (timeout) {
       clearTimeout(timeout)
     }
 
     timeout = setTimeout(() => {
-      setFilterValue('term', txt)
-    }, 250) as unknown as number
-  }, [txt])
+      setFilterValue('term', val)
+    }, 350) as unknown as number
+  }
+
+  // useEffect(() => {
+  //   if (timeout) {
+  //     clearTimeout(timeout)
+  //   }
+  //
+  //   timeout = setTimeout(() => {
+  //     console.log('1')
+  //     setFilterValue('term', txt)
+  //   }, 250) as unknown as number
+  // }, [txt])
 
   return (
     <div className="task-filter">
@@ -69,9 +81,10 @@ export default function TaskFilter({
             <AiOutlineSearch className="text-gray-400" />
             <input
               className="text-sm outline-none dark:bg-gray-900"
-              value={txt}
+              // value={txt}
               onChange={ev => {
-                setTxt(ev.target.value)
+                // setTxt(ev.target.value)
+                onSearch(ev.target.value)
               }}
               placeholder="Search ..."
             />
