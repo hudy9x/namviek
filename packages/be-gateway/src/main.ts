@@ -10,6 +10,7 @@ import './lib/redis'
 import './lib/firebase-admin'
 import './events'
 import Routes from './routes'
+import ApiNotFoundException from './exceptions/ApiNotFoundException'
 // import { Log } from './lib/log'
 
 connectPubClient((err) => {
@@ -31,6 +32,25 @@ app.use(
 app.use(express.json())
 
 app.use('/api', Routes)
+
+
+// Catch wrong api name, method
+app.use((req, res, next) => {
+  const error = new ApiNotFoundException()
+  next(error)
+})
+
+// Handling error middleware
+// See: https://expressjs.com/en/guide/using-middleware.html
+app.use((error, req, res, nextr) => {
+  const statusCode = error.status || 500
+  console.log(error)
+  return res.status(statusCode).json({
+    status: 'error',
+    code: statusCode,
+    message: error.message || 'Internal Server Error'
+  })
+})
 
 const port = process.env.PORT || 3333
 const server = app.listen(port, () => {

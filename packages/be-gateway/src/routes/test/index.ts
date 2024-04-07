@@ -43,6 +43,12 @@ export class TestController extends BaseController {
     return (d2.getTime() - d1.getTime()) / 1000
   }
 
+  @Get('/error-handler')
+  async ErrorHandler() {
+    throw new Error('oiu123ijoijo woiejr')
+    return 1
+  }
+
   @Get('/hello')
   async sayHello() {
     const { taskId } = this.req.query as { taskId: string }
