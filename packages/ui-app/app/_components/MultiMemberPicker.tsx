@@ -1,8 +1,6 @@
 import { useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
-import { BsThreeDots } from 'react-icons/bs'
 import { useEffect, useState } from 'react'
-import { all } from 'axios'
 const List = Form.List
 
 interface IMemberPicker {
@@ -14,7 +12,8 @@ interface IMemberPicker {
   onChange?: (val: string[]) => void
 }
 
-const defaultAssignee = { id: 'NONE', title: 'No assignee' }
+const defaultAssignee: ListItemValue = { id: 'NONE', title: 'No assignee' }
+let defaultAssigneeArr: ListItemValue[] = [defaultAssignee]
 
 export default function MultiMemberPicker({
   title,
@@ -25,7 +24,10 @@ export default function MultiMemberPicker({
   className
 }: IMemberPicker) {
   const { members } = useMemberStore(state => state)
-  const [options, setOptions] = useState<ListItemValue[]>([defaultAssignee])
+  const [options, setOptions] = useState<ListItemValue[]>(defaultAssigneeArr)
+
+  console.log('options.lenght', options.length)
+
   const selectedOption = options.filter(
     opt => value && value.some(v => v === opt.id)
   )
@@ -39,6 +41,7 @@ export default function MultiMemberPicker({
     const listMembers = members.map(mem => ({ id: mem.id, title: mem.name }))
     all && listMembers.push({ id: 'ALL', title: 'All member' })
 
+    defaultAssigneeArr = listMembers as ListItemValue[]
     setOptions(listMembers as ListItemValue[])
   }, [members])
 
@@ -46,7 +49,7 @@ export default function MultiMemberPicker({
     const selectedMembers = options.filter(
       m => value && value.some(v => v === m.id)
     )
-    selectedMembers.length ? setVal(selectedMembers) : setVal([defaultAssignee])
+    selectedMembers.length ? setVal(selectedMembers) : setVal(defaultAssigneeArr)
   }, [options])
 
   // call onChange everytime user select an other assignee

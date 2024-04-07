@@ -14,6 +14,7 @@ interface IStatusSelectProps {
   maxDisplay?: number
 }
 
+let defaultStatusArr: ListItemValue[] = []
 export default function StatusSelectMultiple({
   title,
   className,
@@ -23,9 +24,9 @@ export default function StatusSelectMultiple({
   placeholder,
   maxDisplay = 3
 }: IStatusSelectProps) {
-  // const selectOption = options.find(opt => opt.id === value);
+
   const { statuses } = useProjectStatusStore()
-  const [options, setOptions] = useState<ListItemValue[]>([])
+  const [options, setOptions] = useState<ListItemValue[]>(defaultStatusArr)
   const selectedOption = options.filter(
     opt => value && value.some(v => v === opt.id)
   )
@@ -41,6 +42,16 @@ export default function StatusSelectMultiple({
       id: 'ALL',
       title: 'All statuses'
     })
+    // cache the status array
+    // here is why:
+    // when a view changed, ex: board -> list or list -> calendar, ...
+    // this component will be re-rendered because of parent context changed
+    // so, `options` state will be empty at the first time
+    // it causes the component re-render 2 times, once for empty options, the other for filled options
+    // that's not smooth for user experience
+    // due to, we should cache the status list
+    // next time, when view changed, it will render cached first => no laggy anymore
+    defaultStatusArr = statusList as ListItemValue[]
     setOptions(statusList as ListItemValue[])
   }, [statuses])
 
