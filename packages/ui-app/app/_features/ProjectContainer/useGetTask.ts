@@ -36,9 +36,6 @@ export default function useGetTask() {
       .catch(err => {
         console.log('errpr loading cached task', err)
       })
-      .finally(() => {
-
-      })
   }, [projectId])
 
   useEffect(() => {
@@ -78,11 +75,11 @@ export default function useGetTask() {
     )
       .then(res => {
         const { data, status, error } = res.data
-        console.log('fetched task from server')
 
         if (status !== 200) {
           addAllTasks([])
           localforage.removeItem(key)
+          setTaskLoading(false)
           messageError(error)
           return
         }
@@ -90,11 +87,9 @@ export default function useGetTask() {
         localforage.setItem(key, data)
         setTimeout(() => {
           addAllTasks(data)
+          setTaskLoading(false)
         }, 300)
 
-      })
-      .finally(() => {
-        setTaskLoading(false)
       })
 
     return () => {
