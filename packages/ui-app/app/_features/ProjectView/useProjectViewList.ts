@@ -59,6 +59,7 @@ export const useProjectViewList = () => {
   const { projectId } = useParams()
   const { views } = useProjectViewStore()
   const [loading, setLoading] = useState(true)
+  const oldMode = useRef('')
   // const { fetchNCache } = useProjectViewListHandler(projectId, () => {
   //   setLoading(false)
   // })
@@ -81,14 +82,17 @@ export const useProjectViewList = () => {
 
   // get type of current view
   useDebounce(() => {
-    if (views.length) {
+
+    if (views.length && oldMode.current !== mode) {
+      console.log('mode changed', mode, oldMode.current, currentViewType)
+      oldMode.current = mode
       const view = views.find(v => v.id === mode)
       if (view) {
         setCurrentViewType(view.type)
         setCachedViewType(view.type)
       }
     }
-  }, [views, mode])
+  }, [JSON.stringify(views), mode])
 
   // update cached views as creating/deleting view
   useEffect(() => {

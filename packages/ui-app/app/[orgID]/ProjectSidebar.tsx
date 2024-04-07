@@ -16,7 +16,7 @@ import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import Favorites from '@/features/Favorites'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 
 function ViewAllBtn() {
@@ -39,8 +39,8 @@ function ViewAllBtn() {
   )
 }
 
-export default function ProjectSidebar() {
-  const { orgID } = useParams()
+
+function ProjectSidebarContainer({ orgID }: { orgID: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
@@ -131,4 +131,15 @@ export default function ProjectSidebar() {
       </aside>
     </>
   )
+}
+
+
+export default function ProjectSidebar() {
+  const { orgID } = useParams()
+
+  const view = useMemo(() => {
+    return <ProjectSidebarContainer orgID={orgID} />
+  }, [orgID])
+
+  return <>{view}</>
 }

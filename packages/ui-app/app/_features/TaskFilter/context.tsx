@@ -14,7 +14,8 @@ import {
   useState,
   ReactNode,
   useEffect,
-  useRef
+  useRef,
+  useMemo
 } from 'react'
 
 export enum ETaskFilterGroupByType {
@@ -108,6 +109,10 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
   const [groupByLoading, setGroupbyLoading] = useState(false)
   const [filter, setFilter] = useState<ITaskFilterFields>(defaultFilter)
 
+  const view = useMemo(() => {
+    return children
+  }, [JSON.stringify(groupByItems), groupByLoading, JSON.stringify(filter)])
+
   return (
     <TaskFilterContext.Provider
       value={{
@@ -118,7 +123,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
         groupByLoading,
         setGroupbyLoading
       }}>
-      {children}
+      {view}
     </TaskFilterContext.Provider>
   )
 }

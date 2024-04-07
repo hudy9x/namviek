@@ -11,7 +11,7 @@ import { Loading } from '@shared/ui'
 import { useProjectStatusStore } from '@/store/status'
 import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useId } from 'react'
+import React, { useCallback, useId, useMemo } from 'react'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -67,17 +67,32 @@ function AnimateView({
   // )
 }
 
-export default function ProjectTabContent() {
+function ProjectTabContentLoading() {
+
   const { loading } = useProjectViewStore()
   const { statusLoading } = useProjectStatusStore()
+
+  if (loading || statusLoading) {
+    return <div className="px-3">
+      <Loading.Absolute title="Preparing view ..." enabled={true} />
+    </div>
+  }
+
+  return null
+}
+
+export default function ProjectTabContent() {
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
-  const ignored = ['setting', 'automation', 'automation-create']
-  const isIgnored = () => ignored.includes(mode || '')
+
+  const isIgnored = useCallback(() => {
+    const ignored = ['setting', 'automation', 'automation-create']
+    return ignored.includes(mode || '')
+  }, [mode])
 
   const type = projectViewMap.get(mode || '') || 'NONE'
 
-  const isView = (t: ProjectViewType) => !isIgnored() && type === t
+  const isView = useCallback((t: ProjectViewType) => !isIgnored() && type === t, [isIgnored, type])
   const isNotBoard = !isView(ProjectViewType.BOARD)
 
   // Note: only enable overflow-y to Board view
@@ -85,13 +100,10 @@ export default function ProjectTabContent() {
   // not the whole page
   const cls = `relative ${isNotBoard ? 'overflow-y-auto' : null}`
 
-  return (
-    <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
-      {loading || statusLoading ? (
-        <div className="px-3">
-          <Loading.Absolute title="Preparing view ..." enabled={true} />
-        </div>
-      ) : null}
+  const view = useMemo(() => {
+    console.log('render project view')
+    return <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
+      <ProjectTabContentLoading />
       <AnimateView visible={type === 'NONE' && !isIgnored()}>
         <TaskList />
       </AnimateView>
@@ -113,16 +125,11 @@ export default function ProjectTabContent() {
       <AnimateView visible={isView(ProjectViewType.TEAM)}>
         <DynamicTeamView />
       </AnimateView>
-      {/* {type === 'NONE' && !isIgnored() && <TaskList />} */}
-      {/* {isView(ProjectViewType.BOARD) && <Board />} */}
-      {/* {isView(ProjectViewType.LIST) && <TaskList />} */}
-      {/* {isView(ProjectViewType.DASHBOARD) ? <ProjectOverview /> : null} */}
-      {/* {isView(ProjectViewType.CALENDAR) ? <Calendar /> : null} */}
-      {/* {isView(ProjectViewType.TEAM) ? <DynamicTeamView /> : null} */}
-      {/* {isView(ProjectViewType.GOAL) ? <Vision /> : null} */}
       {mode === 'setting' && <Settings />}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateMenu /> : null}
     </div>
-  )
+  }, [cls, type, isIgnored, mode, isView])
+
+  return view
 }
