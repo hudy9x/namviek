@@ -133,6 +133,7 @@ export const TaskUpdate = () => {
             <>
               <FileKitContainer fileIds={currentTask.fileIds}>
                 <TaskDetail
+                  id={taskId || ''}
                   cover={currentTask.cover || ''}
                   defaultValue={currentTask}
                   onSubmit={v => handleSubmit(v)}
