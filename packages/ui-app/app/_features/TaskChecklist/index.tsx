@@ -15,7 +15,7 @@ export default function TaskChecklist({ taskId }: { taskId: string }) {
   ])
 
   return <section className="task-checklist space-y-2 pb-3">
-    {checklists.map(checklist => {
+    {checklists.sort.map(checklist => {
       return <div key={checklist.id} className="checklist-item">
         <Form.Checkbox checked={checklist.checked} className="shrink-0" />
         <input value={checklist.title} />
