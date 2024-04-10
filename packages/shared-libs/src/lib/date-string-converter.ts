@@ -1,4 +1,4 @@
-import { addDays, lastDayOfMonth, setHours, subDays } from 'date-fns'
+import { addDays, lastDayOfMonth, setHours, subDays, subMonths } from 'date-fns'
 
 export const extractDueDate = ({
   dateOperator,
@@ -157,6 +157,28 @@ export const fromDateStringToDateObject = (
     }
   }
 
+  if (['pre-week'].includes(dateStr)) {
+    const [mon, sat] = getMondayNSaturdayInWeek(subDays(new Date(), 7))
+
+    if (operator === '=') {
+      config.startDate = mon
+      config.endDate = sat
+    }
+
+    if (operator === '>') {
+      to23h59m(sat)
+      config.startDate = sat
+      config.endDate = null
+    }
+
+    if (operator === '<') {
+      // must -- date cuz the query on server side is <=
+      to00h00m(mon)
+      config.startDate = null
+      config.endDate = mon
+    }
+  }
+
   if (['month', 'this-month'].includes(dateStr)) {
     const [firstDate, lastDate] = getStartNEndDateOfMonth(new Date())
 
@@ -179,26 +201,25 @@ export const fromDateStringToDateObject = (
   }
 
   if (['prev-month'].includes(dateStr)) {
-    const date = new Date()
-    const lastDateOfPrevMonth = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      1,
-      0,
-      0,
-      0
-    )
-    lastDateOfPrevMonth.setDate(lastDateOfPrevMonth.getDate() - 1)
+    const date = subMonths(new Date(), 1)
+    const [firstDate, lastDate] = getStartNEndDateOfMonth(date)
 
-    config.startDate = new Date(
-      date.getFullYear(),
-      date.getMonth() - 1,
-      1,
-      0,
-      0,
-      0
-    )
-    config.endDate = lastDateOfPrevMonth
+    to00h00m(firstDate)
+    to23h59m(lastDate)
+    if (operator === '=') {
+      config.startDate = firstDate
+      config.endDate = lastDate
+    }
+
+    if (operator === '>') {
+      config.startDate = lastDate
+      config.endDate = null
+    }
+
+    if (operator === '<') {
+      config.startDate = null
+      config.endDate = firstDate
+    }
   }
 
   return config
