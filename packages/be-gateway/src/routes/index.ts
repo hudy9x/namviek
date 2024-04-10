@@ -31,6 +31,7 @@ import TaskReorderController from './task/reorder.controller'
 import { EventController } from './event/index.controller'
 import { TestController } from './test'
 import ProjectSetting from './project/setting.controller'
+import TaskChecklistController from './task/checklist.controller'
 
 const router = Router()
 
@@ -53,7 +54,8 @@ router.use(
     OrganizationStorageController,
     OrganizationMemberController,
     SchedulerController,
-    TaskReorderController
+    TaskReorderController,
+    TaskChecklistController
   ])
 )
 // middlewares

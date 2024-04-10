@@ -1,27 +1,56 @@
-import { SchemaType, taskChecklistModel } from "./_prisma"
+import { TaskChecklist } from "@prisma/client"
+import { taskChecklistModel } from "./_prisma"
 
-class BaseRepository {
-
-  constructor(protected model: SchemaType) {
-    this.model = model
-
-
+export class TaskChecklistRepository {
+  constructor(private model = taskChecklistModel) {
 
   }
 
-}
-export class TaskChecklistRepository extends BaseRepository {
-  constructor() {
-    super(taskChecklistModel)
+  async getById(cid: string) {
+    return this.model.findFirst({
+      where: {
+        id: cid
+      }
+    })
   }
 
-  async create() {
-    console.log('1')
+  async getAllByTaskId(taskId: string) {
+    return this.model.findMany({
+      where: {
+        taskId
+      },
+      orderBy: {
+        order: 'asc'
+      }
 
-    // taskChecklistModel.create({
-    //   data
-    // })
+    })
   }
+
+  async create(data: Omit<TaskChecklist, 'id'>) {
+
+    return this.model.create({
+      data
+    })
+  }
+
+  async updateById(id: string, data: Partial<Omit<TaskChecklist, 'id'>>) {
+    return this.model.update({
+      where: {
+        id
+      },
+      data
+    })
+  }
+
+  async deleteById(id: string) {
+    return this.model.delete({
+      where: { id }
+    })
+  }
+
+
+
+
 }
 
 

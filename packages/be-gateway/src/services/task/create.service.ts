@@ -64,6 +64,8 @@ export default class TaskCreateService {
           plannedStartDate: dueDate || null,
           plannedDueDate: dueDate || null,
           assigneeIds,
+          checklistDone: 0,
+          checklistTodos: 0,
           desc,
           done,
           fileIds: [],
