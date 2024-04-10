@@ -29,6 +29,11 @@ export default class TaskChecklistController extends BaseController {
   async updateChecklist(@Body() body: TaskChecklist) {
     const { title, done, order, id } = body
 
+    console.log('update checklist:', body)
+    if (!id) {
+      throw new BadRequestException()
+    }
+
     const checklistData = await this.checklistRepo.getById(id)
     let changed = false
 
@@ -53,7 +58,8 @@ export default class TaskChecklistController extends BaseController {
     }
 
     if (changed) {
-      await this.checklistRepo.updateById(id, checklistData)
+      const { id, ...restData } = checklistData
+      await this.checklistRepo.updateById(id, restData)
       return 1
     }
 

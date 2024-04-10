@@ -8,8 +8,12 @@ interface TaskChecklistState {
   checklists: {
     [key: string]: TaskChecklist[]
   }
+  updateChecklistId: (taskId: string, oldId: string, newId: string) => void
   addTaskChecklist: (taskId: string, data: TaskChecklist[]) => void
   addOneChecklist: (data: TaskChecklist) => void
+  toggleChecklistStatus: (taskId: string, idx: number) => void
+  deleteChecklist: (taskId: string, id: string) => void
+  updateChecklist: (taskId: string, data: Partial<TaskChecklist>) => void
 
 }
 
@@ -20,6 +24,32 @@ export const useChecklistStore = create<TaskChecklistState>(set => ({
     set(
       produce((state: TaskChecklistState) => {
         state.checklists[taskId] = data
+      })
+    ),
+  updateChecklist: (taskId: string, data: Partial<TaskChecklist>) =>
+    set(
+      produce((state: TaskChecklistState) => {
+        const checklists = state.checklists
+        if (!taskId) return
+        if (!(taskId in checklists)) return
+
+        const taskChecklist = checklists[taskId]
+        const { id, title } = data
+
+        if (!id) return
+
+        checklists[taskId] = taskChecklist.map(c => {
+          if (c.id !== id) {
+            return c
+          }
+
+          if (c.title !== title && title) {
+            c.title = title
+          }
+
+          return c
+        })
+
       })
     ),
 
@@ -35,5 +65,57 @@ export const useChecklistStore = create<TaskChecklistState>(set => ({
 
         checklists[taskId].push(data)
       })
-    )
+    ),
+
+  toggleChecklistStatus: (taskId: string, idx: number) =>
+    set(
+      produce((state: TaskChecklistState) => {
+        const checklists = state.checklists
+        if (!taskId) return
+
+        if (!checklists[taskId])
+          return
+
+        const stt = checklists[taskId][idx].done
+        checklists[taskId][idx].done = !stt
+
+      })
+    ),
+
+  deleteChecklist: (taskId: string, id: string) =>
+    set(
+      produce((state: TaskChecklistState) => {
+        const checklists = state.checklists
+        if (!taskId) return
+
+        if (!checklists[taskId])
+          return
+
+        const taskChecklist = checklists[taskId]
+
+        checklists[taskId] = taskChecklist.filter(c => c.id !== id)
+      })
+    ),
+
+
+  updateChecklistId: (taskId: string, oldId: string, newId: string) =>
+    set(
+      produce((state: TaskChecklistState) => {
+        const checklists = state.checklists
+        if (!taskId) return
+
+        if (!checklists[taskId])
+          return
+
+        const taskChecklist = checklists[taskId]
+
+        checklists[taskId] = taskChecklist.map(c => {
+          if (c.id === oldId) {
+            c.id = newId
+          }
+          return c
+        })
+      })
+    ),
+
 }))
