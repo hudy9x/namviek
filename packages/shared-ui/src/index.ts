@@ -14,7 +14,7 @@ import LoadingContainer from './components/Loading/LoadingContainer'
 import TimelineContainer from './components/Timeline'
 import DropdownMenuContainer from './components/Dropdown'
 import TabContainer from './components/Tab'
-import PopoverContainer from './components/Popover'
+import PopoverContainer from './components/Controls/PopoverControl'
 import SwitchContainer from './components/Switch'
 
 export {

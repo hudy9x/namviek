@@ -8,7 +8,7 @@ import useChecklistCounter from "./useChecklitCounter";
 
 
 export default function ChecklistList({ taskId }: { taskId: string }) {
-  const { checklists, toggleChecklistStatus, deleteChecklist, updateChecklist } = useChecklistStore()
+  const { checklists, toggleChecklistStatus, deleteChecklist } = useChecklistStore()
   const taskChecklists = checklists[taskId] || []
   useGetTaskChecklist(taskId)
   useChecklistCounter(taskId)
