@@ -24,7 +24,7 @@ export default function ChecklistInput({ id, value, taskId }: {
     })
   }
 
-  return <input value={title}
+  return <input className="checklist-input" value={title}
     onChange={ev => setTitle(ev.target.value)}
     onKeyPress={(ev) => {
       // ev.stopPropagation()

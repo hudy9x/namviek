@@ -24,6 +24,7 @@ interface TaskState {
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
   delTask: (id: string) => void
+  updateChecklistCounter: (taskId: string, done: number, todo: number) => void
 }
 
 export const useTaskStore = create<TaskState>(set => ({
@@ -38,6 +39,18 @@ export const useTaskStore = create<TaskState>(set => ({
           task.selected = false
           return task
         })
+      })
+    ),
+
+  updateChecklistCounter: (taskId: string, done: number, todo: number) =>
+    set(
+      produce((state: TaskState) => {
+        const taskIndex = state.tasks.findIndex(t => t.id === taskId)
+        if (taskIndex === -1) return
+
+        state.tasks[taskIndex].checklistDone = done
+        state.tasks[taskIndex].checklistTodos = todo
+
       })
     ),
   toggleMultipleSelected: (stt: boolean, ids: string[]) =>

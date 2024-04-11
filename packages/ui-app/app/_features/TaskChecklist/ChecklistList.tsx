@@ -4,12 +4,14 @@ import { HiOutlineX } from "react-icons/hi";
 import { taskChecklistSv } from "@/services/task.checklist";
 import useGetTaskChecklist from "./useGetTaskChecklist";
 import ChecklistInput from "./ChecklistInput";
+import useChecklistCounter from "./useChecklitCounter";
 
 
 export default function ChecklistList({ taskId }: { taskId: string }) {
   const { checklists, toggleChecklistStatus, deleteChecklist, updateChecklist } = useChecklistStore()
   const taskChecklists = checklists[taskId] || []
   useGetTaskChecklist(taskId)
+  useChecklistCounter(taskId)
 
   const onDelete = (id: string) => {
     deleteChecklist(taskId, id)
@@ -38,7 +40,7 @@ export default function ChecklistList({ taskId }: { taskId: string }) {
           onCheck(checked, idx, id)
         }} className="shrink-0" />
         <ChecklistInput id={id} value={title} taskId={taskId} />
-        {id}
+        {/* {id} */}
         <HiOutlineX onClick={() => {
           onDelete(id)
         }} className="cursor-pointer" />

@@ -1,100 +1,40 @@
-import { TaskChecklistRepository } from "@shared/models";
 import { BaseController, UseMiddleware, Controller, Get, Post, Req, Delete, Put, Body, Param } from "../../core";
-import { AuthRequest } from "../../types";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
-import BadRequestException from "../../exceptions/BadRequestException";
 import { TaskChecklist } from "@prisma/client";
+import TaskChecklistService from "../../services/task/checklist.service";
 
 @Controller('/project/task/checklist')
 @UseMiddleware([authMiddleware, beProjectMemberMiddleware])
 export default class TaskChecklistController extends BaseController {
-  private checklistRepo: TaskChecklistRepository
+  private checklistService: TaskChecklistService
 
   constructor() {
     super()
-    this.checklistRepo = new TaskChecklistRepository()
+    this.checklistService = new TaskChecklistService()
   }
   @Get('/:taskId')
   async getChecklistByTaskId(@Param() params: { taskId: string }) {
-
+    console.log(1)
     const { taskId } = params
-
-    const results = await this.checklistRepo.getAllByTaskId(taskId)
-
+    const results = await this.checklistService.get(taskId)
     return results
-
   }
 
   @Put('')
   async updateChecklist(@Body() body: TaskChecklist) {
-    const { title, done, order, id } = body
-
-    console.log('update checklist:', body)
-    if (!id) {
-      throw new BadRequestException()
-    }
-
-    const checklistData = await this.checklistRepo.getById(id)
-    let changed = false
-
-    if (title !== checklistData.title) {
-      checklistData.title = title
-      changed = true
-    }
-
-    if (done !== checklistData.done) {
-      checklistData.done = done
-      changed = true
-    }
-
-    if (order !== checklistData.order) {
-      checklistData.order = order
-
-      if (order) {
-        checklistData.doneAt = new Date()
-      }
-
-      changed = true
-    }
-
-    if (changed) {
-      const { id, ...restData } = checklistData
-      await this.checklistRepo.updateById(id, restData)
-      return 1
-    }
-
-    return 0
+    const ret = await this.checklistService.update(body)
+    return ret
   }
 
   @Post('')
   async createChecklist(@Body() body: TaskChecklist) {
-
-    const { title, order, taskId } = body
-
-    const result = await this.checklistRepo.create({
-      title,
-      order: 1,
-      taskId,
-      done: false,
-      doneAt: null
-    })
-
+    const result = await this.checklistService.create(body)
     return result
   }
 
   @Delete('/:checklistId')
   async deleteChecklist(@Param() params: { checklistId: string }) {
-    const { checklistId } = params
-
-    if (!checklistId) {
-      throw new BadRequestException()
-    }
-
-
-    const result = await this.checklistRepo.deleteById(checklistId)
-
-    console.log(result)
-
+    const result = await this.checklistService.delete(params.checklistId)
     return result
   }
 }

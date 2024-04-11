@@ -41,7 +41,7 @@ export default function ChecklistAdd({ taskId }: { taskId: string }) {
   }
   return <div className="checklist-item">
     <HiOutlinePlus />
-    <input ref={inpRef} onKeyPress={(ev) => {
+    <input className="checklist-input" ref={inpRef} onKeyPress={(ev) => {
       ev.stopPropagation()
 
       const target = ev.target as HTMLInputElement
