@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation'
 
 import { useUrl } from '@/hooks/useUrl'
 import PriorityText from '@/components/PriorityText'
-import { Loading, Popover, messageWarning } from '@shared/ui'
+import { Loading, Popover, Tooltip, messageWarning } from '@shared/ui'
 
 import differenceInDays from 'date-fns/differenceInDays'
 import { useStatusUtils } from '@/hooks/useStatusUtils'
@@ -83,7 +83,9 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
             triggerBy={
               <div>
                 {progress > 0 && progress < 100 ?
-                  <div className='p-0.5 w-5 h-5 cursor-pointer border dark:border-gray-700 rounded-full text-[10px] text-center animate-pulse'>{progress}</div>
+                  <Tooltip title={`Checklist progress`}>
+                    <div className='p-0.5 w-5 h-5 cursor-pointer border dark:border-gray-700 rounded-full text-[10px] text-center animate-pulse'>{progress}</div>
+                  </Tooltip>
                   :
                   <GoTasklist className='p-0.5 w-5 h-5 cursor-pointer border dark:border-gray-700 rounded-full' />
                 }
