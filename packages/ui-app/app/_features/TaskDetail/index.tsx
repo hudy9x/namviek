@@ -28,6 +28,8 @@ import TaskCover from './TaskCover'
 import TaskComments from '../TaskComments'
 import TaskDescUpdate from './TaskDescUpdate'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
+import TaskChecklist from '../TaskChecklist'
+import { GoTasklist } from 'react-icons/go'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -59,6 +61,7 @@ export interface ITaskDefaultValues {
   progress: number
 }
 interface ITaskFormProps {
+  id: string
   cover?: string
   isUpdate?: boolean
   taskStatusId?: string
@@ -68,6 +71,7 @@ interface ITaskFormProps {
 }
 
 export default function TaskDetail({
+  id,
   cover,
   dueDate,
   taskStatusId,
@@ -269,18 +273,26 @@ export default function TaskDetail({
               </div>
             </div>
           </div>
-          <div className="task-info-item">
+          {/* <div className="task-info-item"> */}
+          {/*   <div className="task-info-label"> */}
+          {/*     <HiOutlineBattery50 /> <span>Progress</span> */}
+          {/*   </div> */}
+          {/*   <div className="task-info-content w-[230px] pl-3"> */}
+          {/*     <Form.Range */}
+          {/*       step={5} */}
+          {/*       value={formik.values.progress} */}
+          {/*       onChange={v => { */}
+          {/*         formik.setFieldValue('progress', v) */}
+          {/*       }} */}
+          {/*     /> */}
+          {/*   </div> */}
+          {/* </div> */}
+          <div className="flex flex-col items-start pt-2">
             <div className="task-info-label">
-              <HiOutlineBattery50 /> <span>Progress</span>
+              <GoTasklist /> <span>Checklist</span>
             </div>
-            <div className="task-info-content w-[230px] pl-3">
-              <Form.Range
-                step={5}
-                value={formik.values.progress}
-                onChange={v => {
-                  formik.setFieldValue('progress', v)
-                }}
-              />
+            <div className="task-info-content w-full mt-4">
+              <TaskChecklist taskId={id} />
             </div>
           </div>
           <div className="flex flex-col items-start pt-2">

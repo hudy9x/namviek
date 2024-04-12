@@ -157,6 +157,9 @@ model Task {
   order   Int
   type    TaskType?
 
+  checklistDone  Int?
+  checklistTodos Int?
+
   cover            String?
   plannedStartDate DateTime?
   plannedDueDate   DateTime?
@@ -187,6 +190,15 @@ model TaskStatus {
   order     Int
   projectId String     @db.ObjectId
   type      StatusType @default(TODO)
+}
+
+model TaskChecklist {
+  id     String    @id @default(auto()) @map("_id") @db.ObjectId
+  taskId String    @db.ObjectId
+  title  String
+  order  Int
+  done   Boolean?
+  doneAt DateTime?
 }
 
 // Tag used for Projects and Tasks

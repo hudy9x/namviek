@@ -5,6 +5,7 @@ import {
   ExpressRequest,
   ExpressResponse,
   Get,
+  Post,
   Req,
   Res
 } from '../../core'
@@ -28,6 +29,13 @@ export class TestController extends BaseController {
     super()
 
     this.taskQueue = getTaskQueueInstance()
+  }
+
+  @Post('/hanet-webhook')
+  async testHanetWebhook() {
+    console.log(this.req.url, this.req.method)
+    console.log('body:', this.req.body)
+    return 1
   }
 
   calculateSecondBetween2Date() {

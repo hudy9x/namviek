@@ -26,8 +26,6 @@ export default function MultiMemberPicker({
   const { members } = useMemberStore(state => state)
   const [options, setOptions] = useState<ListItemValue[]>(defaultAssigneeArr)
 
-  console.log('options.lenght', options.length)
-
   const selectedOption = options.filter(
     opt => value && value.some(v => v === opt.id)
   )

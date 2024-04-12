@@ -40,11 +40,13 @@ export default function TaskMultipleActions() {
     setData(structuredClone({ ...defaultData }))
   }
 
+  console.log('multiple select', hasSelected)
+
   return (
     <div
       className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg transition-all z-40 ${hasSelected
-          ? '-translate-y-0 shadow-color-base'
-          : '-translate-y-full shadow-transparent'
+        ? '-translate-y-0 shadow-color-base'
+        : '-translate-y-full shadow-transparent'
         }`}>
       <div className="w-full grid grid-cols-2 px-4 sm:flex sm:items-center justify-center gap-2 text-sm">
         <span className="btn">Selected: {selected.length}</span>

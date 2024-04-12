@@ -1,0 +1,10 @@
+.checklist-item {
+  @apply flex items-center gap-2 bg-gray-100 dark:bg-gray-800 border dark:border-gray-700 px-2.5 py-1.5 rounded-md;
+
+  & .checklist-input {
+    @apply text-sm bg-transparent w-full outline-none
+  }
+
+
+
+}

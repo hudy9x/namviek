@@ -40,10 +40,22 @@
 .board-item {
   @apply bg-white p-3 rounded-md shadow-sm border;
   @apply dark:bg-gray-900 dark:border-gray-700;
-  @apply active:scale-[95%] transition-all;
+  /* @apply active:scale-[95%] transition-all; */
   @apply hover:dark:border-indigo-400 hover:border-indigo-400;
 }
 
 .board-item-action {
   @apply flex items-center justify-between text-gray-500 mt-3;
+  & .task-assignee .selected-member-name {
+    @apply hidden;
+  }
+}
+
+.board-item-duedate { 
+  @apply text-gray-400 dark:text-gray-600;
+  @apply flex items-center gap-1;
+
+  & .form-input {
+    @apply text-[11px] cursor-pointer;
+  }
 }
