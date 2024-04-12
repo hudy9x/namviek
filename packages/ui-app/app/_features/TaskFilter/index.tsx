@@ -50,13 +50,7 @@ export default function TaskFilter({
   const isShowStatusFilter =
     currentViewType === ProjectViewType.CALENDAR ||
     currentViewType === ProjectViewType.BOARD
-  const showOperator = [
-    'this-month',
-    'prev-month',
-    'this-week',
-    'prev-week',
-    'today'
-  ]
+  const showOperator = ['this-month', 'this-week', 'today']
 
   const onSearch = (val: string) => {
     if (timeout) {
@@ -132,7 +126,7 @@ export default function TaskFilter({
                   { id: 'yesterday', title: '📆 Yesterday' },
                   { id: 'tomorrow', title: '📆 Tomorrow' },
                   { id: 'this-week', title: '📆 This week' },
-                  { id: 'pre-week', title: '📆 Previous week' },
+                  { id: 'prev-week', title: '📆 Previous week' },
                   { id: 'this-month', title: '📆 This month' },
                   { id: 'prev-month', title: '📆 Previous month' },
                   { id: 'not-set', title: '📆 Not set' },

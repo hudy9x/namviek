@@ -157,26 +157,11 @@ export const fromDateStringToDateObject = (
     }
   }
 
-  if (['pre-week'].includes(dateStr)) {
+  if (['prev-week'].includes(dateStr)) {
     const [mon, sat] = getMondayNSaturdayInWeek(subDays(new Date(), 7))
 
-    if (operator === '=') {
-      config.startDate = mon
-      config.endDate = sat
-    }
-
-    if (operator === '>') {
-      to23h59m(sat)
-      config.startDate = sat
-      config.endDate = null
-    }
-
-    if (operator === '<') {
-      // must -- date cuz the query on server side is <=
-      to00h00m(mon)
-      config.startDate = null
-      config.endDate = mon
-    }
+    config.startDate = mon
+    config.endDate = sat
   }
 
   if (['month', 'this-month'].includes(dateStr)) {
@@ -206,20 +191,8 @@ export const fromDateStringToDateObject = (
 
     to00h00m(firstDate)
     to23h59m(lastDate)
-    if (operator === '=') {
-      config.startDate = firstDate
-      config.endDate = lastDate
-    }
-
-    if (operator === '>') {
-      config.startDate = lastDate
-      config.endDate = null
-    }
-
-    if (operator === '<') {
-      config.startDate = null
-      config.endDate = firstDate
-    }
+    config.startDate = firstDate
+    config.endDate = lastDate
   }
 
   return config
