@@ -1,4 +1,4 @@
-import { addDays, lastDayOfMonth, setHours, subDays } from 'date-fns'
+import { addDays, lastDayOfMonth, setHours, subDays, subMonths } from 'date-fns'
 
 export const extractDueDate = ({
   dateOperator,
@@ -157,6 +157,13 @@ export const fromDateStringToDateObject = (
     }
   }
 
+  if (['prev-week'].includes(dateStr)) {
+    const [mon, sat] = getMondayNSaturdayInWeek(subDays(new Date(), 7))
+
+    config.startDate = mon
+    config.endDate = sat
+  }
+
   if (['month', 'this-month'].includes(dateStr)) {
     const [firstDate, lastDate] = getStartNEndDateOfMonth(new Date())
 
@@ -179,26 +186,13 @@ export const fromDateStringToDateObject = (
   }
 
   if (['prev-month'].includes(dateStr)) {
-    const date = new Date()
-    const lastDateOfPrevMonth = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      1,
-      0,
-      0,
-      0
-    )
-    lastDateOfPrevMonth.setDate(lastDateOfPrevMonth.getDate() - 1)
+    const date = subMonths(new Date(), 1)
+    const [firstDate, lastDate] = getStartNEndDateOfMonth(date)
 
-    config.startDate = new Date(
-      date.getFullYear(),
-      date.getMonth() - 1,
-      1,
-      0,
-      0,
-      0
-    )
-    config.endDate = lastDateOfPrevMonth
+    to00h00m(firstDate)
+    to23h59m(lastDate)
+    config.startDate = firstDate
+    config.endDate = lastDate
   }
 
   return config

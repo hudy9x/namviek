@@ -98,21 +98,21 @@ export default function TaskFilter({
             <CalendarModeFilter />
           ) : (
             <>
-              {date && showOperator.includes(date) && (
-                <ListPreset
-                  value={dateOperator}
-                  onChange={val => {
-                    setFilterValue('dateOperator', val)
-                  }}
-                  className="w-[100px] mr-1"
-                  width={100}
-                  options={[
-                    { id: '=', title: 'Equal' },
-                    { id: '>', title: 'After' },
-                    { id: '<', title: 'Before' }
-                  ]}
-                />
-              )}
+              {/* {date && showOperator.includes(date) && ( */}
+              {/*   <ListPreset */}
+              {/*     value={dateOperator} */}
+              {/*     onChange={val => { */}
+              {/*       setFilterValue('dateOperator', val) */}
+              {/*     }} */}
+              {/*     className="w-[100px] mr-1" */}
+              {/*     width={100} */}
+              {/*     options={[ */}
+              {/*       { id: '=', title: 'Equal' }, */}
+              {/*       { id: '>', title: 'After' }, */}
+              {/*       { id: '<', title: 'Before' } */}
+              {/*     ]} */}
+              {/*   /> */}
+              {/* )} */}
               <ListPreset
                 className="w-[150px]"
                 value={date}
@@ -126,7 +126,9 @@ export default function TaskFilter({
                   { id: 'yesterday', title: '📆 Yesterday' },
                   { id: 'tomorrow', title: '📆 Tomorrow' },
                   { id: 'this-week', title: '📆 This week' },
+                  { id: 'prev-week', title: '📆 Previous week' },
                   { id: 'this-month', title: '📆 This month' },
+                  { id: 'prev-month', title: '📆 Previous month' },
                   { id: 'not-set', title: '📆 Not set' },
                   { id: 'date-range', title: '📆 Date range' }
                 ]}
