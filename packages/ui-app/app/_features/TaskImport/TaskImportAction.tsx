@@ -98,6 +98,8 @@ export default function TaskImportAction() {
         title,
         desc: null,
         type: TaskType.TASK,
+        checklistDone: 0,
+        checklistTodos: 0,
         cover: null,
         order: -1,
         plannedStartDate: null,

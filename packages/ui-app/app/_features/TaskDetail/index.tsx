@@ -273,20 +273,20 @@ export default function TaskDetail({
               </div>
             </div>
           </div>
-          <div className="task-info-item">
-            <div className="task-info-label">
-              <HiOutlineBattery50 /> <span>Progress</span>
-            </div>
-            <div className="task-info-content w-[230px] pl-3">
-              <Form.Range
-                step={5}
-                value={formik.values.progress}
-                onChange={v => {
-                  formik.setFieldValue('progress', v)
-                }}
-              />
-            </div>
-          </div>
+          {/* <div className="task-info-item"> */}
+          {/*   <div className="task-info-label"> */}
+          {/*     <HiOutlineBattery50 /> <span>Progress</span> */}
+          {/*   </div> */}
+          {/*   <div className="task-info-content w-[230px] pl-3"> */}
+          {/*     <Form.Range */}
+          {/*       step={5} */}
+          {/*       value={formik.values.progress} */}
+          {/*       onChange={v => { */}
+          {/*         formik.setFieldValue('progress', v) */}
+          {/*       }} */}
+          {/*     /> */}
+          {/*   </div> */}
+          {/* </div> */}
           <div className="flex flex-col items-start pt-2">
             <div className="task-info-label">
               <GoTasklist /> <span>Checklist</span>

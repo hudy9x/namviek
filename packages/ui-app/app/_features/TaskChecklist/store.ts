@@ -8,6 +8,7 @@ interface TaskChecklistState {
   checklists: {
     [key: string]: TaskChecklist[]
   }
+  setCheclistLoading: (stt: boolean) => void
   updateChecklistId: (taskId: string, oldId: string, newId: string) => void
   addTaskChecklist: (taskId: string, data: TaskChecklist[]) => void
   addOneChecklist: (data: TaskChecklist) => void
@@ -20,6 +21,12 @@ interface TaskChecklistState {
 export const useChecklistStore = create<TaskChecklistState>(set => ({
   loading: true,
   checklists: {},
+  setCheclistLoading: (stt: boolean) =>
+    set(
+      produce((state: TaskChecklistState) => {
+        state.loading = stt
+      })
+    ),
   addTaskChecklist: (taskId: string, data: TaskChecklist[]) =>
     set(
       produce((state: TaskChecklistState) => {

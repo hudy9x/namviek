@@ -1,4 +1,4 @@
-import { Form, messageSuccess } from "@shared/ui";
+import { Form, Loading, messageSuccess } from "@shared/ui";
 import { useChecklistStore } from "./store";
 import { HiOutlineX } from "react-icons/hi";
 import { taskChecklistSv } from "@/services/task.checklist";
@@ -8,7 +8,7 @@ import useChecklistCounter from "./useChecklitCounter";
 
 
 export default function ChecklistList({ taskId }: { taskId: string }) {
-  const { checklists, toggleChecklistStatus, deleteChecklist } = useChecklistStore()
+  const { checklists, loading, toggleChecklistStatus, deleteChecklist } = useChecklistStore()
   const taskChecklists = checklists[taskId] || []
   useGetTaskChecklist(taskId)
   useChecklistCounter(taskId)
@@ -33,6 +33,10 @@ export default function ChecklistList({ taskId }: { taskId: string }) {
 
 
   return <>
+    {taskChecklists.length ? null :
+      <Loading size="base" enabled={loading} title="Loading ..." />
+    }
+
     {taskChecklists.map((c, idx) => {
       const { id, title, done } = c
       return <div key={id} className="checklist-item">
