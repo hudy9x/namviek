@@ -55,7 +55,9 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
     replace(link)
   }
 
-  if (dueDate && taskStatusType !== StatusType.DONE && differenceInDays(new Date(dueDate), new Date()) < 0) {
+  const isOverdue = dueDate && taskStatusType !== StatusType.DONE && differenceInDays(new Date(dueDate), new Date()) < 0
+
+  if (isOverdue) {
     dateClasses.push('text-red-400')
   }
 
@@ -80,7 +82,11 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
           <Popover
             triggerBy={
               <div>
-                <GoTasklist className='p-0.5 w-5 h-5 cursor-pointer border rounded-full' />
+                {progress > 0 && progress < 100 ?
+                  <div className='p-0.5 w-5 h-5 cursor-pointer border dark:border-gray-700 rounded-full text-[10px] text-center animate-pulse'>{progress}</div>
+                  :
+                  <GoTasklist className='p-0.5 w-5 h-5 cursor-pointer border dark:border-gray-700 rounded-full' />
+                }
               </div>
             }
             content={
@@ -99,7 +105,7 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
       </div>
       {progress ?
         <div className='absolute bottom-0 left-0 w-full rounded-b-md overflow-hidden'>
-          <div className='h-1 bg-green-400' style={{ width: `${progress}%` }}></div>
+          <div className={`h-1 ${isOverdue && progress < 100 ? 'bg-red-400' : 'bg-green-400'}`} style={{ width: `${progress}%` }}></div>
         </div>
         : null}
     </div>
