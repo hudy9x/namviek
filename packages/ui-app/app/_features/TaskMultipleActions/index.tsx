@@ -40,8 +40,6 @@ export default function TaskMultipleActions() {
     setData(structuredClone({ ...defaultData }))
   }
 
-  console.log('multiple select', hasSelected)
-
   return (
     <div
       className={`fixed top-0 left-0 w-full py-3 border-b border-color-base bg-base shadow-lg transition-all z-40 ${hasSelected

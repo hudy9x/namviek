@@ -1,5 +1,6 @@
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
+import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { Form } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
@@ -10,18 +11,39 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
     useTaskStore()
   const { groupBy, isGroupbyStatus, isGroupbyAssignee, isGroupbyPriority } =
     useTaskFilterContext()
+  const { statuses } = useProjectStatusStore()
 
   const taskIds = useMemo(() => {
     const ids: string[] = []
-    tasks.forEach(task => {
-      if (isGroupbyStatus && task.taskStatusId !== groupId) {
-        if (groupId === 'NONE') {
-          ids.push(task.id)
-          return
-        }
-
-        return null
+    const projectStatusIds = statuses.map(stt => stt.id)
+    const getIdsByStatus = ({ statusId, taskId }: { statusId: string, taskId: string }) => {
+      if (statusId === groupId) {
+        ids.push(taskId)
+        return
       }
+
+      if (groupId === 'NONE' && !projectStatusIds.includes(statusId)) {
+        ids.push(taskId)
+        return
+      }
+    }
+
+    tasks.forEach(task => {
+      if (isGroupbyStatus) {
+        getIdsByStatus({
+          statusId: task.taskStatusId || '',
+          taskId: task.id
+        })
+        return
+      }
+      // if (isGroupbyStatus && task.taskStatusId !== groupId) {
+      //   if (groupId === 'NONE') {
+      //     ids.push(task.id)
+      //     return
+      //   }
+      //
+      //   return null
+      // }
 
       if (isGroupbyAssignee) {
         if (task.assigneeIds.length && !task.assigneeIds.includes(groupId)) {
@@ -37,11 +59,12 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
         return null
       }
 
+      console.log(isGroupbyStatus, task.taskStatusId, groupId)
       ids.push(task.id)
     })
 
     return ids
-  }, [groupBy, groupId, taskLoading, JSON.stringify(tasks)])
+  }, [groupBy, JSON.stringify(statuses), groupId, taskLoading, JSON.stringify(tasks)])
 
   const onChecked = (checked: boolean) => {
     toggleMultipleSelected(checked, taskIds)
@@ -77,7 +100,7 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
         setChecked(true)
       }
     }
-  }, [selected, taskIds, checked])
+  }, [selected, JSON.stringify(tasks), checked])
 
   return (
     <Form.Checkbox
