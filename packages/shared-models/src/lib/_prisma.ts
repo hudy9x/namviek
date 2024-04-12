@@ -31,27 +31,3 @@ export const visionModel = pmClient.vision
 export const activityModel = pmClient.activity
 export const commentModel = pmClient.comment
 
-export type SchemaType =
-  typeof projectModel
-  | typeof projectViewModel
-  | typeof projectNotifyModel
-  | typeof taskStatusModel
-  | typeof taskPointModel
-  | typeof taskChecklistModel
-  | typeof tagModel
-  | typeof favModel
-  | typeof taskModel
-  | typeof memberModel
-  | typeof userModel
-  | typeof orgModel
-  | typeof orgStorage
-  | typeof orgMemberModel
-  | typeof dboardModel
-  | typeof dboardComponentModal
-  | typeof taskAutomation
-  | typeof fileStorageModel
-  | typeof visionModel
-  | typeof activityModel
-  | typeof commentModel
-
-
