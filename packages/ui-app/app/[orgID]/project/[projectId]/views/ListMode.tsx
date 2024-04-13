@@ -21,7 +21,6 @@ export default function ListMode() {
   } = useTaskFilterContext()
 
   const { tasks, taskLoading } = useTaskStore()
-  console.log('rendered')
 
   return (
     <div className="pb-[300px]">

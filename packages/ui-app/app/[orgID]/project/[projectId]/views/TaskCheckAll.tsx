@@ -1,4 +1,3 @@
-import { useTaskFilter } from '@/features/TaskFilter/context'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
@@ -36,14 +35,6 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
         })
         return
       }
-      // if (isGroupbyStatus && task.taskStatusId !== groupId) {
-      //   if (groupId === 'NONE') {
-      //     ids.push(task.id)
-      //     return
-      //   }
-      //
-      //   return null
-      // }
 
       if (isGroupbyAssignee) {
         if (task.assigneeIds.length && !task.assigneeIds.includes(groupId)) {
@@ -67,6 +58,7 @@ export default function TaskCheckAll({ groupId }: { groupId: string }) {
   }, [groupBy, JSON.stringify(statuses), groupId, taskLoading, JSON.stringify(tasks)])
 
   const onChecked = (checked: boolean) => {
+    console.log('taskids', taskIds)
     toggleMultipleSelected(checked, taskIds)
   }
 
