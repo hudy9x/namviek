@@ -77,7 +77,7 @@ export default function TaskImportAction() {
       // const projectId = _projectId
       const title = _title
       const assigneeIds = toAssigneeIds(_assigneeIds)
-      const dueDate = _dueDate ? new Date(_dueDate) : null
+      const dueDate = _dueDate ? new Date(_dueDate) : new Date()
       const priority = toValidPriority(_priority)
       const taskPoint = _taskPoint ? parseInt(_taskPoint, 10) : null
       const taskStatusId = toValidStatusId(_taskStatusId)
