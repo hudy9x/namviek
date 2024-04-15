@@ -151,7 +151,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
         })
       }
     }
-    console.log('1')
+    console.log('2')
 
     const tasks = await mdTaskGetAll(rest)
     if (counter) {

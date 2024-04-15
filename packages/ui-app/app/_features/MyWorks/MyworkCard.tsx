@@ -35,7 +35,7 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
     const take = limit * page
     const skip = page === 1 ? 0 : take - limit
 
-    return { take, skip }
+    return { take: limit, skip }
   }, [page])
   const maxPage = Math.ceil(total / limit)
 
