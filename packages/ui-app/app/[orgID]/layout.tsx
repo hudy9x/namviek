@@ -3,6 +3,7 @@ import HamburgerMenu from '@/components/HamburgerMenu'
 import ProjectSidebar from './ProjectSidebar'
 import { useOrgMemberGet } from '@/services/organizationMember'
 import EventUserProjectUpdate from '@/features/Events/EventUserProjectUpdate'
+import CommandPalleteContainer from '@/features/CommandPallete'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
@@ -22,6 +23,7 @@ export default function ProjectLayout({
     <>
       <div>
         <PrefetchData />
+        <CommandPalleteContainer />
         <EventUserProjectUpdate />
       </div>
       <ProjectSidebar />
