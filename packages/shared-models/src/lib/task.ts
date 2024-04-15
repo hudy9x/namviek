@@ -190,6 +190,8 @@ export const mdTaskGetAll = (query: ITaskQuery) => {
     return taskModel.count({ where })
   }
 
+  console.log('task get all:', take, skip)
+
   return taskModel.findMany({
     skip,
     take,
