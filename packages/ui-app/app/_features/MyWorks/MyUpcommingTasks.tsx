@@ -8,10 +8,11 @@ export default function MyUpcomingTasks() {
   evening.setHours(23)
   evening.setMinutes(59)
 
-  const query:ITaskQuery = {
+  const query: ITaskQuery = {
     projectId: 'all',
     dueDate: [evening, 'undefined'],
     take: 5,
+    done: 'no',
     counter: true
   }
 
