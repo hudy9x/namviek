@@ -2,9 +2,7 @@
 
 import { ITaskQuery, taskGetByCond } from '@/services/task'
 import { Task } from '@prisma/client'
-import { useEffect, useState } from 'react'
-import TaskStatus from '../../[orgID]/project/[projectId]/views/TaskStatus'
-import TaskPriorityCell from '../../[orgID]/project/[projectId]/views/TaskPriorityCell'
+import { useEffect, useMemo, useState } from 'react'
 import { messageError } from '@shared/ui'
 import { MdOutlineRefresh } from 'react-icons/md'
 import { useMyworkContext } from './context'
@@ -15,28 +13,66 @@ import {
   HiOutlinePlus
 } from 'react-icons/hi2'
 import { format } from 'date-fns'
+import { useProjectStore } from '@/store/project'
+import MyworkTaskList from './MyworkTaskList'
+import MyworkTaskPaginate from './MyworkTaskPaginate'
 
 interface IMyworkCardProps {
   title: string
   query: ITaskQuery
 }
 export default function MyworkCard({ title, query }: IMyworkCardProps) {
+  const limit = query.take || 5
   const [loading, setLoading] = useState(true)
   const [tasks, setTasks] = useState<Task[]>([])
   const [total, setTotal] = useState(0)
   const [updateCounter, setUpdate] = useState(0)
   const { assigneeIds, projectId } = useMyworkContext()
   const [collapse, setCollapse] = useState(false)
+  const { projects } = useProjectStore()
+  const [page, setPage] = useState(1)
+  const paginate = useMemo(() => {
+    const take = limit * page
+    const skip = page === 1 ? 0 : take - limit
+
+    return { take, skip }
+  }, [page])
+  const maxPage = Math.ceil(total / limit)
+
+  const projectIds = useMemo(() => {
+    return projects.map(p => p.id)
+  }, [JSON.stringify(projects)])
 
   const getTask = (
-    assigneeIds: string[],
-    projectId: string,
-    abortSignal: AbortSignal
+    { assigneeIds,
+      projectId,
+      abortSignal,
+      take,
+      skip,
+    }: {
+      assigneeIds: string[],
+      projectId: string,
+      abortSignal: AbortSignal,
+      take?: number
+      skip?: number
+    }
   ) => {
     if (assigneeIds.length) {
       setLoading(true)
 
-      const condition = { ...query, assigneeIds, projectId }
+      let condition = { ...query, assigneeIds }
+
+      if (projectId !== 'all') {
+        condition = { ...condition, projectId }
+      } else {
+        condition = { ...condition, projectIds, projectId: '' }
+      }
+
+      if (take && skip && take > 0 && skip > -1) {
+        condition = { ...condition, take, skip }
+      }
+
+      console.log('condition', condition)
 
       taskGetByCond(condition, abortSignal).then(res => {
         const { status, data, total } = res.data
@@ -45,6 +81,7 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
           setLoading(false)
           return
         }
+
         setLoading(false)
         setTotal(total)
         setTasks(data)
@@ -56,22 +93,38 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
     }
   }
 
+  // fetch data first time
   useEffect(() => {
     const controller = new AbortController()
-    getTask(assigneeIds, projectId, controller.signal)
-    return () => {
-      controller.abort()
-    }
-  }, [assigneeIds, projectId])
+    const { take, skip } = paginate
+    getTask({
+      assigneeIds,
+      projectId,
+      take,
+      skip,
+      abortSignal: controller.signal
+    })
 
-  useEffect(() => {
-    const controller = new AbortController()
-    console.log('update', updateCounter)
-    updateCounter > 0 && getTask(assigneeIds, projectId, controller.signal)
     return () => {
       controller.abort()
     }
-  }, [updateCounter, assigneeIds, projectId])
+  }, [JSON.stringify(assigneeIds), projectId, JSON.stringify(projectIds), JSON.stringify(paginate)])
+
+  // reload data
+  useEffect(() => {
+    const controller = new AbortController()
+    const { take, skip } = paginate
+    updateCounter > 0 && getTask({
+      assigneeIds,
+      projectId,
+      abortSignal: controller.signal,
+      take,
+      skip
+    })
+    return () => {
+      controller.abort()
+    }
+  }, [updateCounter, JSON.stringify(assigneeIds), projectId, JSON.stringify(projectIds), JSON.stringify(paginate)])
 
   return (
     <div className="mw-card py-4">
@@ -94,34 +147,15 @@ export default function MyworkCard({ title, query }: IMyworkCardProps) {
           />
         </div>
       </h2>
-      <MyworkLoading loading={loading} />
       <div className={`space-y-2 ${collapse ? 'hidden' : ''}`}>
-        {!loading &&
-          tasks.map(task => {
-            const dueDate = task.dueDate ? new Date(task.dueDate) : null
-            return (
-              <div className="mw-task" key={task.id}>
-                <div className="">
-                  {/* <TaskStatus taskId={task.id} value={task.taskStatusId || ''} /> */}
-                  {task.title}
-                  <div className="text-xs text-gray-400 mt-1.5">
-                    {dueDate ? format(dueDate, 'PP') : null}
-                  </div>
-
-                  {/* <TaskPriorityCell taskId={task.id} value={task.priority} /> */}
-                </div>
-              </div>
-            )
-          })}
-        {!loading && tasks.length < total && (
-          <div className="mw-card-more">And {total} more</div>
-        )}
-
-        {!loading && !tasks.length && (
-          <div className="task-empty text-sm bg-red-200 dark:bg-red-300 rounded-md border border-red-200 dark:border-red-400 shadow-sm shadow-red-300 dark:shadow-red-700 p-3 text-red-800">
-            {`🎃😎🥶 No tasks found! You're so lucky buddy !!`}
-          </div>
-        )}
+        <MyworkLoading loading={loading} />
+        <MyworkTaskList loading={loading} tasks={tasks} />
+        <MyworkTaskPaginate
+          enable={!loading && !!tasks.length}
+          page={page}
+          maxPage={maxPage}
+          onNext={() => setPage(page => page + 1)}
+          onPrev={() => setPage(page => page + -1)} />
       </div>
     </div>
   )

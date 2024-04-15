@@ -10,6 +10,7 @@ export default function MyOvedueTasks() {
   const query: ITaskQuery = {
     projectId: 'all',
     dueDate: ['undefined', today],
+    done: 'no',
     take: 5,
     counter: true
   }

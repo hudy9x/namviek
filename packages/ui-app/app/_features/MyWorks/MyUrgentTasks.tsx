@@ -11,10 +11,11 @@ export default function MyUrgentTasks() {
   evening.setHours(23)
   evening.setMinutes(59)
 
-  const query:ITaskQuery = {
+  const query: ITaskQuery = {
     projectId: 'all',
     priority: TaskPriority.URGENT,
     take: 5,
+    done: 'no',
     counter: true
   }
 

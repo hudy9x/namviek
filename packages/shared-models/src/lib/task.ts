@@ -177,12 +177,14 @@ export const mdTaskDelete = (id: string) => {
 
 export const mdTaskGetAll = (query: ITaskQuery) => {
   let take = query.take
-  const { counter, skip } = query
+  let skip = query.skip
+  const { counter } = query
   const where: {
     [key: string]: unknown
   } = generateConditions(query)
 
   take = take ? parseInt(take as unknown as string, 10) : undefined
+  skip = skip ? parseInt(skip as unknown as string, 10) : undefined
 
   if (counter) {
     return taskModel.count({ where })
