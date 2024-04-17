@@ -19,20 +19,23 @@ export const useProjectViewAdd = () => {
     projectId: string
     data?: IBoardFilter
   }) => {
+    const filter = data
+      ? {
+          date: data.date,
+          priority: data.priority,
+          point: data.point,
+          statusIds: data.statusIds,
+          groupBy: data.groupBy,
+          calendarMode: data.calendarMode
+        }
+      : null
 
-    const filter = data ? {
-      date: data.date,
-      priority: data.priority,
-      point: data.point,
-      statusIds: data.statusIds,
-      groupBy: data.groupBy
-    } : null
-
-
+    console.log({ filter })
     return projectView
       .add({ icon, name, type, projectId, data: filter })
       .then(res => {
         const { data } = res.data
+        console.log({ viewAddRes: data })
         addView(data)
       })
   }

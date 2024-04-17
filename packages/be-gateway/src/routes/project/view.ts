@@ -33,7 +33,8 @@ export default class ProjectViewController extends BaseController {
         priority: string
         point: string
         groupBy: string
-        statusIds: string[]
+        statusIds: string[],
+        calendarMode?: string
       }
     }
 
@@ -53,7 +54,8 @@ export default class ProjectViewController extends BaseController {
           priority: data.priority,
           point: data.point,
           groupBy: data.groupBy,
-          statusIds: data.statusIds
+          statusIds: data.statusIds,
+          calendarMode: data.calendarMode ? data.calendarMode : 'MONTH'
         }
         : {},
 
@@ -85,12 +87,13 @@ export default class ProjectViewController extends BaseController {
   @Put('/')
   async updateView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, id } = req.body as { id: string; name: string }
+    const { name, id, data } = req.body as { id: string; name: string, data: object }
 
     const result = await mdProjectView.update(id, {
       name: name,
       updatedAt: new Date(),
-      updatedBy: uid
+      updatedBy: uid,
+      data: data
     })
 
     pusherServer.trigger(

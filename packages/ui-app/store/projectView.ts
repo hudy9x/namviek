@@ -33,10 +33,11 @@ export const useProjectViewStore = create<ProjectViewState>(set => ({
         if (foundIndex === -1) return
 
         const view = state.views[foundIndex]
-        const { name } = data
+        const { name, data: projectData } = data
 
         if (name) {
           view.name = name
+          if (projectData) view.data = projectData
         }
       })
     ),

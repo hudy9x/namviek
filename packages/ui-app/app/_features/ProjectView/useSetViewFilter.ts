@@ -15,32 +15,26 @@ export default function useSetViewFilter() {
     const viewId = mode
     const view = views.find(v => v.id === viewId)
 
-    if (
-      view &&
-      view.data &&
-      !Object.keys(view.data as { [key: string]: unknown }).length
-    ) {
-      setDefaultFilter()
-    }
-
-    if (
-      view &&
-      view.data &&
-      Object.keys(view.data as { [key: string]: unknown }).length
-    ) {
+    if (view && view.data) {
       const data = view.data as unknown as IBoardFilter
-      console.log('set view data fileter', data)
+      const { date, groupBy, priority, statusIds, point } = data
 
-      setFilter(filter => ({
-        ...filter,
-        ...{
-          date: data.date,
-          groupBy: data.groupBy,
-          priority: data.priority,
-          statusIds: data.statusIds,
-          point: data.point
-        }
-      }))
+      if (!(date && groupBy && priority && statusIds && point)) {
+        setDefaultFilter()
+      } else {
+        console.log('set view data fileter', data)
+
+        setFilter(filter => ({
+          ...filter,
+          ...{
+            date,
+            groupBy,
+            priority,
+            statusIds,
+            point
+          }
+        }))
+      }
     }
   }, [mode, views.toString()])
 }

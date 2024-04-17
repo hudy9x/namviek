@@ -6,16 +6,18 @@ export enum ICalendarView {
 }
 
 interface ICalendarProps {
-  calendarView: ICalendarView,
-  setCalendarView: Dispatch<SetStateAction<ICalendarView>>
+  calendarView: ICalendarView
+  // setCalendarView: Dispatch<SetStateAction<ICalendarView>>
+  setCalendarView: (calendarView: ICalendarView) => void
   month: number
   setMonth: Dispatch<SetStateAction<number>>
 }
 
-
 const CalendarContext = createContext<ICalendarProps>({
   calendarView: ICalendarView.MONTH,
-  setCalendarView: () => { console.log(1) },
+  setCalendarView: () => {
+    console.log(1)
+  },
   month: new Date().getMonth(),
   setMonth: () => {
     console.log('1')

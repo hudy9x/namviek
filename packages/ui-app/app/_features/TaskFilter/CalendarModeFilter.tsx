@@ -19,6 +19,8 @@ const CalendarFilter = () => {
   const isCalendarMode = mode === 'calendar'
   const { date, status } = filter
 
+  const { calendarView } = useCalendarContext()
+
   const months = getMonthList()
 
   const onChangeMonthCalendar = (month: string) => {
@@ -43,7 +45,7 @@ const CalendarFilter = () => {
       <div className="flex items-center gap-2">
         <ListPreset
           className="no-clear-icon"
-          value={ICalendarView.MONTH}
+          value={calendarView}
           onChange={val => {
             setCalendarView(val as ICalendarView)
           }}

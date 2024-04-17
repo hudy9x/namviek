@@ -1,13 +1,15 @@
 import { TaskPriority } from '@prisma/client'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
+import { ICalendarView } from '../../[orgID]/project/[projectId]/calendar/context'
 
 export interface IBoardFilter {
   date: string
-  priority: TaskPriority | 'ALL',
+  priority: TaskPriority | 'ALL'
   point: string
   groupBy: ETaskFilterGroupByType
   statusIds: string[]
+  calendarMode?: string
 }
 
 interface IProjectViewContextProps {
@@ -24,7 +26,9 @@ interface IProjectViewContextProps {
 }
 const ProjectViewContext = createContext<IProjectViewContextProps>({
   icon: '',
-  setIcon: () => { console.log(1) },
+  setIcon: () => {
+    console.log(1)
+  },
   name: '',
   setName: () => {
     console.log(1)
@@ -38,22 +42,33 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
     console.log(1)
   },
   filter: {
-    date: "this-month",
+    date: 'this-month',
     priority: 'ALL',
-    point: "-1",
+    point: '-1',
     statusIds: ['ALL'],
-    groupBy: ETaskFilterGroupByType.STATUS
+    groupBy: ETaskFilterGroupByType.STATUS,
+    calendarMode: ICalendarView.MONTH
   },
-  setFilter: () => { console.log(1) }
+  setFilter: () => {
+    console.log(1)
+  }
 })
 
 export const ProjectViewProvider = ProjectViewContext.Provider
 
 export const useProjectViewContext = () => {
-  const { filter, setFilter, customView,
-    setCustomView, setName, name,
-    icon, setIcon,
-    visible, setVisible } = useContext(ProjectViewContext)
+  const {
+    filter,
+    setFilter,
+    customView,
+    setCustomView,
+    setName,
+    name,
+    icon,
+    setIcon,
+    visible,
+    setVisible
+  } = useContext(ProjectViewContext)
 
   const setFilterValue = (
     name: keyof IBoardFilter,
@@ -63,10 +78,16 @@ export const useProjectViewContext = () => {
   }
 
   return {
-    icon, setIcon,
-    filter, setFilter, setFilterValue,
-    customView, setCustomView, setName,
-    name, visible, setVisible
+    icon,
+    setIcon,
+    filter,
+    setFilter,
+    setFilterValue,
+    customView,
+    setCustomView,
+    setName,
+    name,
+    visible,
+    setVisible
   }
-
 }

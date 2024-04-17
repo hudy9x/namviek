@@ -6,6 +6,10 @@ import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { useProjectViewContext } from '../ProjectView/context'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import { ProjectViewType } from '@prisma/client'
+import {
+  ICalendarView,
+  useCalendarContext
+} from '../../[orgID]/project/[projectId]/calendar/context'
 
 export default function FilterForm({ type }: { type?: ProjectViewType }) {
   const { customView, setCustomView, filter, setFilterValue } =
@@ -28,6 +32,21 @@ export default function FilterForm({ type }: { type?: ProjectViewType }) {
       </div>
 
       <div className={`flex flex-wrap items-center gap-2 mb-6 ${hidden}`}>
+        {type === ProjectViewType.CALENDAR ? (
+          <ListPreset
+            className="no-clear-icon"
+            value={ICalendarView.MONTH}
+            onChange={val => {
+              setFilterValue('calendarMode', val)
+            }}
+            width={150}
+            options={[
+              { id: ICalendarView.WEEK, title: 'Week view' },
+              { id: ICalendarView.MONTH, title: 'Month view' }
+            ]}
+          />
+        ) : null}
+
         <ListPreset
           // title="Date"
           className="w-[150px]"
