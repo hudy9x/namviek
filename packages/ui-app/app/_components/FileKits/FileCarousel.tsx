@@ -33,7 +33,8 @@ function FileCarouselDisplay({ file }: { file: IFileItem }) {
             style={{
               width: 'calc(100vw - 200px)',
               minWidth: 300,
-              maxWidth: 1300
+              maxWidth: 1300,
+              maxHeight: '80vh'
             }}
             controls>
             <source src={file.url} type={file.mimeType} />
@@ -95,9 +96,8 @@ export default function FileCarousel() {
 
   return (
     <div
-      className={`z-10 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${
-        selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}>
+      className={`file-carousel z-10 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}>
       <div className="border-b border-b-gray-700 bg-black dark:border-gray-700 px-4 py-3 flex items-center justify-between text-gray-300">
         <div></div>
         <div className="text-sm">

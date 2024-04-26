@@ -16,7 +16,6 @@ export default function FileThumb({
 }) {
   const { setSelected, previewFiles } = useFileKitContext()
   const onView = () => {
-    console.log('asdf', id)
     if (!id) return
     const idx = previewFiles.findIndex(pf => pf.id === id)
     if (idx !== -1) {
