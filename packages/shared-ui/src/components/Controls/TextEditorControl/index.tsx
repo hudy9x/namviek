@@ -3,10 +3,12 @@ import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
+import Image from "@tiptap/extension-image";
 import { TextareaProps, TexteditorProps } from '../type'
 import { LuBold, LuItalic, LuStrikethrough, LuListOrdered, LuList } from "react-icons/lu";
 
 import './style.css'
+import BubbleEditorMenu from './BubbleEditorMenu'
 
 
 export default function TextareaControl({
@@ -29,7 +31,7 @@ export default function TextareaControl({
   // };
 
   const editor = useEditor({
-    extensions: [StarterKit, Link.configure({ openOnClick: false })],
+    extensions: [StarterKit, Image, Link.configure({ openOnClick: false })],
     content: val,
     editable: !disabled,
     onUpdate: ({ editor }) => {
@@ -52,43 +54,13 @@ export default function TextareaControl({
   readOnly && classes.push('readonly')
   error && classes.push('error')
 
-  const getClasses = (isActive: boolean) => {
-    const classes = []
-
-    classes.push('bubble-action-btn')
-
-    isActive && classes.push('is-active')
-    return classes.join(' ')
-  }
 
   return (
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
       <div className="relative form-control-wrapper inline-flex w-full">
         <div className="form-input">
-          {editor &&
-            <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-              <div className='flex gap-1 border rounded-md dark:border-gray-700 dark:bg-gray-900 py-2 px-2'>
-                <span
-                  onClick={() => editor.chain().focus().toggleBold().run()}
-                  className={getClasses(editor.isActive('bold'))}
-                >
-                  <LuBold />
-                </span>
-                <span
-                  onClick={() => editor.chain().focus().toggleItalic().run()}
-                  className={getClasses(editor.isActive('italic'))}
-                >
-                  <LuItalic />
-                </span>
-                <span
-                  onClick={() => editor.chain().focus().toggleStrike().run()}
-                  className={getClasses(editor.isActive('strike'))}
-                >
-                  <LuStrikethrough />
-                </span>
-              </div>
-            </BubbleMenu>
+          {editor && <BubbleEditorMenu editor={editor} />
           }
           <EditorContent className="text-editor" spellCheck={false} editor={editor} />
         </div>
