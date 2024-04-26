@@ -1,6 +1,17 @@
 .text-editor .ProseMirror {
   min-height: 100px;
 }
+
+.bubble-action-btn {
+  @apply cursor-pointer bg-gray-100;
+  @apply border rounded w-5 h-5 flex justify-center items-center;
+  @apply dark:border-gray-700 dark:bg-gray-800
+}
+
+.bubble-action-btn.is-active {
+  @apply dark:bg-gray-900;
+}
+
 .ProseMirror-focused {
   border: none;
   outline: none;
