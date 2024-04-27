@@ -1,14 +1,14 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Image from "@tiptap/extension-image";
-import { TextareaProps, TexteditorProps } from '../type'
-import { LuBold, LuItalic, LuStrikethrough, LuListOrdered, LuList } from "react-icons/lu";
+import { TexteditorProps } from '../type'
 
 import './style.css'
-import BubbleEditorMenu from './BubbleEditorMenu'
+import FloatingMenuEditor from './FloatingMenuEditor';
+import BubbleMenuEditor from './BubbleMenuEditor';
 
 
 export default function TextareaControl({
@@ -60,8 +60,8 @@ export default function TextareaControl({
       {title ? <label>{title}</label> : null}
       <div className="relative form-control-wrapper inline-flex w-full">
         <div className="form-input">
-          {editor && <BubbleEditorMenu editor={editor} />
-          }
+          {editor && <BubbleMenuEditor editor={editor} />}
+          {editor && <FloatingMenuEditor editor={editor} />}
           <EditorContent className="text-editor" spellCheck={false} editor={editor} />
         </div>
       </div>
