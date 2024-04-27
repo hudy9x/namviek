@@ -9,9 +9,11 @@ import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
+import { useTaskViewStore } from '@/store/taskView'
 
-export const TaskUpdate = () => {
+export const TaskUpdate2 = () => {
   const [visible, setVisible] = useState(false)
+  const { taskId, closeTaskDetail } = useTaskViewStore()
   const sp = useSearchParams()
   const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
 
@@ -24,7 +26,8 @@ export const TaskUpdate = () => {
   const { orgID, projectId } = useParams()
   const router = useRouter()
   const mode = sp.get('mode')
-  const taskId = sp.get('taskId')
+  console.log('taks update 2', taskId)
+  // const taskId = sp.get('taskId')
 
   useEffect(() => {
     console.log('taskId', taskId)
@@ -35,7 +38,8 @@ export const TaskUpdate = () => {
 
   const closeTheModal = () => {
     setVisible(false)
-    router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+    closeTaskDetail()
+    // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
 
   const handleSubmit = (v: ITaskDefaultValues) => {
@@ -82,7 +86,7 @@ export const TaskUpdate = () => {
   // Thus, we need to make sure that the defaultValue update first
   // That's why we use useLayoutEffect here
   // It block render process and only run when the inside code run already
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!taskId || !tasks || !tasks.length) return
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
@@ -128,7 +132,8 @@ export const TaskUpdate = () => {
           visible={visible}
           onVisibleChange={() => {
             setVisible(false)
-            router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+            closeTaskDetail()
+            // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
           }}
           loading={taskLoading}
           title=""

@@ -1,4 +1,5 @@
 import { useUrl } from "@/hooks/useUrl"
+import { useTaskViewStore } from "@/store/taskView"
 import { messageWarning } from "@shared/ui"
 import { useParams, useRouter } from "next/navigation"
 
@@ -7,6 +8,7 @@ export default function TaskTitle({ id, projectId, title }: { id: string, projec
   const params = useParams()
   const { replace } = useRouter()
   const { getSp } = useUrl()
+  const { openTaskDetail } = useTaskViewStore()
 
   const isRandomId = id.includes('TASK-ID-RAND')
 
@@ -19,16 +21,17 @@ export default function TaskTitle({ id, projectId, title }: { id: string, projec
         return
       }
       console.log('replace link with taskid')
-      replace(
-        `${params.orgID}/project/${projectId}?mode=${getSp(
-          'mode'
-        )}&taskId=${id}`
-      )
+      openTaskDetail(id)
+      // replace(
+      //   `${params.orgID}/project/${projectId}?mode=${getSp(
+      //     'mode'
+      //   )}&taskId=${id}`
+      // )
     }}
   // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
   //   'mode'
   // )}&taskId=${task.id}`}
   >
-    <div className="w-full">{title}</div>
+    <div className="w-full active:text-gray-500">{title}</div>
   </div>
 }
