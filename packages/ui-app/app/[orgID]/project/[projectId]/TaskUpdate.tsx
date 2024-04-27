@@ -27,6 +27,7 @@ export const TaskUpdate = () => {
   const taskId = sp.get('taskId')
 
   useEffect(() => {
+    console.log('taskId', taskId)
     if (!taskId) return
 
     setVisible(true)
@@ -81,7 +82,7 @@ export const TaskUpdate = () => {
   // Thus, we need to make sure that the defaultValue update first
   // That's why we use useLayoutEffect here
   // It block render process and only run when the inside code run already
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!taskId || !tasks || !tasks.length) return
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
@@ -116,6 +117,8 @@ export const TaskUpdate = () => {
       })
     }
   }, [taskId, tasks])
+
+  console.log('task update form visible:', visible)
 
   return (
     <>

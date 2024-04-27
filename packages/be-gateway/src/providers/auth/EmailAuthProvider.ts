@@ -11,7 +11,10 @@ export default class EmailAuthProvider extends BaseAuthProvider {
   }
 
   async verify() {
+    console.log('email', this.email)
     const user = await serviceGetUserByEmail(this.email)
+
+    console.log('verify', user)
 
     if (!user) {
       throw new CredentialInvalidException()
