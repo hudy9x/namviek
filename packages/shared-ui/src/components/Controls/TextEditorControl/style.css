@@ -1,6 +1,19 @@
 .text-editor .ProseMirror {
   min-height: 100px;
 }
+
+.bubble-action-btn {
+  @apply cursor-pointer bg-gray-100 text-gray-500;
+  @apply border rounded w-6 h-6 flex justify-center items-center;
+  @apply dark:border-gray-700 dark:text-gray-500 dark:bg-gray-800;
+  @apply hover:bg-white dark:hover:bg-gray-700;
+}
+
+.bubble-action-btn.is-active {
+  @apply dark:bg-gray-900 dark:text-gray-400 dark:border-gray-500;
+  @apply bg-gray-200 text-gray-800 border-gray-400;
+}
+
 .ProseMirror-focused {
   border: none;
   outline: none;
@@ -8,6 +21,10 @@
 
 .ProseMirror {
   @apply space-y-6;
+}
+
+.ProseMirror pre {
+  @apply p-4 rounded-md bg-black text-white text-xs;
 }
 
 .ProseMirror h1,
@@ -19,6 +36,18 @@
 .ProseMirror h1 {
   font-size: 2rem;
 }
+
+.ProseMirror img {
+  @apply block mx-auto;
+  @apply my-6;
+  max-height: 700px;
+
+}
+
+img.ProseMirror-selectednode {
+  @apply outline outline-2 outline-offset-2 outline-indigo-400;
+}
+
 .ProseMirror h2 {
   font-size: 1.5rem;
 }

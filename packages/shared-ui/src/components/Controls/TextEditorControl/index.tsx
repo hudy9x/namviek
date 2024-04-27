@@ -1,12 +1,15 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
+import Image from "@tiptap/extension-image";
+import { TextareaProps, TexteditorProps } from '../type'
+import { LuBold, LuItalic, LuStrikethrough, LuListOrdered, LuList } from "react-icons/lu";
 
 import './style.css'
+import BubbleEditorMenu from './BubbleEditorMenu'
 
-import { TextareaProps, TexteditorProps } from '../type'
 
 export default function TextareaControl({
   title,
@@ -28,7 +31,7 @@ export default function TextareaControl({
   // };
 
   const editor = useEditor({
-    extensions: [StarterKit, Link.configure({ openOnClick: false })],
+    extensions: [StarterKit, Image, Link.configure({ openOnClick: false })],
     content: val,
     editable: !disabled,
     onUpdate: ({ editor }) => {
@@ -51,24 +54,16 @@ export default function TextareaControl({
   readOnly && classes.push('readonly')
   error && classes.push('error')
 
+
   return (
     <div className={classes.join(' ')}>
       {title ? <label>{title}</label> : null}
       <div className="relative form-control-wrapper inline-flex w-full">
         <div className="form-input">
+          {editor && <BubbleEditorMenu editor={editor} />
+          }
           <EditorContent className="text-editor" spellCheck={false} editor={editor} />
         </div>
-        {/* <textarea */}
-        {/*   value={val} */}
-        {/*   name={name} */}
-        {/*   cols={cols} */}
-        {/*   rows={rows} */}
-        {/*   disabled={disabled} */}
-        {/*   readOnly={readOnly} */}
-        {/*   onChange={onInputChange} */}
-        {/*   placeholder={placeholder} */}
-        {/*   className="form-input" */}
-        {/* /> */}
       </div>
       {helper && !error ? (
         <p className="mt-2 text-sm text-gray-500">{helper}</p>
