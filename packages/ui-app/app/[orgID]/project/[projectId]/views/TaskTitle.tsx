@@ -5,9 +5,9 @@ import { useParams, useRouter } from "next/navigation"
 
 export default function TaskTitle({ id, projectId, title }: { id: string, projectId: string, title: string }) {
 
-  const params = useParams()
-  const { replace } = useRouter()
-  const { getSp } = useUrl()
+  // const params = useParams()
+  // const { replace, push } = useRouter()
+  // const { getSp } = useUrl()
   const { openTaskDetail } = useTaskViewStore()
 
   const isRandomId = id.includes('TASK-ID-RAND')
@@ -20,7 +20,6 @@ export default function TaskTitle({ id, projectId, title }: { id: string, projec
         messageWarning('This task has been creating by server !')
         return
       }
-      console.log('replace link with taskid')
       openTaskDetail(id)
       // replace(
       //   `${params.orgID}/project/${projectId}?mode=${getSp(

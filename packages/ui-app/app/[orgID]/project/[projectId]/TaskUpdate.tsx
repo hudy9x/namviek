@@ -10,6 +10,17 @@ import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
 
+function TestModal({ visible, setVisible }: { visible: boolean, setVisible: () => void }) {
+  const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 backdrop-blur-md'
+
+  return <div className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
+    <div className='w-[500px] border rounded-md bg-black p-8'>
+      <h2>Hello world</h2>
+      <span onClick={setVisible} className='px-3 py-2 rounded-md border bg-gray-500'>Close me</span>
+    </div>
+  </div>
+}
+
 export const TaskUpdate = () => {
   const [visible, setVisible] = useState(false)
   const sp = useSearchParams()
@@ -122,30 +133,33 @@ export const TaskUpdate = () => {
 
   return (
     <>
-      <div>
-        <Modal
-          size="lg"
-          visible={visible}
-          onVisibleChange={() => {
-            setVisible(false)
-            router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
-          }}
-          loading={taskLoading}
-          title=""
-          content={
-            <>
-              <FileKitContainer fileIds={currentTask.fileIds}>
-                <TaskDetail
-                  id={taskId || ''}
-                  cover={currentTask.cover || ''}
-                  defaultValue={currentTask}
-                  onSubmit={v => handleSubmit(v)}
-                />
-              </FileKitContainer>
-            </>
-          }
-        />
-      </div>
+      <TestModal visible={visible} setVisible={() => {
+        setVisible(false)
+      }} />
+      {/* <div> */}
+      {/*   <Modal */}
+      {/*     size="lg" */}
+      {/*     visible={visible} */}
+      {/*     onVisibleChange={() => { */}
+      {/*       setVisible(false) */}
+      {/*       router.replace(`${orgID}/project/${projectId}?mode=${mode}`) */}
+      {/*     }} */}
+      {/*     loading={taskLoading} */}
+      {/*     title="" */}
+      {/*     content={ */}
+      {/*       <> */}
+      {/*         <FileKitContainer fileIds={currentTask.fileIds}> */}
+      {/*           <TaskDetail */}
+      {/*             id={taskId || ''} */}
+      {/*             cover={currentTask.cover || ''} */}
+      {/*             defaultValue={currentTask} */}
+      {/*             onSubmit={v => handleSubmit(v)} */}
+      {/*           /> */}
+      {/*         </FileKitContainer> */}
+      {/*       </> */}
+      {/*     } */}
+      {/*   /> */}
+      {/* </div> */}
     </>
   )
 }

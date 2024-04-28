@@ -118,6 +118,10 @@ export default function TaskDetail({
     }
   })
 
+  useEffect(() => {
+    formik.setValues(defaultValue)
+  }, [defaultValue])
+
   // select a default status if empty
   useEffect(() => {
     if (statuses.length && !formik.values.taskStatusId) {

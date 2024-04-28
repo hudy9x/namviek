@@ -1,6 +1,6 @@
 import { Modal, messageError, messageSuccess } from '@shared/ui'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import TaskForm, { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
@@ -10,11 +10,59 @@ import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
 import { useTaskViewStore } from '@/store/taskView'
+import { MdClose } from 'react-icons/md'
+import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
+
+function TaskUpdateModal({
+  id,
+  visible,
+  setVisible,
+  task,
+  onSubmit,
+  children }:
+  {
+    id: string
+    task: ITaskDefaultValues,
+    visible: boolean,
+    setVisible: () => void,
+    children?: ReactNode
+    onSubmit: (v: ITaskDefaultValues) => void
+  }) {
+
+  useEscapeKeyPressed(() => {
+    console.log('1')
+    setVisible()
+  })
+
+  if (!id) return null;
+
+  const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
+
+  return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
+    <div onClick={ev => {
+      ev.stopPropagation()
+    }} className='modal-content modal-size-lg'>
+      {/* <h2>{task.title}</h2> */}
+      {/* <p>{task.desc}</p> */}
+      <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
+        <MdClose />
+      </span>
+      <FileKitContainer fileIds={task.fileIds}>
+        <TaskDetail
+          id={id || ''}
+          cover={task.cover || ''}
+          defaultValue={task}
+          onSubmit={onSubmit}
+        />
+      </FileKitContainer>
+    </div>
+  </div>
+}
 
 export const TaskUpdate2 = () => {
   const [visible, setVisible] = useState(false)
   const { taskId, closeTaskDetail } = useTaskViewStore()
-  const sp = useSearchParams()
+  // const sp = useSearchParams()
   const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
 
   const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
@@ -23,14 +71,12 @@ export const TaskUpdate2 = () => {
     useState<ITaskDefaultValues>(defaultFormikValues)
   const refCurrentTask = useRef<Task>()
   const { user } = useUser()
-  const { orgID, projectId } = useParams()
-  const router = useRouter()
-  const mode = sp.get('mode')
-  console.log('taks update 2', taskId)
+  // const { orgID, projectId } = useParams()
+  // const router = useRouter()
+  // const mode = sp.get('mode')
   // const taskId = sp.get('taskId')
 
   useEffect(() => {
-    console.log('taskId', taskId)
     if (!taskId) return
 
     setVisible(true)
@@ -122,35 +168,43 @@ export const TaskUpdate2 = () => {
     }
   }, [taskId, tasks])
 
-  console.log('task update form visible:', visible)
+  console.log('found currentTask', currentTask)
 
-  return (
-    <>
-      <div>
-        <Modal
-          size="lg"
-          visible={visible}
-          onVisibleChange={() => {
-            setVisible(false)
-            closeTaskDetail()
-            // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
-          }}
-          loading={taskLoading}
-          title=""
-          content={
-            <>
-              <FileKitContainer fileIds={currentTask.fileIds}>
-                <TaskDetail
-                  id={taskId || ''}
-                  cover={currentTask.cover || ''}
-                  defaultValue={currentTask}
-                  onSubmit={v => handleSubmit(v)}
-                />
-              </FileKitContainer>
-            </>
-          }
-        />
-      </div>
-    </>
-  )
+  return <TaskUpdateModal
+    id={taskId}
+    task={currentTask}
+    onSubmit={handleSubmit}
+    visible={!!taskId}
+    setVisible={() => {
+      closeTaskDetail()
+      // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+    }} >
+
+  </TaskUpdateModal>
+
+  // return (
+  //   <Modal
+  //     size="lg"
+  //     visible={!!taskId}
+  //     onVisibleChange={() => {
+  //       setVisible(false)
+  //       closeTaskDetail()
+  //       // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+  //     }}
+  //     loading={taskLoading}
+  //     title=""
+  //     content={
+  //       <>
+  //         <FileKitContainer fileIds={currentTask.fileIds}>
+  //           <TaskDetail
+  //             id={taskId || ''}
+  //             cover={currentTask.cover || ''}
+  //             defaultValue={currentTask}
+  //             onSubmit={v => handleSubmit(v)}
+  //           />
+  //         </FileKitContainer>
+  //       </>
+  //     }
+  //   />
+  // )
 }
