@@ -1,4 +1,4 @@
-import { Modal, messageError, messageSuccess } from '@shared/ui'
+import { Dialog, Modal, messageError, messageSuccess } from '@shared/ui'
 import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import TaskForm, { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
@@ -13,55 +13,111 @@ import { useTaskViewStore } from '@/store/taskView'
 import { MdClose } from 'react-icons/md'
 import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
 
+// function TaskUpdateModal({
+//   id,
+//   visible,
+//   setVisible,
+//   task,
+//   onSubmit,
+//   children }:
+//   {
+//     id: string
+//     task: ITaskDefaultValues,
+//     visible: boolean,
+//     setVisible: () => void,
+//     children?: ReactNode
+//     onSubmit: (v: ITaskDefaultValues) => void
+//   }) {
+//
+//   useEscapeKeyPressed(() => {
+//     console.log('1')
+//     setVisible()
+//   })
+//
+//   if (!id) return null;
+//
+//   const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
+//
+//   return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
+//     <div onClick={ev => {
+//       ev.stopPropagation()
+//     }} className='modal-content modal-size-lg'>
+//       {/* <h2>{task.title}</h2> */}
+//       {/* <p>{task.desc}</p> */}
+//       <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
+//         <MdClose />
+//       </span>
+//       <FileKitContainer fileIds={task.fileIds}>
+//         <TaskDetail
+//           id={id || ''}
+//           cover={task.cover || ''}
+//           defaultValue={task}
+//           onSubmit={onSubmit}
+//         />
+//       </FileKitContainer>
+//     </div>
+//   </div>
+// }
+
 function TaskUpdateModal({
   id,
   visible,
   setVisible,
   task,
-  onSubmit,
-  children }:
+  onSubmit
+}:
   {
     id: string
     task: ITaskDefaultValues,
     visible: boolean,
     setVisible: () => void,
-    children?: ReactNode
     onSubmit: (v: ITaskDefaultValues) => void
   }) {
 
-  useEscapeKeyPressed(() => {
-    console.log('1')
-    setVisible()
-  })
+  // if (!id) return null;
 
-  if (!id) return null;
 
-  const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
+  return <Dialog.Root open={visible} onOpenChange={setVisible}>
+    <Dialog.Portal>
+      <Dialog.Content>
+        <FileKitContainer fileIds={task.fileIds}>
+          <TaskDetail
+            id={id || ''}
+            cover={task.cover || ''}
+            defaultValue={task}
+            onSubmit={onSubmit}
+          />
+        </FileKitContainer>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
 
-  return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
-    <div onClick={ev => {
-      ev.stopPropagation()
-    }} className='modal-content modal-size-lg'>
-      {/* <h2>{task.title}</h2> */}
-      {/* <p>{task.desc}</p> */}
-      <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
-        <MdClose />
-      </span>
-      <FileKitContainer fileIds={task.fileIds}>
-        <TaskDetail
-          id={id || ''}
-          cover={task.cover || ''}
-          defaultValue={task}
-          onSubmit={onSubmit}
-        />
-      </FileKitContainer>
-    </div>
-  </div>
+  // const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
+  //
+  // return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
+  //   <div onClick={ev => {
+  //     ev.stopPropagation()
+  //   }} className='modal-content modal-size-lg'>
+  //     {/* <h2>{task.title}</h2> */}
+  //     {/* <p>{task.desc}</p> */}
+  //     <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
+  //       <MdClose />
+  //     </span>
+  //     <FileKitContainer fileIds={task.fileIds}>
+  //       <TaskDetail
+  //         id={id || ''}
+  //         cover={task.cover || ''}
+  //         defaultValue={task}
+  //         onSubmit={onSubmit}
+  //       />
+  //     </FileKitContainer>
+  //   </div>
+  // </div>
 }
 
 export const TaskUpdate2 = () => {
-  const [visible, setVisible] = useState(false)
   const { taskId, closeTaskDetail } = useTaskViewStore()
+  // const { taskId, closeTaskDetail } = useTaskViewStore()
   // const sp = useSearchParams()
   const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
 
@@ -79,11 +135,9 @@ export const TaskUpdate2 = () => {
   useEffect(() => {
     if (!taskId) return
 
-    setVisible(true)
   }, [taskId])
 
   const closeTheModal = () => {
-    setVisible(false)
     closeTaskDetail()
     // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
@@ -168,8 +222,6 @@ export const TaskUpdate2 = () => {
     }
   }, [taskId, tasks])
 
-  console.log('found currentTask', currentTask)
-
   return <TaskUpdateModal
     id={taskId}
     task={currentTask}
@@ -178,33 +230,5 @@ export const TaskUpdate2 = () => {
     setVisible={() => {
       closeTaskDetail()
       // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
-    }} >
-
-  </TaskUpdateModal>
-
-  // return (
-  //   <Modal
-  //     size="lg"
-  //     visible={!!taskId}
-  //     onVisibleChange={() => {
-  //       setVisible(false)
-  //       closeTaskDetail()
-  //       // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
-  //     }}
-  //     loading={taskLoading}
-  //     title=""
-  //     content={
-  //       <>
-  //         <FileKitContainer fileIds={currentTask.fileIds}>
-  //           <TaskDetail
-  //             id={taskId || ''}
-  //             cover={currentTask.cover || ''}
-  //             defaultValue={currentTask}
-  //             onSubmit={v => handleSubmit(v)}
-  //           />
-  //         </FileKitContainer>
-  //       </>
-  //     }
-  //   />
-  // )
+    }} />
 }

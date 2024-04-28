@@ -1,0 +1,56 @@
+.dialog-container {
+  @apply fixed z-50 top-0 left-0 w-full h-full overflow-y-auto backdrop-blur-sm;
+  @apply flex items-center justify-center;
+}
+
+.dialog-content {
+  @apply bg-white dark:bg-gray-900 dark:border-gray-700 dark:border;
+  @apply rounded-lg shadow-lg;
+  @apply p-6 z-10 relative;
+
+  /* box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, */
+  /*   hsl(206 22% 7% / 20%) 0px 10px 20px -15px; */
+  width: 90vw;
+  max-width: 450px;
+  max-height: initial;
+  /* animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1); */
+}
+
+.dialog-content.size-xl {
+  max-width: 900px;
+}
+
+.dialog-content.size-lg {
+  max-width: 700px;
+}
+
+.dialog-content.size-sm {
+  max-width: 350px;
+}
+
+.dialog-close {
+  @apply w-9 h-9 p-1 border hover:bg-gray-50 hover:text-gray-600 rounded-md text-gray-400;
+  @apply flex items-center justify-center;
+  @apply absolute top-5 right-6 cursor-pointer;
+}
+
+@keyframes overlayShow {
+
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

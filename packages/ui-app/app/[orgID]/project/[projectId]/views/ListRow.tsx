@@ -27,8 +27,6 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
     return isNaN(percent) ? 0 : Math.round(percent)
   }, [JSON.stringify(task)])
 
-  console.log('reder')
-
   return (
     <div
       className="px-3 py-2 text-sm sm:flex items-center justify-between group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"

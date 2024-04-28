@@ -33,8 +33,6 @@ export default function ProjectNav() {
   const { selectedProject } = useProjectStore(state => state)
   const mode = searchParams.get('mode')
 
-  console.log('re render projectnav')
-
   const [tabs] = useState([
     {
       title: 'Overview',

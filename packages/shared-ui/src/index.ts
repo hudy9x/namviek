@@ -16,6 +16,7 @@ import DropdownMenuContainer from './components/Dropdown'
 import TabContainer from './components/Tab'
 import PopoverContainer from './components/Controls/PopoverControl'
 import SwitchContainer from './components/Switch'
+import DialogContainer from "./components/Dialog";
 
 export {
   messageInfo,
@@ -25,6 +26,7 @@ export {
 } from './components/Message'
 export { setFixLoading } from './components/Loading'
 
+export const Dialog = DialogContainer
 export const Switch = SwitchContainer
 export const Popover = PopoverContainer
 export const Modal = ModalComp
