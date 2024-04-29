@@ -10,6 +10,9 @@
   @apply opacity-0 pointer-events-none;
   @apply transition-all;
 }
+.dialog-title {
+  @apply text-xl font-bold pb-4;
+}
 
 .dialog-content {
   @apply bg-white dark:bg-gray-900 dark:border-gray-700 dark:border;

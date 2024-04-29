@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useRef } from "react"
 import { createPortal } from "react-dom";
 
 function createDialogContainer(containerId: string) {
@@ -22,6 +22,18 @@ function getDialogContainer(): HTMLDivElement {
 }
 
 export default function DialogPortal({ children }: { children: ReactNode }) {
-  const container = getDialogContainer()
-  return createPortal(children, container)
+  const container = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const containerElem = getDialogContainer()
+    container.current = containerElem
+  })
+
+  if (!container.current) return null
+
+  return createPortal(children, container.current)
+
+
+  // const container = getDialogContainer()
+  // return createPortal(children, container)
 }

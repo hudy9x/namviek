@@ -118,7 +118,7 @@ export default function FileCarousel() {
 
   const view = (
     <div
-      className={`file-carousel z-10 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`file-carousel z-50 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}>
       <div className="border-b border-b-gray-700 bg-black dark:border-gray-700 px-4 py-3 flex items-center justify-between text-gray-300">
         <div></div>

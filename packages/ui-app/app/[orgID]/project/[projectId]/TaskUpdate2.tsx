@@ -8,9 +8,7 @@ import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
-import { useTaskViewStore } from '@/store/taskView'
 import { deleteState, onPushStateRun } from 'packages/ui-app/libs/pushState'
-import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
 
 
 function TaskUpdateModal({
@@ -28,12 +26,12 @@ function TaskUpdateModal({
     onSubmit: (v: ITaskDefaultValues) => void
   }) {
 
+
   return <Dialog.Root open={visible} onOpenChange={() => {
-    console.log('call callback from dialog root')
     setVisible()
   }}>
     <Dialog.Portal>
-      <Dialog.Content>
+      <Dialog.Content size='lg'>
         <FileKitContainer fileIds={task.fileIds}>
           <TaskDetail
             id={id || ''}
@@ -48,31 +46,14 @@ function TaskUpdateModal({
 
 }
 
-export const TaskUpdate2 = () => {
-  const [taskId, setTaskId] = useState('')
-  // const { taskId, closeTaskDetail } = useTaskViewStore()
-  // const { taskId, closeTaskDetail } = useTaskViewStore()
-  // const sp = useSearchParams()
-  const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
-
-  const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
-
-  const [currentTask, setCurrentTask] =
-    useState<ITaskDefaultValues>(defaultFormikValues)
-  const refCurrentTask = useRef<Task>()
-  const { user } = useUser()
-  // const { orgID, projectId } = useParams()
-  // const router = useRouter()
-  // const mode = sp.get('mode')
-  // const taskId = sp.get('taskId')
-
+function useTaskIdChange(fn: (id: string) => void) {
   useEffect(() => {
     const destroy = onPushStateRun((url: string) => {
 
       const newUrl = new URL(url)
       const taskId = newUrl.searchParams.get('taskId')
-      setTaskId(taskId || '')
-      console.log('task id via pushState:', taskId)
+      // setTaskId(taskId || '')
+      fn(taskId || '')
     })
 
     return () => {
@@ -85,10 +66,29 @@ export const TaskUpdate2 = () => {
     const taskId = newUrl.searchParams.get('taskId')
     if (taskId) {
       console.log('FIRST TIME', taskId)
-      setTaskId(taskId)
+      // setTaskId(taskId)
+      fn(taskId)
     }
 
   }, [])
+
+}
+
+export const TaskUpdate2 = () => {
+  const [taskId, setTaskId] = useState('')
+  const { syncRemoteTaskById, tasks, updateTask } = useTaskStore()
+
+  const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
+
+  const [currentTask, setCurrentTask] =
+    useState<ITaskDefaultValues>(defaultFormikValues)
+  const refCurrentTask = useRef<Task>()
+  const { user } = useUser()
+
+  useTaskIdChange((id) => {
+    setTaskId(id)
+  })
+
 
   useEffect(() => {
     if (!taskId) return
@@ -177,10 +177,6 @@ export const TaskUpdate2 = () => {
     }
   }, [taskId, tasks])
 
-  useEscapeKeyPressed(() => {
-    console.log('escape pressed')
-    deleteState('taskId')
-  })
 
   return <TaskUpdateModal
     id={taskId}
@@ -188,7 +184,6 @@ export const TaskUpdate2 = () => {
     onSubmit={handleSubmit}
     visible={!!taskId}
     setVisible={() => {
-      console.log('call set visible')
       // closeTaskDetail()
       deleteState('taskId')
       // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
