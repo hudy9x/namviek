@@ -2,6 +2,7 @@ import { useUrl } from "@/hooks/useUrl"
 import { useTaskViewStore } from "@/store/taskView"
 import { messageWarning } from "@shared/ui"
 import { useParams, useRouter } from "next/navigation"
+import { pushState } from "packages/ui-app/libs/pushState"
 
 export default function TaskTitle({ id, projectId, title }: { id: string, projectId: string, title: string }) {
 
@@ -21,6 +22,7 @@ export default function TaskTitle({ id, projectId, title }: { id: string, projec
         return
       }
       openTaskDetail(id)
+      pushState('taskId', id)
       // replace(
       //   `${params.orgID}/project/${projectId}?mode=${getSp(
       //     'mode'

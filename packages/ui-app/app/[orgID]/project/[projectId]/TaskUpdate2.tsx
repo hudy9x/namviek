@@ -1,7 +1,6 @@
-import { Dialog, Modal, messageError, messageSuccess } from '@shared/ui'
-import { useSearchParams, useRouter, useParams } from 'next/navigation'
-import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import TaskForm, { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
+import { Dialog, messageError, messageSuccess } from '@shared/ui'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
@@ -10,54 +9,9 @@ import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
 import { useTaskViewStore } from '@/store/taskView'
-import { MdClose } from 'react-icons/md'
+import { deleteState, onPushStateRun } from 'packages/ui-app/libs/pushState'
 import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
 
-// function TaskUpdateModal({
-//   id,
-//   visible,
-//   setVisible,
-//   task,
-//   onSubmit,
-//   children }:
-//   {
-//     id: string
-//     task: ITaskDefaultValues,
-//     visible: boolean,
-//     setVisible: () => void,
-//     children?: ReactNode
-//     onSubmit: (v: ITaskDefaultValues) => void
-//   }) {
-//
-//   useEscapeKeyPressed(() => {
-//     console.log('1')
-//     setVisible()
-//   })
-//
-//   if (!id) return null;
-//
-//   const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
-//
-//   return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
-//     <div onClick={ev => {
-//       ev.stopPropagation()
-//     }} className='modal-content modal-size-lg'>
-//       {/* <h2>{task.title}</h2> */}
-//       {/* <p>{task.desc}</p> */}
-//       <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
-//         <MdClose />
-//       </span>
-//       <FileKitContainer fileIds={task.fileIds}>
-//         <TaskDetail
-//           id={id || ''}
-//           cover={task.cover || ''}
-//           defaultValue={task}
-//           onSubmit={onSubmit}
-//         />
-//       </FileKitContainer>
-//     </div>
-//   </div>
-// }
 
 function TaskUpdateModal({
   id,
@@ -74,10 +28,10 @@ function TaskUpdateModal({
     onSubmit: (v: ITaskDefaultValues) => void
   }) {
 
-  // if (!id) return null;
-
-
-  return <Dialog.Root open={visible} onOpenChange={setVisible}>
+  return <Dialog.Root open={visible} onOpenChange={() => {
+    console.log('call callback from dialog root')
+    setVisible()
+  }}>
     <Dialog.Portal>
       <Dialog.Content>
         <FileKitContainer fileIds={task.fileIds}>
@@ -92,31 +46,11 @@ function TaskUpdateModal({
     </Dialog.Portal>
   </Dialog.Root>
 
-  // const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 overflow-y-auto'
-  //
-  // return <div onClick={setVisible} className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
-  //   <div onClick={ev => {
-  //     ev.stopPropagation()
-  //   }} className='modal-content modal-size-lg'>
-  //     {/* <h2>{task.title}</h2> */}
-  //     {/* <p>{task.desc}</p> */}
-  //     <span onClick={setVisible} className='modal-close cursor-pointer z-10'>
-  //       <MdClose />
-  //     </span>
-  //     <FileKitContainer fileIds={task.fileIds}>
-  //       <TaskDetail
-  //         id={id || ''}
-  //         cover={task.cover || ''}
-  //         defaultValue={task}
-  //         onSubmit={onSubmit}
-  //       />
-  //     </FileKitContainer>
-  //   </div>
-  // </div>
 }
 
 export const TaskUpdate2 = () => {
-  const { taskId, closeTaskDetail } = useTaskViewStore()
+  const [taskId, setTaskId] = useState('')
+  // const { taskId, closeTaskDetail } = useTaskViewStore()
   // const { taskId, closeTaskDetail } = useTaskViewStore()
   // const sp = useSearchParams()
   const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
@@ -133,12 +67,37 @@ export const TaskUpdate2 = () => {
   // const taskId = sp.get('taskId')
 
   useEffect(() => {
+    const destroy = onPushStateRun((url: string) => {
+
+      const newUrl = new URL(url)
+      const taskId = newUrl.searchParams.get('taskId')
+      setTaskId(taskId || '')
+      console.log('task id via pushState:', taskId)
+    })
+
+    return () => {
+      destroy()
+    }
+  }, [])
+
+  useEffect(() => {
+    const newUrl = new URL(window.location.toString())
+    const taskId = newUrl.searchParams.get('taskId')
+    if (taskId) {
+      console.log('FIRST TIME', taskId)
+      setTaskId(taskId)
+    }
+
+  }, [])
+
+  useEffect(() => {
     if (!taskId) return
 
   }, [taskId])
 
   const closeTheModal = () => {
-    closeTaskDetail()
+    deleteState('taskId')
+    // closeTaskDetail()
     // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
 
@@ -175,10 +134,6 @@ export const TaskUpdate2 = () => {
         // syncRemoteTaskById(refCurrentTask.current.id, refCurrentTask.current)
         console.log(err)
       })
-      .finally(() => {
-        // setVisible(false)
-        // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
-      })
   }
 
   // When copy the url with taskId param and paste to another tab
@@ -186,7 +141,7 @@ export const TaskUpdate2 = () => {
   // Thus, we need to make sure that the defaultValue update first
   // That's why we use useLayoutEffect here
   // It block render process and only run when the inside code run already
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!taskId || !tasks || !tasks.length) return
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
@@ -222,13 +177,20 @@ export const TaskUpdate2 = () => {
     }
   }, [taskId, tasks])
 
+  useEscapeKeyPressed(() => {
+    console.log('escape pressed')
+    deleteState('taskId')
+  })
+
   return <TaskUpdateModal
     id={taskId}
     task={currentTask}
     onSubmit={handleSubmit}
     visible={!!taskId}
     setVisible={() => {
-      closeTaskDetail()
+      console.log('call set visible')
+      // closeTaskDetail()
+      deleteState('taskId')
       // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
     }} />
 }

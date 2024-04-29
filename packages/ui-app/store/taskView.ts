@@ -18,7 +18,6 @@ export const useTaskViewStore = create<TaskViewState>(set => ({
   openTaskDetail: (taskId: string) =>
     set(
       produce((state: TaskViewState) => {
-        console.log('set taskid', state.taskId, taskId)
         state.taskId = taskId
       })
     ),
