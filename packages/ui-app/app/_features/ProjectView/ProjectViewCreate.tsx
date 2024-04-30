@@ -1,4 +1,4 @@
-import { Modal } from '@shared/ui'
+import { Dialog, Modal } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
@@ -40,21 +40,35 @@ export default function ProjectViewCreate() {
         setFilter
       }}>
 
-      <Modal
-        backdrop={false}
-        className="project-view-modal"
-        size="lg"
-        visible={visible}
-        onVisibleChange={setVisible}
-        title=""
-        triggerBy={
+      <Dialog.Root open={visible} onOpenChange={setVisible}>
+        <Dialog.Trigger>
           <div className="project-view-item">
             <AiOutlinePlus />
             <span>View</span>
           </div>
-        }
-        content={<ProjectViewModal />}
-      />
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content size='lg'>
+            <ProjectViewModal />
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      {/* <Modal */}
+      {/*   backdrop={false} */}
+      {/*   className="project-view-modal" */}
+      {/*   size="lg" */}
+      {/*   visible={visible} */}
+      {/*   onVisibleChange={setVisible} */}
+      {/*   title="" */}
+      {/*   triggerBy={ */}
+      {/*     <div className="project-view-item"> */}
+      {/*       <AiOutlinePlus /> */}
+      {/*       <span>View</span> */}
+      {/*     </div> */}
+      {/*   } */}
+      {/*   content={<ProjectViewModal />} */}
+      {/* /> */}
     </ProjectViewProvider>
   )
 }

@@ -17,6 +17,7 @@ import TaskCheckbox from '@/components/TaskCheckbox'
 import { GoTasklist } from 'react-icons/go'
 import TaskChecklist from '@/features/TaskChecklist'
 import { useMemo } from 'react'
+import { pushState } from 'packages/ui-app/libs/pushState'
 
 function BoardItemCover({ cover }: { cover: string | null }) {
   if (!cover) return null
@@ -30,12 +31,11 @@ function BoardItemCover({ cover }: { cover: string | null }) {
 
 
 export default function BoardItem({ data }: { data: ExtendedTask }) {
-  const { orgID, projectId } = useParams()
-  const { replace } = useRouter()
+  // const { orgID, projectId } = useParams()
+  // const { replace } = useRouter()
   const { getStatusTypeByTaskId } = useStatusUtils()
-  const { getSp } = useUrl()
-  const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${data.id
-    }`
+  // const { getSp } = useUrl()
+  // const link = `${orgID}/project/${projectId}?mode=${getSp('mode')}&taskId=${data.id}`
   const progress = useMemo(() => {
     const done = data.checklistDone || 0
     const todo = data.checklistTodos || 0
@@ -52,7 +52,8 @@ export default function BoardItem({ data }: { data: ExtendedTask }) {
       messageWarning('This task has been creating by server !')
       return
     }
-    replace(link)
+    pushState('taskId', data.id)
+    // replace(link)
   }
 
   const isOverdue = dueDate && taskStatusType !== StatusType.DONE && differenceInDays(new Date(dueDate), new Date()) < 0

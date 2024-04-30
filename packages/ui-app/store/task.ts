@@ -56,6 +56,7 @@ export const useTaskStore = create<TaskState>(set => ({
   toggleMultipleSelected: (stt: boolean, ids: string[]) =>
     set(
       produce((state: TaskState) => {
+        console.time('toggleMultipleSelect')
         if (stt) {
           const newSelected = new Set([...state.selected, ...ids])
           state.selected = Array.from(newSelected)
@@ -77,6 +78,7 @@ export const useTaskStore = create<TaskState>(set => ({
           }
           return task
         })
+        console.timeEnd('toggleMultipleSelect')
 
         // console.log(
         //   JSON.parse(

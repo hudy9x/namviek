@@ -15,7 +15,7 @@ export default function FileThumb({
   id: string
 }) {
   const { setSelected, previewFiles } = useFileKitContext()
-  const onView = () => {
+  const onThumbClick = () => {
     if (!id) return
     const idx = previewFiles.findIndex(pf => pf.id === id)
     if (idx !== -1) {
@@ -27,7 +27,7 @@ export default function FileThumb({
   if (isImage(type)) {
     return (
       <div
-        onClick={onView}
+        onClick={onThumbClick}
         className="bg-gray-100 overflow-hidden group cursor-pointer relative dark:bg-gray-900 border-r dark:border-gray-700 rounded-l-md max-h-[88px] w-[120px] shrink-0">
         <img alt={name} className="h-auto w-auto rounded-l-md" src={src} />
         <HiOutlineCamera className="absolute left-2 bottom-2 text-gray-200 group-hover:opacity-100 opacity-0 w-7 h-7 p-1.5 rounded-md bg-black/50" />
@@ -37,7 +37,7 @@ export default function FileThumb({
 
   return (
     <div
-      onClick={onView}
+      onClick={onThumbClick}
       className="relative group bg-gray-100 dark:bg-gray-800 cursor-pointer border-r dark:border-gray-700 rounded-l-md max-h-[150px] w-[120px] shrink-0 flex items-center justify-center">
       <div className="">
         <img

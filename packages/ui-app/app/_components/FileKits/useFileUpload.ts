@@ -16,14 +16,39 @@ import {
 } from '@shared/ui'
 import { AxiosError } from 'axios'
 import { useSetDefaultCover } from './useSetDefaultCover'
+import { useEffect, useState } from 'react'
+import { onPushStateRun } from 'packages/ui-app/libs/pushState'
 
 export default function useFileUpload() {
+  const [taskId, setTaskId] = useState('')
   const { uploading, setUploading, setPreviewFiles } = useFileKitContext()
   const { setDefaultCover } = useSetDefaultCover()
   const { orgID, projectId } = useParams()
   const { push } = useRouter()
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
+  // const sp = useSearchParams()
+  // const taskId = sp.get('taskId')
+
+  useEffect(() => {
+    const destroy = onPushStateRun((url: string) => {
+
+      const newUrl = new URL(url)
+      const taskId = newUrl.searchParams.get('taskId')
+      setTaskId(taskId || '')
+    })
+
+    return () => {
+      destroy()
+    }
+  }, [])
+
+  useEffect(() => {
+    const newUrl = new URL(window.location.toString())
+    const taskId = newUrl.searchParams.get('taskId')
+    if (taskId) {
+      setTaskId(taskId)
+    }
+
+  }, [])
 
   const { updateTaskData } = useServiceTaskUpdate()
 
@@ -180,6 +205,10 @@ export default function useFileUpload() {
   }
 
   const onFileHandler = async (files: FileList) => {
+    if (!taskId) {
+      messageError("Task id not found")
+      return
+    }
     if (uploading) {
       messageWarning('Wait a sec, upload is running')
       return

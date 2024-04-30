@@ -5,11 +5,12 @@ import ProjectViewCreate from './ProjectViewCreate'
 import './style.css'
 import { useProjectViewList } from './useProjectViewList'
 import ProjectViewIcon from './ProjectViewIcon'
-import { Loading } from '@shared/ui'
+import { Button, Dialog, Loading } from '@shared/ui'
 import ProjectViewItemDropdown from './ProjectViewItemDropdown'
 import DynamicIcon from '@/components/DynamicIcon'
 import HasRole from '../UserPermission/HasRole'
 import useSetViewFilter from './useSetViewFilter'
+import { useState } from 'react'
 
 export default function ProjectView() {
   const searchParams = useSearchParams()

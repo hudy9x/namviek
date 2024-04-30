@@ -8,6 +8,7 @@ import { HiOutlineDownload } from 'react-icons/hi'
 import { useEffect } from 'react'
 import PdfViewer from '../PdfViewer'
 import './carousel.css'
+import { createPortal } from 'react-dom'
 
 function FileCarouselDisplay({ file }: { file: IFileItem }) {
   if (!file) return null
@@ -57,6 +58,27 @@ function FileCarouselDisplay({ file }: { file: IFileItem }) {
   )
 }
 
+function createFileCarouselContainer(id: string) {
+  const container = document.createElement('div') as HTMLDivElement
+
+  container.id = id
+
+  document.body.append(container)
+
+  return container
+}
+
+function getFileCarouselContainer() {
+  const id = 'file-carousel-container'
+  let container = document.getElementById(id)
+
+  if (!container) {
+    container = createFileCarouselContainer(id)
+  }
+
+  return container
+}
+
 export default function FileCarousel() {
   const { previewFiles, selected, setSelected } = useFileKitContext()
   const len = previewFiles.length
@@ -94,9 +116,9 @@ export default function FileCarousel() {
     }
   }, [])
 
-  return (
+  const view = (
     <div
-      className={`file-carousel z-10 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`file-carousel z-50 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}>
       <div className="border-b border-b-gray-700 bg-black dark:border-gray-700 px-4 py-3 flex items-center justify-between text-gray-300">
         <div></div>
@@ -129,4 +151,6 @@ export default function FileCarousel() {
       {/* <div onClick={onClose} className="w-full h-full"></div> */}
     </div>
   )
+
+  return createPortal(view, getFileCarouselContainer())
 }
