@@ -14,6 +14,8 @@ import { notifyToWebUsers } from '../../lib/buzzer'
 import InternalErrorException from '../../exceptions/InternalErrorException'
 
 import TaskReminderJob from '../../jobs/reminder.job'
+import TaskPusherJob from '../../jobs/task.pusher.job'
+const taskPusherJob = new TaskPusherJob()
 
 export default class TaskCreateService {
   activityService: ActivityService
@@ -94,6 +96,10 @@ export default class TaskCreateService {
 
         this.notifyNewTaskToAssignee({ uid, task: result })
 
+        taskPusherJob.triggerUpdateEvent({
+          projectId,
+          uid
+        })
         if (!done) {
           this.createTaskReminder(result)
         }

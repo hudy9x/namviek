@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { extractDueDate } from '@shared/libs'
 import { ExtendedTask, useTaskStore } from '@/store/task'
 import { taskGetByCond } from '@/services/task'
@@ -38,7 +38,7 @@ export default function useGetTask() {
       })
   }, [projectId])
 
-  useEffect(() => {
+  const fetchAllTask = useCallback(() => {
     const controller = new AbortController()
     const {
       term,
@@ -72,25 +72,23 @@ export default function useGetTask() {
         dueDate: [startDate || 'null', endDate || 'null']
       },
       controller.signal
-    )
-      .then(res => {
-        const { data, status, error } = res.data
+    ).then(res => {
+      const { data, status, error } = res.data
 
-        if (status !== 200) {
-          addAllTasks([])
-          localforage.removeItem(key)
-          setTaskLoading(false)
-          messageError(error)
-          return
-        }
+      if (status !== 200) {
+        addAllTasks([])
+        localforage.removeItem(key)
+        setTaskLoading(false)
+        messageError(error)
+        return
+      }
 
-        localforage.setItem(key, data)
-        setTimeout(() => {
-          addAllTasks(data)
-          setTaskLoading(false)
-        }, 300)
-
-      })
+      localforage.setItem(key, data)
+      setTimeout(() => {
+        addAllTasks(data)
+        setTaskLoading(false)
+      }, 300)
+    })
 
     return () => {
       controller.abort()
@@ -98,5 +96,11 @@ export default function useGetTask() {
 
     // only re-fetching data when filter changes
     // excpet groupBy filter
-  }, [JSON.stringify(filterWithoutGroupBy)])
+  }, [projectId, filter, key, addAllTasks, setTaskLoading])
+
+  useEffect(() => {
+    fetchAllTask()
+  }, [JSON.stringify(filterWithoutGroupBy), fetchAllTask])
+
+  return { fetchAllTask }
 }
