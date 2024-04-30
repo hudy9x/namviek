@@ -6,6 +6,7 @@ import CalTaskInWeek from './CalTaskInWeek'
 import Link from 'next/link'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { TaskType } from '@prisma/client'
+import { pushState } from 'packages/ui-app/libs/pushState'
 
 interface ICalMonthTaskProps {
   id: string
@@ -39,7 +40,10 @@ export default function CalMonthTask({
   classes?.length && taskClasses.push(...classes)
 
   const view = () => (
-    <Link href={link}>
+    <div onClick={() => {
+      pushState('taskId', id)
+    }}>
+
       <Draggable draggableId={id} index={index}>
         {provided => (
           <div
@@ -69,7 +73,9 @@ export default function CalMonthTask({
           </div>
         )}
       </Draggable>
-    </Link>
+
+    </div>
+    // <Link href={link}></Link>
   )
 
   // if statusIds contain ALL or nothing
