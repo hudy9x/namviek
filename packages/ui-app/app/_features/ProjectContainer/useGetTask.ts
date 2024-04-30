@@ -6,39 +6,23 @@ import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
-import differenceInDays from 'date-fns/differenceInDays'
-import { Task } from '@prisma/client'
 
-export default function useGetTask() {
+const getAssigneeIds = (assigneeIds: string[]) => {
+  if (assigneeIds.includes('ALL')) return undefined
+  if (!assigneeIds.length) return ['null']
+
+  return assigneeIds.filter(a => a !== 'ALL')
+}
+
+export const useGetTaskHandler = () => {
   const { projectId } = useParams()
   const { addAllTasks, setTaskLoading } = useTaskStore()
   const { filter } = useTaskFilterContext()
-
   const { groupBy, status, statusIds, ...filterWithoutGroupBy } = filter
-  // const { groupBy, status,...filterWithoutGroupBy } = filter
+
   const key = `TASKLIST_${projectId}`
 
-  const getAssigneeIds = (assigneeIds: string[]) => {
-    if (assigneeIds.includes('ALL')) return undefined
-    if (!assigneeIds.length) return ['null']
-
-    return assigneeIds.filter(a => a !== 'ALL')
-  }
-
-  useEffect(() => {
-    localforage
-      .getItem(key)
-      .then(val => {
-        if (val) {
-          addAllTasks(val as ExtendedTask[])
-        }
-      })
-      .catch(err => {
-        console.log('errpr loading cached task', err)
-      })
-  }, [projectId])
-
-  const fetchAllTask = useCallback(() => {
+  const fetchNCache = useCallback(() => {
     const controller = new AbortController()
     const {
       term,
@@ -98,9 +82,38 @@ export default function useGetTask() {
     // excpet groupBy filter
   }, [projectId, filter, key, addAllTasks, setTaskLoading])
 
-  useEffect(() => {
-    fetchAllTask()
-  }, [JSON.stringify(filterWithoutGroupBy), fetchAllTask])
+  return {
+    fetchNCache,
+    filterWithoutGroupBy
+  }
+}
 
-  return { fetchAllTask }
+function useFillTaskFromCache() {
+  const { projectId } = useParams()
+  const { addAllTasks } = useTaskStore()
+  const key = `TASKLIST_${projectId}`
+
+  useEffect(() => {
+    localforage
+      .getItem(key)
+      .then(val => {
+        if (val) {
+          addAllTasks(val as ExtendedTask[])
+        }
+      })
+      .catch(err => {
+        console.log('errpr loading cached task', err)
+      })
+  }, [projectId])
+}
+
+export default function useGetTask() {
+  const { fetchNCache, filterWithoutGroupBy } = useGetTaskHandler()
+  useFillTaskFromCache()
+
+  useEffect(() => {
+    fetchNCache()
+    // only re-fetch data as filter changed
+  }, [JSON.stringify(filterWithoutGroupBy)])
+
 }

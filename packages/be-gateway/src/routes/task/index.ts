@@ -401,12 +401,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       body: req.body as Task
     })
 
-    const { projectId } = req.body as Task
-    taskPusherJob.triggerUpdateEvent({
-      projectId,
-      uid: userId
-    })
-
     res.json({
       status: 200,
       data: result

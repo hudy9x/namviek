@@ -2,17 +2,14 @@ import { useEffect } from 'react'
 import { usePusher } from './usePusher'
 import { useUser } from '@goalie/nextjs'
 
-import useGetTask from '@/features/ProjectContainer/useGetTask'
-import { messageSuccess } from '@shared/ui'
-import { useMemberStore } from '@/store/member'
+import { useGetTaskHandler } from '@/features/ProjectContainer/useGetTask'
 
 // @description
 // it will be ran as an user create / delete / update a view
 export const useEventSyncProjectTask = (projectId: string) => {
   const { user } = useUser()
-  const { members } = useMemberStore()
   const { channelTeamCollab } = usePusher()
-  const { fetchAllTask } = useGetTask()
+  const { fetchNCache } = useGetTaskHandler()
 
   useEffect(() => {
     if (!user || !user.id) return
@@ -23,12 +20,8 @@ export const useEventSyncProjectTask = (projectId: string) => {
     channelTeamCollab &&
       channelTeamCollab.bind(eventUpdateName, (data: { triggerBy: string }) => {
         if (data.triggerBy === user.id) return
-        console.log('called', eventUpdateName)
-        const srcUser =
-          members.find(({ id }) => id === data.triggerBy)?.name || 'Someone'
-        srcUser && messageSuccess(`Tasks are changed by ${srcUser}`)
-        // fetch()
-        fetchAllTask()
+
+        fetchNCache()
       })
 
     return () => {

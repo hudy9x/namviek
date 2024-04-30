@@ -15,17 +15,18 @@ import InternalErrorException from '../../exceptions/InternalErrorException'
 
 import TaskReminderJob from '../../jobs/reminder.job'
 import TaskPusherJob from '../../jobs/task.pusher.job'
-const taskPusherJob = new TaskPusherJob()
 
 export default class TaskCreateService {
   activityService: ActivityService
   taskReminderJob: TaskReminderJob
   projectSettingRepo: ProjectSettingRepository
+  taskSyncJob: TaskPusherJob
 
   constructor() {
     this.activityService = new ActivityService()
     this.projectSettingRepo = new ProjectSettingRepository()
     this.taskReminderJob = new TaskReminderJob()
+    this.taskSyncJob = new TaskPusherJob()
   }
 
   async createNewTask({ uid, body }: { uid: string; body: Task }) {
@@ -96,7 +97,7 @@ export default class TaskCreateService {
 
         this.notifyNewTaskToAssignee({ uid, task: result })
 
-        taskPusherJob.triggerUpdateEvent({
+        this.taskSyncJob.triggerUpdateEvent({
           projectId,
           uid
         })
