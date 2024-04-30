@@ -32,6 +32,9 @@ import { createModuleLog } from '../../lib/log'
 import TaskCreateService from '../../services/task/create.service'
 import TaskUpdateService from '../../services/task/update.service'
 import TaskReminderJob from '../../jobs/reminder.job'
+import TaskPusherJob from '../../jobs/task.pusher.job'
+
+const taskPusherJob = new TaskPusherJob()
 
 const logging = createModuleLog('ProjectTask')
 // import { Log } from '../../lib/log'
@@ -337,6 +340,11 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
     }
 
     await findNDelCaches(key)
+    taskPusherJob.triggerUpdateEvent({
+      projectId,
+      uid: req.authen.id
+    })
+
     console.log('deleted task', id)
     res.json({
       status: 200,
@@ -367,6 +375,10 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
     await mdTaskUpdateMany(ids, data)
     await findNDelCaches(key)
     logging.info('TaskUpdateMany - successfully')
+    taskPusherJob.triggerUpdateEvent({
+      projectId: data.projectId,
+      uid: userId
+    })
 
     res.json({
       result: 1

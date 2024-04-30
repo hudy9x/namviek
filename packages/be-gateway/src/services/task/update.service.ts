@@ -15,15 +15,19 @@ import InternalErrorException from '../../exceptions/InternalErrorException'
 import { serviceGetStatusById } from '../status'
 import { serviceGetProjectById } from '../project'
 import TaskReminderJob from '../../jobs/reminder.job'
+import TaskPusherJob from '../../jobs/task.pusher.job'
 
 export default class TaskUpdateService {
   activityService: ActivityService
   projectSettingRepo: ProjectSettingRepository
   taskReminderJob: TaskReminderJob
+  taskSyncJob: TaskPusherJob
+
   constructor() {
     this.activityService = new ActivityService()
     this.projectSettingRepo = new ProjectSettingRepository()
     this.taskReminderJob = new TaskReminderJob()
+    this.taskSyncJob = new TaskPusherJob()
   }
   async doUpdate({ userId, body }: { userId: string; body: Task }) {
     const activityService = this.activityService
@@ -49,6 +53,11 @@ export default class TaskUpdateService {
         taskData: oldTaskData,
         updatedTaskData: body,
         userId
+      })
+
+      this.taskSyncJob.triggerUpdateEvent({
+        projectId: result.projectId,
+        uid: userId
       })
 
       await this._clearRelativeCaches({

@@ -21,6 +21,7 @@ import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
 import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
+import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 
 function SaveRecentVisitPage() {
   const { projectId, orgID } = useParams()
@@ -48,6 +49,7 @@ function useRegisterEvents() {
   useEventSyncProjectMember(projectId)
   useEventSyncProjectView(projectId)
   useEventSyncProjectStatus(projectId)
+  useEventSyncProjectTask(projectId)
 }
 
 function useGetAutomationRulesByProject() {

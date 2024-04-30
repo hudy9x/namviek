@@ -14,16 +14,19 @@ import { notifyToWebUsers } from '../../lib/buzzer'
 import InternalErrorException from '../../exceptions/InternalErrorException'
 
 import TaskReminderJob from '../../jobs/reminder.job'
+import TaskPusherJob from '../../jobs/task.pusher.job'
 
 export default class TaskCreateService {
   activityService: ActivityService
   taskReminderJob: TaskReminderJob
   projectSettingRepo: ProjectSettingRepository
+  taskSyncJob: TaskPusherJob
 
   constructor() {
     this.activityService = new ActivityService()
     this.projectSettingRepo = new ProjectSettingRepository()
     this.taskReminderJob = new TaskReminderJob()
+    this.taskSyncJob = new TaskPusherJob()
   }
 
   async createNewTask({ uid, body }: { uid: string; body: Task }) {
@@ -94,6 +97,10 @@ export default class TaskCreateService {
 
         this.notifyNewTaskToAssignee({ uid, task: result })
 
+        this.taskSyncJob.triggerUpdateEvent({
+          projectId,
+          uid
+        })
         if (!done) {
           this.createTaskReminder(result)
         }
