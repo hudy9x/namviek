@@ -10,7 +10,7 @@
   border: none;
   padding: 0px;
   box-shadow: none !important;
-  @apply text-xs sm:text-sm;
+  @apply text-xs sm:text-sm bg-transparent dark:bg-transparent;
 }
 
 .task-status .status-title {
@@ -61,7 +61,7 @@
 
 .task-date .form-input {
   padding: 0;
-  @apply text-xs sm:text-sm;
+  @apply text-xs sm:text-sm bg-transparent dark:bg-transparent;
 }
 
 .task-date.overdue .form-input {

@@ -1,7 +1,6 @@
-import { Modal, messageError, messageSuccess } from '@shared/ui'
-import { useSearchParams, useRouter, useParams } from 'next/navigation'
+import { Dialog, messageError, messageSuccess } from '@shared/ui'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import TaskForm, { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
+import { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { taskUpdate } from '@/services/task'
@@ -9,22 +8,75 @@ import { Task } from '@prisma/client'
 import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
+import { deleteState, onPushStateRun } from 'packages/ui-app/libs/pushState'
 
-function TestModal({ visible, setVisible }: { visible: boolean, setVisible: () => void }) {
-  const classes = 'fixed flex items-center justify-center top-0 left-0 w-full h-full z-50 backdrop-blur-md'
 
-  return <div className={`${classes} ${visible ? '' : 'invisible pointer-events-none'}`}>
-    <div className='w-[500px] border rounded-md bg-black p-8'>
-      <h2>Hello world</h2>
-      <span onClick={setVisible} className='px-3 py-2 rounded-md border bg-gray-500'>Close me</span>
-    </div>
-  </div>
+function TaskUpdateModal({
+  id,
+  visible,
+  setVisible,
+  task,
+  onSubmit
+}:
+  {
+    id: string
+    task: ITaskDefaultValues,
+    visible: boolean,
+    setVisible: () => void,
+    onSubmit: (v: ITaskDefaultValues) => void
+  }) {
+
+
+  return <Dialog.Root open={visible} onOpenChange={() => {
+    setVisible()
+  }}>
+    <Dialog.Portal>
+      <Dialog.Content size='lg'>
+        <FileKitContainer fileIds={task.fileIds}>
+          <TaskDetail
+            id={id || ''}
+            cover={task.cover || ''}
+            defaultValue={task}
+            onSubmit={onSubmit}
+          />
+        </FileKitContainer>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+
 }
 
-export const TaskUpdate = () => {
-  const [visible, setVisible] = useState(false)
-  const sp = useSearchParams()
-  const { syncRemoteTaskById, tasks, taskLoading, updateTask } = useTaskStore()
+function useTaskIdChange(fn: (id: string) => void) {
+  useEffect(() => {
+    const destroy = onPushStateRun((url: string) => {
+
+      const newUrl = new URL(url)
+      const taskId = newUrl.searchParams.get('taskId')
+      // setTaskId(taskId || '')
+      fn(taskId || '')
+    })
+
+    return () => {
+      destroy()
+    }
+  }, [])
+
+  useEffect(() => {
+    const newUrl = new URL(window.location.toString())
+    const taskId = newUrl.searchParams.get('taskId')
+    if (taskId) {
+      console.log('FIRST TIME', taskId)
+      // setTaskId(taskId)
+      fn(taskId)
+    }
+
+  }, [])
+
+}
+
+export const TaskUpdate2 = () => {
+  const [taskId, setTaskId] = useState('')
+  const { syncRemoteTaskById, tasks, updateTask } = useTaskStore()
 
   const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
 
@@ -32,21 +84,21 @@ export const TaskUpdate = () => {
     useState<ITaskDefaultValues>(defaultFormikValues)
   const refCurrentTask = useRef<Task>()
   const { user } = useUser()
-  const { orgID, projectId } = useParams()
-  const router = useRouter()
-  const mode = sp.get('mode')
-  const taskId = sp.get('taskId')
+
+  useTaskIdChange((id) => {
+    setTaskId(id)
+  })
+
 
   useEffect(() => {
-    console.log('taskId', taskId)
     if (!taskId) return
 
-    setVisible(true)
   }, [taskId])
 
   const closeTheModal = () => {
-    setVisible(false)
-    router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+    deleteState('taskId')
+    // closeTaskDetail()
+    // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
 
   const handleSubmit = (v: ITaskDefaultValues) => {
@@ -81,10 +133,6 @@ export const TaskUpdate = () => {
         if (!refCurrentTask.current) return
         // syncRemoteTaskById(refCurrentTask.current.id, refCurrentTask.current)
         console.log(err)
-      })
-      .finally(() => {
-        // setVisible(false)
-        // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
       })
   }
 
@@ -129,37 +177,15 @@ export const TaskUpdate = () => {
     }
   }, [taskId, tasks])
 
-  console.log('task update form visible:', visible)
 
-  return (
-    <>
-      <TestModal visible={visible} setVisible={() => {
-        setVisible(false)
-      }} />
-      {/* <div> */}
-      {/*   <Modal */}
-      {/*     size="lg" */}
-      {/*     visible={visible} */}
-      {/*     onVisibleChange={() => { */}
-      {/*       setVisible(false) */}
-      {/*       router.replace(`${orgID}/project/${projectId}?mode=${mode}`) */}
-      {/*     }} */}
-      {/*     loading={taskLoading} */}
-      {/*     title="" */}
-      {/*     content={ */}
-      {/*       <> */}
-      {/*         <FileKitContainer fileIds={currentTask.fileIds}> */}
-      {/*           <TaskDetail */}
-      {/*             id={taskId || ''} */}
-      {/*             cover={currentTask.cover || ''} */}
-      {/*             defaultValue={currentTask} */}
-      {/*             onSubmit={v => handleSubmit(v)} */}
-      {/*           /> */}
-      {/*         </FileKitContainer> */}
-      {/*       </> */}
-      {/*     } */}
-      {/*   /> */}
-      {/* </div> */}
-    </>
-  )
+  return <TaskUpdateModal
+    id={taskId}
+    task={currentTask}
+    onSubmit={handleSubmit}
+    visible={!!taskId}
+    setVisible={() => {
+      // closeTaskDetail()
+      deleteState('taskId')
+      // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+    }} />
 }

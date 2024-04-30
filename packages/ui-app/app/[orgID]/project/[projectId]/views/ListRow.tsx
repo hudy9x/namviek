@@ -16,11 +16,9 @@ import TaskTypeCell from './TaskTypeCell'
 import TaskChecklist from '@/features/TaskChecklist'
 import TaskProgress from './TaskProgress'
 import { useMemo } from 'react'
+import TaskTitle from './TaskTitle'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
-  const params = useParams()
-  const { replace } = useRouter()
-  const { getSp } = useUrl()
   const isRandomId = task.id.includes('TASK-ID-RAND')
   const progress = useMemo(() => {
     const done = task.checklistDone || 0
@@ -39,26 +37,28 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
 
         {isRandomId ? <Loading enabled={true} spinnerSpeed="fast" /> : null}
-        <div
-          className="cursor-pointer"
-          key={task.id}
-          onClick={() => {
-            if (isRandomId) {
-              messageWarning('This task has been creating by server !')
-              return
-            }
-            replace(
-              `${params.orgID}/project/${task.projectId}?mode=${getSp(
-                'mode'
-              )}&taskId=${task.id}`
-            )
-          }}
-        // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
-        //   'mode'
-        // )}&taskId=${task.id}`}
-        >
-          <div className="w-full">{task.title}</div>
-        </div>
+        {/* <div */}
+        {/*   className="cursor-pointer" */}
+        {/*   key={task.id} */}
+        {/*   onClick={() => { */}
+        {/*     if (isRandomId) { */}
+        {/*       messageWarning('This task has been creating by server !') */}
+        {/*       return */}
+        {/*     } */}
+        {/*     console.log('replace link with taskid') */}
+        {/*     replace( */}
+        {/*       `${params.orgID}/project/${task.projectId}?mode=${getSp( */}
+        {/*         'mode' */}
+        {/*       )}&taskId=${task.id}` */}
+        {/*     ) */}
+        {/*   }} */}
+        {/* // href={`${params.orgID}/project/${task.projectId}?mode=${getSp( */}
+        {/* //   'mode' */}
+        {/* // )}&taskId=${task.id}`} */}
+        {/* > */}
+        {/*   <div className="w-full">{task.title}</div> */}
+        {/* </div> */}
+        <TaskTitle id={task.id} projectId={task.projectId} title={task.title} />
         <TaskActions
           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
           taskId={task.id}

@@ -8,7 +8,9 @@ export default function useFileGet(fileIds: string[]) {
   const filled = useRef(false)
 
   useEffect(() => {
-    if (fileIds.length && !filled.current) {
+    // if (fileIds.length && !filled.current) {
+    setLoading(true)
+    if (fileIds.length) {
       storageGetFiles(fileIds)
         .then(res => {
           const files = res.data.data as FileStorage[]
@@ -38,6 +40,11 @@ export default function useFileGet(fileIds: string[]) {
           setLoading(false)
         })
     } else {
+      setPreviewFiles([])
+      setLoading(false)
+    }
+
+    return () => {
       setLoading(false)
     }
   }, [fileIds])

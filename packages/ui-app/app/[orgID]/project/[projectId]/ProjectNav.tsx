@@ -24,6 +24,7 @@ import { DropdownMenu } from '@shared/ui'
 import ProjectView from '@/features/ProjectView'
 import HasRole from '@/features/UserPermission/HasRole'
 import ProjectMemberView from '@/features/ProjectMember/View'
+import { TaskUpdate2 } from './TaskUpdate2'
 
 export default function ProjectNav() {
   const searchParams = useSearchParams()
@@ -163,11 +164,10 @@ export default function ProjectNav() {
             <div className="tab">
               <HasRole projectRoles={['MANAGER', 'LEADER']}>
                 <div
-                  className={`tab-item ${
-                    ['automation', 'automation-create'].includes(mode || '')
-                      ? 'active'
-                      : ''
-                  }`}
+                  className={`tab-item ${['automation', 'automation-create'].includes(mode || '')
+                    ? 'active'
+                    : ''
+                    }`}
                   onClick={() => onMoveTabAdvance('automation', 'rule')}>
                   <HiOutlineCpuChip />
                   <span>Automation</span>
@@ -196,7 +196,8 @@ export default function ProjectNav() {
           <TaskCreate />
         </div>
       </div>
-      <TaskUpdate />
+      {/* <TaskUpdate /> */}
+      <TaskUpdate2 />
     </div>
   )
 }

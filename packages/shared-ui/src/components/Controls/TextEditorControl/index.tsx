@@ -31,7 +31,7 @@ export default function TextareaControl({
   // };
 
   const editor = useEditor({
-    extensions: [StarterKit, Image, Link.configure({ openOnClick: false })],
+    extensions: [StarterKit, Image, Link.configure({ openOnClick: true })],
     content: val,
     editable: !disabled,
     onUpdate: ({ editor }) => {
