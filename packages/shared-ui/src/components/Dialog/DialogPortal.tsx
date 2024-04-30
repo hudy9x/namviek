@@ -32,8 +32,4 @@ export default function DialogPortal({ children }: { children: ReactNode }) {
   if (!container.current) return null
 
   return createPortal(children, container.current)
-
-
-  // const container = getDialogContainer()
-  // return createPortal(children, container)
 }

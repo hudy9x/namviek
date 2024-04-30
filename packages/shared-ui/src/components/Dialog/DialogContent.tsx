@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useEffect } from "react";
+import { MouseEvent, ReactNode } from "react";
 import DialogClose from "./DialogClose";
 import { useDialogContext } from "./context";
 

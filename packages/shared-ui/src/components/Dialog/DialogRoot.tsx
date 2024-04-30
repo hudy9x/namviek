@@ -1,5 +1,5 @@
 
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, ReactNode, SetStateAction, useEffect } from "react"
 import { DialogProvider } from "./context"
 
 type DialogRootProps = {

@@ -24,13 +24,9 @@ export const serviceGetUserByEmail = async (email: string) => {
     const key = [CKEY.USER, email]
     const cached = await hgetAll(key)
 
-    console.log('get user from cache', cached)
-
     if (cached) return cached
 
     const result = await mdUserFindEmail(email)
-
-    console.log('md get user by email', result)
 
     await hset(key, result)
 
