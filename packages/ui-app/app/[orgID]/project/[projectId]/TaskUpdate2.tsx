@@ -23,9 +23,10 @@ function TaskUpdateModal({
     task: ITaskDefaultValues,
     visible: boolean,
     setVisible: () => void,
-    onSubmit: (v: ITaskDefaultValues) => void
+    onSubmit: (v: ITaskDefaultValues, cb: () => void) => void
   }) {
 
+  console.log(task.desc)
 
   return <Dialog.Root open={visible} onOpenChange={() => {
     setVisible()
@@ -65,8 +66,6 @@ function useTaskIdChange(fn: (id: string) => void) {
     const newUrl = new URL(window.location.toString())
     const taskId = newUrl.searchParams.get('taskId')
     if (taskId) {
-      console.log('FIRST TIME', taskId)
-      // setTaskId(taskId)
       fn(taskId)
     }
 
@@ -97,11 +96,9 @@ export const TaskUpdate2 = () => {
 
   const closeTheModal = () => {
     deleteState('taskId')
-    // closeTaskDetail()
-    // router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
   }
 
-  const handleSubmit = (v: ITaskDefaultValues) => {
+  const handleSubmit = (v: ITaskDefaultValues, cb: () => void) => {
     if (!taskId) return
 
     const dataUpdate = {
@@ -122,13 +119,18 @@ export const TaskUpdate2 = () => {
     taskUpdate(dataUpdate)
       .then(res => {
         const { data, status } = res.data
-        if (status !== 200) return
+        if (status !== 200) {
+          cb()
+          return
+        }
 
         messageSuccess('Synced success !')
         syncRemoteTaskById(data.id, data as Task)
+        cb()
       })
       .catch(err => {
         messageError('Update new task error')
+        cb()
 
         if (!refCurrentTask.current) return
         // syncRemoteTaskById(refCurrentTask.current.id, refCurrentTask.current)
