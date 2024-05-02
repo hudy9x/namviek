@@ -13,8 +13,6 @@ export default function FilterForm({ type }: { type?: ProjectViewType }) {
   const hidden = customView ? '' : 'hidden'
   const { date, point, priority, groupBy, statusIds } = filter
 
-  console.log('type', type)
-
   return (
     <>
       <div className="flex items-center gap-2 mb-3">
