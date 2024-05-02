@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import useFileUpload from './useFileUpload'
 
 export default function FilePaste() {
-  const { onFileHandler } = useFileUpload()
+  const { onFileHandler, testPasteFile } = useFileUpload()
   const onPaste = async (e: ClipboardEvent) => {
     e.preventDefault()
     const files = e.clipboardData?.files
@@ -11,6 +11,7 @@ export default function FilePaste() {
 
     messageSuccess('You pasted an image !')
     onFileHandler(files)
+    testPasteFile()
   }
 
   useEffect(() => {

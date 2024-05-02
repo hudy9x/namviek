@@ -31,7 +31,7 @@ function TaskUpdateModal({
   }}>
     <Dialog.Portal>
       <Dialog.Content size='lg'>
-        <FileKitContainer fileIds={task.fileIds}>
+        <FileKitContainer taskId={id} fileIds={task.fileIds}>
           <TaskDetail
             id={id || ''}
             cover={task.cover || ''}
