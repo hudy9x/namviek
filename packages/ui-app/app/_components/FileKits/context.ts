@@ -32,7 +32,7 @@ interface IFileKitContextProps {
 }
 
 const FileKitContext = createContext<IFileKitContextProps>({
-  taskId: '', 
+  taskId: '',
   loading: false,
   uploading: false,
   previewFiles: [],

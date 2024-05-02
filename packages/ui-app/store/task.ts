@@ -263,8 +263,13 @@ export const useTaskStore = create<TaskState>(set => ({
         }
 
         if (fileIds) {
-          const oldFileIds = task.fileIds
-          task.fileIds = [...fileIds, ...oldFileIds]
+          if (fileIds.length) {
+            const oldFileIds = task.fileIds
+            task.fileIds = [...fileIds, ...oldFileIds]
+          } else {
+            task.fileIds = []
+          }
+
         }
 
         if (visionId && task.visionId !== visionId) {

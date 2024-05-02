@@ -1,6 +1,6 @@
-import { Button, Loading, messageSuccess } from '@shared/ui'
+import { Button, Loading, messageSuccess, messageWarning } from '@shared/ui'
 import FileThumb from './FileThumb'
-import { IFileItem, isImage } from './context'
+import { IFileItem, isImage, useFileKitContext } from './context'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useParams, useSearchParams } from 'next/navigation'
@@ -9,8 +9,9 @@ import { useTaskStore } from '@/store/task'
 
 export default function FileItem({ data }: { data: IFileItem }) {
   const { name, url, ext, mimeType, uploading, id, createdAt } = data
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
+  const { taskId } = useFileKitContext()
+  // const sp = useSearchParams()
+  // const taskId = sp.get('taskId')
   const { projectId } = useParams()
   const { updateTask } = useTaskStore()
 
@@ -20,7 +21,10 @@ export default function FileItem({ data }: { data: IFileItem }) {
   const createdTime = createdAt ? format(new Date(createdAt), 'HH:mm') : null
 
   const makeThisCover = () => {
-    if (!taskId) return
+    if (!taskId) {
+      messageWarning('Can not turn this to cover => TaskId not found')
+      return
+    }
 
     updateTask({
       id: taskId,

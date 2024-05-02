@@ -264,13 +264,7 @@ export default function useFileUpload() {
     })
   }
 
-  console.log('render taskid', taskId)
-  const testPasteFile = () => {
-    console.log('call test paste file', taskId || '----')
-  }
-
   return {
-    testPasteFile,
     uploadFileToS3,
     doUpload,
     onFileHandler

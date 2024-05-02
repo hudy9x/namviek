@@ -6,13 +6,13 @@ import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 
 export default function FileDelete({ id }: { id: string }) {
-  const { previewFiles, setPreviewFiles } = useFileKitContext()
+  const { previewFiles, setPreviewFiles, taskId } = useFileKitContext()
 
   const { user } = useUser()
   const { updateTask } = useTaskStore()
   const { projectId, orgID } = useParams()
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
+  // const sp = useSearchParams()
+  // const taskId = sp.get('taskId')
 
   const doDelete = () => {
     if (!taskId || !id) {
@@ -29,6 +29,8 @@ export default function FileDelete({ id }: { id: string }) {
         remainFileIds.push(pf.id)
       }
     })
+
+    console.log('previewFiles', remainFileIds, remainFileItems)
 
     setPreviewFiles(remainFileItems)
 
@@ -51,12 +53,12 @@ export default function FileDelete({ id }: { id: string }) {
   }
 
   const onDeleteHandler = () => {
-    // confirmAlert({
-    //   message: 'Are you sure you want to delete this file ?',
-    //   yes: () => {
-    doDelete()
-    //   }
-    // })
+    confirmAlert({
+      message: 'Are you sure you want to delete this file ?',
+      yes: () => {
+        doDelete()
+      }
+    })
   }
 
   return <Button title="Delete" size="sm" onClick={onDeleteHandler} />
