@@ -7,9 +7,11 @@ import FilePaste from './FilePaste'
 import FileCarousel from './FileCarousel'
 
 export default function FileKitContainer({
+  taskId,
   fileIds,
   children
 }: {
+  taskId: string
   fileIds: string[]
   children: ReactNode
 }) {
@@ -21,6 +23,7 @@ export default function FileKitContainer({
   return (
     <FileKitProvider
       value={{
+        taskId,
         uploading,
         setUploading,
         loading,

@@ -31,7 +31,7 @@ function TaskUpdateModal({
   }}>
     <Dialog.Portal>
       <Dialog.Content size='lg'>
-        <FileKitContainer fileIds={task.fileIds}>
+        <FileKitContainer taskId={id} fileIds={task.fileIds}>
           <TaskDetail
             id={id || ''}
             cover={task.cover || ''}
@@ -146,6 +146,7 @@ export const TaskUpdate2 = () => {
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
 
+    console.log('update current Task')
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
@@ -176,6 +177,8 @@ export const TaskUpdate2 = () => {
       })
     }
   }, [taskId, tasks])
+
+  console.log('currentTask', currentTask.fileIds)
 
 
   return <TaskUpdateModal

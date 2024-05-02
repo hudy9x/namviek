@@ -22,7 +22,7 @@
 }
 
 .file-drop-label {
-  @apply absolute z-10 top-0 left-0 w-full h-full rounded-md bg-white/70 backdrop-blur-sm flex items-center justify-center pointer-events-none;
+  @apply absolute z-10 top-0 left-0 w-full h-full rounded-md bg-white/70 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center pointer-events-none;
 }
 
 .file-drop-label + * {

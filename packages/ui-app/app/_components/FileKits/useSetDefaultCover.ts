@@ -3,11 +3,12 @@ import { taskMakeCover } from "@/services/task"
 import { useTaskStore } from "@/store/task"
 import { messageSuccess } from "@shared/ui"
 import { useSearchParams } from "next/navigation"
+import { useFileKitContext } from "./context"
 
 export const useSetDefaultCover = () => {
   const { projectId } = useUrl()
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
+  const { taskId } = useFileKitContext()
+
   const { tasks, updateTask } = useTaskStore()
   const currentTask = tasks.find(t => t.id === taskId)
 
