@@ -1,6 +1,7 @@
 .dialog-wrapper {
-  @apply fixed z-50 top-0 left-0 w-full h-full overflow-y-auto;
-  @apply flex items-center justify-center;
+  @apply fixed z-50 top-0 left-0 w-full h-full;
+  /* @apply overflow-y-auto; */
+  /* @apply flex items-center justify-center; */
 }
 
 .dialog-backdrop {
@@ -27,9 +28,13 @@
   max-height: initial;
 }
 
+.dialog-content.show{
+  @apply pointer-events-auto;
+}
+
 .dialog-backdrop.show, 
 .dialog-content.show{
-  @apply pointer-events-auto scale-100;
+  @apply scale-100;
   @apply opacity-100 ;
 }
 

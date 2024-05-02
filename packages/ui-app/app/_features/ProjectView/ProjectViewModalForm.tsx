@@ -35,7 +35,6 @@ export default function ProjectViewModalForm({
   }
 
   const onAdd = () => {
-    console.log(filter, customView)
     setLoading(true)
     addProjectView({
       icon,
@@ -51,8 +50,6 @@ export default function ProjectViewModalForm({
         hideModal()
       })
   }
-
-  console.log('type', type)
 
   return (
     <div className="min-h-[500px]">

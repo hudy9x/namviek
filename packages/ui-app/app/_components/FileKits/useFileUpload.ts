@@ -64,8 +64,6 @@ export default function useFileUpload() {
         type: file.type
       })
 
-      console.log('res', res)
-
       const { name, presignedUrl, url } = res.data.data
       const keyName = name as string
       await storagePutFile(presignedUrl, file)
@@ -180,8 +178,6 @@ export default function useFileUpload() {
         fileItems.push(value)
       }
     })
-
-    console.log('files items', fileItems)
 
     taskId &&
       fileIds.length &&

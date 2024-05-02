@@ -26,8 +26,6 @@ function TaskUpdateModal({
     onSubmit: (v: ITaskDefaultValues, cb: () => void) => void
   }) {
 
-  console.log(task.desc)
-
   return <Dialog.Root open={visible} onOpenChange={() => {
     setVisible()
   }}>

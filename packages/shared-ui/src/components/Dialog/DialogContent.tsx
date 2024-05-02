@@ -28,11 +28,16 @@ export default function DialogContent({
 
   return <div
     className={`dialog-wrapper ${open ? "" : 'pointer-events-none -z-10'}`}
+    style={!open ? { overflowY: 'hidden' } : {}}
     onClick={clickOutSide}>
     <div className={`dialog-backdrop ${visible}`}></div>
-    <div onClick={stopPropagation} className={`dialog-content ${classes.join(' ')}`}>
-      <DialogClose />
-      {children}
+    <div className={`${open ? 'overflow-y-auto' : ''} h-full z-10 relative py-[100px]`}>
+      <div className="flex items-center justify-center">
+        <div onClick={stopPropagation} className={`dialog-content ${classes.join(' ')}`}>
+          <DialogClose />
+          {children}
+        </div>
+      </div>
     </div>
   </div>
 }
