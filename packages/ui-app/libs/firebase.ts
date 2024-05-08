@@ -11,18 +11,9 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyAl5oGvtt1UU44otEOeO5YaZYCvq_vHlPY',
-  authDomain: 'namviek-e8a35.firebaseapp.com',
-  projectId: 'namviek-e8a35',
-  storageBucket: 'namviek-e8a35.appspot.com',
-  messagingSenderId: '1083705340797',
-  appId: '1:1083705340797:web:69ba2faa1245fc85305214',
-  measurementId: 'G-NNV8C2K4DK'
-}
-
+const firebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_CLIENT_CONFIG
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
+initializeApp(JSON.parse(firebaseConfig || '{}'))
 // const analytics = getAnalytics(app)
 const googleProvider = new GoogleAuthProvider()
 
