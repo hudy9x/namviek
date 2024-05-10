@@ -1,4 +1,3 @@
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import {
   BaseController,
   Body,
@@ -7,7 +6,7 @@ import {
   Post,
   Req
 } from '../../core'
-import { pusherServer } from '../../lib/pusher-server'
+import { pusherTrigger } from '../../lib/pusher-server'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 
@@ -29,7 +28,7 @@ export class EventController extends BaseController {
 
     console.log('trigger event task reorder ', body)
 
-    pusherServer.trigger('team-collab', eventName, {
+    pusherTrigger('team-collab', eventName, {
       ...rest,
       triggerBy: id
     })
@@ -50,7 +49,7 @@ export class EventController extends BaseController {
 
     console.log(`trigger event ${eventName} `, body)
 
-    pusherServer.trigger('team-collab', eventName, {
+    pusherTrigger('team-collab', eventName, {
       ...rest,
       triggerBy: id
     })

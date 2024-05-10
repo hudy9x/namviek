@@ -1,4 +1,4 @@
-import { pusherServer } from '../lib/pusher-server'
+import { pusherTrigger } from '../lib/pusher-server'
 
 export default class TaskPusherJob {
   async triggerUpdateEvent({
@@ -8,7 +8,7 @@ export default class TaskPusherJob {
     projectId: string
     uid: string
   }) {
-    pusherServer.trigger('team-collab', `projectTask:update-${projectId}`, {
+    pusherTrigger('team-collab', `projectTask:update-${projectId}`, {
       triggerBy: uid
     })
   }

@@ -1,5 +1,12 @@
 import { Resend } from 'resend'
-const resend = new Resend(process.env.RESEND_TOKEN)
+let resend: Resend;
+let ready = false
+try {
+  resend = new Resend(process.env.RESEND_TOKEN)
+  ready = true
+} catch (error) {
+  console.warn("Resend token is missing")
+}
 
 const supportEmail = 'support.dev'
 const productionAddress = 'Kampuni.dev'
@@ -11,7 +18,18 @@ interface IEmailFields {
   emails: string[]
 }
 
+const _cannotSendEmail = () => {
+  if (!ready) {
+    console.warn('Cannot send this email. Resend token is missing')
+    return true
+  }
+
+  return false
+}
+
+
 export const sendEmail = ({ emails, html, subject }: IEmailFields) => {
+  if (_cannotSendEmail()) return
   return resend.emails.send({
     from: `Noreply <noreply@${process.env.RESEND_EMAIL_DOMAIN}>`,
     to: emails,
@@ -44,6 +62,8 @@ export const sendVerifyEmail = ({
   email: string
   token: string
 }) => {
+  if (_cannotSendEmail()) return
+
   const verificationLink = `${process.env.NEXT_PUBLIC_FE_GATEWAY}email-verification?token=${token}`
   return sendEmail({
     emails: [email],

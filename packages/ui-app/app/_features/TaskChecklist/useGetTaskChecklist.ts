@@ -12,8 +12,7 @@ export default function useGetTaskChecklist(taskId: string) {
   }, [])
 
   useDebounce(() => {
-
-    taskChecklistSv.getByTaskId(taskId).then(res => {
+    taskId && taskChecklistSv.getByTaskId(taskId).then(res => {
       const { data } = res.data
 
       if (!data) {

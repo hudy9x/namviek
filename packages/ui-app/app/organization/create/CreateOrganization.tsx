@@ -30,7 +30,7 @@ export default function CreateOrganization() {
           messageError('Cannot create organization')
           return
         }
-        push(`/${org.id}`)
+        push(`/${org.id}/my-works`)
       }).catch(err => {
         const error = err as AxiosError
         if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {

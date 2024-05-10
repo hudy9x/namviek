@@ -86,7 +86,7 @@ export default class TaskCreateService {
           progress
         })
 
-        console.log('result task', result)
+        console.log('result task', result.title, result.id)
 
         activityService.createTask({
           id: result.id,
@@ -107,7 +107,7 @@ export default class TaskCreateService {
 
         return result
       } catch (error) {
-        console.log(error)
+        console.trace(error)
         throw new InternalErrorException(error)
       }
     }

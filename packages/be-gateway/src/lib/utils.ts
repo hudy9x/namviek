@@ -1,5 +1,5 @@
 export const isDevMode = () => {
-  return process.env.DEV_MODE === 'true'
+  return process.env.DEV_MODE
 }
 
 export const isProdMode = () => {

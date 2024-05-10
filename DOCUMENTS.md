@@ -5,13 +5,13 @@ We're using Pusher/channel to push a message from server to client. For instance
 - When a user type a new comment, the other user will receive this comment immediately.
 - Or when a new user was added to a new project, he/she will be see it right after the manager update member list
 
-To use it, in your backend code, import the `pusherServer` and trigger an event as follows:
+To use it, in your backend code, import the `pusherTrigger` and trigger an event as follows:
 ```javascript
-import { pusherServer } from '../../lib/pusher-server'
+import { pusherTrigger } from '../../lib/pusher-server'
 
 const eventName = `event-delete-task-comment`
 
-pusherServer.trigger('team-collab', eventName, {
+pusherTrigger('team-collab', eventName, {
     id,
     triggerBy: updatedBy
 })

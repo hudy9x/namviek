@@ -15,7 +15,7 @@ import {
 import { ProjectViewType } from '@prisma/client'
 import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
-import { pusherServer } from '../../lib/pusher-server'
+import { pusherTrigger } from '../../lib/pusher-server'
 
 @Controller('/project-view')
 @UseMiddleware([authMiddleware])
@@ -65,7 +65,7 @@ export default class ProjectViewController extends BaseController {
       updatedBy: null
     })
 
-    pusherServer.trigger('team-collab', `projectView:update-${projectId}`, {
+    pusherTrigger('team-collab', `projectView:update-${projectId}`, {
       triggerBy: uid
     })
 
@@ -93,7 +93,7 @@ export default class ProjectViewController extends BaseController {
       updatedBy: uid
     })
 
-    pusherServer.trigger(
+    pusherTrigger(
       'team-collab',
       `projectView:update-${result.projectId}`,
       {
@@ -110,7 +110,7 @@ export default class ProjectViewController extends BaseController {
     const { id } = req.query as { id: string }
     const result = await mdProjectView.delete(id)
 
-    pusherServer.trigger(
+    pusherTrigger(
       'team-collab',
       `projectView:update-${result.projectId}`,
       {

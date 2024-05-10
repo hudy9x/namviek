@@ -13,6 +13,7 @@ import JwtProvider from '../../providers/JwtProvider'
 import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
 import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
+import { isDevMode } from '../../lib/utils'
 
 const mainRouter = Router()
 const router = Router()
@@ -85,7 +86,6 @@ router.post('/sign-up', async (req, res) => {
     const resultData = data as User
     const hashedPwd = hashPassword(resultData.password)
 
-    console.log(1)
     const user = await mdUserAdd({
       email: resultData.email,
       password: hashedPwd,
@@ -93,7 +93,7 @@ router.post('/sign-up', async (req, res) => {
       country: null,
       bio: null,
       dob: null,
-      status: UserStatus.INACTIVE,
+      status: isDevMode() ? UserStatus.ACTIVE : UserStatus.INACTIVE,
       photo: null,
       settings: {},
       createdAt: new Date(),

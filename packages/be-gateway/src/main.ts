@@ -11,12 +11,19 @@ import './lib/firebase-admin'
 import './events'
 import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
+import { isDevMode } from './lib/utils'
 // import { Log } from './lib/log'
 
 connectPubClient((err) => {
   console.log(err)
 })
 const app: Application = express()
+
+console.log(`
+------------------------------
+Running in ${isDevMode() ? "Development" : "Production"} mode
+------------------------------
+`)
 
 app.get('/check-health', (req, res) => {
   // Log.info('Heelo')
@@ -36,6 +43,7 @@ app.use('/api', Routes)
 
 // Catch wrong api name, method
 app.use((req, res, next) => {
+  console.log('URL:', req.url)
   const error = new ApiNotFoundException()
   next(error)
 })
