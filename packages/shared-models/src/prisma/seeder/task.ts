@@ -5,7 +5,6 @@ import {
   TaskPriority,
   TaskStatus
 } from '@prisma/client'
-import { CKEY, incrCache } from './redis'
 
 const prisma = new PrismaClient()
 
