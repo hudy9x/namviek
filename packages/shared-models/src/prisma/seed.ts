@@ -1,15 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import { dummyAutomation } from './seeder/automation'
-import { dummyTask, updateTaskCounter } from './seeder/task'
-import { dummyMemberToAllProject } from './seeder/member'
+import { createAdminUser } from './seeder/user'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  updateTaskCounter()
-  // dummyAutomation()
-  // dummyTask()
-  // dummyMemberToAllProject()
+  createAdminUser().then(res => {
+    console.log('created admin user')
+  })
 }
 main()
   .then(async () => {
