@@ -63,7 +63,6 @@ export class OrganizationController extends BaseController {
       // Log.flush()
 
       // res.setHeader('Cache-Control', 'max-age=20, public')
-      console.log('orgs', orgs)
 
       return orgs
     } catch (error) {

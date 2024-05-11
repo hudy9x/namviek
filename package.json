@@ -29,7 +29,7 @@
     "pushdb2": "prisma db push --schema=./packages/shared-models/src/prisma/schema.prisma",
     "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma",
 
-    "postinstall": "prisma generate2"
+    "postinstall": "yarn generate2"
   },
   "private": true,
   "dependencies": {
