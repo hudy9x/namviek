@@ -28,6 +28,11 @@ export const signin = ({
       const { headers } = res
 
       console.log('headers', headers)
+      console.log(status)
+
+      if (status === 403) {
+        return Promise.reject('NOT_ACTIVE')
+      }
 
       if (status !== 200) {
         return Promise.reject('INVALID_INFORMATION')
@@ -56,7 +61,7 @@ export const signin = ({
       return Promise.resolve('SUCCESS')
     })
     .catch(error => {
-      console.log('error', error)
+      console.log('error signin', error)
       return Promise.reject(error)
     })
 }

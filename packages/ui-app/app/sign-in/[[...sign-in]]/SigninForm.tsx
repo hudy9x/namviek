@@ -105,7 +105,7 @@ export default function SigninForm() {
       })
       .catch(err => {
 
-        if (err.response && err.response.status === 403) {
+        if (err === 'NOT_ACTIVE') {
           messageError(
             "You haven't activated your account yet. Please check your email for the activation link."
           )
@@ -226,7 +226,7 @@ export default function SigninForm() {
                 loading={sending}
                 primary
                 block
-                title="Resend"
+                title="Send now"
                 onClick={onResend}
               />
             </div>
