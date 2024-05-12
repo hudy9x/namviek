@@ -56,9 +56,9 @@ export default function OrgList() {
                     alt='Organization cover'
                     src={org.cover || ''}
                   />
-                  <div className='text-zinc-700'>
+                  <div className='text-zinc-700 dark:text-zinc-400'>
                     <h2 className='font-medium'>{org.name}</h2>
-                    <small className='text-xs text-zinc-400'>{createdAt}</small>
+                    <small className='text-xs text-zinc-400 dark:text-zinc-600'>{createdAt}</small>
                   </div>
                 </div>
               </Link>
