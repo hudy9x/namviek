@@ -38,9 +38,11 @@ export const createOrganization = async (body: {
     })
 
     console.log('created new organization')
+    return result
 
   } catch (error) {
     console.log('create organization error', error)
+    return null
   }
 
 }
