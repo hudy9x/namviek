@@ -16,7 +16,7 @@ export const AppRoutes = (routeControllers: any[]) => {
 
   routeControllers.forEach(controller => {
     const instance = new controller()
-    console.log('================')
+    // console.log('================')
 
     const prefix = getMetadata(MetaKey.PREFIX, controller) as string
     const routes = getMetadata(MetaKey.ROUTES, controller) as RouteDefinition[]
@@ -50,12 +50,12 @@ export const AppRoutes = (routeControllers: any[]) => {
       if (!func) return
 
       if (params && params.length) {
-        console.log(
-          method.toUpperCase(),
-          `${prefix}${path}`,
-          '==>',
-          r.methodName
-        )
+        // console.log(
+        //   method.toUpperCase(),
+        //   `${prefix}${path}`,
+        //   '==>',
+        //   r.methodName
+        // )
         // console.log(params)
 
         methodRouter[method](path, async (req, res, next) => {
@@ -105,12 +105,12 @@ export const AppRoutes = (routeControllers: any[]) => {
           }
         })
       } else {
-        console.log(
-          method.toUpperCase(),
-          `${prefix}${path}`,
-          '==>',
-          r.methodName
-        )
+        // console.log(
+        //   method.toUpperCase(),
+        //   `${prefix}${path}`,
+        //   '==>',
+        //   r.methodName
+        // )
         methodRouter[method](path, async (req, res, next) => {
           instance.req = req
           instance.res = res

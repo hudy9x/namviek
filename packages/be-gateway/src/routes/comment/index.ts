@@ -14,7 +14,7 @@ import {
   Put,
   Delete
 } from '../../core'
-import { pusherServer } from '../../lib/pusher-server'
+import { pusherTrigger } from '../../lib/pusher-server'
 import { AuthRequest } from '../../types'
 
 @Controller('/comment')
@@ -58,7 +58,7 @@ export default class TaskComment extends BaseController {
 
         console.log(`trigger event ${eventName} `, body)
 
-        pusherServer.trigger('team-collab', eventName, {
+        pusherTrigger('team-collab', eventName, {
           ...result
         })
 
@@ -85,7 +85,7 @@ export default class TaskComment extends BaseController {
 
         console.log(`trigger event ${eventName} `, body)
 
-        pusherServer.trigger('team-collab', eventName, {
+        pusherTrigger('team-collab', eventName, {
           ...result
         })
 
@@ -113,7 +113,7 @@ export default class TaskComment extends BaseController {
 
       console.log(`trigger event ${eventName} `, id)
 
-      pusherServer.trigger('team-collab', eventName, {
+      pusherTrigger('team-collab', eventName, {
         id,
         triggerBy: updatedBy
       })

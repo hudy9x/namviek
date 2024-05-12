@@ -1,5 +1,5 @@
 import { PinnedProjectSetting, UserSetting } from '../type'
-import { Log, pmClient } from './_prisma'
+import { pmClient } from './_prisma'
 import { mdUserFindFirst, mdUserUpdateSetting } from './user'
 
 const _getPinnedProjectList = async (

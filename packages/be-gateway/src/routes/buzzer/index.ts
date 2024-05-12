@@ -3,7 +3,7 @@ import { AuthRequest } from '../../types'
 
 import { authMiddleware } from '../../middlewares'
 import { generateBuzzerToken, notifyToUsers } from '../../lib/buzzer'
-import { pusherServer } from '../../lib/pusher-server'
+import { pusherAuthorizeChannel } from '../../lib/pusher-server'
 
 const router = Router()
 const mainRouter = Router()
@@ -31,7 +31,7 @@ router.post('/channel-auth', async (req, res) => {
 
     console.log('authorize channel')
 
-    const authResponse = pusherServer.authorizeChannel(
+    const authResponse = pusherAuthorizeChannel(
       socketId,
       channel
       // presenceData

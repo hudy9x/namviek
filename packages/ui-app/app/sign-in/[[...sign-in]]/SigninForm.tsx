@@ -74,6 +74,7 @@ export default function SigninForm() {
     setEmail(values.email)
     signin(values)
       .then(res => {
+        console.log('sign in return', res)
         try {
           const user = getGoalieUser()
           setUser(user)
@@ -103,15 +104,16 @@ export default function SigninForm() {
         }
       })
       .catch(err => {
-        if (err.response.status === 403) {
+
+        if (err === 'NOT_ACTIVE') {
           messageError(
             "You haven't activated your account yet. Please check your email for the activation link."
           )
           setIsUserInactive(true)
-        } else {
-          messageError('Your email or password are invalid')
+          return
         }
-        console.log(err)
+
+        messageError('Your email or password are invalid')
       })
       .finally(() => {
         setLoading(false)
@@ -224,7 +226,7 @@ export default function SigninForm() {
                 loading={sending}
                 primary
                 block
-                title="Resend"
+                title="Send now"
                 onClick={onResend}
               />
             </div>

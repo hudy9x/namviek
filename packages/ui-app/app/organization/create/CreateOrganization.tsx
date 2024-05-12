@@ -1,15 +1,18 @@
 'use client'
 
-import { Button, Form, FormGroup, messageError, messageWarning } from '@shared/ui'
+import { Button, Form, FormGroup, Loading, messageError, messageWarning } from '@shared/ui'
 import { useFormik } from 'formik'
 import { orgCreate } from '../../../services/organization'
 import { Organization } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import EmojiInput from '@/components/EmojiInput'
 import { AxiosError } from 'axios'
+import { useState } from 'react'
 
 export default function CreateOrganization() {
   const { push } = useRouter()
+  const [loading, setLoading] = useState(false)
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -22,15 +25,19 @@ export default function CreateOrganization() {
         return
       }
 
+      setLoading(true)
+
       orgCreate(values).then(res => {
         const { status } = res
         const { data } = res.data
         const org = data as Organization
+
         if (status !== 200) {
+          setLoading(false)
           messageError('Cannot create organization')
           return
         }
-        push(`/${org.id}`)
+        push(`/${org.id}/my-works`)
       }).catch(err => {
         const error = err as AxiosError
         if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {
@@ -38,6 +45,7 @@ export default function CreateOrganization() {
 
           console.log(err)
         }
+        setLoading(false)
       })
     }
   })
@@ -57,7 +65,8 @@ export default function CreateOrganization() {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="org">
-        <div className="org-setup">
+        <div className="org-setup relative">
+          <Loading.Absolute enabled={loading} title='Submitting' />
           {/* <section className="setup-step mb-4"><span>Step 1/</span>6</section> */}
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             🖖 Hey,
@@ -84,7 +93,7 @@ export default function CreateOrganization() {
               {...registerForm('desc', formik)}
             />
             <div>
-              <Button type="submit" title="Save it" primary />{' '}
+              <Button type="submit" title="Create now" primary />{' '}
               <Button onClick={() => push('/organization')} title="Back" />
             </div>
           </div>
