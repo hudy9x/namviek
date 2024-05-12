@@ -39,12 +39,21 @@ const createStarterData = () => {
 }
 
 async function main() {
-  const [type] = args.slice(2)
+  const [type, value] = args.slice(2)
+  console.log('>>>>>>')
   console.log('type', type)
+  console.log('value', value)
+  console.log('>>>>>>')
   switch (type) {
     case 'user':
-      createAdminUser().then(res => {
-        console.log('created admin user')
+      createAdminUser(value).then(res => {
+        console.log(`
+An user has been created !
+=============================================
+account: ${res.email}
+password: ${process.env.DEFAULT_PWD || '123123123'}
+=============================================
+`)
       })
       break;
 

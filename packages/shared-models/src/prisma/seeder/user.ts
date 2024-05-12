@@ -9,11 +9,11 @@ export const hashPassword = (pwd: string) => {
   return hashSync(pwd, salt)
 }
 
-export const createAdminUser = () => {
+export const createAdminUser = (value?: string) => {
   return pmClient.user.create({
     data: {
       name: "Administrator",
-      email: "admin@gmail.com",
+      email: value || "admin@gmail.com",
       password: hashPassword(defaultPwd || '123123123'),
       status: UserStatus.ACTIVE,
       country: null,
