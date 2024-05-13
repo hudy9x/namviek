@@ -12,9 +12,9 @@ export const createProject = async (body: {
   const userId = body.uid
   const members = [userId]
 
-  pmClient.$transaction(async tx => {
+  await pmClient.$transaction(async tx => {
 
-    console.log('create project')
+    // console.log('create project')
     const result = await tx.project.create({
       data: {
         cover: null,
@@ -31,7 +31,7 @@ export const createProject = async (body: {
       }
     })
 
-    console.log('project created', result.id)
+    // console.log('project created', result.id)
 
     // Prepare default data - START
 
@@ -100,18 +100,18 @@ export const createProject = async (body: {
     }))
 
 
-    console.log('create rest views but the first one', restViewDatas.length)
+    // console.log('create rest views but the first one', restViewDatas.length)
 
     restViewDatas.length && await tx.projectView.createMany({
       data: restViewDatas
     })
 
-    console.log('create first view')
+    // console.log('create first view')
     const firstProjectView = await tx.projectView.create({
       data: defaultView
     })
 
-    console.log('updating first view to project', firstProjectView.id)
+    // console.log('updating first view to project', firstProjectView.id)
     await tx.project.update({
       where: {
         id: result.id
@@ -153,7 +153,7 @@ export const createProject = async (body: {
       data: initialPointData
     })
 
-    console.log('start inserting default status, point and members')
+    // console.log('start inserting default status, point and members')
     const promises = await Promise.all([
       projectStatusPromise,
       taskPointPromise,
@@ -161,26 +161,9 @@ export const createProject = async (body: {
 
     ])
 
-    // const promise = [
-    //   mdTaskStatusAddMany(initialStatusData),
-    //   mdTaskPointAddMany(initialPointData),
-    //   mdMemberAdd({
-    //     uid: userId,
-    //     projectId: result.id,
-    //     role: MemberRole.MANAGER,
-    //     createdAt: new Date(),
-    //     createdBy: userId,
-    //     updatedBy: null,
-    //     updatedAt: null
-    //   })
-    // ]
 
     await Promise.all(promises)
 
-
-    console.log('done')
-
-    console.log('delete cache done')
   })
 
 }

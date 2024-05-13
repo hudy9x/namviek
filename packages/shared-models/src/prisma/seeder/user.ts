@@ -28,3 +28,11 @@ export const createAdminUser = (value?: string) => {
     }
   })
 }
+
+export const getOrgOwner = (email: string) => {
+  return pmClient.user.findFirst({
+    where: {
+      email
+    }
+  })
+}
