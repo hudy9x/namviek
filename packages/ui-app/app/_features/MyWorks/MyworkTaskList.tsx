@@ -29,9 +29,7 @@ export default function MyworkTaskList({ loading, tasks }: { loading: boolean, t
     )}
 
     {!loading && !tasks.length && (
-      <div className="task-empty text-sm bg-red-200 dark:bg-red-300 rounded-md border border-red-200 dark:border-red-400 shadow-sm shadow-red-300 dark:shadow-red-700 p-3 text-red-800">
-        {`🎃😎🥶 No tasks found! You're so lucky buddy !!`}
-      </div>
+      <div className="task-empty text-sm bg-gray-50 dark:bg-gray-800 rounded-md border dark:border-gray-700 shadow-sm dark:shadow-gray-900 p-3 text-gray-800 dark:text-gray-400">No task found !</div>
     )}
   </>
 }

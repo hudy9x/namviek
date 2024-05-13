@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { createAdminUser } from './seeder/user'
+import { createAdminUser, getOrgOwner } from './seeder/user'
 import { createOrganization } from './seeder/organization'
 import { createProject } from './seeder/project'
+import { generateIconName, generateOrgName, generateProjectName } from './dummy'
 const args = process.argv
 
 const prisma = new PrismaClient()
@@ -9,16 +10,18 @@ const prisma = new PrismaClient()
 const createStarterData = () => {
 
   let userId = '';
-  createAdminUser()
+  getOrgOwner('admin@gmail.com')
     .then(async res => {
-      console.log('created admin user')
+      console.log('get email: ', res.email)
       userId = res.id
       try {
         const result = await createOrganization({
-          name: 'Torchucs',
+          name: generateOrgName(),
           uid: userId,
-          cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f951.png'
+          cover: generateIconName()
         })
+
+        console.log('created org: ', result.name)
 
         return result
       } catch (error) {
@@ -27,11 +30,18 @@ const createStarterData = () => {
 
     })
     .then(async org => {
-      await createProject({
-        name: 'Project 1',
-        uid: userId,
-        organizationId: org.id
-      })
+      for (let i = 0; i < 4; i++) {
+        const projectName = generateProjectName()
+
+        await createProject({
+          icon: generateIconName(),
+          name: projectName,
+          uid: userId,
+          organizationId: org.id
+        });
+
+        console.log('created project:', projectName)
+      }
     })
     .catch(err => {
       console.log(err)
@@ -39,12 +49,21 @@ const createStarterData = () => {
 }
 
 async function main() {
-  const [type] = args.slice(2)
+  const [type, value] = args.slice(2)
+  console.log('>>>>>>')
   console.log('type', type)
+  console.log('value', value)
+  console.log('>>>>>>')
   switch (type) {
     case 'user':
-      createAdminUser().then(res => {
-        console.log('created admin user')
+      createAdminUser(value).then(res => {
+        console.log(`
+An user has been created !
+=============================================
+account: ${res.email}
+password: ${process.env.DEFAULT_PWD || '123123123'}
+=============================================
+`)
       })
       break;
 

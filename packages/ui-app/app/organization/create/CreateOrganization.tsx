@@ -69,8 +69,8 @@ export default function CreateOrganization() {
           <Loading.Absolute enabled={loading} title='Submitting' />
           {/* <section className="setup-step mb-4"><span>Step 1/</span>6</section> */}
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
-            🖖 Hey,
-            <br /> Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
+            Hey fen, 🖖
+            <br /> Lets create your organization
           </h2>
           <p className="text-xs sm:text-sm text-gray-400">
             Tell us more about your organization so we can provide personalized
