@@ -8,7 +8,7 @@ import { GoalieProvider } from '@goalie/nextjs'
 import Head from 'next/head'
 
 import dynamic from 'next/dynamic'
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
 const PushNotification = dynamic(
   () => import('./_components/PushNotification'),
