@@ -52,7 +52,7 @@ function OrgInfo({ id }: { id: string }) {
   return <div className="flex items-center gap-2">
     <div className="w-9 h-9 p-1 rounded-md border bg-zinc-100 dark:bg-gray-800 dark:border-gray-700 relative">
       {org.cover ?
-        <img className="w-full h-full" src={org.cover} /> : <Loading.Absolute title="" />}
+        <img className="w-full h-full" src={org.cover} alt="Cover organization" /> : <Loading.Absolute title="" />}
     </div>
     <div className="flex flex-col">
       <span className="text-gray-700 dark:text-gray-400 text-sm">{org.name ? org.name : <span className="h-2 bg-slate-700 rounded animate-pulse text-transparent">No title</span>}</span>
@@ -87,9 +87,9 @@ function OrgPopMenu({ id }: { id: string }) {
         <HiOutlineCog6Tooth className="text-gray-500" />
       </div>}
       content={<div className="border rounded-md bg-white dark:bg-gray-900 dark:border-gray-700 shadow-sm py-1.5 w-[150px] mt-1">
-        {menus.map(menu => {
+        {menus.map((menu, midx) => {
           const Icon = menu.icon
-          return <Link href={menu.link} className="flex items-center gap-2 py-2 px-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+          return <Link key={midx} href={menu.link} className="flex items-center gap-2 py-2 px-3 hover:bg-gray-50 dark:hover:bg-gray-800">
             <Icon className="text-gray-500 dark:text-gray-400 w-4 h-4" />
             <span className="text-xs text-gray-700 dark:text-gray-500">{menu.title}</span>
           </Link>

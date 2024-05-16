@@ -50,9 +50,9 @@ export default function UserSection() {
               </div>
               <ThemeSelection />
             </div>
-            {menus.map(menu => {
+            {menus.map((menu, midx) => {
               const Icon = menu.icon
-              return <Link href={menu.link} className="flex items-center gap-2 py-2 px-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+              return <Link key={midx} href={menu.link} className="flex items-center gap-2 py-2 px-3 hover:bg-gray-50 dark:hover:bg-gray-800">
                 <Icon className="text-gray-500 dark:text-gray-400 w-4 h-4" />
                 <span className="text-xs text-gray-700 dark:text-gray-500">{menu.title}</span>
               </Link>
