@@ -10,7 +10,11 @@ import {
   HiOutlineServerStack,
   HiOutlineCog6Tooth,
   HiOutlineStar,
-  HiOutlineVideoCamera
+  HiOutlineVideoCamera,
+  HiOutlineChevronLeft,
+  HiArrowLeft,
+  HiOutlineUserGroup,
+  HiOutlineUserPlus
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -18,6 +22,9 @@ import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import Favorites from '@/features/Favorites'
 import { useMemo, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
+import { HiOutlineUserAdd } from 'react-icons/hi'
+import ThemeSelection from 'packages/ui-app/layouts/ThemeSelection'
+import OrgSection from 'packages/ui-app/layouts/OrgSection'
 
 function ViewAllBtn() {
   return (
@@ -52,23 +59,16 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
 
   const menus = [
     {
+      title: 'Back',
+      href: `/organization`,
+      icon: HiArrowLeft,
+      active: false
+    },
+    {
       title: 'My works',
       href: `/${orgID}/my-works`,
       icon: HiOutlineBriefcase,
       active: pathname.includes('/my-works')
-    },
-    {
-      title: 'Meeting',
-      href: `/${orgID}/meeting`,
-      icon: HiOutlineVideoCamera,
-      active: pathname.includes('/meeting')
-    },
-    {
-      title: 'Favorites',
-      // href: `/${orgID}/favorites`,
-      icon: HiOutlineStar,
-      active: pathname.includes('/favorites'),
-      children: Favorites
     },
     {
       title: 'Projects',
@@ -79,26 +79,39 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
       children: ProjectList
     },
     {
+      title: 'Meeting',
+      href: `/${orgID}/meeting`,
+      icon: HiOutlineVideoCamera,
+      active: pathname.includes('/meeting')
+    },
+    // {
+    //   title: 'Favorites',
+    //   // href: `/${orgID}/favorites`,
+    //   icon: HiOutlineStar,
+    //   active: pathname.includes('/favorites'),
+    //   children: Favorites
+    // },
+    {
       title: 'Reports',
       href: `/${orgID}/report`,
       icon: HiOutlineChartPie,
       active: pathname.includes(`${orgID}/report`)
     },
-    {
-      title: 'Settings',
-      href: `/${orgID}/setting/people`,
-      icon: HiOutlineCog6Tooth,
-      active: pathname.includes(`${orgID}/setting`)
-    }
+    // {
+    //   title: 'Settings',
+    //   href: `/${orgID}/setting/people`,
+    //   icon: HiOutlineCog6Tooth,
+    //   active: pathname.includes(`${orgID}/setting`)
+    // }
   ]
 
   return (
     <>
       <aside className={`root-sidebar`}>
-        <RootSidebar />
+        {/* <RootSidebar /> */}
         <nav className="secondary-sidebar">
-          <UserSection />
-          <Scrollbar style={{ height: `calc(100vh - 79px)` }}>
+          <OrgSection />
+          <Scrollbar style={{ height: `calc(100vh - 141px)` }}>
             <section className="side-nav">
               {menus.map((menu, mindex) => {
                 const Icon = menu.icon
@@ -127,6 +140,8 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
               })}
             </section>
           </Scrollbar>
+
+          <UserSection />
         </nav>
       </aside>
     </>

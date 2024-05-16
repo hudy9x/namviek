@@ -7,6 +7,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { orgGet } from '../../services/organization'
 import { dateFormat } from '@shared/libs'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { setOrgInfo } from 'packages/ui-app/layouts/OrgSection'
 
 export default function OrgList() {
   // const { push } = useRouter()
@@ -49,7 +50,12 @@ export default function OrgList() {
           {orgs.map(org => {
             const createdAt = org.createdAt ? formatDistanceToNowStrict(new Date(org.createdAt), { addSuffix: true }) : null
             return (
-              <Link key={org.id} href={`/${org.id}/my-works`}>
+              <Link onClick={() => {
+                setOrgInfo({
+                  name: org.name,
+                  cover: org.cover || ''
+                })
+              }} key={org.id} href={`/${org.id}/my-works`}>
                 <div className="box px-8 border dark:border-gray-700 dark:bg-gray-900 dark:shadow-gray-900 flex h-[100px] gap-5 items-center cursor-pointer hover:border-indigo-300 text-indigo-800 dark:text-indigo-400">
                   <img
                     className="w-10 h-10 rounded-md"

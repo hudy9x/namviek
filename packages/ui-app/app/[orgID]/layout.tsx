@@ -27,7 +27,7 @@ export default function ProjectLayout({
       <ProjectSidebar />
       <main
         className="main-content w-full"
-        style={{ width: 'calc(100% - 308px)' }}>
+        style={{ width: 'calc(100% - 251px)' }}>
         <HamburgerMenu />
         {children}
       </main>
