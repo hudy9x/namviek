@@ -40,7 +40,7 @@ export default function AutomateMenu() {
   const SelectedContent = asides.find(s => s.active)?.content
 
   return (
-    <div className="pt-8 w-[1200px] ml-8">
+    <div className="pt-8 w-[1024px] ml-8">
       <div className="org">
         <div className="aside-content">
           <aside className="aside-menu">

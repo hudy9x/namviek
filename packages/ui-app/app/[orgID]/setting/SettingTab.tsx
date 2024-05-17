@@ -27,24 +27,24 @@ export default function SettingTabLayout() {
       active: pathname.includes('/setting/people'),
       enable: true
     },
+    // {
+    //   title: 'Projects',
+    //   name: 'projects',
+    //   href: '#',
+    //   icon: HiOutlineServerStack,
+    //   active: false,
+    //   enable: true
+    // },
+    // {
+    //   title: 'Apps',
+    //   name: 'apps',
+    //   href: '#',
+    //   icon: AiOutlineAppstoreAdd,
+    //   active: false,
+    //   enable: true
+    // },
     {
-      title: 'Projects',
-      name: 'projects',
-      href: '#',
-      icon: HiOutlineServerStack,
-      active: false,
-      enable: true
-    },
-    {
-      title: 'Apps',
-      name: 'apps',
-      href: '#',
-      icon: AiOutlineAppstoreAdd,
-      active: false,
-      enable: true
-    },
-    {
-      title: 'Export/import',
+      title: 'Export',
       name: 'export-import',
       href: '#',
       icon: AiOutlineCloudDownload,

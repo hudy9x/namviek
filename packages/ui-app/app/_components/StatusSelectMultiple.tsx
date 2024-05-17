@@ -104,7 +104,7 @@ export default function StatusSelectMultiple({
         }}>
         <List.Button>
           {!selectedList || !selectedList.length ? <span className='text-transparent'>Option</span> : null}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1">
             {slicedList.map(item => {
               const stt = statuses.find(stt => stt.id === item.id)
               const isAllOption = item.id === 'ALL' ? bgOfAll : stt?.color

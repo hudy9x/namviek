@@ -6,7 +6,7 @@ import ReportTotalTask from './ReportTotalTask'
 export default function ReportLayout() {
   return (
     <div className="h-screen bg-indigo-50/50">
-      <header className="bg-white dark:bg-gray-900 border-b border-gray-800 py-3">
+      <header className="bg-white dark:bg-gray-900 border-b dark:border-gray-700 py-[15px]">
         <div className="w-[900px] mx-auto">
           <h2 className="text-gray-600 dark:text-gray-300 font-bold text-xl">
             Report section

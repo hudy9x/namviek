@@ -1,5 +1,6 @@
 'use client'
 
+import { getLocalCache } from '@shared/libs'
 import { ThemeProvider } from 'next-themes'
 import { pdfjs } from 'react-pdf'
 
@@ -13,9 +14,12 @@ export default function RootLayoutComp({
 }: {
   children: React.ReactNode
 }) {
+  // const compactMode = getLocalCache('COMPACT_MENU') ? 'compact-menu' : ''
+  const compactMode = ''
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
-      <div className="root-container">{children}</div>
+      <div className={`root-container ${compactMode}`}>{children}</div>
     </ThemeProvider>
   )
 }

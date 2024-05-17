@@ -5,10 +5,9 @@ import './style/index.css'
 import { Inter } from 'next/font/google'
 import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@goalie/nextjs'
-import Head from 'next/head'
 
 import dynamic from 'next/dynamic'
-const inter = Inter({ subsets: ['latin'], display: 'swap' })
+const inter = Inter({ subsets: ['latin'] })
 
 const PushNotification = dynamic(
   () => import('./_components/PushNotification'),

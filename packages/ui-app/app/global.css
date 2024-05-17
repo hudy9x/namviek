@@ -45,6 +45,10 @@
   }
 }
 
+[data-radix-popper-content-wrapper] div {
+  outline: none;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 8px;
@@ -81,6 +85,47 @@
 .primary-sidebar {
   @apply flex flex-col justify-between h-screen border-r dark:border-r-gray-800;
 }
+
+.compact-menu {
+  .secondary-sidebar{
+    width: 60px;
+  }
+
+  .org-section-popup {
+    @apply hidden;
+  }
+
+  .org-section-container {
+    @apply flex-col gap-2;
+  }
+
+  .org-section-info {
+    @apply hidden;
+  }
+
+  .secondary-sidebar .scroll-root {
+    height: calc(100vh - 150px) important;
+  }
+
+  .side-nav .nav-item .right,  
+  .side-nav .nav-item .left svg,
+  .side-nav .nav-item .left span,
+  .side-title span,
+  .nav .section
+  {
+    @apply hidden;
+  }
+
+  .main-content {
+    width: calc(100% - 61px) !important;
+  }
+
+  .main-content .board-container {
+    width: calc(100vw - 74px) !important;
+  }
+}
+
+
 
 .root-sidebar .main-nav-icon {
   @apply m-2 p-3 w-10 h-10 text-gray-400 rounded-lg cursor-pointer;
@@ -149,6 +194,7 @@
 
 .nav .nav-item.active {
   @apply bg-indigo-50 text-indigo-600;
+  /* @apply bg-zinc-100 text-gray-600; */
   @apply dark:bg-indigo-50/10 dark:text-indigo-400;
 }
 

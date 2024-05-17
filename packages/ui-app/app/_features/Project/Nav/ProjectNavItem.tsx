@@ -8,6 +8,7 @@ import Badge from '@/components/Badge'
 import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 import { useProjectViewStore } from '@/store/projectView'
 import { useTaskStore } from '@/store/task'
+import { GoDot, GoDotFill } from 'react-icons/go'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -73,15 +74,14 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${
-        visible ? 'opacity-100' : 'opacity-0'
-      } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+        } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
       }}
       title={name}>
       <div className="left">
-        <HiChevronRight className="text-gray-400 shrink-0" />
+        <GoDot className="ml-0.5 text-gray-400 dark:text-gray-500 shrink-0" />
         <img className="w-5 h-5" src={icon || ''} />
         <span className="whitespace-nowrap truncate">{name}</span>
         {showBadges()}

@@ -15,7 +15,7 @@ import ProjectAvailable from './ProjectAvailable'
 export default function ProjectList() {
   return (
     <div className="bg-indigo-50/50 dark:bg-[#182031]">
-      <div className="bg-white py-3 border-b dark:bg-gray-900 dark:border-gray-700">
+      <div className="bg-white py-[15px] border-b dark:bg-gray-900 dark:border-gray-700">
         <div className="px-5 sm:w-[1120px] mx-auto">
           <h2 className="text-gray-600 dark:text-gray-300 font-bold text-xl">
             Your projects

@@ -102,6 +102,7 @@ export default function EmojiInput({
                 const emojiUrl = emoji.getImageUrl(EmojiStyle.TWITTER)
                 // const emojiNative = emoji.emoji
                 setSelected(emojiUrl)
+                setVisible(false)
                 onChange && onChange(emojiUrl)
               }}
             />

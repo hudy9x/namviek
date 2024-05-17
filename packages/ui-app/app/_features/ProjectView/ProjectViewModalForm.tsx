@@ -10,6 +10,7 @@ import ProjectViewFilterByCalendar from '../ProjectViewFilter/CalendarFilter'
 import ProjectViewFilterByGoal from '../ProjectViewFilter/GoalFilter'
 import ProjectViewFilterByTeam from '../ProjectViewFilter/TeamFilter'
 import ProjectViewFilterByDashboard from '../ProjectViewFilter/DashboardFilter'
+import { Loading } from '@shared/ui'
 
 export default function ProjectViewModalForm({
   type,
@@ -48,11 +49,15 @@ export default function ProjectViewModalForm({
       })
       .finally(() => {
         hideModal()
+        setTimeout(() => {
+          setLoading(false)
+        }, 200)
       })
   }
 
   return (
     <div className="min-h-[500px]">
+      <Loading.Absolute enabled={loading} title='Creating view' className='rounded-md' />
       <ProjectViewFilterByBoard type={type} desc={desc} onAdd={onAdd} />
       <ProjectViewFilterByList type={type} desc={desc} onAdd={onAdd} />
       <ProjectViewFilterByCalendar type={type} desc={desc} onAdd={onAdd} />

@@ -166,6 +166,7 @@ export default function TaskFilter({
 
         {isShowStatusFilter ? (
           <StatusSelectMultiple
+            noName={true}
             maxDisplay={2}
             value={statusIds}
             onChange={val => {
