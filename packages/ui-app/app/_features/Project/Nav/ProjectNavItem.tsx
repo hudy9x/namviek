@@ -8,7 +8,7 @@ import Badge from '@/components/Badge'
 import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 import { useProjectViewStore } from '@/store/projectView'
 import { useTaskStore } from '@/store/task'
-import { GoDotFill } from 'react-icons/go'
+import { GoDot, GoDotFill } from 'react-icons/go'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -81,7 +81,7 @@ export default function ProjectNavItem({
       }}
       title={name}>
       <div className="left">
-        <GoDotFill className="ml-0.5 text-gray-300 dark:text-gray-700 shrink-0" />
+        <GoDot className="ml-0.5 text-gray-400 dark:text-gray-500 shrink-0" />
         <img className="w-5 h-5" src={icon || ''} />
         <span className="whitespace-nowrap truncate">{name}</span>
         {showBadges()}
