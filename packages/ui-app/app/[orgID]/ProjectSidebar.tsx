@@ -102,11 +102,11 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
       <aside className={`root-sidebar relative`}>
         {/* <RootSidebar /> */}
         <nav className={`secondary-sidebar`}>
-          <div className='absolute -right-[12px] bottom-[71px] z-10'>
-            <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 dark:text-gray-400'>
-              <HiOutlineChevronLeft />
-            </div>
-          </div>
+          {/* <div className='absolute -right-[12px] bottom-[71px] z-10'> */}
+          {/*   <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 dark:text-gray-400'> */}
+          {/*     <HiOutlineChevronLeft /> */}
+          {/*   </div> */}
+          {/* </div> */}
           <OrgSection />
           <Scrollbar style={{ height: `calc(100vh - 141px)` }}>
             <section className="side-nav">
