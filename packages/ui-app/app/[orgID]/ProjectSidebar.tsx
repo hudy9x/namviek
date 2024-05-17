@@ -17,6 +17,7 @@ import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import { useMemo, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 import OrgSection from 'packages/ui-app/layouts/OrgSection'
+import { getLocalCache } from '@shared/libs'
 
 function ViewAllBtn() {
   return (
@@ -43,7 +44,6 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
-  const [open, setOpen] = useState(false)
 
   if (pathname.includes('/sign-in') || pathname.includes('/sign-up')) {
     return null
@@ -99,11 +99,11 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
 
   return (
     <>
-      <aside className={`root-sidebar compact relative`}>
+      <aside className={`root-sidebar relative`}>
         {/* <RootSidebar /> */}
-        <nav className="secondary-sidebar">
+        <nav className={`secondary-sidebar`}>
           <div className='absolute -right-[12px] bottom-[71px] z-10'>
-            <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-50 border'>
+            <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 dark:text-gray-400'>
               <HiOutlineChevronLeft />
             </div>
           </div>
