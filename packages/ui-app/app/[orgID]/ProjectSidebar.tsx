@@ -7,6 +7,7 @@ import ProjectList from '@/features/Project/Nav/index'
 import {
   HiOutlineBriefcase,
   HiOutlineChartPie,
+  HiOutlineChevronLeft,
   HiOutlineServerStack,
   HiOutlineVideoCamera,
 } from 'react-icons/hi2'
@@ -98,11 +99,13 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
 
   return (
     <>
-      <aside className={`root-sidebar`}>
+      <aside className={`root-sidebar compact relative`}>
         {/* <RootSidebar /> */}
         <nav className="secondary-sidebar">
-          <div className='absolute right-0 top-1/2 -translate-y-1/2'>
-            <div className='w-2 h-5 bg-gray-100 border'></div>
+          <div className='absolute -right-[12px] bottom-[71px] z-10'>
+            <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-50 border'>
+              <HiOutlineChevronLeft />
+            </div>
           </div>
           <OrgSection />
           <Scrollbar style={{ height: `calc(100vh - 141px)` }}>
