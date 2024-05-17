@@ -8,22 +8,13 @@ import {
   HiOutlineBriefcase,
   HiOutlineChartPie,
   HiOutlineServerStack,
-  HiOutlineCog6Tooth,
-  HiOutlineStar,
   HiOutlineVideoCamera,
-  HiOutlineChevronLeft,
-  HiArrowLeft,
-  HiOutlineUserGroup,
-  HiOutlineUserPlus
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
-import Favorites from '@/features/Favorites'
 import { useMemo, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
-import { HiOutlineUserAdd } from 'react-icons/hi'
-import ThemeSelection from 'packages/ui-app/layouts/ThemeSelection'
 import OrgSection from 'packages/ui-app/layouts/OrgSection'
 
 function ViewAllBtn() {
@@ -110,6 +101,9 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
       <aside className={`root-sidebar`}>
         {/* <RootSidebar /> */}
         <nav className="secondary-sidebar">
+          <div className='absolute right-0 top-1/2 -translate-y-1/2'>
+            <div className='w-2 h-5 bg-gray-100 border'></div>
+          </div>
           <OrgSection />
           <Scrollbar style={{ height: `calc(100vh - 141px)` }}>
             <section className="side-nav">
