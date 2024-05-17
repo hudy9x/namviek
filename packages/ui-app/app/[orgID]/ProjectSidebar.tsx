@@ -58,12 +58,12 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
   }
 
   const menus = [
-    {
-      title: 'Back',
-      href: `/organization`,
-      icon: HiArrowLeft,
-      active: false
-    },
+    // {
+    //   title: 'Back',
+    //   href: `/organization`,
+    //   icon: HiArrowLeft,
+    //   active: false
+    // },
     {
       title: 'My works',
       href: `/${orgID}/my-works`,

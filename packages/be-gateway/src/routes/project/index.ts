@@ -271,11 +271,13 @@ router.post('/project', async (req: AuthRequest, res) => {
       console.log('done')
 
       delCache([CKEY.USER_PROJECT, userId])
-      console.log('delete cache done')
+
+      const retData: Project = { ...result, projectViewId: firstProjectView.id }
+      console.log('delete cache done', retData)
 
       res.json({
         status: 200,
-        data: result
+        data: retData
       })
     })
 

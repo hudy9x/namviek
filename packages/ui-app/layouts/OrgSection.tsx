@@ -10,7 +10,7 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
 import { AiOutlineCloudDownload } from "react-icons/ai"
-import { HiOutlineCog6Tooth, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
+import { HiArrowLeft, HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineCog6Tooth, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
 
 export const setOrgInfo = ({ name, cover }: { name: string, cover: string }) => {
   name && setLocalCache('ORG_NAME', name)
@@ -55,7 +55,7 @@ function OrgInfo({ id }: { id: string }) {
         <img className="w-full h-full" src={org.cover} alt="Cover organization" /> : <Loading.Absolute title="" />}
     </div>
     <div className="flex flex-col">
-      <span className="text-gray-700 dark:text-gray-400 text-sm">{org.name ? org.name : <span className="h-2 bg-slate-700 rounded animate-pulse text-transparent">No title</span>}</span>
+      <span className="text-gray-700 dark:text-gray-400 text-sm truncate">{org.name ? org.name : <span className="h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse text-transparent">No title</span>}</span>
       <span className="text-xs text-gray-400 dark:text-gray-500">There {len > 2 ? "are" : 'is'} {len} members</span>
     </div>
   </div>
@@ -64,6 +64,11 @@ function OrgInfo({ id }: { id: string }) {
 function OrgPopMenu({ id }: { id: string }) {
 
   const menus = [
+    {
+      icon: HiOutlineBuildingOffice,
+      link: `/organization`,
+      title: 'My organizations'
+    },
     {
       icon: HiOutlineUserPlus,
       link: `/${id}/setting/people`,
@@ -83,8 +88,8 @@ function OrgPopMenu({ id }: { id: string }) {
 
   return <div>
     <Popover
-      triggerBy={<div className="w-7 h-7 rounded-md p-1 cursor-pointer border dark:border-gray-700 hover:bg-zinc-100 dark:hover:bg-gray-800 flex items-center justify-center">
-        <HiOutlineCog6Tooth className="text-gray-500" />
+      triggerBy={<div className="w-7 h-7 rounded-md p-1 cursor-pointer  dark:border-gray-700 hover:bg-zinc-100 dark:hover:bg-gray-800 flex items-center justify-center">
+        <HiOutlineChevronDown className="text-gray-500" />
       </div>}
       content={<div className="border rounded-md bg-white dark:bg-gray-900 dark:border-gray-700 shadow-sm py-1.5 w-[150px] mt-1">
         {menus.map((menu, midx) => {

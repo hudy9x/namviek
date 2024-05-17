@@ -25,6 +25,11 @@ export default function CreateOrganization() {
         return
       }
 
+      if (values.name.length > 17) {
+        messageError('Title must less than or equal 17 characters')
+        return
+      }
+
       setLoading(true)
 
       orgCreate(values).then(res => {

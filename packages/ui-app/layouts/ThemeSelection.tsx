@@ -8,14 +8,14 @@ export default function ThemeSelection() {
   return (
     <section className="cursor-pointer">
 
-      <div className='rounded-full flex items-center bg-gray-100 dark:bg-gray-800 dark:border-gray-700'>
+      <div className='rounded-full flex items-center bg-gray-100 dark:bg-gray-700 dark:border-gray-700'>
         <HiOutlineSun
-          className={`main-nav-icon w-7 h-4 rounded-full ${isLightMode ? 'bg-indigo-400 text-white' : ''}`}
+          className={`main-nav-icon w-7 h-5 py-0.5 rounded-full ${isLightMode ? 'bg-indigo-400 text-white' : ''}`}
           onClick={() => setTheme('light')}
         />
 
         <HiOutlineMoon
-          className={`main-nav-icon w-7 h-4 p-0.5 rounded-full ${isDarkMode ? 'bg-indigo-600' : ''}`}
+          className={`main-nav-icon w-7 h-5 p-1 rounded-full ${isDarkMode ? 'bg-indigo-600' : ''}`}
           onClick={() => setTheme('dark')}
         />
 

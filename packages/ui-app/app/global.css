@@ -45,6 +45,10 @@
   }
 }
 
+[data-radix-popper-content-wrapper] div {
+  outline: none;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 8px;
@@ -149,6 +153,7 @@
 
 .nav .nav-item.active {
   @apply bg-indigo-50 text-indigo-600;
+  /* @apply bg-zinc-100 text-gray-600; */
   @apply dark:bg-indigo-50/10 dark:text-indigo-400;
 }
 
