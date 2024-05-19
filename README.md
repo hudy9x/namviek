@@ -5,18 +5,6 @@ This project is an open-source project manager for small teams with low budget. 
 
 This project is a great fit for people with developer skills who are running a small team on a limited budget, similar to me. Read full the [post](https://dev.to/hudy9x/i-built-a-free-open-source-project-manager-that-helps-teams-keep-costs-under-15month-3pmk)
 
-## How did I keep the cost low ?
-
-I leveraged a variety of free platforms to minimize operational costs. Here's a breakdown: 
-
-- Vercel: for the frontend  (Free)
-- Aws Lightsail: for the backend (Paid)
-- Aws S3: for file storage (Paid)
-- Resend: sending email (Free)
-- Cloudflare: to manage my domain (Free)
-- Github Action: CD automation (Free)
-
-
 ## What tech stack I use
 
 - Next.js
