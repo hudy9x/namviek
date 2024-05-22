@@ -77,7 +77,7 @@ export default class TaskReminderJob {
     const d1 = new Date(remindAt)
     const now = new Date()
 
-    // TODO: if user want set an reminder at the exact time, do not substract the dueDate
+    // TODO: if user want set an reminder at the exact time, do not subtract the dueDate
     if (remindBefore) {
       d1.setMinutes(d1.getMinutes() - remindBefore)
       message = `It's ${remindBefore} minutes to: ${message}`
