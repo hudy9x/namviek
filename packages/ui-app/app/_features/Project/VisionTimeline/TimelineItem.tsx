@@ -7,6 +7,50 @@ import MemberAvatar from '@/components/MemberAvatar'
 import ProgressBar from '@/components/ProgressBar'
 import Droppable from '@/components/Dnd/Droppable'
 
+function TimelineItemInfo({
+  id,
+  title,
+  start,
+  end
+}: ITimelineItem) {
+  const { getVisionData } = useVisionContext()
+  // {data => {
+
+  const visionData = getVisionData(id)
+  const assigneeIds = Array.from(new Set(visionData.assigneeIds))
+
+  const displayAssignees = assigneeIds.slice(0, 3)
+  const restAssignees = assigneeIds.slice(3).length
+  return <section className="flex items-center gap-4 justify-between">
+    <div>
+      <span>{title}</span>
+      <div className="flex items-center gap-1 text-[11px] text-gray-400">
+        <HiOutlineFlag />
+        <div>{dateFormat(start, 'MMM dd')}</div>
+        <span>-</span>
+        <div>{dateFormat(end, 'MMM dd')}</div>
+      </div>
+    </div>
+    <div className="flex items-center -space-x-3">
+      {displayAssignees.map(assigneeId => {
+        return (
+          <MemberAvatar
+            noName={true}
+            uid={assigneeId}
+            key={assigneeId}
+          />
+        )
+      })}
+
+      {restAssignees ? (
+        <div className="h-6 w-6 bg-gray-50 rounded-full text-[11px] flex items-center justify-center">
+          +3
+        </div>
+      ) : null}
+    </div>
+  </section>
+}
+
 export default function TimelineItem({ start, end, id, title }: ITimelineItem) {
   const { getVisionProgress, getVisionData, setSelected, selected } =
     useVisionContext()
