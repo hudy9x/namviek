@@ -7,6 +7,7 @@ import TimelineItem from './TimelineItem'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useId } from 'react'
 import VisionMonthNavigator from '../Vision/VisionMonthNavigator'
+import TimelineItemDroppable from './TimelineItemDroppable'
 
 function AnimateView({
   visible,
@@ -37,9 +38,8 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
 
   return (
     <div
-      className={`vision-timeline-container w-full px-3 pt-3 relative ${
-        visible ? '' : 'hidden'
-      }`}>
+      className={`vision-timeline-container w-full px-3 pt-3 relative ${visible ? '' : 'hidden'
+        }`}>
       {/* <Loading.Absolute enabled={loading} border /> */}
       <div className="z-20 relative mb-3">
         <div className="w-[120px]">
@@ -69,7 +69,9 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         {data => {
           return (
             <AnimateView visible={true}>
-              <TimelineItem {...data} />
+              <TimelineItemDroppable id={data.id}>
+                <TimelineItem {...data} />
+              </TimelineItemDroppable>
             </AnimateView>
           )
         }}

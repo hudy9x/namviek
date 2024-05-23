@@ -63,6 +63,7 @@ function TimelineProgress({
 }) {
   if (!enabled) return null
 
+
   return <section className="mt-1 flex items-center gap-2 w-[250px]">
     <ProgressBar
       color={progress === 100 ? 'green' : 'blue'}
@@ -95,14 +96,16 @@ export default function TimelineItem({ start, end, id, title }: ITimelineItem) {
   const isSelected = selected === id ? 'bg-gray-100 dark:bg-gray-800' : ''
 
   return (
-    <div
-      onClick={viewTaskInVision}
-      className={`flex items-center justify-between px-2.5 py-2 rounded-md ${isSelected}`}>
-      <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
-        <TimelineItemInfo {...{ title, start, end, displayAssignees, restAssignees }} />
-        <TimelineProgress enabled={!!hasTask} progress={progress} total={visionData.total} done={visionData.done} />
+    <Droppable droppableId={id} type="vision" className="vision-dropzone">
+      <div
+        onClick={viewTaskInVision}
+        className={`flex items-center justify-between px-2.5 py-2 rounded-md ${isSelected}`}>
+        <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
+          <TimelineItemInfo {...{ title, start, end, displayAssignees, restAssignees }} />
+          <TimelineProgress enabled={!!hasTask} progress={progress} total={visionData.total} done={visionData.done} />
+        </div>
       </div>
-    </div>
+    </Droppable>
   )
   // }}
 }
