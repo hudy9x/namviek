@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { useEffect, useState } from 'react'
+import VisionTaskItemDraggable from './VisionTaskItemDraggable'
 
 export default function VisionListTask() {
   const [hide, setHide] = useState(true)
@@ -76,7 +77,8 @@ export default function VisionListTask() {
           <div className='space-y-2'>
             {taskWithoutVisions.map((t, index) => {
               return (
-                <VisionTaskItem
+                <VisionTaskItemDraggable
+                  index={index}
                   key={t.id}
                   title={t.title}
                   statusId={t.taskStatusId || ''}
