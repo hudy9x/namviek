@@ -5,7 +5,7 @@ import ListBoxCreate from '@/components/ListBox/ListBoxCreate'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
-import { Button } from '@shared/ui'
+import { Button, Scrollbar } from '@shared/ui'
 import { useEffect, useState } from 'react'
 
 export default function VisionListTask() {
@@ -72,16 +72,20 @@ export default function VisionListTask() {
           />
         </div>
         {taskLoading ? <h2>Loading</h2> : null}
-        {taskWithoutVisions.map((t, index) => {
-          return (
-            <VisionTaskItem
-              key={t.id}
-              title={t.title}
-              statusId={t.taskStatusId || ''}
-              id={t.id}
-            />
-          )
-        })}
+        <Scrollbar style={{ height: 'calc(100vh - 195px)' }}>
+          <div className='space-y-2'>
+            {taskWithoutVisions.map((t, index) => {
+              return (
+                <VisionTaskItem
+                  key={t.id}
+                  title={t.title}
+                  statusId={t.taskStatusId || ''}
+                  id={t.id}
+                />
+              )
+            })}
+          </div>
+        </Scrollbar>
         <div className="bg-white rounded-md border shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
           <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
         </div>

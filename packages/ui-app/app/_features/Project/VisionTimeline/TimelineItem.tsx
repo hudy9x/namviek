@@ -24,11 +24,13 @@ export default function TimelineItem({ start, end, id, title }: ITimelineItem) {
     setSelected(selected !== id ? id : '')
   }
 
+  const isSelected = selected === id ? 'bg-gray-100 dark:bg-gray-800' : ''
+
   return (
     <Droppable droppableId={id} type="vision" className="vision-dropzone">
       <div
         onClick={viewTaskInVision}
-        className="flex items-center justify-between">
+        className={`flex items-center justify-between px-2.5 py-2 rounded-md ${isSelected}`}>
         <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
           <section className="flex items-center gap-4 justify-between">
             <div>
