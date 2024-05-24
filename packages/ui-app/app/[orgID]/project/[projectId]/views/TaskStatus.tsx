@@ -4,13 +4,16 @@ import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 export default function TaskStatus({
   taskId,
   value,
-  className
+  className,
+  withName = false
 }: {
   taskId: string
   value: string
   className?: string
+  withName?: boolean
 }) {
   const { updateTaskData } = useServiceTaskUpdate()
+  const classes = ['task-status']
 
   const onUpdateStatus = (statusId: string) => {
     if (statusId === value) return
@@ -19,9 +22,12 @@ export default function TaskStatus({
       taskStatusId: statusId
     })
   }
+
+  withName && classes.push('with-name')
+  className && classes.push(className)
   return (
     <StatusSelect
-      className={`task-status ${className}`}
+      className={classes.join(' ')}
       value={value}
       onChange={onUpdateStatus}
     />

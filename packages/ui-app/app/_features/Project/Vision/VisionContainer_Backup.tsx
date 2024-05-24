@@ -26,7 +26,7 @@ export default function VisionContainer({ visible }: { visible: boolean }) {
     <div className={`vision relative ${visible ? '' : 'hidden'}`}>
       <div
         className="flex divide-x dark:divide-gray-700"
-        style={{ height: `calc(100vh - 83px)` }}>
+        style={{ height: `calc(100vh - 98px)` }}>
         <DndContext onDragEnd={onDragEnd}>
           <VisionListTask />
           {/* <VisionList /> */}

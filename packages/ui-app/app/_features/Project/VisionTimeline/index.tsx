@@ -68,11 +68,11 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
         })}>
         {data => {
           return (
-            <AnimateView visible={true}>
-              <TimelineItemDroppable id={data.id}>
+            <TimelineItemDroppable id={data.id}>
+              <AnimateView visible={true}>
                 <TimelineItem {...data} />
-              </TimelineItemDroppable>
-            </AnimateView>
+              </AnimateView>
+            </TimelineItemDroppable>
           )
         }}
       </Timeline>
