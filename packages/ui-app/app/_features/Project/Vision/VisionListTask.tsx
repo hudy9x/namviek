@@ -76,7 +76,6 @@ export default function VisionListTask() {
               setSelected('')
               setHide(true)
             }}
-            size="sm"
             leadingIcon={<HiOutlineChevronLeft />}
           />
         </div>

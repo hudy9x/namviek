@@ -5,12 +5,12 @@ import { orgGetById } from "@/services/organization"
 import { useOrgMemberStore } from "@/store/orgMember"
 import { Organization } from "@prisma/client"
 import { getLocalCache, setLocalCache } from "@shared/libs"
-import { Loading, Popover, Tooltip } from "@shared/ui"
+import { Loading, Popover } from "@shared/ui"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
 import { AiOutlineCloudDownload } from "react-icons/ai"
-import { HiArrowLeft, HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineCog6Tooth, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
+import { HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
 
 export const setOrgInfo = ({ name, cover }: { name: string, cover: string }) => {
   name && setLocalCache('ORG_NAME', name)
@@ -29,7 +29,6 @@ function OrgInfo({ id }: { id: string }) {
   const { orgMembers } = useOrgMemberStore()
   const [org, setOrg] = useState({ cover, name })
 
-  console.log('org', org)
   const len = orgMembers.length
 
   useDebounce(() => {

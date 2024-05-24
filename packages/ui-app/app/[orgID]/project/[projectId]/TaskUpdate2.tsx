@@ -146,7 +146,6 @@ export const TaskUpdate2 = () => {
     const currentTask = tasks.find(task => task.id === taskId)
     refCurrentTask.current = currentTask
 
-    console.log('update current Task')
     if (currentTask) {
       setCurrentTask({
         title: currentTask?.title || defaultFormikValues.title,
