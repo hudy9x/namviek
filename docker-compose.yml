@@ -1,0 +1,23 @@
+services:
+  namviek:
+    container_name: namviek
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.local
+    ports:
+      - '4200:4200'
+    networks:
+      - namviek-network
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    networks:
+      - namviek-network
+
+networks:
+  namviek-network:
+    driver: bridge
