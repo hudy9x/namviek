@@ -65,9 +65,9 @@ export default function VisionListTask() {
   }
 
   return (
-    <div className="p-3 w-[300px] border-r dark:border-gray-700 shrink-0 sticky left-0 z-40 bg-white/30 dark:bg-gray-800/30 backdrop-blur-md">
+    <div className="py-3 w-[300px] border-r dark:border-gray-700 shrink-0 sticky left-0 z-40 bg-white/30 dark:bg-gray-800/30 backdrop-blur-md">
       <div className="space-y-2">
-        <div className="flex items-center gap-2 justify-between">
+        <div className="flex px-3 items-center gap-2 justify-between">
           <StatusSelectMultiple noName={true} onChange={val => {
             setStatusIds(val)
           }} value={statusIds} />
@@ -81,7 +81,7 @@ export default function VisionListTask() {
         </div>
         {taskLoading ? <h2>Loading</h2> : null}
         <Scrollbar style={{ height: 'calc(100vh - 234px)' }}>
-          <div className='space-y-2'>
+          <div className='space-y-2 px-3'>
             {taskWithoutVisions.map((t, index) => {
               return (
                 <VisionTaskItemDraggable
@@ -95,15 +95,17 @@ export default function VisionListTask() {
             })}
           </div>
         </Scrollbar>
-        <div>
-          <h2 className="text-[12px] uppercase font-bold text-gray-600">
-            {!taskWithoutVisions.length
-              ? 'No task found'
-              : `All tasks: ${taskWithoutVisions.length}`}
-          </h2>
-        </div>
-        <div className="bg-white rounded-md border shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
-          <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
+        <div className='px-3'>
+          <div>
+            <h2 className="text-[12px] uppercase font-bold text-gray-600">
+              {!taskWithoutVisions.length
+                ? 'No task found'
+                : `All tasks: ${taskWithoutVisions.length}`}
+            </h2>
+          </div>
+          <div className="bg-white rounded-md border shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
+            <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
+          </div>
         </div>
       </div>
     </div>
