@@ -3,3 +3,4 @@ Dockerfile
 node_modules
 .github
 .vscode
+.git
