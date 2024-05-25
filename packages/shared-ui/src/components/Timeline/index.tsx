@@ -4,28 +4,13 @@ import { genCalendarArr, getDayName, isSunSat, isToday } from '@shared/libs'
 import TimelineTrack from './TimelineTrack'
 import { useMemo } from 'react'
 import { ITimelineProps } from './type'
-import TimelineList from './TimelineList'
 
-export default function Timeline({
-  month,
-  year,
-  items,
-  height = '2.75rem',
-  children,
-  onChange
-}: ITimelineProps) {
-  const w1 = useMemo(
-    () => genCalendarArr(new Date(year, month - 1, 1)),
-    [month, year]
-  )
+function generateColumnsByMonth(weeks: Date[][], height: string) {
 
-  const weeks = w1
   const dateMap = new Map()
   const gridMap = new Map()
 
   let totalDates = 0
-  const colWidth = '2rem'
-  const colHeight = height
 
   // calculate month columns - start
   let startMonth = 1
@@ -75,6 +60,38 @@ export default function Timeline({
     })
   })
 
+  return {
+    monthColumns,
+    dateMap,
+    gridMap,
+    totalDates,
+  }
+
+}
+
+export default function Timeline({
+  month,
+  year,
+  items,
+  height = '2.75rem',
+  children,
+  onChange
+}: ITimelineProps) {
+  const w1 = useMemo(
+    () => genCalendarArr(new Date(year, month - 1, 1)),
+    [month, year]
+  )
+
+  const weeks = w1
+  const colWidth = '2rem'
+  const colHeight = height
+  const {
+    monthColumns,
+    dateMap,
+    gridMap,
+    totalDates,
+  } = generateColumnsByMonth(weeks, height)
+
   const updateDateRange = (id: string, start: number, end: number) => {
     let posStart = start
     let postEnd = end
@@ -87,8 +104,6 @@ export default function Timeline({
     const startDate = gridMap.get(posStart)
     const dueDate = gridMap.get(postEnd - 1)
 
-    console.log(startDate, dueDate)
-
     onChange &&
       onChange({
         id,
@@ -98,14 +113,12 @@ export default function Timeline({
   }
 
   const today = new Date()
-
   let startWeek = 1
 
   return (
     <div className="timeline-container">
       <div
         className={`flex items-start bg-white dark:bg-gray-900 border dark:border-gray-700 p-0.5 rounded-md`}>
-        {/* <TimelineList items={items} height={colHeight} /> */}
         <section className="timeline custom-scrollbar">
           <header
             className="timeline-month-headers grid divide-x"

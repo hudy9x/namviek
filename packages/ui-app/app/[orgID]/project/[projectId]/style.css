@@ -13,7 +13,7 @@
   @apply text-xs sm:text-sm bg-transparent dark:bg-transparent;
 }
 
-.task-status .status-title {
+.task-status:not(.with-name) .status-title {
   display: none;
 }
 

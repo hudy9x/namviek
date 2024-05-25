@@ -29,7 +29,7 @@ export default function Draggable({
 
   const classes = ['block']
   className && classes.push(className)
-  transform && classes.push('relative z-10')
+  transform && classes.push('fixed z-10')
 
   return (
     <div

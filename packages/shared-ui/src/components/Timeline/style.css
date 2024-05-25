@@ -10,7 +10,7 @@
 }
 
 .timeline-track-container {
-  @apply whitespace-nowrap relative text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 px-2.5 py-2 text-sm  rounded-md border border-gray-300 shadow-md shadow-indigo-50;
+  @apply whitespace-nowrap relative text-gray-600 w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:shadow-gray-900 dark:border-gray-600 text-sm  rounded-md border border-gray-300 shadow-md shadow-indigo-50;
 
   & .progressbar {
     @apply dark:bg-gray-800;

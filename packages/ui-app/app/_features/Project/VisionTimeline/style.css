@@ -1,0 +1,4 @@
+.goal-zone-enter {
+  @apply outline outline-2 outline-offset-2;
+  @apply outline-indigo-500 rounded-sm;
+}
