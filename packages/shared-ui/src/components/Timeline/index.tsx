@@ -4,7 +4,6 @@ import { genCalendarArr, getDayName, isSunSat, isToday } from '@shared/libs'
 import TimelineTrack from './TimelineTrack'
 import { useMemo } from 'react'
 import { ITimelineProps } from './type'
-import TimelineList from './TimelineList'
 
 export default function Timeline({
   month,
@@ -18,6 +17,8 @@ export default function Timeline({
     () => genCalendarArr(new Date(year, month - 1, 1)),
     [month, year]
   )
+
+  console.log('week', w1)
 
   const weeks = w1
   const dateMap = new Map()
@@ -87,8 +88,6 @@ export default function Timeline({
     const startDate = gridMap.get(posStart)
     const dueDate = gridMap.get(postEnd - 1)
 
-    console.log(startDate, dueDate)
-
     onChange &&
       onChange({
         id,
@@ -105,7 +104,6 @@ export default function Timeline({
     <div className="timeline-container">
       <div
         className={`flex items-start bg-white dark:bg-gray-900 border dark:border-gray-700 p-0.5 rounded-md`}>
-        {/* <TimelineList items={items} height={colHeight} /> */}
         <section className="timeline custom-scrollbar">
           <header
             className="timeline-month-headers grid divide-x"
