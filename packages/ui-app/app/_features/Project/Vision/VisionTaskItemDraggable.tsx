@@ -1,5 +1,5 @@
 import { Draggable } from "react-beautiful-dnd";
-import VisionTaskItem2 from "./VisionTaskItem2";
+import VisionTaskItem from "./VisionTaskItem";
 import { DragEvent } from "react";
 
 export default function VisionTaskItemDraggable({
@@ -22,6 +22,6 @@ export default function VisionTaskItemDraggable({
     draggable={true}
     onDragStart={onDragStart}
     className="text-sm bg-white border rounded-md shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
-    <VisionTaskItem2 id={id} title={title} statusId={statusId} />
+    <VisionTaskItem id={id} title={title} statusId={statusId} />
   </div>
 }
