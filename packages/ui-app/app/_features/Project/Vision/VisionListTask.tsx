@@ -8,9 +8,13 @@ import { Button, Scrollbar } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import VisionTaskItemDraggable from './VisionTaskItemDraggable'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
+import { motion } from "framer-motion";
+import { HiOutlineX } from 'react-icons/hi'
 
 function VisionTaskCounter({ total, onHide }: { total: number, onHide: () => void }) {
-  return <div
+  return <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 100 }}
     className="w-[30px] border-r dark:border-gray-700 h-full bg-white dark:bg-gray-900 cursor-pointer"
     onClick={onHide}>
     <div className="whitespace-nowrap uppercase text-[11px] font-bold text-gray-600 dark:text-gray-500 transform rotate-90 translate-y-5">
@@ -19,7 +23,7 @@ function VisionTaskCounter({ total, onHide }: { total: number, onHide: () => voi
         {total}
       </span>
     </div>
-  </div>
+  </motion.div>
 }
 
 export default function VisionListTask() {
@@ -65,9 +69,16 @@ export default function VisionListTask() {
   }
 
   return (
-    <div className="py-3 w-[300px] border-r dark:border-gray-700 shrink-0 sticky left-0 z-40 bg-white/30 dark:bg-gray-800/30 backdrop-blur-md">
-      <div className="space-y-2">
-        <div className="flex px-3 items-center gap-2 justify-between">
+    <motion.div
+      drag dragMomentum={false}
+
+      initial={{ opacity: 0, left: '40%', top: 200 }}
+      animate={{ opacity: 100, left: '40%', top: 100 }}
+
+      className='fixed shadow-lg cursor-move py-3 w-[300px] border rounded-md dark:border-gray-700 shrink-0 z-40 bg-white/30 dark:bg-gray-800/30 backdrop-blur-md'>
+
+      <div className="">
+        <div className="flex px-3 border-b dark:border-gray-700 pb-3 items-center gap-2 justify-between">
           <StatusSelectMultiple noName={true} onChange={val => {
             setStatusIds(val)
           }} value={statusIds} />
@@ -76,12 +87,12 @@ export default function VisionListTask() {
               setSelected('')
               setHide(true)
             }}
-            leadingIcon={<HiOutlineChevronLeft />}
+            leadingIcon={<HiOutlineX />}
           />
         </div>
         {taskLoading ? <h2>Loading</h2> : null}
-        <Scrollbar style={{ height: 'calc(100vh - 234px)' }}>
-          <div className='space-y-2 px-3'>
+        <Scrollbar style={{ height: '500px' }}>
+          <div className='space-y-2 px-3 py-3'>
             {taskWithoutVisions.map((t, index) => {
               return (
                 <VisionTaskItemDraggable
@@ -95,19 +106,17 @@ export default function VisionListTask() {
             })}
           </div>
         </Scrollbar>
-        <div className='px-3'>
-          <div>
-            <h2 className="text-[12px] uppercase font-bold text-gray-600">
-              {!taskWithoutVisions.length
-                ? 'No task found'
-                : `All tasks: ${taskWithoutVisions.length}`}
-            </h2>
-          </div>
+        <div className='px-3 border-t dark:border-gray-700 pt-2 space-y-1'>
+          <h2 className="text-[12px] uppercase font-bold text-gray-600">
+            {!taskWithoutVisions.length
+              ? 'No task found'
+              : `All tasks: ${taskWithoutVisions.length}`}
+          </h2>
           <div className="bg-white rounded-md border shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
             <ListBoxCreate placeholder="Create new task" onEnter={onEnter} />
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
