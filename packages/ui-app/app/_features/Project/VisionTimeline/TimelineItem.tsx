@@ -5,7 +5,6 @@ import { HiOutlineFlag } from 'react-icons/hi2'
 import { dateFormat } from '@shared/libs'
 import MemberAvatar from '@/components/MemberAvatar'
 import ProgressBar from '@/components/ProgressBar'
-import Droppable from '@/components/Dnd/Droppable'
 
 function TimelineItemInfo({
   title,
@@ -92,12 +91,12 @@ export default function TimelineItem({ start, end, id, title }: ITimelineItem) {
     setSelected(selected !== id ? id : '')
   }
 
-  const isSelected = selected === id ? 'bg-gray-100 dark:bg-gray-800' : ''
+  const isSelected = selected === id ? 'outline outline-2 outline-offset-2 outline-green-500' : ''
 
   return (
     <div
       onClick={viewTaskInVision}
-      className={`flex items-center justify-between px-2.5 py-2 rounded-md ${isSelected}`}>
+      className={`flex items-center justify-between px-2.5 py-2 rounded-md cursor-pointer ${isSelected}`}>
       <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
         <TimelineItemInfo {...{ title, start, end, displayAssignees, restAssignees }} />
         <TimelineProgress enabled={!!hasTask} progress={progress} total={visionData.total} done={visionData.done} />
