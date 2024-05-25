@@ -5,28 +5,12 @@ import TimelineTrack from './TimelineTrack'
 import { useMemo } from 'react'
 import { ITimelineProps } from './type'
 
-export default function Timeline({
-  month,
-  year,
-  items,
-  height = '2.75rem',
-  children,
-  onChange
-}: ITimelineProps) {
-  const w1 = useMemo(
-    () => genCalendarArr(new Date(year, month - 1, 1)),
-    [month, year]
-  )
+function generateColumnsByMonth(weeks: Date[][], height: string) {
 
-  console.log('week', w1)
-
-  const weeks = w1
   const dateMap = new Map()
   const gridMap = new Map()
 
   let totalDates = 0
-  const colWidth = '2rem'
-  const colHeight = height
 
   // calculate month columns - start
   let startMonth = 1
@@ -76,6 +60,38 @@ export default function Timeline({
     })
   })
 
+  return {
+    monthColumns,
+    dateMap,
+    gridMap,
+    totalDates,
+  }
+
+}
+
+export default function Timeline({
+  month,
+  year,
+  items,
+  height = '2.75rem',
+  children,
+  onChange
+}: ITimelineProps) {
+  const w1 = useMemo(
+    () => genCalendarArr(new Date(year, month - 1, 1)),
+    [month, year]
+  )
+
+  const weeks = w1
+  const colWidth = '2rem'
+  const colHeight = height
+  const {
+    monthColumns,
+    dateMap,
+    gridMap,
+    totalDates,
+  } = generateColumnsByMonth(weeks, height)
+
   const updateDateRange = (id: string, start: number, end: number) => {
     let posStart = start
     let postEnd = end
@@ -97,7 +113,6 @@ export default function Timeline({
   }
 
   const today = new Date()
-
   let startWeek = 1
 
   return (
