@@ -40,7 +40,4 @@ USER namviek
 EXPOSE 4200
 
 # Permissions for entrypoints
-RUN chmod +x entrypoints.sh
-
-# TODO eventually use tini so it captures signals properly. 
-CMD ["./entrypoints.sh"]
+RUN chmod +x ./docker/entrypoints.sh
