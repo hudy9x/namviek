@@ -15,7 +15,3 @@ echo "yarn pushdb2 completed."
 echo "Running yarn seed2 user..."
 yarn seed2 user
 echo "yarn seed2 completed."
-
-echo "Running backend and frontend.."
-yarn backend &
-yarn frontend

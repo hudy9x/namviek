@@ -1,17 +1,35 @@
 services:
-  namviek:
-    container_name: namviek
+  backend:
+    container_name: backend
     build:
       context: .
       dockerfile: Dockerfile
+    image: namviek
+    env_file:
+      - .env.local
+    ports:
+      - '3333:3333'
+    command: 'yarn backend'
+    depends_on:
+      - redis
+    networks:
+      - namviek-network
+
+  frontend:
+    container_name: frontend
+    image: namviek
     env_file:
       - .env.local
     ports:
       - '4200:4200'
+    command: 'yarn frontend'
+    depends_on:
+      - backend
     networks:
       - namviek-network
 
   redis:
+    container_name: redis
     image: 'redis:alpine'
     ports:
       - '6379:6379'
