@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Logo from '../../../components/Logo'
 import { useState } from 'react'
 import { signup } from '@goalie/nextjs'
+import { motion } from 'framer-motion'
 
 export default function SignupForm() {
   const [loading, setLoading] = useState(false)
@@ -50,8 +51,17 @@ export default function SignupForm() {
   })
 
   return (
-    <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div className="flex border-4 border-white/30 dark:border-gray-800/50 " style={{ borderRadius: `calc(0.375rem + 4px)` }}>
+    <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 100, scale: 1 }}
+        transition={{ delay: 0.5, duration: 2 }}
+        className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 100, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="flex border-4 border-white/30 dark:border-gray-800/50 " style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <div
           className={`w-[350px] sm:w-[400px] text-center p-8 rounded-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-md ${success ? '' : 'hidden'
             }`}>
@@ -103,7 +113,7 @@ export default function SignupForm() {
             </Link>
           </div>
         </form>
-      </div>
+      </motion.div>
 
       {/* <SignUp /> */}
     </div>

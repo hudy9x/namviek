@@ -13,6 +13,7 @@ import { validateLoginUser } from '@shared/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { motion } from "framer-motion";
 import Logo from '../../../components/Logo'
 
 import {
@@ -150,8 +151,16 @@ export default function SigninForm() {
   }
 
   return (
-    <div className="sign-page h-screen w-screen flex items-center justify-center ">
-      <div
+    <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 100, scale: 1 }}
+        transition={{ delay: 0.5, duration: 2 }}
+        className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 100, y: 0 }}
+        transition={{ duration: 0.8 }}
         className="flex border-4 border-white/30 dark:border-gray-800/50 "
         style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
@@ -232,7 +241,7 @@ export default function SigninForm() {
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }

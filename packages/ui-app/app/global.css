@@ -213,11 +213,17 @@
 }
 
 .sign-page {
+  /* background-image: url('/background.png'); */
+  /* background-repeat: no-repeat; */
+  /* background-position: center; */
+  @apply bg-white dark:bg-gray-900;
+}
+
+.sign-page-background {
   background-image: url('/background.png');
-  /* background-size: 95%; */
   background-repeat: no-repeat;
   background-position: center;
-  @apply bg-white dark:bg-gray-900;
+
 }
 
 .droppable {
