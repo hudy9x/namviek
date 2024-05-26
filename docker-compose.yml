@@ -1,0 +1,41 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: namviek
+    env_file:
+      - .env.local
+    ports:
+      - '3333:3333'
+    command: /bin/sh -c "./docker/entrypoints.sh && yarn backend"
+    depends_on:
+      - redis
+    networks:
+      - namviek-network
+
+  frontend:
+    container_name: frontend
+    image: namviek
+    env_file:
+      - .env.local
+    ports:
+      - '4200:4200'
+    command: 'yarn frontend'
+    depends_on:
+      - backend
+    networks:
+      - namviek-network
+
+  redis:
+    container_name: redis
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    networks:
+      - namviek-network
+
+networks:
+  namviek-network:
+    driver: bridge
