@@ -9,6 +9,10 @@ export const serviceGetUserById = async (id: string) => {
     if (cached) return cached
 
     const result = await mdUserFindFirst({ id })
+    if (!result) {
+      console.log('User id not found: ', id)
+      return null;
+    }
 
     await hset(key, result)
 
@@ -27,6 +31,11 @@ export const serviceGetUserByEmail = async (email: string) => {
     if (cached) return cached
 
     const result = await mdUserFindEmail(email)
+
+    if (!result) {
+      console.log('Email not found: ', email)
+      return null;
+    }
 
     await hset(key, result)
 
