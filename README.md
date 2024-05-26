@@ -1,5 +1,8 @@
-This project is an open-source project manager for small teams with low budget. It includes essential features for running your team.
 ![App shot](https://github.com/hudy9x/namviek/assets/95471659/00cab20a-747a-4cf5-8f5e-105f314f7e2f)
+
+Namviek is an open-source project manager for small teams with low budget. It includes essential features for running your team.
+
+----
 
 ## Who is this for ?
 
