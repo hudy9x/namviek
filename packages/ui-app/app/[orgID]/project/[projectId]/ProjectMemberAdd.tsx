@@ -38,7 +38,7 @@ const SelectedMembers = ({
       <h2 className="my-3 font-medium text-sm">Selected members:</h2>
 
       <div className="bg-gray-50 dark:bg-gray-900 dark:border-gray-700 rounded-lg border">
-        <div className="divide-y divide-dashed">
+        <div className="divide-y divide-dashed dark:divide-gray-700">
           {!selectedMember.length ? (
             <div className="px-4 py-3 text-sm text-gray-500">
               No member selected
@@ -86,8 +86,8 @@ const MemberAvatarWithName = ({
     <div className="flex items-center gap-3">
       <Avatar src={photo || ''} name={name || ''} size="lg" />
       <div className="flex flex-col text-sm">
-        <span className="text-gray-700 font-medium">{name}</span>
-        <span className="text-gray-400 text-xs">{email}</span>
+        <span className="text-gray-700 dark:text-gray-400 font-medium">{name}</span>
+        <span className="text-gray-400 dark:text-gray-500 text-xs">{email}</span>
       </div>
     </div>
   )
@@ -215,7 +215,7 @@ export default function ProjectMemberAdd({
                 />
               </div>
               <SearchStatus status={loading} />
-              <div className="divide-y divide-dashed">
+              <div className="divide-y divide-dashed dark:divide-gray-700">
                 {filteredSearchResults.map(member => {
                   return (
                     <div
@@ -225,7 +225,7 @@ export default function ProjectMemberAdd({
                           return [...prev, member]
                         })
                       }}
-                      className="px-4 py-3 hover:bg-white cursor-pointer">
+                      className="px-4 py-3 hover:bg-white dark:hover:bg-gray-800 cursor-pointer">
                       <MemberAvatarWithName
                         name={member.name}
                         photo={member.photo}

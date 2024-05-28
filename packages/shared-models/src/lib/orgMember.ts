@@ -49,12 +49,14 @@ export const mdOrgMemberSeach = async ({
         OR: [
           {
             name: {
-              contains: term
+              contains: term,
+              mode: 'insensitive'
             }
           },
           {
             email: {
-              contains: term
+              contains: term,
+              mode: 'insensitive'
             }
           }
         ]

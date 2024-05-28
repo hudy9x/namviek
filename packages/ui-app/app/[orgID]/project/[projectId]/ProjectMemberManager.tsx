@@ -34,7 +34,8 @@ export default function ProjectMemberManager() {
             if (!member || !member.email || !member.name) {
               return null
             }
-            if (!member.email.includes(term) && !member.name?.includes(term))
+            const { email, name } = member
+            if (!email.toLowerCase().includes(term) && !name.toLowerCase().includes(term))
               return null
 
             const isMe = member.id === user?.id
