@@ -3,7 +3,6 @@ import {
   BaseController,
   Controller,
   Delete,
-  ExpressRequest,
   ExpressResponse,
   UseMiddleware,
   Post,
@@ -16,10 +15,17 @@ import { ProjectViewType } from '@prisma/client'
 import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
 import { pusherTrigger } from '../../lib/pusher-server'
+import ProjectViewService from '../../services/project/view.service'
 
 @Controller('/project-view')
 @UseMiddleware([authMiddleware])
 export default class ProjectViewController extends BaseController {
+  projectViewService: ProjectViewService
+  constructor() {
+    super()
+    this.projectViewService = new ProjectViewService()
+  }
+
   @Post('/')
   async addView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
@@ -38,12 +44,10 @@ export default class ProjectViewController extends BaseController {
     }
 
     if (!data) {
-      console.log('error')
+      console.log('Use default config')
     }
 
-    console.log(icon)
-
-    const result = await mdProjectView.add({
+    const result = await this.projectViewService.create({
       icon,
       name,
       order: null,

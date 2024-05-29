@@ -49,7 +49,7 @@ export default function ProjectView() {
             ) : (
               <ProjectViewIcon type={view.type} />
             )}
-            <span>{view.name}</span>
+            <span>{view.name} {view.order}</span>
             <ProjectViewItemDropdown
               id={view.id}
               name={view.name || ''}
