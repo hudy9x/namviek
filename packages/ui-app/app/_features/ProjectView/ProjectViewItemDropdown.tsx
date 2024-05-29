@@ -7,6 +7,7 @@ import ProjectViewChangeName from './ProjectViewChangeName'
 import ProjectViewDelete from './ProjectViewDelete'
 import { ProjectViewType } from '@prisma/client'
 import ProjectViewSetAsDefault from './ProjectViewSetAsDefault'
+import ProjectViewUpdate from './ProjectViewUpdate'
 
 export default function ProjectViewItemDropdown({
   id,
@@ -31,6 +32,7 @@ export default function ProjectViewItemDropdown({
             icon={<GoTypography />}
             title="Rename"
           />
+          <ProjectViewUpdate id={id} />
           <ProjectViewSetAsDefault id={id} />
           <ProjectViewDelete id={id} />
         </DropdownMenu.Content>
