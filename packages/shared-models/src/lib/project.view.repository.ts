@@ -1,5 +1,5 @@
 import { ProjectView } from "@prisma/client"
-import { pmClient } from "./_prisma";
+import { pmClient, projectViewModel } from "./_prisma";
 
 export default class ProjectViewRepository {
   async create(data: Omit<ProjectView, 'id'>) {
@@ -23,5 +23,13 @@ export default class ProjectViewRepository {
     })
 
     return res
+  }
+
+  async getOne(id: string) {
+    return projectViewModel.findFirst({
+      where: {
+        id
+      }
+    })
   }
 }

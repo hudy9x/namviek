@@ -1,22 +1,24 @@
-import { Button, DropdownMenu, Form, Modal } from '@shared/ui'
+import { DropdownMenu, Modal } from '@shared/ui'
 import { useState } from 'react'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
-import { HiOutlineDocumentText, HiOutlineTrash } from 'react-icons/hi2'
 import { GoTypography } from 'react-icons/go'
 import ProjectViewChangeName from './ProjectViewChangeName'
 import ProjectViewDelete from './ProjectViewDelete'
 import { ProjectViewType } from '@prisma/client'
 import ProjectViewSetAsDefault from './ProjectViewSetAsDefault'
-import ProjectViewUpdate from './ProjectViewUpdate'
+import ProjectViewItemUpdate from './ProjectViewItemUpdate'
+import { HiOutlinePencilSquare } from 'react-icons/hi2'
 
 export default function ProjectViewItemDropdown({
   id,
   name,
-  type
+  type,
+  onUpdate
 }: {
   id: string
   name: string
   type: ProjectViewType
+  onUpdate: (id: string) => void
 }) {
   const [visible, setVisible] = useState(false)
 
@@ -32,7 +34,13 @@ export default function ProjectViewItemDropdown({
             icon={<GoTypography />}
             title="Rename"
           />
-          <ProjectViewUpdate id={id} />
+          <DropdownMenu.Item
+            onClick={() => {
+              onUpdate(id)
+            }}
+            icon={<HiOutlinePencilSquare />}
+            title='Update'
+          />
           <ProjectViewSetAsDefault id={id} />
           <ProjectViewDelete id={id} />
         </DropdownMenu.Content>

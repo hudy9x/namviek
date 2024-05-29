@@ -18,5 +18,8 @@ export const projectView = {
       params: { projectId },
       signal
     })
+  },
+  getOne: (pvId: string) => {
+    return httpGet(`/api/project-view/${pvId}`)
   }
 }

@@ -5,12 +5,13 @@ import ProjectViewCreate from './ProjectViewCreate'
 import './style.css'
 import { useProjectViewList } from './useProjectViewList'
 import ProjectViewIcon from './ProjectViewIcon'
-import { Button, Dialog, Loading } from '@shared/ui'
+import { Loading } from '@shared/ui'
 import ProjectViewItemDropdown from './ProjectViewItemDropdown'
 import DynamicIcon from '@/components/DynamicIcon'
 import HasRole from '../UserPermission/HasRole'
 import useSetViewFilter from './useSetViewFilter'
 import { useState } from 'react'
+import ProjectViewUpdate from './ProjectViewUpdate'
 
 export default function ProjectView() {
   const searchParams = useSearchParams()
@@ -18,6 +19,7 @@ export default function ProjectView() {
   const params = useParams()
   const mode = searchParams.get('mode')
   const { views } = useProjectViewList()
+  const [projectViewId, setProjectViewId] = useState('')
 
   useSetViewFilter()
 
@@ -54,6 +56,9 @@ export default function ProjectView() {
               id={view.id}
               name={view.name || ''}
               type={view.type}
+              onUpdate={id => {
+                setProjectViewId(id)
+              }}
             />
           </div>
         )
@@ -64,6 +69,12 @@ export default function ProjectView() {
           <div className="w-[1px] h-[20px] bg-gray-300 dark:bg-gray-700 mx-2 my-2"></div>
         ) : null}
         <ProjectViewCreate />
+      </HasRole>
+
+      <HasRole projectRoles={['MANAGER', 'LEADER']}>
+        <ProjectViewUpdate id={projectViewId} onUpdate={id => {
+          setProjectViewId(id)
+        }} />
       </HasRole>
     </div>
   )

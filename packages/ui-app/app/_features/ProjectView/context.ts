@@ -47,7 +47,7 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
   setFilter: () => { console.log(1) }
 })
 
-export const ProjectViewProvider = ProjectViewContext.Provider
+export const ProjectViewCreateProvider = ProjectViewContext.Provider
 
 export const useProjectViewContext = () => {
   const { filter, setFilter, customView,

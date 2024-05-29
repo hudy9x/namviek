@@ -9,7 +9,8 @@ import {
   Put,
   Get,
   Req,
-  Res
+  Res,
+  Param
 } from '../../core'
 import { ProjectViewType } from '@prisma/client'
 import { AuthRequest } from '../../types'
@@ -24,6 +25,14 @@ export default class ProjectViewController extends BaseController {
   constructor() {
     super()
     this.projectViewService = new ProjectViewService()
+  }
+
+  @Get('/:id')
+  async getOneView(@Param() params: { id: string }) {
+    console.log('get one view', params)
+    const { id } = params
+    const result = await this.projectViewService.getOne(id)
+    return result
   }
 
   @Post('/')

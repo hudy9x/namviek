@@ -17,4 +17,14 @@ export default class ProjectViewService {
       throw new DataAccessException('Project view create')
     }
   }
+
+  async getOne(id: string) {
+    try {
+      const result = await this.projectViewRepo.getOne(id)
+
+      return result
+    } catch (error) {
+      throw new DataAccessException('Project view found nothing')
+    }
+  }
 }
