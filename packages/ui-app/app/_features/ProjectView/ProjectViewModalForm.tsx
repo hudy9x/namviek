@@ -14,6 +14,7 @@ import { Loading, messageError, messageSuccess } from '@shared/ui'
 import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
 import { projectView } from '@/services/projectView'
+import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 
 export default function ProjectViewModalForm({
   type,
@@ -29,6 +30,7 @@ export default function ProjectViewModalForm({
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
   const { isUpdate, updateId } = useProjectViewUpdateContext()
+  const { setFilter } = useTaskFilterContext()
   const { updateView } = useProjectViewStore()
 
   const hideModal = () => {
@@ -63,7 +65,7 @@ export default function ProjectViewModalForm({
 
   const updateHandler = () => {
     const id = updateId
-
+    const dataFilter = filter
     const dataView = filter as unknown as Pick<ProjectView, 'data'>
 
     updateView(id, {
@@ -72,6 +74,17 @@ export default function ProjectViewModalForm({
       type,
       data: customView ? dataView : undefined
     })
+
+    setFilter(filter => ({
+      ...filter,
+      ...{
+        date: dataFilter.date,
+        groupBy: dataFilter.groupBy,
+        priority: dataFilter.priority,
+        statusIds: dataFilter.statusIds,
+        point: dataFilter.point
+      }
+    }))
 
     hideModal()
 

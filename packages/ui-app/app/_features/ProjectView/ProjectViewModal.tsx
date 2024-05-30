@@ -1,13 +1,15 @@
 import { ProjectViewType } from '@prisma/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ProjectViewModalForm from './ProjectViewModalForm'
 import { useProjectViewContext } from './context'
 import DynamicIcon from '@/components/DynamicIcon'
 import IconSelect from '@/components/IconSelect'
+import { useProjectViewUpdateContext } from './updateContext'
 
 export default function ProjectViewModal() {
   const { name, setName, setIcon, icon } = useProjectViewContext()
+  const { isUpdate, type } = useProjectViewUpdateContext()
   const [active, setActive] = useState<ProjectViewType>(ProjectViewType.LIST)
   const [views] = useState([
     {
@@ -64,8 +66,20 @@ export default function ProjectViewModal() {
     }
   ]
 
+  // as user edit a view, update the selected type
+  useEffect(() => {
+    if (isUpdate && type) {
+      setActive(type)
+    }
+  }, [isUpdate, type])
+
+  // set selected view icon
   const activeView = views.find(v => v.type === active) || otherViews.find(v => v.type === active)
-  const iconName = activeView?.icon || 'HiOutlineBars3CenterLeft'
+  let iconName = activeView?.icon || 'HiOutlineBars3CenterLeft'
+
+  if (isUpdate && icon) {
+    iconName = icon
+  }
 
   return (
     <div className="view-form">

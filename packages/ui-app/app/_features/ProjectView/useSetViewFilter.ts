@@ -10,6 +10,7 @@ export default function useSetViewFilter() {
   const { setFilter, setDefaultFilter } = useTaskFilterContext()
   const mode = searchParams.get('mode')
 
+  console.log('mode update', mode)
   // update task filter once user change to another view
   useDebounce(() => {
     const viewId = mode

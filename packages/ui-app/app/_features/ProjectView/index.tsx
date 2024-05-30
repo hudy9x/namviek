@@ -22,6 +22,7 @@ export default function ProjectView() {
   const { views } = useProjectViewList()
   const [projectViewId, setProjectViewId] = useState('')
 
+  // set the view's filter data
   useSetViewFilter()
 
   const clickOnView = (name: string) => {

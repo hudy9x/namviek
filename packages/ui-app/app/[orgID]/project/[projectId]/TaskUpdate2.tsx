@@ -177,9 +177,6 @@ export const TaskUpdate2 = () => {
     }
   }, [taskId, tasks])
 
-  console.log('currentTask', currentTask.fileIds)
-
-
   return <TaskUpdateModal
     id={taskId}
     task={currentTask}

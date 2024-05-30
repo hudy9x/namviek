@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useContext } from "react";
+import { projectViewMap } from "./useProjectViewList";
 
 interface IProjectViewUpdateProps {
   updateId: string
@@ -16,6 +17,7 @@ export const useProjectViewUpdateContext = () => {
   const context = useContext(ProjectViewUpdateContext)
 
   const isUpdate = !!context.updateId
+  const type = projectViewMap.get(context.updateId)
 
-  return { ...context, isUpdate }
+  return { ...context, isUpdate, type }
 }
