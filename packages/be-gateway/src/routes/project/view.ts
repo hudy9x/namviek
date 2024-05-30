@@ -96,12 +96,36 @@ export default class ProjectViewController extends BaseController {
   }
 
   @Put('/')
-  async updateView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
+  async updateViewName(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, id } = req.body as { id: string; name: string }
+    const { name, id, data, type, icon } = req.body as {
+      id: string
+      name: string
+      icon: string
+      type: ProjectViewType
+      projectId: string
+      data: {
+        date: string
+        priority: string
+        point: string
+        groupBy: string
+        statusIds: string[]
+      }
+    }
 
     const result = await mdProjectView.update(id, {
-      name: name,
+      name,
+      icon,
+      data: data
+        ? {
+          date: data.date,
+          priority: data.priority,
+          point: data.point,
+          groupBy: data.groupBy,
+          statusIds: data.statusIds
+        }
+        : {},
+      type,
       updatedAt: new Date(),
       updatedBy: uid
     })

@@ -7,7 +7,7 @@ import DynamicIcon from '@/components/DynamicIcon'
 import IconSelect from '@/components/IconSelect'
 
 export default function ProjectViewModal() {
-  const { name, setName, setIcon } = useProjectViewContext()
+  const { name, setName, setIcon, icon } = useProjectViewContext()
   const [active, setActive] = useState<ProjectViewType>(ProjectViewType.LIST)
   const [views] = useState([
     {
@@ -65,11 +65,12 @@ export default function ProjectViewModal() {
   ]
 
   const activeView = views.find(v => v.type === active) || otherViews.find(v => v.type === active)
+  const iconName = activeView?.icon || 'HiOutlineBars3CenterLeft'
 
   return (
     <div className="view-form">
       <div className="view-name-input">
-        <IconSelect value={activeView?.icon || 'HiOutlineBars3CenterLeft'} onChange={val => {
+        <IconSelect value={iconName} onChange={val => {
           console.log(val)
           setIcon(val)
         }} />

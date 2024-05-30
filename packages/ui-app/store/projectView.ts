@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { ProjectView } from '@prisma/client'
 import { produce } from 'immer'
+import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
 
 interface ProjectViewState {
   loading: boolean
@@ -33,10 +34,25 @@ export const useProjectViewStore = create<ProjectViewState>(set => ({
         if (foundIndex === -1) return
 
         const view = state.views[foundIndex]
-        const { name } = data
+        const { name, icon, type, data: viewData } = data
+
+        console.log('new data view', data)
 
         if (name) {
           view.name = name
+        }
+
+        if (icon && icon !== view.icon) {
+          view.icon = icon
+        }
+
+        if (type && type !== view.type) {
+          view.type = type
+          projectViewMap.set(view.id, type)
+        }
+
+        if (JSON.stringify(view.data) !== JSON.stringify(viewData)) {
+          view.data = viewData as unknown as Pick<ProjectView, 'data'>
         }
       })
     ),

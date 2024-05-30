@@ -1,4 +1,4 @@
-import { ProjectViewType } from '@prisma/client'
+import { ProjectView, ProjectViewType } from '@prisma/client'
 import { useProjectViewContext } from './context'
 
 import { useParams } from 'next/navigation'
@@ -10,7 +10,10 @@ import ProjectViewFilterByCalendar from '../ProjectViewFilter/CalendarFilter'
 import ProjectViewFilterByGoal from '../ProjectViewFilter/GoalFilter'
 import ProjectViewFilterByTeam from '../ProjectViewFilter/TeamFilter'
 import ProjectViewFilterByDashboard from '../ProjectViewFilter/DashboardFilter'
-import { Loading } from '@shared/ui'
+import { Loading, messageError, messageSuccess } from '@shared/ui'
+import { useProjectViewUpdateContext } from './updateContext'
+import { useProjectViewStore } from '@/store/projectView'
+import { projectView } from '@/services/projectView'
 
 export default function ProjectViewModalForm({
   type,
@@ -25,6 +28,8 @@ export default function ProjectViewModalForm({
   const { setVisible, name: viewName, icon, setName, filter, customView, setCustomView } = useProjectViewContext()
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
+  const { isUpdate, updateId } = useProjectViewUpdateContext()
+  const { updateView } = useProjectViewStore()
 
   const hideModal = () => {
     setTimeout(() => {
@@ -35,7 +40,7 @@ export default function ProjectViewModalForm({
     }, 500)
   }
 
-  const onAdd = () => {
+  const addHandler = () => {
     setLoading(true)
     addProjectView({
       icon,
@@ -53,6 +58,46 @@ export default function ProjectViewModalForm({
           setLoading(false)
         }, 200)
       })
+
+  }
+
+  const updateHandler = () => {
+    const id = updateId
+
+    const dataView = filter as unknown as Pick<ProjectView, 'data'>
+
+    updateView(id, {
+      icon,
+      name: viewName || name,
+      type,
+      data: customView ? dataView : undefined
+    })
+
+    hideModal()
+
+    projectView.update({
+      id,
+      icon,
+      type,
+      name: viewName,
+      data: customView ? dataView : undefined
+    }).then(res => {
+      console.log(res)
+      messageSuccess('Update view successfully')
+
+    }).catch(err => {
+      console.log(err)
+      messageError("Update view failed !")
+    })
+  }
+
+  const onAdd = () => {
+    if (isUpdate) {
+      updateHandler()
+      return
+    }
+
+    addHandler()
   }
 
   return (
