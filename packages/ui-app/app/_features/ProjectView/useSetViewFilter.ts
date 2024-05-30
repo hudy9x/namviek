@@ -16,6 +16,8 @@ export default function useSetViewFilter() {
     const viewId = mode
     const view = views.find(v => v.id === viewId)
 
+    console.log('view', view)
+
     if (
       view &&
       view.data &&
