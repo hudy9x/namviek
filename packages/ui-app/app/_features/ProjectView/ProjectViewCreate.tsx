@@ -2,7 +2,7 @@ import { Dialog } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
-import { IBoardFilter, ProjectViewCreateProvider } from './context'
+import { IBoardFilter, ProjectViewModalProvider } from './context'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
 
 export default function ProjectViewCreate() {
@@ -26,9 +26,10 @@ export default function ProjectViewCreate() {
   }, [visible])
 
   return (
-    <ProjectViewCreateProvider
+    <ProjectViewModalProvider
       value={{
         icon,
+        isUpdate: false,
         name,
         setIcon,
         setName,
@@ -54,6 +55,6 @@ export default function ProjectViewCreate() {
         </Dialog.Portal>
       </Dialog.Root>
 
-    </ProjectViewCreateProvider>
+    </ProjectViewModalProvider>
   )
 }

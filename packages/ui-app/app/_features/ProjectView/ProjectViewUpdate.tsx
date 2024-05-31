@@ -1,13 +1,11 @@
-import { Dialog, Modal } from '@shared/ui'
+import { Dialog } from '@shared/ui'
 import { useEffect, useState } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
-import { IBoardFilter, ProjectViewCreateProvider } from './context'
+import { IBoardFilter, ProjectViewModalProvider } from './context'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { projectView } from '@/services/projectView'
 import { ProjectView } from '@prisma/client'
 import { useProjectViewUpdateContext } from './updateContext'
-
 
 export default function ProjectViewUpdate({
   id,
@@ -19,7 +17,7 @@ export default function ProjectViewUpdate({
   const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
-  const { setUpdateId } = useProjectViewUpdateContext()
+  const { setUpdateId, updateId } = useProjectViewUpdateContext()
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
     priority: 'ALL',
@@ -67,10 +65,11 @@ export default function ProjectViewUpdate({
   }, [id])
 
   return (
-    <ProjectViewCreateProvider
+    <ProjectViewModalProvider
       value={{
         icon,
         name,
+        isUpdate: !!updateId,
         setIcon,
         setName,
         visible,
@@ -89,6 +88,6 @@ export default function ProjectViewUpdate({
         </Dialog.Portal>
       </Dialog.Root>
 
-    </ProjectViewCreateProvider>
+    </ProjectViewModalProvider>
   )
 }

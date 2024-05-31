@@ -12,6 +12,7 @@ export interface IBoardFilter {
 
 interface IProjectViewContextProps {
   icon: string
+  isUpdate: boolean
   setIcon: Dispatch<SetStateAction<string>>
   name: string
   setName: Dispatch<SetStateAction<string>>
@@ -24,6 +25,7 @@ interface IProjectViewContextProps {
 }
 const ProjectViewContext = createContext<IProjectViewContextProps>({
   icon: '',
+  isUpdate: false,
   setIcon: () => { console.log(1) },
   name: '',
   setName: () => {
@@ -47,7 +49,7 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
   setFilter: () => { console.log(1) }
 })
 
-export const ProjectViewCreateProvider = ProjectViewContext.Provider
+export const ProjectViewModalProvider = ProjectViewContext.Provider
 
 export const useProjectViewContext = () => {
   const { filter, setFilter, customView,
