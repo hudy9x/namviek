@@ -1,10 +1,12 @@
 import { ProjectViewType } from "@prisma/client";
 import { Button } from "@shared/ui";
+import ProjectViewForMe from "../ProjectView/ProjectViewForMe";
 
-export default function ProjectViewFilterByTeam({ type, desc, onAdd }: {
+export default function ProjectViewFilterByTeam({ type, desc, isUpdate, onAdd }: {
   type: ProjectViewType
   desc: string
   onAdd: () => void
+  isUpdate: boolean
 }) {
   if (type !== ProjectViewType.TEAM) return null
   return <><img
@@ -14,11 +16,12 @@ export default function ProjectViewFilterByTeam({ type, desc, onAdd }: {
     <div className="">
       <h2 className="text-xl mb-3">Team</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
+      <ProjectViewForMe />
       <div className="text-right">
         <Button
           onClick={onAdd}
           primary
-          title={'Add team'}
+          title={isUpdate ? 'Update team' : 'Add team'}
         />
       </div>
     </div></>

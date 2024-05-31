@@ -34,12 +34,16 @@ export const useProjectViewStore = create<ProjectViewState>(set => ({
         if (foundIndex === -1) return
 
         const view = state.views[foundIndex]
-        const { name, icon, type, data: viewData } = data
+        const { name, onlyMe, icon, type, data: viewData } = data
 
         console.log('new data view', data)
 
         if (name) {
           view.name = name
+        }
+
+        if (view.onlyMe !== onlyMe) {
+          view.onlyMe = !!onlyMe
         }
 
         if (icon && icon !== view.icon) {

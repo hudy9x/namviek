@@ -10,6 +10,7 @@ export default function ProjectViewCreate() {
   const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
+  const [onlyMe, setOnlyMe] = useState(false)
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
     priority: 'ALL',
@@ -30,6 +31,8 @@ export default function ProjectViewCreate() {
       value={{
         icon,
         isUpdate: false,
+        onlyMe,
+        setOnlyMe,
         name,
         setIcon,
         setName,

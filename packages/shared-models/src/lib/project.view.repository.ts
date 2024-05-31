@@ -5,15 +5,17 @@ export default class ProjectViewRepository {
   async create(data: Omit<ProjectView, 'id'>) {
     const res = await pmClient.$transaction(async tx => {
 
-      const max = await tx.projectView.count({
+      const latestOrder = await tx.projectView.findFirst({
         where: {
-          projectId: data.projectId
+          projectId: data.projectId,
+        },
+        orderBy: {
+          order: 'desc'
         }
       })
 
-
-      console.log('max', max)
-      data.order = max || 1
+      const nextOrder = latestOrder.order
+      data.order = nextOrder ? nextOrder + 1 : 1
       console.log('data.order', data.order)
       const result = await tx.projectView.create({
         data

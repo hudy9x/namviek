@@ -26,7 +26,7 @@ export default function ProjectViewModalForm({
   desc: string
 }) {
   const { projectId } = useParams()
-  const { setVisible, name: viewName, icon, setName, filter, customView, setCustomView } = useProjectViewContext()
+  const { setVisible, name: viewName, icon, onlyMe, setOnlyMe, setName, filter, customView, setCustomView } = useProjectViewContext()
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
   const { isUpdate, updateId } = useProjectViewUpdateContext()
@@ -38,6 +38,7 @@ export default function ProjectViewModalForm({
       setLoading(false)
       setVisible(false)
       setCustomView(false)
+      setOnlyMe(false)
       setName('')
     }, 500)
   }
@@ -45,6 +46,7 @@ export default function ProjectViewModalForm({
   const addHandler = () => {
     setLoading(true)
     addProjectView({
+      onlyMe: onlyMe || false,
       icon,
       name: viewName || name,
       type,
@@ -69,6 +71,7 @@ export default function ProjectViewModalForm({
     const dataView = filter as unknown as Pick<ProjectView, 'data'>
 
     updateView(id, {
+      onlyMe: onlyMe || false,
       icon,
       name: viewName || name,
       type,
@@ -116,12 +119,12 @@ export default function ProjectViewModalForm({
   return (
     <div className="min-h-[500px]">
       <Loading.Absolute enabled={loading} title='Creating view' className='rounded-md' />
-      <ProjectViewFilterByBoard type={type} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByList type={type} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByCalendar type={type} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByGoal type={type} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByTeam type={type} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByDashboard type={type} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByBoard type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByList type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByCalendar type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByGoal type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByTeam type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <ProjectViewFilterByDashboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
     </div>
   )
 }

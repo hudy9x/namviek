@@ -6,9 +6,11 @@ import ProjectViewForMe from '../ProjectView/ProjectViewForMe'
 export default function ProjectViewFilterByBoard({
   type,
   desc,
+  isUpdate,
   onAdd
 }: {
   type: ProjectViewType
+  isUpdate: boolean
   desc: string
   onAdd: () => void
 }) {
@@ -29,7 +31,7 @@ export default function ProjectViewFilterByBoard({
         <ProjectViewForMe />
 
         <div className="text-right">
-          <Button onClick={onAdd} primary title={'Add board'} />
+          <Button onClick={onAdd} primary title={isUpdate ? 'Update board' : 'Add board'} />
         </div>
       </div>
     </>

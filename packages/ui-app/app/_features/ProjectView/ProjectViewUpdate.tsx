@@ -17,6 +17,7 @@ export default function ProjectViewUpdate({
   const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
+  const [onlyMe, setOnlyMe] = useState(false)
   const { setUpdateId, updateId } = useProjectViewUpdateContext()
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
@@ -45,6 +46,7 @@ export default function ProjectViewUpdate({
 
       setName(pvData.name || '')
       setIcon(pvData.icon || '')
+      setOnlyMe(!!pvData.onlyMe)
       setCustomView(isCustom)
 
       if (isCustom) {
@@ -70,6 +72,8 @@ export default function ProjectViewUpdate({
         icon,
         name,
         isUpdate: !!updateId,
+        onlyMe,
+        setOnlyMe,
         setIcon,
         setName,
         visible,

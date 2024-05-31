@@ -14,6 +14,7 @@ export default class ProjectViewService {
       console.log('project view create result', result)
       return result
     } catch (error) {
+      console.log(error)
       throw new DataAccessException('Project view create')
     }
   }

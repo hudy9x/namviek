@@ -1,9 +1,11 @@
 import { ProjectViewType } from "@prisma/client";
 import { Button } from "@shared/ui";
+import ProjectViewForMe from "../ProjectView/ProjectViewForMe";
 
-export default function ProjectViewFilterByDashboard({ type, desc, onAdd }: {
+export default function ProjectViewFilterByDashboard({ type, desc, isUpdate, onAdd }: {
   type: ProjectViewType
   desc: string
+  isUpdate: boolean
   onAdd: () => void
 }) {
   if (type !== ProjectViewType.DASHBOARD) return null
@@ -14,11 +16,12 @@ export default function ProjectViewFilterByDashboard({ type, desc, onAdd }: {
     <div className="">
       <h2 className="text-xl mb-3">Dashboard</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
+      <ProjectViewForMe />
       <div className="text-right">
         <Button
           onClick={onAdd}
           primary
-          title={'Add dashboard'}
+          title={isUpdate ? 'Update dashboard' : 'Add dashboard'}
         />
       </div>
     </div></>

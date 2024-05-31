@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 
 import ProjectViewModalForm from './ProjectViewModalForm'
 import { useProjectViewContext } from './context'
-import DynamicIcon from '@/components/DynamicIcon'
-import IconSelect from '@/components/IconSelect'
 import { useProjectViewUpdateContext } from './updateContext'
 import ProjectViewTypes from './ProjectViewTypes'
 import ProjectViewTitle from './ProjectViewTitle'

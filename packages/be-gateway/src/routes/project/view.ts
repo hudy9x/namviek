@@ -38,8 +38,9 @@ export default class ProjectViewController extends BaseController {
   @Post('/')
   async addView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { icon, name, type, projectId, data } = req.body as {
+    const { icon, name, onlyMe, type, projectId, data } = req.body as {
       name: string
+      onlyMe: boolean
       icon: string
       type: ProjectViewType
       projectId: string
@@ -59,6 +60,7 @@ export default class ProjectViewController extends BaseController {
     const result = await this.projectViewService.create({
       icon,
       name,
+      onlyMe: onlyMe || false,
       order: null,
       data: data
         ? {
@@ -82,7 +84,7 @@ export default class ProjectViewController extends BaseController {
       triggerBy: uid
     })
 
-    console.log('added new project view', result.id)
+    console.log('added new project view 1', result.id)
 
     return result
   }
@@ -98,8 +100,9 @@ export default class ProjectViewController extends BaseController {
   @Put('/')
   async updateViewName(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, id, data, type, icon } = req.body as {
+    const { name, id, onlyMe, data, type, icon } = req.body as {
       id: string
+      onlyMe: boolean
       name: string
       icon: string
       type: ProjectViewType
@@ -115,6 +118,7 @@ export default class ProjectViewController extends BaseController {
 
     const result = await mdProjectView.update(id, {
       name,
+      onlyMe: onlyMe || false,
       icon,
       data: data
         ? {
