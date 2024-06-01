@@ -2,26 +2,20 @@ import { create } from 'zustand'
 import { produce } from 'immer'
 // import { projectViewMap } from './useProjectViewList'
 
-interface IProjectViewUpdateProps {
-  updateId: string
-  setUpdateId: (id: string) => void
+interface IProjectViewModalState {
+  visible: boolean
+  viewId: string
+  setVisible: (stt: boolean, pid?: string) => void
 }
 
-export const useProjectViewUpdateStore = create<IProjectViewUpdateProps>(set => ({
-  updateId: '',
-  setUpdateId: (id: string) =>
+export const useProjectViewModalStore = create<IProjectViewModalState>(set => ({
+  visible: false,
+  viewId: '',
+  setVisible: (stt: boolean, id?: string) =>
     set(
-      produce((draftState: IProjectViewUpdateProps) => {
-        draftState.updateId = id
+      produce((state: IProjectViewModalState) => {
+        state.visible = stt
+        state.viewId = id ? id : ''
       })
-    )
+    ),
 }))
-//
-// export const useProjectViewUpdateContext = () => {
-//   const context = useProjectViewUpdateStore()
-//
-//   const isUpdate = !!context.updateId
-//   const type = projectViewMap.get(context.updateId)
-//
-//   return { ...context, isUpdate, type }
-// }
