@@ -6,7 +6,6 @@ import ProjectViewChangeName from './ProjectViewChangeName'
 import ProjectViewDelete from './ProjectViewDelete'
 import { ProjectViewType } from '@prisma/client'
 import ProjectViewSetAsDefault from './ProjectViewSetAsDefault'
-import ProjectViewItemUpdate from './ProjectViewItemUpdate'
 import { HiOutlinePencilSquare } from 'react-icons/hi2'
 
 export default function ProjectViewItemDropdown({

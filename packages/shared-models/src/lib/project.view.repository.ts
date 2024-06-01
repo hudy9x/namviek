@@ -14,7 +14,7 @@ export default class ProjectViewRepository {
         }
       })
 
-      const nextOrder = latestOrder.order
+      const nextOrder = latestOrder ? latestOrder.order : 0
       data.order = nextOrder ? nextOrder + 1 : 1
       console.log('data.order', data.order)
       const result = await tx.projectView.create({
