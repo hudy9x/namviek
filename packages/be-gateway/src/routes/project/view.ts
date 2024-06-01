@@ -90,10 +90,14 @@ export default class ProjectViewController extends BaseController {
   }
 
   @Get('/')
-  async getView() {
+  async getViewByProjectId() {
     const { projectId } = this.req.query as { projectId: string }
+    const req = this.req as AuthRequest
+    const { id } = req.authen
 
-    const result = await mdProjectView.getByProject(projectId)
+    console.log('1')
+
+    const result = await mdProjectView.getByProject(projectId, id)
     return result
   }
 

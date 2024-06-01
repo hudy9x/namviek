@@ -63,8 +63,7 @@ function useGetAutomationRulesByProject() {
 
 }
 
-export default function ProjectContainer() {
-
+function PrefetchData() {
   // realtime events
   useRegisterEvents()
 
@@ -83,8 +82,12 @@ export default function ProjectContainer() {
   // by using task'id
   // Ex: tasks[id] or task[order]
   useGenTaskMappingObject()
+  return <></>
+}
+export default function ProjectContainer() {
 
   return <>
+    <PrefetchData />
     <SaveRecentVisitPage />
     <ProjectNav /></>
 }

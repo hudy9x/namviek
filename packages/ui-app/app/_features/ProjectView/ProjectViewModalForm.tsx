@@ -15,6 +15,7 @@ import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
 import { projectView } from '@/services/projectView'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
+import { useReRenderView } from './useReRenderView'
 
 export default function ProjectViewModalForm({
   type,
@@ -32,9 +33,11 @@ export default function ProjectViewModalForm({
   const { isUpdate, updateId } = useProjectViewUpdateContext()
   const { setFilter } = useTaskFilterContext()
   const { updateView } = useProjectViewStore()
+  const { doReRender } = useReRenderView()
 
   const hideModal = () => {
     setTimeout(() => {
+      console.log('hide')
       setLoading(false)
       setVisible(false)
       setCustomView(false)
@@ -78,6 +81,10 @@ export default function ProjectViewModalForm({
       data: customView ? dataView : undefined
     })
 
+    // re-render view
+    doReRender()
+
+    // update project filter
     setFilter(filter => ({
       ...filter,
       ...{
@@ -94,6 +101,7 @@ export default function ProjectViewModalForm({
     projectView.update({
       id,
       icon,
+      onlyMe: onlyMe || false,
       type,
       name: viewName,
       data: customView ? dataView : undefined

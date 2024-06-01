@@ -44,6 +44,8 @@ export default function ProjectViewUpdate({
       const pvData = data as ProjectView
       const isCustom = !!Object.keys(data.data).length
 
+      console.log('pv Data', pvData)
+
       setName(pvData.name || '')
       setIcon(pvData.icon || '')
       setOnlyMe(!!pvData.onlyMe)

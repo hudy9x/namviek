@@ -29,6 +29,7 @@ function VerticalSeparator() {
 
 export default function ProjectView() {
   const [projectViewId, setProjectViewId] = useState('')
+  console.log('project view render')
 
   return (
     <ProjectViewUpdateProvider value={{

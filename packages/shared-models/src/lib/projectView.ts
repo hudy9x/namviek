@@ -2,10 +2,39 @@ import { ProjectView } from '@prisma/client'
 import { projectViewModel } from './_prisma'
 
 export const mdProjectView = {
-  getByProject: (projectId: string) => {
+  getByProject: (projectId: string, uid: string) => {
     return projectViewModel.findMany({
       where: {
-        projectId
+        // projectId,
+        // AND: [
+        //   { onlyMe: { isSet: false } },
+        //   { onlyMe: false }
+        // ]
+        OR: [
+          // condition 1
+          // get all project's view
+          {
+            projectId, OR: [
+              {
+                onlyMe: {
+                  isSet: false
+                }
+              },
+              {
+                onlyMe: false
+              }
+            ]
+          },
+
+          // condition 2
+          // get views that created by user
+          {
+            projectId,
+            onlyMe: true,
+            createdBy: uid
+          }
+
+        ]
       }
     })
   },
