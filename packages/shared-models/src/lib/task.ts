@@ -32,7 +32,7 @@ const generateConditions = ({
   done,
   counter
 }: ITaskQuery) => {
-  const where: {
+  let where: {
     [key: string]: unknown
   } = {}
 
@@ -47,13 +47,30 @@ const generateConditions = ({
   }
 
   if (taskPoint) {
+    // convert string to number 
     taskPoint = +taskPoint
     if (taskPoint === 0) {
       taskPoint = undefined
+      where = {
+        ...where,
+        ...{
+          OR: [
+            { taskPoint: null },
+            {
+              taskPoint: {
+                isSet: false
+              }
+            }
+
+          ]
+        }
+      }
+    } else {
+      where.taskPoint = taskPoint
     }
 
-    where.taskPoint = taskPoint
   }
+
 
   if (projectId && projectId !== 'all') {
     where.projectId = projectId
