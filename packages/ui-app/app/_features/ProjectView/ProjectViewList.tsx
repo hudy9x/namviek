@@ -48,7 +48,7 @@ export default function ProjectViewList({ onUpdate }: { onUpdate: (id: string) =
               <ProjectViewIcon type={view.type} />
             )}
             <OnlyMeIcon enabled={!!onlyMe} />
-            <span>{view.name} {view.order}</span>
+            <span>{view.name}</span>
             <ProjectViewItemDropdown
               id={view.id}
               name={view.name || ''}
