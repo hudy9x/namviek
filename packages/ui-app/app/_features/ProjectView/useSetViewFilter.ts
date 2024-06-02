@@ -10,13 +10,10 @@ export default function useSetViewFilter() {
   const { setFilter, setDefaultFilter } = useTaskFilterContext()
   const mode = searchParams.get('mode')
 
-  console.log('mode update', mode)
   // update task filter once user change to another view
   useDebounce(() => {
     const viewId = mode
     const view = views.find(v => v.id === viewId)
-
-    console.log('view', view)
 
     if (
       view &&
@@ -32,7 +29,6 @@ export default function useSetViewFilter() {
       Object.keys(view.data as { [key: string]: unknown }).length
     ) {
       const data = view.data as unknown as IBoardFilter
-      console.log('set view data fileter', data)
 
       setFilter(filter => ({
         ...filter,

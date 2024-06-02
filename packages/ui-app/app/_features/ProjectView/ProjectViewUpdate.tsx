@@ -1,4 +1,4 @@
-import { Dialog } from '@shared/ui'
+import { Dialog, messageError, setFixLoading } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewModalProvider } from './context'
@@ -6,6 +6,7 @@ import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { projectView } from '@/services/projectView'
 import { ProjectView } from '@prisma/client'
 import { useProjectViewUpdateContext } from './updateContext'
+import { useProjectViewStore } from '@/store/projectView'
 
 export default function ProjectViewUpdate({
   id,
@@ -18,6 +19,7 @@ export default function ProjectViewUpdate({
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
   const [onlyMe, setOnlyMe] = useState(false)
+  const { views } = useProjectViewStore()
   const { setUpdateId, updateId } = useProjectViewUpdateContext()
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
@@ -37,36 +39,50 @@ export default function ProjectViewUpdate({
     }
   }, [visible])
 
+  const viewDeps = JSON.stringify(views)
   useEffect(() => {
+    if (!id) return
     console.log('project view id ', id)
-    id && projectView.getOne(id).then(res => {
-      const { data } = res.data
-      const pvData = data as ProjectView
-      const isCustom = !!Object.keys(data.data).length
+    console.log('views', views)
+    const view = views.find(v => v.id === id)
+    if (!view) {
+      messageError('This view does not exist. Please reload the page')
+      return
+    }
 
-      console.log('pv Data', pvData)
 
-      setName(pvData.name || '')
-      setIcon(pvData.icon || '')
-      setOnlyMe(!!pvData.onlyMe)
-      setCustomView(isCustom)
+    // projectView.getOne(id).then(res => {
 
-      if (isCustom) {
-        const customData = pvData.data
-        console.log('custom data', customData)
-        setFilter(customData as unknown as IBoardFilter)
-      } else {
-        setFilter({
-          date: 'this-month',
-          priority: 'ALL',
-          point: "-1",
-          statusIds: ['ALL'],
-          groupBy: ETaskFilterGroupByType.STATUS
-        })
-      }
+    // const { data } = res.data
+    // const pvData = data as ProjectView
+    // const isCustom = !!Object.keys(data.data).length
 
-    })
-  }, [id])
+    const pvData = view
+    const isCustom = !!Object.keys(view.data as unknown as object).length
+
+    console.log('pv Data', pvData)
+
+    setName(pvData.name || '')
+    setIcon(pvData.icon || '')
+    setOnlyMe(!!pvData.onlyMe)
+    setCustomView(isCustom)
+
+    if (isCustom) {
+      const customData = pvData.data
+      console.log('custom data', customData)
+      setFilter(customData as unknown as IBoardFilter)
+    } else {
+      setFilter({
+        date: 'this-month',
+        priority: 'ALL',
+        point: "-1",
+        statusIds: ['ALL'],
+        groupBy: ETaskFilterGroupByType.STATUS
+      })
+    }
+
+    // })
+  }, [id, viewDeps])
 
   return (
     <ProjectViewModalProvider

@@ -16,6 +16,7 @@ import { useProjectViewStore } from '@/store/projectView'
 import { projectView } from '@/services/projectView'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { useReRenderView } from './useReRenderView'
+import { projectViewMap } from './useProjectViewList'
 
 export default function ProjectViewModalForm({
   type,
@@ -47,7 +48,7 @@ export default function ProjectViewModalForm({
   }
 
   const addHandler = () => {
-    setLoading(true)
+
     addProjectView({
       onlyMe: onlyMe || false,
       icon,
@@ -81,8 +82,11 @@ export default function ProjectViewModalForm({
       data: customView ? dataView : undefined
     })
 
-    // re-render view
-    doReRender()
+    // only re-render view if type changed
+    const oldType = projectViewMap.get(id)
+    if (oldType !== type) {
+      doReRender()
+    }
 
     // update project filter
     setFilter(filter => ({
@@ -115,7 +119,8 @@ export default function ProjectViewModalForm({
     })
   }
 
-  const onAdd = () => {
+  const onSubmit = () => {
+    setLoading(true)
     if (isUpdate) {
       updateHandler()
       return
@@ -126,13 +131,13 @@ export default function ProjectViewModalForm({
 
   return (
     <div className="min-h-[500px]">
-      <Loading.Absolute enabled={loading} title='Creating view' className='rounded-md' />
-      <ProjectViewFilterByBoard type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByList type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByCalendar type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByGoal type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByTeam type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
-      <ProjectViewFilterByDashboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onAdd} />
+      <Loading.Absolute enabled={loading} title={isUpdate ? 'Updating view...' : 'Creating view...'} className='rounded-md' />
+      <ProjectViewFilterByBoard type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByList type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByCalendar type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByGoal type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByTeam type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByDashboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
     </div>
   )
 }
