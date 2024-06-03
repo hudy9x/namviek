@@ -329,6 +329,7 @@ model ProjectView {
   id        String          @id @default(auto()) @map("_id") @db.ObjectId
   name      String?
   type      ProjectViewType
+  onlyMe    Boolean?
   icon      String?
   projectId String?         @db.ObjectId
   order     Int?

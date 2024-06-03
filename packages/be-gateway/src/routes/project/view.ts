@@ -3,28 +3,44 @@ import {
   BaseController,
   Controller,
   Delete,
-  ExpressRequest,
   ExpressResponse,
   UseMiddleware,
   Post,
   Put,
   Get,
   Req,
-  Res
+  Res,
+  Param
 } from '../../core'
 import { ProjectViewType } from '@prisma/client'
 import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
 import { pusherTrigger } from '../../lib/pusher-server'
+import ProjectViewService from '../../services/project/view.service'
 
 @Controller('/project-view')
 @UseMiddleware([authMiddleware])
 export default class ProjectViewController extends BaseController {
+  projectViewService: ProjectViewService
+  constructor() {
+    super()
+    this.projectViewService = new ProjectViewService()
+  }
+
+  @Get('/:id')
+  async getOneView(@Param() params: { id: string }) {
+    console.log('get one view', params)
+    const { id } = params
+    const result = await this.projectViewService.getOne(id)
+    return result
+  }
+
   @Post('/')
   async addView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { icon, name, type, projectId, data } = req.body as {
+    const { icon, name, onlyMe, type, projectId, data } = req.body as {
       name: string
+      onlyMe: boolean
       icon: string
       type: ProjectViewType
       projectId: string
@@ -38,14 +54,13 @@ export default class ProjectViewController extends BaseController {
     }
 
     if (!data) {
-      console.log('error')
+      console.log('Use default config')
     }
 
-    console.log(icon)
-
-    const result = await mdProjectView.add({
+    const result = await this.projectViewService.create({
       icon,
       name,
+      onlyMe: onlyMe || false,
       order: null,
       data: data
         ? {
@@ -69,26 +84,56 @@ export default class ProjectViewController extends BaseController {
       triggerBy: uid
     })
 
-    console.log('added new project view', result.id)
+    console.log('added new project view 1', result.id)
 
     return result
   }
 
   @Get('/')
-  async getView() {
+  async getViewByProjectId() {
     const { projectId } = this.req.query as { projectId: string }
+    const req = this.req as AuthRequest
+    const { id } = req.authen
 
-    const result = await mdProjectView.getByProject(projectId)
+    console.log('1')
+
+    const result = await mdProjectView.getByProject(projectId, id)
     return result
   }
 
   @Put('/')
-  async updateView(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
+  async updateViewName(@Res() res: ExpressResponse, @Req() req: AuthRequest) {
     const { id: uid } = req.authen
-    const { name, id } = req.body as { id: string; name: string }
+    const { name, id, onlyMe, data, type, icon } = req.body as {
+      id: string
+      onlyMe: boolean
+      name: string
+      icon: string
+      type: ProjectViewType
+      projectId: string
+      data: {
+        date: string
+        priority: string
+        point: string
+        groupBy: string
+        statusIds: string[]
+      }
+    }
 
     const result = await mdProjectView.update(id, {
-      name: name,
+      name,
+      onlyMe: onlyMe || false,
+      icon,
+      data: data
+        ? {
+          date: data.date,
+          priority: data.priority,
+          point: data.point,
+          groupBy: data.groupBy,
+          statusIds: data.statusIds
+        }
+        : {},
+      type,
       updatedAt: new Date(),
       updatedBy: uid
     })

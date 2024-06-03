@@ -1,13 +1,16 @@
 import { ProjectViewType } from '@prisma/client'
 import { Button } from '@shared/ui'
 import FilterForm from './FilterForm'
+import ProjectViewForMe from '../ProjectView/ProjectViewForMe'
 
 export default function ProjectViewFilterByBoard({
   type,
   desc,
+  isUpdate,
   onAdd
 }: {
   type: ProjectViewType
+  isUpdate: boolean
   desc: string
   onAdd: () => void
 }) {
@@ -25,9 +28,10 @@ export default function ProjectViewFilterByBoard({
         <p className="text-sm text-gray-500 mb-6">{desc}</p>
 
         <FilterForm type="BOARD" />
+        <ProjectViewForMe />
 
         <div className="text-right">
-          <Button onClick={onAdd} primary title={'Add board'} />
+          <Button onClick={onAdd} primary title={isUpdate ? 'Update board' : 'Add board'} />
         </div>
       </div>
     </>

@@ -10,8 +10,8 @@ import { ProjectViewType } from '@prisma/client'
 import { Loading } from '@shared/ui'
 import { useProjectStatusStore } from '@/store/status'
 import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
-import { AnimatePresence, motion } from 'framer-motion'
-import React, { useCallback, useId, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useReRenderView } from '@/features/ProjectView/useReRenderView'
 
 const DynamicTeamView = dynamic(() => import('@/features/Project/Team'), {
   loading: () => <ProjectContentLoading />
@@ -83,6 +83,7 @@ function ProjectTabContentLoading() {
 
 export default function ProjectTabContent() {
   const searchParams = useSearchParams()
+  const { counter } = useReRenderView()
   const mode = searchParams.get('mode')
 
   const isIgnored = useCallback(() => {
@@ -129,7 +130,7 @@ export default function ProjectTabContent() {
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateMenu /> : null}
     </div>
-  }, [cls, type, isIgnored, mode, isView])
+  }, [cls, type, isIgnored, mode, isView, counter])
 
   return view
 }

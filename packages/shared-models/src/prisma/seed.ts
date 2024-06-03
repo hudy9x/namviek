@@ -3,6 +3,7 @@ import { createAdminUser, getOrgOwner } from './seeder/user'
 import { createOrganization } from './seeder/organization'
 import { createProject } from './seeder/project'
 import { generateIconName, generateOrgName, generateProjectName } from './dummy'
+import { runTest } from './seeder/test'
 const args = process.argv
 
 const prisma = new PrismaClient()
@@ -69,6 +70,10 @@ password: ${process.env.DEFAULT_PWD || '123123123'}
 
     case 'starter':
       createStarterData()
+      break;
+
+    case 'test':
+      runTest()
       break;
 
     default:

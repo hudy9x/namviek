@@ -29,7 +29,6 @@ export default function useSetViewFilter() {
       Object.keys(view.data as { [key: string]: unknown }).length
     ) {
       const data = view.data as unknown as IBoardFilter
-      console.log('set view data fileter', data)
 
       setFilter(filter => ({
         ...filter,

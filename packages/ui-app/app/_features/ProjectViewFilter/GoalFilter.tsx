@@ -1,9 +1,11 @@
 import { ProjectViewType } from "@prisma/client";
 import { Button } from "@shared/ui";
+import ProjectViewForMe from "../ProjectView/ProjectViewForMe";
 
-export default function ProjectViewFilterByGoal({ type, desc, onAdd }: {
+export default function ProjectViewFilterByGoal({ type, desc, onAdd, isUpdate }: {
   type: ProjectViewType
   desc: string
+  isUpdate: boolean
   onAdd: () => void
 }) {
   if (type !== ProjectViewType.GOAL) return null
@@ -14,11 +16,12 @@ export default function ProjectViewFilterByGoal({ type, desc, onAdd }: {
     <div className="">
       <h2 className="text-xl mb-3">Goal</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
+      <ProjectViewForMe />
       <div className="text-right">
         <Button
           onClick={onAdd}
           primary
-          title={'Add goal'}
+          title={isUpdate ? 'Update goal' : 'Add goal'}
         />
       </div>
     </div></>

@@ -1,8 +1,8 @@
-import { Dialog, Modal } from '@shared/ui'
+import { Dialog } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
-import { IBoardFilter, ProjectViewProvider } from './context'
+import { IBoardFilter, ProjectViewModalProvider } from './context'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
 
 export default function ProjectViewCreate() {
@@ -10,6 +10,7 @@ export default function ProjectViewCreate() {
   const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
   const [customView, setCustomView] = useState(false)
+  const [onlyMe, setOnlyMe] = useState(false)
   const [filter, setFilter] = useState<IBoardFilter>({
     date: 'this-month',
     priority: 'ALL',
@@ -26,9 +27,12 @@ export default function ProjectViewCreate() {
   }, [visible])
 
   return (
-    <ProjectViewProvider
+    <ProjectViewModalProvider
       value={{
         icon,
+        isUpdate: false,
+        onlyMe,
+        setOnlyMe,
         name,
         setIcon,
         setName,
@@ -54,21 +58,6 @@ export default function ProjectViewCreate() {
         </Dialog.Portal>
       </Dialog.Root>
 
-      {/* <Modal */}
-      {/*   backdrop={false} */}
-      {/*   className="project-view-modal" */}
-      {/*   size="lg" */}
-      {/*   visible={visible} */}
-      {/*   onVisibleChange={setVisible} */}
-      {/*   title="" */}
-      {/*   triggerBy={ */}
-      {/*     <div className="project-view-item"> */}
-      {/*       <AiOutlinePlus /> */}
-      {/*       <span>View</span> */}
-      {/*     </div> */}
-      {/*   } */}
-      {/*   content={<ProjectViewModal />} */}
-      {/* /> */}
-    </ProjectViewProvider>
+    </ProjectViewModalProvider>
   )
 }
