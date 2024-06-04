@@ -16,7 +16,12 @@ export const useServiceTaskDel = () => {
     })
   }
 
+  const deleteLocalTask = (id: string) => {
+    delTask(id)
+  }
+
   return {
+    deleteLocalTask,
     deleteTask
   }
 }

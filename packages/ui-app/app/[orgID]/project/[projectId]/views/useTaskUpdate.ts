@@ -10,6 +10,13 @@ export const useTaskUpdate = () => {
   const { projectId } = useParams()
   const { updateTask } = useTaskStore()
 
+  const updateLocalTask = (taskData: Partial<Task>) => {
+    updateTask({
+      updatedBy: user?.id,
+      ...taskData
+    })
+  }
+
   const updateTaskData = (taskData: Partial<Task>) => {
     if (taskData.id?.includes('TASK-ID-RAND')) {
       messageWarning('Wait! this task still syncing data from server')
@@ -40,6 +47,7 @@ export const useTaskUpdate = () => {
       })
   }
   return {
+    updateLocalTask,
     updateTaskData
   }
 }

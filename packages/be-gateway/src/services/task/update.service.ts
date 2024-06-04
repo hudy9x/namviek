@@ -57,7 +57,8 @@ export default class TaskUpdateService {
 
       this.taskSyncJob.triggerUpdateEvent({
         projectId: result.projectId,
-        uid: userId
+        uid: userId,
+        data: result
       })
 
       await this._clearRelativeCaches({
