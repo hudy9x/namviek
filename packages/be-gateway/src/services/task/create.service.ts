@@ -99,6 +99,8 @@ export default class TaskCreateService {
 
         this.taskSyncJob.triggerUpdateEvent({
           projectId,
+          type: 'create',
+          data: result,
           uid
         })
         if (!done) {

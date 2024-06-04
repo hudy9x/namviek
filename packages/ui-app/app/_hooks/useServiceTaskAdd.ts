@@ -39,6 +39,7 @@ export const useServiceTaskAdd = () => {
   }
 
   return {
+    createLocalTask: addOneTask,
     taskCreateOne
   }
 }

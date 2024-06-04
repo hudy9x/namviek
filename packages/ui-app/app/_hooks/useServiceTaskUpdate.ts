@@ -127,6 +127,7 @@ export const useServiceTaskUpdate = () => {
     })
   }
   return {
+    updateLocalTask: updateTask,
     updateTaskData,
     updateMultiTaskData
   }

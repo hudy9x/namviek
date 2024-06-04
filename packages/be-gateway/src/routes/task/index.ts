@@ -342,6 +342,8 @@ router.delete('/project/task', async (req: AuthRequest, res) => {
     await findNDelCaches(key)
     taskPusherJob.triggerUpdateEvent({
       projectId,
+      type: 'delete',
+      data: { id },
       uid: req.authen.id
     })
 
@@ -377,6 +379,7 @@ router.put('/project/task-many', async (req: AuthRequest, res) => {
     logging.info('TaskUpdateMany - successfully')
     taskPusherJob.triggerUpdateEvent({
       projectId: data.projectId,
+      type: 'update-many',
       uid: userId
     })
 
