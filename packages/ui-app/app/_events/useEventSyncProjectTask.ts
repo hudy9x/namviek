@@ -39,11 +39,13 @@ export const useEventSyncProjectTask = (projectId: string) => {
         if (type === 'update' && taskData) {
           // fetchNCache()
           updateLocalTask(taskData)
-          messageInfo("trigger by " + triggerBy)
+          return
+          // messageInfo("trigger by " + triggerBy)
         }
 
         if (type === 'update-many') {
           fetchNCache()
+          return
         }
 
         if (type === 'create') {
@@ -54,6 +56,7 @@ export const useEventSyncProjectTask = (projectId: string) => {
           }
 
           createLocalTask(taskData)
+          return
 
         }
 
@@ -65,6 +68,7 @@ export const useEventSyncProjectTask = (projectId: string) => {
           }
 
           deleteLocalTask(taskData.id)
+          return
         }
       })
 
