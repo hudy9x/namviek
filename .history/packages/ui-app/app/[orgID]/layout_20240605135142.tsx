@@ -25,7 +25,9 @@ export default function ProjectLayout({
         <EventUserProjectUpdate />
       </div>
       <ProjectSidebar />
-      <main className="main-content w-full">
+      <main
+        className="main-content w-full"
+        style={{ width: 'calc(100% - 251px)' }}>
         <HamburgerMenu />
         {children}
       </main>
