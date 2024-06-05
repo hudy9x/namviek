@@ -6,38 +6,33 @@
     "seed": "ts-node ./packages/shared-models/src/prisma/seed"
   },
   "scripts": {
+    "vercel-build": "next build",
     "frontend": "nx serve ui-app",
     "backend": "nx serve be-gateway",
     "scheduler": "nx serve be-scheduler",
-
     "build:fe": "nx build ui-app --prod --skip-nx-cache",
     "build:be": "nx build be-gateway --prod --skip-nx-cache",
     "build:se": "nx build be-scheduler --prod --skip-nx-cache",
     "build:all": "yarn build:fe && yarn build:be",
-
     "prod:fe": "next start ./dist/packages/ui-app/",
     "prod:be": "node ./dist/packages/be-gateway/main.js",
     "prod:se": "node ./dist/packages/be-scheduler/main.js",
-
     "prisma": "prisma",
-
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "pushdb": "prisma db push --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "seed": "prisma db seed --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
-
     "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
     "pushdb2": "prisma db push --schema=./packages/shared-models/src/prisma/schema.prisma",
     "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma",
-
     "postinstall": "yarn generate2"
   },
   "private": true,
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.421.0",
-    "@aws-sdk/s3-request-presigner": "^3.421.0",
-    "@dnd-kit/core": "^6.0.8",
-    "@livekit/components-react": "^1.3.0",
-    "@livekit/components-styles": "^1.0.6",
+    "@aws-sdk/client-s3": "3.590.0",
+    "@aws-sdk/s3-request-presigner": "3.590.0",
+    "@dnd-kit/core": "6.0.8",
+    "@livekit/components-react": "1.3.0",
+    "@livekit/components-styles": "1.0.6",
     "@logtail/node": "^0.4.19",
     "@prisma/client": "5.2.0",
     "@pusher/push-notifications-server": "^1.2.6",
