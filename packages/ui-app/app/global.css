@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --compact-width: 60px;
+}
+
 @layer components {
   .box {
     @apply bg-white dark:bg-gray-900 p-4 shadow-sm shadow-gray-200 dark:shadow-gray-900 rounded-md;
@@ -80,15 +84,34 @@
 .root-sidebar {
   @apply h-screen border-r dark:bg-gray-900 dark:border-r-gray-800;
   @apply hidden sm:flex items-start;
+  @apply transition-all;
+
+  &.compact {
+    width: var(--compact-width) !important;
+  }
+}
+
+.root-sidebar.compact {
+  & .side-nav {
+    width: var(--compact-width);
+  }
+
+  .scroll-viewport {
+    width: var(--compact-width);
+  }
+}
+
+.root-sidebar.compact + .main-content {
+  width: calc(100% - var(--compact-width)) !important;
 }
 
 .primary-sidebar {
   @apply flex flex-col justify-between h-screen border-r dark:border-r-gray-800;
 }
 
-.compact-menu {
+.root-sidebar.compact {
   .secondary-sidebar{
-    width: 60px;
+    width: var(--compact-width);
   }
 
   .org-section-popup {
@@ -107,12 +130,38 @@
     height: calc(100vh - 150px) important;
   }
 
+  .create-project-btn {
+    @apply hidden;
+  }
+
+  .tooltip-wrap-div {
+    @apply hidden;
+  }
+
+  .side-nav .nav-item {
+    @apply gap-0 justify-center;
+  }
+
+  .side-nav .side-title {
+    @apply justify-center;
+  }
+
+  .user-section-info {
+    @apply hidden;
+  }
+
+  .nav .section,
+  .nav .section:hover
+  {
+    @apply text-transparent whitespace-nowrap;
+    @apply h-[1px] w-[30px] mx-auto bg-gray-800 py-0 my-2 rounded-none;
+  }
+
+
   .side-nav .nav-item .right,  
   .side-nav .nav-item .left svg,
   .side-nav .nav-item .left span,
-  .side-title span,
-  .nav .section
-  {
+  .side-title span {
     @apply hidden;
   }
 
@@ -124,8 +173,6 @@
     width: calc(100vw - 74px) !important;
   }
 }
-
-
 
 .root-sidebar .main-nav-icon {
   @apply m-2 p-3 w-10 h-10 text-gray-400 rounded-lg cursor-pointer;

@@ -28,7 +28,7 @@ export default function UserSection() {
     <section className="flex gap-2 items-center justify-between py-3 px-3 border-t dark:border-t-gray-800">
       <div className="flex gap-2 items-center">
         <Avatar src={user?.photo || ''} name={user?.name || ''} />
-        <div className="flex flex-col text-sm">
+        <div className="user-section-info flex flex-col text-sm">
           <span className="text-gray-700 dark:text-gray-400">{user?.name}</span>
           <span className="text-xs text-gray-400 dark:text-gray-500">
             {user?.email}
@@ -59,31 +59,6 @@ export default function UserSection() {
             })}
           </div>}
         />
-
-        {/* <Popover triggerBy={<div> */}
-        {/*   <HiOutlineDotsVertical className="w-6 h-6 p-0.5 border border-transparent bg-transparent dark:hover:bg-gray-800 dark:hover:border-gray-700 hover:bg-gray-50 hover:border-gray-100 cursor-pointer rounded-md text-gray-500" /> */}
-        {/* </div> */}
-        {/* } */}
-        {/*   content={ */}
-        {/*     <div className='border rounded-md bg-white shadow-sm py-1.5 w-[150px]'> */}
-        {/*       <div className='flex items-center gap-2'> */}
-        {/*         <ThemeSelection /> */}
-        {/*         <span className='text-sm'>Theme</span> */}
-        {/*       </div> */}
-        {/**/}
-        {/*       <Link className='flex items-center gap-2' href={`/profile/${user?.id}`}> */}
-        {/*         <TbUserCircle /> */}
-        {/*         <span className='text-sm'>Update profile</span> */}
-        {/*       </Link> */}
-        {/**/}
-        {/*       <Link className='flex items-center gap-2' href={`/sign-out`}> */}
-        {/*         <IoMdLogOut /> */}
-        {/*         <span className='text-sm'>Log out</span> */}
-        {/*       </Link> */}
-        {/*     </div> */}
-        {/*   } */}
-        {/* /> */}
-        {/* </Link> */}
       </div>
     </section>
   )
