@@ -4,10 +4,12 @@ import localforage from "localforage";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { projectViewMap } from "../ProjectView/useProjectViewList";
+import { useReRenderView } from "../ProjectView/useReRenderView";
 
 export default function useSetProjectViewCache() {
   const { addAllView } = useProjectViewStore()
   const { projectId } = useParams()
+  const { doReRender } = useReRenderView()
   const key = `PROJECT_VIEW_${projectId}`
 
   // set all view to caches
@@ -19,6 +21,7 @@ export default function useSetProjectViewCache() {
         views.forEach(v => projectViewMap.set(v.id, v.type))
         console.log("set project's view cache")
         addAllView(views)
+        doReRender()
       }
     })
   }, [])

@@ -91,6 +91,7 @@ export default function ProjectTabContent() {
     return ignored.includes(mode || '')
   }, [mode])
 
+  console.log('projectviewmap', projectViewMap, mode)
   const type = projectViewMap.get(mode || '') || 'NONE'
 
   const isView = useCallback((t: ProjectViewType) => !isIgnored() && type === t, [isIgnored, type])
@@ -102,7 +103,7 @@ export default function ProjectTabContent() {
   const cls = `relative ${isNotBoard ? 'overflow-y-auto' : null}`
 
   const view = useMemo(() => {
-    console.log('render project view')
+    console.log('render project view', mode, type)
     return <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
       <ProjectTabContentLoading />
       <AnimateView visible={type === 'NONE' && !isIgnored()}>
