@@ -320,13 +320,13 @@ export default function TaskDetail({
             </Tab.List>
 
             <Tab.Content value="task-activity">
-              <Activity />
+              <Activity taskId={id} />
             </Tab.Content>
             <Tab.Content value="task-attachment">
               <FileControl />
             </Tab.Content>
             <Tab.Content value="task-comments">
-              <TaskComments />
+              <TaskComments taskId={id} />
             </Tab.Content>
           </Tab>
         </section>
