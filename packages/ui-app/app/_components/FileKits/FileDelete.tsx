@@ -4,13 +4,15 @@ import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, useFileKitContext } from './context'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function FileDelete({ id }: { id: string }) {
   const { previewFiles, setPreviewFiles, taskId } = useFileKitContext()
 
   const { user } = useUser()
   const { updateTask } = useTaskStore()
-  const { projectId, orgID } = useParams()
+  const { projectId } = useParams()
+  const { orgId } = useGetParams()
   // const sp = useSearchParams()
   // const taskId = sp.get('taskId')
 
@@ -42,14 +44,16 @@ export default function FileDelete({ id }: { id: string }) {
       }
     })
 
-    storageDelFile({
-      id,
-      orgId: orgID,
-      projectId
-    }).then(res => {
-      // const { data } = res.data
-      messageSuccess('delete file successfully')
-    })
+    if (orgId) {
+      storageDelFile({
+        id,
+        orgId,
+        projectId
+      }).then(res => {
+        // const { data } = res.data
+        messageSuccess('delete file successfully')
+      })
+    }
   }
 
   const onDeleteHandler = () => {

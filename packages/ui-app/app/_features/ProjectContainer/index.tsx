@@ -8,7 +8,7 @@ import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
 import { useUrl } from '@/hooks/useUrl'
 import { useDebounce } from '@/hooks/useDebounce'
 
-import ProjectNav from '../../[orgID]/project/[projectId]/ProjectNav'
+import ProjectNav from '../../[orgName]/project/[projectId]/ProjectNav'
 import useGetProjectStatus from './useGetProjectStatus'
 import useGetTask from './useGetTask'
 import { useGetMembers } from './useGetMembers'
@@ -24,7 +24,7 @@ import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 
 function SaveRecentVisitPage() {
-  const { projectId, orgID } = useParams()
+  const { projectId, orgName } = useParams()
   const { user } = useUser()
   const { getSp } = useUrl()
 
@@ -33,10 +33,10 @@ function SaveRecentVisitPage() {
     if (user && user.id) {
       setRecentVist(
         user.id,
-        `/${orgID}/project/${projectId}?mode=${getSp('mode')}`
+        `/${orgName}/project/${projectId}?mode=${getSp('mode')}`
       )
     }
-  }, [user, projectId, orgID])
+  }, [user, projectId, orgName])
 
   return <></>
 }

@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function MeetingRoomList() {
-  const { orgID } = useParams()
+  const { orgName } = useParams()
   const { push } = useRouter()
   const [loading, setloading] = useState(false)
 
@@ -14,7 +14,7 @@ export default function MeetingRoomList() {
     meetingService.createRoom(name).then(res => {
 
       setloading(false)
-      push(`/${orgID}/meeting/${name}`)
+      push(`/${orgName}/meeting/${name}`)
 
     }).catch(err => {
       setloading(false)

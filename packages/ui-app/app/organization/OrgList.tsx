@@ -91,9 +91,10 @@ export default function OrgList() {
               <Link onClick={() => {
                 setOrgInfo({
                   name: org.name,
-                  cover: org.cover || ''
+                  cover: org.cover || '',
+                  id: org.id
                 })
-              }} key={org.id} href={`/${org.id}/my-works`}>
+              }} key={org.id} href={`/${org.slug}/my-works`}>
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}

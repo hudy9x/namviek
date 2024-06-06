@@ -1,4 +1,4 @@
-import TaskStatus from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskStatus'
+import TaskStatus from 'packages/ui-app/app/[orgName]/project/[projectId]/views/TaskStatus'
 
 export default function VisionTaskItem2({
   id,

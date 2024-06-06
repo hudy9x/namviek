@@ -11,12 +11,14 @@ import {
   messageSuccess
 } from '@shared/ui'
 import { useFormik } from 'formik'
-import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useUserRole } from '../UserPermission/useUserRole'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function SettingAbout() {
-  const { orgID } = useParams()
+  const { orgId } = useGetParams()
   const { orgRole } = useUserRole()
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -26,6 +28,8 @@ export default function SettingAbout() {
     },
     onSubmit: values => {
       console.log(values)
+      if (!orgId) return
+
       if (orgRole !== 'ADMIN') {
         confirmAlert({
           title: 'Restrict Action !',
@@ -38,14 +42,16 @@ export default function SettingAbout() {
         return
       }
       orgUpdate({
-        id: orgID,
+        id: orgId,
         name: values.name,
         cover: values.cover,
         desc: values.desc
       })
         .then(res => {
+          const orgName = res.data.data.slug
+
           messageSuccess('Updated successully')
-          console.log(res)
+          router.replace(`${orgName}/setting/about`)
         })
         .catch(err => {
           console.log(err)
@@ -66,7 +72,9 @@ export default function SettingAbout() {
   }
 
   useDebounce(() => {
-    orgGetById(orgID).then(res => {
+    if (!orgId) return
+
+    orgGetById(orgId).then(res => {
       const { data } = res.data
 
       formik.setValues({
@@ -75,7 +83,7 @@ export default function SettingAbout() {
         desc: data.desc
       })
     })
-  }, [orgID])
+  }, [orgId])
 
   return (
     <form onSubmit={formik.handleSubmit}>

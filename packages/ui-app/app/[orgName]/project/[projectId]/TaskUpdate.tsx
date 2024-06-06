@@ -32,7 +32,7 @@ export const TaskUpdate = () => {
     useState<ITaskDefaultValues>(defaultFormikValues)
   const refCurrentTask = useRef<Task>()
   const { user } = useUser()
-  const { orgID, projectId } = useParams()
+  const { orgName, projectId } = useParams()
   const router = useRouter()
   const mode = sp.get('mode')
   const taskId = sp.get('taskId')
@@ -46,7 +46,7 @@ export const TaskUpdate = () => {
 
   const closeTheModal = () => {
     setVisible(false)
-    router.replace(`${orgID}/project/${projectId}?mode=${mode}`)
+    router.replace(`${orgName}/project/${projectId}?mode=${mode}`)
   }
 
   const handleSubmit = (v: ITaskDefaultValues) => {

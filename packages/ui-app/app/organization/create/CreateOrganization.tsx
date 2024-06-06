@@ -8,10 +8,26 @@ import { useRouter } from 'next/navigation'
 import EmojiInput from '@/components/EmojiInput'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { setOrgInfo } from 'packages/ui-app/layouts/OrgSection'
+
+type ErrorMessage = {
+  error: string;
+  message: string;
+  status: number;
+}
 
 export default function CreateOrganization() {
   const { push } = useRouter()
   const [loading, setLoading] = useState(false)
+
+  const handleAxiosError = (err: AxiosError) => {
+    const { message } = err.response?.data as ErrorMessage
+    if (message === 'REACHED_MAX_ORGANIZATION') {
+      messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade');
+    } else if (message === 'DUPLICATE_ORGANIZATION') {
+      messageWarning('The organization name already exists in the database.');
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -42,14 +58,18 @@ export default function CreateOrganization() {
           messageError('Cannot create organization')
           return
         }
-        push(`/${org.id}/my-works`)
+
+        setOrgInfo({
+          name: org.name,
+          cover: org.cover || '',
+          id: org.id
+        })
+
+        push(`/${org.slug}/my-works`)
       }).catch(err => {
         const error = err as AxiosError
-        if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {
-          messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade')
-
-          console.log(err)
-        }
+        handleAxiosError(error)
+      }).finally(() => {   
         setLoading(false)
       })
     }

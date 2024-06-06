@@ -1,9 +1,9 @@
 import { orgMemberAdd, orgMemberRemove } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { useUrl } from './useUrl'
+import { useGetParams } from './useGetParams'
 
 export const useServiceOrgMember = () => {
-  const { orgID } = useUrl()
+  const { orgId } = useGetParams()
   const { addToOrg, removeFromOrg } = useOrgMemberStore()
 
   const addNewMemberToOrg = (data: { orgId: string; email: string }) => {
@@ -21,10 +21,13 @@ export const useServiceOrgMember = () => {
   }
 
   const removeMemberFromOrg = (uid: string) => {
-    removeFromOrg(uid)
+    if (!orgId) {
+      return Promise.reject(new Error('Organization ID is not defined'));
+    }
+    
     return orgMemberRemove({
       uid,
-      orgId: orgID
+      orgId,
     })
   }
 

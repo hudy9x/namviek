@@ -1,8 +1,10 @@
 import { useParams, usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useGetParams } from './useGetParams'
 
 export const useUrl = () => {
-  const { projectId, orgID } = useParams()
+  const { orgId } = useGetParams()
+  const { projectId } = useParams()
   const pathname = usePathname()
   const sp = useSearchParams()
   const [searchPath, setSearchPath] = useState('')
@@ -17,7 +19,7 @@ export const useUrl = () => {
 
   return {
     projectId,
-    orgID,
+    orgID: orgId,
     url: pathname + searchPath,
     getSp
   }

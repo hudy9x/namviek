@@ -22,12 +22,12 @@ import { copyToClipboard } from '@shared/libs'
 
 export default function MeetingContainer() {
   // TODO: get user input for room and name
-  const { roomId, orgID } = useParams()
+  const { roomId, orgName } = useParams()
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
 
-  const link = `${process.env.NEXT_PUBLIC_FE_GATEWAY}${orgID}/meeting/${roomId}`
+  const link = `${process.env.NEXT_PUBLIC_FE_GATEWAY}${orgName}/meeting/${roomId}`
 
   useEffect(() => {
     if (user && user.name && roomId) {
@@ -45,7 +45,7 @@ export default function MeetingContainer() {
     <div className='fixed top-0 left-0 z-10 w-full h-full'>
       <LiveKitRoom
         onDisconnected={() => {
-          push(`/${orgID}/meeting`)
+          push(`/${orgName}/meeting`)
         }}
         video={true}
         audio={true}

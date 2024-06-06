@@ -10,11 +10,11 @@ export default function ProjectAdvanceTabs() {
 
 
   const onMoveTab = (name: string) => {
-    push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
+    push(`${params.orgName}/project/${params.projectId}?mode=${name}`)
   }
 
   const onMoveTabAdvance = (name: string, tab: string) => {
-    push(`${params.orgID}/project/${params.projectId}?mode=${name}&tab=${tab}`)
+    push(`${params.orgName}/project/${params.projectId}?mode=${name}&tab=${tab}`)
   }
 
   return <div className="project-advance-tabs flex items-center gap-2">

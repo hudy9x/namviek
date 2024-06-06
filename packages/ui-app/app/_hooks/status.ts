@@ -4,7 +4,7 @@ import { TaskStatus } from '.prisma/client'
 import { projectStatusAdd } from 'packages/ui-app/services/status'
 import { messageError, messageSuccess, randomId } from '@shared/ui'
 import { useProjectStatusStore } from 'packages/ui-app/store/status'
-import { DEFAULT_COLOR } from '../[orgID]/project/[projectId]/settings/status/type'
+import { DEFAULT_COLOR } from '../[orgName]/project/[projectId]/settings/status/type'
 import { StatusType } from '@prisma/client'
 
 interface Props {

@@ -32,7 +32,7 @@ export default function ProjectNavItem({
   const pathName = usePathname()
   const { push } = useRouter()
   const active = params.projectId === id
-  const href = `${params.orgID}/project/${id}?mode=${view}`
+  const href = `${params.orgName}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
   const { addAllTasks } = useTaskStore()
   const onSelectProject = (id: string) => {
@@ -46,7 +46,7 @@ export default function ProjectNavItem({
   }, [])
 
   const onSelectItem = (link: string) => {
-    const p = `${params.orgID}/project/${id}`
+    const p = `${params.orgName}/project/${id}`
 
     if (!pathName.includes(p)) {
       // setProjectViewLoading(true)

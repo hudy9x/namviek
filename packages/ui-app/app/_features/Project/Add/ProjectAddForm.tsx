@@ -13,9 +13,9 @@ import { useParams } from 'next/navigation'
 import { validateQuickAddProject } from '@shared/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
+import { useGetParams } from '@/hooks/useGetParams'
 import EmojiInput, { randIcon } from '@/components/EmojiInput'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
-
 import FormMember from './FormMembers'
 import FormProjectView from './FormProjectView'
 
@@ -24,7 +24,7 @@ export default function ProjectAddForm({
 }: {
   setVisible: Dispatch<SetStateAction<boolean>>
 }) {
-  const params = useParams()
+  const { orgId } = useGetParams()
   const { addProject } = useProjectStore()
 
   const formik = useFormik({
@@ -38,7 +38,7 @@ export default function ProjectAddForm({
     onSubmit: values => {
       const { error, errorArr, data } = validateQuickAddProject(values)
 
-      if (!params.orgID) {
+      if (!orgId) {
         return messageError('Organization ID is not exist')
       }
 
@@ -52,7 +52,7 @@ export default function ProjectAddForm({
       projectQuickAdd({
         ...values,
         ...{
-          organizationId: params.orgID
+          organizationId: orgId
         }
       })
         .then(res => {
