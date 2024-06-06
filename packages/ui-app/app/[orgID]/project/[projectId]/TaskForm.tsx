@@ -150,7 +150,7 @@ export default function TaskForm({
             }}
           />
           {isUpdate ? <FileControl /> : null}
-          {isUpdate ? <Activity /> : null}
+          {/* {isUpdate ? <Activity /> : null} */}
         </div>
         <div
           className={`task-form-right-actions space-y-3 ${isCreate ? 'w-full' : 'sm:w-[200px]'
