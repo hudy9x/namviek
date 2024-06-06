@@ -1,0 +1,29 @@
+import { PrismaClient } from '@prisma/client'
+import { updateOrganization } from './seeder/organization'
+
+const prisma = new PrismaClient()
+async function main() {
+  const orgs = await prisma.organization.findMany({
+    select: {
+      id: true,
+      slug: true,
+      name: true
+    }
+  })
+
+  for (const org of orgs) {
+    const { id, name, slug } = org
+    await updateOrganization(id, { name, slug })
+
+    console.log('Update slug successfully', name)
+  }
+}
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async e => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })

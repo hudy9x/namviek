@@ -34,3 +34,7 @@ export const orgGet = () => {
 export const orgGetById = (orgID: string) => {
   return httpGet(`/api/org/${orgID}`)
 }
+
+export const orgGetBySlug = (slug: string) => {
+  return httpGet(`/api/org/${slug}`)
+}

@@ -1,4 +1,4 @@
-import ListCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/ListCell'
+import ListCell from 'packages/ui-app/app/[slug]/project/[projectId]/views/ListCell'
 import VisionDelete from './VisionDelete'
 import { useVisionContext } from './context'
 import Droppable from '@/components/Dnd/Droppable'
@@ -25,9 +25,8 @@ function VisionItem({
   return (
     <Droppable droppableId={id} type="vision" className="vision-dropzone">
       <div
-        className={`vision-item group cursor-pointer ${
-          active ? 'bg-indigo-50/50 dark:bg-indigo-700' : ''
-        }`}
+        className={`vision-item group cursor-pointer ${active ? 'bg-indigo-50/50 dark:bg-indigo-700' : ''
+          }`}
         onClick={() => {
           setSelected(selected !== id ? id : '')
         }}>

@@ -7,12 +7,12 @@ import FavoriteItem from './FavoriteItem'
 import { useParams } from 'next/navigation'
 
 export default function FavoritesList() {
-  const { orgID } = useParams()
+  const { slug } = useParams()
   const { favorites, addAllFavorites } = useFavStore()
   const [activeId, setActive] = useState('')
 
   useEffect(() => {
-    favGet(orgID)
+    favGet(slug)
       .then(res => {
         const { data } = res.data
         addAllFavorites(data)

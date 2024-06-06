@@ -1,8 +1,8 @@
 import { projectGet } from '@/services/project'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 import { useProjectStore } from '@/store/project'
 import { useEffect, useState } from 'react'
 import ProjectItem from './ProjectItem'
-import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 
@@ -30,14 +30,14 @@ function LoadingSkeleton({ enabled }: { enabled: boolean }) {
 
 export default function ProjectAvailable() {
   const { projects, addAllProject } = useProjectStore(state => state)
-  const { orgID } = useParams()
+  const { org } = useOrganizationBySlug()
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!projects.length) {
+    if (!projects.length && org) {
       setLoading(true)
       projectGet({
-        orgId: orgID,
+        orgId: org.id,
         isArchive: false
       }).then(result => {
         setLoading(false)

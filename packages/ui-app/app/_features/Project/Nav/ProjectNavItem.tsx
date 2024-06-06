@@ -9,6 +9,7 @@ import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 import { useProjectViewStore } from '@/store/projectView'
 import { useTaskStore } from '@/store/task'
 import { GoDot, GoDotFill } from 'react-icons/go'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -28,11 +29,11 @@ export default function ProjectNavItem({
   const [visible, setVisible] = useState(false)
   const { setVisible: setMenuVisible } = useMenuStore()
   const { setLoading: setProjectViewLoading } = useProjectViewStore()
-  const params = useParams()
+  const { projectId, slug } = useParams()
   const pathName = usePathname()
   const { push } = useRouter()
-  const active = params.projectId === id
-  const href = `${params.orgID}/project/${id}?mode=${view}`
+  const active = projectId === id
+  const href = `${slug}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
   const { addAllTasks } = useTaskStore()
   const onSelectProject = (id: string) => {
@@ -46,7 +47,7 @@ export default function ProjectNavItem({
   }, [])
 
   const onSelectItem = (link: string) => {
-    const p = `${params.orgID}/project/${id}`
+    const p = `${slug}/project/${id}`
 
     if (!pathName.includes(p)) {
       // setProjectViewLoading(true)

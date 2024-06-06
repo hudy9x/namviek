@@ -2,17 +2,21 @@ import { Button } from '@shared/ui'
 import { useAutomateContext } from './context'
 import { useParams, useRouter } from 'next/navigation'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 import { AutomateThenPart, AutomateWhenPart } from './AutomateDesc'
 
 export default function AutomateCreate() {
   const { push } = useRouter()
-  const { orgID, projectId } = useParams()
+  const { projectId } = useParams()
+  const { org, slug } = useOrganizationBySlug()
   const { when, then } = useAutomateContext()
   const { addAutomation } = useServiceAutomation()
 
   const onCreate = () => {
-    addAutomation({ when, then, projectId, organizationId: orgID })
-    push(`/${orgID}/project/${projectId}?mode=automation`)
+    if (!org) return
+
+    addAutomation({ when, then, projectId, organizationId: org.id })
+    push(`/${slug}/project/${projectId}?mode=automation`)
   }
 
   return (

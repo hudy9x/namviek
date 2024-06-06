@@ -19,6 +19,7 @@ import { useParams } from 'next/navigation'
 import { UserMember, useMemberStore } from '../../../../store/member'
 import { MemberRole, OrganizationMembers, User } from '@prisma/client'
 import { memAddNewToProject } from '../../../../services/member'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 let timeout = 0
 
@@ -86,8 +87,12 @@ const MemberAvatarWithName = ({
     <div className="flex items-center gap-3">
       <Avatar src={photo || ''} name={name || ''} size="lg" />
       <div className="flex flex-col text-sm">
-        <span className="text-gray-700 dark:text-gray-400 font-medium">{name}</span>
-        <span className="text-gray-400 dark:text-gray-500 text-xs">{email}</span>
+        <span className="text-gray-700 dark:text-gray-400 font-medium">
+          {name}
+        </span>
+        <span className="text-gray-400 dark:text-gray-500 text-xs">
+          {email}
+        </span>
       </div>
     </div>
   )
@@ -110,7 +115,8 @@ export default function ProjectMemberAdd({
 }: {
   triggerBtn?: ReactNode
 }) {
-  const { orgID, projectId } = useParams()
+  const { projectId } = useParams()
+  const { org } = useOrganizationBySlug()
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [searchResults, updateSearchResults] = useState<User[]>([])
@@ -148,10 +154,12 @@ export default function ProjectMemberAdd({
     timeout && clearTimeout(timeout)
 
     timeout = setTimeout(() => {
+      if (!org) return
+
       setLoading(true)
       orgMemberSearch({
         projectId,
-        orgId: orgID,
+        orgId: org.id,
         term: value
       })
         .then(result => {

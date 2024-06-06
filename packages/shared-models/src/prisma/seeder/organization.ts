@@ -1,12 +1,13 @@
-import { InvitationStatus, OrganizationRole } from "@prisma/client"
+import { InvitationStatus, Organization, OrganizationRole } from "@prisma/client"
 import { pmClient } from "../../lib/_prisma"
 
 const MAX_STORAGE_SIZE = 100 * 1024 * 1024 // 100Mb
 
 export const createOrganization = async (body: {
   name: string,
+  slug: string,
   desc?: string,
-  cover?: string
+  cover?: string,
   uid: string
 }) => {
   try {
@@ -14,6 +15,7 @@ export const createOrganization = async (body: {
       data: {
         name: body.name,
         desc: body.desc,
+        slug: body.slug,
         maxStorageSize: MAX_STORAGE_SIZE,
         cover: body.cover,
         avatar: null,
@@ -45,4 +47,20 @@ export const createOrganization = async (body: {
     return null
   }
 
+}
+
+export const updateOrganization = async (id: string, data: Partial<Organization>) => {
+  try {
+    await pmClient.organization.update({
+      data: data,
+      where: {
+        id,
+      },
+    })
+
+    console.log('update organization succesfully')
+  } catch (error) {
+    console.log('update organization error', error)
+    return null
+  }
 }

@@ -63,7 +63,7 @@ export default function SettingTabLayout() {
 
         return (
           <Link
-            href={`${params.orgID}/setting/${tab.name}`}
+            href={`${params.slug}/setting/${tab.name}`}
             className={`tab-item ${isActive}`}
             key={index}>
             <Icon />

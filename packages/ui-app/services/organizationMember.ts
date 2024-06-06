@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { httpDel, httpGet, httpPost } from './_req'
 import { messageError } from '@shared/ui'
-import { useParams } from 'next/navigation'
 import { useOrgMemberStore } from '../store/orgMember'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export const orgMemberGet = (orgId: string) => {
   return httpGet(`/api/org/member/${orgId}`)
@@ -29,11 +29,12 @@ export const orgMemberAdd = (datas: { orgId: string; email: string }) => {
 }
 
 export const useOrgMemberGet = () => {
-  const { orgID } = useParams()
+  const { org } = useOrganizationBySlug()
 
   const { addAllOrgMember } = useOrgMemberStore()
   useEffect(() => {
-    orgMemberGet(orgID)
+    if (!org) return
+    orgMemberGet(org.id)
       .then(res => {
         const { data, status } = res.data
 
@@ -47,7 +48,7 @@ export const useOrgMemberGet = () => {
       .catch(err => {
         messageError(err)
       })
-  }, [orgID, addAllOrgMember])
+  }, [org, addAllOrgMember])
 }
 
 export const orgMemberRemove = ({ orgId, uid }: { orgId: string, uid: string }) => {

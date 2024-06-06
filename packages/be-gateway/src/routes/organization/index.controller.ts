@@ -5,7 +5,8 @@ import {
   mdOrgGetOwned,
   mdOrgMemAdd,
   mdOrgMemGetByUid,
-  mdOrgUpdate
+  mdOrgUpdate,
+  mdOrgGetOneBySlug,
 } from '@shared/models'
 import {
   BaseController,
@@ -35,6 +36,14 @@ export class OrganizationController extends BaseController {
   async getOrgById() {
     const { orgId } = this.req.params as { orgId: string }
     const result = await mdOrgGetOne(orgId)
+
+    return result
+  }
+
+  @Get('/:slug')
+  async getOrgBySlug() {
+    const { slug } = this.req.params as { slug: string }
+    const result = await mdOrgGetOneBySlug(slug)
 
     return result
   }
@@ -79,7 +88,7 @@ export class OrganizationController extends BaseController {
     const isProd = isProdMode()
 
     try {
-      const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover'>
+      const body = req.body as Pick<Organization, 'name' | 'desc' | 'cover' | 'slug'>
       const { id } = req.authen
       const key = [CKEY.USER_ORGS, id]
 
@@ -92,6 +101,7 @@ export class OrganizationController extends BaseController {
       const result = await mdOrgAdd({
         name: body.name,
         desc: body.desc,
+        slug: body.slug,
         maxStorageSize: MAX_STORAGE_SIZE,
         cover: body.cover,
         avatar: null,

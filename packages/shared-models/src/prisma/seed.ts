@@ -1,3 +1,4 @@
+import slugify from 'slugify'
 import { PrismaClient } from '@prisma/client'
 import { createAdminUser, getOrgOwner } from './seeder/user'
 import { createOrganization } from './seeder/organization'
@@ -15,9 +16,12 @@ const createStarterData = () => {
     .then(async res => {
       console.log('get email: ', res.email)
       userId = res.id
+      const name = generateOrgName()
+      const slug = slugify(name, { replacement: '_', lower: true })
       try {
         const result = await createOrganization({
-          name: generateOrgName(),
+          name,
+          slug,
           uid: userId,
           cover: generateIconName()
         })

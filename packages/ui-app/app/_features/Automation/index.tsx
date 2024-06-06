@@ -9,9 +9,11 @@ import AutomateCreate from './AutomateCreate'
 import { IAutomateThenProps, IAutomateWhenProps } from '@/store/automation'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function Automation() {
-  const { orgID, projectId } = useParams()
+  const { projectId } = useParams()
+  const { slug } = useOrganizationBySlug()
   const [when, setWhen] = useState<IAutomateWhenProps>({
     happens: 'task',
     is: WHEN.PROGRESS_CHANGED,
@@ -36,7 +38,7 @@ export default function Automation() {
         }}>
         <div className="automation-wrapper w-[900px] mx-auto mt-10">
           <h2 className="text-xl text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2">
-            <Link href={`/${orgID}/project/${projectId}?mode=automation`}>
+            <Link href={`/${slug}/project/${projectId}?mode=automation`}>
               <HiOutlineChevronLeft className="bg-white dark:bg-gray-900 dark:border-gray-700 border p-1 w-7 h-7 rounded-md" />
             </Link>
             <span>Create custom automation</span>

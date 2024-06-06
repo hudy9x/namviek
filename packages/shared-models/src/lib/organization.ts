@@ -11,6 +11,16 @@ export const mdOrgGetOne = async (orgId: string | string[]) => {
   });
 };
 
+export const mdOrgGetOneBySlug = async (slug: string | string[]) => {
+  return orgModel.findFirst({
+    where: {
+      slug: {
+        in: Array.isArray(slug) ? slug : [slug]
+      }
+    }
+  });
+};
+
 export const mdOrgGet = async (projectId: string | string[]) => {
   return orgModel.findMany({
     where: {

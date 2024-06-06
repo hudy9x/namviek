@@ -1,13 +1,13 @@
 'use client'
 
 import { useDebounce } from "@/hooks/useDebounce"
+import { useOrganizationBySlug } from "@/hooks/useOrganizationBySlug"
 import { orgGetById } from "@/services/organization"
 import { useOrgMemberStore } from "@/store/orgMember"
 import { Organization } from "@prisma/client"
 import { getLocalCache, setLocalCache } from "@shared/libs"
 import { Loading, Popover } from "@shared/ui"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { useState } from "react"
 import { AiOutlineCloudDownload } from "react-icons/ai"
 import { HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
@@ -64,7 +64,7 @@ function OrgInfo({ id }: { id: string }) {
   </div>
 }
 
-function OrgPopMenu({ id }: { id: string }) {
+function OrgPopMenu({ slug }: { slug: string }) {
 
   const menus = [
     {
@@ -74,17 +74,17 @@ function OrgPopMenu({ id }: { id: string }) {
     },
     {
       icon: HiOutlineUserPlus,
-      link: `/${id}/setting/people`,
+      link: `/${slug}/setting/people`,
       title: 'Members'
     },
     {
       icon: AiOutlineCloudDownload,
-      link: `/${id}/setting/export-import`,
+      link: `/${slug}/setting/export-import`,
       title: 'Export'
     },
     {
       icon: HiOutlineInformationCircle,
-      link: `/${id}/setting/about`,
+      link: `/${slug}/setting/about`,
       title: 'About'
     }
   ]
@@ -108,12 +108,12 @@ function OrgPopMenu({ id }: { id: string }) {
 }
 
 export default function OrgSection() {
-  const { orgID } = useParams()
+  const { slug, org } = useOrganizationBySlug()
 
   return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[20px] pb-[21px]">
     <div className="org-section-container flex items-center justify-between">
-      <OrgInfo id={orgID} />
-      <OrgPopMenu id={orgID} />
+      {org && <OrgInfo id={org.id} />}
+      <OrgPopMenu slug={slug} />
     </div>
   </section>
 }

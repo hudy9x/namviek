@@ -13,9 +13,10 @@ import {
 import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useUserRole } from '../UserPermission/useUserRole'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function SettingAbout() {
-  const { orgID } = useParams()
+  const { org } = useOrganizationBySlug()
   const { orgRole } = useUserRole()
   const formik = useFormik({
     initialValues: {
@@ -26,6 +27,8 @@ export default function SettingAbout() {
     },
     onSubmit: values => {
       console.log(values)
+      if (!org) return
+
       if (orgRole !== 'ADMIN') {
         confirmAlert({
           title: 'Restrict Action !',
@@ -38,7 +41,7 @@ export default function SettingAbout() {
         return
       }
       orgUpdate({
-        id: orgID,
+        id: org.id,
         name: values.name,
         cover: values.cover,
         desc: values.desc
@@ -66,7 +69,9 @@ export default function SettingAbout() {
   }
 
   useDebounce(() => {
-    orgGetById(orgID).then(res => {
+    if (!org) return
+
+    orgGetById(org.id).then(res => {
       const { data } = res.data
 
       formik.setValues({
@@ -75,7 +80,7 @@ export default function SettingAbout() {
         desc: data.desc
       })
     })
-  }, [orgID])
+  }, [org])
 
   return (
     <form onSubmit={formik.handleSubmit}>

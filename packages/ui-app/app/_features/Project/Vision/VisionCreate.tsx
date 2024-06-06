@@ -3,12 +3,16 @@ import { useParams } from 'next/navigation'
 import { useVisionContext } from './context'
 import { endOfMonth } from 'date-fns'
 import { messageError } from '@shared/ui'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function VisionCreate() {
-  const { projectId, orgID } = useParams()
+  const { projectId } = useParams()
+  const { org } = useOrganizationBySlug()
   const { createNewVision, filter } = useVisionContext()
   const { month } = filter
   const onEnter = (v: string) => {
+    if (!org) return
+    
     const startRegex = /(\/start-(\d+)\s*)/
     const endRegex = /(\/end-(\d+)\s*)/
 
@@ -26,7 +30,7 @@ export default function VisionCreate() {
       name: v,
       projectId,
       parentId: null,
-      organizationId: orgID,
+      organizationId: org.id,
       startDate: new Date(y, m, 2),
       dueDate: new Date(y, m, 5)
     }

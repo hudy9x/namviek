@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import ProjectList from '@/features/Project/Nav/index'
 import {
   HiOutlineBriefcase,
@@ -10,6 +10,7 @@ import {
   HiOutlineVideoCamera,
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import { useMemo } from 'react'
@@ -124,11 +125,11 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
 
 
 export default function ProjectNavList() {
-  const { orgID } = useParams()
+  const { org } = useOrganizationBySlug()
 
   const view = useMemo(() => {
-    return <ProjectNavListContainer orgID={orgID} />
-  }, [orgID])
+    return org && <ProjectNavListContainer orgID={org.id} />
+  }, [org])
 
   return <>{view}</>
 }

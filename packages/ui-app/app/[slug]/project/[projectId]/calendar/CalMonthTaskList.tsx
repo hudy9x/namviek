@@ -13,7 +13,7 @@ let index = 0
 
 export default function CalMonthTaskList({ day }: { day: Date }) {
   const { tasks } = useTaskStore()
-  const { orgID, projectId } = useParams()
+  const { slug, projectId } = useParams()
   const { getSp } = useUrl()
 
   const mode = getSp('mode')
@@ -47,7 +47,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
         return (
           <CalMonthTask
-            link={`${orgID}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
+            link={`${slug}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
             key={task.id}
             type={task.type || TaskType.TASK}
             time={time}

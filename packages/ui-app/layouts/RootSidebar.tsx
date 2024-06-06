@@ -2,20 +2,20 @@
 
 import Link from 'next/link'
 import { IoMdLogOut } from 'react-icons/io'
-import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { HiOutlineUserPlus } from 'react-icons/hi2'
 import { FcBriefcase, FcOrganization, FcVideoCall } from 'react-icons/fc'
 import { Tooltip } from '@shared/ui'
 import ThemeSelection from './ThemeSelection'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function RootSidebar() {
-  const { orgID } = useParams()
+  const { slug } = useOrganizationBySlug()
 
   return (
     <nav className="primary-sidebar">
       <section>
-        <Link href={`/${orgID}/my-works`}>
+        <Link href={`/${slug}/my-works`}>
           <div className="flex justify-center pt-3">
             <Image
               src={'/logo132x132.svg'}
@@ -34,7 +34,7 @@ export default function RootSidebar() {
           </Tooltip>
         </Link>
 
-        <Link href={`/${orgID}/my-works`}>
+        <Link href={`/${slug}/my-works`}>
           <Tooltip title="Project" side="right">
             <div>
               <FcBriefcase className="main-nav-icon active" />
@@ -42,7 +42,7 @@ export default function RootSidebar() {
           </Tooltip>
         </Link>
 
-        <Link href={`/${orgID}/meeting`}>
+        <Link href={`/${slug}/meeting`}>
           <Tooltip title="Meeting" side="right">
             <div>
               <FcVideoCall className="main-nav-icon" />
@@ -52,7 +52,7 @@ export default function RootSidebar() {
       </section>
       <section>
         <ThemeSelection />
-        <Link href={`/${orgID}/setting/people`}>
+        <Link href={`/${slug}/setting/people`}>
           <HiOutlineUserPlus className="main-nav-icon" />
         </Link>
         <Link href="/sign-out">

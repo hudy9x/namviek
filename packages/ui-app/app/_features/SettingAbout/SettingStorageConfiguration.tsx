@@ -12,10 +12,11 @@ import { useFormik } from 'formik'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUserRole } from '../UserPermission/useUserRole'
+import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
 
 export default function SettingStorageConfiguration() {
   const { orgRole } = useUserRole()
-  const { orgID } = useParams()
+  const { org } = useOrganizationBySlug()
   const [loading, setLoading] = useState(false)
   const formik = useFormik({
     initialValues: {
@@ -25,6 +26,8 @@ export default function SettingStorageConfiguration() {
       secretKey: ''
     },
     onSubmit: values => {
+      if (!org) return
+      
       if (orgRole !== 'ADMIN') {
         confirmAlert({
           title: 'Restrict Action !',
@@ -37,7 +40,7 @@ export default function SettingStorageConfiguration() {
         return
       }
       setLoading(true)
-      orgUpdateStorageConfig(orgID, values)
+      orgUpdateStorageConfig(org.id, values)
         .then(res => {
           console.log(res)
           messageSuccess('Save it !')
