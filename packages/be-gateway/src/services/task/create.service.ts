@@ -202,7 +202,8 @@ export default class TaskCreateService {
     )
 
     notifyToWebUsers(filtered, {
-      title: 'Got a new task',
+      title: `${project.name} - #new-task`,
+      icon: project.icon,
       body: `${task.title}`,
       deep_link: taskLink
     })
