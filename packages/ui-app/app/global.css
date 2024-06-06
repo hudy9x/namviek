@@ -118,6 +118,14 @@
     @apply hidden;
   }
 
+  .nav-org-section {
+    padding-bottom: 22px !important;
+  }
+
+  .user-section-action {
+    @apply hidden;
+  }
+
   .org-section-container {
     @apply flex-col gap-2;
   }
@@ -154,7 +162,7 @@
   .nav .section:hover
   {
     @apply text-transparent whitespace-nowrap;
-    @apply h-[1px] w-[30px] mx-auto bg-gray-800 py-0 my-2 rounded-none;
+    @apply h-[1px] w-[30px] mx-auto bg-gray-200 dark:bg-gray-800 py-0 my-2 rounded-none;
   }
 
 
