@@ -43,9 +43,9 @@ const CommentContext = createContext<ICommentContext>({
   setComments: () => console.log(1)
 })
 
-export const CommentContextProvider = ({ children }: PropsWithChildren) => {
-  const sp = useSearchParams()
-  const taskId = sp.get('taskId')
+export const CommentContextProvider = ({ taskId, children }: PropsWithChildren & { taskId: string }) => {
+  // const sp = useSearchParams()
+  // const taskId = sp.get('taskId')
 
   const [comments, setComments] = useState<Comment[]>([] as Comment[])
   const { user } = useUser()

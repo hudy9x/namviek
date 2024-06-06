@@ -20,7 +20,6 @@ export default function useGetTaskChecklist(taskId: string) {
         return
       }
 
-      console.log('task checklist return ', data)
       addTaskChecklist(taskId, data)
       setCheclistLoading(false)
 
