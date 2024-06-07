@@ -1,5 +1,6 @@
 import { InvitationStatus, Organization, OrganizationRole } from "@prisma/client"
 import { pmClient } from "../../lib/_prisma"
+import slugify from "slugify"
 
 const MAX_STORAGE_SIZE = 100 * 1024 * 1024 // 100Mb
 
@@ -47,6 +48,28 @@ export const createOrganization = async (body: {
     return null
   }
 
+}
+
+export const updateAllSlug = async () => {
+  const orgs = await pmClient.organization.findMany({
+    select: {
+      id: true,
+      name: true
+    }
+  })
+
+  for (const org of orgs) {
+    const { id, name } = org
+    const slug = slugify(name, {
+      replacement: '-',
+      lower: false,
+      trim: true
+    })
+
+    await updateOrganization(id, { name, slug })
+
+    console.log('Update slug successfully', slug)
+  }
 }
 
 export const updateOrganization = async (id: string, data: Partial<Organization>) => {

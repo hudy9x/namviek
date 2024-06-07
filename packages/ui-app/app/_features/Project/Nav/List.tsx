@@ -1,7 +1,7 @@
 
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import ProjectList from '@/features/Project/Nav/index'
 import {
   HiOutlineBriefcase,
@@ -37,7 +37,7 @@ function ViewAllBtn() {
 }
 
 
-function ProjectNavListContainer({ orgID }: { orgID: string }) {
+function ProjectNavListContainer({ slug }: { slug: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
@@ -51,13 +51,13 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
     // },
     {
       title: 'My works',
-      href: `/${orgID}/my-works`,
+      href: `/${slug}/my-works`,
       icon: HiOutlineBriefcase,
       active: pathname.includes('/my-works')
     },
     {
       title: 'Projects',
-      href: `/${orgID}/project`,
+      href: `/${slug}/project`,
       badge: ViewAllBtn,
       icon: HiOutlineServerStack,
       active: pathname.includes('/project/') || pathname.includes('/project'),
@@ -65,28 +65,28 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
     },
     {
       title: 'Meeting',
-      href: `/${orgID}/meeting`,
+      href: `/${slug}/meeting`,
       icon: HiOutlineVideoCamera,
       active: pathname.includes('/meeting')
     },
     // {
     //   title: 'Favorites',
-    //   // href: `/${orgID}/favorites`,
+    //   // href: `/${slug}/favorites`,
     //   icon: HiOutlineStar,
     //   active: pathname.includes('/favorites'),
     //   children: Favorites
     // },
     {
       title: 'Reports',
-      href: `/${orgID}/report`,
+      href: `/${slug}/report`,
       icon: HiOutlineChartPie,
-      active: pathname.includes(`${orgID}/report`)
+      active: pathname.includes(`${slug}/report`)
     },
     // {
     //   title: 'Settings',
-    //   href: `/${orgID}/setting/people`,
+    //   href: `/${slug}/setting/people`,
     //   icon: HiOutlineCog6Tooth,
-    //   active: pathname.includes(`${orgID}/setting`)
+    //   active: pathname.includes(`${slug}/setting`)
     // }
   ]
 
@@ -125,11 +125,11 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
 
 
 export default function ProjectNavList() {
-  const { org } = useOrganizationBySlug()
+  const { slug } = useParams()
 
   const view = useMemo(() => {
-    return org && <ProjectNavListContainer orgID={org.id} />
-  }, [org])
+    return slug && <ProjectNavListContainer slug={slug} />
+  }, [slug])
 
   return <>{view}</>
 }

@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "prisma": {
-    "seed": "ts-node ./packages/shared-models/src/prisma/seed",
-    "seed-update-slug": "ts-node ./packages/shared-models/src/prisma/seed-update-slug"
+    "seed": "ts-node ./packages/shared-models/src/prisma/seed"
   },
   "scripts": {
     "vercel-build": "next build",
@@ -25,6 +24,7 @@
     "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
     "pushdb2": "prisma db push --schema=./packages/shared-models/src/prisma/schema.prisma",
     "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma",
+    "seed-update-slug": "ts-node ./packages/shared-models/src/prisma/seed-update-slug.ts",
     "postinstall": "yarn generate2"
   },
   "private": true,
