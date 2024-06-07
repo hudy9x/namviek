@@ -1,36 +1,65 @@
+import { StatusType } from "@prisma/client"
 import { pmClient } from "../../lib/_prisma"
+import { ObjectId } from "bson"
 
 export const runTest = async () => {
-
-  const results = await pmClient.task.findMany({
+  // pmClient.$runCommandRaw(
+  //
+  // )
+  //
+  const doneStatus = await pmClient.taskStatus.findMany({
     where: {
-      projectId: '65ead4dd34df285397fd0d32',
-      OR: [
-        { taskPoint: null },
-        {
-          taskPoint: {
-            isSet: false
-          }
-        }
-
-      ]
-
-      // taskPoint: { isSet: false },
-      // projectId: '65ead4dd34df285397fd0d32',
-
+      type: StatusType.DONE
     },
     select: {
-      title: true,
-      taskPoint: true
-    },
-    // take: 10
-  })
-
-  console.log('total:', results.length)
-  results.forEach(r => {
-    if (r.taskPoint) {
-      console.log(r)
+      id: true,
+      type: true,
+      name: true
     }
   })
+
+  const ids = doneStatus.map(d => {
+    // const obid = new ObjectId(d.id)
+    // return obid.toString()
+    return { "$oid": d.id }
+  })
+
+  const result = await pmClient.task.aggregateRaw({
+    pipeline: [
+      {
+        $match: {
+          taskStatusId: {
+            $nin: ids
+          }
+        }
+      },
+      { $unwind: "$assigneeIds" },
+      {
+        $project: {
+          assigneeIdStr: { $toString: "$assigneeIds" },
+          projectIdStr: { $toString: "$projectId" }
+        }
+      },
+
+      // // group by assignee for all project
+      // {
+      //   $group: {
+      //     _id: "$assigneeIds",
+      //     totalTask: { $count: {} }
+      //   }
+      // }
+
+      // group by assignee + projectid
+      {
+        $group: {
+          _id: { $concat: ["$assigneeIdStr", "_", "$projectIdStr"] },
+          totalTask: { $count: {} }
+        }
+      }
+
+    ]
+  })
+
+  console.log(result)
 
 }
