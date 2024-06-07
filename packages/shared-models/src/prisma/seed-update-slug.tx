@@ -15,7 +15,7 @@ async function main() {
     const { id, name, slug } = org
     await updateOrganization(id, { name, slug })
 
-    console.log('Update slug successfully', name)
+    console.log('Update slug successfully !', name)
   }
 }
 main()
