@@ -32,6 +32,8 @@ import { EventController } from './event/index.controller'
 import { TestController } from './test'
 import ProjectSetting from './project/setting.controller'
 import TaskChecklistController from './task/checklist.controller'
+import NotificationController from './notification/notification.controller'
+import NotificationToUserController from './notificationToUser/notificationToUser.controller'
 
 const router = Router()
 
@@ -55,7 +57,9 @@ router.use(
     OrganizationMemberController,
     SchedulerController,
     TaskReorderController,
-    TaskChecklistController
+    TaskChecklistController,
+    NotificationController,
+    NotificationToUserController
   ])
 )
 // middlewares

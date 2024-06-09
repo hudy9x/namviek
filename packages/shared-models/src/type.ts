@@ -1,4 +1,5 @@
 import { FileStorage } from '@prisma/client'
+import { Notification, NotificationToUser } from '@prisma/client'
 
 export type PinnedProjectSetting = {
   id: string
@@ -33,3 +34,7 @@ interface ActivityChangeData extends ActivityData {
 }
 
 export type ActivityLogData = ActivityChangeData
+
+export interface UserNotification extends NotificationToUser {
+  content: Notification
+}

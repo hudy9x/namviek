@@ -19,7 +19,6 @@ try {
   console.warn('Pusher Instance Id is missing')
 }
 
-
 export default function PushNotification() {
   const { user } = useUser()
   useEffect(() => {
@@ -38,7 +37,9 @@ export default function PushNotification() {
             .catch(console.error)
         })
       } catch (error) {
-        console.log('Pusher beam missing configuration or configuration invalid')
+        console.log(
+          'Pusher beam missing configuration or configuration invalid'
+        )
       }
     }
   }, [JSON.stringify(user)])

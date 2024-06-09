@@ -9,7 +9,7 @@ import {
   HiOutlineChartPie,
   HiOutlineChevronLeft,
   HiOutlineServerStack,
-  HiOutlineVideoCamera,
+  HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -18,6 +18,8 @@ import { useMemo, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 import OrgSection from 'packages/ui-app/layouts/OrgSection'
 import { getLocalCache } from '@shared/libs'
+import { useEventSyncNotification } from '@/events/useEventSyncNotification'
+import useGetNotification from '@/features/Notification/useGetNotification'
 
 function ViewAllBtn() {
   return (
@@ -38,7 +40,6 @@ function ViewAllBtn() {
     </div>
   )
 }
-
 
 function ProjectSidebarContainer({ orgID }: { orgID: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
@@ -88,7 +89,7 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
       href: `/${orgID}/report`,
       icon: HiOutlineChartPie,
       active: pathname.includes(`${orgID}/report`)
-    },
+    }
     // {
     //   title: 'Settings',
     //   href: `/${orgID}/setting/people`,
@@ -145,9 +146,10 @@ function ProjectSidebarContainer({ orgID }: { orgID: string }) {
   )
 }
 
-
 export default function ProjectSidebar() {
   const { orgID } = useParams()
+  useEventSyncNotification()
+  useGetNotification()
 
   const view = useMemo(() => {
     return <ProjectSidebarContainer orgID={orgID} />

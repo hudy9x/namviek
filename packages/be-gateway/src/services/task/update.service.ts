@@ -2,11 +2,13 @@ import { Task } from '@prisma/client'
 import ActivityService from '../activity.service'
 import { CKEY, findNDelCaches } from '../../lib/redis'
 import {
-  ProjectSettingRepository,
   mdProjectGet,
   mdTaskGetOne,
   mdTaskStatusWithDoneType,
-  mdTaskUpdate
+  mdTaskUpdate,
+  mdUserFindFirst,
+  NotificationRepository,
+  ProjectSettingRepository
 } from '@shared/models'
 import { deleteTodoCounter } from '..//todo.counter'
 import { genFrontendUrl } from '../../lib/url'
@@ -16,18 +18,23 @@ import { serviceGetStatusById } from '../status'
 import { serviceGetProjectById } from '../project'
 import TaskReminderJob from '../../jobs/reminder.job'
 import TaskPusherJob from '../../jobs/task.pusher.job'
+import NotificationPusherJob from '../../jobs/notification.pusher.job'
 
 export default class TaskUpdateService {
   activityService: ActivityService
   projectSettingRepo: ProjectSettingRepository
   taskReminderJob: TaskReminderJob
   taskSyncJob: TaskPusherJob
+  notificationJob: NotificationPusherJob
+  notificationRepo: NotificationRepository
 
   constructor() {
     this.activityService = new ActivityService()
     this.projectSettingRepo = new ProjectSettingRepository()
     this.taskReminderJob = new TaskReminderJob()
     this.taskSyncJob = new TaskPusherJob()
+    this.notificationJob = new NotificationPusherJob()
+    this.notificationRepo = new NotificationRepository()
   }
   async doUpdate({ userId, body }: { userId: string; body: Task }) {
     const activityService = this.activityService
@@ -93,9 +100,57 @@ export default class TaskUpdateService {
         this._deleteTaskReminderById(result.id)
       }
 
+      this._notifyOtherUsers(userId, body as Task)
       return result
       // })
     } catch (error) {
+      throw new InternalErrorException(error)
+    }
+  }
+  private async _notifyOtherUsers(uid: string, task: Task) {
+    try {
+      const user = await mdUserFindFirst({ id: uid })
+      const project = await mdProjectGet(task.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${task.projectId}?mode=task&taskId=${task.id}`
+      )
+      const title = `${user.name} update task ${task.title}`
+
+      const wantNotfifyUserIds =
+        await this.projectSettingRepo.getUsersWantTaskNotifcation(
+          task.projectId
+        )
+      const assigneeIds = task.assigneeIds
+      // if creator and assignee is the same person
+      // do not send notification
+      const filtered = Array.from(
+        new Set(
+          [...assigneeIds, ...wantNotfifyUserIds].filter(
+            assignee => assignee !== uid
+          )
+        )
+      )
+      if (!filtered.length) return
+
+      console.log('update task')
+      console.log({
+        uid,
+        title,
+        data: { link: taskLink },
+        filtered
+      })
+      this.notificationRepo.addNotification(
+        {
+          uid,
+          title,
+          data: { link: taskLink }
+        },
+        [...filtered]
+      )
+
+      this.notificationJob.triggerUpdateEvent({ uid, userIds: filtered })
+    } catch (error) {
+      console.trace(error)
       throw new InternalErrorException(error)
     }
   }

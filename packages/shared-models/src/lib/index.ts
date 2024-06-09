@@ -21,3 +21,6 @@ export * from './activity'
 export * from './scheduler.repository'
 export * from './comment.repository'
 export * from './task.checklist.repository'
+
+export * from './notification.repository'
+export * from './notificationToUser.repository'

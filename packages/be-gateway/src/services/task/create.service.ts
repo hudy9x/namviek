@@ -2,11 +2,13 @@ import { Task, TaskType } from '@prisma/client'
 import ActivityService from '../activity.service'
 import { CKEY, findNDelCaches, incrCache } from '../../lib/redis'
 import {
-  ProjectSettingRepository,
   mdProjectGet,
   mdTaskAdd,
   mdTaskStatusWithDoneType,
-  mdTaskStatusWithTodoType
+  mdTaskStatusWithTodoType,
+  mdUserFindFirst,
+  NotificationRepository,
+  ProjectSettingRepository
 } from '@shared/models'
 import { deleteTodoCounter } from '../todo.counter'
 import { genFrontendUrl } from '../../lib/url'
@@ -15,18 +17,23 @@ import InternalErrorException from '../../exceptions/InternalErrorException'
 
 import TaskReminderJob from '../../jobs/reminder.job'
 import TaskPusherJob from '../../jobs/task.pusher.job'
+import NotificationPusherJob from '../../jobs/notification.pusher.job'
 
 export default class TaskCreateService {
   activityService: ActivityService
   taskReminderJob: TaskReminderJob
   projectSettingRepo: ProjectSettingRepository
+  notificationRepo: NotificationRepository
   taskSyncJob: TaskPusherJob
+  notificationJob: NotificationPusherJob
 
   constructor() {
     this.activityService = new ActivityService()
     this.projectSettingRepo = new ProjectSettingRepository()
     this.taskReminderJob = new TaskReminderJob()
     this.taskSyncJob = new TaskPusherJob()
+    this.notificationRepo = new NotificationRepository()
+    this.notificationJob = new NotificationPusherJob()
   }
 
   async createNewTask({ uid, body }: { uid: string; body: Task }) {
@@ -96,6 +103,7 @@ export default class TaskCreateService {
         await this._deleteRelativeCaches(assigneeIds, projectId)
 
         this.notifyNewTaskToAssignee({ uid, task: result })
+        this.notifyInApp({ uid, task: result })
 
         this.taskSyncJob.triggerUpdateEvent({
           projectId,
@@ -204,5 +212,43 @@ export default class TaskCreateService {
       body: `${task.title}`,
       deep_link: taskLink
     })
+  }
+
+  async notifyInApp({ uid, task }: { uid: string; task: Task }) {
+    try {
+      const user = await mdUserFindFirst({ id: uid })
+      const project = await mdProjectGet(task.projectId)
+      const taskLink = genFrontendUrl(
+        `${project.organizationId}/project/${task.projectId}?mode=task&taskId=${task.id}`
+      )
+      const title = `${user.name} created task ${task.title}`
+
+      const wantNotfifyUserIds =
+        await this.projectSettingRepo.getUsersWantTaskNotifcation(
+          task.projectId
+        )
+      const assigneeIds = task.assigneeIds
+      // if creator and assignee is the same person
+      // do not send notification
+      const filtered = [...assigneeIds, ...wantNotfifyUserIds].filter(
+        assignee => assignee !== uid
+      )
+
+      if (!filtered.length) return
+
+      this.notificationRepo.addNotification(
+        {
+          uid,
+          title,
+          data: { link: taskLink }
+        },
+        [...filtered]
+      )
+
+      this.notificationJob.triggerUpdateEvent({ uid, userIds: filtered })
+    } catch (error) {
+      console.trace(error)
+      throw new InternalErrorException(error)
+    }
   }
 }

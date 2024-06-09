@@ -29,7 +29,6 @@ export class ProjectSettingRepository {
 
     if (settings.length) return settings.map(st => st.uid)
 
-
     return []
   }
 
@@ -47,6 +46,14 @@ export class ProjectSettingRepository {
     if (settings.length) return settings.map(st => st.uid)
 
     return []
+  }
+  async getUsersWantTaskNotifcation(projectId: string) {
+    const settings = await projectNotifyModel.findMany({
+      where: { projectId: projectId }
+    })
+
+    const userIds = settings.map(({ uid }) => uid)
+    return userIds
   }
 
   async updateOrCreateNotifySetting(

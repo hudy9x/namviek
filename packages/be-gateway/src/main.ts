@@ -14,14 +14,14 @@ import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
 // import { Log } from './lib/log'
 
-connectPubClient((err) => {
+connectPubClient(err => {
   console.log(err)
 })
 const app: Application = express()
 
 console.log(`
 ------------------------------
-Running in ${isDevMode() ? "Development" : "Production"} mode
+Running in ${isDevMode() ? 'Development' : 'Production'} mode
 ------------------------------
 `)
 
@@ -39,7 +39,6 @@ app.use(
 app.use(express.json())
 
 app.use('/api', Routes)
-
 
 // Catch wrong api name, method
 app.use((req, res, next) => {
