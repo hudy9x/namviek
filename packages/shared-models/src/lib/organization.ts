@@ -1,5 +1,6 @@
 import { Organization, OrganizationMembers } from '@prisma/client';
 import { orgMemberModel, orgModel } from './_prisma';
+import slugify from 'slugify';
 
 export const mdOrgGetOne = async (orgId: string | string[]) => {
   return orgModel.findFirst({
@@ -11,12 +12,10 @@ export const mdOrgGetOne = async (orgId: string | string[]) => {
   });
 };
 
-export const mdOrgGetOneBySlug = async (slug: string | string[]) => {
-  return orgModel.findFirst({
+export const mdOrgGetOneBySlug = async (slug) => {
+  return orgModel.findUnique({
     where: {
-      slug: {
-        in: Array.isArray(slug) ? slug : [slug]
-      }
+      slug,
     }
   });
 };
@@ -74,3 +73,11 @@ export const mdOrgMemAddMany = async (data: Omit<OrganizationMembers, 'id'>[]) =
     data: data
   });
 };
+
+export const generateSlug = (name: string) => {
+  return slugify(name, {
+    replacement: '-',
+    lower: false,
+    trim: true
+  })
+}

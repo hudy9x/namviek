@@ -1,9 +1,9 @@
 import { useParams, usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useOrganizationBySlug } from './useOrganizationBySlug'
+import { useOrgIdBySlug } from './useOrgIdBySlug'
 
 export const useUrl = () => {
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   const { projectId } = useParams()
   const pathname = usePathname()
   const sp = useSearchParams()
@@ -19,7 +19,7 @@ export const useUrl = () => {
 
   return {
     projectId,
-    orgID: org?.id,
+    orgID: orgId,
     url: pathname + searchPath,
     getSp
   }

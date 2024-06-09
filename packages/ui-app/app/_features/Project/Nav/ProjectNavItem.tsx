@@ -9,7 +9,7 @@ import Tooltip from 'packages/shared-ui/src/components/Tooltip'
 import { useProjectViewStore } from '@/store/projectView'
 import { useTaskStore } from '@/store/task'
 import { GoDot, GoDotFill } from 'react-icons/go'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -75,8 +75,9 @@ export default function ProjectNavItem({
 
   return (
     <div
-      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
-        } transition-all duration-300`}
+      className={`${active ? 'active' : ''} nav-item group ${
+        visible ? 'opacity-100' : 'opacity-0'
+      } transition-all duration-300`}
       onClick={() => {
         onSelectItem(href)
       }}

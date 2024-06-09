@@ -5,11 +5,11 @@ import { useSchedulerContext } from './context'
 import { schedulerService } from '@/services/scheduler'
 import { useParams } from 'next/navigation'
 import MultiMemberPicker from '@/components/MultiMemberPicker'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function ActionList({ back }: { back: () => void }) {
   const { projectId } = useParams()
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   const { trigger } = useSchedulerContext()
   const [content, setContent] = useState({
     title: '',
@@ -18,11 +18,11 @@ export default function ActionList({ back }: { back: () => void }) {
   })
 
   const onCreate = () => {
-    if(!org) return
+    if (!orgId) return
 
     schedulerService
       .create({
-        organizationId: org.id,
+        organizationId: orgId,
         projectId,
         trigger,
         action: {

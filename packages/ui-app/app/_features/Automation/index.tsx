@@ -9,11 +9,11 @@ import AutomateCreate from './AutomateCreate'
 import { IAutomateThenProps, IAutomateWhenProps } from '@/store/automation'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function Automation() {
   const { projectId } = useParams()
-  const { slug } = useOrganizationBySlug()
+  const { slug } = useOrgIdBySlug()
   const [when, setWhen] = useState<IAutomateWhenProps>({
     happens: 'task',
     is: WHEN.PROGRESS_CHANGED,

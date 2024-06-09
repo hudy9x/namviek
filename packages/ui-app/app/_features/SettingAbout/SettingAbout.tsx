@@ -11,13 +11,14 @@ import {
   messageSuccess
 } from '@shared/ui'
 import { useFormik } from 'formik'
-import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useUserRole } from '../UserPermission/useUserRole'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function SettingAbout() {
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   const { orgRole } = useUserRole()
+  const router  = useRouter()
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -27,7 +28,7 @@ export default function SettingAbout() {
     },
     onSubmit: values => {
       console.log(values)
-      if (!org) return
+      if (!orgId) return
 
       if (orgRole !== 'ADMIN') {
         confirmAlert({
@@ -41,14 +42,16 @@ export default function SettingAbout() {
         return
       }
       orgUpdate({
-        id: org.id,
+        id: orgId,
         name: values.name,
         cover: values.cover,
         desc: values.desc
       })
         .then(res => {
+          const { slug } = res.data.data
+          console.log(slug, '---> slug')
           messageSuccess('Updated successully')
-          console.log(res)
+          router.replace(`${slug}/setting/about`)
         })
         .catch(err => {
           console.log(err)
@@ -69,9 +72,9 @@ export default function SettingAbout() {
   }
 
   useDebounce(() => {
-    if (!org) return
+    if (!orgId) return
 
-    orgGetById(org.id).then(res => {
+    orgGetById(orgId).then(res => {
       const { data } = res.data
 
       formik.setValues({
@@ -80,7 +83,7 @@ export default function SettingAbout() {
         desc: data.desc
       })
     })
-  }, [org])
+  }, [orgId])
 
   return (
     <form onSubmit={formik.handleSubmit}>

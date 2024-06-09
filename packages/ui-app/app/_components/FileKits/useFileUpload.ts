@@ -18,13 +18,13 @@ import { AxiosError } from 'axios'
 import { useSetDefaultCover } from './useSetDefaultCover'
 import { useEffect, useState } from 'react'
 import { onPushStateRun } from 'packages/ui-app/libs/pushState'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function useFileUpload() {
   // const [taskId, setTaskId] = useState('')
   const { uploading, setUploading, setPreviewFiles, taskId } = useFileKitContext()
   const { setDefaultCover } = useSetDefaultCover()
-  const { org, slug } = useOrganizationBySlug()
+  const { orgId, slug } = useOrgIdBySlug()
   const { projectId } = useParams()
   const { push } = useRouter()
   // const sp = useSearchParams()
@@ -56,13 +56,13 @@ export default function useFileUpload() {
 
   const doUpload = async (f: IFileUploadItem): Promise<IFileItem | null> => {
     try {
-      if (!org) return null
+      if (!orgId) return null
 
       const { data: file, randId } = f
       const sliceName = file.name.split('.')
 
       const res = await storageCreatePresignedUrl({
-        orgId: org.id,
+        orgId,
         projectId,
         name: file.name,
         type: file.type
@@ -73,7 +73,7 @@ export default function useFileUpload() {
       await storagePutFile(presignedUrl, file)
 
       const result = await storageSaveToDrive({
-        organizationId: org.id,
+        organizationId: orgId,
         projectId,
         name: file.name,
         keyName,

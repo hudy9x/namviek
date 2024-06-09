@@ -19,7 +19,7 @@ import { useParams } from 'next/navigation'
 import { UserMember, useMemberStore } from '../../../../store/member'
 import { MemberRole, OrganizationMembers, User } from '@prisma/client'
 import { memAddNewToProject } from '../../../../services/member'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 let timeout = 0
 
@@ -116,7 +116,7 @@ export default function ProjectMemberAdd({
   triggerBtn?: ReactNode
 }) {
   const { projectId } = useParams()
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [searchResults, updateSearchResults] = useState<User[]>([])
@@ -154,12 +154,12 @@ export default function ProjectMemberAdd({
     timeout && clearTimeout(timeout)
 
     timeout = setTimeout(() => {
-      if (!org) return
+      if (!orgId) return
 
       setLoading(true)
       orgMemberSearch({
         projectId,
-        orgId: org.id,
+        orgId,
         term: value
       })
         .then(result => {

@@ -4,7 +4,7 @@ import { useProjectStore } from '@/store/project'
 import { taskCounterByUser } from '@/services/task'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
-import { useOrganizationBySlug } from './useOrganizationBySlug'
+import { useOrgIdBySlug } from './useOrgIdBySlug'
 
 interface ITodoCounter {
   [key: string]: number
@@ -18,10 +18,10 @@ interface ITodoCounterResult {
 export const useTodoCounter = () => {
   const [todoCounter, setTodoCounter] = useState<ITodoCounter>({})
   const { projects } = useProjectStore()
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   
 
-  const key = org && `TODO_COUNTER_${org.id}`
+  const key = orgId && `TODO_COUNTER_${orgId}`
   const getCacheTodoCounter = () => {
     if (!key) return
     localforage.getItem(key).then(val => {

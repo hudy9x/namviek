@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useParams, usePathname, useRouter } from 'next/navigation'
@@ -7,10 +6,10 @@ import {
   HiOutlineBriefcase,
   HiOutlineChartPie,
   HiOutlineServerStack,
-  HiOutlineVideoCamera,
+  HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import { useMemo } from 'react'
@@ -18,7 +17,8 @@ import { useMenuStore } from '@/store/menu'
 
 function ViewAllBtn() {
   return (
-    <div className='create-project-btn'
+    <div
+      className="create-project-btn"
       onClick={ev => {
         // ev.preventDefault()
         ev.stopPropagation()
@@ -35,7 +35,6 @@ function ViewAllBtn() {
     </div>
   )
 }
-
 
 function ProjectNavListContainer({ slug }: { slug: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
@@ -81,7 +80,7 @@ function ProjectNavListContainer({ slug }: { slug: string }) {
       href: `/${slug}/report`,
       icon: HiOutlineChartPie,
       active: pathname.includes(`${slug}/report`)
-    },
+    }
     // {
     //   title: 'Settings',
     //   href: `/${slug}/setting/people`,
@@ -90,39 +89,38 @@ function ProjectNavListContainer({ slug }: { slug: string }) {
     // }
   ]
 
-
-  return (<Scrollbar style={{ height: `calc(100vh - 141px)` }}>
-    <section className="side-nav">
-      {menus.map((menu, mindex) => {
-        const Icon = menu.icon
-        const Child = menu.children
-        const MenuBadge = menu.badge
-        const active = menu.active
-        return (
-          <div key={mindex} className="cursor-pointer">
-            {/* <Link href={menu.href}> */}
-            <div
-              onClick={() => {
-                menu.href && push(menu.href)
-                setMenuVisible(false)
-              }}
-              className={`side-title ${active ? 'active' : ''}`}>
-              <div className="flex items-center gap-2">
-                <Icon className="w-5 h-5" />
-                <span>{menu.title}</span>
+  return (
+    <Scrollbar style={{ height: `calc(100vh - 141px)` }}>
+      <section className="side-nav">
+        {menus.map((menu, mindex) => {
+          const Icon = menu.icon
+          const Child = menu.children
+          const MenuBadge = menu.badge
+          const active = menu.active
+          return (
+            <div key={mindex} className="cursor-pointer">
+              {/* <Link href={menu.href}> */}
+              <div
+                onClick={() => {
+                  menu.href && push(menu.href)
+                  setMenuVisible(false)
+                }}
+                className={`side-title ${active ? 'active' : ''}`}>
+                <div className="flex items-center gap-2">
+                  <Icon className="w-5 h-5" />
+                  <span>{menu.title}</span>
+                </div>
+                {MenuBadge ? <MenuBadge /> : null}
               </div>
-              {MenuBadge ? <MenuBadge /> : null}
+              {/* </Link> */}
+              {Child && <Child />}
             </div>
-            {/* </Link> */}
-            {Child && <Child />}
-          </div>
-        )
-      })}
-    </section>
-  </Scrollbar>
+          )
+        })}
+      </section>
+    </Scrollbar>
   )
 }
-
 
 export default function ProjectNavList() {
   const { slug } = useParams()

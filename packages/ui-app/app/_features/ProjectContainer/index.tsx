@@ -22,11 +22,11 @@ import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 function SaveRecentVisitPage() {
   const { projectId } = useParams()
-  const { org } = useOrganizationBySlug()
+  const { slug } = useOrgIdBySlug()
   const { user } = useUser()
   const { getSp } = useUrl()
 
@@ -35,16 +35,15 @@ function SaveRecentVisitPage() {
     if (user && user.id) {
       setRecentVist(
         user.id,
-        `/${org}/project/${projectId}?mode=${getSp('mode')}`
+        `/${slug}/project/${projectId}?mode=${getSp('mode')}`
       )
     }
-  }, [user, projectId, org])
+  }, [user, projectId, slug])
 
   return <></>
 }
 
 function useRegisterEvents() {
-
   const { projectId } = useParams()
 
   // realtime events
@@ -62,7 +61,6 @@ function useGetAutomationRulesByProject() {
       getAutomationByProject(projectId)
     }
   }, [projectId])
-
 }
 
 function PrefetchData() {
@@ -87,9 +85,11 @@ function PrefetchData() {
   return <></>
 }
 export default function ProjectContainer() {
-
-  return <>
-    <PrefetchData />
-    <SaveRecentVisitPage />
-    <ProjectNav /></>
+  return (
+    <>
+      <PrefetchData />
+      <SaveRecentVisitPage />
+      <ProjectNav />
+    </>
+  )
 }

@@ -8,18 +8,27 @@ import ProjectViewItemDropdown from './ProjectViewItemDropdown'
 import DynamicIcon from '@/components/DynamicIcon'
 import { Loading } from '@shared/ui'
 import { HiOutlineEye } from 'react-icons/hi2'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 function OnlyMeIcon({ enabled }: { enabled: boolean }) {
   if (!enabled) return null
-  return <HiOutlineEye className='absolute transition-all p-0.5 shadow-md border dark:border-gray-700 rounded-sm bg-white dark:bg-gray-800  group-hover:opacity-100 opacity-0 top-1 left-1' style={{ height: 14, width: 14 }} />
+  return (
+    <HiOutlineEye
+      className="absolute transition-all p-0.5 shadow-md border dark:border-gray-700 rounded-sm bg-white dark:bg-gray-800  group-hover:opacity-100 opacity-0 top-1 left-1"
+      style={{ height: 14, width: 14 }}
+    />
+  )
 }
 
-export default function ProjectViewList({ onUpdate }: { onUpdate: (id: string) => void }) {
+export default function ProjectViewList({
+  onUpdate
+}: {
+  onUpdate: (id: string) => void
+}) {
   const searchParams = useSearchParams()
   const { push } = useRouter()
   const { projectId } = useParams()
-  const { slug } = useOrganizationBySlug()
+  const { slug } = useOrgIdBySlug()
   const mode = searchParams.get('mode')
   const { views } = useProjectViewList()
 
@@ -31,7 +40,7 @@ export default function ProjectViewList({ onUpdate }: { onUpdate: (id: string) =
     <>
       {!views.length ? (
         <div className="px-3 pt-2 pb-2.5 flex items-center justify-center">
-          <Loading enabled={true} title='Loading views ...' />
+          <Loading enabled={true} title="Loading views ..." />
         </div>
       ) : null}
       {views.map((view, index) => {
@@ -40,9 +49,11 @@ export default function ProjectViewList({ onUpdate }: { onUpdate: (id: string) =
 
         return (
           <div
-            title={onlyMe ? "Only you can see this view" : ''}
+            title={onlyMe ? 'Only you can see this view' : ''}
             onClick={() => clickOnView(view.id)}
-            className={`project-view-item group relative ${active ? 'active' : ''}`}
+            className={`project-view-item group relative ${
+              active ? 'active' : ''
+            }`}
             key={index}>
             {icon ? (
               <DynamicIcon name={icon} />

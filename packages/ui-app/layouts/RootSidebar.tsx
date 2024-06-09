@@ -7,10 +7,10 @@ import { HiOutlineUserPlus } from 'react-icons/hi2'
 import { FcBriefcase, FcOrganization, FcVideoCall } from 'react-icons/fc'
 import { Tooltip } from '@shared/ui'
 import ThemeSelection from './ThemeSelection'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 
 export default function RootSidebar() {
-  const { slug } = useOrganizationBySlug()
+  const { slug } = useOrgIdBySlug()
 
   return (
     <nav className="primary-sidebar">

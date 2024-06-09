@@ -1,5 +1,5 @@
 'use client'
-import { useOrganizationBySlug } from '@/hooks/useOrganizationBySlug'
+import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 import { useServiceOrgMember } from '@/hooks/useServiceOrgMember'
 import { useOrgMemberGet } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
@@ -18,7 +18,7 @@ import { HiOutlineMail } from 'react-icons/hi'
 import { HiOutlineTrash } from 'react-icons/hi2'
 
 export default function SettingPeopleContent() {
-  const { org } = useOrganizationBySlug()
+  const { orgId } = useOrgIdBySlug()
   const { orgMembers } = useOrgMemberStore()
   const { addNewMemberToOrg, removeMemberFromOrg } = useServiceOrgMember()
   const [email, setEmail] = useState('')
@@ -26,7 +26,7 @@ export default function SettingPeopleContent() {
   useOrgMemberGet()
 
   const sendInvitation = () => {
-    if (!email || !org) {
+    if (!email || !orgId) {
       messageError('Please input your email')
       return
     }
@@ -50,7 +50,7 @@ export default function SettingPeopleContent() {
 
     setLoading(true)
     addNewMemberToOrg({
-      orgId: org.id,
+      orgId,
       email
     })
       .then(res => {
@@ -63,7 +63,7 @@ export default function SettingPeopleContent() {
         setLoading(false)
       })
 
-    console.log(email, org.id)
+    console.log(email, orgId)
   }
 
   return (

@@ -7,6 +7,7 @@ import {
   mdOrgMemGetByUid,
   mdOrgUpdate,
   mdOrgGetOneBySlug,
+  generateSlug,
 } from '@shared/models'
 import {
   BaseController,
@@ -40,9 +41,9 @@ export class OrganizationController extends BaseController {
     return result
   }
 
-  @Get('/:slug')
+  @Get('/query/slug')
   async getOrgBySlug() {
-    const { slug } = this.req.params as { slug: string }
+    const { slug } = this.req.query as { slug: string }
     const result = await mdOrgGetOneBySlug(slug)
 
     return result
@@ -101,7 +102,7 @@ export class OrganizationController extends BaseController {
       const result = await mdOrgAdd({
         name: body.name,
         desc: body.desc,
-        slug: body.slug,
+        slug: generateSlug(body.name),
         maxStorageSize: MAX_STORAGE_SIZE,
         cover: body.cover,
         avatar: null,
@@ -148,6 +149,7 @@ export class OrganizationController extends BaseController {
 
       const result = await mdOrgUpdate(body.id, {
         name: body.name,
+        slug: generateSlug(body.name),
         desc: body.desc,
         cover: body.cover,
         avatar: null,
