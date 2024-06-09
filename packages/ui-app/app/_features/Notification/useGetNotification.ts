@@ -21,8 +21,6 @@ export const useGetNotificationHandler = () => {
     notificationGet(controller.signal).then(res => {
       const { data, status, error } = res.data
 
-      console.log({ fetchNotification: data, status, error })
-
       if (status !== 200) {
         addAllNotifications([])
         localforage.removeItem(key)
@@ -63,7 +61,7 @@ function useFillNotificationFromCache() {
       .catch(err => {
         console.log('errpr loading cached task', err)
       })
-  }, [orgID])
+  }, [orgID, key])
 }
 
 export default function useGetNotification() {
@@ -72,5 +70,5 @@ export default function useGetNotification() {
 
   useEffect(() => {
     fetchNCache()
-  }, [])
+  }, [fetchNCache])
 }

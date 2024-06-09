@@ -1,5 +1,5 @@
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
-import { Notification } from '@prisma/client'
+import { UserNotification } from '@shared/models'
 
 export const notificationGet = (abortSignal?: AbortSignal) => {
   return httpGet(`/api/notificationToUser`, {
@@ -7,11 +7,11 @@ export const notificationGet = (abortSignal?: AbortSignal) => {
   })
 }
 
-export const notificationCreate = (data: Omit<Notification, 'id'>) => {
+export const notificationCreate = (data: Omit<UserNotification, 'id'>) => {
   return httpPost('/api/notificationToUser', data)
 }
 
-export const notificationUpdate = (data: Notification) => {
+export const notificationUpdate = (data: UserNotification) => {
   return httpPut('/api/notificationToUser', data)
 }
 

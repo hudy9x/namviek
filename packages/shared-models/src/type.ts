@@ -36,5 +36,5 @@ interface ActivityChangeData extends ActivityData {
 export type ActivityLogData = ActivityChangeData
 
 export interface UserNotification extends NotificationToUser {
-  content: Notification
+  content?: Notification
 }

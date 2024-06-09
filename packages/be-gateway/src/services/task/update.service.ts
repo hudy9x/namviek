@@ -100,7 +100,7 @@ export default class TaskUpdateService {
         this._deleteTaskReminderById(result.id)
       }
 
-      this._notifyOtherUsers(userId, body as Task)
+      this._notifyOtherUsers(userId, result as Task)
       return result
       // })
     } catch (error) {

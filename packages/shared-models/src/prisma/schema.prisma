@@ -453,6 +453,7 @@ model Notification{
   uid       String
   title     String
   data      Json   // {link}
+  // users     Users[]
 }
 
 model NotificationToUser{
