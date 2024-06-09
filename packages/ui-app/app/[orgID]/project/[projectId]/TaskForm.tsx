@@ -20,6 +20,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
   fileIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
+  startDate: new Date('1991-1-10 08:00'),
   dueDate: new Date(),
   plannedDueDate: new Date(),
   planedStartDate: new Date(),
@@ -35,6 +36,7 @@ export interface ITaskDefaultValues {
   fileIds: string[]
   taskStatusId: string
   priority: TaskPriority
+  startDate: Date
   dueDate: Date
   plannedDueDate: Date
   planedStartDate: Date
