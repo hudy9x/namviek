@@ -1,12 +1,13 @@
 import { BaseQueue } from '../BaseQueue'
 import { DoneTasksByMemberJob } from './DoneTasksByMemberJob'
+import { UnDoneTasksByProjectJob } from './UnDoneTasksByProjectJob'
 
 
 export class StatsQueue extends BaseQueue {
   constructor() {
     super()
     this.queueName = 'Stats'
-    this.jobs = [new DoneTasksByMemberJob()]
+    this.jobs = [new DoneTasksByMemberJob(), new UnDoneTasksByProjectJob()]
 
     this.run()
   }

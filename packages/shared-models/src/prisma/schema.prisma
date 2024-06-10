@@ -288,14 +288,19 @@ model FileStorage {
 }
 
 model Project {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  projectViewId  String?   @db.ObjectId
-  desc           String?
-  cover          String?
-  icon           String?
-  isArchived     Boolean?  @default(false)
-  createdBy      String?
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  projectViewId String?  @db.ObjectId
+  desc          String?
+  cover         String?
+  icon          String?
+  isArchived    Boolean? @default(false)
+  createdBy     String?
+
+  // these count settings is used for counting the number of tasks by days
+  countMemberTask  Boolean? @default(false)
+  countProjectTask Boolean? @default(true)
+
   createdAt      DateTime?
   organizationId String
   updatedBy      String?

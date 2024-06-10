@@ -1,19 +1,31 @@
+import ProjectRepository from "packages/shared-models/src/lib/project.repository";
 import { StatsQueue, getStatsQueueInstance } from "../queues/Stats";
-import ProjectService from "../services/project/index.service";
 
 export default class StatsByDayEvent {
-  projectService: ProjectService
+  projectRepo: ProjectRepository
   statsQueue: StatsQueue
   constructor() {
-    this.projectService = new ProjectService()
     this.statsQueue = getStatsQueueInstance()
+    this.projectRepo = new ProjectRepository()
   }
   async run() {
-    const projectIds = await this.projectService.getAllProjectIds()
+    const { projectsWMemberEnabled, projectsWCounterEnabled } = await this.projectRepo.getProjectsWithCountSettingEnabled()
 
-    projectIds.map(pid => {
-      console.log('call pid', pid)
+    console.log('stats.day.event called', new Date())
+    if (!projectsWCounterEnabled || !projectsWCounterEnabled.length) {
+      console.log('No project with project counter enabled')
+    }
+
+    projectsWCounterEnabled.map(pid => {
+      this.statsQueue.addJob('unDoneTasksByProject', pid)
+    })
+
+    if (!projectsWMemberEnabled || !projectsWMemberEnabled.length) {
+      console.log('No project with member counter enabled')
+    }
+    projectsWMemberEnabled.map(pid => {
       this.statsQueue.addJob('doneTasksByMember', pid)
     })
+
   }
 }

@@ -22,6 +22,7 @@ connectSubClient((err, redis) => {
 
   // After that, we can listen messages from them
   redis.on('message', async (channel: string, data: string) => {
+    console.log('channel:', channel)
     if (channel === CHANNEL_SCHEDULER_ACTION_NOTIFY) {
       const event = new NotificationEvent()
       event.run(data)

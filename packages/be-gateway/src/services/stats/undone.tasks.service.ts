@@ -2,7 +2,7 @@ import { StatusType } from "@prisma/client";
 import { lastDayOfMonth } from "date-fns";
 import { pmClient } from "packages/shared-models/src/lib/_prisma";
 
-export default class StatsDoneTaskService {
+export default class StatsUnDoneTaskService {
   async implement(pid: string) {
     try {
 
@@ -18,7 +18,7 @@ export default class StatsDoneTaskService {
       })
 
       const ids = doneStatus.map(d => ({ "$oid": d.id }))
-      const DAY_STATS_COLLECTION_NAME = "DayStats";
+      const DAY_STATS_COLLECTION_NAME = "DayStatsByProject";
       const projectId = { "$oid": pid };
 
       const now = new Date()
@@ -34,8 +34,7 @@ export default class StatsDoneTaskService {
       const filterTasks = {
         $match: {
           taskStatusId: {
-            // $nin: ids,
-            $in: ids
+            $nin: ids,
           },
           projectId,
           $or: [
@@ -82,15 +81,11 @@ export default class StatsDoneTaskService {
           unwindAssigneeIds,
           selectNConvertFields,
           addFields,
-          // group by assignee + projectid
+          // group by  projectid
           {
             $group: {
-              _id: { $concat: ["$assigneeIdStr", "_", "$projectIdStr", "_", "$dateStr"] },
-              tasks: {
-                $push: '$_id'
-              },
-              doneTasks: { $count: {} },
-              uid: { $first: "$assigneeIdStr" },
+              _id: { $concat: ["P", "_", "$projectIdStr", "_", "$dateStr"] },
+              unDoneTasks: { $count: {} },
               projectId: { $first: "$projectIdStr" },
 
               year: { $first: "$year" },
@@ -105,11 +100,9 @@ export default class StatsDoneTaskService {
             $project: {
               // _id: 0, // remove _id from the prev stage that makes mongodb generate a new one
               _id: 1,
-              type: 'MEMBER_STATS',
+              type: 'PROJECT_STATS',
               datas: {
-                tasks: "$tasks",
-                doneTasks: '$doneTasks',
-                uid: '$uid',
+                unDoneTasks: '$unDoneTasks',
                 projectId: '$projectId',
               },
               year: "$year",

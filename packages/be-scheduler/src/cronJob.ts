@@ -81,6 +81,7 @@ export const cronJob = {
   },
   create: (cronId: string, trigger: TTrigger, cb: () => void) => {
     const pattern = generateCronPattern(trigger)
+    console.log('pattern', pattern)
 
     const task = cron.schedule(pattern, () => {
       // const task = cron.schedule('*/10 * * * * *', () => {

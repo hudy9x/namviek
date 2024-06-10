@@ -2,7 +2,7 @@ import { StatusType } from "@prisma/client"
 import { pmClient } from "../../lib/_prisma"
 import { lastDayOfMonth } from "date-fns";
 
-async function runDoneTasksByMembers(pid) {
+async function runDoneTasksByMembers(pid: string) {
   const doneStatus = await pmClient.taskStatus.findMany({
     where: {
       type: StatusType.DONE,
@@ -38,23 +38,23 @@ async function runDoneTasksByMembers(pid) {
         $in: ids
       },
       projectId,
-      // $or: [
-      //   // dueDate is in the month
-      //   {
-      //     $and: [
-      //       {
-      //         dueDate: {
-      //           $gte: firstDay,
-      //         },
-      //       },
-      //       {
-      //         dueDate: {
-      //           $lte: lastDay,
-      //         },
-      //       },
-      //     ],
-      //   },
-      // ]
+      $or: [
+        // dueDate is in the month
+        {
+          $and: [
+            {
+              dueDate: {
+                $gte: firstDay,
+              },
+            },
+            {
+              dueDate: {
+                $lte: lastDay,
+              },
+            },
+          ],
+        },
+      ]
     }
   }
 
