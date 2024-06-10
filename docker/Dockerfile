@@ -28,8 +28,11 @@ RUN addgroup -S namviek && \
 
 WORKDIR /app
 
-# Copy .env.local file
-COPY .env.local .env
+# Argument to select the env file
+ARG ENV_FILE=.env.local
+
+# Copy the env file
+COPY ${ENV_FILE} .env
 
 #grab previously installed modules without caches. 
 COPY --from=builder /app/node_modules ./node_modules
