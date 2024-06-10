@@ -33,7 +33,6 @@ connectPubClient((err, redis) => {
   cronJob.delete('testing-cronjob')
   cronJob.create('testing-cronjob', { every: 'minute' }, () => {
     // testing 
-    console.log('call me')
 
     const CHANNEL_DAY_STATS = 'stats:day-stats'
     redis.publish(CHANNEL_DAY_STATS, 'heelo')

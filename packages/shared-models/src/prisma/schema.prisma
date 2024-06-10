@@ -371,6 +371,24 @@ model Members {
   updatedAt DateTime?
 }
 
+enum StatsType {
+  PROJECT_TASK_BY_DAY
+  MEMBER_TASK_BY_DAY
+}
+
+model Stats {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  type      StatsType
+  data      Json?
+  uid       String?   @db.ObjectId
+  projectId String?   @db.ObjectId
+  orgId     String?   @db.ObjectId
+  year      Int
+  month     Int
+  date      Int
+  updatedAt DateTime?
+}
+
 enum DashboardComponentType {
   LINE
   SUMMARY

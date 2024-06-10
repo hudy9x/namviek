@@ -21,6 +21,8 @@ export default class StatsUnDoneTaskService {
       const DAY_STATS_COLLECTION_NAME = "DayStatsByProject";
       const projectId = { "$oid": pid };
 
+      console.log('projectId', projectId)
+
       const now = new Date()
       const y = now.getFullYear()
       const m = now.getMonth()
@@ -124,7 +126,7 @@ export default class StatsUnDoneTaskService {
         ]
       })
 
-      console.log('done', result)
+      console.log('done', result, DAY_STATS_COLLECTION_NAME)
     } catch (error) {
 
       console.log(error)

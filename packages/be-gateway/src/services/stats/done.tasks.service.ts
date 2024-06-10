@@ -21,6 +21,8 @@ export default class StatsDoneTaskService {
       const DAY_STATS_COLLECTION_NAME = "DayStats";
       const projectId = { "$oid": pid };
 
+      console.log('projectId', projectId)
+
       const now = new Date()
       const y = now.getFullYear()
       const m = now.getMonth()
@@ -30,6 +32,9 @@ export default class StatsDoneTaskService {
       const lastDay = lastDayOfMonth(now)
       lastDay.setHours(23)
       lastDay.setMinutes(59)
+
+      console.log('firstDay', firstDay)
+      console.log('lastDay', lastDay)
 
       const filterTasks = {
         $match: {
@@ -131,7 +136,7 @@ export default class StatsDoneTaskService {
         ]
       })
 
-      console.log('done', result)
+      console.log('done', result, DAY_STATS_COLLECTION_NAME)
     } catch (error) {
 
       console.log(error)
