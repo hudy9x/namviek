@@ -30,25 +30,13 @@ connectPubClient((err, redis) => {
     redis.publish(CHANNEL_RUN_EVERY_MINUTE, 'Hello')
   })
 
-  cronJob.delete('testing-cronjob')
-  cronJob.create('testing-cronjob', { every: 'minute' }, () => {
-    // testing 
-
+  // run every 20pm
+  const runAt20h = 'runAt20pm'
+  cronJob.create(runAt20h, '5 12,20 * * *', () => {
+    // cronJob.create(runAt20h, { every: "minute" }, () => {
     const CHANNEL_DAY_STATS = 'stats:day-stats'
     redis.publish(CHANNEL_DAY_STATS, 'heelo')
   })
-
-
-  // run every 20pm
-  // const runAt20h = 'runAt20pm'
-  // cronJob.create(runAt20h, {
-  //   every: 'day',
-  //   at: { hour: 20, minute: 0, period: 'pm' }
-  // }, () => {
-  //   console.log('call me toor')
-  //   const CHANNEL_DAY_STATS = 'stats:day-stats'
-  //   redis.publish(CHANNEL_DAY_STATS, '')
-  // })
 })
 
 connectSubClient((err, redis) => {

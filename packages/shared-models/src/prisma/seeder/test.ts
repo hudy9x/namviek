@@ -168,12 +168,6 @@ async function runDoneTaskByMem(projectId: string) {
       } else {
         totalByMembers.set(a, 1)
       }
-      // if (a in totalByMembers) {
-      //   totalByMembers[a] += 1
-      //
-      // } else {
-      //   totalByMembers[a] = 1
-      // }
     })
 
   })
@@ -191,6 +185,7 @@ async function runDoneTaskByMem(projectId: string) {
       }
     })
 
+    // create new if doesn't exist
     if (!existing) {
       await pmClient.stats.create({
         data: {
@@ -201,11 +196,13 @@ async function runDoneTaskByMem(projectId: string) {
           month,
           date: d,
           data: {
-            doneTotal: result.length
+            doneTotal: total
           },
           updatedAt: new Date()
         }
       })
+
+      // update if existing
     } else {
       await pmClient.stats.update({
         where: {
@@ -213,7 +210,7 @@ async function runDoneTaskByMem(projectId: string) {
         },
         data: {
           data: {
-            doneTotal: result.length
+            doneTotal: total
           },
           updatedAt: new Date()
         }
@@ -223,48 +220,6 @@ async function runDoneTaskByMem(projectId: string) {
   })
 
 
-  // const existing = await pmClient.stats.findFirst({
-  //   where: {
-  //     projectId,
-  //     year: y,
-  //     month: m,
-  //     date: d
-  //   }
-  // })
-  //
-  // if (existing) {
-  //   await pmClient.stats.update({
-  //     where: {
-  //       id: existing.id
-  //     },
-  //     data: {
-  //       type: StatsType.PROJECT_TASK_BY_DAY,
-  //       projectId,
-  //       year: y,
-  //       month: m,
-  //       date: d,
-  //       data: {
-  //         unDoneTotal: result.length
-  //       },
-  //       updatedAt: new Date()
-  //     }
-  //   })
-  // } else {
-  //   console.log(1)
-  //   await pmClient.stats.create({
-  //     data: {
-  //       type: StatsType.PROJECT_TASK_BY_DAY,
-  //       projectId,
-  //       year: y,
-  //       month: m,
-  //       date: d,
-  //       data: {
-  //         unDoneTotal: result.length
-  //       },
-  //       updatedAt: new Date()
-  //     }
-  //   })
-  // }
 }
 
 
