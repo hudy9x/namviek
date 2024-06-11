@@ -157,6 +157,9 @@ export const TaskUpdate2 = () => {
         priority: currentTask.priority
           ? currentTask.priority
           : defaultFormikValues.priority,
+        startDate: currentTask.startDate
+          ? new Date(currentTask.startDate)
+          : defaultFormikValues.startDate,
         dueDate: currentTask.dueDate
           ? new Date(currentTask.dueDate)
           : defaultFormikValues.dueDate,

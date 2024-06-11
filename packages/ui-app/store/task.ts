@@ -202,6 +202,7 @@ export const useTaskStore = create<TaskState>(set => ({
           priority,
           taskPoint,
           done,
+          startDate,
           dueDate,
           visionId,
           updatedBy,
@@ -248,6 +249,10 @@ export const useTaskStore = create<TaskState>(set => ({
 
         if (taskPoint) {
           task.taskPoint = taskPoint
+        }
+
+        if (startDate) {
+          task.startDate = startDate
         }
 
         if (dueDate) {

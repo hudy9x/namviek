@@ -15,3 +15,17 @@ export const createModuleLog = (module: string) => {
   })
 }
 
+export const sendDiscordLog = async (content: string) => {
+  const data = {
+    username: 'Scheduler',
+    avatar_url: "",
+    content
+  }
+  return fetch("https://discord.com/api/webhooks/1249577190626955284/QWVUtgJVOj6JVqlRb7qyZ-MoIKYRUhUm94hXLxXPMi3a23XSmlGfeyPo40x7hHPmlEts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)
+  })
+}

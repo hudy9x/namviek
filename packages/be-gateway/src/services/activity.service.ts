@@ -38,6 +38,7 @@ export default class ActivityService {
       assigneeIds,
       priority,
       taskPoint,
+      startDate,
       dueDate,
       progress,
       fileIds,
@@ -136,6 +137,19 @@ export default class ActivityService {
             changeTo: taskPoint.toString()
           }
 
+          updatingActivities.push(newActivity)
+        }
+      }
+
+      if (startDate) {
+        if (!isSameDay(new Date(taskData.startDate), new Date(startDate))) {
+          console.log('startDate changed')
+          const newActivity = structuredClone(activityTemplate)
+          newActivity.type = ActivityType.TASK_DUEDATE_CHANGED
+          newActivity.data = {
+            changeFrom: new Date(taskData.startDate).toISOString(),
+            changeTo: new Date(startDate).toISOString()
+          }
           updatingActivities.push(newActivity)
         }
       }

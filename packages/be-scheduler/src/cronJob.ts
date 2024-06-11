@@ -79,8 +79,9 @@ export const cronJob = {
       console.log('delete error', error)
     }
   },
-  create: (cronId: string, trigger: TTrigger, cb: () => void) => {
-    const pattern = generateCronPattern(trigger)
+  create: (cronId: string, trigger: TTrigger | string, cb: () => void) => {
+    const pattern = typeof trigger === 'string' ? trigger : generateCronPattern(trigger)
+    console.log('pattern', pattern)
 
     const task = cron.schedule(pattern, () => {
       // const task = cron.schedule('*/10 * * * * *', () => {

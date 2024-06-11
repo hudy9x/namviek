@@ -111,6 +111,7 @@ export default class TaskUpdateService {
     const {
       id,
       title,
+      startDate,
       dueDate,
       assigneeIds,
       fileIds,
@@ -174,6 +175,10 @@ export default class TaskUpdateService {
 
     if (taskPoint) {
       taskData.taskPoint = taskPoint
+    }
+
+    if (startDate) {
+      taskData.startDate = startDate
     }
 
     if (dueDate) {

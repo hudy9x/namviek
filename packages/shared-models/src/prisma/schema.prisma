@@ -288,14 +288,19 @@ model FileStorage {
 }
 
 model Project {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  projectViewId  String?   @db.ObjectId
-  desc           String?
-  cover          String?
-  icon           String?
-  isArchived     Boolean?  @default(false)
-  createdBy      String?
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  projectViewId String?  @db.ObjectId
+  desc          String?
+  cover         String?
+  icon          String?
+  isArchived    Boolean? @default(false)
+  createdBy     String?
+
+  // these count settings is used for counting the number of tasks by days
+  countMemberTask  Boolean? @default(false)
+  countProjectTask Boolean? @default(true)
+
   createdAt      DateTime?
   organizationId String
   updatedBy      String?
@@ -363,6 +368,24 @@ model Members {
   createdBy String?
   createdAt DateTime?
   updatedBy String?
+  updatedAt DateTime?
+}
+
+enum StatsType {
+  PROJECT_TASK_BY_DAY
+  MEMBER_TASK_BY_DAY
+}
+
+model Stats {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  type      StatsType
+  data      Json?
+  uid       String?   @db.ObjectId
+  projectId String?   @db.ObjectId
+  orgId     String?   @db.ObjectId
+  year      Int
+  month     Int
+  date      Int
   updatedAt DateTime?
 }
 
