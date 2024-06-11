@@ -1,6 +1,7 @@
 import { StatsType, StatusType } from "@prisma/client";
 import { lastDayOfMonth } from "date-fns";
 import { pmClient } from "packages/shared-models/src/lib/_prisma";
+import { sendDiscordLog } from "../../lib/log";
 
 export default class StatsUnDoneTaskService {
   async implement(projectId: string) {
@@ -60,7 +61,7 @@ export default class StatsUnDoneTaskService {
         }
       })
 
-      console.log(result.length)
+      const total = result.length
       const existing = await pmClient.stats.findFirst({
         where: {
           projectId,
@@ -77,13 +78,12 @@ export default class StatsUnDoneTaskService {
           },
           data: {
             data: {
-              unDoneTotal: result.length
+              unDoneTotal: total
             },
             updatedAt: new Date()
           }
         })
       } else {
-        console.log(1)
         await pmClient.stats.create({
           data: {
             type: StatsType.PROJECT_TASK_BY_DAY,
@@ -92,14 +92,16 @@ export default class StatsUnDoneTaskService {
             month,
             date: d,
             data: {
-              unDoneTotal: result.length
+              unDoneTotal: total
             },
             updatedAt: new Date()
           }
         })
       }
 
+      sendDiscordLog("Count undone tasks finished: " + total)
     } catch (error) {
+      sendDiscordLog("undone.task.service.error: " + JSON.stringify(error))
       console.log('undone.tasks.service error', error)
     }
   }

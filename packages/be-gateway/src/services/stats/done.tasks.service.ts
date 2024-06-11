@@ -1,6 +1,7 @@
 import { StatsType, StatusType } from "@prisma/client";
 import { lastDayOfMonth } from "date-fns";
 import { pmClient } from "packages/shared-models/src/lib/_prisma";
+import { sendDiscordLog } from "../../lib/log";
 
 export default class StatsDoneTaskService {
   async implement(projectId: string) {
@@ -16,8 +17,6 @@ export default class StatsDoneTaskService {
       })
 
       const ids = doneStatus.map(d => d.id)
-
-      console.log('projectId', projectId)
 
       const now = new Date()
       const y = now.getFullYear()
@@ -126,8 +125,10 @@ export default class StatsDoneTaskService {
         }
       })
 
+      sendDiscordLog("Count done tasks per member finished")
     } catch (error) {
-      console.log('done.task.service error', error )
+      sendDiscordLog("done.task.service.error: " + JSON.stringify(error))
+      console.log('done.task.service error', error)
     }
   }
 }
