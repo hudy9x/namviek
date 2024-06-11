@@ -22,7 +22,7 @@ export default class ProjectRepository {
       }
     })
 
-    const projectsWMemberEnabled = []
+    const projectsWMemberEnabled: string[] = []
 
     const projectsWCounterEnabled = projects.map(p => {
       if (p.countMemberTask) {

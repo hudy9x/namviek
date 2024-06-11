@@ -28,7 +28,6 @@ export default function ProjectNav() {
           <TaskCreate />
         </div>
       </div>
-      {/* <TaskUpdate /> */}
       <TaskUpdate2 />
     </div>
   )
