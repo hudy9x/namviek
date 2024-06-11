@@ -40,7 +40,10 @@ RUN chown -R namviek:namviek /app
 
 USER namviek
 
-EXPOSE 4200
+EXPOSE 3000
 
 # Permissions for entrypoints
 RUN chmod +x ./docker/entrypoints.sh
+
+# Permission for fe-entrypoint
+RUN chmod +x ./docker/fe-entrypoint.sh

@@ -30,8 +30,8 @@ services:
     env_file:
       - .env.local
     ports:
-      - '4200:4200'
-    command: 'yarn frontend'
+      - '3000:3000'
+    command: /bin/sh -c "./docker/fe-entrypoint.sh && yarn prod:fe"
     depends_on:
       - backend
     networks:
