@@ -40,6 +40,63 @@ export const useEventDeleteComment = () => {
 }
 ```
 
+## Create a task scheduler
+
+To run a task in schedule, for example: run a task per 1h, run a task per Monday at 20h
+Do the following steps:
+
+### Step 1 - Create an event in backend
+Open `packages/be-gateway/src/events/index.ts` then create an event name and add a handler to it.
+
+```typescript
+
+export const CHANNEL_DAY_STATS = 'stats:day-stats'
+
+// We must subscribe channels first
+redis.subscribe(CHANNEL_DAY_STATS)
+
+// After that, we can listen messages from them
+redis.on('message', async (channel: string, data: string) => {
+    if (channel === CHANNEL_DAY_STATS) {
+      const dayStats = new StatsByDayEvent()
+      dayStats.run()
+    }
+})
+```
+
+Next, create the event handler at `packages/be-gateway/src/events/` folder. Ex: `stats.day.event.ts`
+```typescript
+export default class StatsByDayEvent {
+  constructor() {
+
+  }
+  async run() {
+
+  }
+}
+```
+
+### Step 2 - Publish to the above event
+After registering event we need to publish message to trigger it. Open `packages/be-scheduler/src/main.ts` and create a cronjob as follows
+
+```typescript
+connectPubClient((err, redis) => {
+  if (err) return
+
+  // run every 20pm
+  const runAt20h = 'runAt20pm'
+  cronJob.create(runAt20h, '5 12,20 * * *', () => {
+
+    // Remember that, channel name must be same as Event name
+    const CHANNEL_DAY_STATS = 'stats:day-stats'
+    redis.publish(CHANNEL_DAY_STATS, 'heelo')
+  })
+})
+
+```
+
+
+
 ## Configure environment variables
 ### Required configs
 |Name|Value|Desc|Required|

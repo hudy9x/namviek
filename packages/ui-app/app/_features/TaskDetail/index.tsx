@@ -11,8 +11,6 @@ import { useProjectStatusStore } from '@/store/status'
 import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 import {
-  HiOutlineBattery50,
-  HiOutlineBeaker,
   HiOutlineBriefcase,
   HiOutlineCalendar,
   HiOutlineChatBubbleLeft,
@@ -39,6 +37,7 @@ export const defaultFormikValues: ITaskDefaultValues = {
   fileIds: [],
   taskStatusId: '',
   priority: TaskPriority.LOW,
+  startDate: new Date(),
   dueDate: new Date(),
   plannedDueDate: new Date(),
   planedStartDate: new Date(),
@@ -54,6 +53,7 @@ export interface ITaskDefaultValues {
   fileIds: string[]
   taskStatusId: string
   priority: TaskPriority
+  startDate: Date
   dueDate: Date
   plannedDueDate: Date
   planedStartDate: Date
@@ -246,6 +246,20 @@ export default function TaskDetail({
           </div>
           <div className="task-info-item">
             <div className="task-info-label">
+              <HiOutlineClock /> <span>Start date</span>
+            </div>
+            <div className="task-info-content">
+              <DatePicker
+                enableTimer={true}
+                value={formik.values.startDate}
+                onChange={d => {
+                  formik.setFieldValue('startDate', d)
+                }}
+              />
+            </div>
+          </div>
+          <div className="task-info-item">
+            <div className="task-info-label">
               <HiOutlineClock /> <span>Due date</span>
             </div>
             <div className="task-info-content">
@@ -320,13 +334,13 @@ export default function TaskDetail({
             </Tab.List>
 
             <Tab.Content value="task-activity">
-              <Activity />
+              <Activity taskId={id} />
             </Tab.Content>
             <Tab.Content value="task-attachment">
               <FileControl />
             </Tab.Content>
             <Tab.Content value="task-comments">
-              <TaskComments />
+              <TaskComments taskId={id} />
             </Tab.Content>
           </Tab>
         </section>

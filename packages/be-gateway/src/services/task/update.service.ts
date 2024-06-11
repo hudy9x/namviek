@@ -111,6 +111,7 @@ export default class TaskUpdateService {
     const {
       id,
       title,
+      startDate,
       dueDate,
       assigneeIds,
       fileIds,
@@ -174,6 +175,10 @@ export default class TaskUpdateService {
 
     if (taskPoint) {
       taskData.taskPoint = taskPoint
+    }
+
+    if (startDate) {
+      taskData.startDate = startDate
     }
 
     if (dueDate) {
@@ -264,8 +269,9 @@ export default class TaskUpdateService {
     const watcherList = await this.getWatchers({ userId, task })
 
     notifyToWebUsers(watcherList, {
-      title: 'Status update',
-      body: `Status changed to ${newStatus.name} on "${task.title}"`,
+      title: `${pinfo.name} - #status-changed`,
+      body: `Changed to ${newStatus.name} on "${task.title}"`,
+      icon: pinfo.icon,
       deep_link: taskLink
     })
   }
@@ -287,7 +293,8 @@ export default class TaskUpdateService {
     const watcherList = await this.getWatchers({ userId, task })
 
     notifyToWebUsers(watcherList, {
-      title: 'Progress update',
+      title: `${pinfo.name} - #progress-changed`,
+      icon: pinfo.icon,
       body: `From ${oldProgress} => ${task.progress} on "${task.title}"`,
       deep_link: taskLink
     })

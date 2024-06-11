@@ -38,6 +38,7 @@ export default class TaskCreateService {
         assigneeIds,
         type,
         title,
+        startDate,
         dueDate,
         projectId,
         priority,
@@ -62,7 +63,7 @@ export default class TaskCreateService {
           cover: null,
           order: order,
           type: type || TaskType.TASK,
-          startDate: null,
+          startDate: startDate || null,
           dueDate: dueDate || null,
           plannedStartDate: dueDate || null,
           plannedDueDate: dueDate || null,
@@ -202,7 +203,8 @@ export default class TaskCreateService {
     )
 
     notifyToWebUsers(filtered, {
-      title: 'Got a new task',
+      title: `${project.name} - #new-task`,
+      icon: project.icon,
       body: `${task.title}`,
       deep_link: taskLink
     })

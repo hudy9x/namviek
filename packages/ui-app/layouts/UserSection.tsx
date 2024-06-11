@@ -36,7 +36,7 @@ export default function UserSection() {
         </div>
       </div>
 
-      <div>
+      <div className='user-section-action'>
         {/* <Link href={`/profile/${user?.id}`}> */}
         <Popover
           triggerBy={<div>
