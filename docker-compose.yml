@@ -11,7 +11,7 @@ services:
       - .env.local
     ports:
       - '3333:3333'
-    command: /bin/sh -c "./docker/entrypoints.sh && yarn backend"
+    command: /bin/sh -c "./docker/be-entrypoint.sh && yarn backend"
     healthcheck:
       test: curl --fail http://localhost:3333 || exit 1
       interval: 30s
