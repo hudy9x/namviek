@@ -42,8 +42,8 @@ USER namviek
 
 EXPOSE 3000
 
-# Permissions for entrypoints
-RUN chmod +x ./docker/entrypoints.sh
+# Permissions for be-entrypoint
+RUN chmod +x ./docker/be-entrypoint.sh
 
 # Permission for fe-entrypoint
 RUN chmod +x ./docker/fe-entrypoint.sh
