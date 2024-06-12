@@ -99,10 +99,12 @@ export class OrganizationController extends BaseController {
         throw new Error('REACHED_MAX_ORGANIZATION')
       }
 
+      const slug = generateSlug(body.name.toLowerCase().trim())
+
       const result = await mdOrgAdd({
         name: body.name,
         desc: body.desc,
-        slug: generateSlug(body.name),
+        slug,
         maxStorageSize: MAX_STORAGE_SIZE,
         cover: body.cover,
         avatar: null,
@@ -131,7 +133,6 @@ export class OrganizationController extends BaseController {
     } catch (error) {
       if (error.code === 'P2002') {
         throw new Error('DUPLICATE_ORGANIZATION')
-        return
       }
 
       throw new InternalServerException()

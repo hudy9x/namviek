@@ -72,7 +72,7 @@ password: ${process.env.DEFAULT_PWD || '123123123'}
       createStarterData()
       break;
 
-    case 'updateSlug':
+    case 'update-slug':
       updateAllSlug().then(() => {
         console.log('Update all organization successfully')
       })

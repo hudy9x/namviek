@@ -57,13 +57,15 @@ export const updateAllSlug = async () => {
     }
   })
 
+  const promises = []
   for (const org of orgs) {
     const { id, name } = org
-    const slug = generateSlug(name)
+    const slug = generateSlug(name.toLowerCase())
 
-    await updateOrganization(id, { name, slug })
-    console.log('Update slug successfully', slug)
+    promises.push(updateOrganization(id, { name, slug }))
   }
+
+  await Promise.allSettled(promises)
 }
 
 export const updateOrganization = async (id: string, data: Partial<Organization>) => {

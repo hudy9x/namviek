@@ -25,7 +25,7 @@ export default function CreateOrganization() {
     if (message === 'REACHED_MAX_ORGANIZATION') {
       messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade');
     } else if (message === 'DUPLICATE_ORGANIZATION') {
-      messageWarning('The organization name already exists in the database.');
+      messageError('The organization name already exists.');
     }
   };
 
@@ -41,8 +41,10 @@ export default function CreateOrganization() {
         return
       }
 
-      if (values.name.length > 17) {
-        messageError('Title must less than or equal 17 characters')
+      values.name = values.name.trim()
+
+      if (values.name.length > 16) {
+        messageError('Title must less than or equal 16 characters')
         return
       }
 
@@ -69,7 +71,7 @@ export default function CreateOrganization() {
       }).catch(err => {
         const error = err as AxiosError
         handleAxiosError(error)
-      }).finally(() => {   
+      }).finally(() => {
         setLoading(false)
       })
     }
