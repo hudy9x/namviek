@@ -22,32 +22,18 @@ Before proceeding, make sure you have docker and docker-compose installed, the r
    cp .env.example .env.local
    ```
 
-   Now visit [here](https://github.com/hudy9x/namviek/blob/main/DOCUMENTS.md#configure-environment-variables) to configure environment variables in your .env.local
-
-3. Add this value in the REDIS_HOST variable of your .env.local file
-
-   ```env
-   REDIS_HOST=host.docker.internal:6379
-   ```
-
-4. Add this value in the MONGODB_URL variable of your .env.local file
-
-   ```env
-   MONGODB_URL=mongodb://mongodb:27017/namviek?replicaSet=rs0&authSource=admin
-   ```
-
-5. Build the image.
+3. Build the image.
 
    ```bash
-   docker-compose build
+   docker compose build
    ```
 
-6. Run the app.
+4. Run the app.
 
    ```bash
-   # Run in the foreground
-   docker-compose up
+   # Option 1 - Run in detached mode (recommended) 
+   docker compose up -d
 
-   # Run in detached mode (recommended)
-   docker-compose up -d
+   # Option 2 - Run in the foreground
+   docker compose up
    ```

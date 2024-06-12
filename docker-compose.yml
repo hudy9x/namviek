@@ -9,6 +9,9 @@ services:
     image: namviek
     env_file:
       - .env.local
+    environment:
+      - REDIS_HOST=redis:6379
+      - MONGODB_URL=mongodb://mongodb:27017/namviek?replicaSet=rs0&authSource=admin
     ports:
       - '3333:3333'
     command: /bin/sh -c "./docker/be-entrypoint.sh && yarn backend"
