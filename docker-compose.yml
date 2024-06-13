@@ -4,13 +4,25 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+      args:
+        - ENV_FILE=.env.local
     image: namviek
     env_file:
       - .env.local
+    environment:
+      - REDIS_HOST=redis:6379
+      - MONGODB_URL=mongodb://mongodb:27017/namviek?replicaSet=rs0&authSource=admin&directConnection=true
     ports:
       - '3333:3333'
-    command: /bin/sh -c "./docker/entrypoints.sh && yarn backend"
+    command: /bin/sh -c "./docker/be-entrypoint.sh && yarn backend"
+    healthcheck:
+      test: curl --fail http://localhost:3333 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     depends_on:
+      - mongodb
       - redis
     networks:
       - namviek-network
@@ -21,8 +33,8 @@ services:
     env_file:
       - .env.local
     ports:
-      - '4200:4200'
-    command: 'yarn frontend'
+      - '3000:3000'
+    command: /bin/sh -c "./docker/fe-entrypoint.sh && yarn prod:fe"
     depends_on:
       - backend
     networks:
@@ -35,6 +47,33 @@ services:
       - '6379:6379'
     networks:
       - namviek-network
+
+  mongodb:
+    container_name: mongodb
+    image: 'mongo:latest'
+    command: ['--replSet', 'rs0', '--bind_ip_all', '--port', '27017']
+    ports:
+      - '27017:27017'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    environment:
+      MONGO_INITDB_DATABASE: namviek
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    networks:
+      - namviek-network
+
+volumes:
+  mongodb-data:
+  mongodb-config:
 
 networks:
   namviek-network:
