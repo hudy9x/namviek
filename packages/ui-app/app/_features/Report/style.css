@@ -1,7 +1,0 @@
-.report-box {
-  @apply border dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm rounded-md;
-}
-
-.center-all {
-  @apply flex items-center justify-center;
-}

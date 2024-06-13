@@ -1,16 +1,39 @@
 'use client'
 
 import { useOrgMemberGet } from '@/services/organizationMember'
-import { TaskFilterProvider } from '../TaskFilter/context'
-import ReportContent from './ReportContent'
 import './style.css'
+import ReportContent from './ReportContent'
+import ReportSidebar from './ReportSidebar'
+import { ReportProvider } from './context'
+import { useState } from 'react'
+
+// export default function Report() {
+//   useOrgMemberGet()
+//
+//   const [counter, setCounter] = useState(1)
+//   return (
+//     <ReportProvider value={{
+//       counter,
+//       setCounter
+//     }}>
+//       <div id='report-page'>
+//         <main>
+//           <ReportContent />
+//           <ReportSidebar />
+//         </main>
+//       </div>
+//
+//     </ReportProvider>
+//   )
+// }
 
 export default function Report() {
   useOrgMemberGet()
 
   return (
-    <TaskFilterProvider>
+    <ReportProvider>
       <ReportContent />
-    </TaskFilterProvider>
+      <ReportSidebar />
+    </ReportProvider>
   )
 }
