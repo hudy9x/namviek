@@ -1,20 +1,26 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 
+
+enum IReportTimeFilter {
+  WEEK,
+  MONTH
+}
 interface IReportProps {
-  counter: number
-  setCounter: Dispatch<SetStateAction<number>>
+  timeFilter: IReportTimeFilter
+  setTimeFilter: Dispatch<SetStateAction<IReportTimeFilter>>
 }
 
 const ReportContext = createContext<IReportProps>({
-  counter: 0,
-  setCounter: () => console.log(1)
+  timeFilter: IReportTimeFilter.WEEK,
+  setTimeFilter: () => console.log(1)
 })
 
 export const ReportProvider = ({ children }: { children: ReactNode }) => {
-  const [counter, setCounter] = useState(1)
+  const [timeFilter, setTimeFilter] = useState<IReportTimeFilter>(IReportTimeFilter.WEEK)
+
   return <ReportContext.Provider value={{
-    counter,
-    setCounter
+    timeFilter,
+    setTimeFilter,
   }} >
     <div id='report-page'>
       <main>

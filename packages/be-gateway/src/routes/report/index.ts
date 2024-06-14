@@ -1,34 +1,33 @@
-import { Router } from 'express'
-import { authMiddleware } from '../../middlewares'
-import { AuthRequest } from '../../types'
-import { mdTaskGetAll } from '@shared/models'
+import { BaseController, UseMiddleware, Controller, Get, Param } from "../../core";
 
-const mainRouter = Router()
-const router = Router()
+import { authMiddleware } from "../../middlewares";
+import StatsService from "../../services/stats/index.service";
 
-mainRouter.use('/report', [authMiddleware, router])
+@Controller('/report')
+@UseMiddleware([authMiddleware])
+export default class ReportController extends BaseController {
 
-// It means GET:/api/example
-router.get('/', async (req: AuthRequest, res) => {
-  const { id: uid } = req.authen
-  const { projectIds, startDate, endDate } = req.query as {
-    projectIds: string[]
-    startDate: string
-    endDate: string
+  statsService: StatsService
+  constructor() {
+    super()
+    this.statsService = new StatsService()
   }
 
-  // await mdTaskGetAll({
-  //   projectIds,
-  //   dueDate: [startDate, endDate]
-  // })
+  @Get('/:orgId/:month/:year')
+  async getProjectReportByOrgId(@Param() params: {
+    orgId: string
+    month: string
+    year: string
+  }) {
+    const { orgId, month, year } = params
+    console.log('3')
+    const result = await this.statsService.getProjectReport({
+      orgId,
+      month: parseInt(month),
+      year: parseInt(year)
+    })
 
-  res.json({ status: 200 })
-})
+    return result
+  }
 
-// It means POST:/api/example
-router.post('/example', (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-  res.json({ status: 200 })
-})
-
-export default mainRouter
+}
