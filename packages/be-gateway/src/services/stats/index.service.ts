@@ -1,3 +1,4 @@
+import { Stats } from "@prisma/client"
 import StatsRepository from "packages/shared-models/src/lib/stats.repository"
 
 export default class StatsService {
@@ -6,15 +7,30 @@ export default class StatsService {
     this.statsRepo = new StatsRepository()
   }
 
-  async getProjectReport({ orgId, month, year, projectIds }: { orgId: string, projectIds: string[], month: number, year: number }) {
-    const result = await this.statsRepo.getProjectReport({
+  async getProjectReport({ month, year, projectIds }: { projectIds: string[], month: number, year: number }) {
+    const reports = await this.statsRepo.getProjectReport({
       projectIds,
-      orgId,
       month,
       year
     })
 
-    return result
+    if (!reports) {
+      return null
+    }
+
+    const statsByProject = new Map<string, Stats[]>()
+
+    for (let i = 0; i < reports.length; i++) {
+      const report = reports[i];
+      const key = report.projectId
+      const datas = statsByProject.get(key) || []
+
+      datas.push(report)
+
+      statsByProject.set(key, datas)
+    }
+
+    return statsByProject
 
   }
 }

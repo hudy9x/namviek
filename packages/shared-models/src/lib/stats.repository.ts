@@ -1,18 +1,8 @@
 import { StatsType } from "@prisma/client";
-import { projectModel, statsModel } from "./_prisma";
+import { statsModel } from "./_prisma";
 
 export default class StatsRepository {
-  async getProjectReport({ orgId, projectIds, month, year }: { orgId: string, projectIds: string[], month: number, year: number }) {
-
-    // const projects = await projectModel.findMany({
-    //   where: {
-    //     organizationId: orgId
-    //   }
-    // })
-
-    // if (!projects.length) return null
-
-    // const projectIds = projects.map(p => p.id)
+  async getProjectReport({ projectIds, month, year }: { projectIds: string[], month: number, year: number }) {
 
     if (!projectIds.length) return null
 

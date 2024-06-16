@@ -21,16 +21,16 @@ export default class ReportController extends BaseController {
     year: string
   }) {
     const { orgId, projectIds, month, year } = body
-    console.log('5', projectIds)
+    console.log('5l', projectIds)
 
     const result = await this.statsService.getProjectReport({
-      orgId,
+      // orgId,
       projectIds,
       month: parseInt(month),
       year: parseInt(year)
     })
 
-    return result
+    return Object.fromEntries(result.entries())
   }
 
 }

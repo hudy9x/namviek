@@ -5,6 +5,7 @@ import './style.css'
 import ReportContent from './ReportContent'
 import ReportSidebar from './ReportSidebar'
 import { ReportProvider } from './context'
+import ReportHeader from './ReportHeader'
 
 
 function PrefetchData() {
@@ -16,8 +17,11 @@ export default function Report() {
   return (
     <ReportProvider>
       <PrefetchData />
-      <ReportContent />
-      <ReportSidebar />
+      <ReportHeader />
+      <div className='report-container flex items-start'>
+        <ReportContent />
+        <ReportSidebar />
+      </div>
     </ReportProvider>
   )
 }
