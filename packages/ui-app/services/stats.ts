@@ -1,7 +1,17 @@
-import { httpGet } from './_req';
+import { httpGet, httpPost } from './_req';
 
 export const statsService = {
-  async get({ orgId, month, year }: { orgId: string, month: number, year: number }) {
-    return httpGet(`/api/report/${orgId}/${month}/${year}`);
+  async get({ orgId, month, year, projectIds }: {
+    orgId: string,
+    month: number,
+    year: number,
+    projectIds: string[]
+  }) {
+    return httpPost(`/api/report`, {
+      orgId,
+      month,
+      year,
+      projectIds
+    });
   }
 }

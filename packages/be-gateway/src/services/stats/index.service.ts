@@ -6,8 +6,9 @@ export default class StatsService {
     this.statsRepo = new StatsRepository()
   }
 
-  async getProjectReport({ orgId, month, year }: { orgId: string, month: number, year: number }) {
+  async getProjectReport({ orgId, month, year, projectIds }: { orgId: string, projectIds: string[], month: number, year: number }) {
     const result = await this.statsRepo.getProjectReport({
+      projectIds,
       orgId,
       month,
       year

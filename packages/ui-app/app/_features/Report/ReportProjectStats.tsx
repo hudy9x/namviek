@@ -7,11 +7,13 @@ export default function ReportProjectStats() {
   const [counter, setCounter] = useState(0)
   useEffect(() => {
     statsService.get({
-      orgId: '664588e52f5b6db5010db971',
+      orgId: '65d6ee7893180a33c22085de',
+      projectIds: ['65e93b8c34df285397fd0b60'],
       month: 6,
-      year: 2024
+      year: 2024,
     }).then(res => {
-      console.log(res)
+      const { data } = res.data
+      console.log(data)
     })
   }, [counter])
 

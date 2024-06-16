@@ -1,4 +1,4 @@
-import { BaseController, UseMiddleware, Controller, Get, Param } from "../../core";
+import { BaseController, UseMiddleware, Body, Controller, Post, Param } from "../../core";
 
 import { authMiddleware } from "../../middlewares";
 import StatsService from "../../services/stats/index.service";
@@ -13,16 +13,19 @@ export default class ReportController extends BaseController {
     this.statsService = new StatsService()
   }
 
-  @Get('/:orgId/:month/:year')
-  async getProjectReportByOrgId(@Param() params: {
+  @Post('/')
+  async getProjectReportByOrgId(@Body() body: {
     orgId: string
+    projectIds: string[]
     month: string
     year: string
   }) {
-    const { orgId, month, year } = params
-    console.log('3')
+    const { orgId, projectIds, month, year } = body
+    console.log('5', projectIds)
+
     const result = await this.statsService.getProjectReport({
       orgId,
+      projectIds,
       month: parseInt(month),
       year: parseInt(year)
     })
