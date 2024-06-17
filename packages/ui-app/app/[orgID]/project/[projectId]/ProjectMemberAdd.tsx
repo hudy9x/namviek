@@ -19,6 +19,7 @@ import { useParams } from 'next/navigation'
 import { UserMember, useMemberStore } from '../../../../store/member'
 import { MemberRole, OrganizationMembers, User } from '@prisma/client'
 import { memAddNewToProject } from '../../../../services/member'
+import { useOrgMemberStore } from '@/store/orgMember'
 
 let timeout = 0
 
@@ -115,7 +116,9 @@ export default function ProjectMemberAdd({
   const [loading, setLoading] = useState(false)
   const [searchResults, updateSearchResults] = useState<User[]>([])
   const [selectedMember, setSelectedMember] = useState<User[]>([])
+  const [searchTerm, setSearchTerm] = useState('') // New state for search term
   const { addMember } = useMemberStore()
+  const { orgMembers } = useOrgMemberStore()
 
   const addToProject = () => {
     const refactorMembers = selectedMember.map(sm => {
@@ -139,6 +142,8 @@ export default function ProjectMemberAdd({
   const onChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const target = ev.target
     const value = target.value
+
+    setSearchTerm(value) // Update search term
 
     if (!value) {
       updateSearchResults([])
@@ -179,8 +184,9 @@ export default function ProjectMemberAdd({
     }, 250) as unknown as number
   }
 
-  const filteredSearchResults = searchResults.filter(
-    sr => !selectedMember.find(sm => sm.id === sr.id)
+  // Filter orgMembers based on searchTerm
+  const filteredOrgMembers = orgMembers.filter(member =>
+    member.name?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
@@ -207,25 +213,44 @@ export default function ProjectMemberAdd({
         content={
           <div className="">
             <div className="bg-gray-50 dark:border-gray-700 dark:bg-gray-900 rounded-lg border">
-              <div className="relative">
+              <div className="relative w-full rounded-lg">
                 <input
-                  className="w-full bg-white dark:bg-gray-900 dark:border-gray-700 px-4 py-3 border-b border-dashed rounded-t-lg text-sm"
+                  className="w-full bg-white dark:bg-gray-900 dark:border-gray-700 px-4 py-3 border-b border-dashed rounded-lg text-sm pr-20"
                   placeholder="Find your member"
                   onChange={onChange}
                 />
+                <button
+                  className="text-xs absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-4 py-2 rounded"
+                  onClick={addToProject}
+                >
+                  Add to project
+                </button>
               </div>
-              <SearchStatus status={loading} />
+            </div>
+
+            <SelectedMembers
+              selectedMember={selectedMember}
+              setSelectedMember={setSelectedMember}
+            />
+
+            <h2 className="my-3 font-medium text-sm">Members:</h2>
+            <div className="bg-gray-50 dark:bg-gray-900 dark:border-gray-700 rounded-lg border">
               <div className="divide-y divide-dashed dark:divide-gray-700">
-                {filteredSearchResults.map(member => {
+                {!filteredOrgMembers.length ? (
+                  <div className="px-4 py-3 text-sm text-gray-500">
+                    No member available
+                  </div>
+                ) : null}
+                {filteredOrgMembers.map(member => {
                   return (
                     <div
-                      key={member.id}
                       onClick={() => {
                         setSelectedMember(prev => {
                           return [...prev, member]
                         })
                       }}
-                      className="px-4 py-3 hover:bg-white dark:hover:bg-gray-800 cursor-pointer">
+                      key={member.id}
+                      className="relative px-4 py-3 hover:bg-white dark:hover:bg-slate-800 rounded-lg cursor-pointer">
                       <MemberAvatarWithName
                         name={member.name}
                         photo={member.photo}
@@ -235,15 +260,6 @@ export default function ProjectMemberAdd({
                   )
                 })}
               </div>
-            </div>
-
-            <SelectedMembers
-              selectedMember={selectedMember}
-              setSelectedMember={setSelectedMember}
-            />
-
-            <div className="mt-3 text-right">
-              <Button title="Add to project" primary onClick={addToProject} />
             </div>
           </div>
         }
