@@ -1,3 +1,4 @@
+
 import { reportService } from '@/services/report'
 import { useProjectStore } from '@/store/project'
 import { Stats } from '@prisma/client'
@@ -29,14 +30,15 @@ function ProjectInfo({ id: projectId }: { id: string }) {
   </div>
 }
 
-export default function ReportByProjectItem({ projectId }: { projectId: string }) {
+export default function ReportByMemberItem({ projectIds, memberId }: { projectIds: string[], memberId: string }) {
   const selectedDate = new Date()
   const xAxis = generateXAxis(selectedDate)
   const [yAxis, setYAxis] = useState<number[]>([])
 
   useEffect(() => {
-    reportService.get({
-      projectIds: [projectId],
+    reportService.getMemberReport({
+      projectIds,
+      memberIds: [memberId],
       month: 6,
       year: 2024,
     }).then(res => {
@@ -45,33 +47,35 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
 
       if (!Object.keys(dailyData).length) return
 
-      const days = xAxis;
-      const totalData = new Map<number, number>()
+      console.log(dailyData)
 
-      for (let i = 0; i < days.length; i++) {
-        totalData.set(days[i], 0)
-      }
-
-      for (const pid in dailyData) {
-        const dailyProjectDatas = dailyData[pid]
-
-        if (!dailyProjectDatas || !dailyProjectDatas.length) continue
-
-        for (let j = 0; j < dailyProjectDatas.length; j++) {
-          const dailyItem = dailyProjectDatas[j];
-          const dailyItemData = dailyItem.data as Record<string, unknown>
-          const unDoneTotal = dailyItemData.unDoneTotal as number
-
-          // console.log(dailyItem.date, unDoneTotal)
-
-          const t = totalData.get(dailyItem.date) || 0
-          totalData.set(dailyItem.date, t + unDoneTotal)
-        }
-      }
-
-      const yAxis = Array.from(totalData, ([name, value]) => value);
-
-      setYAxis(yAxis)
+      // const days = xAxis;
+      // const totalData = new Map<number, number>()
+      //
+      // for (let i = 0; i < days.length; i++) {
+      //   totalData.set(days[i], 0)
+      // }
+      //
+      // for (const pid in dailyData) {
+      //   const dailyProjectDatas = dailyData[pid]
+      //
+      //   if (!dailyProjectDatas || !dailyProjectDatas.length) continue
+      //
+      //   for (let j = 0; j < dailyProjectDatas.length; j++) {
+      //     const dailyItem = dailyProjectDatas[j];
+      //     const dailyItemData = dailyItem.data as Record<string, unknown>
+      //     const unDoneTotal = dailyItemData.unDoneTotal as number
+      //
+      //     // console.log(dailyItem.date, unDoneTotal)
+      //
+      //     const t = totalData.get(dailyItem.date) || 0
+      //     totalData.set(dailyItem.date, t + unDoneTotal)
+      //   }
+      // }
+      //
+      // const yAxis = Array.from(totalData, ([name, value]) => value);
+      //
+      // setYAxis(yAxis)
 
 
     })
@@ -106,13 +110,13 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
   }
 
   return <div className='report-project-stats box'>
-    <ProjectInfo id={projectId} />
-    <Chart
-      options={settings.options}
-      series={settings.series}
-      height={300}
-      type="area"
-    />
+    {/* <ProjectInfo id={projectId} /> */}
+    {/* <Chart */}
+    {/*   options={settings.options} */}
+    {/*   series={settings.series} */}
+    {/*   height={300} */}
+    {/*   type="area" */}
+    {/* /> */}
 
   </div>
 }

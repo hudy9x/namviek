@@ -2,6 +2,7 @@
 
 }
 
+
 .report-content {
   @apply w-full;
 }
@@ -23,3 +24,11 @@
   @apply bg-gray-100 dark:bg-gray-900;
 }
 
+
+.report-filter-member-item {
+  @apply flex items-center gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1
+}
+
+.report-filter-member-item.active {
+  @apply bg-gray-100 dark:bg-gray-900;
+}

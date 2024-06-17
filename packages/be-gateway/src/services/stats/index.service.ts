@@ -33,4 +33,42 @@ export default class StatsService {
     return statsByProject
 
   }
+
+  async getMemberReport({
+    memberIds,
+    projectIds,
+    month,
+    year
+  }: {
+    projectIds: string[]
+    memberIds: string[]
+    month: number
+    year: number
+  }) {
+
+    const reports = await this.statsRepo.getMemberReport({
+      projectIds,
+      memberIds,
+      month,
+      year
+    })
+
+    if (!reports) {
+      return null
+    }
+
+    const statsData = new Map<string, Stats[]>()
+
+    for (let i = 0; i < reports.length; i++) {
+      const report = reports[i];
+      const key = report.uid
+      const datas = statsData.get(key) || []
+
+      datas.push(report)
+
+      statsData.set(key, datas)
+    }
+
+    return statsData
+  }
 }

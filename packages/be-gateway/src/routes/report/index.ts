@@ -13,7 +13,7 @@ export default class ReportController extends BaseController {
     this.statsService = new StatsService()
   }
 
-  @Post('/')
+  @Post('/project')
   async getProjectReportByOrgId(@Body() body: {
     orgId: string
     projectIds: string[]
@@ -25,6 +25,26 @@ export default class ReportController extends BaseController {
 
     const result = await this.statsService.getProjectReport({
       // orgId,
+      projectIds,
+      month: parseInt(month),
+      year: parseInt(year)
+    })
+
+    return Object.fromEntries(result.entries())
+  }
+
+  @Post('/members')
+  async getMemberReportByProjectId(@Body() body: {
+    projectIds: string[]
+    memberIds: string[]
+    month: string
+    year: string
+  }) {
+    const { memberIds, projectIds, month, year } = body
+    console.log('5l', projectIds)
+
+    const result = await this.statsService.getMemberReport({
+      memberIds,
       projectIds,
       month: parseInt(month),
       year: parseInt(year)
