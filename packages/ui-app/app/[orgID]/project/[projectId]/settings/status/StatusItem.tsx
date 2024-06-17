@@ -87,7 +87,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     }
   }
 
-  const handleStatusType = async (type: StatusType) => {
+  const onChangeStatusType = async (type: StatusType) => {
     const id = status.id
     const newStatus = {
       ...status,
@@ -135,7 +135,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
           onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
-        <StatusItemType type={status.type} onStatusType={handleStatusType} />
+        <StatusItemType type={status.type} onStatusType={onChangeStatusType} />
       </div>
       <HasRole projectRoles={['LEADER', 'MANAGER']}>
         <div className="absolute right-3 gap-2 hidden group-hover:flex ">
