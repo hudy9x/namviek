@@ -28,8 +28,11 @@ RUN addgroup -S namviek && \
 
 WORKDIR /app
 
-# Copy .env.local file
-COPY .env.local .env
+# Argument to select the env file
+ARG ENV_FILE=.env.local
+
+# Copy the env file
+COPY ${ENV_FILE} .env
 
 #grab previously installed modules without caches. 
 COPY --from=builder /app/node_modules ./node_modules
@@ -37,7 +40,10 @@ RUN chown -R namviek:namviek /app
 
 USER namviek
 
-EXPOSE 4200
+EXPOSE 3000
 
-# Permissions for entrypoints
-RUN chmod +x ./docker/entrypoints.sh
+# Permissions for be-entrypoint
+RUN chmod +x ./docker/be-entrypoint.sh
+
+# Permission for fe-entrypoint
+RUN chmod +x ./docker/fe-entrypoint.sh
