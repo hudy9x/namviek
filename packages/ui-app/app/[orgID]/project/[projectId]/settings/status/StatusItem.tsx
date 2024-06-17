@@ -128,15 +128,14 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
             </div>
           }
         />
-        <StatusItemType type={status.type} onStatusType={handleStatusType}/>
         <input
           readOnly={readOnly}
           ref={inputRef}
-          className="outline-none bg-transparent w-full text-gray-500 text-sm ml-16 pr-8 py-3"
+          className="outline-none bg-transparent w-full text-gray-500 text-sm pr-8 py-3"
           onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
-        {/* {status.type} */}
+        <StatusItemType type={status.type} onStatusType={handleStatusType} />
       </div>
       <HasRole projectRoles={['LEADER', 'MANAGER']}>
         <div className="absolute right-3 gap-2 hidden group-hover:flex ">
