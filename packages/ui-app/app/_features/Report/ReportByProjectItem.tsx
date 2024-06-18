@@ -10,8 +10,6 @@ const generateXAxis = (d: Date) => {
   const lastDate = getLastDateOfMonth(d)
   const arr = new Array(lastDate.getDate()).fill(1).map((v, i) => i + 1)
 
-  console.log(arr)
-
   return arr
 }
 

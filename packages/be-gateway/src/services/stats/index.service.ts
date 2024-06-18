@@ -64,7 +64,6 @@ export default class StatsService {
       const key = report.date
       const dt = report.data as { doneTotal: number }
       const totalByDate = dt && dt.doneTotal ? dt.doneTotal : 0
-      console.log('totalbydate', totalByDate)
       const total = statsData.get(key) || 0
 
       statsData.set(key, total + totalByDate)
