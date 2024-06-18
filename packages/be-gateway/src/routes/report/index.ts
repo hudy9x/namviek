@@ -1,34 +1,56 @@
-import { Router } from 'express'
-import { authMiddleware } from '../../middlewares'
-import { AuthRequest } from '../../types'
-import { mdTaskGetAll } from '@shared/models'
+import { BaseController, UseMiddleware, Body, Controller, Post, Param } from "../../core";
 
-const mainRouter = Router()
-const router = Router()
+import { authMiddleware } from "../../middlewares";
+import StatsService from "../../services/stats/index.service";
 
-mainRouter.use('/report', [authMiddleware, router])
+@Controller('/report')
+@UseMiddleware([authMiddleware])
+export default class ReportController extends BaseController {
 
-// It means GET:/api/example
-router.get('/', async (req: AuthRequest, res) => {
-  const { id: uid } = req.authen
-  const { projectIds, startDate, endDate } = req.query as {
-    projectIds: string[]
-    startDate: string
-    endDate: string
+  statsService: StatsService
+  constructor() {
+    super()
+    this.statsService = new StatsService()
   }
 
-  // await mdTaskGetAll({
-  //   projectIds,
-  //   dueDate: [startDate, endDate]
-  // })
+  @Post('/project')
+  async getProjectReportByOrgId(@Body() body: {
+    orgId: string
+    projectIds: string[]
+    month: string
+    year: string
+  }) {
+    const { orgId, projectIds, month, year } = body
+    console.log('5l', projectIds)
 
-  res.json({ status: 200 })
-})
+    const result = await this.statsService.getProjectReport({
+      // orgId,
+      projectIds,
+      month: parseInt(month),
+      year: parseInt(year)
+    })
 
-// It means POST:/api/example
-router.post('/example', (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-  res.json({ status: 200 })
-})
+    return Object.fromEntries(result.entries())
+  }
 
-export default mainRouter
+  @Post('/members')
+  async getMemberReportByProjectId(@Body() body: {
+    projectIds: string[]
+    memberId: string
+    month: string
+    year: string
+  }) {
+    const { memberId, projectIds, month, year } = body
+
+    console.log(15)
+    const result = await this.statsService.getMemberReport({
+      memberId,
+      projectIds,
+      month: parseInt(month),
+      year: parseInt(year)
+    })
+
+    return Object.fromEntries(result.entries())
+  }
+
+}

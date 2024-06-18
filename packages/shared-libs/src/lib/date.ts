@@ -44,7 +44,8 @@ export function getLastDateOfMonth(d: Date) {
   date.setMonth(date.getMonth() + 1)
 
   // last date
-  date.setDate(-1)
+  date.setDate(1)
+  date.setHours(-1)
 
   return date
 }

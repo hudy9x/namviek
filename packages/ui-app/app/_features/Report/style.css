@@ -1,7 +1,35 @@
-.report-box {
-  @apply border dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm rounded-md;
+#report-page main {
+  @apply overflow-y-auto;
+  height: calc(100vh)
 }
 
-.center-all {
-  @apply flex items-center justify-center;
+
+.report-content {
+  @apply w-full;
+}
+
+.report-container {
+  @apply sm:w-[1120px] mx-4 px-4 sm:mx-auto
+}
+
+
+.report-sidebar {
+  @apply w-[200px] shrink-0;
+}
+
+.report-filter-project-item {
+  @apply rounded-md cursor-pointer hover:opacity-90 inline-block px-2 py-1 bg-white dark:bg-gray-800 border dark:border-gray-700
+}
+
+.report-filter-project-item.active {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+
+.report-filter-member-item {
+  @apply flex items-center gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1
+}
+
+.report-filter-member-item.active {
+  @apply bg-gray-100 dark:bg-gray-900;
 }
