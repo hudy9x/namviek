@@ -124,7 +124,10 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
       },
 
       chart: {
-        id: 'basic-bar'
+        id: 'basic-bar',
+        zoom: {
+          enabled: false
+        }
       },
 
       xaxis: {
@@ -145,7 +148,7 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
       //   name: 'Actual',
       //   data: [10, 13, 40, 30, 49, 81, 60, 91]
       // }
-    ]
+    ],
   }
 
   return <div className='report-project-stats box'>
