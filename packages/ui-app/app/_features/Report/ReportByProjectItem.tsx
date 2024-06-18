@@ -80,17 +80,60 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
 
   const settings = {
     options: {
+      annotations: {
+        xaxis: [
+          {
+            x: 15,
+            borderColor: '#775DD0',
+            label: {
+              style: {
+                color: '#c3c3c3',
+              },
+              text: 'Today'
+            }
+          }
+        ]
+      },
+
+      dataLabels: {
+        enabled: false
+      },
+
+
+      grid: {
+        borderColor: '#ebebeb',
+        row: {
+          colors: ['transparent', 'transparent'],
+          opacity: 0.1
+        },
+        column: {
+          colors: ['transparent', 'transparent'],
+        },
+        xaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+
       title: {
-        text: 'Burndown chart',
+        text: '',
         style: {
           fontWeight: 'normal'
         }
       },
+
       chart: {
         id: 'basic-bar'
       },
+
       xaxis: {
+        tickAmount: 17,
         categories: xAxis
+      },
+
+      yaxis: {
+        show: false
       }
     },
     series: [

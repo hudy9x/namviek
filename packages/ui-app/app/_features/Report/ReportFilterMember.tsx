@@ -1,5 +1,6 @@
 import { useOrgMemberStore } from "@/store/orgMember"
 import { useReportContext } from "./context"
+import { Avatar } from "@shared/ui"
 
 export default function ReportFilterMember() {
   const { orgMembers } = useOrgMemberStore()
@@ -12,8 +13,8 @@ export default function ReportFilterMember() {
           toggleMemberIds(mem.id)
         }}
         className={`report-filter-member-item ${isActive}`}>
-        <img src={mem.photo || ''} className="w-6 h-6 rounded-full" alt={mem.name || ''} />
-        <span>{mem.name}</span>
+        <Avatar src={mem.photo || ''} name={mem.name || ''} size="md" />
+        <span className="text-sm">{mem.name}</span>
       </div>
     })}
   </div>

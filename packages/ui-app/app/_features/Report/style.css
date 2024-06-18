@@ -1,5 +1,6 @@
 #report-page main {
-
+  @apply overflow-y-auto;
+  height: calc(100vh)
 }
 
 

@@ -36,15 +36,15 @@ export default class ReportController extends BaseController {
   @Post('/members')
   async getMemberReportByProjectId(@Body() body: {
     projectIds: string[]
-    memberIds: string[]
+    memberId: string
     month: string
     year: string
   }) {
-    const { memberIds, projectIds, month, year } = body
-    console.log('5l', projectIds)
+    const { memberId, projectIds, month, year } = body
 
+    console.log(15)
     const result = await this.statsService.getMemberReport({
-      memberIds,
+      memberId,
       projectIds,
       month: parseInt(month),
       year: parseInt(year)

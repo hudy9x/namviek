@@ -32,18 +32,18 @@ export default class StatsRepository {
   }
 
   async getMemberReport({
-    memberIds,
+    memberId,
     projectIds,
     month,
     year
   }: {
-    memberIds: string[]
+    memberId: string
     projectIds: string[]
     month: number
     year: number
   }) {
 
-    if (!memberIds.length) return null
+    if (!memberId) return null
 
     const results = await statsModel.findMany({
       where: {
@@ -51,9 +51,7 @@ export default class StatsRepository {
         projectId: {
           in: projectIds
         },
-        uid: {
-          in: memberIds
-        },
+        uid: memberId,
         year,
         month
       },

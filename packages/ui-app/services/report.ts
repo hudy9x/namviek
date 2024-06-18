@@ -13,16 +13,16 @@ export const reportService = {
     });
   },
 
-  async getMemberReport({ month, year, projectIds, memberIds }: {
+  async getMemberReport({ month, year, projectIds, memberId }: {
     month: number,
     year: number,
     projectIds: string[],
-    memberIds: string[]
+    memberId: string
   }) {
     return httpPost(`/api/report/members`, {
       month,
       year,
-      memberIds,
+      memberId,
       projectIds
     });
   }

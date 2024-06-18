@@ -1,8 +1,9 @@
 
 import { reportService } from '@/services/report'
-import { useProjectStore } from '@/store/project'
-import { Stats } from '@prisma/client'
+import { useMemberStore } from '@/store/member'
+import { useOrgMemberStore } from '@/store/orgMember'
 import { getLastDateOfMonth } from '@shared/libs'
+import { Avatar } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
 
@@ -11,22 +12,20 @@ const generateXAxis = (d: Date) => {
   const lastDate = getLastDateOfMonth(d)
   const arr = new Array(lastDate.getDate()).fill(1).map((v, i) => i + 1)
 
-  console.log(arr)
-
   return arr
 }
 
-function ProjectInfo({ id: projectId }: { id: string }) {
-  const { projects } = useProjectStore()
-  const pInfo = useMemo(() => {
-    return projects.find(p => p.id === projectId)
-  }, [projectId])
+function MemberInfo({ id }: { id: string }) {
+  const { orgMembers: members } = useOrgMemberStore()
+  const mInfo = useMemo(() => {
+    return members.find(mem => mem.id === id)
+  }, [id])
 
-  if (!pInfo) return null
+  if (!mInfo) return null
 
   return <div className='flex items-center gap-2 rounded-md'>
-    <img src={pInfo.icon || ''} alt="Project icon" className='w-6 h-6' />
-    <h2>{pInfo.name}</h2>
+    <Avatar name={mInfo.name || ''} size='md' src={mInfo.photo || ''} />
+    <h2>{mInfo.name}</h2>
   </div>
 }
 
@@ -38,62 +37,66 @@ export default function ReportByMemberItem({ projectIds, memberId }: { projectId
   useEffect(() => {
     reportService.getMemberReport({
       projectIds,
-      memberIds: [memberId],
+      memberId,
       month: 6,
       year: 2024,
     }).then(res => {
       const { data } = res.data
-      const dailyData = data as Record<string, Stats[]>
+      const dailyData = data as Record<string, number>
 
       if (!Object.keys(dailyData).length) return
 
-      console.log(dailyData)
+      const days = xAxis;
+      const totalData = new Map<number, number>()
 
-      // const days = xAxis;
-      // const totalData = new Map<number, number>()
-      //
-      // for (let i = 0; i < days.length; i++) {
-      //   totalData.set(days[i], 0)
-      // }
-      //
-      // for (const pid in dailyData) {
-      //   const dailyProjectDatas = dailyData[pid]
-      //
-      //   if (!dailyProjectDatas || !dailyProjectDatas.length) continue
-      //
-      //   for (let j = 0; j < dailyProjectDatas.length; j++) {
-      //     const dailyItem = dailyProjectDatas[j];
-      //     const dailyItemData = dailyItem.data as Record<string, unknown>
-      //     const unDoneTotal = dailyItemData.unDoneTotal as number
-      //
-      //     // console.log(dailyItem.date, unDoneTotal)
-      //
-      //     const t = totalData.get(dailyItem.date) || 0
-      //     totalData.set(dailyItem.date, t + unDoneTotal)
-      //   }
-      // }
-      //
-      // const yAxis = Array.from(totalData, ([name, value]) => value);
-      //
-      // setYAxis(yAxis)
+      for (let i = 0; i < days.length; i++) {
+        totalData.set(days[i], 0)
+      }
+
+      for (const pid in dailyData) {
+        totalData.set(parseInt(pid), dailyData[pid])
+      }
+
+      const yAxis = Array.from(totalData, ([name, value]) => value);
+
+      setYAxis(yAxis)
 
 
     })
 
-  }, [])
+  }, [projectIds, memberId])
 
   const settings = {
     options: {
+      annotations: {
+        xaxis: [
+          {
+            x: 18,
+            x2: 20,
+            borderColor: '#775DD0',
+            label: {
+              style: {
+                color: '#c3c3c3',
+              },
+              // text: 'Today'
+            }
+          }
+        ]
+      },
       title: {
-        text: 'Burndown chart',
+        text: '',
         style: {
-          fontWeight: 'normal'
+          fontWeight: 'normal',
         }
       },
       chart: {
         id: 'basic-bar'
       },
       xaxis: {
+        tickAmount: 12,
+        labels: {
+          rotate: 0,
+        },
         categories: xAxis
       }
     },
@@ -110,13 +113,13 @@ export default function ReportByMemberItem({ projectIds, memberId }: { projectId
   }
 
   return <div className='report-project-stats box'>
-    {/* <ProjectInfo id={projectId} /> */}
-    {/* <Chart */}
-    {/*   options={settings.options} */}
-    {/*   series={settings.series} */}
-    {/*   height={300} */}
-    {/*   type="area" */}
-    {/* /> */}
+    <MemberInfo id={memberId} />
+    <Chart
+      options={settings.options}
+      series={settings.series}
+      height={300}
+      type="area"
+    />
 
   </div>
 }

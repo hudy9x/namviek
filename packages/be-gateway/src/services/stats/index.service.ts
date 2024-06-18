@@ -35,20 +35,20 @@ export default class StatsService {
   }
 
   async getMemberReport({
-    memberIds,
+    memberId,
     projectIds,
     month,
     year
   }: {
     projectIds: string[]
-    memberIds: string[]
+    memberId: string
     month: number
     year: number
   }) {
 
     const reports = await this.statsRepo.getMemberReport({
       projectIds,
-      memberIds,
+      memberId,
       month,
       year
     })
@@ -57,16 +57,17 @@ export default class StatsService {
       return null
     }
 
-    const statsData = new Map<string, Stats[]>()
+    const statsData = new Map<number, number>()
 
     for (let i = 0; i < reports.length; i++) {
       const report = reports[i];
-      const key = report.uid
-      const datas = statsData.get(key) || []
+      const key = report.date
+      const dt = report.data as { doneTotal: number }
+      const totalByDate = dt && dt.doneTotal ? dt.doneTotal : 0
+      console.log('totalbydate', totalByDate)
+      const total = statsData.get(key) || 0
 
-      datas.push(report)
-
-      statsData.set(key, datas)
+      statsData.set(key, total + totalByDate)
     }
 
     return statsData
