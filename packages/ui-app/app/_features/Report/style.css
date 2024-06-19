@@ -1,8 +1,11 @@
 #report-page main {
-  @apply overflow-y-auto;
+  @apply overflow-y-auto bg-white dark:bg-gray-900;
   height: calc(100vh)
 }
 
+.report-header {
+  @apply border-b dark:border-gray-800 py-3;
+}
 
 .report-content {
   @apply w-full;

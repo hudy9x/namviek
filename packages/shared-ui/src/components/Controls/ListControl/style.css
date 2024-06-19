@@ -2,10 +2,6 @@
   @apply relative;
 }
 
-.report-header {
-  @apply border-b dark:border-gray-700 py-3;
-}
-
 .select-container.select-none .select-options {
   @apply hidden;
 }

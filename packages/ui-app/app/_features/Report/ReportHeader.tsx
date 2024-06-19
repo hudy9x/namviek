@@ -1,7 +1,7 @@
 import ListPreset from "@/components/ListPreset";
 import { dateFormat, genCalendarArr, getMonthList } from "@shared/libs";
 import { Button, FormGroup, ListItemValue } from "@shared/ui";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useReportContext } from "./context";
 
 function useWeekList(d: number) {
@@ -10,19 +10,28 @@ function useWeekList(d: number) {
   const arr = genCalendarArr(m)
 
   let selectedWeek = ''
+  let firstId = ''
 
   const weeks: ListItemValue[] = arr.map((a, ak) => {
     const start = a[0];
     const end = a[a.length - 1]
 
-    const id = ak + ''
+    const startStr = dateFormat(start, 'yyyy/MM/dd');
+    const endStr = dateFormat(end, 'yyyy/MM/dd')
+    const id = `${startStr}-${endStr}`
 
-    if (now.getTime() >= start.getTime() && now.getTime() <= end.getTime()) {
+    firstId = !firstId ? id : firstId;
+
+    if (!selectedWeek && now.getTime() >= start.getTime() && now.getTime() <= end.getTime()) {
       selectedWeek = id
     }
 
     return { title: `${dateFormat(start, 'MM/dd')} - ${dateFormat(end, 'MM/dd')}`, id }
   })
+
+  if (!selectedWeek) {
+    selectedWeek = firstId
+  }
 
   return {
     weekOptions: weeks,
@@ -48,7 +57,11 @@ function useMonthList() {
 export default function ReportHeader() {
   const { monthOptions } = useMonthList()
   const { selectedMonth, setSelectedMonth } = useReportContext()
-  const { weekOptions, selectedWeek } = useWeekList(parseInt(selectedMonth, 10))
+  const { weekOptions, selectedWeek } = useWeekList(parseInt(selectedMonth || '1', 10))
+
+  useEffect(() => {
+    console.log('selectedWeek', selectedWeek)
+  }, [selectedWeek])
 
   return <div className='report-header'>
     <div className="report-container">
@@ -61,7 +74,9 @@ export default function ReportHeader() {
         <ListPreset size="sm" width={120} value={selectedMonth} options={monthOptions} onChange={val => {
           setSelectedMonth(val)
         }} />
-        <ListPreset size="sm" value={selectedWeek} options={weekOptions} width={150} />
+        <ListPreset size="sm" value={selectedWeek} onChange={val => {
+          console.log('val', val)
+        }} options={weekOptions} width={150} />
       </div>
     </div>
   </div>
