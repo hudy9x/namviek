@@ -1,9 +1,16 @@
+import { getMonthList } from "@shared/libs";
+import { ListItemValue } from "@shared/ui";
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 
 
 enum IReportTimeFilter {
   WEEK,
   MONTH
+}
+
+type TReportDuration = {
+  from: Date,
+  to: Date
 }
 interface IReportProps {
   timeFilter: IReportTimeFilter
@@ -12,6 +19,13 @@ interface IReportProps {
   setProjectIds: Dispatch<SetStateAction<string[]>>
   selectedMemberIds: string[]
   setMemberIds: Dispatch<SetStateAction<string[]>>
+
+  selectedMonth: string
+  setSelectedMonth: Dispatch<SetStateAction<string>>
+
+  duration: TReportDuration,
+  setDuration: Dispatch<SetStateAction<TReportDuration>>
+
 }
 
 const ReportContext = createContext<IReportProps>({
@@ -22,13 +36,33 @@ const ReportContext = createContext<IReportProps>({
   setMemberIds: () => console.log(1),
 
   selectedProjectIds: [],
-  setProjectIds: () => console.log(1)
+  setProjectIds: () => console.log(1),
+
+  selectedMonth: '',
+  setSelectedMonth: () => console.log(1),
+
+  duration: {
+    from: new Date(),
+    to: new Date()
+  },
+
+  setDuration: () => console.log(1)
 })
+
+function useMonthList() {
+  const now = new Date()
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1 + '')
+
+  return { selectedMonth, setSelectedMonth }
+}
 
 export const ReportProvider = ({ children }: { children: ReactNode }) => {
   const [timeFilter, setTimeFilter] = useState<IReportTimeFilter>(IReportTimeFilter.WEEK)
   const [projectIds, setProjectIds] = useState<string[]>([])
   const [selectedMemberIds, setMemberIds] = useState<string[]>([])
+  const { selectedMonth, setSelectedMonth } = useMonthList()
+  const [duration, setDuration] = useState<TReportDuration>({ from: new Date(), to: new Date() })
+
 
   return <ReportContext.Provider value={{
     timeFilter,
@@ -36,7 +70,11 @@ export const ReportProvider = ({ children }: { children: ReactNode }) => {
     selectedProjectIds: projectIds,
     setProjectIds,
     selectedMemberIds,
-    setMemberIds
+    setMemberIds,
+    selectedMonth,
+    setSelectedMonth,
+    duration,
+    setDuration
   }} >
     <div id='report-page'>
       <main>
