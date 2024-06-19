@@ -22,11 +22,14 @@ export const useTaskUpdate = () => {
       messageWarning('Wait! this task still syncing data from server')
       return
     }
+    
+    if (!taskData.parentTaskId) {
+      updateTask({
+        updatedBy: user?.id,
+        ...taskData
+      })
+    }
 
-    updateTask({
-      updatedBy: user?.id,
-      ...taskData
-    })
     taskUpdate({
       projectId,
       ...taskData

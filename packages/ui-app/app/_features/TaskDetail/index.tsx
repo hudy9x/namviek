@@ -28,6 +28,9 @@ import TaskDescUpdate from './TaskDescUpdate'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
 import TaskChecklist from '../TaskChecklist'
 import { GoTasklist } from 'react-icons/go'
+import SubtaskAdd from '../SubTask/SubTaskAdd'
+import { TaskProvider } from '../../[orgID]/project/[projectId]/views/ListMode'
+import { SubTaskList } from '../SubTask/SubTaskList'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -170,7 +173,7 @@ export default function TaskDetail({
             }}
             style={{ width: 'calc(100% - 40px)' }}
             className={`cursor-pointer font-bold text-2xl select-none ${titleVisible ? '' : 'hidden'
-              }`}>
+            }`}>
             {formik.values.title}
           </h2>
 
@@ -344,6 +347,20 @@ export default function TaskDetail({
             </Tab.Content>
           </Tab>
         </section>
+
+        <div className="flex flex-col items-start pt-2">
+          <div className="task-info-label mb-2">
+            <GoTasklist /> <span>Create sub task</span>
+          </div>
+          <TaskProvider key={id}>
+            <div className='w-full'>
+              <SubTaskList parentTaskId={id} projectId={params.projectId}/>
+              <div className="task-info-content w-full mt-4">
+                <SubtaskAdd parentTaskId={id} />
+              </div>
+            </div>
+          </TaskProvider>
+        </div>
 
         <section className="sticky bottom-[-99px] left-0 backdrop-blur-sm bg-white/50 dark:bg-gray-900/50">
           <div className="text-right pt-3 pb-2">

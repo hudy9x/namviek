@@ -2,6 +2,7 @@ import { Task, TaskPriority } from '@prisma/client'
 import { taskModel, pmClient } from './_prisma'
 
 export interface ITaskQuery {
+  id?: string
   projectId?: string
   projectIds?: string[]
   title?: string
@@ -18,6 +19,7 @@ export interface ITaskQuery {
 }
 
 const generateConditions = ({
+  id,
   take,
   skip,
   orderBy,
@@ -74,6 +76,10 @@ const generateConditions = ({
 
   if (projectId && projectId !== 'all') {
     where.projectId = projectId
+  }
+
+  if (id) {
+    where.parentTaskId = id
   }
 
   if (projectIds && projectIds.length) {

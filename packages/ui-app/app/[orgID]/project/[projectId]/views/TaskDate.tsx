@@ -9,12 +9,14 @@ export default function TaskDate({
   date,
   taskId,
   toNow = false,
-  className
+  className,
+  parentTaskId
 }: {
   date: Date | null
   taskId: string
   className?: string
   toNow?: boolean
+  parentTaskId?: string | null
 }) {
   const [value, setValue] = useState(date)
   const { getStatusTypeByTaskId } = useStatusUtils()
@@ -32,7 +34,8 @@ export default function TaskDate({
     const dueDate = date
     updateTaskData({
       id: taskId,
-      dueDate
+      dueDate,
+      parentTaskId
     })
   }
 

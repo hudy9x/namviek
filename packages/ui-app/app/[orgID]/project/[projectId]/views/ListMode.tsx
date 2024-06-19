@@ -1,6 +1,6 @@
 'use client'
 
-import { useTaskStore } from '../../../../../store/task'
+import { ExtendedTask, useTaskStore } from '../../../../../store/task'
 import TaskCheckAll from './TaskCheckAll'
 import ListCell from './ListCell'
 import { Avatar, Loading } from '@shared/ui'
@@ -8,30 +8,48 @@ import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
-import { createContext } from 'react'
+import { Dispatch, SetStateAction, createContext } from 'react'
 import { ReactNode, useState } from 'react'
-import { ListSubTask } from './ListSubTask'
+import { SubTask } from './SubTask'
+import { Task } from '@prisma/client'
 
-export const TaskContext = createContext({
+interface ITaskContext {
+  isOpen: boolean,
+  loading: boolean,
+  subTasks: Task[],
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  toggleOpen: () => void,
+  setSubTasks: Dispatch<SetStateAction<Task[]>>
+}
+
+export const TaskContext = createContext<ITaskContext>({
   isOpen: false,
-  toggleOpen: () => {console.log('TOGGLE_SUBTASK')}
+  loading: false,
+  setLoading: () => {
+    console.log('SUBTASK_LOADING')
+  },
+  toggleOpen: () => {
+    console.log('TOGGLE_SUBTASK')
+  },
+  subTasks: [],
+  setSubTasks: () => []
 })
 
-const TaskProvider = ({ children }: {
-  children: ReactNode
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const TaskProvider = ({ children }: { children: ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [subTasks, setSubTasks] = useState<Task[]>([])
 
   const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   return (
-    <TaskContext.Provider value={{ isOpen, toggleOpen }}>
+    <TaskContext.Provider value={{ isOpen, toggleOpen, setLoading, loading, subTasks, setSubTasks }}>
       {children}
     </TaskContext.Provider>
-  );
-};
+  )
+}
 
 export default function ListMode() {
   const {
@@ -44,7 +62,22 @@ export default function ListMode() {
   } = useTaskFilterContext()
 
   const { tasks, taskLoading } = useTaskStore()
-  
+
+  const ListTask = ({
+    task,
+    groupId
+  }: {
+    task: ExtendedTask
+    groupId: string
+  }) => {
+    return (
+      <TaskProvider key={task.id}>
+        {!task.parentTaskId && <ListRow task={task} />}
+        <SubTask task={task} groupId={groupId} />
+      </TaskProvider>
+    )
+  }
+
   return (
     <div className="pb-[300px]">
       {groupByItems.map(group => {
@@ -95,10 +128,11 @@ export default function ListMode() {
                   if (isGroupbyStatus && task.taskStatusId !== group.id) {
                     if (group.id === 'NONE' && group.items.includes(task.id)) {
                       return (
-                        <TaskProvider key={task.id}>
-                          <ListRow task={task} />
-                          <ListSubTask/>
-                        </TaskProvider>
+                        <ListTask
+                          key={task.id}
+                          groupId={group.id}
+                          task={task}
+                        />
                       )
                     }
                     return null
@@ -122,10 +156,7 @@ export default function ListMode() {
                   }
 
                   return (
-                    <TaskProvider key={task.id}>
-                      <ListRow task={task} />
-                      <ListSubTask/>
-                    </TaskProvider>
+                    <ListTask key={task.id} groupId={group.id} task={task} />
                   )
                 })}
               <ListCreateTask type={filter.groupBy} groupId={group.id} />

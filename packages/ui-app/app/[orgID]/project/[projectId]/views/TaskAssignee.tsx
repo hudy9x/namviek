@@ -5,11 +5,13 @@ export default function TaskAssignee({
   taskId,
   uids,
   className,
+  parentTaskId,
   noName = false
 }: {
   taskId: string
   uids: string[]
   className?: string
+  parentTaskId?: string | null
   noName?: boolean
 }) {
   const { updateTaskData } = useServiceTaskUpdate()
@@ -18,6 +20,7 @@ export default function TaskAssignee({
     const assigneeIds = [assigneeId]
     updateTaskData({
       id: taskId,
+      parentTaskId,
       assigneeIds
     })
   }

@@ -32,7 +32,7 @@ export default function VisionListTask() {
   const { selected, setSelected } = useVisionContext()
   const { tasks, taskLoading } = useTaskStore()
   const [statusIds, setStatusIds] = useState(['ALL'])
-  const { taskCreateOne } = useServiceTaskAdd()
+  const { taskCreateOne } = useServiceTaskAdd({})
 
   const includeStatusId = (id: string) => {
     if (statusIds.includes('ALL')) return true

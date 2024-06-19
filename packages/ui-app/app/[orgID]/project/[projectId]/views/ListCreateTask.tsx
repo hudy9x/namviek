@@ -3,21 +3,25 @@ import useOutsideClick from '@/hooks/useOutsideClick'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 import { Task, TaskPriority } from '@prisma/client'
 import { useParams } from 'next/navigation'
-import { useEffect, useRef, useState, KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, KeyboardEvent, useContext } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 interface IListCreateTaskProps {
   type: ETaskFilterGroupByType
   groupId: string
+  title?: string
+  parentTaskId?: string
 }
 
 export default function ListCreateTask({
   type,
-  groupId
+  groupId,
+  title = 'Create new task',
+  parentTaskId
 }: IListCreateTaskProps) {
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
-  const { taskCreateOne } = useServiceTaskAdd()
+  const { taskCreateOne } = useServiceTaskAdd({ parentTaskId })
   const { projectId } = useParams()
 
   const handleClickOutside = () => {
@@ -54,9 +58,10 @@ export default function ListCreateTask({
     const data: Partial<Task> = {
       dueDate: new Date(),
       title: value,
-      projectId
+      projectId,
+      parentTaskId,
     }
-
+    
     if (type === ETaskFilterGroupByType.STATUS) {
       data.taskStatusId = groupId
     }
@@ -93,7 +98,7 @@ export default function ListCreateTask({
             visible ? 'hidden' : ''
           }`}
           onClick={() => setVisible(true)}>
-          Create new task
+          {title}
         </span>
         <input
           ref={ref}
