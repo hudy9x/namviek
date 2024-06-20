@@ -56,12 +56,16 @@ function useMonthList() {
 
 export default function ReportHeader() {
   const { monthOptions } = useMonthList()
-  const { selectedMonth, setSelectedMonth } = useReportContext()
-  const { weekOptions, selectedWeek } = useWeekList(parseInt(selectedMonth || '1', 10))
+  const { selectedMonth, setSelectedMonth, setDuration } = useReportContext()
+  const { weekOptions, selectedWeek, } = useWeekList(parseInt(selectedMonth || '1', 10))
 
   useEffect(() => {
-    console.log('selectedWeek', selectedWeek)
+    onSelectWeek(selectedWeek)
   }, [selectedWeek])
+
+  const onSelectWeek = (val: string) => {
+    setDuration(val)
+  }
 
   return <div className='report-header'>
     <div className="report-container">
@@ -76,6 +80,7 @@ export default function ReportHeader() {
         }} />
         <ListPreset size="sm" value={selectedWeek} onChange={val => {
           console.log('val', val)
+          setDuration(val)
         }} options={weekOptions} width={150} />
       </div>
     </div>

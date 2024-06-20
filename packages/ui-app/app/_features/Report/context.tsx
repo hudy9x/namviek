@@ -8,10 +8,7 @@ enum IReportTimeFilter {
   MONTH
 }
 
-type TReportDuration = {
-  from: Date,
-  to: Date
-}
+type TReportDuration = string
 interface IReportProps {
   timeFilter: IReportTimeFilter
   setTimeFilter: Dispatch<SetStateAction<IReportTimeFilter>>
@@ -41,10 +38,7 @@ const ReportContext = createContext<IReportProps>({
   selectedMonth: '',
   setSelectedMonth: () => console.log(1),
 
-  duration: {
-    from: new Date(),
-    to: new Date()
-  },
+  duration: '',
 
   setDuration: () => console.log(1)
 })
@@ -61,7 +55,7 @@ export const ReportProvider = ({ children }: { children: ReactNode }) => {
   const [projectIds, setProjectIds] = useState<string[]>([])
   const [selectedMemberIds, setMemberIds] = useState<string[]>([])
   const { selectedMonth, setSelectedMonth } = useMonthList()
-  const [duration, setDuration] = useState<TReportDuration>({ from: new Date(), to: new Date() })
+  const [duration, setDuration] = useState<TReportDuration>('')
 
 
   return <ReportContext.Provider value={{

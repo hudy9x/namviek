@@ -1,19 +1,9 @@
 
 import { reportService } from '@/services/report'
-import { useMemberStore } from '@/store/member'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { getLastDateOfMonth } from '@shared/libs'
-import { Avatar } from '@shared/ui'
+import { Avatar, Loading } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
-
-const generateXAxis = (d: Date) => {
-
-  const lastDate = getLastDateOfMonth(d)
-  const arr = new Array(lastDate.getDate()).fill(1).map((v, i) => i + 1)
-
-  return arr
-}
 
 function MemberInfo({ id }: { id: string }) {
   const { orgMembers: members } = useOrgMemberStore()
@@ -29,51 +19,63 @@ function MemberInfo({ id }: { id: string }) {
   </div>
 }
 
-export default function ReportByMemberItem({ projectIds, memberId }: { projectIds: string[], memberId: string }) {
-  const selectedDate = new Date()
-  const xAxis = generateXAxis(selectedDate)
+export default function ReportByMemberItem({
+  projectIds,
+  memberId,
+  duration
+}:
+  {
+    projectIds: string[],
+    memberId: string,
+    duration: string
+  }) {
+  const now = new Date()
+
   const [yAxis, setYAxis] = useState<number[]>([])
+  const [xAxis, setXAxis] = useState<number[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     reportService.getMemberReport({
       projectIds,
       memberId,
-      month: 6,
-      year: 2024,
+      duration
     }).then(res => {
       const { data } = res.data
       const dailyData = data as Record<string, number>
 
-      if (!Object.keys(dailyData).length) return
-
-      const days = xAxis;
-      const totalData = new Map<number, number>()
-
-      for (let i = 0; i < days.length; i++) {
-        totalData.set(days[i], 0)
+      if (!Object.keys(dailyData).length) {
+        setXAxis([])
+        setYAxis([])
+        setLoading(false)
+        return
       }
+
+      const totalData = new Map<number, number>()
 
       for (const pid in dailyData) {
         totalData.set(parseInt(pid), dailyData[pid])
       }
 
       const yAxis = Array.from(totalData, ([name, value]) => value);
+      const xAxis = Array.from(totalData, ([name, value]) => name);
 
       setYAxis(yAxis)
-
+      setXAxis(xAxis)
+      setLoading(false)
 
     })
 
-  }, [projectIds, memberId])
+  }, [projectIds, memberId, duration])
 
   const settings = {
     options: {
       annotations: {
         xaxis: [
           {
-            x: 18,
-            x2: 20,
-            borderColor: '#775DD0',
+            x: now.getDate(),
+            borderColor: 'red',
             label: {
               style: {
                 color: '#c3c3c3',
@@ -90,14 +92,23 @@ export default function ReportByMemberItem({ projectIds, memberId }: { projectId
         }
       },
       chart: {
-        id: 'basic-bar'
+        toolbar: {
+          show: false
+        },
+        id: 'member-chart',
+        zoom: {
+          enabled: false
+        }
       },
       xaxis: {
-        tickAmount: 12,
+        // tickPlacement: 'between',
         labels: {
           rotate: 0,
         },
         categories: xAxis
+      },
+      yaxis: {
+        show: false
       }
     },
     series: [
@@ -112,8 +123,9 @@ export default function ReportByMemberItem({ projectIds, memberId }: { projectId
     ]
   }
 
-  return <div className='report-project-stats box'>
+  return <div className='report-project-stats box relative'>
     <MemberInfo id={memberId} />
+    <Loading.Absolute enabled={loading} title='Fetching ...' />
     <Chart
       options={settings.options}
       series={settings.series}

@@ -4,15 +4,17 @@ import { statsModel } from "./_prisma";
 export default class StatsRepository {
   async getProjectReport({
     projectIds,
-    month,
-    year
+    duration
   }: {
     projectIds: string[],
-    month: number,
-    year: number
+    duration: string
   }) {
 
     if (!projectIds.length) return null
+
+    const [startStr, endStr] = duration.split('-')
+    const [sY, sM, sD] = startStr.split('/')
+    const [eY, eM, eD] = endStr.split('/')
 
     const results = await statsModel.findMany({
       where: {
@@ -20,8 +22,22 @@ export default class StatsRepository {
         projectId: {
           in: projectIds
         },
-        year,
-        month
+        AND: [
+          {
+            AND: [
+              { date: { gte: +sD } },
+              { month: { gte: +sM } },
+              { year: { gte: +sY } },
+            ]
+          },
+          {
+            AND: [
+              { date: { lte: +eD } },
+              { month: { lte: +eM } },
+              { year: { lte: +eY } },
+            ]
+          }
+        ]
       },
       orderBy: {
         date: 'asc'
@@ -34,16 +50,18 @@ export default class StatsRepository {
   async getMemberReport({
     memberId,
     projectIds,
-    month,
-    year
+    duration
   }: {
     memberId: string
     projectIds: string[]
-    month: number
-    year: number
+    duration: string
   }) {
 
     if (!memberId) return null
+
+    const [startStr, endStr] = duration.split('-')
+    const [sY, sM, sD] = startStr.split('/')
+    const [eY, eM, eD] = endStr.split('/')
 
     const results = await statsModel.findMany({
       where: {
@@ -52,8 +70,22 @@ export default class StatsRepository {
           in: projectIds
         },
         uid: memberId,
-        year,
-        month
+        AND: [
+          {
+            AND: [
+              { date: { gte: +sD } },
+              { month: { gte: +sM } },
+              { year: { gte: +sY } },
+            ]
+          },
+          {
+            AND: [
+              { date: { lte: +eD } },
+              { month: { lte: +eM } },
+              { year: { lte: +eY } },
+            ]
+          }
+        ]
       },
       orderBy: {
         date: 'asc'

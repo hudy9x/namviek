@@ -7,11 +7,11 @@ export default class StatsService {
     this.statsRepo = new StatsRepository()
   }
 
-  async getProjectReport({ month, year, projectIds }: { projectIds: string[], month: number, year: number }) {
+  async getProjectReport({ duration, projectIds }:
+    { projectIds: string[], duration: string }) {
     const reports = await this.statsRepo.getProjectReport({
       projectIds,
-      month,
-      year
+      duration
     })
 
     if (!reports) {
@@ -37,20 +37,17 @@ export default class StatsService {
   async getMemberReport({
     memberId,
     projectIds,
-    month,
-    year
+    duration
   }: {
     projectIds: string[]
     memberId: string
-    month: number
-    year: number
+    duration: string
   }) {
 
     const reports = await this.statsRepo.getMemberReport({
       projectIds,
       memberId,
-      month,
-      year
+      duration
     })
 
     if (!reports) {
