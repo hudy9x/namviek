@@ -9,6 +9,36 @@ export const mdProjectAdd = async (data: Omit<Project, 'id'>) => {
   })
 }
 
+export const mdProjectGetReportSetting = async (id: string) => {
+  return projectModel.findFirst({
+    where: {
+      id
+    },
+    select: {
+      countProjectTask: true,
+      countMemberTask: true,
+      id: true
+    }
+  })
+}
+
+export const mdProjectUpdateReportSetting = async ({ projectId, countProjectTask, countMemberTask }: {
+  projectId: string,
+  countMemberTask: boolean
+  countProjectTask: boolean
+}) => {
+
+  return await projectModel.update({
+    where: {
+      id: projectId
+    },
+    data: {
+      countMemberTask,
+      countProjectTask
+    }
+  })
+}
+
 export const mdProjectGetOrgId = async (projectId: string) => {
   return projectModel.findFirst({
     where: {

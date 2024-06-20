@@ -31,7 +31,7 @@ export default function ProjectNotificationSetting() {
           const { overdue, taskChanges, remind } =
             data as ProjectSettingNotification
 
-            console.log('remind', remind)
+          console.log('remind', remind)
 
           setData({
             overdue: !!overdue,

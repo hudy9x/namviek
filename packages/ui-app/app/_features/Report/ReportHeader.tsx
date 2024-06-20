@@ -125,8 +125,16 @@ export default function ReportHeader() {
     <div className="report-container">
       <h2 className="text-lg font-medium">Summary report</h2>
       <div className="flex items-center gap-2">
-        <ReportHeaderTimeFilter />
-        <ReportHeaderDuration />
+        <div className="flex items-center gap-2">
+          <ReportHeaderTimeFilter />
+          <ReportHeaderDuration />
+        </div>
+        <div>
+          {/* <FormGroup> */}
+          {/*   <Button title="Separate" size="sm" /> */}
+          {/*   <Button title="Group" size="sm" /> */}
+          {/* </FormGroup> */}
+        </div>
       </div>
     </div>
   </div>

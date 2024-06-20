@@ -54,7 +54,7 @@
 }
 
 .report-member-filter {
-  @apply space-y-1
+  @apply flex flex-wrap items-center gap-1
 }
 
 .report-filter-project-item {
@@ -67,7 +67,7 @@
 
 
 .report-filter-member-item {
-  @apply flex items-center cursor-pointer gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1;
+  @apply inline-flex items-center cursor-pointer gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1;
   @apply hover:opacity-90;
 }
 

@@ -16,7 +16,7 @@ export default function ReportFilterMember() {
           }}
           className={`report-filter-member-item ${isActive}`}>
           <Avatar src={mem.photo || ''} name={mem.name || ''} size="md" />
-          <span className="text-sm">{mem.name}</span>
+          <span className="text-xs">{mem.name}</span>
         </div>
       })}
     </div>
