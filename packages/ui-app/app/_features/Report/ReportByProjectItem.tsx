@@ -141,9 +141,9 @@ export default function ReportByProjectItem({
       },
 
       xaxis: {
-        // tickAmount: 17,
+        tickAmount: 17,
         // tickPlacement: 'between',
-        categories: xAxis
+        categories: xAxis,
       },
 
       yaxis: {

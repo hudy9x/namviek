@@ -101,6 +101,7 @@ export default function ReportByMemberItem({
         }
       },
       xaxis: {
+        tickAmount: 17,
         // tickPlacement: 'between',
         labels: {
           rotate: 0,
@@ -129,7 +130,7 @@ export default function ReportByMemberItem({
     <Chart
       options={settings.options}
       series={settings.series}
-      height={300}
+      height={190}
       type="area"
     />
 

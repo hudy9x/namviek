@@ -1,8 +1,8 @@
 import ListPreset from "@/components/ListPreset";
-import { dateFormat, genCalendarArr, getMonthList } from "@shared/libs";
+import { dateFormat, genCalendarArr, getLastDateOfMonth, getMonthList } from "@shared/libs";
 import { Button, FormGroup, ListItemValue } from "@shared/ui";
 import { useEffect } from "react";
-import { useReportContext } from "./context";
+import { IReportTimeFilter, useReportContext } from "./context";
 
 function useWeekList(d: number) {
   const now = new Date()
@@ -54,9 +54,21 @@ function useMonthList() {
   return { monthOptions: options }
 }
 
-export default function ReportHeader() {
+function ReportHeaderTimeFilter() {
+  const { setTimeFilter, timeFilter } = useReportContext()
+  return <FormGroup>
+    <Button size="sm" onClick={() => {
+      setTimeFilter(IReportTimeFilter.WEEK)
+    }} disabled={timeFilter === IReportTimeFilter.WEEK} title="Weekly" />
+    <Button size="sm" onClick={() => {
+      setTimeFilter(IReportTimeFilter.MONTH)
+    }} disabled={timeFilter === IReportTimeFilter.MONTH} title="Monthly" />
+  </FormGroup>
+}
+
+function ReportHeaderDuration() {
   const { monthOptions } = useMonthList()
-  const { selectedMonth, setSelectedMonth, setDuration } = useReportContext()
+  const { selectedMonth, setSelectedMonth, setDuration, timeFilter } = useReportContext()
   const { weekOptions, selectedWeek, } = useWeekList(parseInt(selectedMonth || '1', 10))
 
   useEffect(() => {
@@ -64,24 +76,57 @@ export default function ReportHeader() {
   }, [selectedWeek])
 
   const onSelectWeek = (val: string) => {
+    if (timeFilter === IReportTimeFilter.MONTH) return
     setDuration(val)
   }
+
+  const onSelectMonth = (val: string) => {
+    setSelectedMonth(val)
+
+    if (timeFilter === IReportTimeFilter.MONTH) {
+      const d1 = new Date()
+      const y = d1.getFullYear()
+
+      const lastDate = getLastDateOfMonth(new Date(y, +val - 1, 1))
+      const duration = `${y}/${val}/1-${y}/${val}/${lastDate.getDate()}`
+      console.log(duration)
+      setDuration(duration)
+    }
+  }
+
+  useEffect(() => {
+    if (timeFilter === IReportTimeFilter.MONTH) {
+      onSelectMonth(selectedMonth)
+    }
+
+    if (timeFilter === IReportTimeFilter.WEEK) {
+      onSelectWeek(selectedWeek)
+    }
+
+
+
+  }, [timeFilter, selectedMonth, selectedWeek])
+
+  return <>
+    <ListPreset size="sm" width={120} value={selectedMonth} options={monthOptions} onChange={onSelectMonth} />
+    {timeFilter === IReportTimeFilter.WEEK ?
+      <ListPreset size="sm" value={selectedWeek} onChange={val => {
+        console.log('val', val)
+        setDuration(val)
+      }} options={weekOptions} width={150} />
+      : null}
+
+  </>
+}
+
+export default function ReportHeader() {
 
   return <div className='report-header'>
     <div className="report-container">
       <h2 className="text-lg font-medium">Summary report</h2>
       <div className="flex items-center gap-2">
-        <FormGroup>
-          <Button size="sm" title="Monthly" />
-          <Button size="sm" title="Weekly" />
-        </FormGroup>
-        <ListPreset size="sm" width={120} value={selectedMonth} options={monthOptions} onChange={val => {
-          setSelectedMonth(val)
-        }} />
-        <ListPreset size="sm" value={selectedWeek} onChange={val => {
-          console.log('val', val)
-          setDuration(val)
-        }} options={weekOptions} width={150} />
+        <ReportHeaderTimeFilter />
+        <ReportHeaderDuration />
       </div>
     </div>
   </div>
