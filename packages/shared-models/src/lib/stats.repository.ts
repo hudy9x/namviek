@@ -62,14 +62,22 @@ export default class StatsRepository {
     const [startStr, endStr] = duration.split('-')
     const [sY, sM, sD] = startStr.split('/')
     const [eY, eM, eD] = endStr.split('/')
+    let cond = {}
+
+    if (projectIds.length) {
+      cond = {
+        ...cond,
+        projectId: {
+          in: projectIds
+        }
+      }
+    }
 
     const results = await statsModel.findMany({
       where: {
         type: StatsType.MEMBER_TASK_BY_DAY,
-        projectId: {
-          in: projectIds
-        },
         uid: memberId,
+        ...cond,
         AND: [
           {
             AND: [

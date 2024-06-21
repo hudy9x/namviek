@@ -40,7 +40,7 @@ export default class ReportController extends BaseController {
   }) {
     const { memberId, projectIds, duration } = body
 
-    console.log(15)
+    console.log(17)
     const result = await this.statsService.getMemberReport({
       memberId,
       projectIds,
