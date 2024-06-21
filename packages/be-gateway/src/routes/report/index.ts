@@ -15,19 +15,18 @@ export default class ReportController extends BaseController {
 
   @Post('/project')
   async getProjectReportByOrgId(@Body() body: {
-    orgId: string
     projectIds: string[]
-    month: string
-    year: string
+    duration: string
   }) {
-    const { orgId, projectIds, month, year } = body
+    const { projectIds, duration } = body
     console.log('5l', projectIds)
+
+    if (!duration) { return null }
 
     const result = await this.statsService.getProjectReport({
       // orgId,
       projectIds,
-      month: parseInt(month),
-      year: parseInt(year)
+      duration
     })
 
     return Object.fromEntries(result.entries())
@@ -37,17 +36,15 @@ export default class ReportController extends BaseController {
   async getMemberReportByProjectId(@Body() body: {
     projectIds: string[]
     memberId: string
-    month: string
-    year: string
+    duration: string
   }) {
-    const { memberId, projectIds, month, year } = body
+    const { memberId, projectIds, duration } = body
 
     console.log(15)
     const result = await this.statsService.getMemberReport({
       memberId,
       projectIds,
-      month: parseInt(month),
-      year: parseInt(year)
+      duration
     })
 
     return Object.fromEntries(result.entries())

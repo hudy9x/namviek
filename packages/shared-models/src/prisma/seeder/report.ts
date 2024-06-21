@@ -5,12 +5,12 @@ import { pmClient } from "../../lib/_prisma"
 export const generateDailyData = async () => {
 
   console.log('clean stats data first')
-  await pmClient.stats.deleteMany({})
+  // await pmClient.stats.deleteMany({})
 
   console.log('start fetching projects')
-  const orgId = '664588e52f5b6db5010db971'
+  const orgId = '65d6ee7893180a33c22085de'
   const year = 2024
-  const month = 6
+  const month = 5
 
   const projects = await pmClient.project.findMany({
     where: {
@@ -28,7 +28,7 @@ export const generateDailyData = async () => {
   projects.map(async p => {
     const startDateNum = 1
     const endDateNum = 30
-    let total = 80
+    let total = 70
     const projectId = p.id
 
     const data: Omit<Stats, 'id'>[] = []

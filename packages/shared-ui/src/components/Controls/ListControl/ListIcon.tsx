@@ -6,7 +6,7 @@ export default function ListIcon() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6 select-icon">
+      className="select-icon">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

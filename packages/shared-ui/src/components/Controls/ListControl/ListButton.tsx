@@ -3,9 +3,10 @@ import { useListContext } from './context';
 import ListIcon, { XIcon } from './ListIcon';
 
 interface ListButtonProps {
+  size?: 'sm'
   children: ReactNode | string;
 }
-export default function ListButton({ children }: ListButtonProps) {
+export default function ListButton({ size, children }: ListButtonProps) {
   const buttonRef = useRef<HTMLDivElement>(null);
   const { visible, multiple, setVisible, onChange, onMultiChange, name, onFormikChange, placeholder } = useListContext();
 
@@ -27,8 +28,14 @@ export default function ListButton({ children }: ListButtonProps) {
     );
   };
 
+  const classes = []
+  size && classes.push(size)
+
   return (
-    <div className="select-button form-input group" ref={buttonRef} tabIndex={0} onClick={() => setVisible(!visible)}>
+    <div className={`select-button form-input group ${classes.join(' ')}`}
+      ref={buttonRef}
+      tabIndex={0}
+      onClick={() => setVisible(!visible)}>
       {multiple ? <div className="flex flex-wrap gap-2 pr-6 selected-item-container">{child()}</div> : child()}
       <div className="trailing-icon group-hover:text-gray-500">
         {children ? (

@@ -9,6 +9,7 @@ interface IListPresetProps {
   width?: number
   error?: string
   value?: string
+  size?: 'sm'
   defaultOption?: ListItemValue
   onChange?: (val: string) => void
   options: ListItemValue[]
@@ -22,6 +23,7 @@ function ListPreset({
   error,
   className,
   value,
+  size,
   onChange,
   defaultOption,
   options
@@ -55,7 +57,7 @@ function ListPreset({
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>
-        <List.Button>
+        <List.Button size={size}>
           <span className="whitespace-nowrap">
             {val.icon ? <span className="pr-1">{val.icon}</span> : null}
             {selectedVal.title}

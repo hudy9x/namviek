@@ -15,8 +15,27 @@
   padding-right: 49px;
 }
 
+.select-button.sm {
+  @apply py-0.5 pl-2 pr-[39px] rounded;
+
+  span {
+    @apply text-xs;
+  }
+}
+
 .select-clear-icon {
   @apply absolute top-1 right-6 p-0.5 w-4 h-4 bg-gray-200 text-gray-500 rounded-full;
+}
+
+.select-button.sm .select-clear-icon {
+  @apply top-0.5 right-4 w-3 h-3;
+}
+
+.select-icon {
+  @apply w-6 h-6;
+}
+.select-button.sm .select-icon {
+  @apply w-4 h-4;
 }
 
 .select-button .trailing-icon {

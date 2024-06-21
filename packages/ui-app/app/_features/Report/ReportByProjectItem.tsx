@@ -1,16 +1,17 @@
 import { reportService } from '@/services/report'
 import { useProjectStore } from '@/store/project'
 import { Stats } from '@prisma/client'
-import { getLastDateOfMonth } from '@shared/libs'
+import { Loading } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
+import { HiOutlineX } from 'react-icons/hi'
+import { useReportContext } from './context'
 
-const generateXAxis = (d: Date) => {
-
-  const lastDate = getLastDateOfMonth(d)
-  const arr = new Array(lastDate.getDate()).fill(1).map((v, i) => i + 1)
-
-  return arr
+function RemoveProjectStats({ id }: { id: string }) {
+  const { toggleProjectIds } = useReportContext()
+  return <HiOutlineX className='absolute top-4 right-4 cursor-pointer w-7 h-7 text-gray-500 rounded-md border bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-900 hover:bg-gray-200 p-2' onClick={() => {
+    toggleProjectIds(id)
+  }} />
 }
 
 function ProjectInfo({ id: projectId }: { id: string }) {
@@ -27,28 +28,41 @@ function ProjectInfo({ id: projectId }: { id: string }) {
   </div>
 }
 
-export default function ReportByProjectItem({ projectId }: { projectId: string }) {
-  const selectedDate = new Date()
-  const xAxis = generateXAxis(selectedDate)
+export default function ReportByProjectItem({
+  projectId,
+  duration
+}: {
+  projectId: string
+  duration: string
+}) {
+  const now = new Date()
   const [yAxis, setYAxis] = useState<number[]>([])
+  const [xAxis, setXAxis] = useState<number[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     reportService.get({
       projectIds: [projectId],
-      month: 6,
-      year: 2024,
+      duration
     }).then(res => {
       const { data } = res.data
       const dailyData = data as Record<string, Stats[]>
 
-      if (!Object.keys(dailyData).length) return
+      console.log(dailyData)
+      if (!Object.keys(dailyData).length) {
+        setXAxis([])
+        setYAxis([])
+        setLoading(false)
+        return
+      }
 
-      const days = xAxis;
+      // const days = xAxis;
       const totalData = new Map<number, number>()
 
-      for (let i = 0; i < days.length; i++) {
-        totalData.set(days[i], 0)
-      }
+      // for (let i = 0; i < days.length; i++) {
+      //   totalData.set(days[i], 0)
+      // }
 
       for (const pid in dailyData) {
         const dailyProjectDatas = dailyData[pid]
@@ -60,41 +74,45 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
           const dailyItemData = dailyItem.data as Record<string, unknown>
           const unDoneTotal = dailyItemData.unDoneTotal as number
 
+          const key = dailyItem.date
           // console.log(dailyItem.date, unDoneTotal)
 
-          const t = totalData.get(dailyItem.date) || 0
-          totalData.set(dailyItem.date, t + unDoneTotal)
+          const t = totalData.get(key) || 0
+          totalData.set(key, t + unDoneTotal)
         }
       }
 
       const yAxis = Array.from(totalData, ([name, value]) => value);
+      const xAxis = Array.from(totalData, ([name, value]) => name);
 
+      setXAxis(xAxis)
       setYAxis(yAxis)
+      setLoading(false)
 
 
     })
 
-  }, [])
+  }, [duration])
 
   const settings = {
     options: {
       annotations: {
         xaxis: [
           {
-            x: 15,
-            borderColor: '#775DD0',
+            x: now.getDate(),
+            borderColor: 'red',
             label: {
               style: {
                 color: '#c3c3c3',
               },
-              text: 'Today'
+              // text: 'Today'
             }
           }
         ]
       },
 
       dataLabels: {
-        enabled: false
+        enabled: true
       },
 
 
@@ -122,6 +140,9 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
       },
 
       chart: {
+        toolbar: {
+          show: false
+        },
         id: 'basic-bar',
         zoom: {
           enabled: false
@@ -130,7 +151,8 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
 
       xaxis: {
         tickAmount: 17,
-        categories: xAxis
+        // tickPlacement: 'between',
+        categories: xAxis,
       },
 
       yaxis: {
@@ -149,8 +171,10 @@ export default function ReportByProjectItem({ projectId }: { projectId: string }
     ],
   }
 
-  return <div className='report-project-stats box'>
+  return <div className='report-project-stats box relative'>
     <ProjectInfo id={projectId} />
+    <RemoveProjectStats id={projectId} />
+    <Loading.Absolute enabled={loading} title='Fetching ...' />
     <Chart
       options={settings.options}
       series={settings.series}

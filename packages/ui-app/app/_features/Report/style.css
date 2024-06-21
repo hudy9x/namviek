@@ -1,11 +1,42 @@
 #report-page main {
-  @apply overflow-y-auto;
+  @apply overflow-y-auto bg-white dark:bg-gray-900;
   height: calc(100vh)
 }
 
+.dark .apexcharts-gridline{
+  stroke: #20293c
+}
+.dark .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  @apply bg-gray-900 border-gray-700;
+}
+
+.dark .apexcharts-tooltip.apexcharts-theme-light {
+  @apply bg-gray-800 border-gray-700;
+}
+.dark .apexcharts-xaxistooltip, 
+.dark .apexcharts-yaxistooltip {
+  @apply bg-gray-800 border-gray-700 text-gray-200;
+}
+
+.dark .apexcharts-xaxistooltip-bottom:after {
+  @apply border-b-gray-800
+}
+
+.dark .apexcharts-text.apexcharts-xaxis-label {
+  fill: #858585
+}
+
+.dark .apexcharts-grid-borders line:last-child{
+  stroke: #4a4a4a
+}
+
+.report-header {
+  @apply bg-white dark:bg-gray-900 border-b dark:border-gray-800 py-3;
+  @apply sticky top-0 z-10;
+}
 
 .report-content {
-  @apply w-full;
+  @apply w-full pt-3 pb-[100px];
 }
 
 .report-container {
@@ -14,7 +45,20 @@
 
 
 .report-sidebar {
-  @apply w-[200px] shrink-0;
+  @apply w-[200px] sticky top-20 shrink-0;
+  @apply space-y-3 pt-3;
+}
+
+.report-filter-project {
+  @apply space-y-1
+}
+
+.report-member-filter {
+  @apply flex flex-wrap items-center gap-1
+}
+
+.report-box {
+  @apply rounded-md cursor-pointer hover:opacity-90 px-2 py-1 bg-white dark:bg-gray-800 border dark:border-gray-700
 }
 
 .report-filter-project-item {
@@ -27,7 +71,8 @@
 
 
 .report-filter-member-item {
-  @apply flex items-center gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1
+  @apply inline-flex items-center cursor-pointer gap-2 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 px-2 py-1;
+  @apply hover:opacity-90;
 }
 
 .report-filter-member-item.active {

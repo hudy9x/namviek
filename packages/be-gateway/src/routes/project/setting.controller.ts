@@ -11,14 +11,30 @@ import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
 import { ProjectSettingRepository } from '@shared/models'
 import BadRequestException from '../../exceptions/BadRequestException'
+import ProjectSettingReportService, { IProjectReportSettingBody } from '../../services/project/setting.report.service'
 
 @Controller('/project-setting')
 @UseMiddleware([authMiddleware])
 class ProjectSetting extends BaseController {
   settingRepo: ProjectSettingRepository
+  settingReportService: ProjectSettingReportService
   constructor() {
     super()
     this.settingRepo = new ProjectSettingRepository()
+    this.settingReportService = new ProjectSettingReportService()
+  }
+
+  @Get('/daily-report/:projectId')
+  async getDailyReportSetting() {
+    console.log(1)
+    const { projectId } = this.req.params as { projectId: string }
+    const result = await this.settingReportService.getReportSetting(projectId)
+    return result
+  }
+  @Put('/daily-report')
+  async updateDailyReportSetting(@Body() body: IProjectReportSettingBody) {
+    const result = await this.settingReportService.updateReportSetting(body)
+    return result
   }
   @Get('/notification')
   async getAllNotificationSetting(@Req() req: AuthRequest) {
