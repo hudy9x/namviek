@@ -5,7 +5,7 @@ import { useReportContext } from "../Report/context"
 export default function SavedList() {
   const { list, delItem } = useReportSavedListContext()
   const { setAllConfig } = useReportContext()
-  return <div>
+  return <div className="space-y-1">
     {list.map(item => {
       return <div className="report-box text-xs flex items-center justify-between" onClick={() => {
         if (item.data) {

@@ -8,15 +8,23 @@ export default function AddToSavedList() {
   const { addItem } = useReportSavedListContext()
   const [title, setTitle] = useState('')
 
+  const addAction = () => {
+    addItem({
+      id: randomId(),
+      title,
+      createdAt: new Date(),
+      data: getSavedConfig()
+    })
+
+    setTitle('')
+  }
+
   return <div className="flex items-center gap-2">
-    <Form.Input size="sm" placeholder="Report name" value={title} onChange={v => setTitle(v.target.value)} />
+    <Form.Input size="sm" onEnter={() => {
+      addAction()
+    }} placeholder="Report name" value={title} onChange={v => setTitle(v.target.value)} />
     <Button title="Save" size="sm" onClick={() => {
-      addItem({
-        id: randomId(),
-        title,
-        createdAt: new Date(),
-        data: getSavedConfig()
-      })
+      addAction()
     }} primary />
   </div>
 }
