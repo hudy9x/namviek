@@ -4,6 +4,15 @@ import { useOrgMemberStore } from '@/store/orgMember'
 import { Avatar, Loading } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
+import { HiOutlineX } from 'react-icons/hi'
+import { useReportContext } from './context'
+
+function RemoveMemberStats({ id }: { id: string }) {
+  const { toggleMemberIds } = useReportContext()
+  return <HiOutlineX className='absolute top-4 right-4 cursor-pointer w-7 h-7 text-gray-500 rounded-md border bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-900 hover:bg-gray-200 p-2' onClick={() => {
+    toggleMemberIds(id)
+  }} />
+}
 
 function MemberInfo({ id }: { id: string }) {
   const { orgMembers: members } = useOrgMemberStore()
@@ -126,6 +135,7 @@ export default function ReportByMemberItem({
 
   return <div className='report-project-stats box relative'>
     <MemberInfo id={memberId} />
+    <RemoveMemberStats id={memberId} />
     <Loading.Absolute enabled={loading} title='Fetching ...' />
     <Chart
       options={settings.options}

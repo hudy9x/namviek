@@ -4,6 +4,15 @@ import { Stats } from '@prisma/client'
 import { Loading } from '@shared/ui'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
+import { HiOutlineX } from 'react-icons/hi'
+import { useReportContext } from './context'
+
+function RemoveProjectStats({ id }: { id: string }) {
+  const { toggleProjectIds } = useReportContext()
+  return <HiOutlineX className='absolute top-4 right-4 cursor-pointer w-7 h-7 text-gray-500 rounded-md border bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-900 hover:bg-gray-200 p-2' onClick={() => {
+    toggleProjectIds(id)
+  }} />
+}
 
 function ProjectInfo({ id: projectId }: { id: string }) {
   const { projects } = useProjectStore()
@@ -164,6 +173,7 @@ export default function ReportByProjectItem({
 
   return <div className='report-project-stats box relative'>
     <ProjectInfo id={projectId} />
+    <RemoveProjectStats id={projectId} />
     <Loading.Absolute enabled={loading} title='Fetching ...' />
     <Chart
       options={settings.options}

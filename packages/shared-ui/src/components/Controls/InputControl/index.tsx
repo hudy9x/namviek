@@ -13,6 +13,7 @@ export default function InputControl({
   onEsc,
   type = 'text',
   name,
+  size = 'base',
   placeholder,
   helper,
   required,
@@ -59,6 +60,7 @@ export default function InputControl({
   addon && classes.push('addon')
   error && classes.push('error')
   className && classes.push(className)
+  size !== 'base' && classes.push(size)
 
   return (
     <div className={classes.join(' ')}>

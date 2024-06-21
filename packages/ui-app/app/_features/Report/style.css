@@ -57,6 +57,10 @@
   @apply flex flex-wrap items-center gap-1
 }
 
+.report-box {
+  @apply rounded-md cursor-pointer hover:opacity-90 px-2 py-1 bg-white dark:bg-gray-800 border dark:border-gray-700
+}
+
 .report-filter-project-item {
   @apply rounded-md cursor-pointer hover:opacity-90 inline-block px-2 py-1 bg-white dark:bg-gray-800 border dark:border-gray-700
 }
