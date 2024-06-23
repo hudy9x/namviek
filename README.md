@@ -26,5 +26,5 @@ As mentioned before, this app includes some essential features for a small team 
 Check out [the setup guide](https://www.namviek.com/#download). If you encounter any errors during the setup process, you can refer to the full guide [here](https://docs.namviek.com/doc/installation).
 
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhudy9x%2Fnamviek%2Ftree%2Fmain&project-name=namviek&build-command=npm%20run%20generate2%20%26%26%20npx%20nx%20build%20ui-app%20--prod&output-directory=dist%2Fpackages%2Fui-app%2F.next&install-command=npm%20install&env=NEXT_PUBLIC_FIREBASE_CLIENT_CONFIG,LOGTAIL_SOURCE_TOKEN,NEXT_PUBLIC_PUSHER_CHANNEL_APP_KEY,NEXT_PUBLIC_PUSHER_CHANNEL_APP_CLUSTER,NEXT_PUBLIC_BE_GATEWAY,NEXT_PUBLIC_FE_GATEWAY,NEXT_PUBLIC_APP_NAME,NEXT_PUBLIC_PUSHER_INSTANCE_ID,NEXT_PUBLIC_LIVEKIT_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhudy9x%2Fnamviek%2Ftree%2Fmain&project-name=namviek&build-command=npm%20run%20generate2%20%26%26%20npx%20nx%20build%20ui-app%20--prod&output-directory=dist%2Fpackages%2Fui-app%2F.next&install-command=npm%20install&env=NEXT_PUBLIC_BE_GATEWAY,NEXT_PUBLIC_FE_GATEWAY,NEXT_PUBLIC_APP_NAME)
 
