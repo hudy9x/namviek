@@ -26,5 +26,5 @@ As mentioned before, this app includes some essential features for a small team 
 Check out [the setup guide](https://www.namviek.com/#download). If you encounter any errors during the setup process, you can refer to the full guide [here](https://docs.namviek.com/doc/installation).
 
 
-
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhudy9x%2Fnamviek%2Ftree%2Fmain&build-command=npm%20run%20generate2%20%26%26%20npx%20nx%20build%20ui-app%20--prod&output-directory=dist%2Fpackages%2Fui-app%2F.next&install-command=npm%20install)
 
