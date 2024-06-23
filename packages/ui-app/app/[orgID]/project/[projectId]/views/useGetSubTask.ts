@@ -11,7 +11,7 @@ export const useGetSubTasks = ({ parentTaskId, projectId }: { parentTaskId: stri
     const fetchSubTasks = async () => {
       try {
         const query: ITaskQuery = {
-          id: parentTaskId,
+          parentTaskId,
           projectId,
         };
         const response = await taskGetByCond(query);

@@ -136,7 +136,10 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
     let ableToCache = false
     const queryKeys = Object.keys(req.query)
     const projectId = req.query.projectId as string
-    const key = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
+    const parentTaskId = req.query.parentTaskId as string
+    const keyMainTask = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
+    const keySubTask = [CKEY.TASK_QUERY, parentTaskId, genKeyFromSource(req.query)]
+    const key = parentTaskId ? keySubTask : keyMainTask
 
     if (
       queryKeys.length === 2 &&
