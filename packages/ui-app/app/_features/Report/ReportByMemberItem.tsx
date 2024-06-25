@@ -118,7 +118,8 @@ export default function ReportByMemberItem({
         categories: xAxis
       },
       yaxis: {
-        show: false
+        show: false,
+        max: 80
       }
     },
     series: [
