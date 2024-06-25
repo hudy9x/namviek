@@ -1,4 +1,4 @@
-import MeetingRoom from "./MeetingRoom";
+import MeetingRoom from "@/features/MeetingRoom";
 
 export default function Page() {
   return <MeetingRoom />
