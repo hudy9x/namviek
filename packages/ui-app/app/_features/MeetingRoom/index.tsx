@@ -17,8 +17,10 @@ import { meetingGetParticipant } from '@/services/meeting'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
 import { Form, messageSuccess } from '@shared/ui'
-import { HiOutlineDuplicate } from 'react-icons/hi'
+import { HiOutlineDuplicate, HiOutlineX } from 'react-icons/hi'
 import { copyToClipboard } from '@shared/libs'
+import './style.css'
+import { HiOutlineInformationCircle } from 'react-icons/hi2'
 
 export default function MeetingContainer() {
   // TODO: get user input for room and name
@@ -26,8 +28,6 @@ export default function MeetingContainer() {
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
-
-  const link = `${process.env.NEXT_PUBLIC_FE_GATEWAY}${orgID}/meeting/${roomId}`
 
   useEffect(() => {
     if (user && user.name && roomId) {
@@ -42,7 +42,7 @@ export default function MeetingContainer() {
   }
 
   return (
-    <div className='fixed top-0 left-0 z-10 w-full h-full'>
+    <div className='meeting-room fixed top-0 left-0 z-10 w-full h-full'>
       <LiveKitRoom
         onDisconnected={() => {
           push(`/${orgID}/meeting`)
@@ -68,30 +68,48 @@ export default function MeetingContainer() {
             <ControlBar />
           </div>
 
-          <div className='w-[350px] shrink-0 flex items-end h-full'>
-            <Chat />
-          </div>
+          {/* <div className='w-[350px] shrink-0 flex items-end h-full'> */}
+          {/*   <Chat className='' /> */}
+          {/* </div> */}
         </div>
       </LiveKitRoom>
-      <div className='fixed bottom-5 left-5 bg-white rounded-md shadow-lg p-4 w-[400px] text-gray-600 text-sm'>
-        <h2 className='text-2xl text-gray-800 mb-2'>Your meeting is ready</h2>
-        <div className='space-y-2'>
-          <p>Share this link with others you want in the meeting</p>
-
-          <div className='relative'>
-            <Form.Input readOnly value={link} />
-            <HiOutlineDuplicate
-              onClick={() => {
-                copyToClipboard(link)
-                messageSuccess('Copied to clipboard already !')
-              }}
-              className='absolute top-2 right-2 p-1 w-6 h-6 hover:border-gray-900 cursor-pointer bg-white border rounded-md shadow' />
-          </div>
-          <p>People who use this meeting link must get your permission before they can join </p>
-        </div>
-      </div>
+      <MeetingRoomInfo />
     </div>
   )
+}
+
+function MeetingRoomInfo() {
+  const { roomId, orgID } = useParams()
+  const [visible, setVisible] = useState(true)
+
+  const getLink = () => {
+    return `${window.location.protocol}//${window.location.host}/${orgID}/meeting/${roomId}`
+  }
+
+  return <div className={`fixed bottom-5 left-5 bg-white rounded-md shadow-lg p-4 text-gray-600 text-sm`}>
+    <HiOutlineInformationCircle onClick={() => {
+      setVisible(true)
+    }} className={`cursor-pointer ${visible ? 'hidden' : ''}`} />
+    <div className={`relative w-[400px] ${visible ? '' : 'hidden'}`}>
+      <HiOutlineX className='cursor-pointer w-7 h-7 p-1 rounded-md absolute top-1 right-1 border bg-gray-100' onClick={() => setVisible(false)} />
+      <h2 className='text-2xl text-gray-800 mb-2'>Your meeting is ready</h2>
+      <div className='space-y-2'>
+        <p>Share this link with others you want in the meeting</p>
+
+        <div className='relative'>
+          <Form.Input readOnly value={getLink()} />
+          <HiOutlineDuplicate
+            onClick={() => {
+              copyToClipboard(getLink())
+              messageSuccess('Copied to clipboard already !')
+            }}
+            className='absolute top-2 right-2 p-1 w-6 h-6 hover:border-gray-900 cursor-pointer bg-white border rounded-md shadow' />
+        </div>
+        <p>People who use this meeting link must get your permission before they can join </p>
+      </div>
+    </div>
+  </div>
+
 }
 
 function MyVideoConference() {
