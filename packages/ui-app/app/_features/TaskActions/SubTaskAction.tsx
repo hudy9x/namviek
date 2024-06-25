@@ -1,9 +1,9 @@
 import { Button } from '@shared/ui'
 import { useContext } from 'react'
 import { LuGitBranchPlus } from 'react-icons/lu'
-import { TaskContext } from '../../[orgID]/project/[projectId]/views/ListMode'
+import { SubTaskContext } from '../SubTask/context'
 
 export default function SubTaskAction() {
-  const { toggleOpen } = useContext(TaskContext)
-  return <Button onClick={toggleOpen} leadingIcon={<LuGitBranchPlus />} />
+  const { toggleOpen, loading } = useContext(SubTaskContext)
+  return <Button onClick={toggleOpen} loading={loading} leadingIcon={<LuGitBranchPlus />} />
 }

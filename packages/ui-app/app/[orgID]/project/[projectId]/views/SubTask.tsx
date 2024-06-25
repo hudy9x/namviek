@@ -1,15 +1,14 @@
-import { TaskContext } from './ListMode'
+
 import { useContext } from 'react'
 import ListRow from './ListRow'
-import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import CreateSubTask from './ListCreateTask'
 import { ExtendedTask } from '@/store/task'
 import { Loading } from '@shared/ui'
 import { useGetSubTasks } from './useGetSubTask'
+import { SubTaskContext } from '@/features/SubTask/context'
 
-export const SubTask = ({ task, groupId }: { task: ExtendedTask, groupId: string }) => {
-  const { isOpen, subTasks, loading } = useContext(TaskContext)
-  const { filter } = useTaskFilterContext()
+export const SubTask = ({ task }: { task: ExtendedTask }) => {
+  const { isOpen, subTasks, loading } = useContext(SubTaskContext)
   useGetSubTasks({ parentTaskId: task.id, projectId: task.projectId })
 
   if (loading && isOpen) {
@@ -23,8 +22,6 @@ export const SubTask = ({ task, groupId }: { task: ExtendedTask, groupId: string
       ))}
       <CreateSubTask
         parentTaskId={task.id}
-        type={filter.groupBy}
-        groupId={groupId}
         title="Create new sub task"
       />
     </div>

@@ -136,10 +136,7 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
     let ableToCache = false
     const queryKeys = Object.keys(req.query)
     const projectId = req.query.projectId as string
-    const parentTaskId = req.query.parentTaskId as string
-    const keyMainTask = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
-    const keySubTask = [CKEY.TASK_QUERY, parentTaskId, genKeyFromSource(req.query)]
-    const key = parentTaskId ? keySubTask : keyMainTask
+    const key = [CKEY.TASK_QUERY, projectId, genKeyFromSource(req.query)]
 
     if (
       queryKeys.length === 2 &&
@@ -170,6 +167,54 @@ router.get('/project/task/query', async (req: AuthRequest, res) => {
 
     if (ableToCache) {
       setJSONCache(key, { data: tasks, total: 0 })
+    }
+
+    res.json({ status: 200, data: tasks })
+  } catch (error) {
+    console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.get('/project/task/query-subtask', async (req: AuthRequest, res) => {
+  try {
+    // const query = req.body as ITaskQuery
+    const { counter, ...rest } = req.query
+
+    let ableToCache = false
+    const queryKeys = Object.keys(req.query)
+    const parentTaskId = req.query.parentTaskId as string
+    const keySubTask = [CKEY.TASK_QUERY, parentTaskId, genKeyFromSource(req.query)]
+
+    if (
+      queryKeys.length === 2 &&
+      queryKeys.includes('projectId') &&
+      queryKeys.includes('dueDate') && 
+      queryKeys.includes('parentTaskId') 
+    ) {
+      ableToCache = true
+
+      const cached = await getJSONCache(keySubTask)
+      if (cached) {
+        return res.json({
+          status: 200,
+          data: cached.data,
+          total: cached.total
+        })
+      }
+    }
+
+    const tasks = await mdTaskGetAll(rest)
+    if (counter) {
+      const total = await mdTaskGetAll(req.query)
+      if (ableToCache) {
+        setJSONCache(keySubTask, { data: tasks, total })
+      }
+      return res.json({ status: 200, data: tasks, total })
+    }
+
+    if (ableToCache) {
+      setJSONCache(keySubTask, { data: tasks, total: 0 })
     }
 
     res.json({ status: 200, data: tasks })

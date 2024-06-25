@@ -1,23 +1,22 @@
+import { SubTaskContext } from '@/features/SubTask/context'
 import { taskAdd } from '@/services/task'
 import { ExtendedTask, useTaskStore } from '@/store/task'
 import { useUser } from '@goalie/nextjs'
 import { Task, TaskPriority } from '@prisma/client'
 import { messageError, messageSuccess } from '@shared/ui'
 import { useContext } from 'react'
-import { TaskContext } from '../[orgID]/project/[projectId]/views/ListMode'
 
-export const useServiceTaskAdd = ({ parentTaskId }: {
-  parentTaskId?: string
-}) => {
+export const useServiceTaskAdd = () => {
   const { user } = useUser()
-  const { setSubTasks } = useContext(TaskContext)
+  const { setSubTasks } = useContext(SubTaskContext)
   const { addOneTask, syncRemoteTaskById } = useTaskStore()
 
   const taskCreateOne = (mergedValues: Partial<Task>) => {
     const randomId = `TASK-ID-RAND-${Date.now()}`
     mergedValues.priority = mergedValues.priority || TaskPriority.LOW
+    const isCreatingSubTask = mergedValues.parentTaskId
 
-    if (!parentTaskId) {
+    if (!isCreatingSubTask) {
       addOneTask({
         ...mergedValues,
         ...{
@@ -33,8 +32,8 @@ export const useServiceTaskAdd = ({ parentTaskId }: {
         const { data, status } = res.data
         if (status !== 200) return
 
-        !parentTaskId && syncRemoteTaskById(randomId, data as Task)
-        if (parentTaskId) {
+        !isCreatingSubTask && syncRemoteTaskById(randomId, data as Task)
+        if (isCreatingSubTask) {
           setSubTasks(prev => [...prev, data])
         }
         messageSuccess('Synced success !')

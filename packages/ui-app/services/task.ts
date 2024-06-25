@@ -35,6 +35,13 @@ export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
   })
 }
 
+export const taskGetSubTask = (query: ITaskQuery, signal?: AbortSignal) => {
+  return httpGet(`/api/project/task/query-subtask`, {
+    params: query,
+    signal: signal
+  })
+}
+
 type ITaskExportQuery = Omit<ITaskQuery, 'projectId'> & {
   projectIds?: string[]
 }

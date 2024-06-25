@@ -5,12 +5,12 @@ import { useParams } from 'next/navigation'
 import { useRef } from 'react'
 
 interface ISubtaskAddProps {
-  parentTaskId: string
+  taskId: string
 }
 
-export default function SubtaskAdd({ parentTaskId }: ISubtaskAddProps) {
+export default function SubtaskAdd({ taskId }: ISubtaskAddProps) {
   const inpRef = useRef<HTMLInputElement>(null)
-  const { taskCreateOne } = useServiceTaskAdd({ parentTaskId })
+  const { taskCreateOne } = useServiceTaskAdd()
   const { projectId } = useParams()
 
   const onEnter = (value: string) => {
@@ -19,7 +19,7 @@ export default function SubtaskAdd({ parentTaskId }: ISubtaskAddProps) {
       dueDate: new Date(),
       title: value,
       projectId,
-      parentTaskId
+      parentTaskId: taskId
     }
 
     taskCreateOne(data)

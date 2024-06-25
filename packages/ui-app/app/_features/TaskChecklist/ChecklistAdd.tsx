@@ -19,7 +19,7 @@ export default function ChecklistAdd({
   const inpRef = useRef<HTMLInputElement>(null)
   const onEnter = (value: string) => {
     inpRef.current && (inpRef.current.value = '')
-
+    const isCreatingSubTask = parentTaskId;
     const randCheckListId = 'RAND-' + randomId()
     const newData = {
       id: randCheckListId,
@@ -30,10 +30,10 @@ export default function ChecklistAdd({
       doneAt: null
     }
 
-    if (!parentTaskId) {
-      addOneChecklist(newData)
-    } else {
+    if (isCreatingSubTask) { 
       setListSubTaskCheckList(prev => [...prev, newData]);
+    } else {
+      addOneChecklist(newData)
     }
 
     taskChecklistSv
@@ -46,7 +46,7 @@ export default function ChecklistAdd({
         const { data } = res.data
         const taskChecklist = data as TaskChecklist
 
-        if (!taskChecklist || !taskChecklist.id || parentTaskId) return
+        if (!taskChecklist || !taskChecklist.id || isCreatingSubTask) return
 
         updateChecklistId(taskId, randCheckListId, taskChecklist.id)
       })

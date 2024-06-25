@@ -8,48 +8,8 @@ import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
-import { Dispatch, SetStateAction, createContext } from 'react'
-import { ReactNode, useState } from 'react'
 import { SubTask } from './SubTask'
-import { Task } from '@prisma/client'
-
-interface ITaskContext {
-  isOpen: boolean,
-  loading: boolean,
-  subTasks: Task[],
-  setLoading: Dispatch<SetStateAction<boolean>>,
-  toggleOpen: () => void,
-  setSubTasks: Dispatch<SetStateAction<Task[]>>
-}
-
-export const TaskContext = createContext<ITaskContext>({
-  isOpen: false,
-  loading: false,
-  setLoading: () => {
-    console.log('SUBTASK_LOADING')
-  },
-  toggleOpen: () => {
-    console.log('TOGGLE_SUBTASK')
-  },
-  subTasks: [],
-  setSubTasks: () => []
-})
-
-export const TaskProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [subTasks, setSubTasks] = useState<Task[]>([])
-
-  const toggleOpen = () => {
-    setIsOpen(!isOpen)
-  }
-
-  return (
-    <TaskContext.Provider value={{ isOpen, toggleOpen, setLoading, loading, subTasks, setSubTasks }}>
-      {children}
-    </TaskContext.Provider>
-  )
-}
+import { SubTaskProvider } from '@/features/SubTask/context'
 
 export default function ListMode() {
   const {
@@ -65,16 +25,14 @@ export default function ListMode() {
 
   const ListTask = ({
     task,
-    groupId
   }: {
     task: ExtendedTask
-    groupId: string
   }) => {
     return (
-      <TaskProvider key={task.id}>
+      <SubTaskProvider key={task.id}>
         {!task.parentTaskId && <ListRow task={task} />}
-        <SubTask task={task} groupId={groupId} />
-      </TaskProvider>
+        <SubTask task={task} />
+      </SubTaskProvider>
     )
   }
 
@@ -130,7 +88,6 @@ export default function ListMode() {
                       return (
                         <ListTask
                           key={task.id}
-                          groupId={group.id}
                           task={task}
                         />
                       )
@@ -156,7 +113,7 @@ export default function ListMode() {
                   }
 
                   return (
-                    <ListTask key={task.id} groupId={group.id} task={task} />
+                    <ListTask key={task.id} task={task} />
                   )
                 })}
               <ListCreateTask type={filter.groupBy} groupId={group.id} />

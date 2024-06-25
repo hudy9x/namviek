@@ -7,8 +7,8 @@ import { useEffect, useRef, useState, KeyboardEvent, useContext } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 interface IListCreateTaskProps {
-  type: ETaskFilterGroupByType
-  groupId: string
+  type?: ETaskFilterGroupByType
+  groupId?: string
   title?: string
   parentTaskId?: string
 }
@@ -21,7 +21,7 @@ export default function ListCreateTask({
 }: IListCreateTaskProps) {
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
-  const { taskCreateOne } = useServiceTaskAdd({ parentTaskId })
+  const { taskCreateOne } = useServiceTaskAdd()
   const { projectId } = useParams()
 
   const handleClickOutside = () => {

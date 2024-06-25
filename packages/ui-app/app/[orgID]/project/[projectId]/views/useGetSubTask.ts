@@ -1,20 +1,19 @@
 import { useContext, useEffect } from 'react'
-import { TaskContext } from './ListMode'
-import { ITaskQuery, taskGetByCond } from '@/services/task'
+import { ITaskQuery, taskGetSubTask } from '@/services/task'
+import { SubTaskContext } from '@/features/SubTask/context';
 
-export const useGetSubTasks = ({ parentTaskId, projectId }: { parentTaskId: string, projectId: string }) => {
-  const { setSubTasks, isOpen, setLoading } = useContext(TaskContext)
-  const newUrl = new URL(window.location.toString())
-  const taskId = newUrl.searchParams.get('taskId')
+export const useGetSubTasks = ({ parentTaskId, projectId, taskDetailId }: { parentTaskId?: string, taskDetailId?: string, projectId: string }) => {
+  const { setSubTasks, isOpen, setLoading } = useContext(SubTaskContext)
 
   useEffect(() => {
     const fetchSubTasks = async () => {
+      const id = parentTaskId || taskDetailId
       try {
         const query: ITaskQuery = {
-          parentTaskId,
+          parentTaskId: id,
           projectId,
         };
-        const response = await taskGetByCond(query);
+        const response = await taskGetSubTask(query);
         const listSubTask = response.data;
         if (listSubTask && listSubTask.data) {
           setLoading(false)
@@ -24,11 +23,11 @@ export const useGetSubTasks = ({ parentTaskId, projectId }: { parentTaskId: stri
         console.error('Error fetching subtasks:', error);
       }
     };
-
-    if (isOpen || taskId) {
+    
+    if (isOpen || taskDetailId) {
       setLoading(true);
       fetchSubTasks();
     }
     
-  }, [isOpen, taskId]);
+  }, [isOpen, taskDetailId, parentTaskId]);
 }

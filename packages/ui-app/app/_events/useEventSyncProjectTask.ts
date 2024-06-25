@@ -17,7 +17,7 @@ export const useEventSyncProjectTask = (projectId: string) => {
   const { fetchNCache } = useGetTaskHandler()
   const { updateLocalTask } = useTaskUpdate()
   const { deleteLocalTask } = useServiceTaskDel()
-  const { createLocalTask } = useServiceTaskAdd({})
+  const { createLocalTask } = useServiceTaskAdd()
 
   useEffect(() => {
     if (!user || !user.id) return
