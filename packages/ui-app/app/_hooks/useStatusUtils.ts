@@ -41,3 +41,29 @@ export const useStatusUtils = () => {
     getStatusTypeByTaskId,
   }
 }
+
+
+export const useStatusFuncs = () => {
+
+  const { statuses } = useProjectStatusStore()
+
+  const doneStatus = useMemo(() => {
+    const doneIds: string[] = []
+    statuses.forEach(stt => {
+      if (stt.type === StatusType.DONE) {
+        doneIds.push(stt.id)
+      }
+    })
+
+    return doneIds
+  }, [statuses.toString()])
+
+  const isDoneStatus = (statusId: string) => {
+    return doneStatus.includes(statusId)
+  }
+
+
+  return {
+    isDoneStatus,
+  }
+}
