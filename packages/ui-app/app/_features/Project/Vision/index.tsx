@@ -13,7 +13,8 @@ import VisionContainer from './VisionContainer'
 import './style.css'
 import { Vision } from '@prisma/client'
 import { useTaskStore } from '@/store/task'
-import { useProjectStatusStore } from '@/store/status'
+// import { useProjectStatusStore } from '@/store/status'
+import { useStatusFuncs } from '@/hooks/useStatusUtils'
 
 const useVisionByDates = (visions: VisionField[]) => {
   const visionByDays: VisionByDays = {}
@@ -34,7 +35,8 @@ const useVisionByDates = (visions: VisionField[]) => {
 
 const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
   const { tasks } = useTaskStore()
-  const { statusDoneId } = useProjectStatusStore()
+  // const { statusDoneId } = useProjectStatusStore()
+  const { isDoneStatus } = useStatusFuncs()
   //
   const visionProgress: {
     [key: string]: { total: number; done: number; assigneeIds: string[] }
@@ -60,7 +62,8 @@ const useVisionProgress = ({ visions }: { visions: VisionField[] }) => {
       })
     }
 
-    if (taskStatusId === statusDoneId) {
+    // if (taskStatusId === statusDoneId) {
+    if (isDoneStatus(taskStatusId || '')) {
       visionProgress[visionId].done += 1
       taskDone += 1
     }

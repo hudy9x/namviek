@@ -32,6 +32,7 @@ import { EventController } from './event/index.controller'
 import { TestController } from './test'
 import ProjectSetting from './project/setting.controller'
 import TaskChecklistController from './task/checklist.controller'
+import ReportController from './report'
 
 const router = Router()
 
@@ -55,7 +56,8 @@ router.use(
     OrganizationMemberController,
     SchedulerController,
     TaskReorderController,
-    TaskChecklistController
+    TaskChecklistController,
+    ReportController
   ])
 )
 // middlewares
@@ -64,7 +66,6 @@ router.use(meetingRouter)
 router.use(buzzerRouter)
 router.use('/storage', [authMiddleware, storageRouter])
 router.use(visionRouter)
-router.use(reportRouter)
 router.use(authRouter)
 router.use(favRouter)
 router.use(automationRouter)

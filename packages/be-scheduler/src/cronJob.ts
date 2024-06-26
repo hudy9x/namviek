@@ -86,7 +86,9 @@ export const cronJob = {
     const task = cron.schedule(pattern, () => {
       // const task = cron.schedule('*/10 * * * * *', () => {
       cb()
-    })
+    }, {
+        timezone: 'Asia/Ho_Chi_Minh'
+      })
 
     task.start()
 

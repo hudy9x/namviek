@@ -1,4 +1,4 @@
-import { TaskStatus } from '@prisma/client'
+import { StatusType, TaskStatus } from '@prisma/client'
 import {
   projectStatusDel,
   projectStatusUpdate
@@ -12,6 +12,7 @@ import { IoIosClose } from 'react-icons/io'
 import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
 import { useUserRole } from '@/features/UserPermission/useUserRole'
 import HasRole from '@/features/UserPermission/HasRole'
+import { StatusItemType } from './StatusType'
 
 interface IStatusItemProps {
   status: TaskStatus
@@ -53,8 +54,6 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     }
     updateStatus(id, newStatus)
     inputRef?.current?.blur()
-    messageSuccess('Update status successfully')
-
     await updateNewStatus(oldStatus, newStatus)
   }
 
@@ -64,7 +63,9 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     newStatus: TaskStatus
   ) => {
     const id = status.id
-    await projectStatusUpdate(newStatus).catch(err => {
+    await projectStatusUpdate(newStatus).then(() => {
+      messageSuccess('Update status successfully')
+    }).catch(err => {
       console.log(`Update status failed: ${err}\nRollback to old value`)
       messageError('Status has been failed to sync ! 😥')
       updateStatus(id, oldStatus)
@@ -86,11 +87,26 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
     }
   }
 
+  const onChangeStatusType = async (type: StatusType) => {
+    const id = status.id
+    const newStatus = {
+      ...status,
+      type
+    }
+
+    try {
+      updateStatus(id, newStatus)
+      await updateNewStatus(status, newStatus)
+    } catch (error) {
+      messageError('Update status type error')
+    }
+  }
+
   const readOnly = projectRole === 'MEMBER' || projectRole === 'GUEST'
 
   return (
     <>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <div className="text-xl text-gray-500 cursor-grabbing">
           <HiOutlineBars3 className="text-gray-500" />
         </div>
@@ -119,7 +135,7 @@ export const StatusItem = ({ status }: IStatusItemProps) => {
           onKeyDown={e => onChangeNameHandler(e, status)}
           defaultValue={status.name}
         />
-        {/* {status.type} */}
+        <StatusItemType type={status.type} onStatusType={onChangeStatusType} />
       </div>
       <HasRole projectRoles={['LEADER', 'MANAGER']}>
         <div className="absolute right-3 gap-2 hidden group-hover:flex ">

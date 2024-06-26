@@ -32,7 +32,7 @@ connectPubClient((err, redis) => {
 
   // run every 20pm
   const runAt20h = 'runAt20pm'
-  cronJob.create(runAt20h, '5 12,20 * * *', () => {
+  cronJob.create(runAt20h, '5 12,18,20 * * *', () => {
     // cronJob.create(runAt20h, { every: "minute" }, () => {
     const CHANNEL_DAY_STATS = 'stats:day-stats'
     redis.publish(CHANNEL_DAY_STATS, 'heelo')

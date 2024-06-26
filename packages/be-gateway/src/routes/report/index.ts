@@ -1,34 +1,53 @@
-import { Router } from 'express'
-import { authMiddleware } from '../../middlewares'
-import { AuthRequest } from '../../types'
-import { mdTaskGetAll } from '@shared/models'
+import { BaseController, UseMiddleware, Body, Controller, Post, Param } from "../../core";
 
-const mainRouter = Router()
-const router = Router()
+import { authMiddleware } from "../../middlewares";
+import StatsService from "../../services/stats/index.service";
 
-mainRouter.use('/report', [authMiddleware, router])
+@Controller('/report')
+@UseMiddleware([authMiddleware])
+export default class ReportController extends BaseController {
 
-// It means GET:/api/example
-router.get('/', async (req: AuthRequest, res) => {
-  const { id: uid } = req.authen
-  const { projectIds, startDate, endDate } = req.query as {
-    projectIds: string[]
-    startDate: string
-    endDate: string
+  statsService: StatsService
+  constructor() {
+    super()
+    this.statsService = new StatsService()
   }
 
-  // await mdTaskGetAll({
-  //   projectIds,
-  //   dueDate: [startDate, endDate]
-  // })
+  @Post('/project')
+  async getProjectReportByOrgId(@Body() body: {
+    projectIds: string[]
+    duration: string
+  }) {
+    const { projectIds, duration } = body
+    console.log('5l', projectIds)
 
-  res.json({ status: 200 })
-})
+    if (!duration) { return null }
 
-// It means POST:/api/example
-router.post('/example', (req: AuthRequest, res) => {
-  console.log('auth user', req.authen)
-  res.json({ status: 200 })
-})
+    const result = await this.statsService.getProjectReport({
+      // orgId,
+      projectIds,
+      duration
+    })
 
-export default mainRouter
+    return Object.fromEntries(result.entries())
+  }
+
+  @Post('/members')
+  async getMemberReportByProjectId(@Body() body: {
+    projectIds: string[]
+    memberId: string
+    duration: string
+  }) {
+    const { memberId, projectIds, duration } = body
+
+    console.log(17)
+    const result = await this.statsService.getMemberReport({
+      memberId,
+      projectIds,
+      duration
+    })
+
+    return Object.fromEntries(result.entries())
+  }
+
+}

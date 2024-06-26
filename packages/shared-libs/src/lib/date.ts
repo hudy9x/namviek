@@ -44,15 +44,15 @@ export function getLastDateOfMonth(d: Date) {
   date.setMonth(date.getMonth() + 1)
 
   // last date
-  date.setDate(-1)
+  date.setDate(1)
+  date.setHours(-1)
 
   return date
 }
 
 export function getMonthList() {
-  return 'January, February, March, April, May, June, July, August, September, October, November, December'.split(
-    ','
-  )
+  const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  return monthList
 }
 
 const dayArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
