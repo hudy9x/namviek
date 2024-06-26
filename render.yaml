@@ -7,15 +7,9 @@ services:
   envVars:
   - key: REDIS_HOST
     sync: false
-  - key: NEXT_PUBLIC_LIVEKIT_URL
-    sync: false
   - key: NEXT_PUBLIC_FE_GATEWAY
     sync: false
   - key: MONGODB_URL
-    sync: false
-  - key: LIVEKIT_API_SECRET
-    sync: false
-  - key: LIVEKIT_API_KEY
     sync: false
   - key: JWT_VERIFY_USER_LINK_TOKEN_EXPIRED
     sync: false
