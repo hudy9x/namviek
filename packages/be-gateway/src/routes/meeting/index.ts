@@ -5,7 +5,12 @@ import { AuthRequest } from '../../types'
 
 const apiKey = process.env.LIVEKIT_API_KEY
 const apiSecret = process.env.LIVEKIT_API_SECRET
-const wsUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
+let wsUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
+
+if (!wsUrl) {
+  wsUrl = 'wss://sample.livekit.cloud'
+  console.log('⚠️  Livekit configuration is missing')
+}
 
 const router = Router()
 const mainRouter = Router()
