@@ -1,6 +1,6 @@
 services:
 - type: web
-  name: namviek
+  name: namviek-be
   runtime: node
   repo: https://github.com/hudy9x/namviek
   plan: free
