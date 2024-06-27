@@ -9,11 +9,21 @@ export const hashPassword = (pwd: string) => {
   return hashSync(pwd, salt)
 }
 
-export const createAdminUser = (value?: string) => {
-  return pmClient.user.create({
+export const createAdminUser = async (value?: string) => {
+  const email = value || 'admin@gmail.com'
+  const rootUser = await pmClient.user.findFirst({
+    where: {
+      email
+    }
+  })
+
+  if (rootUser) {
+    return rootUser
+  }
+  const result = await pmClient.user.create({
     data: {
       name: "Administrator",
-      email: value || "admin@gmail.com",
+      email,
       password: hashPassword(defaultPwd || '123123123'),
       status: UserStatus.ACTIVE,
       country: null,
@@ -27,6 +37,8 @@ export const createAdminUser = (value?: string) => {
       updatedBy: null
     }
   })
+
+  return result
 }
 
 export const getOrgOwner = (email: string) => {

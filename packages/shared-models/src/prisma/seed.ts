@@ -58,15 +58,14 @@ async function main() {
   console.log('>>>>>>')
   switch (type) {
     case 'user':
-      createAdminUser(value).then(res => {
-        console.log(`
+      const res = await createAdminUser(value)
+      console.log(`
 An user has been created !
 =============================================
 account: ${res.email}
 password: ${process.env.DEFAULT_PWD || '123123123'}
 =============================================
 `)
-      })
       break;
 
     case 'starter':
