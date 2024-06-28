@@ -656,6 +656,22 @@
     "@smithy/types" "^3.0.0"
     tslib "^2.6.2"
 
+"@axiomhq/js@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@axiomhq/js/-/js-1.0.0.tgz#dd3caacfc7569e2f59a567e60d475555a02cf885"
+  integrity sha512-4xf0b/KFVFmNvjxK4lHHuwioQ6TPr+PZLqEdMl/vcot1RqFwDnjaOEOp0/VPhyTgdE0di8bl/hOsu33bHMM27w==
+  dependencies:
+    fetch-retry "^6.0.0"
+    uuid "^8.3.2"
+
+"@axiomhq/winston@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@axiomhq/winston/-/winston-1.0.0.tgz#09d1fcc32fe734c9ae718228785e4d8314e9bb36"
+  integrity sha512-I37gx0eIhQeLZw0r/F3Xt+ERWWFD0VLAcGhXmCJcdmCcHLwwpEiKPsZsYshglZdeFQ2dCPUkOTyJMsjNFb3BdA==
+  dependencies:
+    "@axiomhq/js" "1.0.0"
+    winston-transport "^4.5.0"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7", "@babel/code-frame@^7.22.5":
   version "7.22.5"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.22.5.tgz"
@@ -9031,6 +9047,11 @@ fecha@^4.2.0:
   resolved "https://registry.yarnpkg.com/fecha/-/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
   integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
 
+fetch-retry@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/fetch-retry/-/fetch-retry-6.0.0.tgz#4ffdf92c834d72ae819e42a4ee2a63f1e9454426"
+  integrity sha512-BUFj1aMubgib37I3v4q78fYo63Po7t4HUPTpQ6/QE6yK6cIQrP+W43FYToeTEyg5m2Y7eFUtijUuAv/PDlWuag==
+
 fflate@^0.7.3:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.7.4.tgz#61587e5d958fdabb5a9368a302c25363f4f69f50"
@@ -15476,7 +15497,7 @@ wildcard@^2.0.0:
   resolved "https://registry.npmjs.org/wildcard/-/wildcard-2.0.1.tgz"
   integrity sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==
 
-winston-transport@^4.7.0:
+winston-transport@^4.5.0, winston-transport@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/winston-transport/-/winston-transport-4.7.0.tgz#e302e6889e6ccb7f383b926df6936a5b781bd1f0"
   integrity sha512-ajBj65K5I7denzer2IYW6+2bNIVqLGDHqDw3Ow8Ohh+vdW+rv4MZ6eiDvHoKhfJFZ2auyN8byXieDDJ96ViONg==

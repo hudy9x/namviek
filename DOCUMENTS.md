@@ -143,7 +143,8 @@ NEXT_PUBLIC_LIVEKIT_URL|wss://namviek-hmunmehy.livekit.cloud|Livekit url||
 ### Configure log server
 |Name|Value|Desc|Required|
 |-|-|-|-|
-|LOGTAIL_SOURCE_TOKEN||Logtail source token||
+|AXIOM_DATASET|namviek|Axiom dataset name||
+|AXIOM_TOKEN|namviek|Axiom token||
 
 ### Configure firebase for email verification
 |Name|Value|Desc|Required|

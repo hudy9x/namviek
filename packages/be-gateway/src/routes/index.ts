@@ -33,10 +33,17 @@ import { TestController } from './test'
 import ProjectSetting from './project/setting.controller'
 import TaskChecklistController from './task/checklist.controller'
 import ReportController from './report'
+import { createModuleLog } from '../lib/log'
 
 const router = Router()
+const logger = createModuleLog('Request')
 
 router.use((req, res, next) => {
+  logger.info(req.url, {
+    method: req.method,
+    url: req.url,
+    path: req.path
+  })
   console.log('\x1b[0m', `🥝 ${req.method}: ${req.url}`, '\x1b[90m')
   next()
 })
