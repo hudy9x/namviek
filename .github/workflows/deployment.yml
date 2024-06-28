@@ -89,6 +89,7 @@ jobs:
            " > .env
       - name: run app
         run: |
-          pm2 start pm2.json &
+          pm2 stop all
+          pm2 start pm2.json
       - name: finish deployment
         run: echo 'finish deployment'
