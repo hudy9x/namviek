@@ -264,6 +264,8 @@ router.post('/project/task', async (req: AuthRequest, res) => {
       body: req.body
     })
 
+    logging.info(`TaskCreate - created new task ${result.title}`)
+
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
@@ -403,6 +405,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       userId,
       body: req.body as Task
     })
+    logging.info(`TaskUpdate - update task: ${result.id}`)
 
     res.json({
       status: 200,
