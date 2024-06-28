@@ -82,8 +82,10 @@ jobs:
            FIREBASE_CLIENT_EMAIL=${{vars.FIREBASE_CLIENT_EMAIL}}
            FIREBASE_PRIVATE_KEY=${{vars.FIREBASE_PRIVATE_KEY}}
 
-           # Logtail
-           LOGTAIL_SOURCE_TOKEN=${{vars.LOGTAIL_SOURCE_TOKEN}}
+           # Logging
+           AXIOM_DATASET=${{vars.AXIOM_DATASET}}
+           AXIOM_TOKEN=${{vars.AXIOM_TOKEN}}
+
            " > .env
       - name: run app
         run: |
