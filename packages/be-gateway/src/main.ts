@@ -55,6 +55,7 @@ app.get('/check-health', (req, res) => {
 
 app.use(
   cors({
+    origin: process.env.NEXT_PUBLIC_FE_GATEWAY || '',
     exposedHeaders: ['Authorization', 'RefreshToken']
   })
 )
