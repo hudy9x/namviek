@@ -150,6 +150,8 @@ export default function SigninForm() {
     }
   }
 
+  console.log('NEXT_PUBLIC_BE_GATEWAY', process.env.NEXT_PUBLIC_BE_GATEWAY)
+
   return (
     <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
       <motion.div

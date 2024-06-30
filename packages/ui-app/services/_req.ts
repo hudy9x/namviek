@@ -10,7 +10,7 @@ import { messageError } from '@shared/ui'
 import axios from 'axios'
 
 console.log('=================================')
-console.log('process.env', JSON.stringify(process.env))
+console.log('process.env', process.env.NEXT_PUBLIC_BE_GATEWAY)
 console.log('=================================')
 
 const instance = axios.create({
