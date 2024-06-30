@@ -9,12 +9,16 @@ import {
 import { messageError } from '@shared/ui'
 import axios from 'axios'
 
+console.log('=================================')
+console.log('process.env.NEXT_PUBLIC_BE_GATEWAY', process.env.NEXT_PUBLIC_BE_GATEWAY)
+console.log('=================================')
+
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BE_GATEWAY || ''
 })
 
 instance.interceptors.request.use(
-  function (config) {
+  function(config) {
     const authorization = getGoalieToken()
     const refreshToken = getGoalieRefreshToken()
 
@@ -25,13 +29,13 @@ instance.interceptors.request.use(
     config.headers.set('refreshtoken', refreshToken)
     return config
   },
-  function (error) {
+  function(error) {
     return Promise.reject(error)
   }
 )
 
 instance.interceptors.response.use(
-  function (config) {
+  function(config) {
     const headers = config.headers
     const authorization = headers.authorization
     const refreshtoken = headers.refreshtoken
@@ -44,7 +48,7 @@ instance.interceptors.response.use(
     }
     return config
   },
-  function (error) {
+  function(error) {
     const { response } = error
     if (response && response.status === 440) {
       if (isSessionExpired()) {
