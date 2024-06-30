@@ -13,10 +13,9 @@ import { useState } from "react"
 import { AiOutlineCloudDownload } from "react-icons/ai"
 import { HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
 
-export const setOrgInfo = ({ name, cover, id }: { name: string, cover: string, id: string }) => {
+export const setOrgInfo = ({ name, cover }: { name: string, cover: string }) => {
   name && setLocalCache('ORG_NAME', name)
   cover && setLocalCache('ORG_COVER', cover)
-  id && setLocalCache('ORG_ID', id)
 }
 
 const getOrgInfo = () => {
@@ -36,12 +35,11 @@ function OrgInfo({ id }: { id: string }) {
   useDebounce(() => {
     orgGetById(id).then(res => {
       const { data } = res.data
-      const { name, cover, id } = data as Organization
+      const { name, cover } = data as Organization
 
       setOrgInfo({
         name,
         cover: cover || '',
-        id
       })
 
       setOrg({
@@ -113,7 +111,6 @@ function OrgPopMenu({ orgName }: { orgName: string }) {
 export default function OrgSection() {
   const { orgName } = useParams()
   const { orgId } = useGetParams()
-
   return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[20px] pb-[21px]">
     <div className="org-section-container flex items-center justify-between">
       {orgId && <OrgInfo id={orgId} />}

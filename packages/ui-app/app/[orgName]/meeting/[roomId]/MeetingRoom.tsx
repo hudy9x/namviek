@@ -28,12 +28,7 @@ export default function MeetingContainer() {
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
-
-<<<<<<<< HEAD:packages/ui-app/app/[orgName]/meeting/[roomId]/MeetingRoom.tsx
-  const link = `${process.env.NEXT_PUBLIC_FE_GATEWAY}${orgName}/meeting/${roomId}`
-
-========
->>>>>>>> main:packages/ui-app/app/_features/MeetingRoom/index.tsx
+  
   useEffect(() => {
     if (user && user.name && roomId) {
       meetingGetParticipant({ room: roomId, username: user.name }).then(res => {

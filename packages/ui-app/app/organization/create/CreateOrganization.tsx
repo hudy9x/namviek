@@ -63,8 +63,7 @@ export default function CreateOrganization() {
 
         setOrgInfo({
           name: org.name,
-          cover: org.cover || '',
-          id: org.id
+          cover: org.cover || ''
         })
 
         push(`/${org.slug}/my-works`)

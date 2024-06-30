@@ -7,21 +7,31 @@ export const useOrgIdBySlug = () => {
   const [orgId, setOrgId] = useState<string>()
   const { orgName } = useParams()
 
-  useEffect(() => {
-    const orgId = getLocalCache('ORG_ID')
-    if (orgId) {
-      setOrgId(orgId)
-      return
-    }
-    
+  const fetchOrg = () => {
     orgGetBySlug(orgName).then(res => {
       const { data } = res.data
-      
       setLocalCache('ORG_ID', data.id)
+      setLocalCache('ORG_SLUG', data.slug)
+      
       setOrgId(data.id)
     }).catch(e => {
       console.log(e)
     })
+  }
+
+  useEffect(() => {
+    const orgIdCache = getLocalCache('ORG_ID')
+    const orgSlugCache = getLocalCache('ORG_SLUG')
+
+    if (!orgIdCache || !orgSlugCache) {
+      fetchOrg()
+    }
+
+    if (orgName !== orgSlugCache) {
+      fetchOrg()
+    }
+
+    orgIdCache && setOrgId(orgIdCache)
   }, [orgName])
 
   return { orgId }
