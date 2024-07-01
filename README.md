@@ -29,6 +29,8 @@ Check out [the setup guide](https://www.namviek.com/#download). If you encounter
 
 For easy deployment progress
 
+Please visit [the deployment guide](https://docs.namviek.com/doc/deployment) before clicking on the following buttons
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhudy9x%2Fnamviek%2Ftree%2Fmain&project-name=namviek&build-command=npm%20run%20generate2%20%26%26%20npm%20run%20build:fe&output-directory=dist%2Fpackages%2Fui-app%2F.next&install-command=npm%20install&env=NEXT_PUBLIC_BE_GATEWAY,NEXT_PUBLIC_APP_NAME)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/hudy9x/namviek/tree/main)
