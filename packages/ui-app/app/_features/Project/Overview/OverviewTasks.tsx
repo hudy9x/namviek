@@ -1,8 +1,8 @@
 import { Task } from '@prisma/client'
 import { useParams } from 'next/navigation'
-import TaskAssignee from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskAssignee'
-import TaskPriorityCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskPriorityCell'
-import TaskStatus from 'packages/ui-app/app/[orgID]/project/[projectId]/views/TaskStatus'
+import TaskAssignee from 'packages/ui-app/app/[orgName]/project/[projectId]/views/TaskAssignee'
+import TaskPriorityCell from 'packages/ui-app/app/[orgName]/project/[projectId]/views/TaskPriorityCell'
+import TaskStatus from 'packages/ui-app/app/[orgName]/project/[projectId]/views/TaskStatus'
 // import { taskGetAll } from 'packages/ui-app/services/task'
 import { useEffect, useState } from 'react'
 

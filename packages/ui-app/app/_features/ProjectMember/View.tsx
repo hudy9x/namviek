@@ -1,7 +1,7 @@
 import { useMemberStore } from '@/store/member'
 import { Avatar, Tooltip } from '@shared/ui'
 import { HiOutlinePlus } from 'react-icons/hi2'
-import ProjectMemberAdd from '../../[orgID]/project/[projectId]/ProjectMemberAdd'
+import ProjectMemberAdd from '../../[orgName]/project/[projectId]/ProjectMemberAdd'
 
 export default function ProjectMemberView() {
   const { members } = useMemberStore()

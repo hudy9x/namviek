@@ -18,12 +18,14 @@ import { AxiosError } from 'axios'
 import { useSetDefaultCover } from './useSetDefaultCover'
 import { useEffect, useState } from 'react'
 import { onPushStateRun } from 'packages/ui-app/libs/pushState'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function useFileUpload() {
   // const [taskId, setTaskId] = useState('')
   const { uploading, setUploading, setPreviewFiles, taskId } = useFileKitContext()
   const { setDefaultCover } = useSetDefaultCover()
-  const { orgID, projectId } = useParams()
+  const { orgId } = useGetParams()
+  const { projectId, orgName } = useParams()
   const { push } = useRouter()
   // const sp = useSearchParams()
   // const taskId = sp.get('taskId')
@@ -54,11 +56,13 @@ export default function useFileUpload() {
 
   const doUpload = async (f: IFileUploadItem): Promise<IFileItem | null> => {
     try {
+      if (!orgId) return null
+
       const { data: file, randId } = f
       const sliceName = file.name.split('.')
 
       const res = await storageCreatePresignedUrl({
-        orgId: orgID,
+        orgId,
         projectId,
         name: file.name,
         type: file.type
@@ -69,7 +73,7 @@ export default function useFileUpload() {
       await storagePutFile(presignedUrl, file)
 
       const result = await storageSaveToDrive({
-        organizationId: orgID,
+        organizationId: orgId,
         projectId,
         name: file.name,
         keyName,
@@ -104,7 +108,7 @@ export default function useFileUpload() {
           message:
             'This error occurs as your network has problems or incorrect storage configuration. Go to Setting > About to make sure that Storage configuration is correct.',
           yes: () => {
-            push(`${orgID}/setting/about`)
+            push(`${orgName}/setting/about`)
           }
         })
         return null
@@ -118,7 +122,7 @@ export default function useFileUpload() {
             'Please go to Settings > About to integrate your configuration or use the default limited storage.',
           yes: () => {
             console.log('1')
-            push(`${orgID}/setting/about`)
+            push(`${orgName}/setting/about`)
 
           }
         })

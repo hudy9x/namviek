@@ -4,15 +4,17 @@ import { favGet } from '@/services/favorite'
 import { useFavStore } from '@/store/favorite'
 import { useEffect, useState } from 'react'
 import FavoriteItem from './FavoriteItem'
-import { useParams } from 'next/navigation'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function FavoritesList() {
-  const { orgID } = useParams()
+  const { orgId } = useGetParams()
   const { favorites, addAllFavorites } = useFavStore()
   const [activeId, setActive] = useState('')
 
   useEffect(() => {
-    favGet(orgID)
+    if (!orgId) return
+
+    favGet(orgId)
       .then(res => {
         const { data } = res.data
         addAllFavorites(data)

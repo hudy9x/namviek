@@ -6,14 +6,14 @@ import { HiOutlinePlus } from 'react-icons/hi2'
 import AutomateDesc from './AutomateDesc'
 
 export default function AutomateRuleList() {
-  const { orgID, projectId } = useParams()
+  const { orgName, projectId } = useParams()
   const { automations } = useAutomationStore()
 
   return (
     <div className="box w-[900px] mx-auto">
       <h2 className="flex items-center justify-between text-xl font-bold">
         <span>Rules</span>
-        <Link href={`/${orgID}/project/${projectId}/?mode=automation-create`}>
+        <Link href={`/${orgName}/project/${projectId}/?mode=automation-create`}>
           <Button title="Create" leadingIcon={<HiOutlinePlus />} primary />
         </Link>
       </h2>

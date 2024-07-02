@@ -1,6 +1,7 @@
 'use client'
 
 import { useDebounce } from "@/hooks/useDebounce"
+import { useGetParams } from "@/hooks/useGetParams"
 import { orgGetById } from "@/services/organization"
 import { useOrgMemberStore } from "@/store/orgMember"
 import { Organization } from "@prisma/client"
@@ -38,7 +39,7 @@ function OrgInfo({ id }: { id: string }) {
 
       setOrgInfo({
         name,
-        cover: cover || ''
+        cover: cover || '',
       })
 
       setOrg({
@@ -64,7 +65,7 @@ function OrgInfo({ id }: { id: string }) {
   </div>
 }
 
-function OrgPopMenu({ id }: { id: string }) {
+function OrgPopMenu({ orgName }: { orgName: string }) {
 
   const menus = [
     {
@@ -74,17 +75,17 @@ function OrgPopMenu({ id }: { id: string }) {
     },
     {
       icon: HiOutlineUserPlus,
-      link: `/${id}/setting/people`,
+      link: `/${orgName}/setting/people`,
       title: 'Members'
     },
     {
       icon: AiOutlineCloudDownload,
-      link: `/${id}/setting/export-import`,
+      link: `/${orgName}/setting/export-import`,
       title: 'Export'
     },
     {
       icon: HiOutlineInformationCircle,
-      link: `/${id}/setting/about`,
+      link: `/${orgName}/setting/about`,
       title: 'About'
     }
   ]
@@ -108,12 +109,12 @@ function OrgPopMenu({ id }: { id: string }) {
 }
 
 export default function OrgSection() {
-  const { orgID } = useParams()
-
+  const { orgName } = useParams()
+  const { orgId } = useGetParams()
   return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[20px] pb-[21px]">
     <div className="org-section-container flex items-center justify-between">
-      <OrgInfo id={orgID} />
-      <OrgPopMenu id={orgID} />
+      {orgId && <OrgInfo id={orgId} />}
+      <OrgPopMenu orgName={orgName} />
     </div>
   </section>
 }

@@ -36,7 +36,7 @@ function ViewAllBtn() {
 }
 
 
-function ProjectNavListContainer({ orgID }: { orgID: string }) {
+function ProjectNavListContainer({ orgName }: { orgName: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
@@ -50,13 +50,13 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
     // },
     {
       title: 'My works',
-      href: `/${orgID}/my-works`,
+      href: `/${orgName}/my-works`,
       icon: HiOutlineBriefcase,
       active: pathname.includes('/my-works')
     },
     {
       title: 'Projects',
-      href: `/${orgID}/project`,
+      href: `/${orgName}/project`,
       badge: ViewAllBtn,
       icon: HiOutlineServerStack,
       active: pathname.includes('/project/') || pathname.includes('/project'),
@@ -64,28 +64,28 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
     },
     {
       title: 'Meeting',
-      href: `/${orgID}/meeting`,
+      href: `/${orgName}/meeting`,
       icon: HiOutlineVideoCamera,
       active: pathname.includes('/meeting')
     },
     // {
     //   title: 'Favorites',
-    //   // href: `/${orgID}/favorites`,
+    //   // href: `/${orgName}/favorites`,
     //   icon: HiOutlineStar,
     //   active: pathname.includes('/favorites'),
     //   children: Favorites
     // },
     {
       title: 'Reports',
-      href: `/${orgID}/report`,
+      href: `/${orgName}/report`,
       icon: HiOutlineChartPie,
-      active: pathname.includes(`${orgID}/report`)
+      active: pathname.includes(`${orgName}/report`)
     },
     // {
     //   title: 'Settings',
-    //   href: `/${orgID}/setting/people`,
+    //   href: `/${orgName}/setting/people`,
     //   icon: HiOutlineCog6Tooth,
-    //   active: pathname.includes(`${orgID}/setting`)
+    //   active: pathname.includes(`${orgName}/setting`)
     // }
   ]
 
@@ -124,11 +124,11 @@ function ProjectNavListContainer({ orgID }: { orgID: string }) {
 
 
 export default function ProjectNavList() {
-  const { orgID } = useParams()
+  const { orgName } = useParams()
 
   const view = useMemo(() => {
-    return <ProjectNavListContainer orgID={orgID} />
-  }, [orgID])
+    return <ProjectNavListContainer orgName={orgName} />
+  }, [orgName])
 
   return <>{view}</>
 }

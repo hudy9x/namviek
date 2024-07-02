@@ -50,7 +50,7 @@ export default function RootPage() {
           </Link>
           {orgs.map(org => {
             return (
-              <Link key={org.id} href={`/${org.id}`}>
+              <Link key={org.id} href={`/${org.slug}`}>
                 <div className="box flex h-[100px] gap-3 items-center cursor-pointer hover:border-indigo-300 text-indigo-800">
                   <img
                     className="w-10 h-10 rounded-md"

@@ -18,11 +18,11 @@ export default function ProjectItemAction({
   project: Project
   isArchived?: boolean
 }) {
-  const { orgID } = useParams()
+  const { orgName } = useParams()
   const { addToFavorite } = useServiceFavoriteUpdate()
   const { moveToArchive, removeFromArchive } = useServiceProjectArchive()
 
-  const url = `${orgID}/project/${project.id}?mode=task`
+  const url = `${orgName}/project/${project.id}?mode=task`
 
   const moveToArchiveHandler = () => {
     if (isArchived) {

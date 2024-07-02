@@ -2,7 +2,7 @@ import { favDel, favPost } from '@/services/favorite'
 import { useFavStore } from '@/store/favorite'
 import { Favorites } from '@prisma/client'
 import { messageSuccess, randomId } from '@shared/ui'
-import { useParams } from 'next/navigation'
+import { useGetParams } from './useGetParams'
 
 export interface IFavoriteProps {
   name: string
@@ -11,7 +11,7 @@ export interface IFavoriteProps {
   type: 'PROJECT' | 'PAGE'
 }
 export default function useServiceFavoriteUpdate() {
-  const { orgID } = useParams()
+  const { orgId } = useGetParams()
   const {
     addToFavorite: addToFavStore,
     updateFavorite,
@@ -19,8 +19,10 @@ export default function useServiceFavoriteUpdate() {
   } = useFavStore()
 
   const delFromFavorite = (id: string) => {
+    if (!orgId) return
+
     removeFromFavorite(id)
-    favDel(id, orgID).then(res => {
+    favDel(id, orgId).then(res => {
       console.log(res)
       console.log('1231')
       messageSuccess('Removed from your favorites')
@@ -28,11 +30,12 @@ export default function useServiceFavoriteUpdate() {
   }
 
   const addToFavorite = ({ name, icon, link, type }: IFavoriteProps) => {
+    if (!orgId) return
     const randId = 'FAV_RAND_' + randomId()
 
     addToFavStore({
       id: randId,
-      orgId: orgID,
+      orgId,
       uid: '',
       name,
       icon,
@@ -45,7 +48,7 @@ export default function useServiceFavoriteUpdate() {
     })
 
     favPost({
-      orgId: orgID,
+      orgId,
       name,
       icon,
       link,

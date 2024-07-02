@@ -8,7 +8,7 @@ import { Form } from '@shared/ui'
 // import TaskForm from '../../[orgID]/project/[projectId]/TaskForm'
 
 const DynamicTaskForm = dynamic(
-  () => import('../../[orgID]/project/[projectId]/TaskForm'),
+  () => import('../../[orgName]/project/[projectId]/TaskForm'),
   {
     loading: () => <p>Loading ...</p>
   }

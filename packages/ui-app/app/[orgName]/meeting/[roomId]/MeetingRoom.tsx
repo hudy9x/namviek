@@ -28,7 +28,7 @@ export default function MeetingContainer() {
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
-
+  
   useEffect(() => {
     if (user && user.name && roomId) {
       meetingGetParticipant({ room: roomId, username: user.name }).then(res => {

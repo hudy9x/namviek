@@ -22,7 +22,7 @@ export default function ProjectViewList({ onUpdate }: { onUpdate: (id: string) =
   const { views } = useProjectViewList()
 
   const clickOnView = (name: string) => {
-    push(`${params.orgID}/project/${params.projectId}?mode=${name}`)
+    push(`${params.orgName}/project/${params.projectId}?mode=${name}`)
   }
 
   return (

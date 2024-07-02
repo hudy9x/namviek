@@ -85,6 +85,7 @@ model Favorites {
 model Organization {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String    @unique
+  slug           String    @unique
   cover          String?
   avatar         String?
   maxStorageSize Int?

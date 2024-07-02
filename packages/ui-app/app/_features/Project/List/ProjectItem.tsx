@@ -15,12 +15,12 @@ export default function ProjectItem({
   project: Project
   isArchived?: boolean
 }) {
-  const { orgID } = useParams()
+  const { orgName } = useParams()
   const { push } = useRouter()
   const { selectProject } = useProjectStore(state => state)
   const createdAt = project.createdAt
   const createdAtString = createdAt ? dateFormat(new Date(createdAt), 'PP') : ''
-  const url = `${orgID}/project/${project.id}?mode=task`
+  const url = `${orgName}/project/${project.id}?mode=task`
 
   const onSelectProject = (id: string) => {
     selectProject(id)

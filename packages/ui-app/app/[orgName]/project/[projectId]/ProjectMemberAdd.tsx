@@ -19,6 +19,7 @@ import { useParams } from 'next/navigation'
 import { UserMember, useMemberStore } from '../../../../store/member'
 import { MemberRole, OrganizationMembers, User } from '@prisma/client'
 import { memAddNewToProject } from '../../../../services/member'
+import { useGetParams } from '@/hooks/useGetParams'
 
 let timeout = 0
 
@@ -110,7 +111,8 @@ export default function ProjectMemberAdd({
 }: {
   triggerBtn?: ReactNode
 }) {
-  const { orgID, projectId } = useParams()
+  const { projectId } = useParams()
+  const { orgId } = useGetParams()
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [searchResults, updateSearchResults] = useState<User[]>([])
@@ -148,10 +150,12 @@ export default function ProjectMemberAdd({
     timeout && clearTimeout(timeout)
 
     timeout = setTimeout(() => {
+      if (!orgId) return
+
       setLoading(true)
       orgMemberSearch({
         projectId,
-        orgId: orgID,
+        orgId,
         term: value
       })
         .then(result => {

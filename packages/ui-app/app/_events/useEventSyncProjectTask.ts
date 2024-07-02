@@ -5,7 +5,7 @@ import { useUser } from '@goalie/nextjs'
 import { useGetTaskHandler } from '@/features/ProjectContainer/useGetTask'
 import { messageInfo } from '@shared/ui'
 import { Task } from '@prisma/client'
-import { useTaskUpdate } from '../[orgID]/project/[projectId]/views/useTaskUpdate'
+import { useTaskUpdate } from '../[orgName]/project/[projectId]/views/useTaskUpdate'
 import { useServiceTaskDel } from '@/hooks/useServiceTaskDel'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 
