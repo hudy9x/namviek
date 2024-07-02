@@ -4,10 +4,12 @@ import { useTaskUpdate } from './useTaskUpdate'
 
 export default function TaskTypeCell({
   taskId,
-  type
+  type,
+  parentTaskId,
 }: {
   taskId: string
   type: TaskType | null
+  parentTaskId?: string | null
 }) {
   const { updateTaskData } = useTaskUpdate()
 
@@ -18,7 +20,8 @@ export default function TaskTypeCell({
       onChange={val => {
         updateTaskData({
           id: taskId,
-          type: val
+          type: val,
+          parentTaskId,
         })
       }}
       value={type || TaskType.TASK}

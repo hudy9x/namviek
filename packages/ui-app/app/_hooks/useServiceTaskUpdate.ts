@@ -89,23 +89,29 @@ export const useServiceTaskUpdate = () => {
         return
       }
 
+      const isCreatingSubTask = taskData.parentTaskId
+
       if (!taskData.priority) {
         taskData.priority = TaskPriority.LOW
       }
-
+      
       if (taskData.taskStatusId) {
         taskData.done = taskData.taskStatusId === statusDoneId
       }
 
-      refactorTaskFieldByAutomationConfig(
-        'task',
-        taskData as ITaskDefaultValues
-      )
+      if (!isCreatingSubTask) {
+        refactorTaskFieldByAutomationConfig(
+          'task',
+          taskData as ITaskDefaultValues
+        )
+  
+        updateTask({
+          updatedBy: user?.id,
+          ...taskData
+        })
+      }
 
-      updateTask({
-        updatedBy: user?.id,
-        ...taskData
-      })
+
       taskUpdate({
         projectId,
         ...taskData

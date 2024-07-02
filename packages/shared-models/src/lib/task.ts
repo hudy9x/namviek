@@ -8,6 +8,7 @@ export interface ITaskQuery {
   dueDate?: [Date | string | null, Date | string | null]
   assigneeIds?: string[]
   statusIds?: string[]
+  parentTaskId?: string
   taskPoint?: number
   priority?: TaskPriority
   done?: 'yes' | 'no'
@@ -25,6 +26,7 @@ const generateConditions = ({
   projectId,
   projectIds,
   title,
+  parentTaskId,
   dueDate,
   assigneeIds,
   statusIds,
@@ -74,6 +76,10 @@ const generateConditions = ({
 
   if (projectId && projectId !== 'all') {
     where.projectId = projectId
+  }
+
+  if (parentTaskId) {
+    where.parentTaskId = parentTaskId
   }
 
   if (projectIds && projectIds.length) {

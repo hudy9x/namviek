@@ -7,13 +7,9 @@ import TaskAssignee from './TaskAssignee'
 import TaskPriorityCell from './TaskPriorityCell'
 import TaskPoint from './TaskPoint'
 import TaskDate from './TaskDate'
-import ProgressBar from '@/components/ProgressBar'
-import { useParams, useRouter } from 'next/navigation'
-import { useUrl } from '@/hooks/useUrl'
-import { Loading, messageWarning } from '@shared/ui'
+import { Loading } from '@shared/ui'
 
 import TaskTypeCell from './TaskTypeCell'
-import TaskChecklist from '@/features/TaskChecklist'
 import TaskProgress from './TaskProgress'
 import { useMemo } from 'react'
 import TaskTitle from './TaskTitle'
@@ -32,7 +28,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
       className="px-3 py-2 text-sm sm:flex items-center justify-between group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
       key={task.id}>
       <div className="flex items-center gap-2 dark:text-gray-300">
-        <TaskCheckbox id={task.id} selected={task.selected} />
+        {!task.parentTaskId && <TaskCheckbox id={task.id} selected={task.selected} />}
         {/* <StatusItem id={stt.id} /> */}
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
 
@@ -69,17 +65,18 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
           <TaskAssignee
             className="no-name"
             taskId={task.id}
+            parentTaskId={task.parentTaskId}
             uids={task.assigneeIds}
           />
         </ListCell>
         <ListCell width={115}>
-          <TaskTypeCell type={task.type} taskId={task.id} />
+          <TaskTypeCell type={task.type} taskId={task.id} parentTaskId={task.parentTaskId} />
         </ListCell>
         <ListCell width={75} className="hidden sm:block">
-          <TaskPriorityCell taskId={task.id} value={task.priority} />
+          <TaskPriorityCell taskId={task.id} value={task.priority} parentTaskId={task.parentTaskId} />
         </ListCell>
         <ListCell className="hidden sm:w-[50px] sm:block">
-          <TaskPoint taskId={task.id} value={task.taskPoint} />
+          <TaskPoint taskId={task.id} value={task.taskPoint} parentTaskId={task.parentTaskId} />
         </ListCell>
         <ListCell
           className={`ml-6 sm:ml-0 sm:w-[110px]`}>
@@ -87,10 +84,11 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
             toNow={true}
             taskId={task.id}
             date={task.dueDate ? new Date(task.dueDate) : null}
+            parentTaskId={task.parentTaskId}
           />
         </ListCell>
         <ListCell className="hidden sm:block" width={70}>
-          <TaskProgress progress={progress} taskId={task.id} />
+          <TaskProgress progress={progress} taskId={task.id} parentTaskId={task.parentTaskId} />
           {/* <div className='group/progress relative'> */}
           {/*   <ProgressBar color="green" progress={task.progress || 0} /> */}
           {/*   <div className='group-hover/progress:block hidden absolute z-10 top-2 right-0'> */}

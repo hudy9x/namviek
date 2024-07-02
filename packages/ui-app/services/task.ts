@@ -12,6 +12,7 @@ export const taskGetAll = (projectId: string, signal?: AbortSignal) => {
 }
 
 export interface ITaskQuery {
+  parentTaskId?: string,
   projectId?: string
   projectIds?: string[]
   title?: string
@@ -29,6 +30,13 @@ export interface ITaskQuery {
 
 export const taskGetByCond = (query: ITaskQuery, signal?: AbortSignal) => {
   return httpGet(`/api/project/task/query`, {
+    params: query,
+    signal: signal
+  })
+}
+
+export const taskGetSubTask = (query: ITaskQuery, signal?: AbortSignal) => {
+  return httpGet(`/api/project/task/query-subtask`, {
     params: query,
     signal: signal
   })

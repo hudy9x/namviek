@@ -1,7 +1,6 @@
 'use client'
 
-import { useTaskStore } from '../../../../../store/task'
-
+import { ExtendedTask, useTaskStore } from '../../../../../store/task'
 import TaskCheckAll from './TaskCheckAll'
 import ListCell from './ListCell'
 import { Avatar, Loading } from '@shared/ui'
@@ -9,6 +8,8 @@ import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
+import { SubTask } from './SubTask'
+import { SubTaskProvider } from '@/features/SubTask/context'
 
 export default function ListMode() {
   const {
@@ -21,6 +22,19 @@ export default function ListMode() {
   } = useTaskFilterContext()
 
   const { tasks, taskLoading } = useTaskStore()
+
+  const ListTask = ({
+    task,
+  }: {
+    task: ExtendedTask
+  }) => {
+    return (
+      <SubTaskProvider key={task.id}>
+        {!task.parentTaskId && <ListRow task={task} />}
+        <SubTask task={task} />
+      </SubTaskProvider>
+    )
+  }
 
   return (
     <div className="pb-[300px]">
@@ -71,7 +85,12 @@ export default function ListMode() {
                 tasks.map(task => {
                   if (isGroupbyStatus && task.taskStatusId !== group.id) {
                     if (group.id === 'NONE' && group.items.includes(task.id)) {
-                      return <ListRow key={task.id} task={task} />
+                      return (
+                        <ListTask
+                          key={task.id}
+                          task={task}
+                        />
+                      )
                     }
                     return null
                   }
@@ -93,7 +112,9 @@ export default function ListMode() {
                     return null
                   }
 
-                  return <ListRow key={task.id} task={task} />
+                  return (
+                    <ListTask key={task.id} task={task} />
+                  )
                 })}
               <ListCreateTask type={filter.groupBy} groupId={group.id} />
             </div>
