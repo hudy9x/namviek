@@ -1,5 +1,7 @@
 spec:
   name: namviek
+  description: An open-source project manager for small teams with low budget.
+	repository: https://github.com/FranciscoJBrito/namviek/tree/feature/%23deploy-do-btn
   services:
     - name: frontend
       dockerfile_path: ./docker/Dockerfile
