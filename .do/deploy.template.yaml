@@ -1,0 +1,68 @@
+spec:
+  name: namviek
+  services:
+    - name: frontend
+      dockerfile_path: ./docker/Dockerfile
+      build_context: .
+      source_dir: ./
+      env:
+        - name: NODE_ENV
+          value: production
+      run_command: /bin/sh -c "./docker/fe-entrypoint.sh && yarn prod:fe"
+      http_port: 3000
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      routes:
+        - path: /
+    - name: backend
+      dockerfile_path: ./docker/Dockerfile
+      build_context: .
+      source_dir: ./
+      env:
+        - name: NODE_ENV
+          value: production
+        - name: REDIS_HOST
+          value: ${REDIS_HOST}
+        - name: MONGODB_URL
+          value: ${MONGODB_URL}
+      run_command: /bin/sh -c "./docker/be-entrypoint.sh && yarn prod:be"
+      http_port: 3333
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      routes:
+        - path: /api
+          preserve_path_prefix: true
+    - name: redis
+      image: redis:alpine
+      instance_count: 1
+      instance_size_slug: basic-xxs
+    - name: mongodb
+      image: mongo:latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      command:
+        - '--replSet'
+        - 'rs0'
+        - '--bind_ip_all'
+        - '--port'
+        - '27017'
+      env:
+        - name: MONGO_INITDB_DATABASE
+          value: namviek
+      healthcheck:
+        exec:
+          - echo
+          - "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]}) }"
+          - | mongosh --port 27017 --quiet
+        interval: 5s
+        timeout: 30s
+        retries: 30
+        start_period: 0s
+        start_interval: 1s
+  envs:
+    - name: ENV_FILE
+      value: .env.local
+    - name: REDIS_HOST
+      value: redis:6379
+    - name: MONGODB_URL
+      value: mongodb://mongodb:27017/namviek?replicaSet=rs0&authSource=admin&directConnection=true
