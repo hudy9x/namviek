@@ -1,11 +1,12 @@
 spec:
   name: namviek
   description: An open-source project manager for small teams with low budget.
+	repository: https://github.com/FranciscoJBrito/namviek/tree/feature/%23deploy-do-btn
   services:
     - name: frontend
       git:
-        repo: "https://github.com/FranciscoJBrito/namviek.git"
-        branch: feature/#deploy-do-btn
+        repo: "https://github.com/FranciscoJBrito/namviek"
+        branch: feature/%23deploy-do-btn
       dockerfile_path: ./docker/Dockerfile
       build_context: .
       source_dir: ./
@@ -20,8 +21,8 @@ spec:
         - path: /
     - name: backend
       git:
-        repo: "https://github.com/FranciscoJBrito/namviek.git"
-        branch: feature/#deploy-do-btn
+        repo: "https://github.com/FranciscoJBrito/namviek"
+        branch: feature/%23deploy-do-btn
       dockerfile_path: ./docker/Dockerfile
       build_context: .
       source_dir: ./
