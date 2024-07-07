@@ -4,8 +4,8 @@ spec:
   services:
     - name: frontend
       git:
-        repo: "https://github.com/example/repo"
-        branch: master
+        repo: "https://github.com/FranciscoJBrito/namviek.git"
+        branch: feature/#deploy-do-btn
       dockerfile_path: ./docker/Dockerfile
       build_context: .
       source_dir: ./
@@ -20,8 +20,8 @@ spec:
         - path: /
     - name: backend
       git:
-        repo: "https://github.com/example/repo"
-        branch: master
+        repo: "https://github.com/FranciscoJBrito/namviek.git"
+        branch: feature/#deploy-do-btn
       dockerfile_path: ./docker/Dockerfile
       build_context: .
       source_dir: ./
