@@ -1,15 +1,17 @@
 import { orgGetBySlug } from '@/services/organization'
+import { useGlobalDataStore } from '@/store/global'
 import { getLocalCache, setLocalCache } from '@shared/libs'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-export const useOrgIdBySlug = () => {
-  const [orgId, setOrgId] = useState<string>()
+const useOrgIdBySlug = () => {
+  const { orgId, setOrgId } = useGlobalDataStore()
   const { orgName } = useParams()
 
   const fetchOrg = () => {
     orgGetBySlug(orgName).then(res => {
       const { data } = res.data
+      console.log('set from fetch data')
       setLocalCache('ORG_ID', data.id)
       setLocalCache('ORG_SLUG', data.slug)
 
@@ -20,27 +22,27 @@ export const useOrgIdBySlug = () => {
   }
 
   useEffect(() => {
+    if (!orgName) return
+
     const orgIdCache = getLocalCache('ORG_ID')
     const orgSlugCache = getLocalCache('ORG_SLUG')
 
     if (orgSlugCache === orgName && orgIdCache) {
       if (orgIdCache !== orgId) {
-
+        console.log('set from cache')
         setOrgId(orgIdCache)
         return
       }
     }
 
-    // if (!orgIdCache || !orgSlugCache) {
-    fetchOrg()
-    // }
-    //
-    // if (orgName !== orgSlugCache) {
-    //   fetchOrg()
-    // }
-    //
-    // orgIdCache && setOrgId(orgIdCache)
+    if (!orgId) {
+      fetchOrg()
+    }
+
   }, [orgName, orgId])
 
-  return { orgId }
+}
+
+export const useGlobalDataFetch = () => {
+  useOrgIdBySlug()
 }

@@ -5,12 +5,43 @@ import { useOrgMemberGet } from '@/services/organizationMember'
 import EventUserProjectUpdate from '@/features/Events/EventUserProjectUpdate'
 import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 import { Loading } from '@shared/ui'
+import { ReactNode } from 'react'
+import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
+import { useGlobalDataStore } from '@/store/global'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
 // why ? because it contains useParams inside, and this will triggered as url updated
-function PrefetchData() {
+function PrefetchOrgData() {
   useOrgMemberGet()
+  return <></>
+}
+
+function OrgDetailContent({ children }: { children: ReactNode }) {
+  const { orgId } = useGlobalDataStore()
+
+  console.log('run in <OrgDetailContent/>')
+  if (!orgId) {
+    return <Loading className='h-screen w-screen items-center justify-center' title='Fetching organization data ...' />
+  }
+
+  return <>
+    <div>
+      <PrefetchOrgData />
+      <EventUserProjectUpdate />
+    </div>
+    <ProjectSidebar />
+    <main
+      className="main-content w-full"
+      style={{ width: 'calc(100% - 251px)' }}>
+      <HamburgerMenu />
+      {children}
+    </main>
+  </>
+}
+
+function FetchGlobalData() {
+  useGlobalDataFetch()
   return <></>
 }
 
@@ -19,24 +50,10 @@ export default function ProjectLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { orgId } = useOrgIdBySlug()
-  if (!orgId) {
-    return <Loading className='h-screen w-screen items-center justify-center' title='Oragization ...' />
-  }
-
   return (
     <>
-      <div>
-        <PrefetchData />
-        <EventUserProjectUpdate />
-      </div>
-      <ProjectSidebar />
-      <main
-        className="main-content w-full"
-        style={{ width: 'calc(100% - 251px)' }}>
-        <HamburgerMenu />
-        {children}
-      </main>
+      <FetchGlobalData />
+      <OrgDetailContent>{children}</OrgDetailContent>
     </>
   )
 }
