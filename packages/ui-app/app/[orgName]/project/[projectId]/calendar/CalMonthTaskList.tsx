@@ -1,10 +1,6 @@
 import { useTaskStore } from '@/store/task'
 import CalMonthTask from './CalMonthTask'
 import { isEqual } from 'date-fns'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { useUrl } from '@/hooks/useUrl'
-import { useTaskFilter } from '@/features/TaskFilter/context'
 import differenceInDays from 'date-fns/differenceInDays'
 import { TaskType } from '@prisma/client'
 
@@ -13,10 +9,6 @@ let index = 0
 
 export default function CalMonthTaskList({ day }: { day: Date }) {
   const { tasks } = useTaskStore()
-  const { orgName, projectId } = useParams()
-  const { getSp } = useUrl()
-
-  const mode = getSp('mode')
 
   const dateClasses: string[] = []
   if (day && differenceInDays(new Date(day), new Date()) < 0) {
@@ -47,7 +39,7 @@ export default function CalMonthTaskList({ day }: { day: Date }) {
 
         return (
           <CalMonthTask
-            link={`${orgName}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
+            // link={`${orgName}/project/${projectId}?mode=${mode}&taskId=${task.id}`}
             key={task.id}
             type={task.type || TaskType.TASK}
             time={time}

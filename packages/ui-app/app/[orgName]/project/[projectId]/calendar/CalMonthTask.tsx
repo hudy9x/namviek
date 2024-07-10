@@ -3,14 +3,12 @@ import { useStatusData } from '@/hooks/useStatusData'
 import CalTaskInMonth from './CalTaskInMonth'
 import { ICalendarView, useCalendarContext } from './context'
 import CalTaskInWeek from './CalTaskInWeek'
-import Link from 'next/link'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { TaskType } from '@prisma/client'
 import { pushState } from 'packages/ui-app/libs/pushState'
 
 interface ICalMonthTaskProps {
   id: string
-  link: string
   title: string
   type: TaskType
   time: string
@@ -22,7 +20,6 @@ interface ICalMonthTaskProps {
 
 export default function CalMonthTask({
   index,
-  link,
   type: taskType,
   time,
   id,
