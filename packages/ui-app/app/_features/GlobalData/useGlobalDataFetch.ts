@@ -1,12 +1,13 @@
 import { orgGetBySlug } from '@/services/organization'
 import { useGlobalDataStore } from '@/store/global'
 import { getLocalCache, setLocalCache } from '@shared/libs'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const useOrgIdBySlug = () => {
   const { orgId, setOrgId, setOrgName } = useGlobalDataStore()
   const { orgName } = useParams()
+  const { push } = useRouter()
 
   const fetchOrg = () => {
     orgGetBySlug(orgName).then(res => {
@@ -18,7 +19,8 @@ const useOrgIdBySlug = () => {
       setOrgId(data.id)
       setOrgName(data.slug)
     }).catch(e => {
-      console.log(e)
+      push('/organization')
+      console.log('fetching org error', e)
     })
   }
 
