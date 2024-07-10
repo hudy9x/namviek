@@ -79,11 +79,11 @@ export default function MeetingContainer() {
 }
 
 function MeetingRoomInfo() {
-  const { roomId, orgID } = useParams()
+  const { roomId, orgName } = useParams()
   const [visible, setVisible] = useState(true)
 
   const getLink = () => {
-    return `${window.location.protocol}//${window.location.host}/${orgID}/meeting/${roomId}`
+    return `${window.location.protocol}//${window.location.host}/${orgName}/meeting/${roomId}`
   }
 
   return <div className={`fixed bottom-5 left-5 bg-white rounded-md shadow-lg p-4 text-gray-600 text-sm`}>
