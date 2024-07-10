@@ -33,8 +33,10 @@ function OrgInfo({ id }: { id: string }) {
   const len = orgMembers.length
 
   useDebounce(() => {
+    console.log('id', id)
     orgGetById(id).then(res => {
       const { data } = res.data
+      console.log('data', data)
       const { name, cover } = data as Organization
 
       setOrgInfo({
@@ -109,8 +111,7 @@ function OrgPopMenu({ orgName }: { orgName: string }) {
 }
 
 export default function OrgSection() {
-  const { orgName } = useParams()
-  const { orgId } = useGetParams()
+  const { orgId, orgName } = useGetParams()
   return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[20px] pb-[21px]">
     <div className="org-section-container flex items-center justify-between">
       {orgId && <OrgInfo id={orgId} />}

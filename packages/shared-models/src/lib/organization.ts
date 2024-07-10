@@ -12,7 +12,7 @@ export const mdOrgGetOne = async (orgId: string | string[]) => {
   });
 };
 
-export const mdOrgGetOneBySlug = async (slug) => {
+export const mdOrgGetOneBySlug = async (slug: string) => {
   return orgModel.findUnique({
     where: {
       slug,

@@ -1,20 +1,31 @@
+import { useGetParams } from "@/hooks/useGetParams";
 import { meetingService } from "@/services/meeting";
-import { Button, Form, randomId } from "@shared/ui";
-import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { Button, Form, randomId, setFixLoading } from "@shared/ui";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function MeetingRoomList() {
-  const { orgName } = useParams()
+  const { orgName } = useGetParams()
   const { push } = useRouter()
   const [loading, setloading] = useState(false)
   const [link, setLink] = useState('')
 
+  const showRedirectingStatus = () => {
+    setFixLoading(true)
+    // fallback as page was suspended
+    setTimeout(() => {
+      setFixLoading(false)
+    }, 5000)
+  }
+
   const createInstantMeeting = () => {
+    if (loading) return
     setloading(true)
     const name = randomId()
     meetingService.createRoom(name).then(res => {
 
       setloading(false)
+      showRedirectingStatus()
       push(`/${orgName}/meeting/${name}`)
 
     }).catch(err => {
@@ -33,6 +44,13 @@ export default function MeetingRoomList() {
 
     }
   }
+
+  // only clear fixed loading as the page unmount
+  useEffect(() => {
+    return () => {
+      setFixLoading(false)
+    }
+  })
 
   return <div className="meeting-list flex bg-white dark:bg-gray-900 items-center justify-center h-screen">
     <div className="">

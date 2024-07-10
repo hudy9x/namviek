@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 const useOrgIdBySlug = () => {
-  const { orgId, setOrgId } = useGlobalDataStore()
+  const { orgId, setOrgId, setOrgName } = useGlobalDataStore()
   const { orgName } = useParams()
 
   const fetchOrg = () => {
@@ -16,6 +16,7 @@ const useOrgIdBySlug = () => {
       setLocalCache('ORG_SLUG', data.slug)
 
       setOrgId(data.id)
+      setOrgName(data.slug)
     }).catch(e => {
       console.log(e)
     })
@@ -31,6 +32,7 @@ const useOrgIdBySlug = () => {
       if (orgIdCache !== orgId) {
         console.log('set from cache')
         setOrgId(orgIdCache)
+        setOrgName(orgName)
         return
       }
     }

@@ -16,19 +16,21 @@ import { Track } from 'livekit-client'
 import { meetingGetParticipant } from '@/services/meeting'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
-import { Form, messageSuccess } from '@shared/ui'
+import { Form, messageSuccess, setFixLoading } from '@shared/ui'
 import { HiOutlineDuplicate, HiOutlineX } from 'react-icons/hi'
 import { copyToClipboard } from '@shared/libs'
 import './style.css'
 import { HiOutlineInformationCircle } from 'react-icons/hi2'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function MeetingContainer() {
   // TODO: get user input for room and name
-  const { roomId, orgName } = useParams()
+  const { roomId } = useParams()
+  const { orgName } = useGetParams()
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
-  
+
   useEffect(() => {
     if (user && user.name && roomId) {
       meetingGetParticipant({ room: roomId, username: user.name }).then(res => {
