@@ -62,6 +62,8 @@ export const updateAllSlug = async () => {
     const { id, name } = org
     const slug = generateSlug(name.toLowerCase())
 
+    console.log('slug', slug)
+
     promises.push(updateOrganization(id, { name, slug }))
   }
 

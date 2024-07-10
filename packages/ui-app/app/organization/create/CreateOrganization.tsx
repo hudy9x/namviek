@@ -36,12 +36,17 @@ export default function CreateOrganization() {
       cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
     },
     onSubmit: values => {
+      values.name = values.name.trim()
+
       if (!values.name) {
         messageError('Title is required !')
         return
       }
 
-      values.name = values.name.trim()
+      if (values.name.length < 4) {
+        messageError('Title must greater than or equal 4 characters !')
+        return
+      }
 
       if (values.name.length > 16) {
         messageError('Title must less than or equal 16 characters')
