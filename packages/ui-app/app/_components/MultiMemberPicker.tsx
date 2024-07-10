@@ -1,3 +1,4 @@
+import { getGoalieUser } from '@goalie/nextjs'
 import { useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
 import { useEffect, useState } from 'react'
@@ -36,7 +37,15 @@ export default function MultiMemberPicker({
 
   // update project member into list
   useEffect(() => {
-    const listMembers = members.map(mem => ({ id: mem.id, title: mem.name }))
+    const user = getGoalieUser()
+    const listMembers = members.map(mem => {
+      let title = mem.name
+      if (user?.id === mem.id) {
+        title = 'Me'
+      }
+
+      return { id: mem.id, title }
+    })
     all && listMembers.push({ id: 'ALL', title: 'All member' })
 
     defaultAssigneeArr = listMembers as ListItemValue[]
