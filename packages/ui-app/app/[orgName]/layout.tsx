@@ -5,9 +5,10 @@ import { useOrgMemberGet } from '@/services/organizationMember'
 import EventUserProjectUpdate from '@/features/Events/EventUserProjectUpdate'
 import { useOrgIdBySlug } from '@/hooks/useOrgIdBySlug'
 import { Loading } from '@shared/ui'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
+import { setLocalCache } from '@shared/libs'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
@@ -20,7 +21,7 @@ function PrefetchOrgData() {
 function OrgDetailContent({ children }: { children: ReactNode }) {
   const { orgId } = useGlobalDataStore()
 
-  console.log('run in <OrgDetailContent/>')
+  console.log('run in <OrgDetailContent/>', orgId)
   if (!orgId) {
     return <Loading className='h-screen w-screen items-center justify-center' title='Fetching organization data ...' />
   }
@@ -38,7 +39,24 @@ function OrgDetailContent({ children }: { children: ReactNode }) {
   </>
 }
 
-function FetchGlobalData() {
+// This will clear the global data as the org page unmount
+function OrgDetailClearGlobalData() {
+  const { setOrgId } = useGlobalDataStore()
+
+  useEffect(() => {
+    return () => {
+      console.log('Clear data inside Global data store !')
+      setOrgId('')
+
+      setLocalCache('ORG_ID', '')
+      setLocalCache('ORG_SLUG', '')
+    }
+  }, [])
+  return <></>
+}
+
+// This component used for fetching global data
+function OrgDetailFetchGlobalData() {
   useGlobalDataFetch()
   return <></>
 }
@@ -50,7 +68,8 @@ export default function ProjectLayout({
 }) {
   return (
     <>
-      <FetchGlobalData />
+      <OrgDetailFetchGlobalData />
+      <OrgDetailClearGlobalData />
       <OrgDetailContent>{children}</OrgDetailContent>
     </>
   )

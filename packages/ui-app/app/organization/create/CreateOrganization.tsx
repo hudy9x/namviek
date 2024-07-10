@@ -61,6 +61,8 @@ export default function CreateOrganization() {
           return
         }
 
+        console.log('res org', org)
+
         setOrgInfo({
           name: org.name,
           cover: org.cover || ''

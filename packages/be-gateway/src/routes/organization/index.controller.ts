@@ -99,7 +99,7 @@ export class OrganizationController extends BaseController {
         throw new Error('REACHED_MAX_ORGANIZATION')
       }
 
-      const slug = generateSlug(body.name.toLowerCase().trim())
+      const slug = generateSlug(body.name)
 
       const result = await mdOrgAdd({
         name: body.name,

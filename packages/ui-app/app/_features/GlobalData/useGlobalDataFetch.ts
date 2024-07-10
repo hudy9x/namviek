@@ -35,7 +35,7 @@ const useOrgIdBySlug = () => {
       }
     }
 
-    if (!orgId) {
+    if (orgSlugCache !== orgName) {
       fetchOrg()
     }
 
