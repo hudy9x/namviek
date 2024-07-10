@@ -1,4 +1,5 @@
 'use client'
+import { useGetParams } from '@/hooks/useGetParams'
 import { useServiceOrgMember } from '@/hooks/useServiceOrgMember'
 import { useOrgMemberGet } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
@@ -11,14 +12,13 @@ import {
   messageError,
   messageSuccess
 } from '@shared/ui'
-import { useParams } from 'next/navigation'
 import FormGroup from 'packages/shared-ui/src/components/FormGroup'
 import { useState } from 'react'
 import { HiOutlineMail } from 'react-icons/hi'
 import { HiOutlineTrash } from 'react-icons/hi2'
 
 export default function SettingPeopleContent() {
-  const { orgID } = useParams()
+  const { orgId } = useGetParams()
   const { orgMembers } = useOrgMemberStore()
   const { addNewMemberToOrg, removeMemberFromOrg } = useServiceOrgMember()
   const [email, setEmail] = useState('')
@@ -26,7 +26,7 @@ export default function SettingPeopleContent() {
   useOrgMemberGet()
 
   const sendInvitation = () => {
-    if (!email || !orgID) {
+    if (!email || !orgId) {
       messageError('Please input your email')
       return
     }
@@ -50,7 +50,7 @@ export default function SettingPeopleContent() {
 
     setLoading(true)
     addNewMemberToOrg({
-      orgId: orgID,
+      orgId,
       email
     })
       .then(res => {
@@ -63,7 +63,7 @@ export default function SettingPeopleContent() {
         setLoading(false)
       })
 
-    console.log(email, orgID)
+    console.log(email, orgId)
   }
 
   return (

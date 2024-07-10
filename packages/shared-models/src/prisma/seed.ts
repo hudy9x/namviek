@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { createAdminUser, getOrgOwner } from './seeder/user'
-import { createOrganization } from './seeder/organization'
+import { createOrganization, updateAllSlug } from './seeder/organization'
 import { createProject } from './seeder/project'
 import { generateIconName, generateOrgName, generateProjectName } from './dummy'
 import { runTest } from './seeder/test'
@@ -71,11 +71,14 @@ password: ${process.env.DEFAULT_PWD || '123123123'}
     case 'starter':
       createStarterData()
       break;
-
+    case 'update-slug':
+      updateAllSlug().then(() => {
+        console.log('Update all organization successfully')
+      })
+      break
     case 'daily-stats':
       await generateDailyData()
       break;
-
     case 'test':
       await runTest()
       break;

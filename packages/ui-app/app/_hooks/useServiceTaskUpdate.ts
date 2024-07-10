@@ -5,7 +5,7 @@ import { taskUpdate, taskUpdateMany } from '@/services/task'
 import { messageError, messageSuccess, messageWarning } from '@shared/ui'
 import { Task, TaskPriority } from '@prisma/client'
 import { useTaskAutomation } from './useTaskAutomation'
-import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
+import { ITaskDefaultValues } from '../[orgName]/project/[projectId]/TaskForm'
 import { useProjectStatusStore } from '@/store/status'
 import localforage from 'localforage'
 

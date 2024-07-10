@@ -1,5 +1,5 @@
 import { useAutomationStore } from '@/store/automation'
-import { ITaskDefaultValues } from '../[orgID]/project/[projectId]/TaskForm'
+import { ITaskDefaultValues } from '../[orgName]/project/[projectId]/TaskForm'
 import { THEN, WHEN } from '@/features/Automation/context'
 import { fromDateStringToDate } from '@shared/libs'
 

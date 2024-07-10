@@ -42,7 +42,7 @@ export default function SettingExport() {
   const { projects } = useProjectStore()
   const { orgMembers } = useOrgMemberStore()
   const { filter } = useExportFilter()
-  const { orgID } = useParams()
+  const { orgName } = useParams()
   useOrgMemberGet()
 
   const getDueDate = ({
@@ -168,7 +168,7 @@ export default function SettingExport() {
                         {key === 'projectName' ? (
                           <Link
                             className="text-indigo-500 hover:underline"
-                            href={`${orgID}/project/${projectId}?mode=task`}>
+                            href={`${orgName}/project/${projectId}?mode=task`}>
                             {value}
                           </Link>
                         ) : (

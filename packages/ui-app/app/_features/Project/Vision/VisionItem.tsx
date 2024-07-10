@@ -1,4 +1,4 @@
-import ListCell from 'packages/ui-app/app/[orgID]/project/[projectId]/views/ListCell'
+import ListCell from 'packages/ui-app/app/[orgName]/project/[projectId]/views/ListCell'
 import VisionDelete from './VisionDelete'
 import { useVisionContext } from './context'
 import Droppable from '@/components/Dnd/Droppable'

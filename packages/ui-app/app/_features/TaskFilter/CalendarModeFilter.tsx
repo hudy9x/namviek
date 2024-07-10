@@ -6,7 +6,7 @@ import { useTaskFilter } from './context'
 import {
   ICalendarView,
   useCalendarContext
-} from '../../[orgID]/project/[projectId]/calendar/context'
+} from '../../[orgName]/project/[projectId]/calendar/context'
 import { getMonthList } from '@shared/libs'
 import useTaskFilterContext from './useTaskFilterContext'
 

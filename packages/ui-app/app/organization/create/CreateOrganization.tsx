@@ -8,10 +8,26 @@ import { useRouter } from 'next/navigation'
 import EmojiInput from '@/components/EmojiInput'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { setOrgInfo } from 'packages/ui-app/layouts/OrgSection'
+
+type ErrorMessage = {
+  error: string;
+  message: string;
+  status: number;
+}
 
 export default function CreateOrganization() {
   const { push } = useRouter()
   const [loading, setLoading] = useState(false)
+
+  const handleAxiosError = (err: AxiosError) => {
+    const { message } = err.response?.data as ErrorMessage
+    if (message === 'REACHED_MAX_ORGANIZATION') {
+      messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade');
+    } else if (message === 'DUPLICATE_ORGANIZATION') {
+      messageError('The organization name already exists.');
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -20,13 +36,20 @@ export default function CreateOrganization() {
       cover: 'https://cdn.jsdelivr.net/npm/emoji-datasource-twitter/img/twitter/64/1f344.png',
     },
     onSubmit: values => {
+      values.name = values.name.trim()
+
       if (!values.name) {
         messageError('Title is required !')
         return
       }
 
-      if (values.name.length > 17) {
-        messageError('Title must less than or equal 17 characters')
+      if (values.name.length < 4) {
+        messageError('Title must greater than or equal 4 characters !')
+        return
+      }
+
+      if (values.name.length > 16) {
+        messageError('Title must less than or equal 16 characters')
         return
       }
 
@@ -42,14 +65,19 @@ export default function CreateOrganization() {
           messageError('Cannot create organization')
           return
         }
-        push(`/${org.id}/my-works`)
+
+        console.log('res org', org)
+
+        setOrgInfo({
+          name: org.name,
+          cover: org.cover || ''
+        })
+
+        push(`/${org.slug}/my-works`)
       }).catch(err => {
         const error = err as AxiosError
-        if (error && error.response?.data === 'REACHED_MAX_ORGANIZATION') {
-          messageWarning('Sorry, You have created more than 2 organization. Please contact admin to upgrade')
-
-          console.log(err)
-        }
+        handleAxiosError(error)
+      }).finally(() => {
         setLoading(false)
       })
     }

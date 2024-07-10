@@ -5,7 +5,9 @@ import {
   mdOrgGetOwned,
   mdOrgMemAdd,
   mdOrgMemGetByUid,
-  mdOrgUpdate
+  mdOrgUpdate,
+  mdOrgGetOneBySlug,
+  generateSlug,
 } from '@shared/models'
 import {
   BaseController,
@@ -35,6 +37,14 @@ export class OrganizationController extends BaseController {
   async getOrgById() {
     const { orgId } = this.req.params as { orgId: string }
     const result = await mdOrgGetOne(orgId)
+
+    return result
+  }
+
+  @Get('/query/slug')
+  async getOrgBySlug() {
+    const { slug } = this.req.query as { slug: string }
+    const result = await mdOrgGetOneBySlug(slug)
 
     return result
   }
@@ -89,9 +99,12 @@ export class OrganizationController extends BaseController {
         throw new Error('REACHED_MAX_ORGANIZATION')
       }
 
+      const slug = generateSlug(body.name)
+
       const result = await mdOrgAdd({
         name: body.name,
         desc: body.desc,
+        slug,
         maxStorageSize: MAX_STORAGE_SIZE,
         cover: body.cover,
         avatar: null,
@@ -118,7 +131,9 @@ export class OrganizationController extends BaseController {
 
       return result
     } catch (error) {
-      console.log('create org error', error)
+      if (error.code === 'P2002') {
+        throw new Error('DUPLICATE_ORGANIZATION')
+      }
 
       throw new InternalServerException()
     }
@@ -138,6 +153,7 @@ export class OrganizationController extends BaseController {
 
       const result = await mdOrgUpdate(body.id, {
         name: body.name,
+        slug: generateSlug(body.name),
         desc: body.desc,
         cover: body.cover,
         avatar: null,

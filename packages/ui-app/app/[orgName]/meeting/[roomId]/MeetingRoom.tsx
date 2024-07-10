@@ -16,15 +16,17 @@ import { Track } from 'livekit-client'
 import { meetingGetParticipant } from '@/services/meeting'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@goalie/nextjs'
-import { Form, messageSuccess } from '@shared/ui'
+import { Form, messageSuccess, setFixLoading } from '@shared/ui'
 import { HiOutlineDuplicate, HiOutlineX } from 'react-icons/hi'
 import { copyToClipboard } from '@shared/libs'
 import './style.css'
 import { HiOutlineInformationCircle } from 'react-icons/hi2'
+import { useGetParams } from '@/hooks/useGetParams'
 
 export default function MeetingContainer() {
   // TODO: get user input for room and name
-  const { roomId, orgName } = useParams()
+  const { roomId } = useParams()
+  const { orgName } = useGetParams()
   const { push } = useRouter()
   const { user } = useUser()
   const [token, setToken] = useState('')
@@ -79,11 +81,11 @@ export default function MeetingContainer() {
 }
 
 function MeetingRoomInfo() {
-  const { roomId, orgName } = useParams()
+  const { roomId, orgID } = useParams()
   const [visible, setVisible] = useState(true)
 
   const getLink = () => {
-    return `${window.location.protocol}//${window.location.host}/${orgName}/meeting/${roomId}`
+    return `${window.location.protocol}//${window.location.host}/${orgID}/meeting/${roomId}`
   }
 
   return <div className={`fixed bottom-5 left-5 bg-white rounded-md shadow-lg p-4 text-gray-600 text-sm`}>

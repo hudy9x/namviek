@@ -20,7 +20,6 @@ function ProjectSidebarContainer() {
 
   return (
     <aside className={classes.join(' ')}>
-      {/* <RootSidebar /> */}
       <nav className={`secondary-sidebar`}>
         <div onClick={() => {
           setLocalCache('COMPACT_MENU', isCompactMode ? '0' : '1')

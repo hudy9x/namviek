@@ -11,7 +11,7 @@ import { useUrl } from '@/hooks/useUrl'
 
 export default function AutomateMenu() {
   const { push } = useRouter()
-  const { orgID, projectId } = useParams()
+  const { orgName, projectId } = useParams()
   const { getSp } = useUrl()
   const tab = getSp('tab')
 
@@ -19,7 +19,7 @@ export default function AutomateMenu() {
   const asides = [
     {
       title: 'Rules',
-      href: `${orgID}/project/${projectId}?mode=automation&tab=rule`,
+      href: `${orgName}/project/${projectId}?mode=automation&tab=rule`,
       active: !tab ? true : tab === 'rule' ? true : false,
       icon: HiOutlineBolt,
       content: AutomateRuleList,
@@ -27,7 +27,7 @@ export default function AutomateMenu() {
     },
     {
       title: 'Scheduler',
-      href: `${orgID}/project/${projectId}?mode=automation&tab=schedule`,
+      href: `${orgName}/project/${projectId}?mode=automation&tab=schedule`,
       active: tab === 'schedule',
       icon: HiOutlineCalendarDays,
       content: AutomationScheduler,

@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 export default function Automation() {
-  const { orgID, projectId } = useParams()
+  const { projectId, orgName } = useParams()
   const [when, setWhen] = useState<IAutomateWhenProps>({
     happens: 'task',
     is: WHEN.PROGRESS_CHANGED,
@@ -36,7 +36,7 @@ export default function Automation() {
         }}>
         <div className="automation-wrapper w-[900px] mx-auto mt-10">
           <h2 className="text-xl text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2">
-            <Link href={`/${orgID}/project/${projectId}?mode=automation`}>
+            <Link href={`/${orgName}/project/${projectId}?mode=automation`}>
               <HiOutlineChevronLeft className="bg-white dark:bg-gray-900 dark:border-gray-700 border p-1 w-7 h-7 rounded-md" />
             </Link>
             <span>Create custom automation</span>
