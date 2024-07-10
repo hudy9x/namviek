@@ -26,10 +26,8 @@ function OrgDetailContent({ children }: { children: ReactNode }) {
   }
 
   return <>
-    <div>
-      <PrefetchOrgData />
-      <EventUserProjectUpdate />
-    </div>
+    <PrefetchOrgData />
+    <EventUserProjectUpdate />
     <ProjectSidebar />
     <main
       className="main-content w-full"
