@@ -72,8 +72,6 @@ export default function TaskFilter({
     }, 350) as unknown as number
   }
 
-  console.log('taskFilter assigneeIDs', assigneeIds)
-
   return (
     <div className="task-filter">
       <div className="flex items-center gap-2">

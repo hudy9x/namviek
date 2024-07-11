@@ -18,7 +18,6 @@ export const useGenTaskMappingObject = () => {
   const { tasks } = useTaskStore()
 
   useDebounce(() => {
-    console.log('generate task mapping object')
     tasks.length && tasks.forEach((t, index) => {
       taskIdMap.set(t.id, t)
       taskIndexMap.set(t.id, index)

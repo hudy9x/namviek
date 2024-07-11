@@ -110,7 +110,6 @@ interface typesPropsIcon {
 }
 
 function DynamicIcon({ name, propsIcon }: typesPropsIcon) {
-  console.log(name in icons)
   if (name in icons) {
     const Icon = icons[name] as IconType
     return <Icon />
