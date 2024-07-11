@@ -13,7 +13,7 @@ import ProjectReportSetting from '@/features/ProjectSetting/Report'
 
 const Setting = () => {
   const { push } = useRouter()
-  const { orgID, projectId } = useParams()
+  const { orgName, projectId } = useParams()
   const searchParams = useSearchParams()
   const tab = searchParams.get('tab')
 
@@ -25,7 +25,7 @@ const Setting = () => {
       title: 'Points',
       active: !tab ? true : tab === 'points' ? true : false,
       content: <ProjectPoint />,
-      href: `${orgID}/project/${projectId}?mode=setting&tab=points`,
+      href: `${orgName}/project/${projectId}?mode=setting&tab=points`,
       desc: 'Story points are an Agile estimation technique that gives you a relative estimate of how much work and effort will go into a particular task.'
     },
     {
@@ -34,7 +34,7 @@ const Setting = () => {
       ),
       title: 'Statuses',
       active: tab === 'statuses',
-      href: `${orgID}/project/${projectId}?mode=setting&tab=statuses`,
+      href: `${orgName}/project/${projectId}?mode=setting&tab=statuses`,
       content: <ProjectStatus />,
       desc: 'Project status refers to the level of progress it achieves in working toward an end goal.'
     },
@@ -54,7 +54,7 @@ const Setting = () => {
       ),
       title: 'Members',
       active: tab === 'members',
-      href: `${orgID}/project/${projectId}?mode=setting&tab=members`,
+      href: `${orgName}/project/${projectId}?mode=setting&tab=members`,
       content: <ProjectMemberManager />,
       desc: 'Where you can send add users to the projects. It also helps you to grant access to a specific member.'
     },
@@ -64,7 +64,7 @@ const Setting = () => {
       ),
       title: 'Notification',
       active: tab === 'notification',
-      href: `${orgID}/project/${projectId}?mode=setting&tab=notification`,
+      href: `${orgName}/project/${projectId}?mode=setting&tab=notification`,
       content: <ProjectNotificationSetting />,
       desc: 'Enable automatic notifications to stay on top of important tasks'
     },
@@ -74,7 +74,7 @@ const Setting = () => {
       ),
       title: 'Report',
       active: tab === 'report',
-      href: `${orgID}/project/${projectId}?mode=setting&tab=report`,
+      href: `${orgName}/project/${projectId}?mode=setting&tab=report`,
       content: <ProjectReportSetting />,
       desc: 'Automatic collect completed or incomplete works daily.'
     }
