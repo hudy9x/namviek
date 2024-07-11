@@ -19,8 +19,6 @@ export default function BoardContainer() {
     dragItemToAnotherColumn
   } = useBoardDndAction()
 
-  console.log('re-render')
-
   const { statusIds } = filter
 
   useBoardRealtimeUpdate()

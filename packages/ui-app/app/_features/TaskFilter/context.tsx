@@ -96,7 +96,7 @@ const defaultFilter: ITaskFilterFields = {
   endDate: lastDate,
   point: '-1',
   priority: 'ALL',
-  assigneeIds: ['ALL'],
+  assigneeIds: ['ME'],
   statusIds: ['ALL'],
   status: 'ALL'
 }

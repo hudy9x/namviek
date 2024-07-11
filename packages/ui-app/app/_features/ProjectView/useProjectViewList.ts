@@ -84,7 +84,6 @@ export const useProjectViewList = () => {
   useDebounce(() => {
 
     if (views.length && oldMode.current !== mode) {
-      console.log('mode changed', mode, oldMode.current, currentViewType)
       oldMode.current = mode
       const view = views.find(v => v.id === mode)
       if (view) {

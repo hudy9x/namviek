@@ -21,7 +21,6 @@ function PrefetchOrgData() {
 function OrgDetailContent({ children }: { children: ReactNode }) {
   const { orgId } = useGlobalDataStore()
 
-  console.log('run in <OrgDetailContent/>', orgId)
   if (!orgId) {
     return <Loading className='h-screen w-screen items-center justify-center' title='Fetching organization data ...' />
   }

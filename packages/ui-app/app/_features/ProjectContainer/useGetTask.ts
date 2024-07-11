@@ -6,8 +6,17 @@ import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
+import { getGoalieUser } from '@goalie/nextjs'
 
 const getAssigneeIds = (assigneeIds: string[]) => {
+  assigneeIds = assigneeIds.map(uid => {
+    const user = getGoalieUser()
+    if (uid === 'ME' && user?.id) {
+      return user.id
+    }
+
+    return uid
+  })
   if (assigneeIds.includes('ALL')) return undefined
   if (!assigneeIds.length) return ['null']
 
