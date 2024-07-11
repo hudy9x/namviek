@@ -9,7 +9,6 @@ import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { getGoalieUser } from '@goalie/nextjs'
 
 const getAssigneeIds = (assigneeIds: string[]) => {
-  console.log('before assignids', JSON.stringify(assigneeIds))
   assigneeIds = assigneeIds.map(uid => {
     const user = getGoalieUser()
     if (uid === 'ME' && user?.id) {
@@ -55,7 +54,6 @@ export const useGetTaskHandler = () => {
 
     setTaskLoading(true)
 
-    console.log('getASsignids', getAssigneeIds(assigneeIds))
     taskGetByCond(
       {
         title: term || undefined,
