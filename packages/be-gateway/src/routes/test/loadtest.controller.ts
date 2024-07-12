@@ -1,6 +1,7 @@
 import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import {
   BaseController,
+  Body,
   Controller,
   Get,
   Post,
@@ -15,14 +16,19 @@ export class LoadTestController extends BaseController {
   }
 
   @Post('/load-test')
-  async doLoadTest() {
+  async doLoadTest(@Body() body: { projectId: string, assigneeIds: string[] }) {
+    const { projectId, assigneeIds } = body
 
-    mdTaskGetAll({
-      projectId: "",
-      dueDate: ['2024-06-01', '2024-06-30']
+    // console.log('-----------------')
+    // console.log(projectId, assigneeIds)
+
+    const result = await mdTaskGetAll({
+      projectId: projectId,
+      dueDate: ['2024-06-01', '2024-06-30'],
+      assigneeIds
     })
 
-    return 1
+    return result
   }
 
 }

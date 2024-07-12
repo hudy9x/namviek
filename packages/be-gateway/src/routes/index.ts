@@ -34,6 +34,7 @@ import ProjectSetting from './project/setting.controller'
 import TaskChecklistController from './task/checklist.controller'
 import ReportController from './report'
 import { createModuleLog } from '../lib/log'
+import { LoadTestController } from './test/loadtest.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -51,6 +52,7 @@ router.use((req, res, next) => {
 router.use(
   AppRoutes([
     TestController,
+    LoadTestController,
     ProjectController,
     ActivityRouter,
     CommentRouer,
