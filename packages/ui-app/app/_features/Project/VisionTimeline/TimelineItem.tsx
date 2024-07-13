@@ -5,11 +5,14 @@ import { HiOutlineFlag } from 'react-icons/hi2'
 import { dateFormat } from '@shared/libs'
 import MemberAvatar from '@/components/MemberAvatar'
 import ProgressBar from '@/components/ProgressBar'
+import { ReactNode } from 'react'
+import TimelineTitle from './TimelineTitle'
 
 function TimelineItemInfo({
   title,
   start,
   end,
+  children,
   restAssignees,
   displayAssignees
 }: {
@@ -18,10 +21,11 @@ function TimelineItemInfo({
   end: Date
   displayAssignees: string[]
   restAssignees: number
+  children: ReactNode
 }) {
   return <section className="flex items-center gap-4 justify-between">
     <div>
-      <span>{title}</span>
+      {children}
       <div className="flex items-center gap-1 text-[11px] text-gray-400">
         <HiOutlineFlag />
         <div>{dateFormat(start, 'MMM dd')}</div>
@@ -98,7 +102,9 @@ export default function TimelineItem({ start, end, id, title }: ITimelineItem) {
       onClick={viewTaskInVision}
       className={`flex items-center justify-between px-2.5 py-2 rounded-md cursor-pointer ${isSelected}`}>
       <div className={`w-full ${isSame ? 'pl-6' : ''}`}>
-        <TimelineItemInfo {...{ title, start, end, displayAssignees, restAssignees }} />
+        <TimelineItemInfo {...{ title, start, end, displayAssignees, restAssignees }} >
+          <TimelineTitle id={id} title={title} />
+        </TimelineItemInfo>
         <TimelineProgress enabled={!!hasTask} progress={progress} total={visionData.total} done={visionData.done} />
       </div>
     </div>

@@ -29,7 +29,7 @@ function VisionTaskCounter({ total, onHide }: { total: number, onHide: () => voi
 export default function VisionListTask() {
   const [hide, setHide] = useState(true)
   const { projectId } = useParams()
-  const { selected, setSelected } = useVisionContext()
+  const { selected, setSelected, visions } = useVisionContext()
   const { tasks, taskLoading } = useTaskStore()
   const [statusIds, setStatusIds] = useState(['ALL'])
   const { taskCreateOne } = useServiceTaskAdd()
@@ -44,7 +44,9 @@ export default function VisionListTask() {
     if (selected) {
       return t.visionId === selected && includeStatusId(statusId)
     }
-    return !t.visionId && includeStatusId(statusId)
+
+    // task with selected status and not int current visions
+    return includeStatusId(statusId) && !visions.find(v => v.id === t.visionId)
   })
 
   const onEnter = (v: string) => {

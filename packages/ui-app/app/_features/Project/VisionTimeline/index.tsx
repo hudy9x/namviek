@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useId } from 'react'
 import VisionMonthNavigator from '../Vision/VisionMonthNavigator'
 import TimelineItemDroppable from './TimelineItemDroppable'
+import TimelineTaskFilter from './TimelineTaskFilter'
 
 function AnimateView({
   visible,
@@ -41,14 +42,15 @@ export default function VisionTimeline({ visible }: { visible: boolean }) {
       className={`vision-timeline-container w-full px-3 pt-3 relative ${visible ? '' : 'hidden'
         }`}>
       {/* <Loading.Absolute enabled={loading} border /> */}
-      <div className="z-20 relative mb-3">
+      <div className="z-20 relative mb-3 flex items-center gap-2">
         <div className="w-[120px]">
           <VisionMonthNavigator />
         </div>
+        <TimelineTaskFilter />
       </div>
 
       <Timeline
-        height="5.75rem"
+        height="6.5rem"
         month={filter.month}
         year={ed.getFullYear()}
         onChange={({ id, start, end }) => {
