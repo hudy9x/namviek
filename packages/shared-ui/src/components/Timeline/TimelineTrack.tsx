@@ -7,6 +7,37 @@ import {
   ReactNode
 } from 'react'
 
+function getPointer() {
+  let pointElem = document.querySelector('#point') as HTMLDivElement
+
+  if (!pointElem) {
+    pointElem = document.createElement('div') as HTMLDivElement
+    pointElem.id = 'point'
+    document.body.appendChild(pointElem)
+  }
+
+  return pointElem
+}
+
+// for dubugging
+function startDebugPointer({ top, left }: { top: number, left: number }) {
+  const pointElem = getPointer()
+
+  pointElem.style.top = `${top}px`
+  pointElem.style.left = `${left}px`
+}
+
+// for debugging
+function moveDebugPointer({ width }: { width: number }) {
+  const pointElem = getPointer()
+  const col = document.querySelector('.timeline-day-col')
+  const colRect = col?.getBoundingClientRect()
+  const colW = colRect ? colRect.width : 0
+
+  pointElem.style.width = `${width}px`
+  pointElem.innerText = `${width} - ${Math.ceil(width / colW)}`
+}
+
 export default function TimelineTrack({
   id,
   title,
@@ -49,7 +80,7 @@ export default function TimelineTrack({
 
   const onResizeHead = useCallback(
     (ev: MouseEvent<HTMLDivElement>) => {
-      const { pageX } = ev
+      const { pageX, pageY } = ev
       if (startDragging.current) return
 
       type.current = 'head'
@@ -58,13 +89,16 @@ export default function TimelineTrack({
       startDragging.current = true
       initX.current = pageX
       setStopCounter(0)
+
+      // startPointer({ left: pageX, top: pageY })
+
     },
     [start]
   )
 
   const onResizeTail = useCallback(
     (ev: MouseEvent<HTMLDivElement>) => {
-      const { pageX } = ev
+      const { pageX, pageY } = ev
       if (startDragging.current) return
 
       type.current = 'tail'
@@ -73,6 +107,8 @@ export default function TimelineTrack({
       startDragging.current = true
       initX.current = pageX
       setStopCounter(0)
+
+      // startPointer({ left: pageX, top: pageY })
 
       // console.log(ev)
       // console.log('on start resize ')
@@ -87,16 +123,31 @@ export default function TimelineTrack({
 
       if (!startDragging.current) return
 
-      const extraCol = Math.ceil((pageX - initialX) / 32)
+      const col = document.querySelector('.timeline-day-col')
+      const colRect = col?.getBoundingClientRect()
+      const w = colRect ? colRect.width : 0
+
+      const deltaX = pageX - initialX
+      const totalCol = deltaX / w
+      const dir = totalCol < 0 ? -1 : 1
+      const extraCol = Math.ceil(Math.abs(totalCol)) * dir
+
+
+
+      // const debugWidth = Math.abs(pageX - initialX)
 
       if (type.current === 'tail') {
         const initEnd = initEndCol.current
         setPosition(prev => ({ ...prev, end: initEnd + extraCol }))
+
+        // movePointer({ width: debugWidth })
       }
 
       if (type.current === 'head') {
         const initStart = initStartCol.current
         setPosition(prev => ({ ...prev, start: initStart + extraCol }))
+
+        // movePointer({ width: debugWidth })
       }
     }
 

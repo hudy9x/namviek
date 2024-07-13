@@ -47,6 +47,10 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  .btn-icon {
+    @apply w-7 h-6 rounded-md bg-white border dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 transition-all;
+  }
 }
 
 [data-radix-popper-content-wrapper] div {
