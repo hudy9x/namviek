@@ -156,7 +156,7 @@ export default function Timeline({
                   : ''
                 return (
                   <div
-                    className={`h-[50px] border-b dark:border-gray-700 text-xs text-center leading-7 text-gray-500 dark:text-gray-400 ${isWeekend}`}
+                    className={`timeline-day-col h-[50px] border-b dark:border-gray-700 text-xs text-center leading-7 text-gray-500 dark:text-gray-400 ${isWeekend}`}
                     key={d.getTime()}>
                     {d.getDate()}
                     <div className="text-[11px] leading-4">{getDayName(d)}</div>

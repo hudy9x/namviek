@@ -1,3 +1,10 @@
+/* for debugging */
+#point {
+  @apply fixed top-0 left-0 bg-red-400;
+  height: 5px;
+}
+/* for debugging */
+
 .timeline-list {
   @apply w-[300px];
 }
