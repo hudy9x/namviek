@@ -6,12 +6,22 @@ import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { useProjectViewContext } from '../ProjectView/context'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import { ProjectViewType } from '@prisma/client'
+import MultiMemberPicker from '@/components/MultiMemberPicker'
+import { useUser } from '@goalie/nextjs'
 
 export default function FilterForm({ type }: { type?: ProjectViewType }) {
   const { customView, setCustomView, filter, setFilterValue } =
     useProjectViewContext()
   const hidden = customView ? '' : 'hidden'
-  const { date, point, priority, groupBy, statusIds } = filter
+  const { user } = useUser()
+  const { date, point, priority, groupBy, statusIds, assigneeIds } = filter
+
+  const updatedAssigneeIds = assigneeIds.map(uid => {
+    if (uid === 'ME' && user?.id) {
+      return user.id
+    }
+    return uid
+  })
 
   return (
     <>
@@ -74,6 +84,15 @@ export default function FilterForm({ type }: { type?: ProjectViewType }) {
             }}
           />
         ) : null}
+
+        {type === ProjectViewType.LIST ||
+          type === ProjectViewType.BOARD ||
+          type === ProjectViewType.CALENDAR ||
+          type === ProjectViewType.GOAL ?
+          <MultiMemberPicker compact={true} all={true} value={updatedAssigneeIds} onChange={val => {
+            setFilterValue('assigneeIds', val)
+          }} />
+          : null}
       </div>
 
       <div className={`mb-6 ${hidden}`}>

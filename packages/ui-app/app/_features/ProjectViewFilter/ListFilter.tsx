@@ -18,7 +18,7 @@ export default function ProjectViewFilterByList({ type, desc, isUpdate, onAdd }:
       <h2 className="text-xl mb-3">List</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>
 
-      <FilterForm />
+      <FilterForm type="LIST" />
       <ProjectViewForMe />
       <div className="text-right">
         <Button

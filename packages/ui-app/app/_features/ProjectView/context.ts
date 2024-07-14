@@ -8,6 +8,7 @@ export interface IBoardFilter {
   point: string
   groupBy: ETaskFilterGroupByType
   statusIds: string[]
+  assigneeIds: string[]
 }
 
 interface IProjectViewContextProps {
@@ -48,6 +49,7 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
     priority: 'ALL',
     point: "-1",
     statusIds: ['ALL'],
+    assigneeIds: ['ME'],
     groupBy: ETaskFilterGroupByType.STATUS
   },
   setFilter: () => { console.log(1) }
