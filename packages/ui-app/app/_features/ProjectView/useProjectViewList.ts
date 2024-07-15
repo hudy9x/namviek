@@ -20,6 +20,16 @@ export const useProjectViewListHandler = (
   const { addAllView } = useProjectViewStore()
   const { doReRender } = useReRenderView()
   const key = `PROJECT_VIEW_${projectId}`
+
+  const reRenderViewIfNoCacheFound = () => {
+    // only re-render the view in case no cache found
+    localforage.getItem(key).then(res => {
+      if (!res) {
+        doReRender()
+      }
+    })
+
+  }
   const fetchNCache = () => {
     const controller = new AbortController()
 
@@ -44,7 +54,9 @@ export const useProjectViewListHandler = (
 
         localforage.setItem(key, views)
         views.forEach(v => projectViewMap.set(v.id, v.type))
-        doReRender()
+
+        reRenderViewIfNoCacheFound()
+
       })
       .finally(() => {
         cb && cb()
