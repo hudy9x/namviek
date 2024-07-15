@@ -40,7 +40,6 @@ export default function ProjectViewModalForm({
 
   const hideModal = () => {
     setTimeout(() => {
-      console.log('hide')
       setLoading(false)
       setVisible(false)
       setCustomView(false)
@@ -89,7 +88,6 @@ export default function ProjectViewModalForm({
 
   const updateHandler = () => {
     const id = updateId
-    const dataFilter = filter
     const newDataFilter = refactorAssigneeList(filter)
     const dataView = filter as unknown as Pick<ProjectView, 'data'>
 
