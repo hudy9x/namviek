@@ -7,6 +7,7 @@ import { getLocalCache, setLocalCache } from '@shared/libs'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useReRenderView } from './useReRenderView'
 
 type TCurrentViewType = ProjectViewType | ''
 
@@ -17,7 +18,18 @@ export const useProjectViewListHandler = (
   cb?: () => void
 ) => {
   const { addAllView } = useProjectViewStore()
+  const { doReRender } = useReRenderView()
   const key = `PROJECT_VIEW_${projectId}`
+
+  const reRenderViewIfNoCacheFound = () => {
+    // only re-render the view in case no cache found
+    localforage.getItem(key).then(res => {
+      if (!res) {
+        doReRender()
+      }
+    })
+
+  }
   const fetchNCache = () => {
     const controller = new AbortController()
 
@@ -42,6 +54,9 @@ export const useProjectViewListHandler = (
 
         localforage.setItem(key, views)
         views.forEach(v => projectViewMap.set(v.id, v.type))
+
+        reRenderViewIfNoCacheFound()
+
       })
       .finally(() => {
         cb && cb()
