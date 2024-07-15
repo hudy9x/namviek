@@ -50,6 +50,7 @@ export default class ProjectViewController extends BaseController {
         point: string
         groupBy: string
         statusIds: string[]
+        assigneeIds: string[]
       }
     }
 
@@ -68,7 +69,8 @@ export default class ProjectViewController extends BaseController {
           priority: data.priority,
           point: data.point,
           groupBy: data.groupBy,
-          statusIds: data.statusIds
+          statusIds: data.statusIds,
+          assigneeIds: data.assigneeIds
         }
         : {},
 
@@ -117,6 +119,7 @@ export default class ProjectViewController extends BaseController {
         point: string
         groupBy: string
         statusIds: string[]
+        assigneeIds: string[]
       }
     }
 
@@ -130,7 +133,8 @@ export default class ProjectViewController extends BaseController {
           priority: data.priority,
           point: data.point,
           groupBy: data.groupBy,
-          statusIds: data.statusIds
+          statusIds: data.statusIds,
+          assigneeIds: data.assigneeIds
         }
         : {},
       type,

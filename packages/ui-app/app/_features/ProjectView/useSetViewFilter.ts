@@ -30,6 +30,7 @@ export default function useSetViewFilter() {
     ) {
       const data = view.data as unknown as IBoardFilter
 
+
       setFilter(filter => ({
         ...filter,
         ...{
@@ -37,6 +38,7 @@ export default function useSetViewFilter() {
           groupBy: data.groupBy,
           priority: data.priority,
           statusIds: data.statusIds,
+          assigneeIds: data.assigneeIds,
           point: data.point
         }
       }))
