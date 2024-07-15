@@ -8,6 +8,7 @@ function TimelineTaskFilter() {
   const { filter, setFilterValue } = useTaskFilter()
   const { assigneeIds } = filter
 
+  console.log('assigneeIds', assigneeIds)
   const updatedAssigneeIds = assigneeIds.map(uid => {
     if (uid === 'ME' && user?.id) {
       return user.id

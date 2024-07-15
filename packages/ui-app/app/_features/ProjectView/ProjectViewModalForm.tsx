@@ -48,15 +48,21 @@ export default function ProjectViewModalForm({
     }, 500)
   }
 
-  const refactorAssigneeList = (filter: IBoardFilter) => {
+  const replaceUidToRelativeValue = (filter: IBoardFilter) => {
     const cloneFilter = { ...filter }
-    cloneFilter.assigneeIds = cloneFilter.assigneeIds.map(uid => {
-      if (user?.id === uid) {
-        return "ME"
-      }
 
-      return uid
-    })
+    if (type === ProjectViewType.GOAL) {
+      cloneFilter.assigneeIds = ['ALL']
+    } else {
+      cloneFilter.assigneeIds = cloneFilter.assigneeIds.map(uid => {
+        if (user?.id === uid) {
+          return "ME"
+        }
+
+        return uid
+      })
+    }
+
 
     return cloneFilter
   }
@@ -64,7 +70,8 @@ export default function ProjectViewModalForm({
   const addHandler = () => {
 
     // setLoading(false)
-    const newFilter = refactorAssigneeList(filter)
+    const newFilter = replaceUidToRelativeValue(filter)
+    const isCustomView = customView || type === ProjectViewType.GOAL
 
     addProjectView({
       onlyMe: onlyMe || false,
@@ -72,7 +79,7 @@ export default function ProjectViewModalForm({
       name: viewName || name,
       type,
       projectId,
-      data: customView ? newFilter : undefined
+      data: isCustomView ? newFilter : undefined
     })
       .catch(err => {
         hideModal()
@@ -88,7 +95,7 @@ export default function ProjectViewModalForm({
 
   const updateHandler = () => {
     const id = updateId
-    const newDataFilter = refactorAssigneeList(filter)
+    const newDataFilter = replaceUidToRelativeValue(filter)
     const dataView = filter as unknown as Pick<ProjectView, 'data'>
 
     updateView(id, {

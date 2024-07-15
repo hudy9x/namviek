@@ -30,7 +30,6 @@ export default function useSetViewFilter() {
     ) {
       const data = view.data as unknown as IBoardFilter
 
-
       setFilter(filter => ({
         ...filter,
         ...{
