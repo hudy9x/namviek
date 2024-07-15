@@ -1,5 +1,5 @@
 import { ProjectView, ProjectViewType } from '@prisma/client'
-import { useProjectViewContext } from './context'
+import { IBoardFilter, useProjectViewContext } from './context'
 
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -17,6 +17,7 @@ import { projectView } from '@/services/projectView'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { useReRenderView } from './useReRenderView'
 import { projectViewMap } from './useProjectViewList'
+import { useUser } from '@goalie/nextjs'
 
 export default function ProjectViewModalForm({
   type,
@@ -27,6 +28,7 @@ export default function ProjectViewModalForm({
   name: string
   desc: string
 }) {
+  const { user } = useUser()
   const { projectId } = useParams()
   const { setVisible, name: viewName, icon, onlyMe, setOnlyMe, setName, filter, customView, setCustomView } = useProjectViewContext()
   const [loading, setLoading] = useState(false)
@@ -38,7 +40,6 @@ export default function ProjectViewModalForm({
 
   const hideModal = () => {
     setTimeout(() => {
-      console.log('hide')
       setLoading(false)
       setVisible(false)
       setCustomView(false)
@@ -47,7 +48,30 @@ export default function ProjectViewModalForm({
     }, 500)
   }
 
+  const replaceUidToRelativeValue = (filter: IBoardFilter) => {
+    const cloneFilter = { ...filter }
+
+    if (type === ProjectViewType.GOAL) {
+      cloneFilter.assigneeIds = ['ALL']
+    } else {
+      cloneFilter.assigneeIds = cloneFilter.assigneeIds.map(uid => {
+        if (user?.id === uid) {
+          return "ME"
+        }
+
+        return uid
+      })
+    }
+
+
+    return cloneFilter
+  }
+
   const addHandler = () => {
+
+    // setLoading(false)
+    const newFilter = replaceUidToRelativeValue(filter)
+    const isCustomView = customView || type === ProjectViewType.GOAL
 
     addProjectView({
       onlyMe: onlyMe || false,
@@ -55,7 +79,7 @@ export default function ProjectViewModalForm({
       name: viewName || name,
       type,
       projectId,
-      data: customView ? filter : undefined
+      data: isCustomView ? newFilter : undefined
     })
       .catch(err => {
         hideModal()
@@ -71,7 +95,7 @@ export default function ProjectViewModalForm({
 
   const updateHandler = () => {
     const id = updateId
-    const dataFilter = filter
+    const newDataFilter = replaceUidToRelativeValue(filter)
     const dataView = filter as unknown as Pick<ProjectView, 'data'>
 
     updateView(id, {
@@ -92,11 +116,12 @@ export default function ProjectViewModalForm({
     setFilter(filter => ({
       ...filter,
       ...{
-        date: dataFilter.date,
-        groupBy: dataFilter.groupBy,
-        priority: dataFilter.priority,
-        statusIds: dataFilter.statusIds,
-        point: dataFilter.point
+        date: newDataFilter.date,
+        groupBy: newDataFilter.groupBy,
+        priority: newDataFilter.priority,
+        statusIds: newDataFilter.statusIds,
+        point: newDataFilter.point,
+        assigneeIds: newDataFilter.assigneeIds
       }
     }))
 

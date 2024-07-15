@@ -46,13 +46,17 @@ export default function TaskFilter({
     statusIds
   } = filter
 
-  const updatedAssigneeIds = assigneeIds.map(uid => {
+  if (!assigneeIds) {
+    console.error(`${assigneeIds} is undefined, use ALL for default`)
+  }
+
+  const updatedAssigneeIds = assigneeIds ? assigneeIds.map(uid => {
     if (uid === 'ME' && user?.id) {
       return user.id
     }
 
     return uid
-  })
+  }) : ['ALL']
 
   const isDateRange = date === 'date-range'
   const isCalendarMode = currentViewType === ProjectViewType.CALENDAR

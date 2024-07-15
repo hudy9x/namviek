@@ -1,10 +1,8 @@
-import { Dialog, messageError, setFixLoading } from '@shared/ui'
+import { Dialog, messageError } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewModalProvider } from './context'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
-import { projectView } from '@/services/projectView'
-import { ProjectView } from '@prisma/client'
 import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
 
@@ -26,6 +24,7 @@ export default function ProjectViewUpdate({
     priority: 'ALL',
     point: "-1",
     statusIds: ['ALL'],
+    assigneeIds: ['ME'],
     groupBy: ETaskFilterGroupByType.STATUS
   })
 
@@ -77,6 +76,7 @@ export default function ProjectViewUpdate({
         priority: 'ALL',
         point: "-1",
         statusIds: ['ALL'],
+        assigneeIds: ['ME'],
         groupBy: ETaskFilterGroupByType.STATUS
       })
     }

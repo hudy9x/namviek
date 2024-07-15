@@ -16,6 +16,7 @@ export default function ProjectViewCreate() {
     priority: 'ALL',
     point: "-1",
     statusIds: ['ALL'],
+    assigneeIds: ['ME'],
     groupBy: ETaskFilterGroupByType.STATUS
   })
 

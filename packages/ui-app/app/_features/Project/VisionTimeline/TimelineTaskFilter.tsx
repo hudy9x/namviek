@@ -8,15 +8,13 @@ function TimelineTaskFilter() {
   const { filter, setFilterValue } = useTaskFilter()
   const { assigneeIds } = filter
 
-  const updatedAssigneeIds = assigneeIds.map(uid => {
+  const updatedAssigneeIds = assigneeIds ? assigneeIds.map(uid => {
     if (uid === 'ME' && user?.id) {
       return user.id
     }
 
     return uid
-  })
-
-  console.log('update assignee', updatedAssigneeIds)
+  }) : []
 
   return <div>
     <MultiMemberPicker value={updatedAssigneeIds}

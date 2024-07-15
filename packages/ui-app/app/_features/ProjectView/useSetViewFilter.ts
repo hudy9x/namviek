@@ -37,6 +37,7 @@ export default function useSetViewFilter() {
           groupBy: data.groupBy,
           priority: data.priority,
           statusIds: data.statusIds,
+          assigneeIds: data.assigneeIds,
           point: data.point
         }
       }))
