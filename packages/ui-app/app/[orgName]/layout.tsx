@@ -66,7 +66,7 @@ function RegisterServiceWorker() {
   useEffect(() => {
     if ('serviceWorker' in window.navigator) {
       window.navigator.serviceWorker
-        .register('/sw/cache-pages.js')
+        .register('/sw-cache-pages.js')
         .then(registration => console.log('Scope is:', registration, registration.scope))
     }
   })
