@@ -9,6 +9,7 @@ import { ReactNode, useEffect } from 'react'
 import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
 import { setLocalCache } from '@shared/libs'
+import { useParams } from 'next/navigation'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
@@ -60,6 +61,18 @@ function OrgDetailFetchGlobalData() {
   return <></>
 }
 
+function RegisterServiceWorker() {
+  const { orgName } = useParams()
+  useEffect(() => {
+    if ('serviceWorker' in window.navigator) {
+      window.navigator.serviceWorker
+        .register('/sw/cache-pages.js')
+        .then(registration => console.log('Scope is:', registration, registration.scope))
+    }
+  })
+  return <></>
+}
+
 export default function ProjectLayout({
   children
 }: {
@@ -67,6 +80,7 @@ export default function ProjectLayout({
 }) {
   return (
     <>
+      <RegisterServiceWorker />
       <OrgDetailFetchGlobalData />
       <OrgDetailClearGlobalData />
       <OrgDetailContent>{children}</OrgDetailContent>
