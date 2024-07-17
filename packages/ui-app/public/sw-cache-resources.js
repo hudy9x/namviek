@@ -1,5 +1,5 @@
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v1.1'
+const cacheVersion = 'v1.2'
 
 const cacheClone = async (e) => {
   const res = await fetch(e.request);
@@ -19,25 +19,53 @@ const deleteOldCaches = async () => {
   })
 }
 
+const cacheFirstThenFetch = async (cacheName, event) => {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(event.request)
+
+  if (cachedResponse) {
+    event.waitUntil( // Schedule a background update
+      fetch(event.request).then((networkResponse) => {
+        cache.put(event.request, networkResponse.clone());
+      })
+    );
+
+    return cachedResponse
+  }
+
+  const res = await fetch(event.request);
+  const resClone = res.clone();
+
+  await cache.put(event.request, resClone);
+  return res;
+}
+
 
 const isEmojiResources = (url) => {
   return url.includes('cdn.jsdelivr.net/npm/emoji-datasource-twitter/img')
 }
 
-const cacheEmojiResources = async (e) => {
-  const cache = await caches.open(cacheVersion);
-
-  const res = await fetch(e.request);
-  const resClone = res.clone();
-
-  await cache.put(e.request, resClone);
-  return res;
+const cacheEmojiResources = async (event) => {
+  cacheFirstThenFetch(cacheVersion, event)
 }
 
-const cachedNextStaticResources = async () => {
-  console.log(1)
+const isNextjsStaticResource = (url) => {
+  return url.includes('_next/static');
+
 }
 
+const cachedNextStaticResources = async (event) => {
+  cacheFirstThenFetch(cacheVersion, event)
+}
+
+const isOtherNextResource = (url) => {
+  return url.includes('__nextjs_original-stack-frame');
+}
+
+const isApiRequest = (url) => {
+  return url.includes('/api/');
+
+}
 const fetchEvent = () => {
 
   // delete old caches
@@ -54,13 +82,27 @@ const fetchEvent = () => {
 
     const url = e.request.url
     if (isEmojiResources(url)) {
-      console.log(url)
       cacheEmojiResources(e)
       return
     }
 
-    // cache _next/static
-    cachedNextStaticResources()
+    if (isNextjsStaticResource(url)) {
+      cachedNextStaticResources(e)
+      return
+    }
+
+    if (isOtherNextResource(url)) {
+      e.respondWith(fetch(e.request))
+      return
+    }
+
+    if (isApiRequest(url)) {
+      // console.log('request url', url)
+      e.respondWith(fetch(e.request))
+      return
+    }
+
+    console.log('request url', url)
 
     e.respondWith(fetch(e.request))
     // e.respondWith(

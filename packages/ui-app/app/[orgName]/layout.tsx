@@ -62,11 +62,10 @@ function OrgDetailFetchGlobalData() {
 }
 
 function RegisterServiceWorker() {
-  const { orgName } = useParams()
   useEffect(() => {
     if ('serviceWorker' in window.navigator) {
       window.navigator.serviceWorker
-        .register('/sw-cache-pages.js')
+        .register('/sw-cache-resources.js')
         .then(registration => console.log('Scope is:', registration, registration.scope))
     }
   })
