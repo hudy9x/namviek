@@ -1,5 +1,5 @@
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v0.1'
+const cacheVersion = 'v0.2'
 
 const cacheClone = async (e) => {
   const res = await fetch(e.request);
@@ -133,6 +133,12 @@ const fetchEvent = () => {
       return
     }
 
+    if (isApiRequest(url)) {
+      // console.log('request url', url)
+      // e.respondWith(fetch(e.request))
+      return
+    }
+
     if (isProjectPage(url)) {
       cacheProjectPage(e)
       return
@@ -140,12 +146,6 @@ const fetchEvent = () => {
 
     if (isGmailAvatar(url)) {
       cacheGmailAvatar(e)
-    }
-
-    if (isApiRequest(url)) {
-      // console.log('request url', url)
-      // e.respondWith(fetch(e.request))
-      return
     }
 
   });
