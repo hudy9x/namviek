@@ -48,7 +48,7 @@ export default function MeetingRoomList() {
   // only clear fixed loading as the page unmount
   useEffect(() => {
     return () => {
-      setFixLoading(false)
+      // setFixLoading(false)
     }
   })
 
