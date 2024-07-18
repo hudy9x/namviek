@@ -1,5 +1,5 @@
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v1.2'
+const cacheVersion = 'v0.1'
 
 const cacheClone = async (e) => {
   const res = await fetch(e.request);
@@ -17,6 +17,21 @@ const deleteOldCaches = async () => {
     console.log('delete key', k)
     await caches.delete(k)
   })
+}
+
+const cacheResource = async (cacheName, event) => {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(event.request)
+
+  if (cachedResponse) {
+    return cachedResponse
+  }
+
+  const res = await fetch(event.request);
+  const resClone = res.clone();
+
+  await cache.put(event.request, resClone);
+  return res;
 }
 
 const cacheFirstThenFetch = async (cacheName, event) => {
@@ -46,7 +61,7 @@ const isEmojiResources = (url) => {
 }
 
 const cacheEmojiResources = async (event) => {
-  cacheFirstThenFetch(cacheVersion, event)
+  cacheResource(cacheVersion, event)
 }
 
 const isNextjsStaticResource = (url) => {
@@ -55,32 +70,45 @@ const isNextjsStaticResource = (url) => {
 }
 
 const cachedNextStaticResources = async (event) => {
-  cacheFirstThenFetch(cacheVersion, event)
+  cacheResource(cacheVersion, event)
 }
 
 const isOtherNextResource = (url) => {
   return url.includes('__nextjs_original-stack-frame');
 }
 
+const cacheOtherNextResource = async (event) => {
+  cacheResource(cacheVersion, event)
+}
+
+const cacheProjectPage = async (event) => {
+  cacheFirstThenFetch(cacheVersion, event)
+}
+
 const isApiRequest = (url) => {
   return url.includes('/api/');
+}
+
+const isProjectPage = (url) => {
+  const urlObj = new URL(url)
+
+  if (!urlObj.pathname) return
+
+  const path = urlObj.pathname.split('/').filter(Boolean)
+
+  return path.length === 3 && path[1] === 'project'
 
 }
+
 const fetchEvent = () => {
 
   // delete old caches
   deleteOldCaches()
 
-
-  // return default request 
-
   self.addEventListener('fetch', (e) => {
-    // console.log('----------------------')
-    // console.log('e.request:', e.request.method, e.request.url)
+    const url = e.request.url
 
     // cache fixed images like emoji picker
-
-    const url = e.request.url
     if (isEmojiResources(url)) {
       cacheEmojiResources(e)
       return
@@ -92,24 +120,25 @@ const fetchEvent = () => {
     }
 
     if (isOtherNextResource(url)) {
-      e.respondWith(fetch(e.request))
+      cacheOtherNextResource(e)
+      // e.respondWith(fetch(e.request))
+      return
+    }
+
+    if (isProjectPage(url)) {
+      console.log('project url', url)
+      cacheProjectPage(e)
       return
     }
 
     if (isApiRequest(url)) {
       // console.log('request url', url)
-      e.respondWith(fetch(e.request))
+      // e.respondWith(fetch(e.request))
       return
     }
 
-    console.log('request url', url)
 
-    e.respondWith(fetch(e.request))
-    // e.respondWith(
-    //   cacheClone(e)
-    //     .catch(() => caches.match(e.request))
-    //     .then((res) => res)
-    // );
+    // e.respondWith(fetch(e.request))
   });
 };
 

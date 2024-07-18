@@ -61,17 +61,6 @@ function OrgDetailFetchGlobalData() {
   return <></>
 }
 
-function RegisterServiceWorker() {
-  useEffect(() => {
-    if ('serviceWorker' in window.navigator) {
-      window.navigator.serviceWorker
-        .register('/sw-cache-resources.js')
-        .then(registration => console.log('Scope is:', registration, registration.scope))
-    }
-  })
-  return <></>
-}
-
 export default function ProjectLayout({
   children
 }: {
@@ -79,7 +68,6 @@ export default function ProjectLayout({
 }) {
   return (
     <>
-      <RegisterServiceWorker />
       <OrgDetailFetchGlobalData />
       <OrgDetailClearGlobalData />
       <OrgDetailContent>{children}</OrgDetailContent>
