@@ -1,14 +1,5 @@
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v0.2'
-
-const cacheClone = async (e) => {
-  const res = await fetch(e.request);
-  const resClone = res.clone();
-
-  const cache = await caches.open(cacheVersion);
-  await cache.put(e.request, resClone);
-  return res;
-};
+const cacheVersion = 'v0.4'
 
 const deleteOldCaches = async () => {
   const keys = await caches.keys()
@@ -82,7 +73,7 @@ const cacheOtherNextResource = async (event) => {
 }
 
 const cacheProjectPage = async (event) => {
-  cacheFirstThenFetch(cacheVersion, event)
+  cacheResource(cacheVersion, event)
 }
 
 const isApiRequest = (url) => {
@@ -105,7 +96,7 @@ const isGmailAvatar = (url) => {
 }
 
 const cacheGmailAvatar = async (event) => {
-  cacheFirstThenFetch(cacheVersion, event)
+  cacheResource(cacheVersion, event)
 }
 
 const fetchEvent = () => {
