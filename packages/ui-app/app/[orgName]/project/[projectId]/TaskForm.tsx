@@ -11,6 +11,7 @@ import { useProjectStatusStore } from 'packages/ui-app/store/status'
 import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
+import { useUser } from '@goalie/nextjs'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -61,8 +62,13 @@ export default function TaskForm({
   const params = useParams()
   const [loading, setLoading] = useState(false)
   const { statuses } = useProjectStatusStore()
+  const { user } = useUser()
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
   // const submitTimeout = useRef(0)
+
+  if(user?.id) {
+    refDefaultValue.current = { ...refDefaultValue.current, assigneeIds:[user.id] }
+  }
 
   if (dueDate) {
     refDefaultValue.current = { ...refDefaultValue.current, dueDate }
