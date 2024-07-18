@@ -9,7 +9,6 @@ import { ReactNode, useEffect } from 'react'
 import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
 import { setLocalCache } from '@shared/libs'
-import { useParams } from 'next/navigation'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component

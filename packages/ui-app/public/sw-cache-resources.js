@@ -100,6 +100,14 @@ const isProjectPage = (url) => {
 
 }
 
+const isGmailAvatar = (url) => {
+  return url.includes('lh3.googleusercontent.com');
+}
+
+const cacheGmailAvatar = async (event) => {
+  cacheFirstThenFetch(cacheVersion, event)
+}
+
 const fetchEvent = () => {
 
   // delete old caches
@@ -126,9 +134,12 @@ const fetchEvent = () => {
     }
 
     if (isProjectPage(url)) {
-      console.log('project url', url)
       cacheProjectPage(e)
       return
+    }
+
+    if (isGmailAvatar(url)) {
+      cacheGmailAvatar(e)
     }
 
     if (isApiRequest(url)) {
@@ -137,8 +148,6 @@ const fetchEvent = () => {
       return
     }
 
-
-    // e.respondWith(fetch(e.request))
   });
 };
 
