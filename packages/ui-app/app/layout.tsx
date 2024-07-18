@@ -7,7 +7,6 @@ import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@goalie/nextjs'
 
 import dynamic from 'next/dynamic'
-import RegisterServiceWorker from './_features/ServiceWorker'
 const inter = Inter({ subsets: ['latin'] })
 
 const PushNotification = dynamic(
@@ -34,7 +33,6 @@ export default function RootLayout({
         <body className={inter.className}>
           <RootLayoutComp>{children}</RootLayoutComp>
           <PushNotification />
-          <RegisterServiceWorker />
         </body>
       </html>
     </GoalieProvider>
