@@ -8,6 +8,7 @@ import { Task, TaskPriority } from '@prisma/client'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { useParams } from 'next/navigation'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
+import { useUser } from '@goalie/nextjs'
 
 export const BoardActionCreateTaskWithIcon = ({
   groupId
@@ -94,11 +95,17 @@ export const BoardActionCreateTask = ({ groupId }: { groupId: string }) => {
     useTaskFilterContext()
   const [visible, setVisible] = useState(false)
   const { projectId } = useParams()
+  const { user } = useUser()
   const { handleSubmit } = useHandleSubmit(() => {
     // setVisible(false)
   })
 
+  const userId = user?.id;
   const defaultData: ITaskDefaultValues = { ...defaultFormikValues }
+  
+  if (userId) {
+    defaultData.assigneeIds = [userId]
+  }
 
   if (isGroupbyStatus) {
     defaultData.taskStatusId = groupId

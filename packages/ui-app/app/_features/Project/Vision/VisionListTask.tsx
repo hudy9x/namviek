@@ -6,6 +6,9 @@ import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { useEffect, useState } from 'react'
+import { useUser } from '@goalie/nextjs'
+
+
 import VisionTaskItemDraggable from './VisionTaskItemDraggable'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import { motion } from "framer-motion";
@@ -31,6 +34,7 @@ export default function VisionListTask() {
   const { projectId } = useParams()
   const { selected, setSelected, visions } = useVisionContext()
   const { tasks, taskLoading } = useTaskStore()
+  const { user } = useUser()
   const [statusIds, setStatusIds] = useState(['ALL'])
   const { taskCreateOne } = useServiceTaskAdd()
 
@@ -50,7 +54,8 @@ export default function VisionListTask() {
   })
 
   const onEnter = (v: string) => {
-    if (!v) {
+    const userId = user?.id
+    if (!v || !userId) {
       return
     }
 
@@ -58,6 +63,7 @@ export default function VisionListTask() {
       dueDate: new Date(),
       title: v,
       projectId,
+      assigneeIds: [userId],
       visionId: selected
     })
   }

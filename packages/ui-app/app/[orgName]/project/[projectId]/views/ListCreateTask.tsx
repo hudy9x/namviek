@@ -1,6 +1,7 @@
 import { ETaskFilterGroupByType } from '@/features/TaskFilter/context'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
+import { useUser } from '@goalie/nextjs'
 import { Task, TaskPriority } from '@prisma/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState, KeyboardEvent } from 'react'
@@ -19,6 +20,7 @@ export default function ListCreateTask({
   const ref = useRef<HTMLInputElement>(null)
   const { taskCreateOne } = useServiceTaskAdd()
   const { projectId } = useParams()
+  const { user } = useUser()
 
   const handleClickOutside = () => {
     if (visible) {
@@ -40,6 +42,7 @@ export default function ListCreateTask({
   const onKeyup = (ev: KeyboardEvent<HTMLInputElement>) => {
     const key = ev.key
     const target = ev.target as HTMLInputElement
+    const userId = user?.id;
 
     if (key.toLowerCase() === 'escape') {
       setVisible(false)
@@ -55,6 +58,10 @@ export default function ListCreateTask({
       dueDate: new Date(),
       title: value,
       projectId
+    }
+
+    if (userId) {
+      data.assigneeIds = [userId]
     }
 
     if (type === ETaskFilterGroupByType.STATUS) {
