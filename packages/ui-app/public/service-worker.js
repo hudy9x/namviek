@@ -2,7 +2,9 @@ importScripts("https://js.pusher.com/beams/service-worker.js");
 // importScripts('sw-cache-resources.js')
 
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v0.18'
+const cacheVersion = 'v0.25'
+
+const SW_CACHED_TIME = 'sw-cached-time'
 
 const deleteOldCaches = async () => {
   const keys = await caches.keys()
@@ -18,14 +20,24 @@ const cacheResource = async (cacheName, event) => {
   const cache = await caches.open(cacheName);
   const cachedResponse = await cache.match(url)
 
+  // const cachedTime = cachedResponse.headers.get(SW_CACHED_TIME)
+  // console.log('media cached', cachedTime, new Date())
+  // if (isMediaResources(url)) {
+  //   const cachedTime = cachedResponse.headers.get(SW_CACHED_TIME)
+  //   console.log('media cached', cachedTime, new Date())
+  // }
+
   if (cachedResponse) {
     return cachedResponse
   }
 
   const res = await fetch(event.request);
+  // if (res.ok) {
   const resClone = res.clone();
-
+  const cachedTime = new Date()
+  resClone.headers.set(SW_CACHED_TIME, cachedTime)
   await cache.put(url, resClone);
+  // }
   return res;
 }
 
@@ -48,9 +60,10 @@ const cacheFirstThenFetch = async (cacheName, event) => {
   }
 
   const res = await fetch(event.request);
+  // if (res.ok) {
   const resClone = res.clone();
-
   await cache.put(url, resClone);
+  // }
   return res;
 }
 
@@ -103,6 +116,10 @@ const isGmailAvatar = (url) => {
   return url.includes('lh3.googleusercontent.com');
 }
 
+const isMediaResources = (url) => {
+  return /\.(png|svg|gif|jpeg|jpg|bmp|avif|ico)$/.test(url)
+}
+
 const cacheGmailAvatar = async (event) => {
   cacheResource(cacheVersion, event)
 }
@@ -118,6 +135,12 @@ const fetchEvent = () => {
     // cache fixed images like emoji picker
     if (isEmojiResources(url)) {
       cacheEmojiResources(e)
+      return
+    }
+
+    if (isMediaResources(url)) {
+      console.log('media resource:', url)
+      cacheResource(cacheVersion, e)
       return
     }
 
@@ -145,6 +168,8 @@ const fetchEvent = () => {
       cacheProjectPage(e)
       return
     }
+
+    console.log('other url', url)
 
   });
 };
