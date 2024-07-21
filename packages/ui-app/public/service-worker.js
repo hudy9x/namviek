@@ -2,9 +2,8 @@ importScripts("https://js.pusher.com/beams/service-worker.js");
 // importScripts('sw-cache-resources.js')
 
 // everytime you deploy new frontend version, please update the cache version
-const cacheVersion = 'v0.25'
+const cacheVersion = 'v0.52'
 
-const SW_CACHED_TIME = 'sw-cached-time'
 
 const deleteOldCaches = async () => {
   const keys = await caches.keys()
@@ -20,51 +19,26 @@ const cacheResource = async (cacheName, event) => {
   const cache = await caches.open(cacheName);
   const cachedResponse = await cache.match(url)
 
-  // const cachedTime = cachedResponse.headers.get(SW_CACHED_TIME)
-  // console.log('media cached', cachedTime, new Date())
-  // if (isMediaResources(url)) {
-  //   const cachedTime = cachedResponse.headers.get(SW_CACHED_TIME)
-  //   console.log('media cached', cachedTime, new Date())
-  // }
-
   if (cachedResponse) {
     return cachedResponse
   }
 
   const res = await fetch(event.request);
-  // if (res.ok) {
-  const resClone = res.clone();
-  const cachedTime = new Date()
-  resClone.headers.set(SW_CACHED_TIME, cachedTime)
-  await cache.put(url, resClone);
-  // }
+  if (res.ok) {
+    const resClone = res.clone();
+    await cache.put(url, resClone);
+  }
   return res;
 }
 
-const cacheFirstThenFetch = async (cacheName, event) => {
+const updateCache = async (event) => { // Separate promise for update
   const url = event.request.url
-  const cache = await caches.open(cacheName);
-  const cachedResponse = await cache.match(url)
-
-  // const updatePromise = async () => { // Separate promise for update
-  //   const res = await fetch(event.request);
-  //   const resClone = res.clone();
-  //   console.log('return cache 3', event.request.url)
-  //   await cache.put(event.request, resClone);
-  // }
-
-  if (cachedResponse) {
-    // event.waitUntil(updatePromise);
-    console.log('return from cached')
-    return cachedResponse
-  }
-
+  const cache = await caches.open(cacheVersion);
   const res = await fetch(event.request);
-  // if (res.ok) {
   const resClone = res.clone();
-  await cache.put(url, resClone);
-  // }
-  return res;
+
+  console.log('cache updated 2')
+  return cache.put(url, resClone);
 }
 
 
@@ -73,7 +47,7 @@ const isEmojiResources = (url) => {
 }
 
 const cacheEmojiResources = async (event) => {
-  cacheResource(cacheVersion, event)
+  return cacheResource(cacheVersion, event)
 }
 
 const isNextjsStaticResource = (url) => {
@@ -82,34 +56,11 @@ const isNextjsStaticResource = (url) => {
 }
 
 const cachedNextStaticResources = async (event) => {
-  cacheResource(cacheVersion, event)
-}
-
-const isOtherNextResource = (url) => {
-  return url.includes('__nextjs_original-stack-frame');
-}
-
-const cacheOtherNextResource = async (event) => {
-  cacheResource(cacheVersion, event)
-}
-
-const cacheProjectPage = async (event) => {
-  cacheFirstThenFetch(cacheVersion, event)
+  return cacheResource(cacheVersion, event)
 }
 
 const isApiRequest = (url) => {
   return url.includes('/api/');
-}
-
-const isProjectPage = (url) => {
-  const urlObj = new URL(url)
-
-  if (!urlObj.pathname) return
-
-  const path = urlObj.pathname.split('/').filter(Boolean)
-
-  return path.length === 3 && path[1] === 'project'
-
 }
 
 const isGmailAvatar = (url) => {
@@ -121,8 +72,30 @@ const isMediaResources = (url) => {
 }
 
 const cacheGmailAvatar = async (event) => {
-  cacheResource(cacheVersion, event)
+  return cacheResource(cacheVersion, event)
 }
+
+const isMutateMethod = (method) => ['PUT', 'DELETE', 'POST'].includes(method)
+
+const isApiStatus = url => url.includes('api/project/status')
+
+const deleteCache = async (key) => {
+  const cache = await caches.open(cacheVersion);
+  await cache.delete(key)
+}
+
+const handleStatusApiCache = async (method, url, event) => {
+  if (isMutateMethod(method)) {
+    console.log('delete old cache', url)
+    await deleteCache(url)
+    const res = await fetch(event.request);
+    return res
+  }
+  console.log('set new cache', url)
+  return cacheResource(cacheVersion, event)
+}
+
+const isGetMethod = (event) => event.request && event.request.method === 'GET'
 
 const fetchEvent = () => {
 
@@ -130,46 +103,45 @@ const fetchEvent = () => {
   deleteOldCaches()
 
   self.addEventListener('fetch', (e) => {
-    const url = e.request.url
-
-    // cache fixed images like emoji picker
-    if (isEmojiResources(url)) {
-      cacheEmojiResources(e)
-      return
-    }
-
-    if (isMediaResources(url)) {
-      console.log('media resource:', url)
-      cacheResource(cacheVersion, e)
-      return
-    }
-
-    if (isNextjsStaticResource(url)) {
-      cachedNextStaticResources(e)
-      return
-    }
-
-    if (isOtherNextResource(url)) {
-      cacheOtherNextResource(e)
-      return
-    }
+    const req = e.request
+    const url = req.url
+    const method = req.method
 
     if (isApiRequest(url)) {
+
+      // console.log('url api', method, url)
+      // if (isApiStatus(url)) {
+      //   const response = handleStatusApiCache(method, url, e)
+      //   console.log('done')
+      //   return e.respondWith(response)
+      // }
+
+      console.log('url here')
+      // e.respondWith(fetch(e.request))
+      return
+    }
+
+    if (isEmojiResources(url)) {
+      e.respondWith(cacheEmojiResources(e))
       return
     }
 
     if (isGmailAvatar(url)) {
-      cacheGmailAvatar(e)
+      e.respondWith(cacheGmailAvatar(e))
       return
     }
 
-    if (isProjectPage(url)) {
-      console.log('is project page', url)
-      cacheProjectPage(e)
+    if (isMediaResources(url)) {
+      e.respondWith(cacheResource(cacheVersion, e))
       return
     }
 
-    console.log('other url', url)
+    if (isNextjsStaticResource(url)) {
+      e.respondWith(cachedNextStaticResources(e))
+      return
+    }
+
+    // e.respondWith(fetch(e.request))
 
   });
 };
