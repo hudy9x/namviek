@@ -21,6 +21,8 @@ export class StorageService {
     const orgStorageService = new OrganizationStorageService(this.orgId)
     const awsConfig = await orgStorageService.getConfig()
 
+    console.log('awsConfig', awsConfig)
+
     if (!awsConfig) {
       throw new StorageConfigurationNotFoundException()
     }
@@ -96,6 +98,7 @@ export class StorageService {
 
     try {
       const presignedUrl = await s3Store.createPresignedUrlWithClient(randName, type)
+      console.log('presignedUrl', presignedUrl)
       return {
         randName,
         presignedUrl,

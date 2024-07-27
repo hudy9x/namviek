@@ -76,7 +76,9 @@ export default class AwsS3StorageProvider {
       credentials: {
         accessKeyId: accessKey,
         secretAccessKey: secretKey
-      }
+      },
+      endpoint: 'http://127.0.0.1:9000',
+      forcePathStyle: true
     })
 
     clientMapper.set(orgId, {
@@ -110,7 +112,8 @@ export default class AwsS3StorageProvider {
   }
 
   getObjectURL(name: string) {
-    return `https://${this.bucket}.s3.${this.region}.amazonaws.com/${name}`
+    // return `https://${this.bucket}.s3.${this.region}.amazonaws.com/${name}`
+    return `http://127.0.0.1:9000/${this.bucket}/${name}`
   }
 
   async getObject(name: string) {
