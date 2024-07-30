@@ -1,6 +1,6 @@
 'use client'
 
-import { orgStorageGet, orgUpdateStorageConfig } from '@/services/organization'
+import { orgUpdateStorageConfig } from '@/services/organization'
 import {
   Button,
   Form,
@@ -9,8 +9,7 @@ import {
   messageSuccess
 } from '@shared/ui'
 import { useFormik } from 'formik'
-import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useUserRole } from '../UserPermission/useUserRole'
 import { useGetParams } from '@/hooks/useGetParams'
 

@@ -5,7 +5,7 @@ import {
   DeleteObjectCommand,
   S3Client
 } from '@aws-sdk/client-s3'
-import { getSignedUrl, S3RequestPresigner } from '@aws-sdk/s3-request-presigner'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { randomUUID } from 'crypto'
 
 interface IConfig {
@@ -19,6 +19,7 @@ const clientMapper = new Map<string, {
   config: IConfig
 }>()
 
+const minioEndpoint = process.env.AWS_MINIO_ENDPOINT
 
 export default class AwsS3StorageProvider {
   protected client: S3Client
@@ -71,15 +72,25 @@ export default class AwsS3StorageProvider {
     const { region, accessKey, secretKey } = this.config
     const orgId = this.orgId
 
-    this.client = new S3Client({
+    let s3Config = {
       region: region,
       credentials: {
         accessKeyId: accessKey,
         secretAccessKey: secretKey
-      },
-      endpoint: 'http://127.0.0.1:9000',
-      forcePathStyle: true
-    })
+      }
+    }
+
+    if (minioEndpoint) {
+      s3Config = {
+        ...s3Config,
+        ...{
+          endpoint: minioEndpoint,
+          forcePathStyle: true
+        }
+      }
+    }
+
+    this.client = new S3Client(s3Config)
 
     clientMapper.set(orgId, {
       client: this.client,
@@ -112,8 +123,11 @@ export default class AwsS3StorageProvider {
   }
 
   getObjectURL(name: string) {
-    // return `https://${this.bucket}.s3.${this.region}.amazonaws.com/${name}`
-    return `http://127.0.0.1:9000/${this.bucket}/${name}`
+    if (minioEndpoint) {
+      return `${minioEndpoint}/${this.bucket}/${name}`
+    }
+
+    return `https://${this.bucket}.s3.${this.region}.amazonaws.com/${name}`
   }
 
   async getObject(name: string) {

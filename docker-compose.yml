@@ -12,6 +12,7 @@ services:
     environment:
       - REDIS_HOST=redis:6379
       - MONGODB_URL=mongodb://mongodb:27017/namviek?replicaSet=rs0&authSource=admin&directConnection=true
+      - AWS_MINIO_ENDPOINT=http://localhost:9000
     ports:
       - '3333:3333'
     command: /bin/sh -c "./docker/be-entrypoint.sh && yarn backend"
@@ -37,55 +38,6 @@ services:
     command: /bin/sh -c "./docker/fe-entrypoint.sh && yarn prod:fe"
     depends_on:
       - backend
-    networks:
-      - namviek-network
-
-  redis:
-    container_name: redis
-    image: 'redis:alpine'
-    ports:
-      - '6380:6379'
-    networks:
-      - namviek-network
-
-  storage: 
-    container_name: storage
-    image: 'quay.io/minio/minio'
-    command: ["server", "/data", "--console-address", ":9001"]
-    ports: 
-      - '9001:9001'
-      - '9000:9000'
-    environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=Admin@123
-    volumes:
-      - minio-data:/data
-    networks:
-      - namviek-network
-
-  mongodb:
-    container_name: mongodb
-    image: 'mongo:latest'
-    command: ['--replSet', 'rs0', '--bind_ip_all', '--port', '27017']
-    ports:
-      - '27017:27017'
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-    # healthcheck:
-    #   test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
-    #   interval: 5s
-    #   timeout: 30s
-    #   start_period: 0s
-    #   start_interval: 1s
-    #   retries: 30
-    environment:
-      - MONGO_INITDB_DATABASE=namviek
-      # - MONGO_INITDB_ROOT_USERNAME=dbadmin
-      # - MONGO_INITDB_ROOT_PASSWORD=Admin@123
-
-    volumes:
-      - mongodb-data:/data/db
-      - mongodb-config:/data/configdb
     networks:
       - namviek-network
 
