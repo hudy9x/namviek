@@ -96,6 +96,7 @@ export class StorageService {
 
     try {
       const presignedUrl = await s3Store.createPresignedUrlWithClient(randName, type)
+      console.log('presignedUrl', presignedUrl)
       return {
         randName,
         presignedUrl,

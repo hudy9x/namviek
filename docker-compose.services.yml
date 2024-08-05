@@ -1,0 +1,56 @@
+services:
+  redis:
+    container_name: redis
+    image: 'redis:alpine'
+    ports:
+      - '6380:6379'
+    networks:
+      - namviek-network
+
+  storage: 
+    container_name: storage
+    image: 'quay.io/minio/minio'
+    command: ["server", "/data", "--console-address", ":9001"]
+    ports: 
+      - '9001:9001' # UI minio
+      - '9000:9000' # API minio
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=Admin@123
+    volumes:
+      - minio-data:/data
+    networks:
+      - namviek-network
+
+  mongodb:
+    container_name: mongodb
+    image: 'mongo:latest'
+    command: ['--replSet', 'rs0', '--bind_ip_all', '--port', '27017']
+    ports:
+      - '27017:27017'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    environment:
+      - MONGO_INITDB_DATABASE=namviek
+
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    networks:
+      - namviek-network
+
+volumes:
+  mongodb-data:
+  minio-data:
+  mongodb-config:
+
+networks:
+  namviek-network:
+    driver: bridge
