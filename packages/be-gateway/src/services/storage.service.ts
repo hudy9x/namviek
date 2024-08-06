@@ -10,7 +10,7 @@ import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
 
 const mb = 1024 * 1024
-export const MAX_STORAGE_SIZE = 1024 * mb // 1Gb
+export const MAX_STORAGE_SIZE = 10 * 1024 * mb // 10Gb
 export class StorageService {
   protected orgId: string
   constructor(orgId: string) {
