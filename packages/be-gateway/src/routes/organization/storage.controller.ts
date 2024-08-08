@@ -34,9 +34,9 @@ export class OrganizationStorageController extends BaseController {
 
       const { id } = req.authen
 
-      const { bucketName, region, secretKey, accessKey } = config
+      const { bucketName, region, secretKey, accessKey, maxStorageSize } = config
 
-      if (!bucketName || !region || !secretKey || !accessKey) {
+      if (!bucketName || !region || !secretKey || !accessKey || !maxStorageSize) {
         throw new Error('Invalid AWS S3 configuration ')
       }
 
@@ -47,7 +47,8 @@ export class OrganizationStorageController extends BaseController {
           bucketName,
           region,
           secretKey,
-          accessKey
+          accessKey,
+          maxStorageSize
         },
         type: OrgStorageType.AWS_S3,
         createdAt: new Date(),

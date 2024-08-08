@@ -115,6 +115,11 @@ export class StorageService {
     const totalSize = await storageCache.getTotalSize()
     const { maxStorageSize } = await mdOrgGetOne(organizationId)
 
+    //  unlimited storage size
+    if (maxStorageSize === -1) {
+      return true
+    }
+
     if (maxStorageSize && totalSize > maxStorageSize) {
       return true
     }

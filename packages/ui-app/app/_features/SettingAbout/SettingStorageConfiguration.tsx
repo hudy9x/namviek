@@ -22,7 +22,8 @@ export default function SettingStorageConfiguration() {
       bucketName: '',
       region: '',
       accessKey: '',
-      secretKey: ''
+      secretKey: '',
+      maxStorageSize: -1
     },
     onSubmit: values => {
       if (!orgId) return

@@ -4,6 +4,7 @@ export interface IStorageAWSConfig {
   region: string
   secretKey: string
   accessKey: string
+  maxStorageSize: number
 }
 
 export default class OrganizationStorageService {
