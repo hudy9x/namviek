@@ -26,6 +26,7 @@ import {
 import { BsMailbox } from 'react-icons/bs'
 import { getRecentVisit } from '@shared/libs'
 import { signinWithGoogle } from 'packages/ui-app/libs/firebase'
+import { GAAction, GACategory, trackingEvent } from '@/components/GA/utils'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -76,6 +77,11 @@ export default function SigninForm() {
     signin(values)
       .then(res => {
         console.log('sign in return', res)
+        trackingEvent({
+          action: GAAction.SIGN_IN,
+          category: GACategory.AUTHEN,
+          value: values.email
+        })
         try {
           const user = getGoalieUser()
           setUser(user)

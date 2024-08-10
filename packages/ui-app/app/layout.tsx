@@ -7,6 +7,7 @@ import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@goalie/nextjs'
 
 import dynamic from 'next/dynamic'
+import GoogleAnalytics from './_components/GA'
 const inter = Inter({ subsets: ['latin'] })
 
 const PushNotification = dynamic(
@@ -33,6 +34,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <RootLayoutComp>{children}</RootLayoutComp>
           <PushNotification />
+          <GoogleAnalytics />
         </body>
       </html>
     </GoalieProvider>
