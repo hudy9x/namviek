@@ -1,10 +1,8 @@
-import { StorageAws } from "@be/storage"
 import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
 import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
 import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdProjectGetOrgId, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
 import StorageCache from "../caches/StorageCache"
-import MaxStorageSizeException from "../exceptions/MaxStorageSizeException"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
 import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
@@ -13,8 +11,6 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 const mb = 1024 * 1024
 export const GB = 1024 * mb
 export const MAX_STORAGE_SIZE = 10 * GB // 10Gb
-
-
 
 export class StorageService {
   protected orgId: string

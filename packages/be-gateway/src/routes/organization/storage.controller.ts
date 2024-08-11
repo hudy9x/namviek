@@ -69,8 +69,6 @@ export class OrganizationStorageController extends BaseController {
         throw new Error('Invalid AWS S3 configuration')
       }
 
-      console.log('valid', valid)
-
       const orgRepo = new OrgStorageRepository()
       const result = await orgRepo.updateOrCreateAwsConfig(orgId, {
         organizationId: orgId,
