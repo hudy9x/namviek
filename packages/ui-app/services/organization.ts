@@ -14,7 +14,7 @@ export const orgUpdateStorageConfig = (orgId: string, config: {
   region: string
   secretKey: string
   accessKey: string
-  maxStorageSize: number
+  maxStorageSize: string
 }) => {
   return httpPut('/api/org-storage', {
     orgId,
