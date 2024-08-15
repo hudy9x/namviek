@@ -5,7 +5,8 @@ import { AuthRequest } from '../../types'
 import InternalServerException from '../../exceptions/InternalServerException'
 import { OrgStorageType } from '@prisma/client'
 import { IStorageAWSConfig } from '../../services/organizationStorage.service'
-import { GB, StorageService } from '../../services/storage.service'
+import { GB, MB, StorageService } from '../../services/storage.service'
+import StorageCache from '../../caches/StorageCache'
 
 @Controller('/org-storage')
 @UseMiddleware([authMiddleware])
@@ -56,7 +57,9 @@ export class OrganizationStorageController extends BaseController {
         maxStorageSize = maxStorageSize * GB
       }
 
-      console.log('maxStorageSize', maxStorageSize)
+      if (maxStorageSize < 100 * MB) {
+        throw new Error('Storage size must be greater than or equal 1GB')
+      }
 
       const valid = await this.storageService.validateAwsConfig({
         bucketName,
@@ -85,6 +88,8 @@ export class OrganizationStorageController extends BaseController {
         updatedAt: null,
         updatedBy: null
       })
+
+      StorageCache.deleteMaxStorageSize(orgId)
 
       return result
     } catch (error) {

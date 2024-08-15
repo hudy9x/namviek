@@ -48,10 +48,8 @@ export default function SettingStorageConfiguration() {
       }
 
       setLoading(true)
-      console.log('values', values)
       orgUpdateStorageConfig(orgId, values)
         .then(res => {
-          console.log(res)
           messageSuccess('Save it !')
           setLoading(false)
         })
