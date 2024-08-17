@@ -12,6 +12,7 @@ import { useFormik } from 'formik'
 import { useState } from 'react'
 import { useUserRole } from '../UserPermission/useUserRole'
 import { useGetParams } from '@/hooks/useGetParams'
+import ListPreset from '@/components/ListPreset'
 
 export default function SettingStorageConfiguration() {
   const { orgRole } = useUserRole()
@@ -22,7 +23,8 @@ export default function SettingStorageConfiguration() {
       bucketName: '',
       region: '',
       accessKey: '',
-      secretKey: ''
+      secretKey: '',
+      maxStorageSize: '-1'
     },
     onSubmit: values => {
       if (!orgId) return
@@ -38,16 +40,26 @@ export default function SettingStorageConfiguration() {
         })
         return
       }
+
+      const maxSize = parseInt(values.maxStorageSize, 10)
+      if (isNaN(maxSize)) {
+        messageError('Invalid max storage size')
+        return
+      }
+
       setLoading(true)
       orgUpdateStorageConfig(orgId, values)
         .then(res => {
-          console.log(res)
           messageSuccess('Save it !')
           setLoading(false)
         })
         .catch(err => {
-          console.log(err)
-          messageError('Cannot save configuration')
+          if (err && err.response && err.response.data && err.response.data.message) {
+            messageError(err.response.data.message)
+          } else {
+            messageError('Cannot save configuration')
+
+          }
           setLoading(false)
         })
     }
@@ -78,9 +90,22 @@ export default function SettingStorageConfiguration() {
         />
         <Form.Input title="Aws region" {...registerForm('region', formik)} />
         <Form.Input
-          title="Aws bucket"
+          title="Aws bucket name"
           {...registerForm('bucketName', formik)}
         />
+        <ListPreset title='Max storage size'
+          value={formik.values.maxStorageSize}
+          onChange={val => {
+            console.log('storage size', val)
+            formik.setFieldValue('maxStorageSize', val)
+          }}
+          options={[
+            { id: '-1', title: 'Unlimited' },
+            { id: '10', title: '10GB' },
+            { id: '20', title: '20GB' },
+            { id: '50', title: '50GB' },
+            { id: '100', title: '100GB' },
+          ]} />
         <div className="mt-4 text-right">
           <Button loading={loading} type="submit" title="Save it" primary />{' '}
         </div>

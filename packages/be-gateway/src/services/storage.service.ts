@@ -1,16 +1,17 @@
-import { StorageAws } from "@be/storage"
 import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
-import OrganizationStorageService from "./organizationStorage.service"
+import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
 import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdProjectGetOrgId, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
 import StorageCache from "../caches/StorageCache"
-import MaxStorageSizeException from "../exceptions/MaxStorageSizeException"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
 import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 
-const mb = 1024 * 1024
-export const MAX_STORAGE_SIZE = 10 * 1024 * mb // 10Gb
+export const MB = 1024 * 1024
+export const GB = 1024 * MB
+export const MAX_STORAGE_SIZE = 10 * GB // 10Gb
+
 export class StorageService {
   protected orgId: string
   constructor(orgId: string) {
@@ -88,6 +89,35 @@ export class StorageService {
     }
   }
 
+  async validateAwsConfig(awsConfig: Omit<IStorageAWSConfig, 'maxStorageSize'>) {
+
+    const client = new S3Client({
+
+      region: awsConfig.region,
+      credentials: {
+        accessKeyId: awsConfig.accessKey,
+        secretAccessKey: awsConfig.secretKey
+      }
+    });
+
+
+    const command = new PutObjectCommand({
+      Bucket: awsConfig.bucketName,
+      Key: "hello-s3.txt",
+      Body: "Hello S3!",
+    });
+
+    try {
+      const response = await client.send(command);
+      console.log(response);
+      return true
+    } catch (err) {
+      console.error(err);
+      return false
+    }
+
+  }
+
 
   async createPresignedUrl({ projectId, type, name }: { projectId: string, name: string, type: string }) {
 
@@ -110,10 +140,16 @@ export class StorageService {
   }
 
   async exceedMaxStorageSize() {
-    const organizationId = this.orgId
-    const storageCache = new StorageCache(organizationId)
+    const orgId = this.orgId
+    const storageCache = new StorageCache(orgId)
     const totalSize = await storageCache.getTotalSize()
-    const { maxStorageSize } = await mdOrgGetOne(organizationId)
+    const maxStorageSize = await storageCache.getMaxStorageSize()
+    // const { maxStorageSize } = await mdOrgGetOne(organizationId)
+
+    //  unlimited storage size
+    if (maxStorageSize === -1) {
+      return true
+    }
 
     if (maxStorageSize && totalSize > maxStorageSize) {
       return true

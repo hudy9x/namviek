@@ -91,7 +91,7 @@ const fetchEvent = () => {
     }
 
     if (isNextjsStaticResource(url)) {
-      e.respondWith(cachedNextStaticResources(e))
+      // e.respondWith(cachedNextStaticResources(e))
       return
     }
 
