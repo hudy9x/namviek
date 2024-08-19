@@ -1,5 +1,5 @@
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("MONGODB_URL")
 }
 
@@ -50,7 +50,7 @@ enum ActivityObjectType {
 }
 
 model User {
-  id                  String                @id @default(auto()) @map("_id") @db.ObjectId
+  id                  Int                   @id @default(autoincrement()) @map("_id")
   email               String                @unique
   password            String
   name                String?
@@ -69,12 +69,12 @@ model User {
 }
 
 model Favorites {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int       @id @default(autoincrement()) @map("_id")
   name      String
   icon      String
   link      String
-  uid       String    @db.ObjectId
-  orgId     String    @db.ObjectId
+  uid       Int
+  orgId     Int
   type      String
   createdAt DateTime?
   createdBy String?
@@ -83,7 +83,7 @@ model Favorites {
 }
 
 model Organization {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             Int       @id @default(autoincrement()) @map("_id")
   name           String    @unique
   slug           String    @unique
   cover          String?
@@ -102,10 +102,10 @@ enum OrgStorageType {
 }
 
 model OrganizationStorage {
-  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  id             Int            @id @default(autoincrement()) @map("_id")
   type           OrgStorageType
   config         Json
-  organizationId String         @db.ObjectId
+  organizationId Int
   createdAt      DateTime?
   createdBy      String?
   updatedAt      DateTime?
@@ -113,10 +113,10 @@ model OrganizationStorage {
 }
 
 model OrganizationMembers {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  uid            String           @db.ObjectId
+  id             Int              @id @default(autoincrement()) @map("_id")
+  uid            Int
   status         InvitationStatus
-  organizationId String           @db.ObjectId
+  organizationId Int
   role           OrganizationRole
   users          User             @relation(fields: [uid], references: [id])
   createdAt      DateTime?
@@ -132,13 +132,13 @@ enum CounterType {
 }
 
 model Counter {
-  id      String      @id @default(auto()) @map("_id") @db.ObjectId
+  id      Int         @id @default(autoincrement()) @map("_id")
   type    CounterType
   counter Int
 }
 
 model Test {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    Int    @id @default(autoincrement()) @map("_id")
   title String
   order Int
 }
@@ -151,7 +151,7 @@ enum TaskType {
 }
 
 model Task {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  id      Int       @id @default(autoincrement()) @map("_id")
   title   String
   desc    String?
   dueDate DateTime?
@@ -165,14 +165,14 @@ model Task {
   plannedStartDate DateTime?
   plannedDueDate   DateTime?
   startDate        DateTime?
-  projectId        String        @db.ObjectId
+  projectId        Int
   priority         TaskPriority?
-  visionId         String?       @db.ObjectId
-  taskStatusId     String?       @db.ObjectId
-  tagIds           String[]      @db.ObjectId
-  assigneeIds      String[]      @db.ObjectId
-  fileIds          String[]      @db.ObjectId
-  parentTaskId     String?       @db.ObjectId
+  visionId         Int?
+  taskStatusId     Int?
+  tagIds           Int[]
+  assigneeIds      Int[]
+  fileIds          Int[]
+  parentTaskId     Int?
   progress         Int?
   done             Boolean       @default(false)
   // do not store `point` as objectID, cuz we just need to fill the point value
@@ -185,17 +185,17 @@ model Task {
 }
 
 model TaskStatus {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int        @id @default(autoincrement()) @map("_id")
   name      String
   color     String
   order     Int
-  projectId String     @db.ObjectId
+  projectId Int
   type      StatusType @default(TODO)
 }
 
 model TaskChecklist {
-  id     String    @id @default(auto()) @map("_id") @db.ObjectId
-  taskId String    @db.ObjectId
+  id     Int       @id @default(autoincrement()) @map("_id")
+  taskId Int
   title  String
   order  Int
   done   Boolean?
@@ -204,36 +204,23 @@ model TaskChecklist {
 
 // Tag used for Projects and Tasks
 model Tag {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int    @id @default(autoincrement()) @map("_id")
   name      String
   color     String
-  projectId String @db.ObjectId
+  projectId Int
 }
 
 model TaskPoint {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int     @id @default(autoincrement()) @map("_id")
   point     Int
-  projectId String  @db.ObjectId
+  projectId Int
   icon      String?
 }
 
-type taskAutomateThenType {
-  change String
-  value  String
-}
-
-type taskAutomateWhenType {
-  happens   String
-  is        String
-  valueFrom String?
-  valueTo   String?
-  equal     String?
-}
-
 model TaskAutomation {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String    @db.ObjectId
-  projectId      String    @db.ObjectId
+  id             Int       @id @default(autoincrement()) @map("_id")
+  organizationId Int
+  projectId      Int
   when           Json
   then           Json
   createdBy      String?
@@ -243,9 +230,9 @@ model TaskAutomation {
 }
 
 model Scheduler {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String  @db.ObjectId
-  projectId      String  @db.ObjectId
+  id             Int     @id @default(autoincrement()) @map("_id")
+  organizationId Int
+  projectId      Int
   cronId         String?
 
   trigger Json
@@ -269,9 +256,9 @@ enum FileOwnerType {
 }
 
 model FileStorage {
-  id             String         @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String         @db.ObjectId
-  projectId      String         @db.ObjectId
+  id             Int            @id @default(autoincrement()) @map("_id")
+  organizationId Int
+  projectId      Int
   name           String
   keyName        String
   type           FileType
@@ -279,7 +266,7 @@ model FileStorage {
   size           Float?
   mimeType       String?
   parentId       String?
-  owner          String?        @db.ObjectId
+  owner          Int?
   ownerType      FileOwnerType?
   isDeleted      Boolean?       @default(false)
   createdBy      String?
@@ -289,9 +276,9 @@ model FileStorage {
 }
 
 model Project {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  id            Int      @id @default(autoincrement()) @map("_id")
   name          String
-  projectViewId String?  @db.ObjectId
+  projectViewId Int?
   desc          String?
   cover         String?
   icon          String?
@@ -309,9 +296,9 @@ model Project {
 }
 
 model ProjectSettingNotification {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  uid         String   @db.ObjectId
-  projectId   String   @db.ObjectId
+  id          Int      @id @default(autoincrement()) @map("_id")
+  uid         Int
+  projectId   Int
   taskChanges Boolean? @default(false)
   remind      Boolean? @default(false)
   overdue     Boolean? @default(false)
@@ -332,12 +319,12 @@ enum ProjectViewType {
 }
 
 model ProjectView {
-  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int             @id @default(autoincrement()) @map("_id")
   name      String?
   type      ProjectViewType
   onlyMe    Boolean?
   icon      String?
-  projectId String?         @db.ObjectId
+  projectId Int?
   order     Int?
   data      Json?
 
@@ -348,11 +335,11 @@ model ProjectView {
 }
 
 model Vision {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             Int       @id @default(autoincrement()) @map("_id")
   name           String
-  projectId      String?   @db.ObjectId
-  organizationId String?   @db.ObjectId
-  parentId       String?   @db.ObjectId
+  projectId      Int?
+  organizationId Int?
+  parentId       Int?
   startDate      DateTime?
   dueDate        DateTime?
   progress       Int?
@@ -361,11 +348,11 @@ model Vision {
 }
 
 model Members {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  projectId String     @db.ObjectId
+  id        Int        @id @default(autoincrement()) @map("_id")
+  projectId Int
   role      MemberRole
   users     User?      @relation(fields: [uid], references: [id])
-  uid       String?    @db.ObjectId
+  uid       Int?
   createdBy String?
   createdAt DateTime?
   updatedBy String?
@@ -378,12 +365,12 @@ enum StatsType {
 }
 
 model Stats {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int       @id @default(autoincrement()) @map("_id")
   type      StatsType
   data      Json?
-  uid       String?   @db.ObjectId
-  projectId String?   @db.ObjectId
-  orgId     String?   @db.ObjectId
+  uid       Int?
+  projectId Int?
+  orgId     Int?
   year      Int
   month     Int
   date      Int
@@ -402,9 +389,9 @@ enum DashboardComponentType {
 }
 
 model DashboardComponent {
-  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  id          Int                     @id @default(autoincrement()) @map("_id")
   dashboard   Dashboard?              @relation(fields: [dashboardId], references: [id])
-  dashboardId String?                 @db.ObjectId
+  dashboardId Int?
   title       String?
   type        DashboardComponentType?
   config      Json?
@@ -416,10 +403,10 @@ model DashboardComponent {
 }
 
 model Dashboard {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  id                  Int                  @id @default(autoincrement()) @map("_id")
   dashboardComponents DashboardComponent[]
   title               String?              @default("Untitled")
-  projectId           String?              @db.ObjectId
+  projectId           Int?
   isDefault           Boolean?             @default(false)
 }
 
@@ -450,7 +437,7 @@ enum ActivityType {
 }
 
 model Activity {
-  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  id         Int                @id @default(autoincrement()) @map("_id")
   objectId   String
   objectType ActivityObjectType
   type       ActivityType
@@ -462,9 +449,9 @@ model Activity {
 }
 
 model Comment {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  taskId    String @db.ObjectId
-  projectId String @db.ObjectId
+  id        Int @id @default(autoincrement()) @map("_id")
+  taskId    Int
+  projectId Int
 
   content String
 
