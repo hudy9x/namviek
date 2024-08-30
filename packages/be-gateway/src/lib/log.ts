@@ -26,12 +26,17 @@ export const createModuleLog = (module: string) => {
 }
 
 export const sendDiscordLog = async (content: string) => {
+  if (!process.env.DISCORD_LOG_URL) {
+    return
+  }
+
   const data = {
     username: 'Scheduler',
     avatar_url: "",
     content
   }
-  return fetch("https://discord.com/api/webhooks/1249577190626955284/QWVUtgJVOj6JVqlRb7qyZ-MoIKYRUhUm94hXLxXPMi3a23XSmlGfeyPo40x7hHPmlEts", {
+
+  return fetch(process.env.DISCORD_LOG_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

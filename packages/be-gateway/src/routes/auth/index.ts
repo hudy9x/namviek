@@ -14,6 +14,7 @@ import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
 import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
 import { isDevMode } from '../../lib/utils'
+import { sendDiscordLog } from '../../lib/log'
 
 const mainRouter = Router()
 const router = Router()
@@ -62,6 +63,8 @@ router.post('/sign-in', async (req, res) => {
       name: user.name,
       photo: user.photo
     })
+
+    sendDiscordLog(`${user.email} - ${user.name} just signed in`)
 
     const { token, refreshToken } = jwtProvider.generate()
 
