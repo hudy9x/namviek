@@ -1,6 +1,7 @@
 docker-compose.yml
 Dockerfile
 node_modules
+dist
 .github
 .vscode
 .git
