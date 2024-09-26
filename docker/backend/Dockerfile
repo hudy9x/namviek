@@ -1,3 +1,4 @@
+# ----------------------- base -----------------
 FROM node:lts-alpine AS base
 
 USER root
@@ -10,23 +11,12 @@ WORKDIR /app
 # Add NX
 RUN yarn global add nx@latest 
 
-
-
-
-
-#############################
-# Install NPM packages so we can ditch caches
+# ----------------------- dependencies -----------------
 FROM base AS deps
 
-# Install everything, I have no idea if we want --production
-# RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn \
-# yarn install --immutable
 RUN npm install --only=development --silent
 
-
-
-#############################
-# Runner without caches
+# ------------------------ builder ---------------
 FROM base AS builder
 
 # add non root user
@@ -35,39 +25,33 @@ RUN addgroup -S namviek && \
 
 WORKDIR /app
 
-# Argument to select the env file
-ARG ENV_FILE=.env
-
 # Copy the env file
-COPY ${ENV_FILE} .env
+COPY .env .env
 
-#grab previously installed modules without caches. 
 COPY --from=deps /app/node_modules ./node_modules
 
 RUN npm run generate2
-# RUN yarn generate2
-
 RUN npm run build:be
-# RUN yarn build:be
 
-
+# ------------------------ runner ---------------------
 FROM node:lts-alpine AS runner
 
-# USER namviek
 WORKDIR /app
 
 COPY --from=builder /app/dist/packages/be-gateway ./
-RUN npm install
-# RUN chmod -R 0777  *
+COPY ./packages/shared-models/src/prisma/schema.prisma .
+
+# Only need MONGODB_URL in .env file
+COPY .env .env
+
+RUN npm install --only=production --silent 
+RUN npx prisma generate --schema=./schema.prisma
 
 
-# # Set environment variables
-# ENV NODE_ENV=production
-# ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
-#
-# # Expose the port the app runs on
+
 EXPOSE 3000
-#
-# CMD HOSTNAME="0.0.0.0" node ./packages/ui-app/server.js
-CMD ["node", "main.js"]
+
+
+CMD HOSTNAME="0.0.0.0" node main.js
+# CMD ["node", "main.js"]
