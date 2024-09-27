@@ -20,8 +20,8 @@ RUN npm install --only=development --silent
 FROM base AS builder
 
 # add non root user
-RUN addgroup -S namviek && \
-  adduser -S -G namviek namviek
+# RUN addgroup -S namviek && \
+#   adduser -S -G namviek namviek
 
 WORKDIR /app
 
@@ -30,8 +30,8 @@ COPY .env .env
 
 COPY --from=deps /app/node_modules ./node_modules
 
-RUN npm run generate2 > log.txt
-RUN npm run build:be
+RUN yarn generate2
+RUN yarn build:be
 
 # ------------------------ runner ---------------------
 FROM node:lts-alpine AS runner
@@ -40,11 +40,13 @@ WORKDIR /app
 
 COPY --from=builder /app/dist/packages/be-gateway ./
 COPY ./packages/shared-models/src/prisma/schema.prisma .
+COPY ./yarn.lock .
 
 # Only need MONGODB_URL in .env file
 COPY .env .env
 
-RUN npm install --only=production --silent 
+# RUN npm install --only=production --silent 
+RUN yarn install --frozen-lockfile
 
 
 # ---------------- TEST ------------
