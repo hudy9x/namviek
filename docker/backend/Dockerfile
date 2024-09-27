@@ -30,7 +30,7 @@ COPY .env .env
 
 COPY --from=deps /app/node_modules ./node_modules
 
-RUN npm run generate2
+RUN npm run generate2 > log.txt
 RUN npm run build:be
 
 # ------------------------ runner ---------------------
@@ -45,12 +45,10 @@ COPY ./packages/shared-models/src/prisma/schema.prisma .
 COPY .env .env
 
 RUN npm install --only=production --silent 
-# RUN npx prisma generate --schema=./schema.prisma
 
 
 # ---------------- TEST ------------
-# COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 # --------------------------------
 
 
@@ -59,5 +57,7 @@ ENV PORT=3000
 EXPOSE 3000
 
 
-CMD HOSTNAME="0.0.0.0" node main.js
-# CMD ["node", "main.js"]
+# CMD HOSTNAME="0.0.0.0" node main.js
+CMD ["node", "main.js"]
+# CMD ["node", "test.js"]
+
