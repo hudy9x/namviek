@@ -14,7 +14,7 @@ RUN yarn global add nx@latest
 # ----------------------- dependencies -----------------
 FROM base AS deps
 
-RUN npm install --only=development --silent
+RUN npm install --only=development
 
 # ------------------------ builder ---------------
 FROM base AS builder
@@ -25,8 +25,10 @@ FROM base AS builder
 
 WORKDIR /app
 
+# Argument to select the env file
+ARG ENV_FILE=.env
 # Copy the env file
-COPY .env .env
+COPY ${ENV_FILE} .env
 
 COPY --from=deps /app/node_modules ./node_modules
 
@@ -45,8 +47,8 @@ COPY ./yarn.lock .
 # Only need MONGODB_URL in .env file
 COPY .env .env
 
-# RUN npm install --only=production --silent 
-RUN yarn install --frozen-lockfile
+# RUN yarn install --frozen-lockfile
+RUN yarn install
 
 
 # ---------------- TEST ------------

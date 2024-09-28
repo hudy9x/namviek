@@ -22,9 +22,9 @@ RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn \
 
 FROM base AS builder
 
-# add non root user
-RUN addgroup -S namviek && \
-  adduser -S -G namviek namviek
+# # add non root user
+# RUN addgroup -S namviek && \
+#   adduser -S -G namviek namviek
 
 WORKDIR /app
 
