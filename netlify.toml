@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build:fe"
+  publish = "dist/packages/ui-app"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[context]
+  environment = {
+    NEXT_PUBLIC_APP_NAME = "Namviek"
+    NEXT_PUBLIC_BE_GATEWAY = "https://endpoint.namviek.com"
+  }
+
