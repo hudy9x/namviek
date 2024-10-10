@@ -6,8 +6,8 @@
   package = "@netlify/plugin-nextjs"
 
 [template.environment]
-  NEXT_PUBLIC_APP_NAME = "What is the name of your app?"
-  NEXT_PUBLIC_BE_GATEWAY = "What is the backend gateway URL?"
+  NEXT_PUBLIC_APP_NAME = "NEXT_PUBLIC_APP_NAME"
+  NEXT_PUBLIC_BE_GATEWAY = "NEXT_PUBLIC_BE_GATEWAY"
 
 [context.production]
   environment = { }
