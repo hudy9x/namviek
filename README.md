@@ -27,8 +27,8 @@ As mentioned before, this app includes some essential features for a small team 
 
 ```
 $ cp .env.example .env.local
-$ docker compose -f docker-compose.yml -f docker-compose.services.yml build
-$ docker compose -f docker-compose.yml -f docker-compose.services.yml up
+$ yarn compose-build
+$ yarn compose-up
 ```
 
 Why do I have `docker-compose.services.yml` file ? If you're a developer who want to contribute this app, but don't want to setup all services on the cloud, then this file will help you run all services (Redis, MongoDB, Minio) and you just have to install Nx and run the codebase
