@@ -1,6 +1,6 @@
 [build]
   command = "npm run build:fe"
-  publish = "dist/packages/ui-app"
+  publish = "./dist/packages/ui-app/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
