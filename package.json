@@ -81,6 +81,7 @@
     "livekit-client": "^1.14.4",
     "livekit-server-sdk": "^1.2.7",
     "localforage": "^1.10.0",
+    "mongoose": "^8.7.2",
     "next": "13.4.1",
     "next-themes": "^0.2.1",
     "node-cron": "^3.0.3",
