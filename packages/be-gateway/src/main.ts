@@ -12,11 +12,14 @@ import './events'
 import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
+import { connectDB } from '@shared/models'
 // import { Log } from './lib/log'
 
+connectDB()
 connectPubClient((err) => {
   console.log(err)
 })
+
 const app: Application = express()
 
 console.log(`
