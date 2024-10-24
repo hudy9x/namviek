@@ -1,35 +1,27 @@
-import { Favorites } from '@prisma/client'
-import { favModel } from './_prisma'
+import { IFavoritesField, favoritesModel, castToObjectId } from '../schema'
 
-export const mdFavAdd = (data: Omit<Favorites, 'id'>) => {
-  return favModel.create({
-    data
+export const mdFavAdd = async (data: Omit<IFavoritesField, 'id'>) => {
+  return await favoritesModel.create(data)
+}
+
+export const mdFavGet = async (uid: string, orgId: string) => {
+  return await favoritesModel.find({ 
+    uid: castToObjectId(uid), 
+    orgId: castToObjectId(orgId) 
   })
 }
 
-export const mdFavGet = (uid: string, orgId: string) => {
-  return favModel.findMany({
-    where: {
-      uid,
-      orgId
-    }
+export const mdFavDel = async (id: string, uid: string) => {
+  return await favoritesModel.findOneAndDelete({ 
+    _id: castToObjectId(id), 
+    uid: castToObjectId(uid) 
   })
 }
 
-export const mdFavDel = (id: string, uid: string) => {
-  return favModel.delete({
-    where: {
-      id,
-      uid
-    }
-  })
-}
-
-export const mdFavUpdate = (id: string, data: Partial<Favorites>) => {
-  return favModel.update({
-    where: {
-      id
-    },
-    data: data
-  })
+export const mdFavUpdate = async (id: string, data: Partial<Omit<IFavoritesField, 'id'>>) => {
+  return await favoritesModel.findByIdAndUpdate(
+    id,
+    { $set: data },
+    { new: true }
+  )
 }
