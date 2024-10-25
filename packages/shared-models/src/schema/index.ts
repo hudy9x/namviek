@@ -120,8 +120,14 @@ export enum ActivityType {
 }
 
 export const castToObjectId = (id: string) => new mongoose.Types.ObjectId(id)
+export const castArrToObjectId = (ids: string[]) => ids.map(castToObjectId)
 
 // Interfaces
+
+interface IUserSettingFields {
+  pinnedProjects: string[];
+  [key: string]: unknown; // Allow for additional settings properties
+}
 export type IUserField = {
   id: string;
   email: string;
@@ -132,7 +138,7 @@ export type IUserField = {
   bio?: string;
   photo?: string;
   dob?: Date;
-  settings?: Schema.Types.Mixed;
+  settings?: IUserSettingFields;
   createdAt?: Date;
   createdBy?: string;
   updatedAt?: Date;
@@ -465,7 +471,14 @@ const UserSchema = new Schema<IUser>({
   bio: String,
   photo: String,
   dob: Date,
-  settings: Schema.Types.Mixed,
+  settings: {
+    type: Object,
+    default: {},
+    pinnedProjects: {
+      type: [String],
+      default: []
+    }
+  },
   createdAt: Date,
   createdBy: String,
   updatedAt: Date,

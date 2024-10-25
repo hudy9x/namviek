@@ -1,5 +1,4 @@
-import { User, UserStatus } from '@prisma/client'
-import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models'
+import { IUserField, UserStatus, mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models'
 import { validateRegisterUser } from '@shared/validation'
 import { Router } from 'express'
 import { sendVerifyEmail } from '../../lib/email'
@@ -27,7 +26,7 @@ router.post('/refresh-token', async (req, res) => {
 
 router.post('/sign-in', async (req, res) => {
   try {
-    const body = req.body as Pick<User, 'email' | 'password'> & {
+    const body = req.body as Pick<IUserField, 'email' | 'password'> & {
       provider: 'GOOGLE' | 'EMAIL_PASSWORD'
     }
 
@@ -79,14 +78,14 @@ router.post('/sign-in', async (req, res) => {
 
 router.post('/sign-up', async (req, res) => {
   try {
-    const body = req.body as User
+    const body = req.body as IUserField
     const { error, errorArr, data } = validateRegisterUser(body)
 
     if (error && errorArr) {
       return res.json({ status: 404, error: errorArr })
     }
 
-    const resultData = data as User
+    const resultData = data as IUserField
     const hashedPwd = hashPassword(resultData.password)
 
     const user = await mdUserAdd({
@@ -98,7 +97,9 @@ router.post('/sign-up', async (req, res) => {
       dob: null,
       status: isDevMode() ? UserStatus.ACTIVE : UserStatus.INACTIVE,
       photo: null,
-      settings: {},
+      settings: {
+        pinnedProjects: []
+      },
       createdAt: new Date(),
       createdBy: null,
       updatedAt: null,

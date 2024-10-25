@@ -1,7 +1,4 @@
-// import { User } from '@prisma/client'
-
-import { UserSetting } from '../type'
-import { IUserField, UserStatus, castToObjectId, userModel } from '../schema'
+import { IUserField, UserStatus, castArrToObjectId, castToObjectId, userModel } from '../schema'
 
 export const mdUserFindEmail = async (email: string) => {
   return userModel.findOne({
@@ -24,7 +21,7 @@ export const mdUserAdd = async (data: Omit<IUserField, 'id'>) => {
 export const mdUserFindEmailsByUids = async (uids: string[]) => {
   const result = await userModel.find(
     {
-      _id: { $in: uids.map(uid => castToObjectId(uid)) },
+      _id: { $in: castArrToObjectId(uids) },
       status: UserStatus.ACTIVE
     },
     { email: 1, _id: 0 }
