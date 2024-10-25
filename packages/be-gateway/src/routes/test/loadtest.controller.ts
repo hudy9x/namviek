@@ -1,4 +1,3 @@
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
 import {
   BaseController,
   Body,
