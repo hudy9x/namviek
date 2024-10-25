@@ -1,5 +1,5 @@
 import { mdMemberBelongToProject } from "@shared/models";
-import { BaseController, Body, Controller, Get, Param, Query } from "../../core";
+import { BaseController, Controller, Get, Query } from "../../core";
 
 @Controller('/user-permission')
 export default class UserPermission extends BaseController {

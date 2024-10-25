@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import {
+  IActivityField,
   mdActivityAdd,
+  mdActivityDel,
   mdActivityGetAllByTask,
   mdActivityUpdate
 } from '@shared/models'
@@ -13,7 +15,6 @@ import {
   Body,
   Next,
   Param,
-  Query,
   ExpressResponse,
   Get,
   Post,
@@ -53,7 +54,7 @@ export default class TaskActivity extends BaseController {
 
   @Post('')
   createActivity(
-    @Body() body: Omit<Activity, 'id'>,
+    @Body() body: Omit<IActivityField, 'id'>,
     @Res() res: ExpressResponse
   ) {
     mdActivityAdd(body)
@@ -71,7 +72,7 @@ export default class TaskActivity extends BaseController {
 
   @Put('')
   updateActivity(@Res() res: Response, @Req() req: Request, @Next() next) {
-    const body = req.body as Activity
+    const body = req.body as IActivityField
     const { id, ...dataUpdate } = body
     mdActivityUpdate(id, dataUpdate)
       .then(result => {
@@ -90,7 +91,7 @@ export default class TaskActivity extends BaseController {
   async adminDelete(@Param() params, @Res() res: Response) {
     try {
       const { id } = params
-      const result = await mdActivityAdd(id)
+      const result = await mdActivityDel(id)
       res.json({ status: 200, data: result })
     } catch (error) {
       res.json({
