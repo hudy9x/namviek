@@ -4,7 +4,8 @@ import {
   DashboardComponentType,
   dashboardModel,
   dashboardComponentModel,
-  taskModel
+  taskModel,
+  castToObjectId
 } from '../schema'
 
 export const mdDBoardGetComponents = async (dboardId: string) => {
@@ -19,8 +20,14 @@ export const mdDboardGetDefault = async (projectId: string) => {
   return dashboardModel.findOne({ projectId })
 }
 
-export const mdDBoardCreate = async (data: Omit<IDashboardField, 'id'>) => {
-  return dashboardModel.create(data)
+export const mdDBoardCreate = async (data: Omit<IDashboardField, 'id' | 'projectId'> & { projectId: string }) => {
+
+  return dashboardModel.create({
+    ...data,
+    ...{
+      projectId: castToObjectId(data.projectId)
+    }
+  })
 }
 
 export const mdDBoardAddComponent = async (
@@ -205,7 +212,16 @@ export const mdDBoardQueryTask = async (
 ) => {
   const where = generateQueryCondition(restConfig)
   console.log('Dboard component:', type)
-  return taskModel.countDocuments(where).skip(skip).limit(take)
+  const q = taskModel.countDocuments(where)
+  if (skip && !isNaN(skip)) {
+    q.skip(skip)
+  }
+
+  if (take && !isNaN(take)) {
+    q.limit(take)
+  }
+  // return taskModel.countDocuments(where).skip(skip).limit(take)
+  return q.exec()
 }
 
 export const mdDBoardQuerySum = ({
@@ -215,7 +231,18 @@ export const mdDBoardQuerySum = ({
 }: IDBComponentConfig) => {
   const where = generateQueryCondition(restConfig)
   console.log('dboard summary')
-  return taskModel.countDocuments(where).skip(skip).limit(take)
+
+  const q = taskModel.countDocuments(where)
+  if (skip && !isNaN(skip)) {
+
+    q.skip(skip)
+  }
+  if (take && !isNaN(take)) {
+    q.limit(take)
+  }
+
+  return q.exec()
+  // return taskModel.countDocuments(where).skip(skip).limit(take)
 }
 
 type TDateChart = {

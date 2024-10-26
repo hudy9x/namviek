@@ -1,5 +1,7 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
+// This generic helps converting a specified field to string
+// Ex: type IFavoritesField2 = ConvertFieldsToString<IFavoritesField, ''>
 type ConvertFieldsToString<T, Fields extends keyof T> = {
   [K in keyof T]: K extends Fields
   ? T[K] extends mongoose.Types.ObjectId ? string
@@ -200,6 +202,7 @@ export type IOrganizationStorageField = {
   updatedAt?: Date;
   updatedBy?: string;
 }
+export type IOrganizationStorageFields = ConvertFieldsToString<IOrganizationStorageField, 'organizationId'>
 
 export type IOrganizationStorage = IOrganizationStorageField & Document
 
@@ -497,7 +500,7 @@ export type ICommentField = {
 export type IComment = ICommentField & Document
 
 // Schemas
-const UserSchema = new Schema<IUser>({
+export const UserSchema = new Schema<IUser>({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   name: String,
@@ -520,7 +523,7 @@ const UserSchema = new Schema<IUser>({
   updatedBy: String
 }, { timestamps: true });
 
-const FavoritesSchema = new Schema<IFavorites>({
+export const FavoritesSchema = new Schema<IFavorites>({
   name: { type: String, required: true },
   icon: { type: String, required: true },
   link: { type: String, required: true },
@@ -533,7 +536,7 @@ const FavoritesSchema = new Schema<IFavorites>({
   updatedBy: String
 }, { timestamps: true });
 
-const OrganizationSchema = new Schema<IOrganization>({
+export const OrganizationSchema = new Schema<IOrganization>({
   name: { type: String, unique: true, required: true },
   slug: { type: String, unique: true, required: true },
   cover: String,
@@ -546,7 +549,7 @@ const OrganizationSchema = new Schema<IOrganization>({
   updatedBy: String
 }, { timestamps: true });
 
-const OrganizationStorageSchema = new Schema<IOrganizationStorage>({
+export const OrganizationStorageSchema = new Schema<IOrganizationStorage>({
   type: { type: String, enum: Object.values(OrgStorageType), required: true },
   config: { type: Schema.Types.Mixed, required: true },
   organizationId: { type: Schema.Types.ObjectId, required: true },
@@ -556,7 +559,7 @@ const OrganizationStorageSchema = new Schema<IOrganizationStorage>({
   updatedBy: String
 }, { timestamps: true });
 
-const OrganizationMembersSchema = new Schema<IOrganizationMember>({
+export const OrganizationMembersSchema = new Schema<IOrganizationMember>({
   uid: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   status: { type: String, enum: Object.values(InvitationStatus), required: true },
   organizationId: { type: Schema.Types.ObjectId, required: true },
@@ -567,17 +570,17 @@ const OrganizationMembersSchema = new Schema<IOrganizationMember>({
   updatedBy: String
 }, { timestamps: true });
 
-const CounterSchema = new Schema<ICounter>({
+export const CounterSchema = new Schema<ICounter>({
   type: { type: String, enum: Object.values(CounterType), required: true },
   counter: { type: Number, required: true }
 });
 
-const TestSchema = new Schema<ITest>({
+export const TestSchema = new Schema<ITest>({
   title: { type: String, required: true },
   order: { type: Number, required: true }
 });
 
-const TaskSchema = new Schema<ITask>({
+export const TaskSchema = new Schema<ITask>({
   title: { type: String, required: true },
   desc: String,
   dueDate: Date,
@@ -606,7 +609,7 @@ const TaskSchema = new Schema<ITask>({
   updatedAt: Date
 }, { timestamps: true });
 
-const TaskStatusSchema = new Schema<ITaskStatus>({
+export const TaskStatusSchema = new Schema<ITaskStatus>({
   name: { type: String, required: true },
   color: { type: String, required: true },
   order: { type: Number, required: true },
@@ -614,7 +617,7 @@ const TaskStatusSchema = new Schema<ITaskStatus>({
   type: { type: String, enum: Object.values(StatusType), default: StatusType.TODO }
 });
 
-const TaskChecklistSchema = new Schema<ITaskChecklist>({
+export const TaskChecklistSchema = new Schema<ITaskChecklist>({
   taskId: { type: Schema.Types.ObjectId, required: true },
   title: { type: String, required: true },
   order: { type: Number, required: true },
@@ -622,19 +625,19 @@ const TaskChecklistSchema = new Schema<ITaskChecklist>({
   doneAt: Date
 });
 
-const TagSchema = new Schema<ITag>({
+export const TagSchema = new Schema<ITag>({
   name: { type: String, required: true },
   color: { type: String, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true }
 });
 
-const TaskPointSchema = new Schema<ITaskPoint>({
+export const TaskPointSchema = new Schema<ITaskPoint>({
   point: { type: Number, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   icon: String
 });
 
-const TaskAutomationSchema = new Schema<ITaskAutomation>({
+export const TaskAutomationSchema = new Schema<ITaskAutomation>({
   organizationId: { type: Schema.Types.ObjectId, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   when: { type: Schema.Types.Mixed, required: true },
@@ -645,7 +648,7 @@ const TaskAutomationSchema = new Schema<ITaskAutomation>({
   updatedAt: Date
 }, { timestamps: true });
 
-const SchedulerSchema = new Schema<IScheduler>({
+export const SchedulerSchema = new Schema<IScheduler>({
   organizationId: { type: Schema.Types.ObjectId, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   cronId: String,
@@ -657,7 +660,7 @@ const SchedulerSchema = new Schema<IScheduler>({
   updatedAt: Date
 }, { timestamps: true });
 
-const FileStorageSchema = new Schema<IFileStorage>({
+export const FileStorageSchema = new Schema<IFileStorage>({
   organizationId: { type: Schema.Types.ObjectId, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   name: { type: String, required: true },
@@ -676,7 +679,7 @@ const FileStorageSchema = new Schema<IFileStorage>({
   deletedBy: String
 }, { timestamps: true });
 
-const ProjectSchema = new Schema<IProject>({
+export const ProjectSchema = new Schema<IProject>({
   name: { type: String, required: true },
   projectViewId: Schema.Types.ObjectId,
   desc: String,
@@ -692,7 +695,7 @@ const ProjectSchema = new Schema<IProject>({
   updatedAt: Date
 }, { timestamps: true });
 
-const ProjectSettingNotificationSchema = new Schema<IProjectSettingNotification>({
+export const ProjectSettingNotificationSchema = new Schema<IProjectSettingNotification>({
   uid: { type: Schema.Types.ObjectId, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   taskChanges: { type: Boolean, default: false },
@@ -702,7 +705,7 @@ const ProjectSettingNotificationSchema = new Schema<IProjectSettingNotification>
   createdAt: Date
 }, { timestamps: true });
 
-const ProjectViewSchema = new Schema<IProjectView>({
+export const ProjectViewSchema = new Schema<IProjectView>({
   name: String,
   type: { type: String, enum: Object.values(ProjectViewType), required: true },
   onlyMe: Boolean,
@@ -716,7 +719,7 @@ const ProjectViewSchema = new Schema<IProjectView>({
   updatedAt: Date
 }, { timestamps: true });
 
-const VisionSchema = new Schema<IVision>({
+export const VisionSchema = new Schema<IVision>({
   name: { type: String, required: true },
   projectId: Schema.Types.ObjectId,
   organizationId: Schema.Types.ObjectId,
@@ -728,7 +731,7 @@ const VisionSchema = new Schema<IVision>({
   createdAt: Date
 }, { timestamps: true });
 
-const MembersSchema = new Schema<IMember>({
+export const MembersSchema = new Schema<IMember>({
   projectId: { type: Schema.Types.ObjectId, required: true },
   role: { type: String, enum: Object.values(MemberRole), required: true },
   uid: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -738,7 +741,7 @@ const MembersSchema = new Schema<IMember>({
   updatedAt: Date
 }, { timestamps: true });
 
-const StatsSchema = new Schema<IStats>({
+export const StatsSchema = new Schema<IStats>({
   type: { type: String, enum: Object.values(StatsType), required: true },
   data: Schema.Types.Mixed,
   uid: Schema.Types.ObjectId,
@@ -750,7 +753,7 @@ const StatsSchema = new Schema<IStats>({
   updatedAt: Date
 });
 
-const DashboardComponentSchema = new Schema<IDashboardComponent>({
+export const DashboardComponentSchema = new Schema<IDashboardComponent>({
   dashboardId: { type: Schema.Types.ObjectId, ref: 'Dashboard' },
   title: String,
   type: { type: String, enum: Object.values(DashboardComponentType) },
@@ -761,13 +764,13 @@ const DashboardComponentSchema = new Schema<IDashboardComponent>({
   updatedAt: Date
 }, { timestamps: true });
 
-const DashboardSchema = new Schema<IDashboard>({
+export const DashboardSchema = new Schema<IDashboard>({
   title: { type: String, default: 'Untitled' },
   projectId: Schema.Types.ObjectId,
   isDefault: { type: Boolean, default: false }
 });
 
-const ActivitySchema = new Schema<IActivity>({
+export const ActivitySchema = new Schema<IActivity>({
   objectId: { type: String, required: true },
   objectType: { type: String, enum: Object.values(ActivityObjectType), required: true },
   type: { type: String, enum: Object.values(ActivityType), required: true },
@@ -778,7 +781,7 @@ const ActivitySchema = new Schema<IActivity>({
   updatedBy: String
 });
 
-const CommentSchema = new Schema<IComment>({
+export const CommentSchema = new Schema<IComment>({
   taskId: { type: Schema.Types.ObjectId, required: true },
   projectId: { type: Schema.Types.ObjectId, required: true },
   content: { type: String, required: true },
@@ -787,64 +790,3 @@ const CommentSchema = new Schema<IComment>({
   updatedAt: { type: Date, required: true }
 });
 
-// Array of all schemas
-const allSchemas = [
-  UserSchema, FavoritesSchema, OrganizationSchema, OrganizationStorageSchema, OrganizationMembersSchema,
-  CounterSchema, TestSchema, TaskSchema, TaskStatusSchema, TaskChecklistSchema, TagSchema, TaskPointSchema,
-  TaskAutomationSchema, SchedulerSchema, FileStorageSchema, ProjectSchema, ProjectSettingNotificationSchema,
-  ProjectViewSchema, VisionSchema, MembersSchema, StatsSchema, DashboardComponentSchema, DashboardSchema,
-  ActivitySchema, CommentSchema
-];
-
-// Add virtual 'id' field to all schemas
-allSchemas.forEach(schema => {
-  schema.virtual('id').get(function(this: Document<Schema.Types.ObjectId>) {
-    return this._id.toString();
-  });
-});
-
-// Ensure virtuals are included in toJSON output
-const toJSONConfig = {
-  virtuals: true,
-  transform: (doc: unknown, ret: any) => {
-    ret.id = ret._id.toHexString();
-    return ret;
-  }
-};
-
-// Apply toJSON configuration to all schemas
-allSchemas.forEach(schema => {
-  schema.set('toJSON', toJSONConfig);
-});
-
-// Create models with existence check
-function createModel<T extends Document>(name: string, schema: Schema): Model<T> {
-  return mongoose.models[name] || mongoose.model<T>(name, schema, name);
-}
-
-// Create and export all models
-export const userModel = createModel<IUser>('User', UserSchema);
-export const favoritesModel = createModel<IFavorites>('Favorites', FavoritesSchema);
-export const organizationModel = createModel<IOrganization>('Organization', OrganizationSchema);
-export const organizationStorageModel = createModel<IOrganizationStorage>('OrganizationStorage', OrganizationStorageSchema);
-export const organizationMembersModel = createModel<IOrganizationMember>('OrganizationMembers', OrganizationMembersSchema);
-export const counterModel = createModel<ICounter>('Counter', CounterSchema);
-export const testModel = createModel<ITest>('Test', TestSchema);
-export const taskModel = createModel<ITask>('Task', TaskSchema);
-export const taskStatusModel = createModel<ITaskStatus>('TaskStatus', TaskStatusSchema);
-export const taskChecklistModel = createModel<ITaskChecklist>('TaskChecklist', TaskChecklistSchema);
-export const tagModel = createModel<ITag>('Tag', TagSchema);
-export const taskPointModel = createModel<ITaskPoint>('TaskPoint', TaskPointSchema);
-export const taskAutomationModel = createModel<ITaskAutomation>('TaskAutomation', TaskAutomationSchema);
-export const schedulerModel = createModel<IScheduler>('Scheduler', SchedulerSchema);
-export const fileStorageModel = createModel<IFileStorage>('FileStorage', FileStorageSchema);
-export const projectModel = createModel<IProject>('Project', ProjectSchema);
-export const projectSettingNotificationModel = createModel<IProjectSettingNotification>('ProjectSettingNotification', ProjectSettingNotificationSchema);
-export const projectViewModel = createModel<IProjectView>('ProjectView', ProjectViewSchema);
-export const visionModel = createModel<IVision>('Vision', VisionSchema);
-export const membersModel = createModel<IMember>('Members', MembersSchema);
-export const statsModel = createModel<IStats>('Stats', StatsSchema);
-export const dashboardComponentModel = createModel<IDashboardComponent>('DashboardComponent', DashboardComponentSchema);
-export const dashboardModel = createModel<IDashboard>('Dashboard', DashboardSchema);
-export const activityModel = createModel<IActivity>('Activity', ActivitySchema);
-export const commentModel = createModel<IComment>('Comment', CommentSchema);

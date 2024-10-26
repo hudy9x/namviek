@@ -20,7 +20,7 @@ const router = Router()
 
 mainRouter.use('/auth', router)
 
-router.post('/refresh-token', async (req, res) => {
+router.post('/refresh-token', async () => {
   console.log('a')
 })
 
@@ -30,23 +30,25 @@ router.post('/sign-in', async (req, res) => {
       provider: 'GOOGLE' | 'EMAIL_PASSWORD'
     }
 
-    const isEmailPasswordProvider = body.provider === 'EMAIL_PASSWORD'
-    const isGoogleProvider = body.provider === 'GOOGLE'
+    // const isEmailPasswordProvider = body.provider === 'EMAIL_PASSWORD'
+    // const isGoogleProvider = body.provider === 'GOOGLE'
 
     let authProvider: EmailAuthProvider | GoogleAuthProvider
 
-    if (isEmailPasswordProvider) {
-      authProvider = new EmailAuthProvider({
-        email: body.email,
-        password: body.password
-      })
-    }
+    switch (body.provider) {
+      case 'EMAIL_PASSWORD':
+        authProvider = new EmailAuthProvider({
+          email: body.email,
+          password: body.password
+        })
+        break;
 
-    if (isGoogleProvider) {
-      authProvider = new GoogleAuthProvider({
-        email: body.email,
-        password: body.password
-      })
+      case 'GOOGLE':
+        authProvider = new GoogleAuthProvider({
+          email: body.email,
+          password: body.password
+        })
+        break;
     }
 
     if (!authProvider) {

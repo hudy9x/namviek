@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
-import { mdFavAdd, mdFavDel, mdFavGet } from '@shared/models'
+// import { mdFavAdd, mdFavDel, mdFavGet } from '@shared/models'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
+import { castToObjectId, mdFavAdd, mdFavDel, mdFavGet } from '@shared/models'
 
 const router = Router()
 
@@ -73,11 +74,11 @@ router.post('/favorite', async (req: AuthRequest, res) => {
   try {
     const result = await mdFavAdd({
       name,
-      orgId,
+      orgId: castToObjectId(orgId),
       icon,
       link,
       type,
-      uid: uid,
+      uid: castToObjectId(uid),
       createdAt: new Date(),
       createdBy: uid,
       updatedAt: null,

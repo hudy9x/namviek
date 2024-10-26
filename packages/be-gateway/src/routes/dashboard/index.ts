@@ -11,9 +11,11 @@ import {
   mdDBoardQueryColumn,
   mdDBoardQueryBurnChart,
   mdDBoardQuerySum,
-  mdDboardGetDefault
+  mdDboardGetDefault,
+  IDashboardComponentField,
+  DashboardComponentType
 } from '@shared/models'
-import { DashboardComponent, DashboardComponentType } from '@prisma/client'
+// import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 
 const router = Router()
 
@@ -80,7 +82,7 @@ router.post('/dboard/component', async (req: AuthRequest, res) => {
   try {
     const { id: uid } = req.authen
     const { dashboardId, title, type, config } = req.body as Partial<
-      Omit<DashboardComponent, 'id'>
+      Omit<IDashboardComponentField, 'id'>
     >
 
     console.log('create component')

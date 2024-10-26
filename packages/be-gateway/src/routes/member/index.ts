@@ -2,12 +2,15 @@ import { Router } from 'express'
 import { authMiddleware, beProjectMemberMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
+  IUserField,
+  MemberRole,
+  castToObjectId,
   mdMemberAddMany,
   mdMemberDel,
   mdMemberGetAllByProjectId,
   mdMemberUpdateRole
 } from '@shared/models'
-import { MemberRole, User } from '@prisma/client'
+// import { MemberRole, User } from '@prisma/client'
 import {
   CKEY,
   delCache,
@@ -59,7 +62,7 @@ router.post('/project/member', async (req: AuthRequest, res) => {
   const { id: userId } = req.authen
   const { projectId, members } = req.body as {
     projectId: string
-    members: User[]
+    members: IUserField[]
   }
   const key = [CKEY.PROJECT_MEMBER, projectId]
   const userProjectKeys = []
@@ -74,9 +77,9 @@ router.post('/project/member', async (req: AuthRequest, res) => {
       }
 
       return {
-        projectId,
+        projectId: castToObjectId(projectId),
         role: MemberRole.MEMBER,
-        uid: m.id,
+        uid: castToObjectId(m.id),
         createdBy: userId,
         createdAt: new Date(),
         updatedBy: null,

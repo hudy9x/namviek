@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { CommentRepository } from '@shared/models'
-import { Comment } from '@prisma/client'
+import { CommentRepository, ICommentField } from '@shared/models'
+// import { Comment } from '@prisma/client'
 import {
   BaseController,
   Controller,
@@ -46,14 +46,14 @@ export default class TaskComment extends BaseController {
 
   @Post('')
   createComment(
-    @Body() body: Omit<Comment, 'id'>,
+    @Body() body: Omit<ICommentField, 'id'>,
     @Res() res: ExpressResponse,
     @Req() req: AuthRequest
   ) {
     this.commentRepo
       .mdCommentAdd(body)
       .then(result => {
-        const { taskId } = body as Comment
+        const { taskId } = body as ICommentField
         const eventName = `event-send-task-comment-${taskId}`
 
         console.log(`trigger event ${eventName} `, body)
@@ -75,12 +75,12 @@ export default class TaskComment extends BaseController {
 
   @Put('')
   updateComment(@Res() res: Response, @Req() req: AuthRequest, @Next() next) {
-    const body = req.body as Comment
+    const body = req.body as ICommentField
     const { id, ...rest } = body
     this.commentRepo
       .mdCommentUpdate(id, rest)
       .then(result => {
-        const { taskId } = result as Comment
+        const { taskId } = result as ICommentField
         const eventName = `event-update-task-comment-${taskId}`
 
         console.log(`trigger event ${eventName} `, body)

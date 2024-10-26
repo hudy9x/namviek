@@ -2,11 +2,12 @@ import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 import {
+  ITaskAutomationField,
   mdAutomationDel,
   mdAutomationGet,
   mdAutomationPost
 } from '@shared/models'
-import { TaskAutomation } from '@prisma/client'
+// import { TaskAutomation } from '@prisma/client'
 
 const router = Router()
 
@@ -30,7 +31,7 @@ router.get('/automation', async (req: AuthRequest, res) => {
 router.post('/automation', async (req: AuthRequest, res) => {
   try {
     const { id: uid } = req.authen
-    const { organizationId, projectId, when, then } = req.body as TaskAutomation
+    const { organizationId, projectId, when, then } = req.body as ITaskAutomationField
 
     const data = {
       projectId,

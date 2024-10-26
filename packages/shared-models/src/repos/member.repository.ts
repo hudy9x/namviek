@@ -1,9 +1,16 @@
-import { IMemberField, membersModel, MemberRole, castToObjectId } from '../schema'
+import { IMemberField, membersModel, MemberRole, castToObjectId, transformToId } from '../schema'
 
 export const mdMemberGetProject = async (uid: string) => {
-  return membersModel.find({
+  const members = await membersModel.find({
     uid: castToObjectId(uid)
-  })
+  }).lean() as unknown as IMemberField[]
+
+  if (members && members.length) {
+    console.log('run herer')
+    return members.map(transformToId)
+  }
+
+  return members
 }
 
 export const mdMemberHasRole = async (uid: string, role: MemberRole) => {
@@ -62,7 +69,17 @@ export const mdMemberBelongToProject = async (
 }
 
 export const mdMemberGetAllByProjectId = async (projectId: string) => {
-  return membersModel.find({
+  const members = await membersModel.find({
     projectId: castToObjectId(projectId)
-  }).populate('uid')
+  }).populate('uid').lean() as unknown as IMemberField[]
+
+  if (members && members.length) {
+    return members.map((m: any) => {
+      m.id = m._id.toString()
+      m.users = m.uid
+      return m
+    })
+  }
+  return members
+
 }

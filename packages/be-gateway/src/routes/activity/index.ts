@@ -6,7 +6,7 @@ import {
   mdActivityGetAllByTask,
   mdActivityUpdate
 } from '@shared/models'
-import { Activity } from '@prisma/client'
+// import { Activity } from '@prisma/client'
 import {
   BaseController,
   Controller,

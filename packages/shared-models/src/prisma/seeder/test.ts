@@ -1,4 +1,6 @@
 import { mdUserFindEmailsByUids } from "../../lib"
+import { mdMemberGetAllByProjectId, mdMemberGetProject } from "../../repos"
+import { mdMemberGetAllByProjectId as mdMemberGetAllByProjectId2 } from "../../lib";
 import { mdUserAdd, mdUserFindEmail, mdUserFindFirst, mdUserUpdate } from "../../repos/user.reposioty"
 import { UserStatus, userModel } from "../../schema"
 import { connectDB } from "../../schema/connect"
@@ -6,6 +8,18 @@ import { connectDB } from "../../schema/connect"
 export const runTest = async () => {
   console.log('run test')
   await connectDB()
+
+  // const result = await mdMemberGetAllByProjectId('664225004b4f250ca2404749')
+  // console.log(result)
+
+  // const res2 = await mdMemberGetAllByProjectId2('664225004b4f250ca2404749')
+  //
+  // console.log(res2)
+
+  const member = await mdMemberGetProject('66407ace0f3e9590dd4e969a')
+
+  console.log('==============> ')
+  console.dir(member)
 
   // const first = await mdUserFindFirst({ id: '664588192f5b6db5010db970' })
   // console.log('first', first)
@@ -29,6 +43,7 @@ export const runTest = async () => {
   //   name: 'Nguyen Tuyet A'
   // })
   // console.log(updateData)
+
 
 
   process.exit()

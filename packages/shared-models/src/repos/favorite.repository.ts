@@ -5,16 +5,18 @@ export const mdFavAdd = async (data: Omit<IFavoritesField, 'id'>) => {
 }
 
 export const mdFavGet = async (uid: string, orgId: string) => {
-  return await favoritesModel.find({ 
-    uid: castToObjectId(uid), 
-    orgId: castToObjectId(orgId) 
-  })
+  const result = await favoritesModel.find({
+    uid: castToObjectId(uid),
+    orgId: castToObjectId(orgId)
+  }).lean()
+
+  return result 
 }
 
 export const mdFavDel = async (id: string, uid: string) => {
-  return await favoritesModel.findOneAndDelete({ 
-    _id: castToObjectId(id), 
-    uid: castToObjectId(uid) 
+  return await favoritesModel.findOneAndDelete({
+    _id: castToObjectId(id),
+    uid: castToObjectId(uid)
   })
 }
 

@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { AccessToken, RoomServiceClient } from 'livekit-server-sdk'
-import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
 
 const apiKey = process.env.LIVEKIT_API_KEY
