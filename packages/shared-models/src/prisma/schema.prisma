@@ -143,6 +143,31 @@ model Test {
   order Int
 }
 
+enum FieldType {
+  NUMBER
+  TEXT
+  DATE
+  SELECT
+  MULTISELECT
+  CHECKBOX
+  URL
+  EMAIL
+  // STATUS
+  // FILES
+  // PHONE
+  // PERSON
+}
+
+model Field {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String    @db.ObjectId
+  name      String
+  type      FieldType
+  icon      String
+  display   Boolean
+  data      Json
+}
+
 enum TaskType {
   TASK
   BUG
@@ -177,6 +202,8 @@ model Task {
   done             Boolean       @default(false)
   // do not store `point` as objectID, cuz we just need to fill the point value
   taskPoint        Int?
+
+  customFields Json?
 
   createdBy String?
   createdAt DateTime?
