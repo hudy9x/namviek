@@ -25,4 +25,5 @@ export const visionModel = pmClient.vision
 export const activityModel = pmClient.activity
 export const commentModel = pmClient.comment
 export const statsModel = pmClient.stats
+export const fieldModel = pmClient.field
 
