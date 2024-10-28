@@ -17,7 +17,7 @@ export default function CreateField() {
 
     <Dialog.Root open={visible} onOpenChange={setVisible}>
       <Dialog.Portal>
-        <Dialog.Content size='sm'>
+        <Dialog.Content position="right" size='sm'>
           <CreateFieldContainer />
         </Dialog.Content>
       </Dialog.Portal>
