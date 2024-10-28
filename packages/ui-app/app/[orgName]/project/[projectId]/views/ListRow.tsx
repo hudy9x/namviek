@@ -101,6 +101,8 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
           {/*   </div> */}
           {/* </div> */}
         </ListCell>
+        <ListCell width={40}>
+        </ListCell>
       </div>
     </div>
   )

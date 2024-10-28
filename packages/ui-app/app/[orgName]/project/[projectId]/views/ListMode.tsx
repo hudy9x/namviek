@@ -9,6 +9,7 @@ import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
+import CreateField from '@/features/CustomField/CreateField'
 
 export default function ListMode() {
   const {
@@ -59,6 +60,9 @@ export default function ListMode() {
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
                 <ListCell width={70}>Progress</ListCell>
+                <ListCell width={40}>
+                  <CreateField />
+                </ListCell>
                 {/* <ListCell width={100}>Created by</ListCell> */}
               </div>
             </div>
