@@ -8,7 +8,7 @@ export class FieldSelectStrategy implements FieldFactoryBase {
     this.fieldRepo = new FieldRepository()
   }
   async create(data: FieldCreate): Promise<Field> {
-    console.log('create text')
+    console.log('create select')
     try {
       const result = await this.fieldRepo.create({ ...data, ...{ data: {} } })
       return result

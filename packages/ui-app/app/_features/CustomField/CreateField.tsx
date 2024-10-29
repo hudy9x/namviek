@@ -1,14 +1,23 @@
 import { Dialog } from "@shared/ui";
 import Button from "packages/shared-ui/src/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi2";
 import CreateFieldContainer from "./CreateFieldContainer";
+import { useCustomFieldStore } from "./store";
 
 export default function CreateField() {
   const [visible, setVisible] = useState(false)
+  const { setDisplay } = useCustomFieldStore()
   const onClick = () => {
     setVisible(true)
   }
+
+  // reset form data
+  useEffect(() => {
+    if (visible === false) {
+      setDisplay(false)
+    }
+  }, [visible])
 
   return <>
     <Button onClick={onClick} leadingIcon={

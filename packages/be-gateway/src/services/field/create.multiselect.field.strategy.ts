@@ -8,7 +8,7 @@ export class FieldMultiSelectStrategy implements FieldFactoryBase {
     this.fieldRepo = new FieldRepository()
   }
   async create(data: FieldCreate): Promise<Field> {
-    console.log('create text')
+    console.log('create multi select')
     try {
       const result = await this.fieldRepo.create({ ...data, ...{ data: {} } })
       return result

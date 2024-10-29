@@ -38,15 +38,16 @@ export default class FieldController extends BaseController {
   }
 
   @Post('')
-  create(
+  async create(
     @Body() body: Omit<Field, 'id'>,
     @Res() res: ExpressResponse
   ) {
 
-    console.log('body', body)
+    console.log('Field data', body)
 
-    const result = this.fieldService.create(body.type, body)
+    const result = await this.fieldService.create(body.type, body)
 
+    console.log('ret data', result)
 
     res.json({ status: 200, data: result })
 

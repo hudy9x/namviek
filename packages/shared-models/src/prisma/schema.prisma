@@ -163,9 +163,11 @@ model Field {
   projectId String    @db.ObjectId
   name      String
   type      FieldType
-  icon      String
-  display   Boolean
-  data      Json
+  icon      String?
+  hidden    Boolean?
+  desc      String?
+  data      Json?
+  config    Json?
 }
 
 enum TaskType {
