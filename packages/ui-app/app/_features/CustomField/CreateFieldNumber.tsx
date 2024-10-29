@@ -2,6 +2,9 @@ import { Form, ListItemValue } from "@shared/ui";
 import { useCustomFieldStore } from "./store";
 import { useEffect, useState } from "react";
 import { Prisma } from "@prisma/client";
+import { TbNumber29Small, TbNumber9 } from "react-icons/tb";
+import { RiDonutChartLine } from "react-icons/ri";
+import { IoBatteryHalfOutline } from "react-icons/io5";
 
 const List = Form.List
 const options: ListItemValue[] = [
@@ -22,15 +25,12 @@ function NumberFormat() {
     if (counter <= 0) {
       return
     }
-
     setConfig({ format: selected.id })
-
   }, [counter])
 
+  // set default config to number field 
   useEffect(() => {
-    if (counter === 0) {
-      setConfig({ format: options[0].id })
-    }
+    setConfig({ format: options[0].id })
   }, [])
 
 
@@ -54,10 +54,33 @@ function NumberFormat() {
 }
 
 function NumberShownAs() {
+  const { setConfig, data } = useCustomFieldStore()
+  const shownAs = [
+    { value: 'number', title: 'Number', icon: <TbNumber29Small /> },
+    { value: 'bar', title: 'Bar', icon: <IoBatteryHalfOutline /> },
+    { value: 'ring', title: 'Ring', icon: <RiDonutChartLine /> },
+  ]
+  const [selected, setSelected] = useState('number')
+
+  useEffect(() => {
+    setConfig({ shownAs: 'number' })
+  }, [])
+
   return <div className="form-control">
     <label>Shown as</label>
-    <div>
-      <div></div>
+    <div className="grid grid-cols-3 gap-2">
+      {shownAs.map(item => {
+        const active = item.value === selected ? 'ring-2 ring-indigo-400' : ''
+        return <div key={item.value}
+          onClick={() => {
+            setConfig({ shownAs: item.value })
+            setSelected(item.value)
+          }}
+          className={`dark:hover:bg-gray-800 cursor-pointer border rounded-md dark:border-gray-700 p-2 ${active}`}>
+          {item.icon}
+          <span>{item.title}</span>
+        </div>
+      })}
     </div>
   </div>
 }
@@ -72,6 +95,7 @@ export default function CreateFieldNumber() {
     }} title="Field name" placeholder="Input your field name" required className="w-full" />
 
     <NumberFormat />
+    <NumberShownAs />
 
     {/* <Form.Textarea placeholder="What does this field do ?" value={desc || ''} onChange={ev => { */}
     {/*   setData({ desc: ev.target.value }) */}

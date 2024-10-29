@@ -6,6 +6,7 @@ import SubmitCustomFieldConfig from "./SubmitCustomFieldConfig";
 import { types } from "./FormSelectType";
 import CreateFieldNumber from "./CreateFieldNumber";
 import CreateFieldDate from "./CreateFieldDate";
+import CreateFieldSelect from "./CreateFieldSelect";
 
 export default function CreateFieldFactory() {
 
@@ -13,22 +14,26 @@ export default function CreateFieldFactory() {
 
   const generateForm = () => {
     switch (data.type) {
+      case FieldType.EMAIL:
+      case FieldType.URL:
       case FieldType.TEXT:
         return <CreateFieldText />
+
       case FieldType.NUMBER:
         return <CreateFieldNumber />
+
       case FieldType.DATE:
         return <CreateFieldDate />
+
       case FieldType.CHECKBOX:
         return <CreateFieldText />
-      case FieldType.URL:
-        return <CreateFieldText />
+
       case FieldType.SELECT:
-        return <CreateFieldText />
+        return <CreateFieldSelect />
+
       case FieldType.MULTISELECT:
         return <CreateFieldText />
-      case FieldType.EMAIL:
-        return <CreateFieldText />
+
       default:
         return null
     }
