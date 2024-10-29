@@ -53,6 +53,15 @@ function NumberFormat() {
   </List>
 }
 
+function NumberShownAs() {
+  return <div className="form-control">
+    <label>Shown as</label>
+    <div>
+      <div></div>
+    </div>
+  </div>
+}
+
 export default function CreateFieldNumber() {
   const { data, setData } = useCustomFieldStore()
   const { name, desc } = data
