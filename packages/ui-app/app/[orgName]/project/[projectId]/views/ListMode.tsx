@@ -10,6 +10,8 @@ import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import CreateField from '@/features/CustomField/CreateField'
+import ListCellCustomFields from './ListCellCustomFields'
+import ListRowCustomFields from './ListRowCustomFields'
 
 export default function ListMode() {
   const {
@@ -60,6 +62,7 @@ export default function ListMode() {
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
                 <ListCell width={70}>Progress</ListCell>
+                <ListCellCustomFields />
                 <ListCell width={40}>
                   <CreateField />
                 </ListCell>
@@ -99,6 +102,7 @@ export default function ListMode() {
 
                   return <ListRow key={task.id} task={task} />
                 })}
+
               <ListCreateTask type={filter.groupBy} groupId={group.id} />
             </div>
           </div>

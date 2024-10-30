@@ -17,6 +17,7 @@ import TaskChecklist from '@/features/TaskChecklist'
 import TaskProgress from './TaskProgress'
 import { useMemo } from 'react'
 import TaskTitle from './TaskTitle'
+import ListCellCustomFieldValues from './ListCellCustomFieldValues'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const isRandomId = task.id.includes('TASK-ID-RAND')
@@ -101,6 +102,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
           {/*   </div> */}
           {/* </div> */}
         </ListCell>
+        <ListCellCustomFieldValues taskId={task.id} data={task.customFields} />
         <ListCell width={40}>
         </ListCell>
       </div>

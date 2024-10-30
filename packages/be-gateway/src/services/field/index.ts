@@ -4,7 +4,7 @@ import { FieldTextStrategy } from "./create.text.field.strategy";
 import { FieldNumberStrategy } from "./create.number.field.strategy";
 import { FieldDateStrategy } from "./create.date.field.strategy";
 import { FieldSelectStrategy } from "./create.select.field.strategy";
-import { FieldMultiSelectStrategy } from "./create.multiselect.field.strategy";
+// import { FieldMultiSelectStrategy } from "./create.multiselect.field.strategy";
 import { FieldCheckboxStrategy } from "./create.checkbox.field.strategy";
 import { FieldRepository } from "@shared/models";
 
@@ -44,12 +44,12 @@ export class FieldService {
         break
 
       case FieldType.SELECT:
+      case FieldType.MULTISELECT:
         createFieldFactory = new FieldSelectStrategy()
         break
 
-      case FieldType.MULTISELECT:
-        createFieldFactory = new FieldMultiSelectStrategy()
-        break
+      // createFieldFactory = new FieldMultiSelectStrategy()
+      // break
 
       case FieldType.CHECKBOX:
         createFieldFactory = new FieldCheckboxStrategy()

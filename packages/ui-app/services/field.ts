@@ -9,8 +9,12 @@ export const fieldSv = {
     return httpPost('/api/fields', data)
   },
 
-  getByProjectId(projectId: string) {
-    return httpGet(`/api/fields/${projectId}`)
+  getByProjectId(projectId: string,
+    abortSignal?: AbortSignal
+  ) {
+    return httpGet(`/api/fields/${projectId}`, {
+      signal: abortSignal
+    })
   },
 
   delete(id: string) {

@@ -2,7 +2,7 @@ import { Form, ListItemValue } from "@shared/ui";
 import { useCustomFieldStore } from "./store";
 import { useEffect, useState } from "react";
 import { Prisma } from "@prisma/client";
-import { TbNumber29Small, TbNumber9 } from "react-icons/tb";
+import { TbNumber29Small } from "react-icons/tb";
 import { RiDonutChartLine } from "react-icons/ri";
 import { IoBatteryHalfOutline } from "react-icons/io5";
 
@@ -56,9 +56,9 @@ function NumberFormat() {
 function NumberShownAs() {
   const { setConfig, data } = useCustomFieldStore()
   const shownAs = [
-    { value: 'number', title: 'Number', icon: <TbNumber29Small /> },
-    { value: 'bar', title: 'Bar', icon: <IoBatteryHalfOutline /> },
-    { value: 'ring', title: 'Ring', icon: <RiDonutChartLine /> },
+    { value: 'number', title: 'Number', icon: <TbNumber29Small className="w-5 h-5" /> },
+    { value: 'bar', title: 'Bar', icon: <IoBatteryHalfOutline className="w-5 h-5" /> },
+    { value: 'ring', title: 'Ring', icon: <RiDonutChartLine className="w-5 h-5" /> },
   ]
   const [selected, setSelected] = useState('number')
 
@@ -78,7 +78,7 @@ function NumberShownAs() {
           }}
           className={`dark:hover:bg-gray-800 cursor-pointer border rounded-md dark:border-gray-700 p-2 ${active}`}>
           {item.icon}
-          <span>{item.title}</span>
+          <span className="text-[12px]">{item.title}</span>
         </div>
       })}
     </div>

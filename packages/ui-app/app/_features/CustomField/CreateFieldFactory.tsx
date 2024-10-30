@@ -17,6 +17,7 @@ export default function CreateFieldFactory() {
       case FieldType.EMAIL:
       case FieldType.URL:
       case FieldType.TEXT:
+      case FieldType.CHECKBOX:
         return <CreateFieldText />
 
       case FieldType.NUMBER:
@@ -25,14 +26,9 @@ export default function CreateFieldFactory() {
       case FieldType.DATE:
         return <CreateFieldDate />
 
-      case FieldType.CHECKBOX:
-        return <CreateFieldText />
-
       case FieldType.SELECT:
-        return <CreateFieldSelect />
-
       case FieldType.MULTISELECT:
-        return <CreateFieldText />
+        return <CreateFieldSelect />
 
       default:
         return null

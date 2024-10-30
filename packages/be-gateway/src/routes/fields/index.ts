@@ -12,7 +12,8 @@ import {
   Get,
   Post,
   Put,
-  Delete
+  Delete,
+  Param
 } from '../../core'
 import { FieldService } from '../../services/field'
 
@@ -29,11 +30,12 @@ export default class FieldController extends BaseController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    const { projectId } = req.query as { projectId: string }
+    const { projectId } = req.params as { projectId: string }
+
+    console.log('projectId', req.params)
 
     const result = await this.fieldService.getAllByProjectId(projectId)
 
-    console.log('2')
     res.json({ status: 200, data: result })
   }
 
@@ -72,10 +74,10 @@ export default class FieldController extends BaseController {
     //   })
   }
 
-  @Delete(':id')
-  async delete(@Query() query, @Res() res: Response) {
+  @Delete('/:id')
+  async delete(@Param() params, @Res() res: Response) {
     try {
-      const { id } = query
+      const { id } = params
       // const result = await mdActivityAdd(id)
       // res.json({ status: 200, data: result })
       res.json({ status: 200, data: 1 })

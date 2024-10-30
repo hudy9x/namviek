@@ -6,12 +6,19 @@ type CustomState = {
   data: Partial<Field>
   setData: (data: Partial<Field>) => void
   setType: (type: FieldType) => void
+  visible: boolean
+  setVisible: (stt: boolean) => void
   display: boolean
   setDisplay: (stt: boolean) => void
   setConfig: (config: Prisma.JsonObject) => void
 }
 
 export const useCustomFieldStore = create<CustomState>(set => ({
+  visible: false,
+  setVisible: (stt: boolean) => set(produce((state: CustomState) => {
+    state.visible = stt
+  })),
+
   data: {},
   setType: (type: FieldType) => set(produce((state: CustomState) => {
     state.display = true
