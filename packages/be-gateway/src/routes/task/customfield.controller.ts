@@ -1,3 +1,4 @@
+import { FieldType } from "@prisma/client";
 import { BaseController, UseMiddleware, Controller, Put, Body } from "../../core";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
 import TaskCustomFieldService from "../../services/task/custom.field.service";
@@ -13,10 +14,10 @@ export default class TaskCustomFieldController extends BaseController {
   }
 
   @Put('')
-  async update(@Body() body: { value: string, taskId: string, fieldId: string }) {
-    // const ret = await this.checklistService.update(body)
-    // return ret
-    return 1
+  async update(@Body() body: { value: string, taskId: string, fieldId: string, type: FieldType }) {
+    console.log('body 7')
+    const ret = await this.customFieldService.update(body)
+    return ret
   }
 
 

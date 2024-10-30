@@ -1,3 +1,4 @@
+import { FieldType } from "@prisma/client"
 import { httpDel, httpGet, httpPost, httpPut } from "./_req"
 
 
@@ -11,7 +12,7 @@ export const taskCustomFieldSv = {
   // delete(id: string) {
   //   return httpDel(`/api/project/task/checklist/${id}`)
   // },
-  update(data: { value: string, taskId: string, fieldId: string }) {
+  update(data: { value: string, taskId: string, fieldId: string, type: FieldType }) {
     return httpPut('/api/project/task/custom-field', data)
   }
 

@@ -36,6 +36,7 @@ import ReportController from './report'
 import { createModuleLog } from '../lib/log'
 import { LoadTestController } from './test/loadtest.controller'
 import FieldController from './fields'
+import TaskCustomFieldController from './task/customfield.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -71,6 +72,7 @@ router.use(
     SchedulerController,
     TaskReorderController,
     TaskChecklistController,
+    TaskCustomFieldController,
     ReportController,
     FieldController
   ])
