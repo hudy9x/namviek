@@ -7,6 +7,8 @@ import { useProjectCustomFieldStore } from "@/store/customFields"
 export default function SubmitCustomFieldConfig() {
   const { data } = useCustomFieldStore()
   const addCustomField = useProjectCustomFieldStore(state => state.addCustomField)
+  const updateCustomField = useProjectCustomFieldStore(state => state.updateCustomField)
+
   const { projectId } = useParams()
 
   const onSubmit = async () => {
@@ -16,6 +18,15 @@ export default function SubmitCustomFieldConfig() {
     }
 
     console.log('data', data)
+    if (data.id) {
+      console.log('edit mode ======')
+      const result = await fieldSv.update({ ...data, ...{ projectId } })
+      const { data: fieldData } = result.data
+      console.log('this is result', fieldData)
+      updateCustomField(fieldData)
+      return
+    }
+
 
     const result = await fieldSv.create({ ...data, ...{ projectId } })
 

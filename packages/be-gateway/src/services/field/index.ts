@@ -27,6 +27,14 @@ export class FieldService {
     await this.fieldRepo.delete(id)
   }
 
+  async update(data: Field) {
+    const result = await this.fieldRepo.update(data.id, data)
+
+    console.log('Updated custom field:', data.id, data.name, data.type)
+    console.log(result)
+    return result
+  }
+
   async create(type: FieldType, data: Omit<Field, 'id'>) {
     console.log('123', type === FieldType.TEXT)
 

@@ -13,6 +13,7 @@ export type TCustomFieldOption = {
 type CustomState = {
   data: Partial<Field>
   setData: (data: Partial<Field>) => void
+  setEditData: (data: Field) => void
   setType: (type: FieldType) => void
   visible: boolean
   setVisible: (stt: boolean) => void
@@ -25,6 +26,12 @@ export const useCustomFieldStore = create<CustomState>(set => ({
   visible: false,
   setVisible: (stt: boolean) => set(produce((state: CustomState) => {
     state.visible = stt
+  })),
+
+  setEditData: (data: Field) => set(produce((state: CustomState) => {
+    state.visible = true
+    state.data = data // override field's data
+    state.display = true // move to edit field
   })),
 
   data: {},

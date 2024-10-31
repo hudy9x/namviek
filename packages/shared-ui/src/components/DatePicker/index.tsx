@@ -8,6 +8,7 @@ import './style.css'
 
 export interface IDatePicker {
   className?: string
+  dateFormat?: string
   disabled?: boolean
   enableTimer?: boolean
   title?: string
@@ -20,6 +21,7 @@ export interface IDatePicker {
 export default function DatePicker({
   title,
   className,
+  dateFormat,
   disabled,
   enableTimer,
   value,
@@ -97,6 +99,16 @@ export default function DatePicker({
   const showDateStr = (d: Date) => {
     if (toNow) {
       return formatDistanceToNowStrict(d, { addSuffix: true })
+    }
+
+    if (dateFormat) {
+      try {
+        const formatData = format(d, dateFormat)
+        return formatData
+      } catch (error) {
+        console.log('datepicker format string error: ', error)
+        return format(d, 'PP')
+      }
     }
 
     return format(d, 'PP')

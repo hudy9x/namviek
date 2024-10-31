@@ -5,6 +5,7 @@ import ProjectView from '@/features/ProjectView'
 import { TaskUpdate2 } from './TaskUpdate2'
 import ProjectAdvanceTabs from '@/features/ProjectAdvanceTabs'
 import ProjectHeader from '@/features/Project/Header'
+import CustomFieldModal from '@/features/CustomField/CustomFieldModal'
 
 export default function ProjectNav() {
 
@@ -29,6 +30,7 @@ export default function ProjectNav() {
         </div>
       </div>
       <TaskUpdate2 />
+      <CustomFieldModal />
     </div>
   )
 }

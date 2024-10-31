@@ -26,7 +26,7 @@ export default function CustomFieldInputFactory({
         return <CustomFieldInpText value={value} />
 
       case FieldType.DATE:
-        return <CustomFieldInpDate value={value} />
+        return <CustomFieldInpDate value={value} config={config} />
 
       case FieldType.CHECKBOX:
         return <CustomFieldInpCheckbox value={value} />

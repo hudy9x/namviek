@@ -11,7 +11,6 @@ import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import CreateField from '@/features/CustomField/CreateField'
 import ListCellCustomFields from './ListCellCustomFields'
-import ListRowCustomFields from './ListRowCustomFields'
 
 export default function ListMode() {
   const {

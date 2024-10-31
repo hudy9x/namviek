@@ -1,13 +1,17 @@
 import { Button, Form } from "@shared/ui";
 import { TCustomFieldOption, useCustomFieldStore } from "./store";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ColorPicker, { colors } from "@/components/ColorPicker";
+import { Prisma } from "@prisma/client";
 
 function CreateOptionForm() {
 
-  const { setData } = useCustomFieldStore()
-  const [options, setOptions] = useState<TCustomFieldOption[]>([])
+  const { setData, data } = useCustomFieldStore(state => ({ setData: state.setData, data: state.data }))
+  const defaultData = (data.data || {}) as Prisma.JsonObject
+  const defaultOptionsData = (defaultData && defaultData.options ? defaultData.options : []) as TCustomFieldOption[]
+  const [options, setOptions] = useState<TCustomFieldOption[]>(defaultOptionsData)
+  const [counter, setCounter] = useState(0)
 
   const addNewOption = () => {
     setOptions(options => {
@@ -48,13 +52,14 @@ function CreateOptionForm() {
 
   }
 
-  useEffect(() => {
+  const onSave = useCallback(() => {
     setData({
       data: {
         options
       }
     })
-  }, [options])
+  }, [options, setData])
+
 
   return <div className="form-control">
     <label>Create option</label>
@@ -64,14 +69,18 @@ function CreateOptionForm() {
           <ColorPicker color={option.color} onChange={(color) => {
             onChangeColor(index, color)
           }} />
-          <Form.Input size="sm"
-            onEnter={value => {
-              onUpdateOption(index, value)
+          <Form.Input value={option.value} size="sm"
+            onChange={ev => {
+              onUpdateOption(index, ev.target.value)
+            }}
+            onEnter={v => {
+              onSave()
               addNewOption()
             }}
             onBlur={(ev) => {
-              const value = ev.target.value
-              onUpdateOption(index, value)
+              onSave()
+              // const value = ev.target.value
+              // onUpdateOption(index, value)
             }} className="w-full" />
           <Button size="sm"
             onClick={() => onDeleteOption(index)}

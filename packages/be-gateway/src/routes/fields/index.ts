@@ -56,11 +56,12 @@ export default class FieldController extends BaseController {
   }
 
   @Put('')
-  update(@Res() res: Response, @Req() req: Request, @Next() next) {
+  async update(@Res() res: Response, @Req() req: Request, @Next() next) {
     const body = req.body as Field
-    const { id, ...dataUpdate } = body
+    console.log('edit custom field', body)
+    const result = await this.fieldService.update(body)
 
-    res.json({ status: 200, data: 1 })
+    res.json({ status: 200, data: result })
   }
 
   @Delete('/:id')

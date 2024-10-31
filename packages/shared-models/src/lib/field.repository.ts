@@ -19,10 +19,11 @@ export class FieldRepository {
     })
   }
 
-  async update(id: string, data: Partial<Field>) {
+  async update(fieldId: string, data: Partial<Field>) {
+    const { id, ...restData } = data
     return fieldModel.update({
-      where: { id },
-      data
+      where: { id: fieldId },
+      data: restData
     })
   }
 
