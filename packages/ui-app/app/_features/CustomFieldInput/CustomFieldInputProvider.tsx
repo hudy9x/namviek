@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { CustomFieldInputContext } from "./context";
 
-export default function CustomFieldInputProvider({ children, onChange }: { children: ReactNode, onChange?: (value: string) => void }) {
+export default function CustomFieldInputProvider({ children, onChange }: { children: ReactNode, onChange?: (value: string | string[]) => void }) {
 
-  const onChangeHandler = (val: string) => {
+  const onChangeHandler = (val: string | string[]) => {
     onChange && onChange(val)
   }
 

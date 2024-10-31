@@ -23,6 +23,10 @@ export class FieldService {
     }
   }
 
+  async delete(id: string) {
+    await this.fieldRepo.delete(id)
+  }
+
   async create(type: FieldType, data: Omit<Field, 'id'>) {
     console.log('123', type === FieldType.TEXT)
 

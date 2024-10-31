@@ -1,24 +1,18 @@
 import { Button, Form } from "@shared/ui";
-import { useCustomFieldStore } from "./store";
+import { TCustomFieldOption, useCustomFieldStore } from "./store";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import ColorPicker, { colors } from "@/components/ColorPicker";
 
-type TOption = {
-  id: number,
-  order: number,
-  value: string,
-  color: string
-}
 function CreateOptionForm() {
 
   const { setData } = useCustomFieldStore()
-  const [options, setOptions] = useState<TOption[]>([])
+  const [options, setOptions] = useState<TCustomFieldOption[]>([])
 
   const addNewOption = () => {
     setOptions(options => {
       console.log(options.length)
-      const newOption: TOption = {
+      const newOption: TCustomFieldOption = {
         id: options.length,
         order: options.length,
         value: '',
@@ -93,6 +87,7 @@ function CreateOptionForm() {
       className="mt-3 flex text-xs uppercase cursor-pointer items-center gap-2"><HiOutlinePlus /> <span>Add option</span></div>
   </div>
 }
+
 export default function CreateFieldSelect() {
   const { data, setData } = useCustomFieldStore()
   const { name } = data

@@ -12,7 +12,7 @@ export const taskCustomFieldSv = {
   // delete(id: string) {
   //   return httpDel(`/api/project/task/checklist/${id}`)
   // },
-  update(data: { value: string, taskId: string, fieldId: string, type: FieldType }) {
+  update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     return httpPut('/api/project/task/custom-field', data)
   }
 

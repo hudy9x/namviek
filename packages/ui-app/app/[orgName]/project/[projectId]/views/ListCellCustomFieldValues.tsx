@@ -10,7 +10,7 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
   const customFields = useProjectCustomFieldStore(state => state.customFields)
   const customData = (data || {}) as Prisma.JsonObject
 
-  const onChange = (value: string, fieldId: string, type: FieldType) => {
+  const onChange = (value: string | string[], fieldId: string, type: FieldType) => {
     console.log(value)
     taskCustomFieldSv.update({
       taskId,
@@ -36,6 +36,8 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
 
       const dataValue = customData[field.id] // convert all to string
       const type = field.type
+      const data = JSON.stringify(field.data)
+      const config = JSON.stringify(field.config)
 
       console.log('dataVAlue', dataValue)
 
@@ -43,7 +45,11 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
         <CustomFieldInputProvider onChange={(value) => {
           onChange(value, field.id, field.type)
         }} >
-          <CustomFieldInputFactory type={type} value={dataValue ? (dataValue + '') : ''} />
+          <CustomFieldInputFactory
+            data={data}
+            config={config}
+            type={type}
+            value={dataValue ? (dataValue + '') : ''} />
         </CustomFieldInputProvider>
       </ListCell>
     })}

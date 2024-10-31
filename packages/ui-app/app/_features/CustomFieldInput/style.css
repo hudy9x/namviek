@@ -1,0 +1,18 @@
+.list-cell .select-button {
+    padding: 0;
+    white-space: nowrap;
+}
+
+.list-cell .select-button .trailing-icon {
+    display: none;
+}
+
+.custom-field-date .form-input {
+  padding: 0px;
+  border: 0px;
+  @apply bg-transparent shadow-none;
+
+  & + svg {
+    @apply hidden;
+  }
+}

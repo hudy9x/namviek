@@ -3,12 +3,15 @@ import { taskModel } from "./_prisma"
 
 export class TaskCustomFieldRepository {
 
-  private convertType(type: FieldType, value: string) {
+  private convertType(type: FieldType, value: string | string[]) {
+    if (type === FieldType.MULTISELECT && Array.isArray(value)) {
+      return value
+    }
     if (type === FieldType.NUMBER) {
       return +value
     }
 
-    if (type === FieldType.DATE) {
+    if (type === FieldType.DATE && !Array.isArray(value)) {
       console.log('date', new Date(value))
       return new Date(value).toISOString()
     }
@@ -16,7 +19,7 @@ export class TaskCustomFieldRepository {
     return value
   }
 
-  async update({ id, fieldId, value, type }: { id: string, type: FieldType, value: string, fieldId: string }) {
+  async update({ id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
     const oldTask = await taskModel.findFirst({ where: { id } })
     const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
     console.log('type', type)

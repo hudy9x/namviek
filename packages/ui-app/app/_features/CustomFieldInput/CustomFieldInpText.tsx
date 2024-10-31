@@ -3,11 +3,12 @@ import { useCustomFieldInputContext } from "./context"
 export default function CustomFieldInpText({ value }: { value: string }) {
 
   const { onChange } = useCustomFieldInputContext()
-  return <input className="w-full"
+  return <input className="w-full border px-1.5 py-1 rounded-md"
     onBlur={ev => {
-      const target = ev.target
-      console.log(target.value)
-      onChange(target.value)
+      const val = ev.target.value
+      if (val === value) return
+
+      onChange(val)
     }}
     defaultValue={value || ''} />
 }

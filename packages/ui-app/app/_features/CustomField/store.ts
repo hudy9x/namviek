@@ -2,6 +2,14 @@ import { create } from 'zustand'
 import { produce } from 'immer'
 import { Field, FieldType, Prisma } from '@prisma/client'
 
+
+export type TCustomFieldOption = {
+  id: number,
+  order: number,
+  value: string,
+  color: string
+}
+
 type CustomState = {
   data: Partial<Field>
   setData: (data: Partial<Field>) => void

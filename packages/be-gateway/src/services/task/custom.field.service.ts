@@ -7,7 +7,7 @@ export default class TaskCustomFieldService {
     this.taskCustomRepo = new TaskCustomFieldRepository()
   }
 
-  async update(body: { value: string, taskId: string, fieldId: string, type: FieldType }) {
+  async update(body: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     try {
       const result = await this.taskCustomRepo.update({
         id: body.taskId,

@@ -61,25 +61,13 @@ export default class FieldController extends BaseController {
     const { id, ...dataUpdate } = body
 
     res.json({ status: 200, data: 1 })
-    // mdActivityUpdate(id, dataUpdate)
-    //   .then(result => {
-    //     res.json({ status: 200, data: result })
-    //   })
-    //   .catch(error => {
-    //     console.log({ error })
-    //     res.json({
-    //       status: 500,
-    //       err: error
-    //     })
-    //   })
   }
 
   @Delete('/:id')
   async delete(@Param() params, @Res() res: Response) {
     try {
       const { id } = params
-      // const result = await mdActivityAdd(id)
-      // res.json({ status: 200, data: result })
+      await this.fieldService.delete(id)
       res.json({ status: 200, data: 1 })
     } catch (error) {
       res.json({

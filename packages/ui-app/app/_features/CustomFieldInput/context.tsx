@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 interface ICustomFieldInputContext {
-  onChange: (value: string) => void
+  onChange: (value: string | string[]) => void
 }
 
 export const CustomFieldInputContext = createContext<ICustomFieldInputContext>({

@@ -9,6 +9,11 @@ const options: ListItemValue[] = [
   { id: 'DD/MM/YYYY', title: 'European (20/03/2020)' },
   { id: 'MM/DD/YYYY', title: 'US (03/20/2020)' },
   { id: 'YYYY-MM-DD', title: 'ISO (2020-03-20)' },
+  { id: 'from-now', title: 'Time from now (2 days ago)' },
+  { id: 'ccc, LLL dd, yyyy p', title: 'Thu, Aug 16, 2018 8:02 PM' },
+  {
+    id: 'LLL dd, yyyy', title: 'Aug 16, 2018'
+  },
 ]
 
 function DateFormat() {
