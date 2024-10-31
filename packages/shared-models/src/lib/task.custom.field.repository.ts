@@ -10,7 +10,7 @@ export class TaskCustomFieldRepository {
 
     if (type === FieldType.DATE) {
       console.log('date', new Date(value))
-      return new Date(value)
+      return new Date(value).toISOString()
     }
 
     return value
