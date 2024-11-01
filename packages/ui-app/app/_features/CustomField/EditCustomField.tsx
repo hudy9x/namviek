@@ -4,7 +4,7 @@ import { useCustomFieldStore } from "./store";
 
 export default function EditCustomField({ data }: { data: Field }) {
   const setEditCustomField = useCustomFieldStore(state => state.setEditData)
-  return <HiOutlinePencil onClick={() => {
+  return <HiOutlinePencil className="cursor-pointer shrink-0" onClick={() => {
     setEditCustomField(data)
     console.log(data)
   }} />

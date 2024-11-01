@@ -26,6 +26,7 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
     const transformedOptions = parsedOptions.map(opt => {
       colors.set(opt.value, opt.color)
       return {
+        icon: opt.color,
         id: opt.value,
         title: opt.value
       }
@@ -47,12 +48,13 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
     onChange(newValue.map(v => v.id))
   }
 
+
   if (!options?.length) return null
 
   console.log('selected', selected)
 
   return (
-    <div className="z-30 relative">
+    <div className="z-30 relative custom-field-multiselect">
       <List
         multiple={true}
         onMultiChange={handleSelectionChange}
@@ -60,6 +62,7 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
         <List.Button>
           {selected.map(s => {
             return <OptionDisplay
+              icon={s.icon}
               title={s.title}
               backgroundColor={colorMap.get(s.id)}
             />
@@ -69,6 +72,7 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
           {options.map(option => (
             <List.Item key={option.id} value={option}>
               <OptionDisplay
+                icon={option.icon}
                 title={option.title}
                 backgroundColor={colorMap.get(option.id)}
               />
@@ -81,16 +85,28 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
 }
 
 interface OptionDisplayProps {
+  icon?: string
   title: string
   backgroundColor?: string
 }
 
-const OptionDisplay = ({ title, backgroundColor }: OptionDisplayProps) => (
-  <div
-    className="text-xs rounded-md p-1 inline-block"
-    style={{ backgroundColor }}
+const OptionDisplay = ({ title, backgroundColor, icon }: OptionDisplayProps) => {
+  const genIcon = (icon: string) => {
+    console.log('icon', icon)
+    if (icon.includes('http')) {
+      return <img className="w-5 h-5 shrink-0" src={icon} />
+    }
+
+    return <span className="w-5 h-5 border rounded-md shrink-0" style={{ backgroundColor: icon }}></span>
+  }
+
+  return <div
+    className="text-xs rounded-md p-1 inline-flex items-center gap-1"
   >
+    {genIcon(icon || '')}
     {title}
   </div>
-)
+
+}
+
 

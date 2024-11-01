@@ -7,7 +7,12 @@ export default function CustomFieldInpDate({ value, config }: { value: string, c
   console.log('config', defaultConfig)
   const { onChange } = useCustomFieldInputContext()
   const date = value ? new Date(value) : undefined
-  return <DatePickerBorderless dateFormat={defaultConfig.format} className="custom-field-date"
+
+  return <DatePickerBorderless
+    className="custom-field-date"
+    placeholder={defaultConfig.format}
+    enableTimer={defaultConfig.includeTime}
+    dateFormat={defaultConfig.format}
     value={date}
     onChange={date => {
       console.log(date.toISOString())

@@ -16,3 +16,12 @@
     @apply hidden;
   }
 }
+
+.custom-field-select {
+
+}
+
+.custom-field-multiselect .selected-item-container {
+  flex-wrap: nowrap;
+
+}

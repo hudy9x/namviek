@@ -29,7 +29,7 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
 
     state.customFields = state.customFields.map(cf => {
       if (cf.id === field.id) {
-        return field
+        return { ...cf, ...field }
       }
       return cf
     })

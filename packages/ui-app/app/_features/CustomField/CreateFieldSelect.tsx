@@ -1,8 +1,7 @@
-import { Button, Form } from "@shared/ui";
+import { Button, Form, IconColorPicker, colors } from "@shared/ui";
 import { TCustomFieldOption, useCustomFieldStore } from "./store";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
-import { useCallback, useEffect, useState } from "react";
-import ColorPicker, { colors } from "@/components/ColorPicker";
+import { useCallback, useState } from "react";
 import { Prisma } from "@prisma/client";
 
 function CreateOptionForm() {
@@ -66,9 +65,12 @@ function CreateOptionForm() {
     <div className="space-y-1">
       {options.map((option, index) => {
         return <div key={option.id} className="flex items-center gap-2">
-          <ColorPicker color={option.color} onChange={(color) => {
-            onChangeColor(index, color)
+          <IconColorPicker value={option.color} onChange={val => {
+            onChangeColor(index, val)
           }} />
+          {/* <ColorPicker color={option.color} onChange={(color) => { */}
+          {/*   onChangeColor(index, color) */}
+          {/* }} /> */}
           <Form.Input value={option.value} size="sm"
             onChange={ev => {
               onUpdateOption(index, ev.target.value)

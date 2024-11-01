@@ -44,6 +44,8 @@ export const Timeline = TimelineContainer
 export const DropdownMenu = DropdownMenuContainer
 export const Tab = TabContainer
 
+// export const IconColorPicker = IconColorPickerContainer
+export * from './components/IconColorPicker'
 export * from './components/Confirmbox'
 export * from './components/Timeline/type'
 

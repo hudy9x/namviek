@@ -31,7 +31,7 @@ export default function ListMode() {
           <div
             className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
             key={group.id}>
-            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[40px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
+            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[40px] bg-white dark:bg-gray-900 rounded-t-md flex items-center z-10">
               <div
                 style={{ color: group.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">
@@ -56,11 +56,11 @@ export default function ListMode() {
               </div>
               <div className="hidden sm:flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
                 <ListCell width={150}>Assignee</ListCell>
-                <ListCell width={115}>Type</ListCell>
-                <ListCell width={75}>Priority</ListCell>
-                <ListCell width={50}>Point</ListCell>
-                <ListCell width={110}>Duedate</ListCell>
-                <ListCell width={70}>Progress</ListCell>
+                {/* <ListCell width={115}>Type</ListCell> */}
+                {/* <ListCell width={75}>Priority</ListCell> */}
+                {/* <ListCell width={50}>Point</ListCell> */}
+                {/* <ListCell width={110}>Duedate</ListCell> */}
+                {/* <ListCell width={70}>Progress</ListCell> */}
                 <ListCellCustomFields />
                 <ListCell width={40}>
                   <CreateField />

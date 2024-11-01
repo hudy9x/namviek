@@ -30,7 +30,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
 
   return (
     <div
-      className="px-3 py-2 text-sm sm:flex items-center justify-between group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
+      className="px-3 py-2 text-sm sm:flex items-center group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
       key={task.id}>
       <div className="flex items-center gap-2 dark:text-gray-300">
         <TaskCheckbox id={task.id} selected={task.selected} />
@@ -73,35 +73,26 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
             uids={task.assigneeIds}
           />
         </ListCell>
-        <ListCell width={115}>
-          <TaskTypeCell type={task.type} taskId={task.id} />
-        </ListCell>
-        <ListCell width={75} className="hidden sm:block">
-          <TaskPriorityCell taskId={task.id} value={task.priority} />
-        </ListCell>
-        <ListCell className="hidden sm:w-[50px] sm:block">
-          <TaskPoint taskId={task.id} value={task.taskPoint} />
-        </ListCell>
-        <ListCell
-          className={`ml-6 sm:ml-0 sm:w-[110px]`}>
-          <TaskDate
-            toNow={true}
-            taskId={task.id}
-            date={task.dueDate ? new Date(task.dueDate) : null}
-          />
-        </ListCell>
-        <ListCell className="hidden sm:block" width={70}>
-          <TaskProgress progress={progress} taskId={task.id} />
-          {/* <div className='group/progress relative'> */}
-          {/*   <ProgressBar color="green" progress={task.progress || 0} /> */}
-          {/*   <div className='group-hover/progress:block hidden absolute z-10 top-2 right-0'> */}
-          {/*     <div className='p-3 border bg-white rounded-md'> */}
-          {/*       <TaskChecklist /> */}
-          {/*     </div> */}
-          {/**/}
-          {/*   </div> */}
-          {/* </div> */}
-        </ListCell>
+        {/* <ListCell width={115}> */}
+        {/*   <TaskTypeCell type={task.type} taskId={task.id} /> */}
+        {/* </ListCell> */}
+        {/* <ListCell width={75} className="hidden sm:block"> */}
+        {/*   <TaskPriorityCell taskId={task.id} value={task.priority} /> */}
+        {/* </ListCell> */}
+        {/* <ListCell className="hidden sm:w-[50px] sm:block"> */}
+        {/*   <TaskPoint taskId={task.id} value={task.taskPoint} /> */}
+        {/* </ListCell> */}
+        {/* <ListCell */}
+        {/*   className={`ml-6 sm:ml-0 sm:w-[110px]`}> */}
+        {/*   <TaskDate */}
+        {/*     toNow={true} */}
+        {/*     taskId={task.id} */}
+        {/*     date={task.dueDate ? new Date(task.dueDate) : null} */}
+        {/*   /> */}
+        {/* </ListCell> */}
+        {/* <ListCell className="hidden sm:block" width={70}> */}
+        {/*   <TaskProgress progress={progress} taskId={task.id} /> */}
+        {/* </ListCell> */}
         <ListCellCustomFieldValues taskId={task.id} data={task.customFields} />
         <ListCell width={40}>
         </ListCell>

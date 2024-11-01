@@ -1,6 +1,6 @@
 import { Form, ListItemValue } from "@shared/ui";
 import { useCustomFieldStore } from "./store";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Prisma } from "@prisma/client";
 
 const List = Form.List
@@ -10,7 +10,7 @@ const options: ListItemValue[] = [
   { id: 'MM/dd/yyyy', title: 'US (03/20/2020)' },
   { id: 'yyyy-MM-dd', title: 'ISO (2020-03-20)' },
   { id: 'from-now', title: 'Time from now (2 days ago)' },
-  { id: 'ccc, LLL dd, yyyy p', title: 'Thu, Aug 16, 2018 8:02 PM' },
+  { id: 'ccc, LLL dd, yyyy', title: 'Thu, Aug 16, 2018' },
   {
     id: 'LLL dd, yyyy', title: 'Aug 16, 2018'
   },
@@ -20,8 +20,13 @@ function DateFormat() {
 
   const { setConfig, data } = useCustomFieldStore()
   const configData = data.config as Prisma.JsonObject
+
+  const defaultSelected = useMemo(() => {
+    const found = options.find(opt => opt.id === configData?.format)
+    return found || options[0]
+  }, [configData])
   const [counter, setCounter] = useState(0)
-  const [selected, setSelected] = useState<ListItemValue>(options[0])
+  const [selected, setSelected] = useState<ListItemValue>(defaultSelected)
 
   useEffect(() => {
     if (counter <= 0) {
@@ -39,13 +44,8 @@ function DateFormat() {
   }, [])
 
 
-  let opt: ListItemValue | undefined = options[0]
-  if (configData) {
-    opt = options.find(opt => opt.id === configData.format)
-  }
-
   return <List title="Date format"
-    value={opt || options[0]}
+    value={selected}
     onChange={val => {
       setSelected(val)
       setCounter(counter => counter + 1)
@@ -64,13 +64,18 @@ function IncludeTime() {
   const defaultConfig = data.config as Prisma.JsonObject
   let checked = false
 
+  console.log('include time', defaultConfig)
+
   if (defaultConfig && defaultConfig.includeTime) {
     checked = true
   }
 
   useEffect(() => {
-    setConfig({ includeTime: false })
+    if (!data.id) {
+      setConfig({ includeTime: false })
+    }
   }, [])
+
 
   return <Form.Checkbox checked={checked} onChange={val => {
     console.log(val)

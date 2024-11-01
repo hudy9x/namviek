@@ -10,7 +10,7 @@ export class FieldNumberStrategy implements FieldFactoryBase {
   async create(data: FieldCreate): Promise<Field> {
     console.log('create number')
     try {
-      const result = await this.fieldRepo.create({ ...data, ...{ data: {} } })
+      const result = await this.fieldRepo.create({ ...{ data: {}, config: { width: 100 } }, ...data })
 
       return result
     } catch (error) {

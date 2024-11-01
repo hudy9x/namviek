@@ -3,13 +3,37 @@ import { useCustomFieldStore } from "./store"
 import { fieldSv } from "@/services/field"
 import { useParams } from "next/navigation"
 import { useProjectCustomFieldStore } from "@/store/customFields"
+import { Field } from "@prisma/client"
 
 export default function SubmitCustomFieldConfig() {
-  const { data } = useCustomFieldStore()
+  const data = useCustomFieldStore(state => state.data)
+  const setVisible = useCustomFieldStore(state => state.setVisible)
   const addCustomField = useProjectCustomFieldStore(state => state.addCustomField)
+
   const updateCustomField = useProjectCustomFieldStore(state => state.updateCustomField)
 
   const { projectId } = useParams()
+
+  const updateCustomFieldHandler = async () => {
+    const updateData = { ...data, ...{ projectId } }
+    updateCustomField(updateData as Field)
+    setVisible(false)
+    const result = await fieldSv.update(updateData)
+    const { data: fieldData } = result.data
+    console.log('this is result', fieldData)
+  }
+
+  const createCustomFieldHandler = async () => {
+    const insertData = { ...data, ...{ projectId } }
+    console.log('insertData', insertData)
+    const result = await fieldSv.create(insertData)
+    const { data: fieldData } = result.data
+
+    console.log('this is result', fieldData)
+    addCustomField(fieldData)
+    setVisible(false)
+
+  }
 
   const onSubmit = async () => {
     if (!projectId) {
@@ -19,25 +43,16 @@ export default function SubmitCustomFieldConfig() {
 
     console.log('data', data)
     if (data.id) {
-      console.log('edit mode ======')
-      const result = await fieldSv.update({ ...data, ...{ projectId } })
-      const { data: fieldData } = result.data
-      console.log('this is result', fieldData)
-      updateCustomField(fieldData)
+      updateCustomFieldHandler()
       return
     }
 
-
-    const result = await fieldSv.create({ ...data, ...{ projectId } })
-
-    const { data: fieldData } = result.data
-
-    console.log('this is result', fieldData)
-    addCustomField(fieldData)
-
+    createCustomFieldHandler()
   }
 
+  const title = data.id ? 'Update' : 'Create'
+
   return <div className="mt-3">
-    <Button block onClick={onSubmit} primary title="Create" />
+    <Button block onClick={onSubmit} primary title={title} />
   </div>
 }

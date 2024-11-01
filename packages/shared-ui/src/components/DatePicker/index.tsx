@@ -97,7 +97,7 @@ export default function DatePicker({
   }
 
   const showDateStr = (d: Date) => {
-    if (toNow) {
+    if (toNow || dateFormat === 'from-now') {
       return formatDistanceToNowStrict(d, { addSuffix: true })
     }
 

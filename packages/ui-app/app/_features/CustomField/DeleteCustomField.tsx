@@ -17,6 +17,6 @@ export default function DeleteCustomField({ id }: { id: string }) {
     const key = `PROJECT_CUSTOM_FIELD_${projectId}`
     localforage.removeItem(key)
   }
-  return <HiOutlineTrash className="shrink-0" onClick={onDelete} />
+  return <HiOutlineTrash className="shrink-0 cursor-pointer" onClick={onDelete} />
 
 }
