@@ -5,6 +5,7 @@ import CustomFieldInpSelect from "./CustomFieldInpSelect"
 import CustomFieldInpCheckbox from "./CustomFieldInpCheckbox"
 import CustomFieldInpMultiSelect from "./CustomFieldInpMultiSelect"
 import './style.css'
+import CustomFieldInpNumber from "./CustomFieldInpNumber"
 
 type ICustomFieldInputFactoryProps = {
   data: string
@@ -24,6 +25,9 @@ export default function CustomFieldInputFactory({
       case FieldType.URL:
       case FieldType.EMAIL:
         return <CustomFieldInpText value={value} />
+
+      case FieldType.NUMBER:
+        return <CustomFieldInpNumber value={value} config={config} />
 
       case FieldType.DATE:
         return <CustomFieldInpDate value={value} config={config} />

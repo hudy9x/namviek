@@ -17,9 +17,12 @@ const options: ListItemValue[] = [
 
 function NumberFormat() {
   const { setConfig, data } = useCustomFieldStore()
-  const [counter, setCounter] = useState(0)
-  const [selected, setSelected] = useState<ListItemValue>(options[0])
   const configData = data.config as Prisma.JsonObject
+  const [counter, setCounter] = useState(0)
+  const [selected, setSelected] = useState<ListItemValue>(() => {
+    const found = options.find(opt => opt.id === configData?.format)
+    return found || options[0]
+  })
 
   useEffect(() => {
     if (counter <= 0) {
@@ -39,7 +42,7 @@ function NumberFormat() {
     opt = options.find(opt => opt.id === configData.format)
   }
   return <List title="Number format"
-    value={opt || options[0]}
+    value={selected}
     onChange={val => {
       setSelected(val)
       setCounter(counter => counter + 1)
@@ -55,15 +58,18 @@ function NumberFormat() {
 
 function NumberShownAs() {
   const { setConfig, data } = useCustomFieldStore()
+  const configData = data.config as Prisma.JsonObject
   const shownAs = [
     { value: 'number', title: 'Number', icon: <TbNumber29Small className="w-5 h-5" /> },
     { value: 'bar', title: 'Bar', icon: <IoBatteryHalfOutline className="w-5 h-5" /> },
     { value: 'ring', title: 'Ring', icon: <RiDonutChartLine className="w-5 h-5" /> },
   ]
-  const [selected, setSelected] = useState('number')
+  const [selected, setSelected] = useState(configData?.shownAs || 'number')
 
   useEffect(() => {
-    setConfig({ shownAs: 'number' })
+    if (!data.id) {
+      setConfig({ shownAs: 'number' })
+    }
   }, [])
 
   return <div className="form-control">
@@ -76,7 +82,7 @@ function NumberShownAs() {
             setConfig({ shownAs: item.value })
             setSelected(item.value)
           }}
-          className={`dark:hover:bg-gray-800 cursor-pointer border rounded-md dark:border-gray-700 p-2 ${active}`}>
+          className={`text-gray-600 dark:hover:bg-gray-800 cursor-pointer border rounded-md dark:border-gray-700 p-2 ${active}`}>
           {item.icon}
           <span className="text-[12px]">{item.title}</span>
         </div>
