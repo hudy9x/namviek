@@ -6,7 +6,7 @@ spec:
         branch: main
         repo_clone_url: https://github.com/hudy9x/namviek
       build_command: npm install && npm run generate2 && npm run build:be
-      run_command: node dist/packages/be-gateway/main.js
+      run_command: node ./dist/packages/be-gateway/main.js
       envs:
         - key: REDIS_HOST
           value: <redis host >
