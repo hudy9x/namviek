@@ -29,7 +29,7 @@ spec:
       instance_count: 1
       instance_size_slug: basic-xs
       health_check:
-        http_path: /health
+        http_path: /check-health
         period_seconds: 10
         timeout_seconds: 5
         success_threshold: 1
