@@ -5,8 +5,8 @@ spec:
       git:
         branch: main
         repo_clone_url: https://github.com/hudy9x/namviek
-      build_command: npm install && npm run generate2 && npm run build:be
-      run_command: npm run prod:be
+      build_command: yarn install && yarn generate2 && yarn build:be
+      run_command: yarn prod:be
       envs:
         - key: REDIS_HOST
           value: <redis host >
