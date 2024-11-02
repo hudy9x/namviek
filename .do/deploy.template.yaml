@@ -6,7 +6,7 @@ spec:
         branch: main
         repo_clone_url: https://github.com/hudy9x/namviek
       build_command: npm install && npm run generate2 && npm run build:be
-      run_command: node ./dist/packages/be-gateway/main.js
+      run_command: npm run prod:be
       envs:
         - key: REDIS_HOST
           value: <redis host >
@@ -34,8 +34,8 @@ spec:
         timeout_seconds: 5
         success_threshold: 1
         failure_threshold: 3
-      routes:
-        - path: /
-          preserve_path_prefix: true
-      source_dir: ./dist/packages/be-gateway
+      # routes:
+      #   - path: /
+      #     preserve_path_prefix: true
+      # source_dir: ./dist/packages/be-gateway
 
