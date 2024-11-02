@@ -37,5 +37,5 @@ spec:
       routes:
         - path: /
           preserve_path_prefix: true
-      source_dir: /dist/packages/be-gateway
+      source_dir: ./dist/packages/be-gateway
 
