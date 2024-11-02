@@ -49,6 +49,8 @@ Please visit [the deployment guide](https://docs.namviek.com/doc/deployment) bef
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/hudy9x/namviek/tree/main)
 
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/hudy9x/namviek/tree/main)
+
 ## Support me
 If you love this open source? Support its future on Ko-fi! Join the community of backers
 
