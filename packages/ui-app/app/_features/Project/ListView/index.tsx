@@ -11,6 +11,7 @@ import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import CreateField from '@/features/CustomField/CreateField'
 import ListCellCustomFields from './ListCellCustomFields'
+import ListRowContainer from './ListRowContainer'
 
 export default function ListViewContainer() {
   const {
@@ -54,53 +55,42 @@ export default function ListViewContainer() {
                   </span>
                 </div>
               </div>
-              <div className="hidden sm:flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
-                <ListCell width={150}>Assignee</ListCell>
-                {/* <ListCell width={115}>Type</ListCell> */}
-                {/* <ListCell width={75}>Priority</ListCell> */}
-                {/* <ListCell width={50}>Point</ListCell> */}
-                {/* <ListCell width={110}>Duedate</ListCell> */}
-                {/* <ListCell width={70}>Progress</ListCell> */}
-                <ListCellCustomFields />
-                <ListCell width={40}>
-                  <CreateField />
-                </ListCell>
-                {/* <ListCell width={100}>Created by</ListCell> */}
-              </div>
             </div>
             <div className="divide-y dark:divide-gray-800">
-              {taskLoading ? (
-                <Loading className="px-3 py-2 text-sm" title="Loading ..." />
-              ) : null}
 
-              {!taskLoading &&
-                tasks.map(task => {
-                  if (isGroupbyStatus && task.taskStatusId !== group.id) {
-                    if (group.id === 'NONE' && group.items.includes(task.id)) {
-                      return <ListRow key={task.id} task={task} />
-                    }
-                    return null
-                  }
-
-                  if (isGroupbyAssignee) {
-                    if (
-                      task.assigneeIds.length &&
-                      !task.assigneeIds.includes(group.id)
-                    ) {
-                      return null
-                    }
-
-                    if (!task.assigneeIds.length && group.id !== 'NONE') {
-                      return null
-                    }
-                  }
-
-                  if (isGroupbyPriority && task.priority !== group.id) {
-                    return null
-                  }
-
-                  return <ListRow key={task.id} task={task} />
-                })}
+              {!taskLoading ?
+                <ListRowContainer tasks={tasks} />
+                : null
+              }
+              {/* {!taskLoading && */}
+              {/*   tasks.map(task => { */}
+              {/*     if (isGroupbyStatus && task.taskStatusId !== group.id) { */}
+              {/*       if (group.id === 'NONE' && group.items.includes(task.id)) { */}
+              {/*         return <ListRow key={task.id} task={task} /> */}
+              {/*       } */}
+              {/*       return null */}
+              {/*     } */}
+              {/**/}
+              {/*     if (isGroupbyAssignee) { */}
+              {/*       if ( */}
+              {/*         task.assigneeIds.length && */}
+              {/*         !task.assigneeIds.includes(group.id) */}
+              {/*       ) { */}
+              {/*         return null */}
+              {/*       } */}
+              {/**/}
+              {/*       if (!task.assigneeIds.length && group.id !== 'NONE') { */}
+              {/*         return null */}
+              {/*       } */}
+              {/*     } */}
+              {/**/}
+              {/*     if (isGroupbyPriority && task.priority !== group.id) { */}
+              {/*       return null */}
+              {/*     } */}
+              {/**/}
+              {/**/}
+              {/*     return <ListRow key={task.id} task={task} /> */}
+              {/*   })} */}
 
               <ListCreateTask type={filter.groupBy} groupId={group.id} />
             </div>

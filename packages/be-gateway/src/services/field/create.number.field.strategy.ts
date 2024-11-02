@@ -1,6 +1,6 @@
 import { FieldRepository } from "@shared/models";
 import { FieldCreate, FieldFactoryBase } from "./type";
-import { Field } from "@prisma/client";
+import { Field, Prisma } from "@prisma/client";
 
 export class FieldNumberStrategy implements FieldFactoryBase {
   fieldRepo: FieldRepository
@@ -9,8 +9,17 @@ export class FieldNumberStrategy implements FieldFactoryBase {
   }
   async create(data: FieldCreate): Promise<Field> {
     console.log('create number')
+    const { data: fData, config: fConfig, ...restData } = data
+    const fieldConfig = fConfig as Prisma.JsonObject
+    const fieldData = fData as Prisma.JsonObject
     try {
-      const result = await this.fieldRepo.create({ ...{ data: {}, config: { width: 100 } }, ...data })
+      const result = await this.fieldRepo.create({
+        ...{
+          data: { ...fieldData },
+          config: { ...{ width: 100 }, ...fieldConfig }
+        },
+        ...restData
+      })
 
       return result
     } catch (error) {

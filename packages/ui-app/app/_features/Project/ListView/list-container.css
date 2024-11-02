@@ -1,0 +1,11 @@
+.list-table {
+  @apply divide-y dark:divide-gray-700;
+}
+.list-heading .list-cell {
+  @apply px-3 py-2 leading-[20px] h-[35px] shrink-0 truncate text-ellipsis;
+  @apply cursor-pointer;
+}
+
+.list-row {
+  @apply flex divide-x dark:divide-gray-700
+}

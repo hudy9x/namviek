@@ -15,7 +15,7 @@ export default class TaskCustomFieldController extends BaseController {
 
   @Put('')
   async update(@Body() body: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
-    console.log('body 11', body)
+    console.log('body 1', body)
     const ret = await this.customFieldService.update(body)
     return ret
   }

@@ -6,9 +6,7 @@ import CustomFieldInputProvider from "@/features/CustomFieldInput/CustomFieldInp
 import { taskCustomFieldSv } from "@/services/task.customfield";
 import { messageSuccess } from "@shared/ui";
 
-export default function ListCellCustomFieldValues({ data, taskId }: { data: Prisma.JsonValue, taskId: string }) {
-  const customFields = useProjectCustomFieldStore(state => state.customFields)
-  const customData = (data || {}) as Prisma.JsonObject
+const useOnChangeCustomFieldInput = (taskId: string) => {
 
   const onChange = (value: string | string[], fieldId: string, type: FieldType) => {
     console.log(value)
@@ -24,6 +22,15 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
       messageSuccess('Update field value sucecss')
     })
   }
+
+  return { onChange }
+}
+
+export default function ListCellCustomFieldValues({ data, taskId }: { data: Prisma.JsonValue, taskId: string }) {
+  const customFields = useProjectCustomFieldStore(state => state.customFields)
+  const { onChange } = useOnChangeCustomFieldInput(taskId)
+  const customData = (data || {}) as Prisma.JsonObject
+
 
   return <>
     {customFields.map(field => {

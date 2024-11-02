@@ -1,5 +1,5 @@
 import ListViewContainer from '@/features/Project/ListView'
-// import ListMode from './views/ListMode'
+import ListMode from './views/ListMode'
 import TaskFilter from '@/features/TaskFilter'
 
 export default function TaskList() {

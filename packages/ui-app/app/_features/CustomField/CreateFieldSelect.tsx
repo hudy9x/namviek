@@ -10,7 +10,6 @@ function CreateOptionForm() {
   const defaultData = (data.data || {}) as Prisma.JsonObject
   const defaultOptionsData = (defaultData && defaultData.options ? defaultData.options : []) as TCustomFieldOption[]
   const [options, setOptions] = useState<TCustomFieldOption[]>(defaultOptionsData)
-  const [counter, setCounter] = useState(0)
 
   const addNewOption = () => {
     setOptions(options => {
@@ -65,12 +64,9 @@ function CreateOptionForm() {
     <div className="space-y-1">
       {options.map((option, index) => {
         return <div key={option.id} className="flex items-center gap-2">
-          <IconColorPicker value={option.color} onChange={val => {
+          <IconColorPicker value={option.color} onChange={(val: string) => {
             onChangeColor(index, val)
           }} />
-          {/* <ColorPicker color={option.color} onChange={(color) => { */}
-          {/*   onChangeColor(index, color) */}
-          {/* }} /> */}
           <Form.Input value={option.value} size="sm"
             onChange={ev => {
               onUpdateOption(index, ev.target.value)
