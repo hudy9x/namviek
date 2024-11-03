@@ -17,6 +17,7 @@ export class FieldTextStrategy implements FieldFactoryBase {
     try {
       const result = await this.fieldRepo.create({
         ...{
+          width: 100,
           data: { ...fieldData },
           config: { ...{ width: 100 }, ...fieldConfig }
         },

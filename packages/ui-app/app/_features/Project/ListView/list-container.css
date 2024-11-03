@@ -9,3 +9,6 @@
 .list-row {
   @apply flex divide-x dark:divide-gray-700
 }
+.list-cell {
+  @apply relative;
+}

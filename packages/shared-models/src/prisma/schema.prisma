@@ -165,6 +165,8 @@ model Field {
   type      FieldType
   icon      String?
   hidden    Boolean?
+  width     Int
+  order     Int?
   desc      String?
   data      Json?
   config    Json?

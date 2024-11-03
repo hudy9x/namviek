@@ -12,6 +12,14 @@ export class FieldRepository {
     })
   }
 
+  async countProjectCustomField(projectId: string) {
+    return fieldModel.count({
+      where: {
+        projectId
+      }
+    })
+  }
+
   async create(data: Omit<Field, 'id'>) {
 
     return fieldModel.create({
