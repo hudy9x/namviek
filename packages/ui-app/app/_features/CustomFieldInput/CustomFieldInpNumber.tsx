@@ -1,8 +1,40 @@
 import { useEffect, useRef, useState } from "react"
 import { useCustomFieldInputContext } from "./context"
 
+function NumberFormat({ val, format }: { val: string, format: string }) {
+  const formatNumber = (num: string, style: string) => {
+    if (num === '') return;
+
+    const numStr = num.toString();
+    let formattedNum = numStr;
+
+    switch (style) {
+      case 'percent':
+        formattedNum = numStr + ' %';
+        break;
+      case 'number-with-commas':
+        formattedNum = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        break;
+      case 'us-dollar':
+        formattedNum = `$ ${numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+        break;
+      case 'vietnam-dong':
+        formattedNum = `${numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} ₫`;
+        break;
+      default:
+        formattedNum = numStr
+        break;
+    }
+
+    return formattedNum;
+  };
+
+  return <span>{formatNumber(val, format)}</span>;
+}
+
 export default function CustomFieldInpNumber({ value, config }: { value: string, config: string }) {
-  console.log(config)
+  const fieldConfig = JSON.parse(config) as { width: number, format: string, shownAs: string }
+  console.log('fieldConfig', fieldConfig)
   const [enableEdit, setEnableEdit] = useState(false)
   const { onChange } = useCustomFieldInputContext()
   const [val, setVal] = useState(value)
@@ -39,7 +71,9 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
         }}
         defaultValue={val || ''} />
       :
-      <div className="cf-display" onClick={ev => setEnableEdit(true)}>{val}</div>
+      <div className="cf-display" onClick={ev => setEnableEdit(true)}>
+        <NumberFormat val={val} format={fieldConfig.format} />
+      </div>
     }
   </div>
 }
