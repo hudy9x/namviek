@@ -16,15 +16,26 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
     }
   }, [enableEdit, ref])
 
+  const handleUpdate = (inpVal: string) => {
+    setEnableEdit(false)
+    if (inpVal === val) return
+    setVal(inpVal)
+    onChange(inpVal)
+  }
+
   return <div className="cf-input-container">
     {enableEdit ?
       <input ref={ref} className="cf-edit"
+        onKeyUp={ev => {
+          const target = ev.target as HTMLInputElement
+          if (ev.key === 'Enter') {
+            handleUpdate(target.value)
+          }
+
+        }}
         onBlur={ev => {
-          setEnableEdit(false)
           const inpVal = ev.target.value
-          if (inpVal === val) return
-          setVal(inpVal)
-          onChange(inpVal)
+          handleUpdate(inpVal)
         }}
         defaultValue={val || ''} />
       :

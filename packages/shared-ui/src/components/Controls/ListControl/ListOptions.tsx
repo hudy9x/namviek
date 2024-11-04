@@ -29,8 +29,8 @@ export default function ListOptions({
   return (<div className="list-portal-container" ref={ref}>
     <ListPortal>
       <div
-        className={`select-options ${visible ? 'fixed z-[9999]' : 'hidden -z-10'}`}
-        style={{ width, minWidth, top: pos.top, left: pos.left }}>
+        className={`select-options ${visible ? 'fixed' : 'hidden -z-10'}`}
+        style={{ width, minWidth, top: pos.top, left: pos.left, zIndex: 9999 }}>
         {children}
       </div>
     </ListPortal>
