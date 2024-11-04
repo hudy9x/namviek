@@ -51,7 +51,7 @@ function DateFormat() {
       setCounter(counter => counter + 1)
     }}>
     <List.Button>{selected.title}</List.Button>
-    <List.Options>
+    <List.Options width={300}>
       {options.map(option => {
         return <List.Item key={option.id} value={option}>{option.title}</List.Item>
       })}

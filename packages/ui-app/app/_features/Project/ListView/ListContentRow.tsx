@@ -34,17 +34,27 @@ export default function ListContentRow({ task }: { task: ExtendedTask }) {
   const taskCustomData = task.customFields
   const customData = (taskCustomData || {}) as Prisma.JsonObject
   // const customFields = useProjectCustomFieldStore(state => state.customFields)
-  // const { onChange } = useOnChangeCustomFieldInput(task.id)
+  const { onChange } = useOnChangeCustomFieldInput(task.id)
 
   return <div className="list-row"
     key={task.id}>
 
     <CustomFieldDisplay>
       {(index, fieldData) => {
-        const { id } = fieldData
+        const { id, type } = fieldData
+        const data = JSON.stringify(fieldData.data)
+        const config = JSON.stringify(fieldData.config)
         const dataValue = customData[id] // convert all to string
         return <>
-          {dataValue}
+          <CustomFieldInputProvider onChange={(value) => {
+            onChange(value, id, type)
+          }} >
+            <CustomFieldInputFactory
+              data={data}
+              config={config}
+              type={type}
+              value={dataValue ? (dataValue + '') : ''} />
+          </CustomFieldInputProvider>
         </>
       }}
     </CustomFieldDisplay>

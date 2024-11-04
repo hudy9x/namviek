@@ -1,9 +1,15 @@
 .list-table {
   @apply divide-y dark:divide-gray-700;
 }
+.list-heading {
+  @apply bg-gray-50 dark:bg-gray-800;
+}
 .list-heading .list-cell {
-  @apply px-3 py-2 leading-[20px] h-[35px] shrink-0 truncate text-ellipsis;
-  @apply cursor-pointer;
+  @apply px-3 py-2;
+}
+
+.list-cell {
+  @apply leading-[20px] h-[35px] shrink-0 truncate text-ellipsis;
 }
 
 .list-row {

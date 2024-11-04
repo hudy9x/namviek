@@ -52,25 +52,64 @@ export class FieldService {
     const { data: fData, config: fConfig, ...restData } = data
     const fieldConfig = fConfig as Prisma.JsonObject
     const fieldData = fData as Prisma.JsonObject
-    const order = await this.fieldRepo.countProjectCustomField(data.projectId)
 
-    try {
-      const result = await this.fieldRepo.create({
-        ...{
-          width: 100,
-          data: { ...fieldData },
-          config: { ...{ width: 100 }, ...fieldConfig }
+    const result = await pmClient.$transaction(async (tx) => {
+      const field = await tx.field.findFirst({
+        where: {
+          projectId: data.projectId
         },
-        ...restData,
-        ...{ order }
+        orderBy: {
+          order: 'desc'
+        },
+        select: {
+          order: true
+        }
       })
 
-      return result
-    } catch (error) {
-      console.log(error)
-      throw new Error('Create custom field error')
-    }
+      let biggestOrder = 0
+      if (field && field.order >= 0) {
+        biggestOrder = field.order + 1
+      }
 
+      const createdField = await tx.field.create({
+        data: {
+          ...{
+            width: 100,
+            data: { ...fieldData },
+            config: fieldConfig
+          },
+          ...restData,
+          ...{ order: biggestOrder }
+        }
+      })
+
+      return createdField
+
+    })
+
+    return result
+
+
+
+    // const order = await this.fieldRepo.countProjectCustomField(data.projectId)
+    //
+    // try {
+    //   const result = await this.fieldRepo.create({
+    //     ...{
+    //       width: 100,
+    //       data: { ...fieldData },
+    //       config: { ...{ width: 100 }, ...fieldConfig }
+    //     },
+    //     ...restData,
+    //     ...{ order }
+    //   })
+    //
+    //   return result
+    // } catch (error) {
+    //   console.log(error)
+    //   throw new Error('Create custom field error')
+    // }
+    // ==============================================================================================================================================
 
     // let createFieldFactory: FieldFactoryBase
     //

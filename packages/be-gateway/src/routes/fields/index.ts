@@ -45,7 +45,7 @@ export default class FieldController extends BaseController {
     @Res() res: ExpressResponse
   ) {
 
-    console.log('Field data', body)
+    console.log('Field data 2', body)
 
     const result = await this.fieldService.create(body.type, body)
 

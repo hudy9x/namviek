@@ -6,6 +6,8 @@ import CustomFieldInpCheckbox from "./CustomFieldInpCheckbox"
 import CustomFieldInpMultiSelect from "./CustomFieldInpMultiSelect"
 import './style.css'
 import CustomFieldInpNumber from "./CustomFieldInpNumber"
+import CustomFieldInpUrl from "./CustomFieldInpUrl"
+import CustomFieldInpEmail from "./CustomFieldInpEmail"
 
 type ICustomFieldInputFactoryProps = {
   data: string
@@ -22,9 +24,13 @@ export default function CustomFieldInputFactory({
   const generateFieldInput = () => {
     switch (type) {
       case FieldType.TEXT:
-      case FieldType.URL:
-      case FieldType.EMAIL:
         return <CustomFieldInpText value={value} />
+
+      case FieldType.EMAIL:
+        return <CustomFieldInpEmail value={value} config={config} />
+
+      case FieldType.URL:
+        return <CustomFieldInpUrl value={value} config={config} />
 
       case FieldType.NUMBER:
         return <CustomFieldInpNumber value={value} config={config} />

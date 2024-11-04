@@ -2,7 +2,6 @@ import { Form, ListItemValue } from "@shared/ui"
 import { useCustomFieldInputContext } from "./context"
 import { TCustomFieldOption } from "../CustomField/store"
 import { useEffect, useState } from "react"
-import { color } from "framer-motion"
 
 const List = Form.List
 
@@ -37,35 +36,36 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   const genIcon = (icon: string) => {
     console.log('icon', icon)
     if (icon.includes('http')) {
-      return <img className="w-5 h-5" src={icon} />
+      return <img className="w-4 h-4" src={icon} />
     }
 
-    return <span className="w-5 h-5 border rounded-md" style={{ backgroundColor: icon }}></span>
+    return <span className="w-4 h-4 border rounded-md" style={{ backgroundColor: icon }}></span>
   }
 
-  return <div className="z-30 relative custom-field-select"><List
-    onChange={val => {
-      setSelected(val as ListItemValue)
-      setCounter(counter + 1)
-    }}
-    value={selected}>
-    <List.Button>
-      <div className="text-xs rounded-md p-1 inline-flex items-center gap-1" >
-        {genIcon(selected.icon || '')}
-        {selected.title}
-      </div>
-    </List.Button>
-    <List.Options width={150}>
-      {options.map(option => {
-        const bg = colorMap.get(option.id)
-        return <List.Item key={option.id} value={option}>
-          <div className="text-xs rounded-md p-1 inline-flex items-center gap-1" >
-            {genIcon(option.icon || '')}
-            {option.title}
-          </div>
-        </List.Item>
-      })}
-    </List.Options>
-  </List></div>
+  return <div className="cf-input-container">
+    <List
+      onChange={val => {
+        setSelected(val as ListItemValue)
+        setCounter(counter + 1)
+      }}
+      value={selected}>
+      <List.Button>
+        <div className="inline-flex items-center gap-2" >
+          {genIcon(selected.icon || '')}
+          {selected.title}
+        </div>
+      </List.Button>
+      <List.Options width={150}>
+        {options.map(option => {
+          const bg = colorMap.get(option.id)
+          return <List.Item key={option.id} value={option}>
+            <div className="text-xs rounded-md p-1 inline-flex items-center gap-2" >
+              {genIcon(option.icon || '')}
+              {option.title}
+            </div>
+          </List.Item>
+        })}
+      </List.Options>
+    </List></div>
 }
 

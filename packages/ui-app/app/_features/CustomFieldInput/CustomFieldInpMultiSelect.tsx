@@ -54,7 +54,7 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
   console.log('selected', selected)
 
   return (
-    <div className="z-30 relative custom-field-multiselect">
+    <div className="cf-input-container">
       <List
         multiple={true}
         onMultiChange={handleSelectionChange}
@@ -97,11 +97,11 @@ const OptionDisplay = ({ title, backgroundColor, icon }: OptionDisplayProps) => 
       return <img className="w-5 h-5 shrink-0" src={icon} />
     }
 
-    return <span className="w-5 h-5 border rounded-md shrink-0" style={{ backgroundColor: icon }}></span>
+    return <span className="w-5 h-5  rounded-md shrink-0" style={{ backgroundColor: icon }}></span>
   }
 
   return <div
-    className="text-xs rounded-md p-1 inline-flex items-center gap-1"
+    className="text-xs inline-flex items-center gap-1"
   >
     {genIcon(icon || '')}
     {title}

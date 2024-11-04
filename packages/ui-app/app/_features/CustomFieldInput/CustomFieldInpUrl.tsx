@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { useCustomFieldInputContext } from "./context"
+import { HiOutlineExternalLink } from "react-icons/hi"
 
-export default function CustomFieldInpNumber({ value, config }: { value: string, config: string }) {
-  console.log(config)
+export default function CustomFieldInpUrl({ value, config }: { value: string, config: string }) {
   const [enableEdit, setEnableEdit] = useState(false)
   const { onChange } = useCustomFieldInputContext()
   const [val, setVal] = useState(value)
@@ -11,10 +11,11 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
   useEffect(() => {
     const inpElem = ref.current
     if (enableEdit && inpElem) {
-
       inpElem.focus()
     }
   }, [enableEdit, ref])
+
+  console.log('enableEdit', enableEdit)
 
   return <div className="cf-input-container">
     {enableEdit ?
@@ -28,7 +29,13 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
         }}
         defaultValue={val || ''} />
       :
-      <div className="cf-display" onClick={ev => setEnableEdit(true)}>{val}</div>
+      <div className="cf-display group flex gap-2 items-center"
+        onClick={ev => setEnableEdit(true)}>
+        <span className="">{val}</span>
+        {val ?
+          <a href={val} target="_blank"><HiOutlineExternalLink className="opacity-0 group-hover:opacity-100 transition-all" /></a>
+          : null}
+      </div>
     }
   </div>
 }

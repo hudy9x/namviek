@@ -49,7 +49,13 @@ export default function CustomFieldResize({ id, index, width }: { index: number,
 
   return <div
     onMouseDown={ev => {
+      // only trigger when user press left mouse
+      if (ev.button !== 0) {
+        return
+      }
       handleMouseDown(ev.clientX, width)
     }}
-    className="absolute w-1 h-full right-0 top-0 cursor-w-resize hover:bg-indigo-400"></div>
+    className="absolute w-3 h-full right-0 top-0 cursor-ew-resize group">
+    <div className="absolute rounded-full w-1 h-full right-0 top-0 group-hover:bg-gray-400"></div>
+  </div>
 }

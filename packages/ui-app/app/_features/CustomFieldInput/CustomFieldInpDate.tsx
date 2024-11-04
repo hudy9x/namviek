@@ -9,7 +9,7 @@ export default function CustomFieldInpDate({ value, config }: { value: string, c
   const date = value ? new Date(value) : undefined
 
   return <DatePickerBorderless
-    className="custom-field-date"
+    className="cf-edit cf-inp-date"
     placeholder={defaultConfig.format}
     enableTimer={defaultConfig.includeTime}
     dateFormat={defaultConfig.format}

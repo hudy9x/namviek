@@ -1,4 +1,6 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import ListPortal from './ListPortal'
+import { useListContext } from './context'
 
 export default function ListOptions({
   width,
@@ -9,9 +11,29 @@ export default function ListOptions({
   minWidth?: number
   children: ReactNode
 }) {
-  return (
-    <div className="select-options" style={{ width, minWidth }}>
-      {children}
-    </div>
+  const ref = useRef<HTMLDivElement>(null)
+  const { visible } = useListContext()
+  const [pos, setPos] = useState({ top: 0, left: 0 })
+
+  useEffect(() => {
+    const elem = ref.current
+    if (visible && elem) {
+      const rect = elem.getBoundingClientRect()
+      setPos({
+        top: rect.top,
+        left: rect.left
+      })
+    }
+  }, [visible, ref])
+
+  return (<div className="list-portal-container" ref={ref}>
+    <ListPortal>
+      <div
+        className={`select-options ${visible ? 'fixed z-[9999]' : 'hidden -z-10'}`}
+        style={{ width, minWidth, top: pos.top, left: pos.left }}>
+        {children}
+      </div>
+    </ListPortal>
+  </div>
   )
 }
