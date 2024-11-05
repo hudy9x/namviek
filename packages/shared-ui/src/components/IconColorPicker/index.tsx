@@ -56,7 +56,7 @@ export default function IconColorPicker({ value, onChange }: ColorPickerProps) {
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger asChild>
         <button
-          className="w-10 h-10 rounded-md shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-opacity overflow-hidden border border-gray-300"
+          className="w-6 h-6 p-0.5 shrink-0 rounded-md shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-opacity overflow-hidden border border-gray-300"
           style={pickerState.type === 'color' ? { backgroundColor: pickerState.value } : {}}
           aria-label={pickerState.type === 'color' ? `Selected color: ${pickerState.value}` : 'Selected emoji'}
         >

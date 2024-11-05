@@ -16,13 +16,16 @@ import {
   Param
 } from '../../core'
 import { FieldService } from '../../services/field'
+import { CommonQueue, getCommonQueueInstance } from '../../queues/Common'
 
 @Controller('/fields')
 export default class FieldController extends BaseController {
   fieldService: FieldService
+  commonQueue: CommonQueue
   constructor() {
     super()
     this.fieldService = new FieldService()
+    this.commonQueue = getCommonQueueInstance()
   }
 
   @Get('/:projectId')
@@ -62,6 +65,16 @@ export default class FieldController extends BaseController {
     const result = await this.fieldService.update(body)
 
     res.json({ status: 200, data: result })
+  }
+
+  @Put('/sortable')
+  async sortable(@Res() res: Response, @Req() req: Request, @Next() next) {
+    const { items } = req.body as { items: { id: string, order: number }[] }
+
+    await this.commonQueue.addJob('fieldSortable', items)
+    // await this.fieldService.sortable(items)
+    console.log('done 1')
+    res.json({ status: 200, data: 1 })
   }
 
   @Delete('/:id')

@@ -34,7 +34,6 @@ function NumberFormat({ val, format }: { val: string, format: string }) {
 
 export default function CustomFieldInpNumber({ value, config }: { value: string, config: string }) {
   const fieldConfig = JSON.parse(config) as { width: number, format: string, shownAs: string }
-  console.log('fieldConfig', fieldConfig)
   const [enableEdit, setEnableEdit] = useState(false)
   const { onChange } = useCustomFieldInputContext()
   const [val, setVal] = useState(value)

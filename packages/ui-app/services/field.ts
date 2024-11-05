@@ -23,6 +23,10 @@ export const fieldSv = {
 
   update(data: PartialField) {
     return httpPut('/api/fields', data)
+  },
+
+  sortable(fields: { id: string, order: number }[]) {
+    return httpPut('/api/fields/sortable', { items: fields })
   }
 
 }

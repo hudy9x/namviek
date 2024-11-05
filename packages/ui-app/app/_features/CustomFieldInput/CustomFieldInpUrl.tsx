@@ -15,8 +15,6 @@ export default function CustomFieldInpUrl({ value, config }: { value: string, co
     }
   }, [enableEdit, ref])
 
-  console.log('enableEdit', enableEdit)
-
   return <div className="cf-input-container">
     {enableEdit ?
       <input ref={ref} className="cf-edit"

@@ -10,6 +10,7 @@ interface FieldState {
   updateFieldWidth: (index: number, width: number) => void
   removeCustomField: (id: string) => void
   addAllCustomField: (fields: Field[]) => void
+  swapPosition: (draggedItem: number, index: number) => void
 }
 
 export const useProjectCustomFieldStore = create<FieldState>(set => ({
@@ -57,6 +58,30 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
     console.log('add custom fields', fields)
 
     state.customFields = fields
+
+  })),
+
+
+  swapPosition: (draggedItem: number, index: number) => set(produce((state: FieldState) => {
+
+    const items = state.customFields
+    // Reorder immediately during drag over
+    const newItems = [...items];
+    const draggedItemContent = newItems[draggedItem];
+
+    // Remove dragged item from array
+    newItems.splice(draggedItem, 1);
+    // Insert at new position
+    newItems.splice(index, 0, draggedItemContent);
+
+    // Update order numbers
+    newItems.forEach((item, idx) => {
+      item.order = idx + 1;
+    });
+
+    state.customFields = newItems
+
+    // setItems(newItems);
 
   }))
 }))

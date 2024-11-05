@@ -16,10 +16,10 @@ export class FieldService {
 
   async getAllByProjectId(projectId: string) {
     try {
-      console.log('projectId', projectId)
       const result = await this.fieldRepo.getAllByProjectId(projectId)
+      const sorted = result.sort((a, b) => a.order - b.order)
 
-      return result
+      return sorted
     } catch (error) {
       console.log(error)
       throw new Error('FieldService.getAllByProjectId error')
@@ -28,6 +28,43 @@ export class FieldService {
 
   async delete(id: string) {
     await this.fieldRepo.delete(id)
+  }
+
+  async sortable(items: { id: string, order: number }[]) {
+    await pmClient.$transaction(async (tx) => {
+      const updatePromises = []
+      console.log('start updating')
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        console.log('item', item.id, item.order)
+        // await tx.field.update({
+        //   where: {
+        //     id: item.id
+        //   },
+        //   data: {
+        //     order: item.order
+        //   }
+        // })
+
+        updatePromises.push(tx.field.update({
+          where: {
+            id: item.id
+          },
+          data: {
+            order: item.order
+          }
+        }))
+      }
+
+      const result = await Promise.all(updatePromises).catch(err => {
+        console.log(err)
+      })
+      return result
+
+      // return 1
+    }, {
+      timeout: 20000
+    })
   }
 
   async update(data: Field) {

@@ -166,7 +166,7 @@ model Field {
   icon      String?
   hidden    Boolean?
   width     Int
-  order     Int?
+  order     Int
   desc      String?
   data      Json?
   config    Json?

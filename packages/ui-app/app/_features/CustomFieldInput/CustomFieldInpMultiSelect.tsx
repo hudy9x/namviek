@@ -42,16 +42,12 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
   const { onChange } = useCustomFieldInputContext()
 
   const handleSelectionChange = (value: ListItemValue[] | ((prev: ListItemValue[]) => ListItemValue[])) => {
-    console.log('multi select', value)
     const newValue = typeof value === 'function' ? value(selected) : value
     setSelected(newValue)
     onChange(newValue.map(v => v.id))
   }
 
-
   if (!options?.length) return null
-
-  console.log('selected', selected)
 
   return (
     <div className="cf-input-container">
@@ -92,7 +88,6 @@ interface OptionDisplayProps {
 
 const OptionDisplay = ({ title, backgroundColor, icon }: OptionDisplayProps) => {
   const genIcon = (icon: string) => {
-    console.log('icon', icon)
     if (icon.includes('http')) {
       return <img className="w-5 h-5 shrink-0" src={icon} />
     }

@@ -9,7 +9,6 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   const colorMap = new Map<string, string>()
   const { options: dataOptions } = JSON.parse(data) as { options: TCustomFieldOption[] }
   const [options, setOptions] = useState<ListItemValue[]>(dataOptions.map(opt => {
-    console.log(opt)
     colorMap.set(opt.value, opt.color)
     return {
       icon: opt.color,
@@ -19,7 +18,6 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   }))
 
   const defaultSelected = options.find(opt => opt.id === value)
-  console.log('defaultSelected', defaultSelected)
   const [selected, setSelected] = useState<ListItemValue>(defaultSelected || options[0])
   const [counter, setCounter] = useState(0)
   const { onChange } = useCustomFieldInputContext()
@@ -34,7 +32,6 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   if (!options || !options?.length) return null
 
   const genIcon = (icon: string) => {
-    console.log('icon', icon)
     if (icon.includes('http')) {
       return <img className="w-4 h-4" src={icon} />
     }

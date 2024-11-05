@@ -5,7 +5,7 @@ import CustomFieldResize from "@/features/CustomFieldDisplay/CustomFieldResize";
 export default function ListHeadingRow() {
 
   return <div className="list-heading list-row">
-    <CustomFieldDisplay createBtn={true}>
+    <CustomFieldDisplay sortable={true} createBtn={true}>
       {(index, fieldData) => {
         const { name, width, id } = fieldData
         return <>
