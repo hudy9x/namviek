@@ -30,7 +30,13 @@ export default function ListOptions({
     <ListPortal>
       <div
         className={`select-options ${visible ? 'fixed' : 'hidden -z-10'}`}
-        style={{ width, minWidth, top: pos.top, left: pos.left, zIndex: 9999 }}>
+        style={{
+          width: width || 170,
+          minWidth,
+          top: pos.top,
+          left: pos.left,
+          zIndex: 9999
+        }}>
         {children}
       </div>
     </ListPortal>
