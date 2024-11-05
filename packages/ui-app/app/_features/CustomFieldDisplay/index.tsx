@@ -107,12 +107,123 @@ function CustomFieldStatic({ children, createBtn }: ICustomFieldDisplayProps) {
   </>
 }
 
-export default function CustomFieldDisplay({ children, createBtn = false, sortable = false }: ICustomFieldDisplayProps) {
+// export default function CustomFieldDisplay({ children, createBtn = false, sortable = false }: ICustomFieldDisplayProps) {
+//
+//   if (sortable) {
+//     return <CustomFieldSortable children={children} createBtn={createBtn} />
+//   }
+//
+//   return <CustomFieldStatic children={children} createBtn={createBtn} />
+//
+// }
 
-  if (sortable) {
-    return <CustomFieldSortable children={children} createBtn={createBtn} />
+
+function CustomFieldStaticCell({ children, width }: { children: ReactNode, width: number }) {
+  return <div className="list-cell" style={{ width }}>
+    {children}
+  </div>
+}
+
+let draggedItem: number | null = null
+let oldIndex: number = -1
+
+function CustomFieldSortableCell({ children, width, index }: { children: ReactNode, width: number, index: number }) {
+
+  const customFields = useProjectCustomFieldStore(state => state.customFields)
+  const swapPos = useProjectCustomFieldStore(state => state.swapPosition)
+  // const oldIndex = useRef(-1)
+  const timeout = useRef(0)
+
+  // const [draggedItem, setDraggedItem] = useState<number | null>(null);
+
+  const reorderFields = customFields.map(f => ({ id: f.id, order: f.order }))
+
+  const updateSortable = () => {
+    if (timeout.current) {
+      console.log('cancelled')
+      clearTimeout(timeout.current)
+    }
+
+    timeout.current = setTimeout(() => {
+      fieldSv.sortable(reorderFields).then(res => {
+        console.log(res)
+        messageSuccess('Reorder success')
+      })
+
+    }, 500) as unknown as number;
   }
 
-  return <CustomFieldStatic children={children} createBtn={createBtn} />
+  const setDraggedItem = (n: number | null) => {
+    draggedItem = n
+  }
+
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, index: number) => {
+    console.log('set dragged item', index)
+    setDraggedItem(index);
+    const target = e.target as HTMLDivElement
+    e.dataTransfer.effectAllowed = 'move';
+    target.classList.add('opacity-50');
+  };
+
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
+    setDraggedItem(null);
+    oldIndex = -1
+    const target = e.target as HTMLDivElement
+    target.classList.remove('opacity-50');
+
+    updateSortable()
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>, index: number) => {
+    console.log(draggedItem, index, oldIndex)
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    if (oldIndex === index) return
+    oldIndex = index
+
+    if (draggedItem === null || draggedItem === index) return;
+
+    console.log(draggedItem, index)
+
+    swapPos(draggedItem, index)
+    setDraggedItem(index);
+  };
+
+
+  return <div
+    draggable
+    onDragStart={(e) => handleDragStart(e, index)}
+    onDragEnd={e => handleDragEnd(e)}
+    onDragOver={(e) => handleDragOver(e, index)}
+
+    className="list-cell"
+    style={{ width: width }}>
+    {children}
+  </div>
+}
+
+export default function CustomFieldDisplay({ children, createBtn = false, sortable = false }: ICustomFieldDisplayProps) {
+  const customFields = useProjectCustomFieldStore(state => state.customFields)
+
+  const generateCustomFieldCell = (index: number, cf: Field) => {
+    const { width } = cf
+    if (!sortable)
+      return <CustomFieldStaticCell key={cf.id} width={width}>
+        {children(index, cf)}
+      </CustomFieldStaticCell>
+
+    return <CustomFieldSortableCell width={width} index={index}>
+      {children(index, cf)}
+    </CustomFieldSortableCell>
+  }
+
+  return <>{customFields.map((cf, index) => {
+    return generateCustomFieldCell(index, cf)
+  })}
+    <div className="list-cell">
+      {createBtn ? <CreateField /> : null}
+    </div>
+  </>
 
 }
