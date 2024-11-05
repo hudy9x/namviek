@@ -49,6 +49,8 @@ export default function CustomFieldResize({ id, index, width }: { index: number,
 
   return <div
     onMouseDown={ev => {
+      ev.stopPropagation()
+      ev.preventDefault()
       // only trigger when user press left mouse
       if (ev.button !== 0) {
         return

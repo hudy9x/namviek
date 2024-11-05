@@ -1,20 +1,25 @@
 .list-table {
   @apply divide-y dark:divide-gray-700;
 }
+
 .list-heading {
   @apply bg-gray-50 dark:bg-gray-800;
 }
+
 .list-heading .list-cell {
-  @apply px-3 py-2;
+  @apply px-3 py-2 ;
+  @apply bg-gray-50 dark:bg-gray-800;
 }
 
 .list-cell {
   @apply leading-[20px] h-[35px] shrink-0 truncate text-ellipsis;
+  @apply bg-white dark:bg-gray-900;
 }
 
 .list-row {
   @apply flex divide-x dark:divide-gray-700
 }
+
 .list-cell {
   @apply relative;
 }

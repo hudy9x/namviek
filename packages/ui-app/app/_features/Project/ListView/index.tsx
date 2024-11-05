@@ -30,7 +30,7 @@ export default function ListViewContainer() {
       {groupByItems.map(group => {
         return (
           <div
-            className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
+            className="bg-white m-4 dark:bg-gray-900 rounded-md border dark:border-gray-800 relative "
             key={group.id}>
             <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[40px] bg-white dark:bg-gray-900 rounded-t-md flex items-center z-10">
               <div
