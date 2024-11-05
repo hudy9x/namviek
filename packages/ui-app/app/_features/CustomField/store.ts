@@ -62,8 +62,11 @@ export const useCustomFieldStore = create<CustomState>(set => ({
   setDisplay: (stt: boolean) =>
     set(
       produce((state: CustomState) => {
+        const isCreating = !state.data.id
         state.display = stt
-        if (stt === false) {
+
+        // only clear data as creating new field
+        if (stt === false && isCreating) {
           state.data = {}
         }
       })

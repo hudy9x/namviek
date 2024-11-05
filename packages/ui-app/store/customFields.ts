@@ -47,6 +47,7 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
 
     state.customFields = state.customFields.map(cf => {
       if (cf.id === field.id) {
+        console.log('update field id', cf, field)
         return { ...cf, ...field }
       }
       return cf

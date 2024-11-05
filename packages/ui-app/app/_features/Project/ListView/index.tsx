@@ -59,9 +59,10 @@ export default function ListViewContainer() {
             <div className="divide-y dark:divide-gray-800">
 
               {!taskLoading ?
-                <ListRowContainer tasks={tasks} />
+                <ListRowContainer group={group} tasks={tasks} />
                 : null
               }
+
               {/* {!taskLoading && */}
               {/*   tasks.map(task => { */}
               {/*     if (isGroupbyStatus && task.taskStatusId !== group.id) { */}
