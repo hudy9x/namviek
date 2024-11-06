@@ -1,6 +1,6 @@
 import { FieldType } from "@prisma/client"
 import { GoNumber } from "react-icons/go"
-import { HiMiniAtSymbol, HiOutlineArrowDownCircle, HiOutlineCalendar, HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet } from "react-icons/hi2"
+import { HiMiniAtSymbol, HiOutlineArrowDownCircle, HiOutlineCalendar, HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet, HiOutlineUser } from "react-icons/hi2"
 import { RxText } from "react-icons/rx";
 import { useCustomFieldStore } from "./store";
 
@@ -8,6 +8,7 @@ export const types = [
   { icon: <RxText className="w-4 h-4" />, title: 'Text', type: FieldType.TEXT },
   { icon: <GoNumber className="w-4 h-4" />, title: 'Number', type: FieldType.NUMBER },
   { icon: <HiOutlineCalendar className="w-4 h-4" />, title: 'Date', type: FieldType.DATE },
+  { icon: <HiOutlineUser className="w-4 h-4" />, title: 'Person', type: FieldType.PERSON },
   { icon: <HiOutlineArrowDownCircle className="w-4 h-4" />, title: 'Select', type: FieldType.SELECT },
   { icon: <HiOutlineListBullet className="w-4 h-4" />, title: 'Multi Select', type: FieldType.MULTISELECT },
   { icon: <HiOutlineCheckCircle className="w-4 h-4" />, title: 'Checkbox', type: FieldType.CHECKBOX },

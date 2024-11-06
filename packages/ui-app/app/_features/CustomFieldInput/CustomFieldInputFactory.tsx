@@ -8,6 +8,7 @@ import './style.css'
 import CustomFieldInpNumber from "./CustomFieldInpNumber"
 import CustomFieldInpUrl from "./CustomFieldInpUrl"
 import CustomFieldInpEmail from "./CustomFieldInpEmail"
+import CustomFieldInpPerson from "./CustomFieldInpPerson"
 
 type ICustomFieldInputFactoryProps = {
   data: string
@@ -37,6 +38,9 @@ export default function CustomFieldInputFactory({
 
       case FieldType.DATE:
         return <CustomFieldInpDate value={value} config={config} />
+
+      case FieldType.PERSON:
+        return <CustomFieldInpPerson value={value} config={config} />
 
       case FieldType.CHECKBOX:
         return <CustomFieldInpCheckbox value={value} />

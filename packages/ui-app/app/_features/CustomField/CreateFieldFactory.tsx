@@ -7,6 +7,7 @@ import { types } from "./FormSelectType";
 import CreateFieldNumber from "./CreateFieldNumber";
 import CreateFieldDate from "./CreateFieldDate";
 import CreateFieldSelect from "./CreateFieldSelect";
+import CreateFieldPerson from "./CreateFieldPerson";
 
 export default function CreateFieldFactory() {
 
@@ -23,8 +24,12 @@ export default function CreateFieldFactory() {
       case FieldType.NUMBER:
         return <CreateFieldNumber />
 
+      case FieldType.PERSON:
+        return <CreateFieldPerson />
+
       case FieldType.DATE:
         return <CreateFieldDate />
+
 
       case FieldType.SELECT:
       case FieldType.MULTISELECT:

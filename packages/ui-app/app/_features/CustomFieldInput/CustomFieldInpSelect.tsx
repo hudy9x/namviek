@@ -41,8 +41,8 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
 
   return <div className="cf-input-container">
     <List
-      onChange={val => {
-        setSelected(val as ListItemValue)
+      onChange={(val: ListItemValue) => {
+        setSelected(val)
         setCounter(counter + 1)
       }}
       value={selected}>

@@ -153,9 +153,9 @@ enum FieldType {
   URL
   EMAIL
   // STATUS
-  // FILES
-  // PHONE
-  // PERSON
+  FILES
+  PHONE
+  PERSON
 }
 
 model Field {
