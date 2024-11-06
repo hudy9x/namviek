@@ -63,6 +63,7 @@ export default function CustomFieldInpMultiSelect({ value, data }: CustomFieldIn
               backgroundColor={colorMap.get(s.id)}
             />
           })}
+          <div className="inline-flex items-center justify-center min-w-[12px] h-5 border absolute top-2 right-2 rounded bg-gray-50 py-2 px-1 text-[10px]">{selected.length}</div>
         </List.Button>
         <List.Options width={150}>
           {options.map(option => (
@@ -92,11 +93,11 @@ const OptionDisplay = ({ title, backgroundColor, icon }: OptionDisplayProps) => 
       return <img className="w-5 h-5 shrink-0" src={icon} />
     }
 
-    return <span className="w-5 h-5  rounded-md shrink-0" style={{ backgroundColor: icon }}></span>
+    return <span className="w-4 h-4  rounded shrink-0" style={{ backgroundColor: icon }}></span>
   }
 
   return <div
-    className="text-xs inline-flex items-center gap-1"
+    className="text-sm inline-flex items-center gap-1"
   >
     {genIcon(icon || '')}
     {title}

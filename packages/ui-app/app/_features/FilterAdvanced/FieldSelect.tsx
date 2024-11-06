@@ -1,10 +1,16 @@
 import { useProjectCustomFieldStore } from "@/store/customFields";
 import { FieldType } from "@prisma/client";
 import { Form, ListItemValue } from "@shared/ui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const List = Form.List
-export default function FieldSelect({ onChange }: { onChange?: ({ val, type }: { val: string, type: FieldType | null }) => void }) {
+export default function FieldSelect({
+  value,
+  onChange
+}: {
+  value?: string
+  onChange?: ({ id, type }: { id: string, type: FieldType }) => void
+}) {
   const customFields = useProjectCustomFieldStore(state => state.customFields)
   const options = useMemo(() => {
     if (!customFields) return [{ id: 'NONE', title: 'None' }]
@@ -21,11 +27,19 @@ export default function FieldSelect({ onChange }: { onChange?: ({ val, type }: {
 
   const [selected, setSelected] = useState<ListItemValue>(options[0])
 
+  useEffect(() => {
+    const newSelected = options.find(opt => opt.id === value)
+    newSelected && setSelected(newSelected)
+  }, [value])
+
   return <List
     value={selected}
     onChange={(val: ListItemValue) => {
-      setSelected(val)
-      onChange && onChange({ val: val.id, type: getCustomFieldType(val.id) })
+      // setSelected(val)
+      const t = getCustomFieldType(val.id)
+      if (t) {
+        onChange && onChange({ id: val.id, type: t })
+      }
     }}>
     <List.Button>
       {selected.title}
