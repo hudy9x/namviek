@@ -23,6 +23,7 @@ import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 import { useGetCustomFields } from './useGetCustomFields'
+import useGetCustomData from '../FilterAdvanced/useGetCustomData'
 
 function SaveRecentVisitPage() {
   const { projectId, orgName } = useParams()
@@ -78,6 +79,8 @@ function PrefetchData() {
   useGetProjectViewList()
   useGetAutomationRulesByProject()
   useGetCustomFields()
+
+  useGetCustomData()
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible

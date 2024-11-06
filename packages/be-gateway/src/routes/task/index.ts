@@ -33,6 +33,8 @@ import TaskCreateService from '../../services/task/create.service'
 import TaskUpdateService from '../../services/task/update.service'
 import TaskReminderJob from '../../jobs/reminder.job'
 import TaskPusherJob from '../../jobs/task.pusher.job'
+import { FieldType } from '@prisma/client'
+
 
 const taskPusherJob = new TaskPusherJob()
 
@@ -413,6 +415,52 @@ router.put('/project/task', async (req: AuthRequest, res) => {
     })
   } catch (error) {
     res.status(500).send(error)
+  }
+})
+
+enum EFilterCondition {
+  AND = 'AND',
+  OR = 'OR'
+}
+
+type TFilterAdvancedItem = {
+  id: string
+  type: FieldType
+  operator: string
+  value: string
+}
+
+interface IFilterAdvancedData {
+  condition: EFilterCondition
+  list: TFilterAdvancedItem[]
+}
+
+router.post('/project/task/query-custom', async (req: AuthRequest, res) => {
+  try {
+    const filter = req.body.filter as IFilterAdvancedData
+    
+    console.log('Received custom filter:', {
+      condition: filter.condition,
+      list: filter.list.map(item => ({
+        id: item.id,
+        type: item.type,
+        operator: item.operator,
+        value: item.value
+      }))
+    })
+
+    // TODO: Implement actual filtering logic here
+    // For now, just return the filter for testing
+    res.json({ 
+      status: 200, 
+      data: {
+        receivedFilter: filter,
+        timestamp: new Date().toISOString()
+      }
+    })
+  } catch (error) {
+    console.error('Custom query error:', error)
+    res.json({ status: 500, error: error.message })
   }
 })
 

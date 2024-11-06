@@ -1,41 +1,24 @@
-import { FieldType } from "@prisma/client"
-import { produce } from "immer"
-import { useEffect, useState } from "react"
 import FieldSelect from "./FieldSelect"
 import { Button } from "@shared/ui"
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2"
-import { EFilterCondition, IFilterAdvancedData, TFilterAdvancedItem, filterOperatorMap } from "./type"
+import { TFilterAdvancedItem } from "./type"
 import ConditionSelect from "./ConditionSelect"
 import { useProjectCustomFieldStore } from "@/store/customFields"
 import FieldOperator from "./FieldOperator"
 import FilterValue from "./FilterValue"
+import { useFilterAdvancedStore } from "./store"
 
-/*
- *
- * {
-  condition: AND
-  filter: [
-    { field, type, operator, value },
-    { field, type, operator, value },
-    {
-      condition: OR
-      filters: [
-      	
-      ] 
-     }
-  ]
-}
- * */
-
-function AddFilter({ onAdd }: { onAdd: (level: number, data: TFilterAdvancedItem) => void }) {
+function AddFilter() {
   const customFields = useProjectCustomFieldStore(state => state.customFields)
+  const addFilter = useFilterAdvancedStore(state => state.addFilter)
+
   if (!customFields) return null
 
   const firstField = customFields[0]
   const onClick = () => {
     if (!firstField) return
 
-    onAdd(0, {
+    addFilter(0, {
       id: firstField.id,
       type: firstField.type,
       operator: '',
@@ -59,119 +42,76 @@ function FilterEmpty({ enable }: { enable: boolean }) {
   </div>
 }
 
-function FilterCondition({ index, condition, switchCondition }: {
-  index: number,
-  condition: EFilterCondition,
-  switchCondition: (condition: EFilterCondition) => void
-}) {
+function FilterCondition({ index }: { index: number }) {
+  const condition = useFilterAdvancedStore(state => state.filter.condition)
+  const switchCondition = useFilterAdvancedStore(state => state.switchCondition)
+
   return <div className="w-[100px]">
     {index === 0
-      ? <ConditionSelect value={condition} onChange={val => {
-        switchCondition(val)
-      }} />
+      ? <ConditionSelect value={condition} onChange={switchCondition} />
       : <span className="pl-3">{condition}</span>}
   </div>
 }
 
+function FilterItem({ index, filterItem }: {
+  index: number,
+  filterItem: TFilterAdvancedItem
+}) {
+  const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
+  const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
+  const changeValue = useFilterAdvancedStore(state => state.changeValue)
+  const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
+
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center gap-2">
+        <FilterCondition index={index} />
+
+        <FieldSelect
+          value={filterItem.id}
+          onChange={val => changeFieldType(0, index, val)}
+        />
+        <FieldOperator
+          value={filterItem.operator}
+          type={filterItem.type}
+          onChange={val => changeFilterOperator(0, index, val)}
+        />
+        <FilterValue
+          type={filterItem.type}
+          fieldId={filterItem.id}
+          onChange={val => changeValue(0, index, val)}
+          operator={filterItem.operator}
+        />
+      </div>
+      <Button
+        leadingIcon={<HiOutlineTrash />}
+        onClick={() => deleteFilter(index)}
+      />
+    </div>
+  )
+}
+
 export default function FilterAdvancedModal() {
-  const [filter, setFilter] = useState<IFilterAdvancedData>({
-    condition: EFilterCondition.AND,
-    list: []
-  })
+  const filter = useFilterAdvancedStore(state => state.filter)
 
-  const addFilter = (level: number, data: TFilterAdvancedItem) => {
-    const nextState = produce(filter, draftState => {
-      draftState.list.push(data)
-    })
+  console.log('filter', filter)
 
-    setFilter(nextState)
-  }
+  return (
+    <div className="border bg-white rounded-md shadow-lg min-w-[300px] text-sm">
+      <div className="space-y-2 px-3 py-3">
+        <FilterEmpty enable={!filter.list.length} />
 
-  const switchCondition = (condition: EFilterCondition) => {
-    const nextState = produce(filter, draftState => {
-      draftState.condition = condition
-    })
-
-    setFilter(nextState)
-  }
-
-  const changeFieldType = (level: number, index: number, val: { id: string, type: FieldType }) => {
-
-    const operator = filterOperatorMap.get(val.type)
-    const nextState = produce(filter, draftState => {
-      draftState.list[index].id = val.id
-      draftState.list[index].type = val.type
-      draftState.list[index].value = ''
-      if (operator) {
-        draftState.list[index].operator = operator[0]
-      }
-    })
-
-    setFilter(nextState)
-  }
-
-  const changeFilterOperator = (level: number, index: number, val: string) => {
-    const nextState = produce(filter, draftState => {
-      draftState.list[index].operator = val
-    })
-
-    setFilter(nextState)
-  }
-
-  const changeValue = (level: number, index: number, val: string) => {
-    const nextState = produce(filter, draftState => {
-      draftState.list[index].value = val
-    })
-    setFilter(nextState)
-  }
-
-  const deleteByIndex = (index: number) => {
-    const nextState = produce(filter, draftState => {
-      draftState.list = draftState.list.filter((item, idx) => idx !== index)
-      // delete draftState.list[index]
-    })
-
-    setFilter(nextState)
-  }
-
-  useEffect(() => {
-    console.log('filter', filter)
-  }, [filter])
-
-  return <div className="border bg-white rounded-md shadow-lg min-w-[300px] text-sm">
-    <div className="space-y-2 px-3 py-3">
-      <FilterEmpty enable={!filter.list.length} />
-
-      {filter.list.map((filterItem, filterIndex) => {
-        const key = filterIndex
-        return <div key={key} className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <FilterCondition index={filterIndex} condition={filter.condition} switchCondition={switchCondition} />
-
-            <FieldSelect value={filterItem.id} onChange={val => {
-              changeFieldType(0, filterIndex, val)
-            }} />
-            <FieldOperator value={filterItem.operator} type={filterItem.type} onChange={val => {
-              changeFilterOperator(0, filterIndex, val)
-            }} />
-            <FilterValue type={filterItem.type}
-              fieldId={filterItem.id}
-              onChange={val => {
-                changeValue(0, filterIndex, val)
-              }}
-              operator={filterItem.operator} />
-          </div>
-          <Button
-            leadingIcon={<HiOutlineTrash />}
-            onClick={() => {
-              deleteByIndex(filterIndex)
-            }} />
-
-        </div>
-      })}
+        {filter.list.map((filterItem, index) => (
+          <FilterItem
+            key={index}
+            index={index}
+            filterItem={filterItem}
+          />
+        ))}
+      </div>
+      <div className="px-3 py-2 flex items-center gap-3 border-t">
+        <AddFilter />
+      </div>
     </div>
-    <div className="px-3 py-2 flex items-center gap-3 border-t">
-      <AddFilter onAdd={addFilter} />
-    </div>
-  </div>
+  )
 }

@@ -8,7 +8,7 @@ export interface ListItemValue {
 }
 
 export type FormikFunc = (field: string, value: any) => void
-export type ListOnChange = Dispatch<SetStateAction<ListItemValue>>
+export type ListOnChange = Dispatch<SetStateAction<ListItemValue>> | ((val: ListItemValue) => void)
 export type ListOnMultiChange = Dispatch<SetStateAction<ListItemValue[]>>
 
 export interface ListContextProps {
