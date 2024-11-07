@@ -17,12 +17,19 @@ export type TFilterAdvancedItem = {
   type: FieldType
   operator: string
   value: string
+  subValue?: string
 }
 
 export interface IFilterAdvancedData {
   condition: EFilterCondition
   list: TFilterAdvancedItem[]
 }
+
+interface PaginationOptions {
+  limit?: number
+  cursor?: string
+}
+
 
 export default class TaskCustomFieldService {
   customFieldRepo: TaskCustomFieldRepository
@@ -70,7 +77,7 @@ export default class TaskCustomFieldService {
         return buildNumberQuery(fieldPath, item.operator, item.value)
 
       case FieldType.DATE:
-        return buildDateQuery(fieldPath, item.operator, item.value)
+        return buildDateQuery(fieldPath, item.operator, item.value, item.subValue)
 
       case FieldType.SELECT:
       case FieldType.MULTISELECT:
@@ -90,33 +97,35 @@ export default class TaskCustomFieldService {
     }
   }
 
-  async queryCustomField(projectId: string, filter: IFilterAdvancedData) {
+  async queryCustomField(
+    projectId: string,
+    filter: IFilterAdvancedData,
+    pagination: PaginationOptions = {}
+  ) {
     try {
-      console.log('Building query for filter:', filter)
+      const { limit = 50, cursor } = pagination
+      const safeLimit = Math.min(limit, 100)
 
       const query = this.buildCustomFieldQuery(filter)
 
+      // Base filter with project ID
       const _filter = {
         projectId: {
           $eq: { $oid: projectId }
         },
         ...query
       }
-      console.log('Generated query:', JSON.stringify(_filter, null, 2))
 
-      // const result = await pmClient.task.findRaw({
-      //   filter: {
-      //     projectId: {
-      //       $eq: { $oid: projectId }
-      //     }
-      //   }
-      // })
-      //
-      // console.log('result', result)
+      // If cursor exists, add the cursor condition
+      if (cursor) {
+        _filter['_id'] = { $gt: cursor }
+      }
 
       const results = await pmClient.task.findRaw({
         filter: _filter,
         options: {
+          limit: safeLimit + 1,
+          sort: { id: 1 },
           projection: {
             id: 1,
             createdAt: 1,
@@ -130,9 +139,23 @@ export default class TaskCustomFieldService {
         }
       })
 
+      console.log('restuls', results)
+
+      const resultsArray = Array.from(results as unknown as Record<string, unknown>[])
+      const items = resultsArray.slice(0, safeLimit)
+      const hasNextPage = resultsArray.length > safeLimit
+      const nextCursor = hasNextPage ? items[items.length - 1].id : null
+
       return {
         status: 200,
-        data: results
+        // data: results
+        data: {
+          items,
+          pageInfo: {
+            hasNextPage,
+            nextCursor
+          }
+        }
       }
     } catch (error) {
       console.error('Custom field query error:', error)

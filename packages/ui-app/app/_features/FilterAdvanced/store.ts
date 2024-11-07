@@ -13,6 +13,7 @@ interface FilterAdvancedState {
   changeFilterOperator: (level: number, index: number, val: string) => void
   changeValue: (level: number, index: number, val: string) => void
   deleteFilter: (index: number) => void
+  changeSubValue: (level: number, index: number, val: string) => void
 }
 
 const initialFilter: IFilterAdvancedData = {
@@ -26,7 +27,10 @@ export const useFilterAdvancedStore = create<FilterAdvancedState>((set) => ({
   addFilter: (level: number, data: TFilterAdvancedItem) =>
     set(
       produce((state: FilterAdvancedState) => {
-        state.filter.list.push(data)
+        state.filter.list.push({
+          ...data,
+          subValue: ''
+        })
       })
     ),
 
@@ -44,6 +48,7 @@ export const useFilterAdvancedStore = create<FilterAdvancedState>((set) => ({
         state.filter.list[index].id = val.id
         state.filter.list[index].type = val.type
         state.filter.list[index].value = ''
+        state.filter.list[index].subValue = ''
         if (operator) {
           state.filter.list[index].operator = operator[0]
         }
@@ -61,6 +66,7 @@ export const useFilterAdvancedStore = create<FilterAdvancedState>((set) => ({
     set(
       produce((state: FilterAdvancedState) => {
         state.filter.list[index].value = val
+        state.filter.list[index].subValue = ''
       })
     ),
 
@@ -68,6 +74,13 @@ export const useFilterAdvancedStore = create<FilterAdvancedState>((set) => ({
     set(
       produce((state: FilterAdvancedState) => {
         state.filter.list = state.filter.list.filter((_, idx) => idx !== index)
+      })
+    ),
+
+  changeSubValue: (level: number, index: number, val: string) =>
+    set(
+      produce((state: FilterAdvancedState) => {
+        state.filter.list[index].subValue = val
       })
     ),
 }))

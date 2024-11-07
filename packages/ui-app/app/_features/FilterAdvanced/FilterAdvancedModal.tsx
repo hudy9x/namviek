@@ -7,6 +7,7 @@ import { useProjectCustomFieldStore } from "@/store/customFields"
 import FieldOperator from "./FieldOperator"
 import FilterValue from "./FilterValue"
 import { useFilterAdvancedStore } from "./store"
+import FilterSubValue from "./FilterSubValue"
 
 function AddFilter() {
   const customFields = useProjectCustomFieldStore(state => state.customFields)
@@ -60,6 +61,7 @@ function FilterItem({ index, filterItem }: {
   const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
   const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
   const changeValue = useFilterAdvancedStore(state => state.changeValue)
+  const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
   const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
 
   return (
@@ -81,6 +83,12 @@ function FilterItem({ index, filterItem }: {
           fieldId={filterItem.id}
           onChange={val => changeValue(0, index, val)}
           operator={filterItem.operator}
+        />
+        <FilterSubValue
+          type={filterItem.type}
+          value={filterItem.value || ''}
+          subValue={filterItem.subValue || ''}
+          onChange={(val: string) => changeSubValue(0, index, val)}
         />
       </div>
       <Button

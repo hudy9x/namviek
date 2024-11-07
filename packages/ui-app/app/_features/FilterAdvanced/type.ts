@@ -10,6 +10,7 @@ export type TFilterAdvancedItem = {
   id: string
   operator: string
   value: string
+  subValue?: string
 }
 
 export interface IFilterAdvancedData {
@@ -82,6 +83,17 @@ filterOperatorMap.set(FieldType.SELECT, selectOperators)
 filterOperatorMap.set(FieldType.MULTISELECT, selectOperators)
 
 // =================== Field value ===========================
+export const RELATIVE_TIME_VALUES = [
+  'days ago',
+  'days from now',
+  'weeks ago',
+  'weeks from now',
+  'months ago',
+  'months from now',
+  'years ago',
+  'years from now'
+]
+
 filterValueMap.set(FieldType.DATE, [
   'today',
   'yesterday',
@@ -95,14 +107,6 @@ filterValueMap.set(FieldType.DATE, [
   'one year ago',
   'this year',
   'next year',
-  
-  'days ago',
-  'days from now',
-  'weeks ago',
-  'weeks from now',
-  'months ago',
-  'months from now',
-  'years ago',
-  'years from now',
+  ...RELATIVE_TIME_VALUES,
   'exact date'
 ])

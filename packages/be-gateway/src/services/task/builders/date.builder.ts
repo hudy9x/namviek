@@ -88,7 +88,8 @@ export function getRelativeDate(value: string): Date {
   }
 }
 
-export function buildDateQuery(path: string, operator: string, value: string) {
+export function buildDateQuery(path: string, operator: string, value: string, subValue?: string) {
+  console.log('sub value', subValue)
   const dateValue = getRelativeDate(value)
 
   // Helper function to get end of day
