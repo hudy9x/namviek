@@ -1,7 +1,8 @@
 import { FieldType } from "@prisma/client";
-import { BaseController, UseMiddleware, Controller, Put, Body } from "../../core";
+import { BaseController, UseMiddleware, Controller, Put, Post, Body } from "../../core";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
-import TaskCustomFieldService from "../../services/task/custom.field.service";
+import TaskCustomFieldService, { IFilterAdvancedData } from "../../services/task/custom.field.service";
+
 
 @Controller('/project/task/custom-field')
 @UseMiddleware([authMiddleware, beProjectMemberMiddleware])
@@ -20,10 +21,16 @@ export default class TaskCustomFieldController extends BaseController {
     return ret
   }
 
-
-  // @Delete('/:checklistId')
-  // async deleteChecklist(@Param() params: { checklistId: string }) {
-  //   const result = await this.checklistService.delete(params.checklistId)
-  //   return result
-  // }
+  @Post('/query')
+  async queryCustomField(@Body() body: { projectId: string, filter: IFilterAdvancedData }) {
+    try {
+      console.log('1')
+      const { filter, projectId } = body
+      const result = await this.customFieldService.queryCustomField(projectId, filter)
+      return result
+    } catch (error) {
+      console.error('Custom query error:', error)
+      return { status: 500, error: error.message }
+    }
+  }
 }

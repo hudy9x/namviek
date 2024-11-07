@@ -21,7 +21,7 @@ export default function useGetCustomData() {
       }))
     })
 
-    taskGetCustomQuery(filter, controller.signal)
+    taskGetCustomQuery(projectId, filter, controller.signal)
       .then(res => {
         const { data, status, error } = res.data
         if (status === 200) {

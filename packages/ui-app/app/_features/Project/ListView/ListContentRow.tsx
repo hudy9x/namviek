@@ -47,6 +47,7 @@ export default function ListContentRow({ task }: { task: ExtendedTask }) {
         const dataValue = customData[id] // convert all to string
         return <>
           <CustomFieldInputProvider onChange={(value) => {
+            console.log(id, value)
             onChange(value, id, type)
           }} >
             <CustomFieldInputFactory

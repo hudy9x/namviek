@@ -95,6 +95,7 @@ filterValueMap.set(FieldType.DATE, [
   'one year ago',
   'this year',
   'next year',
+  
   'days ago',
   'days from now',
   'weeks ago',

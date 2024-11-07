@@ -152,7 +152,6 @@ enum FieldType {
   CHECKBOX
   URL
   EMAIL
-  // STATUS
   FILES
   PHONE
   PERSON
