@@ -66,6 +66,8 @@ type RedisJSONValue = {
   [key: string]: unknown
 }
 
+export const getRedisConnection = () => connected
+
 // export const setCache = (key: string, value: RedisValue) => {
 //   if (!connected) {
 //     return
