@@ -126,35 +126,49 @@ export default class TaskCustomFieldService {
         options: {
           limit: safeLimit + 1,
           sort: { id: 1 },
-          projection: {
-            id: 1,
-            createdAt: 1,
-            createdBy: 1,
-            updatedAt: 1,
-            updatedBy: 1,
-            projectId: 1,
-            customFields: 1,
-            _id: 0
-          }
         }
       })
 
-      console.log('restuls', results)
+      // Convert MongoDB extended JSON format
+      const resultsArray = Array.from(results as unknown as Record<string, any>[])
+      const normalizedResults = resultsArray.map(task => {
+        const normalized = { ...task }
 
-      const resultsArray = Array.from(results as unknown as Record<string, unknown>[])
-      const items = resultsArray.slice(0, safeLimit)
-      const hasNextPage = resultsArray.length > safeLimit
+        // Convert _id and other ObjectId fields
+        if (normalized._id?.$oid) normalized._id = normalized._id.$oid
+        normalized.id = normalized._id
+        if (normalized.projectId?.$oid) normalized.projectId = normalized.projectId.$oid
+
+        // Convert date fields
+        if (normalized.createdAt?.$date) normalized.createdAt = normalized.createdAt.$date
+        if (normalized.updatedAt?.$date) normalized.updatedAt = normalized.updatedAt.$date
+        if (normalized.dueDate?.$date) normalized.dueDate = normalized.dueDate.$date
+        if (normalized.startDate?.$date) normalized.startDate = normalized.startDate.$date
+        if (normalized.plannedStartDate?.$date) normalized.plannedStartDate = normalized.plannedStartDate.$date
+        if (normalized.plannedDueDate?.$date) normalized.plannedDueDate = normalized.plannedDueDate.$date
+
+        if (Array.isArray(normalized.assigneeIds)) {
+          normalized.assigneeIds = normalized.assigneeIds.map(id => id?.$oid || id)
+        }
+
+        if (Array.isArray(normalized.fileIds)) {
+          normalized.fileIds = normalized.fileIds.map(id => id?.$oid || id)
+        }
+
+        return normalized
+      })
+
+      const items = normalizedResults.slice(0, safeLimit)
+      const hasNextPage = normalizedResults.length > safeLimit
       const nextCursor = hasNextPage ? items[items.length - 1].id : null
 
       return {
         status: 200,
         // data: results
-        data: {
-          items,
-          pageInfo: {
-            hasNextPage,
-            nextCursor
-          }
+        data: items,
+        pageInfo: {
+          hasNextPage,
+          nextCursor
         }
       }
     } catch (error) {

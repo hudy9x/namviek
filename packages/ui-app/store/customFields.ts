@@ -45,13 +45,16 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
 
   updateCustomField: (field: Field) => set(produce((state: FieldState) => {
 
-    state.customFields = state.customFields.map(cf => {
+    const newCustomFields = state.customFields.map(cf => {
       if (cf.id === field.id) {
-        console.log('update field id', cf, field)
+        field.desc = new Date().toString()
         return { ...cf, ...field }
       }
       return cf
     })
+
+    console.log('newCustomFields', newCustomFields)
+    state.customFields = newCustomFields
 
   })),
 

@@ -105,7 +105,7 @@ export default function FilterAdvancedModal() {
   console.log('filter', filter)
 
   return (
-    <div className="border bg-white rounded-md shadow-lg min-w-[300px] text-sm">
+    <div className="border bg-white dark:bg-gray-800 dark:border-gray-700 rounded-md shadow-lg min-w-[300px] text-sm">
       <div className="space-y-2 px-3 py-3">
         <FilterEmpty enable={!filter.list.length} />
 
@@ -117,7 +117,7 @@ export default function FilterAdvancedModal() {
           />
         ))}
       </div>
-      <div className="px-3 py-2 flex items-center gap-3 border-t">
+      <div className="px-3 py-2 flex items-center gap-3 border-t dark:border-gray-700">
         <AddFilter />
       </div>
     </div>

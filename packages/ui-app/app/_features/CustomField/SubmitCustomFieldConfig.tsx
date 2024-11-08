@@ -16,6 +16,7 @@ export default function SubmitCustomFieldConfig() {
 
   const updateCustomFieldHandler = async () => {
     const updateData = { ...data, ...{ projectId } }
+    console.log('udpate field data', updateData)
     updateCustomField(updateData as Field)
     setVisible(false)
     const result = await fieldSv.update(updateData)

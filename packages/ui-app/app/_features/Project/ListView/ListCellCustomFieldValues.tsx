@@ -25,6 +25,8 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
     })
   }
 
+  console.log('render custom field', customFields)
+
   return <>
     {customFields.map(field => {
       const fieldId = field.id

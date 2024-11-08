@@ -1,15 +1,22 @@
 import { useCallback, useEffect } from 'react'
-import { useFilterAdvancedStore } from './store'
 import { taskGetCustomQuery } from '@/services/task'
 import { useParams } from 'next/navigation'
-import { IFilterAdvancedData } from './type'
+import { useFilterAdvancedStore } from '../FilterAdvanced/store'
+import { IFilterAdvancedData } from '../FilterAdvanced/type'
+import { useTaskStore } from '@/store/task'
+import { messageError } from '@shared/ui'
+import localforage from 'localforage'
 
 export default function useGetCustomData() {
   const { projectId } = useParams()
   const filter = useFilterAdvancedStore((state): IFilterAdvancedData => state.filter)
+  const { addAllTasks, setTaskLoading } = useTaskStore()
+
+  const key = `TASKLIST_${projectId}`
 
   const fetchCustomData = useCallback(() => {
     const controller = new AbortController()
+    setTaskLoading(true)
 
     console.log('Filter being sent to API:', {
       condition: filter.condition,
@@ -23,21 +30,32 @@ export default function useGetCustomData() {
 
     taskGetCustomQuery(projectId, filter, controller.signal)
       .then(res => {
-        const { data, status, error } = res.data
+        const { data: resData } = res.data
+        const { data, status } = resData
+        // const { data, status } = data
         if (status === 200) {
           console.log('Custom query results:', data)
+          localforage.setItem(key, data)
+          setTimeout(() => {
+            addAllTasks(data)
+            setTaskLoading(false)
+          }, 300)
         } else {
-          console.error('Custom query error:', error)
+          addAllTasks([])
+          localforage.removeItem(key)
+          setTaskLoading(false)
+          // messageError(error)
         }
       })
       .catch(err => {
         console.error('Failed to fetch custom data:', err)
+        setTaskLoading(false)
       })
 
     return () => {
       controller.abort()
     }
-  }, [filter])
+  }, [filter, projectId, addAllTasks, setTaskLoading])
 
   useEffect(() => {
     const cleanup = fetchCustomData()

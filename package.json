@@ -106,6 +106,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@nx/cypress": "16.2.2",
     "@nx/esbuild": "16.2.2",
     "@nx/eslint-plugin": "16.2.2",

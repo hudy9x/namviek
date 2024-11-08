@@ -25,19 +25,26 @@ function CreateOptionForm() {
   }
 
   const onChangeColor = (index: number, color: string) => {
-    setOptions(options => options.map((opt, optIndex) => {
+
+    const newOptions = options.map((opt, optIndex) => {
       if (optIndex === index) {
+        console.log({ ...opt, color })
         return { ...opt, color }
       }
 
       return opt
-    }))
+    })
+    setOptions(newOptions)
+    saveOption(newOptions)
   }
 
   const onDeleteOption = (index: number) => {
-    setOptions(options => options.filter((opt, optIndex) => {
+    const newOptions = options.filter((opt, optIndex) => {
       return optIndex !== index
-    }))
+    })
+    setOptions(newOptions)
+    saveOption(newOptions)
+
   }
 
   const onUpdateOption = (index: number, value: string) => {
@@ -50,13 +57,32 @@ function CreateOptionForm() {
 
   }
 
-  const onSave = useCallback(() => {
+  const saveOption = (options: TCustomFieldOption[]) => {
     setData({
       data: {
         options
       }
     })
-  }, [options, setData])
+
+  }
+
+  console.log('options', options)
+  // const onSave = () => {
+  //   console.log('save', options)
+  //   setData({
+  //     data: {
+  //       options
+  //     }
+  //   })
+  // }
+  const onSave = useCallback(() => {
+    console.log('save', options)
+    setData({
+      data: {
+        options
+      }
+    })
+  }, [options.toString(), setData])
 
 
   return <div className="form-control">
@@ -67,6 +93,7 @@ function CreateOptionForm() {
           <IconColorPicker value={option.color} onChange={(val: string) => {
             onChangeColor(index, val)
           }} />
+
           <Form.Input value={option.value} size="sm"
             onChange={ev => {
               onUpdateOption(index, ev.target.value)

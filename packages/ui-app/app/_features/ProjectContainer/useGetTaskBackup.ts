@@ -69,7 +69,6 @@ export const useGetTaskHandler = () => {
     ).then(res => {
       const { data, status, error } = res.data
 
-      console.log('useGetTaskData', data)
       if (status !== 200) {
         addAllTasks([])
         localforage.removeItem(key)
@@ -118,7 +117,7 @@ function useFillTaskFromCache() {
   }, [projectId])
 }
 
-export default function useGetTask() {
+export default function useGetTaskBackup() {
   const { fetchNCache, filterWithoutGroupBy } = useGetTaskHandler()
   useFillTaskFromCache()
 
