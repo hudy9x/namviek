@@ -9,6 +9,7 @@ import CustomFieldInpNumber from "./CustomFieldInpNumber"
 import CustomFieldInpUrl from "./CustomFieldInpUrl"
 import CustomFieldInpEmail from "./CustomFieldInpEmail"
 import CustomFieldInpPerson from "./CustomFieldInpPerson"
+import { memo } from "react"
 
 type ICustomFieldInputFactoryProps = {
   data: string
@@ -17,7 +18,7 @@ type ICustomFieldInputFactoryProps = {
   value: string // convert all data to string
 }
 
-export default function CustomFieldInputFactory({
+function CustomFieldInputFactory({
   data, config,
   type,
   value }: ICustomFieldInputFactoryProps) {
@@ -58,3 +59,5 @@ export default function CustomFieldInputFactory({
 
   return <>{generateFieldInput()}</>
 }
+
+export default memo(CustomFieldInputFactory)

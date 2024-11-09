@@ -16,6 +16,10 @@
   @apply bg-white dark:bg-gray-900;
 }
 
+.list-cell-sortable-hover {
+  border: 2px solid #6366f1 !important; 
+}
+
 .list-row {
   @apply flex divide-x dark:divide-gray-700
 }

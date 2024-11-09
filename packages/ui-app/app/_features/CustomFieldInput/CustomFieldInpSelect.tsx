@@ -22,6 +22,43 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   const [counter, setCounter] = useState(0)
   const { onChange } = useCustomFieldInputContext()
 
+  // re-render options as user update field's data
+  useEffect(() => {
+    const { options: dataOptions } = JSON.parse(data) as { options: TCustomFieldOption[] }
+
+    let newSelectedItem: ListItemValue | null = null
+    let foundSelectedItem = false
+    setOptions(dataOptions.map(opt => {
+      const item: ListItemValue = {
+        icon: opt.color,
+        id: opt.value,
+        title: opt.value
+      }
+
+      if (opt.value === selected.id) {
+        foundSelectedItem = true
+        newSelectedItem = item
+      }
+      colorMap.set(opt.value, opt.color)
+      return item
+    }))
+
+    if (newSelectedItem && foundSelectedItem) {
+      setSelected(newSelectedItem)
+    }
+
+    // case: user update options
+    // and accident the selected item contains the old value
+    // so we need to clear currect select value
+    if (!foundSelectedItem) {
+      setSelected({
+        icon: '',
+        id: '',
+        title: ''
+      })
+    }
+
+  }, [data])
 
   useEffect(() => {
     if (counter > 0) {
@@ -32,6 +69,7 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   if (!options || !options?.length) return null
 
   const genIcon = (icon: string) => {
+    if (!icon) return null
     if (icon.includes('http')) {
       return <img className="w-4 h-4" src={icon} />
     }

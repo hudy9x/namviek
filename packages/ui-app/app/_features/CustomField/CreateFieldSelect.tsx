@@ -66,23 +66,13 @@ function CreateOptionForm() {
 
   }
 
-  console.log('options', options)
-  // const onSave = () => {
-  //   console.log('save', options)
-  //   setData({
-  //     data: {
-  //       options
-  //     }
-  //   })
-  // }
-  const onSave = useCallback(() => {
-    console.log('save', options)
+  const onSave = () => {
     setData({
       data: {
         options
       }
     })
-  }, [options.toString(), setData])
+  }
 
 
   return <div className="form-control">
@@ -104,8 +94,6 @@ function CreateOptionForm() {
             }}
             onBlur={(ev) => {
               onSave()
-              // const value = ev.target.value
-              // onUpdateOption(index, value)
             }} className="w-full" />
           <Button size="sm"
             onClick={() => onDeleteOption(index)}
