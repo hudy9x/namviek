@@ -77,4 +77,20 @@ export const generateCustomFieldData = async (projectId: string, totalRecords: n
     console.error('Error generating custom field data:', error)
     throw error
   }
-} 
+}
+
+export const truncateCustomField = async (projectId: string) => {
+  const promises = []
+  promises.push(pmClient.task.deleteMany({
+    where: {
+      projectId
+    }
+  }))
+  promises.push(pmClient.field.deleteMany({
+    where: {
+      projectId
+    }
+  }))
+  const result = await Promise.all(promises)
+  console.log('done')
+}

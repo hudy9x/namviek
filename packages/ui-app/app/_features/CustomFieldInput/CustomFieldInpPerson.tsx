@@ -13,10 +13,18 @@ export default function CustomFieldInpPerson({ value, config }: CustomFieldInpPe
   // Parse the configuration
   const parsedConfig = JSON.parse(config || '{}')
   const isMultiple = parsedConfig.multiple || false
-  const isShowAllMember = parsedConfig.allMembers || false
+  // const isShowAllMember = parsedConfig.allMembers || false
+  const selectedMembers = parsedConfig.selectedMembers || null
+
+  console.log('parseConfig', parsedConfig)
 
   // Parse the value (convert from JSON string to array/string)
-  const parsedValue = value ? JSON.parse(value) : (isMultiple ? [] : '')
+  let parsedValue = isMultiple ? undefined : '';
+  try {
+    parsedValue = value ? JSON.parse(value) : (isMultiple ? undefined : '')
+  } catch (error) {
+    console.log('error', error)
+  }
 
   const handleChange = (newValue: string | string[]) => {
     onChange(JSON.stringify(newValue))
@@ -25,7 +33,10 @@ export default function CustomFieldInpPerson({ value, config }: CustomFieldInpPe
   if (isMultiple) {
     return (
       <MultiMemberPicker
-        value={parsedValue as string[]}
+        // compact={true}
+        displayedOptions={selectedMembers}
+        className='cf-input-container'
+        value={parsedValue as string[] | undefined}
         onChange={handleChange}
       />
     )

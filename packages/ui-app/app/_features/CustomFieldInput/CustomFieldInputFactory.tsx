@@ -1,4 +1,4 @@
-import { FieldType } from "@prisma/client"
+import { FieldType, FileType } from "@prisma/client"
 import CustomFieldInpText from "./CustomFieldInpText"
 import CustomFieldInpDate from "./CustomFieldInpDate"
 import CustomFieldInpSelect from "./CustomFieldInpSelect"
@@ -41,6 +41,7 @@ function CustomFieldInputFactory({
         return <CustomFieldInpDate value={value} config={config} />
 
       case FieldType.PERSON:
+        console.log(FieldType.PERSON, value, config)
         return <CustomFieldInpPerson value={value} config={config} />
 
       case FieldType.CHECKBOX:
