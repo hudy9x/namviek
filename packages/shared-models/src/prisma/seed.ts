@@ -5,7 +5,7 @@ import { createProject } from './seeder/project'
 import { generateIconName, generateOrgName, generateProjectName } from './dummy'
 import { runTest } from './seeder/test'
 import { generateDailyData } from './seeder/report'
-import { generateCustomFieldData, truncateCustomField } from './seeder/customData'
+import { generateCustomFieldData, truncateCustomField, truncateData } from './seeder/customData'
 const args = process.argv
 
 const prisma = new PrismaClient()
@@ -81,10 +81,11 @@ password: ${process.env.DEFAULT_PWD || '123123123'}
       await generateDailyData()
       break;
     case 'truncate':
-      truncateCustomField('667547bbe186cf14067ef458')
+      // truncateCustomField('667547bbe186cf14067ef458')
+      truncateData('667547bbe186cf14067ef458')
       break;
     case 'custom-field':
-      await generateCustomFieldData('667547bbe186cf14067ef458', 2);
+      await generateCustomFieldData('667547bbe186cf14067ef458', 200);
       break
     case 'test':
       await runTest()

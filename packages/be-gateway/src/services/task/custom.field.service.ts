@@ -121,6 +121,8 @@ export default class TaskCustomFieldService {
         _filter['_id'] = { $gt: cursor }
       }
 
+      console.log('filter', JSON.stringify(_filter, null, ' '))
+
       const results = await pmClient.task.findRaw({
         filter: _filter,
         options: {
@@ -128,6 +130,8 @@ export default class TaskCustomFieldService {
           sort: { id: 1 },
         }
       })
+
+
 
       // Convert MongoDB extended JSON format
       const resultsArray = Array.from(results as unknown as Record<string, any>[])
@@ -161,6 +165,8 @@ export default class TaskCustomFieldService {
       const items = normalizedResults.slice(0, safeLimit)
       const hasNextPage = normalizedResults.length > safeLimit
       const nextCursor = hasNextPage ? items[items.length - 1].id : null
+
+      console.log('items', items.length)
 
       return {
         status: 200,

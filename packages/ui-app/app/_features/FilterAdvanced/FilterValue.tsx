@@ -5,7 +5,8 @@ import FilterValueSelect from "./FilterValueSelect";
 import FilterValueCheckbox from "./FilterValueCheckbox";
 import FilterValueMultiSelect from "./FilterValueMultiSelect";
 
-export default function FilterValue({ type, operator, onChange, fieldId }: {
+export default function FilterValue({ type, operator, onChange, fieldId, value }: {
+  value: string
   fieldId: string
   type: FieldType,
   onChange: (val: string) => void
@@ -13,13 +14,12 @@ export default function FilterValue({ type, operator, onChange, fieldId }: {
 }) {
   switch (type) {
     case FieldType.DATE:
-      return <FieldValueDate onChange={onChange} />
+      return <FieldValueDate value={value} onChange={onChange} />
 
     case FieldType.SELECT:
       return <FilterValueSelect
+        value={value}
         onChange={onChange}
-        type={type}
-        operator={operator}
         fieldId={fieldId}
       />
 

@@ -29,8 +29,9 @@ export default function FieldValueDate({
   const [selected, setSelected] = useState<ListItemValue>(defaultOption)
 
   useEffect(() => {
-    setSelected(options[0])
-  }, [value])
+    const newSelected = options.find(opt => opt.id === value) || options[0]
+    setSelected(newSelected)
+  }, [value, options])
 
   return <List
     value={selected}

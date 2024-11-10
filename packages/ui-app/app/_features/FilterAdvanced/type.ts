@@ -63,10 +63,8 @@ filterOperatorMap.set(FieldType.DATE, [
   'is',
   'is not',
   'is before',
-  'is on or before',
   'is after',
-  'is on or after',
-  'is within',
+  // 'is within',
   'is empty',
   'is not empty'
 ])
@@ -107,6 +105,6 @@ filterValueMap.set(FieldType.DATE, [
   'one year ago',
   'this year',
   'next year',
-  ...RELATIVE_TIME_VALUES,
+  // ...RELATIVE_TIME_VALUES,
   'exact date'
 ])

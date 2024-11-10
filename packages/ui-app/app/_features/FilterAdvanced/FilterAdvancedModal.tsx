@@ -61,7 +61,7 @@ function FilterItem({ index, filterItem }: {
   const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
   const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
   const changeValue = useFilterAdvancedStore(state => state.changeValue)
-  const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
+  // const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
   const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
 
   return (
@@ -79,17 +79,18 @@ function FilterItem({ index, filterItem }: {
           onChange={val => changeFilterOperator(0, index, val)}
         />
         <FilterValue
+          value={filterItem.value}
           type={filterItem.type}
           fieldId={filterItem.id}
           onChange={val => changeValue(0, index, val)}
           operator={filterItem.operator}
         />
-        <FilterSubValue
-          type={filterItem.type}
-          value={filterItem.value || ''}
-          subValue={filterItem.subValue || ''}
-          onChange={(val: string) => changeSubValue(0, index, val)}
-        />
+        {/* <FilterSubValue */}
+        {/*   type={filterItem.type} */}
+        {/*   value={filterItem.value || ''} */}
+        {/*   subValue={filterItem.subValue || ''} */}
+        {/*   onChange={(val: string) => changeSubValue(0, index, val)} */}
+        {/* /> */}
       </div>
       <Button
         leadingIcon={<HiOutlineTrash />}
@@ -101,8 +102,6 @@ function FilterItem({ index, filterItem }: {
 
 export default function FilterAdvancedModal() {
   const filter = useFilterAdvancedStore(state => state.filter)
-
-  console.log('filter', filter)
 
   return (
     <div className="border bg-white dark:bg-gray-800 dark:border-gray-700 rounded-md shadow-lg min-w-[300px] text-sm">

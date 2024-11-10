@@ -9,7 +9,7 @@ const generateFieldValue = async (type: FieldType, config: any, data: any, membe
     case 'TEXT':
       return faker.person.fullName()
     case 'DATE':
-      return faker.date.between({ from: new Date(2024, 8, 1), to: new Date(2024, 10, 1) }).toISOString()
+      return faker.date.between({ from: new Date(2024, 0, 1), to: new Date(2024, 11, 1) }).toISOString()
     case 'SELECT':
       // const options = config?.options || ['Option 1', 'Option 2', 'Option 3']
       const options = data?.options || []
@@ -35,7 +35,7 @@ const generateFieldValue = async (type: FieldType, config: any, data: any, membe
   }
 }
 
-export const generateCustomFieldData = async (projectId: string, totalRecords: number = 10) => {
+export const generateCustomFieldData = async (projectId: string, totalRecords = 10) => {
   try {
     const [fields, members] = await Promise.all([
       pmClient.field.findMany({
@@ -87,6 +87,17 @@ export const truncateCustomField = async (projectId: string) => {
     }
   }))
   promises.push(pmClient.field.deleteMany({
+    where: {
+      projectId
+    }
+  }))
+  const result = await Promise.all(promises)
+  console.log('done')
+}
+
+export const truncateData = async (projectId: string) => {
+  const promises = []
+  promises.push(pmClient.task.deleteMany({
     where: {
       projectId
     }
