@@ -1,7 +1,7 @@
 export function buildBooleanQuery(path: string, operator: string, value: string) {
   switch (operator) {
     case 'is':
-      return { [path]: value.toLowerCase() === 'true' }
+      return { [path]: value.toLowerCase() }
 
     case 'is empty':
       return {
@@ -20,6 +20,6 @@ export function buildBooleanQuery(path: string, operator: string, value: string)
       }
 
     default:
-      return { [path]: value.toLowerCase() === 'true' }
+      return { [path]: value.toLowerCase() }
   }
 } 

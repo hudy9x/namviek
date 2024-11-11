@@ -34,7 +34,7 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
       />
 
     case FieldType.CHECKBOX:
-      return <FilterValueCheckbox onChange={onChange} />
+      return <FilterValueCheckbox value={value} onChange={onChange} />
 
     case FieldType.PERSON:
       return <FilterValuePerson

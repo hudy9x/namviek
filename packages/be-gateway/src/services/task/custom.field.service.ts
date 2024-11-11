@@ -41,13 +41,6 @@ export default class TaskCustomFieldService {
   async update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     try {
 
-      console.log({
-        id: data.taskId,
-        fieldId: data.fieldId,
-        type: data.type,
-        value: data.value
-      })
-
       const result = await this.customFieldRepo.update({
         id: data.taskId,
         fieldId: data.fieldId,
