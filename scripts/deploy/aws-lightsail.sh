@@ -54,7 +54,7 @@ sudo /opt/bitnami/ctlscript.sh restart apache
 
 # install forever and node_modules
 sudo chmod 0777 *
-sudo npm install forever -g
+sudo npm install pm2 -g
 sudo yarn install
 
 # build code
@@ -62,4 +62,4 @@ sudo yarn generate2
 sudo yarn build:be
 
 # start backend
-sudo forever start ./dist/packages/be-gateway/main.js
+sudo pm2 start ./dist/packages/be-gateway/main.js
