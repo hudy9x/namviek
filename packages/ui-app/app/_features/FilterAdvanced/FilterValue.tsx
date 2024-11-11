@@ -4,6 +4,7 @@ import { Form } from "@shared/ui";
 import FilterValueSelect from "./FilterValueSelect";
 import FilterValueCheckbox from "./FilterValueCheckbox";
 import FilterValueMultiSelect from "./FilterValueMultiSelect";
+import FilterValueInput from "./FilterValueInput";
 
 export default function FilterValue({ type, operator, onChange, fieldId, value }: {
   value: string
@@ -35,9 +36,9 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
       return <FilterValueCheckbox onChange={onChange} />
 
     default:
-      return <Form.Input
+      return <FilterValueInput
         value={value}
-        onBlur={ev => onChange(ev.target.value)}
+        onChange={onChange}
       />
   }
 }

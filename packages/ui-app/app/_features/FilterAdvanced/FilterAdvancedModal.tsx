@@ -119,6 +119,7 @@ function SaveFilter() {
 
   return (
     <Button
+      ghost
       size="sm"
       leadingIcon={<HiOutlineSave className="w-4 h-4" />}
       onClick={handleSave}
@@ -143,7 +144,7 @@ export default function FilterAdvancedModal() {
           />
         ))}
       </div>
-      <div className="px-3 py-2 flex items-center gap-3 border-t dark:border-gray-700">
+      <div className="px-3 py-2 flex items-center justify-between gap-3 border-t dark:border-gray-700">
         <AddFilter />
         <SaveFilter />
       </div>

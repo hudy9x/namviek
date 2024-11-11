@@ -18,6 +18,7 @@ interface IButtonProps {
   title?: string
   primary?: boolean
   danger?: boolean
+  ghost?: boolean
   warn?: boolean
   leadingIcon?: React.ReactNode
   loading?: boolean
@@ -40,6 +41,7 @@ const Button = ({
   primary,
   danger,
   warn,
+  ghost,
   block,
   size = 'base',
   type = 'button',
@@ -52,6 +54,7 @@ const Button = ({
   const classes = [
     'btn',
     leadingIcon && 'has-leading-icon',
+    ghost && 'btn-ghost',
     primary && 'btn-primary',
     danger && 'btn-danger',
     warn && 'btn-warning',
