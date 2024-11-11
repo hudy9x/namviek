@@ -123,7 +123,8 @@ function getFirstAndLastDateOfYear(date) {
 }
 
 
-export function getRelativeDate(value: string): Date[] {
+export function getRelativeDate(value: string, subValue?: string): Date[] {
+
   const now = new Date();
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -178,7 +179,7 @@ export function getRelativeDate(value: string): Date[] {
       return getFirstAndLastDateOfYear(getFirstDateOfNextYear(startOfDay))
 
     case 'exact date':
-      return getStartAndEndTime(startOfDay);
+      return getStartAndEndTime(subValue ? new Date(subValue) : startOfDay);
 
     default:
       // Try to parse the value as a date string
@@ -186,36 +187,9 @@ export function getRelativeDate(value: string): Date[] {
   }
 }
 
-// New helper function to handle 'is within' logic
-const handleIsWithin = (path: string, value: string, dateValue: Date, getEndOfDay: (date: Date) => Date) => {
-  let endDate: Date;
-  switch (value) {
-    case 'this week':
-      endDate = new Date(dateValue);
-      endDate.setDate(endDate.getDate() + 7);
-      break;
-    case 'this month':
-      endDate = new Date(dateValue);
-      endDate.setMonth(endDate.getMonth() + 1);
-      break;
-    case 'this year':
-      endDate = new Date(dateValue);
-      endDate.setFullYear(endDate.getFullYear() + 1);
-      break;
-    default:
-      endDate = getEndOfDay(dateValue);
-  }
-  return {
-    $and: [
-      { [path]: { $gte: dateValue } },
-      { [path]: { $lt: endDate } }
-    ]
-  };
-};
-
 export function buildDateQuery(path: string, operator: string, value: string, subValue?: string) {
   console.log('sub value', subValue);
-  const dateValue = getRelativeDate(value);
+  const dateValue = getRelativeDate(value, subValue);
 
   switch (operator) {
     case 'is':

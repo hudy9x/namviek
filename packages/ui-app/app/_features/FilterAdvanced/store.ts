@@ -6,7 +6,7 @@ import { filterOperatorMap } from './type'
 
 interface FilterAdvancedState {
   filter: IFilterAdvancedData
-  // Actions
+  initializeFilter: (filter: IFilterAdvancedData) => void
   addFilter: (level: number, data: TFilterAdvancedItem) => void
   switchCondition: (condition: EFilterCondition) => void
   changeFieldType: (level: number, index: number, val: { id: string, type: FieldType }) => void
@@ -23,6 +23,11 @@ const initialFilter: IFilterAdvancedData = {
 
 export const useFilterAdvancedStore = create<FilterAdvancedState>((set) => ({
   filter: initialFilter,
+
+  initializeFilter: (filter: IFilterAdvancedData) => 
+    set(produce((state: FilterAdvancedState) => {
+      state.filter = filter
+    })),
 
   addFilter: (level: number, data: TFilterAdvancedItem) =>
     set(

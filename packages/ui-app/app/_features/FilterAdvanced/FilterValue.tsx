@@ -36,6 +36,7 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
 
     default:
       return <Form.Input
+        value={value}
         onBlur={ev => onChange(ev.target.value)}
       />
   }

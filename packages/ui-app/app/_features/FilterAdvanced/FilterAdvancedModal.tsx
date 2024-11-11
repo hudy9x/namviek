@@ -1,5 +1,5 @@
 import FieldSelect from "./FieldSelect"
-import { Button } from "@shared/ui"
+import { Button, messageSuccess } from "@shared/ui"
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2"
 import { TFilterAdvancedItem } from "./type"
 import ConditionSelect from "./ConditionSelect"
@@ -8,6 +8,11 @@ import FieldOperator from "./FieldOperator"
 import FilterValue from "./FilterValue"
 import { useFilterAdvancedStore } from "./store"
 import FilterSubValue from "./FilterSubValue"
+import { useParams } from "next/navigation"
+// import { getProjectFilter, setProjectFilter } from '@shared/libs/lib/localCache'
+import { useEffect } from "react"
+import { getProjectFilter, setProjectFilter } from "@shared/libs"
+import { HiOutlineSave } from "react-icons/hi"
 
 function AddFilter() {
   const customFields = useProjectCustomFieldStore(state => state.customFields)
@@ -49,8 +54,10 @@ function FilterCondition({ index }: { index: number }) {
 
   return <div className="w-[100px]">
     {index === 0
-      ? <ConditionSelect value={condition} onChange={switchCondition} />
-      : <span className="pl-3">{condition}</span>}
+      ? <span className="pl-3">Where</span>
+      : index === 1
+        ? <ConditionSelect value={condition} onChange={switchCondition} />
+        : <span className="pl-3">{condition}</span>}
   </div>
 }
 
@@ -61,7 +68,7 @@ function FilterItem({ index, filterItem }: {
   const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
   const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
   const changeValue = useFilterAdvancedStore(state => state.changeValue)
-  // const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
+  const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
   const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
 
   return (
@@ -85,12 +92,12 @@ function FilterItem({ index, filterItem }: {
           onChange={val => changeValue(0, index, val)}
           operator={filterItem.operator}
         />
-        {/* <FilterSubValue */}
-        {/*   type={filterItem.type} */}
-        {/*   value={filterItem.value || ''} */}
-        {/*   subValue={filterItem.subValue || ''} */}
-        {/*   onChange={(val: string) => changeSubValue(0, index, val)} */}
-        {/* /> */}
+        <FilterSubValue
+          type={filterItem.type}
+          value={filterItem.value || ''}
+          subValue={filterItem.subValue || ''}
+          onChange={(val: string) => changeSubValue(0, index, val)}
+        />
       </div>
       <Button
         leadingIcon={<HiOutlineTrash />}
@@ -100,9 +107,29 @@ function FilterItem({ index, filterItem }: {
   )
 }
 
-export default function FilterAdvancedModal() {
+function SaveFilter() {
+  const { projectId } = useParams()
   const filter = useFilterAdvancedStore(state => state.filter)
 
+  const handleSave = () => {
+    if (!projectId) return
+    setProjectFilter(projectId, filter)
+    messageSuccess('Filter saved successfully')
+  }
+
+  return (
+    <Button
+      size="sm"
+      leadingIcon={<HiOutlineSave className="w-4 h-4" />}
+      onClick={handleSave}
+      title="Save Filter"
+    />
+  )
+}
+
+export default function FilterAdvancedModal() {
+
+  const filter = useFilterAdvancedStore(state => state.filter)
   return (
     <div className="border bg-white dark:bg-gray-800 dark:border-gray-700 rounded-md shadow-lg min-w-[300px] text-sm">
       <div className="space-y-2 px-3 py-3">
@@ -118,6 +145,7 @@ export default function FilterAdvancedModal() {
       </div>
       <div className="px-3 py-2 flex items-center gap-3 border-t dark:border-gray-700">
         <AddFilter />
+        <SaveFilter />
       </div>
     </div>
   )
