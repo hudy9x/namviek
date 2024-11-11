@@ -6,6 +6,7 @@ import { buildDateQuery } from "./builders/date.builder"
 import { buildSelectQuery } from "./builders/select.builder"
 import { buildBooleanQuery } from "./builders/boolean.builder"
 import { TaskCustomFieldRepository } from "@shared/models"
+import { buildPersonQuery } from "./builders/person.builder"
 
 export enum EFilterCondition {
   AND = 'AND',
@@ -39,6 +40,13 @@ export default class TaskCustomFieldService {
 
   async update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     try {
+
+      console.log({
+        id: data.taskId,
+        fieldId: data.fieldId,
+        type: data.type,
+        value: data.value
+      })
 
       const result = await this.customFieldRepo.update({
         id: data.taskId,
@@ -87,7 +95,7 @@ export default class TaskCustomFieldService {
         return buildBooleanQuery(fieldPath, item.operator, item.value)
 
       case FieldType.PERSON:
-        return buildSelectQuery(fieldPath, item.operator, item.value)
+        return buildPersonQuery(fieldPath, item.operator, item.value)
 
       case FieldType.TEXT:
       case FieldType.URL:

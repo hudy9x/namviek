@@ -15,7 +15,6 @@ export default function FieldOperator({
   onChange?: (val: string) => void
 }) {
 
-  // render
   const options: ListItemValue[] = useMemo(() => {
     const operators = filterOperatorMap.get(type)
     if (!operators) return []
@@ -45,7 +44,7 @@ export default function FieldOperator({
       onChange && onChange(val.id)
     }}>
     <List.Button>
-      {selected.title}
+      {selected ? selected.title : null}
     </List.Button>
     <List.Options>
       {options.map(option => {

@@ -77,8 +77,17 @@ const selectOperators = [
   'is empty',
   'is not empty'
 ]
+
 filterOperatorMap.set(FieldType.SELECT, selectOperators)
 filterOperatorMap.set(FieldType.MULTISELECT, selectOperators)
+
+const personOperators = [
+  'contains',
+  'doesn\'t contain',
+  'is empty',
+  'is not empty'
+]
+filterOperatorMap.set(FieldType.PERSON, personOperators)
 
 // =================== Field value ===========================
 export const RELATIVE_TIME_VALUES = [

@@ -21,7 +21,7 @@ const generateFieldValue = async (type: FieldType, config: any, data: any, membe
       const selected = faker.helpers.arrayElements(multiOptions, { min: 1, max: 3 }) as { value: string, color: string }[]
       return selected.map(s => s.value)
     case 'CHECKBOX':
-      return faker.datatype.boolean()
+      return faker.datatype.boolean() ? 'true' : 'false'
     case 'URL':
       return faker.internet.url()
     case 'EMAIL':

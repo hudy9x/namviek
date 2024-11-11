@@ -5,6 +5,7 @@ import FilterValueSelect from "./FilterValueSelect";
 import FilterValueCheckbox from "./FilterValueCheckbox";
 import FilterValueMultiSelect from "./FilterValueMultiSelect";
 import FilterValueInput from "./FilterValueInput";
+import FilterValuePerson from './FilterValuePerson';
 
 export default function FilterValue({ type, operator, onChange, fieldId, value }: {
   value: string
@@ -34,6 +35,14 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
 
     case FieldType.CHECKBOX:
       return <FilterValueCheckbox onChange={onChange} />
+
+    case FieldType.PERSON:
+      return <FilterValuePerson
+        fieldId={fieldId}
+        value={value}
+        onChange={onChange}
+        operator={operator}
+      />
 
     default:
       return <FilterValueInput
