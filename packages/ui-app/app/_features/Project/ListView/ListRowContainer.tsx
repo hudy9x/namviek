@@ -4,6 +4,7 @@ import ListHeadingRow from "./ListHeadingRow";
 import ListContentRow from "./ListContentRow";
 import useTaskFilterContext from "@/features/TaskFilter/useTaskFilterContext";
 import { ITaskFilterGroupbyItem } from "@/features/TaskFilter/context";
+import CreateNewRow from "./CreateNewRow";
 
 export default function ListRowContainer({ tasks }: {
   tasks: ExtendedTask[],
@@ -48,6 +49,7 @@ export default function ListRowContainer({ tasks }: {
 
         return <ListContentRow task={task} key={task.id} />
       })}
+      <CreateNewRow />
     </div>
 
   </div>
