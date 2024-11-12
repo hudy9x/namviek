@@ -8,16 +8,23 @@ const List = Form.List
 export default function CustomFieldInpSelect({ value, data }: { value: string, data: string }) {
   const colorMap = new Map<string, string>()
   const { options: dataOptions } = JSON.parse(data) as { options: TCustomFieldOption[] }
-  const [options, setOptions] = useState<ListItemValue[]>(dataOptions.map(opt => {
-    colorMap.set(opt.value, opt.color)
-    return {
-      icon: opt.color,
-      id: opt.value,
-      title: opt.value
-    }
-  }))
+  const [options, setOptions] = useState<ListItemValue[]>([
+    {
+      icon: '',
+      id: '',
+      title: '(Empty)'
+    },
+    ...dataOptions.map(opt => {
+      colorMap.set(opt.value, opt.color)
+      return {
+        icon: opt.color,
+        id: opt.value,
+        title: opt.value
+      }
+    })
+  ])
 
-  const defaultSelected = options.find(opt => opt.id === value)
+  const defaultSelected = value ? options.find(opt => opt.id === value) : options[0]
   const [selected, setSelected] = useState<ListItemValue>(defaultSelected || options[0])
   const [counter, setCounter] = useState(0)
   const { onChange } = useCustomFieldInputContext()

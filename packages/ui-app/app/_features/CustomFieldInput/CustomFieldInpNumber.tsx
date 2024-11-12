@@ -33,7 +33,6 @@ function NumberFormat({ val, format }: { val: string, format: string }) {
 }
 
 function NumberShownAs({ val, type, divide }: { val: string, type: string, divide: string }) {
-  console.log(type)
   if (!type || !divide || !val) return null
   if (type === 'number') return null
   const parsedValue = parseInt(val, 10)
@@ -47,12 +46,12 @@ function NumberShownAs({ val, type, divide }: { val: string, type: string, divid
   }
 
   const circularBar = () => {
-    return <div className="w-4 relative size-40">
+    return <div className="w-5 relative size-40">
       <svg className="size-full -rotate-90" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
         {/* Background Circle */}
-        <circle cx="18" cy="18" r="16" fill="none" className="stroke-current text-gray-200 dark:text-neutral-700" strokeWidth="6"></circle>
+        <circle cx="18" cy="18" r="14" fill="none" className="stroke-current text-gray-200 dark:text-neutral-700" strokeWidth="5"></circle>
         {/* Progress Circle */}
-        <circle cx="18" cy="18" r="16" fill="none" className="stroke-current text-blue-600 dark:text-blue-500" strokeWidth="6" strokeDasharray={100} strokeDashoffset={100 - percentage} strokeLinecap="round"></circle>
+        <circle cx="18" cy="18" r="14" fill="none" className="stroke-current text-blue-600 dark:text-blue-500" strokeWidth="5" strokeDasharray={100} strokeDashoffset={100 - percentage} strokeLinecap="round"></circle>
       </svg>
     </div>
   }
@@ -100,7 +99,7 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
         }}
         defaultValue={val || ''} />
       :
-      <div className="cf-display flex items-center gap-2" onClick={ev => setEnableEdit(true)}>
+      <div className="cf-display flex items-center justify-between gap-2" onClick={ev => setEnableEdit(true)}>
         <NumberFormat val={val} format={fieldConfig.format} />
         <NumberShownAs val={val} type={fieldConfig.shownAs} divide={fieldConfig.divide} />
       </div>

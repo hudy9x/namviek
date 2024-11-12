@@ -5,6 +5,7 @@ import FilterValueCheckbox from "./FilterValueCheckbox";
 import FilterValueMultiSelect from "./FilterValueMultiSelect";
 import FilterValueInput from "./FilterValueInput";
 import FilterValuePerson from './FilterValuePerson';
+import { emptyOperators } from "./type";
 
 export default function FilterValue({ type, operator, onChange, fieldId, value }: {
   value: string
@@ -13,6 +14,10 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
   onChange: (val: string) => void
   operator: string
 }) {
+  if (emptyOperators.includes(operator)) {
+    return null
+  }
+
   switch (type) {
     case FieldType.DATE:
       return <FieldValueDate value={value} onChange={onChange} />

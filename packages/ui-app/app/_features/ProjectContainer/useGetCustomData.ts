@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation'
 import { useFilterAdvancedStore } from '../FilterAdvanced/store'
 import { IFilterAdvancedData } from '../FilterAdvanced/type'
 import { useTaskStore } from '@/store/task'
-import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 
 export default function useGetCustomData() {
@@ -18,15 +17,15 @@ export default function useGetCustomData() {
     const controller = new AbortController()
     setTaskLoading(true)
 
-    console.log('Filter being sent to API:', {
-      condition: filter.condition,
-      list: filter.list.map(item => ({
-        id: item.id,
-        type: item.type,
-        operator: item.operator,
-        value: item.value
-      }))
-    })
+    // console.log('Filter being sent to API:', {
+    //   condition: filter.condition,
+    //   list: filter.list.map(item => ({
+    //     id: item.id,
+    //     type: item.type,
+    //     operator: item.operator,
+    //     value: item.value
+    //   }))
+    // })
 
     taskGetCustomQuery(projectId, filter, controller.signal)
       .then(res => {
@@ -34,7 +33,7 @@ export default function useGetCustomData() {
         const { data, status } = resData
         // const { data, status } = data
         if (status === 200) {
-          console.log('Custom query results:', data)
+          // console.log('Custom query results:', data)
           localforage.setItem(key, data)
           setTimeout(() => {
             addAllTasks(data)

@@ -48,13 +48,18 @@ function FilterValueSelectContent({ options, onChange, value }: {
   onChange: (val: ListItemValue) => void
   value: string
 }) {
-  const refactorOptions: ListItemValue[] = options.map(opt => ({
-    id: opt.value,
-    icon: opt.color,
-    title: opt.value
-  }))
-
-  console.log('value', value)
+  const refactorOptions: ListItemValue[] = [
+    {
+      id: '',
+      icon: '',
+      title: '(Empty)'
+    },
+    ...options.map(opt => ({
+      id: opt.value,
+      icon: opt.color,
+      title: opt.value
+    }))
+  ]
 
   const defaultSelected = useMemo(() => {
     if (value) {

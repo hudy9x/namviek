@@ -24,6 +24,10 @@ export const filterValueMap = new Map<FieldType, string[]>()
 
 // =================== Field operator ===========================
 
+export const emptyOperators = [
+  'is empty',
+  'is not empty'
+]
 const textOperators = [
   'is',
   'is not',
@@ -32,8 +36,7 @@ const textOperators = [
   'contains word',
   'doesn\'t contain word',
   'length is lower than',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ]
 filterOperatorMap.set(FieldType.TEXT, textOperators)
 filterOperatorMap.set(FieldType.URL, textOperators)
@@ -49,14 +52,12 @@ filterOperatorMap.set(FieldType.NUMBER, [
   'lower than',
   'lower than or equal',
   'is even and whole',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ])
 
 filterOperatorMap.set(FieldType.CHECKBOX, [
   'is',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ])
 
 filterOperatorMap.set(FieldType.DATE, [
@@ -65,8 +66,7 @@ filterOperatorMap.set(FieldType.DATE, [
   'is before',
   'is after',
   // 'is within',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ])
 
 const selectOperators = [
@@ -74,8 +74,7 @@ const selectOperators = [
   'doesn\'t contain',
   'is',
   'is not',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ]
 
 filterOperatorMap.set(FieldType.SELECT, selectOperators)
@@ -84,8 +83,7 @@ filterOperatorMap.set(FieldType.MULTISELECT, selectOperators)
 const personOperators = [
   'contains',
   'doesn\'t contain',
-  'is empty',
-  'is not empty'
+  ...emptyOperators
 ]
 filterOperatorMap.set(FieldType.PERSON, personOperators)
 

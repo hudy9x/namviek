@@ -44,6 +44,10 @@
 	justify-content: center;
 	line-height: 1;
 	font-weight: 500;
+
+  &.avatar-none {
+    @apply bg-gray-600;
+  }
 }
 
 .avatar-root.size-base .avatar-fallback {

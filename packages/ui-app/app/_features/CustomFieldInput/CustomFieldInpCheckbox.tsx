@@ -15,7 +15,7 @@ export default function CustomFieldInpCheckbox({ value }: { value: string }) {
       onChange(checked ? 'true' : 'false')
       setChecked(checked)
     }} />
-    <label htmlFor={checkboxId} className="cf-edit cursor-pointer">
+    <label htmlFor={checkboxId} className="cf-edit flex justify-center cursor-pointer">
       <span className="cf-checkbox">
         <HiOutlineCheck />
       </span>

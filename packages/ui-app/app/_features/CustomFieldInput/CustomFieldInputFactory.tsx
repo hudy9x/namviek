@@ -41,7 +41,6 @@ function CustomFieldInputFactory({
         return <CustomFieldInpDate value={value} config={config} />
 
       case FieldType.PERSON:
-        console.log(FieldType.PERSON, value, config)
         return <CustomFieldInpPerson value={value} config={config} />
 
       case FieldType.CHECKBOX:
