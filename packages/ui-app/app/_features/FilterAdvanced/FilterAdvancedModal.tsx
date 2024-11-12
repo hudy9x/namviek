@@ -42,7 +42,7 @@ function AddFilter() {
 
 function FilterEmpty({ enable }: { enable: boolean }) {
   if (!enable) return null
-  return <div className="space-y-1">
+  return <div className="space-y-1 py-2 px-1">
     <h2 className="font-bold">You have not yet created a filter</h2>
     <p className="text-xs text-gray-500">Filters allow you to show rows that apply to your conditions.</p>
   </div>

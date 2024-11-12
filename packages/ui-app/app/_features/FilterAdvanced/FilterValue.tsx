@@ -1,6 +1,5 @@
 import { FieldType } from "@prisma/client";
 import FieldValueDate from "./FilterValueDate";
-import { Form } from "@shared/ui";
 import FilterValueSelect from "./FilterValueSelect";
 import FilterValueCheckbox from "./FilterValueCheckbox";
 import FilterValueMultiSelect from "./FilterValueMultiSelect";

@@ -43,7 +43,7 @@ function NumberFormat() {
   }
   return <List title="Number format"
     value={selected}
-    onChange={val => {
+    onChange={(val: ListItemValue) => {
       setSelected(val)
       setCounter(counter => counter + 1)
     }}>
@@ -56,6 +56,10 @@ function NumberFormat() {
   </List>
 }
 
+function NumberDivideBy() {
+
+}
+
 function NumberShownAs() {
   const { setConfig, data } = useCustomFieldStore()
   const configData = data.config as Prisma.JsonObject
@@ -65,6 +69,8 @@ function NumberShownAs() {
     { value: 'ring', title: 'Ring', icon: <RiDonutChartLine className="w-5 h-5" /> },
   ]
   const [selected, setSelected] = useState(configData?.shownAs || 'number')
+  const [divideBy, setDivideBy] = useState('100')
+  const isNumberOrRing = selected === 'bar' || selected === 'ring'
 
   useEffect(() => {
     if (!data.id) {
@@ -79,7 +85,7 @@ function NumberShownAs() {
         const active = item.value === selected ? 'ring-2 ring-indigo-400' : ''
         return <div key={item.value}
           onClick={() => {
-            setConfig({ shownAs: item.value })
+            setConfig({ shownAs: item.value, divide: divideBy })
             setSelected(item.value)
           }}
           className={`text-gray-600 dark:hover:bg-gray-800 cursor-pointer border rounded-md dark:border-gray-700 p-2 ${active}`}>
@@ -87,6 +93,17 @@ function NumberShownAs() {
           <span className="text-[12px]">{item.title}</span>
         </div>
       })}
+
+      {isNumberOrRing ?
+        <div className="form-control col-span-3">
+          <label>Divided by</label>
+          <input className="form-input" value={divideBy} onChange={ev => {
+            const value = ev.target.value
+            setDivideBy(value)
+            setConfig({ divide: value })
+          }} />
+        </div>
+        : null}
     </div>
   </div>
 }

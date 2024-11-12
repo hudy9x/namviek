@@ -27,3 +27,6 @@
 .list-cell {
   @apply relative;
 }
+.list-cell:last-child{
+  @apply w-full;
+}
