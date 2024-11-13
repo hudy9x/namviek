@@ -13,7 +13,7 @@ import JwtProvider from '../../providers/JwtProvider'
 import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
 import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
-import { isDevMode } from '../../lib/utils'
+import { isDevMode, isEmailVerificationEnabled } from '../../lib/utils'
 import { sendDiscordLog } from '../../lib/log'
 
 const mainRouter = Router()
@@ -96,7 +96,8 @@ router.post('/sign-up', async (req, res) => {
       country: null,
       bio: null,
       dob: null,
-      status: isDevMode() ? UserStatus.ACTIVE : UserStatus.INACTIVE,
+      status: isEmailVerificationEnabled() ? UserStatus.INACTIVE : UserStatus.ACTIVE,
+      // status: isDevMode() ? UserStatus.ACTIVE : isEmailVerificationEnabled() ? UserStatus.INACTIVE : UserStatus.ACTIVE,
       photo: null,
       settings: {},
       createdAt: new Date(),
@@ -116,6 +117,7 @@ router.post('/sign-up', async (req, res) => {
       token: token
     })
 
+    user.password = null
     res.json({
       status: 200,
       data: user
