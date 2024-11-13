@@ -93,11 +93,12 @@ export class OrganizationController extends BaseController {
       const { id } = req.authen
       const key = [CKEY.USER_ORGS, id]
 
-      const ownedOrgs = await mdOrgGetOwned(id)
-
-      if (isProd && ownedOrgs.length >= 1) {
-        throw new Error('REACHED_MAX_ORGANIZATION')
-      }
+      // const ownedOrgs = await mdOrgGetOwned(id)
+      //
+      // // limit the maximum of organizations
+      // if (isProd && ownedOrgs.length >= 1) {
+      //   throw new Error('REACHED_MAX_ORGANIZATION')
+      // }
 
       const slug = generateSlug(body.name)
 
