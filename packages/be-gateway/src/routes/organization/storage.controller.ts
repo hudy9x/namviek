@@ -55,6 +55,8 @@ export class OrganizationStorageController extends BaseController {
 
       if (maxStorageSize !== -1) {
         maxStorageSize = maxStorageSize * GB
+      } else {
+        maxStorageSize = 999999 * GB
       }
 
       if (maxStorageSize < 100 * MB) {
