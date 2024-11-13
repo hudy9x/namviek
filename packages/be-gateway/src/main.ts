@@ -1,7 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
 import 'dotenv/config'
 import express, { Application } from 'express'
 import { connectPubClient } from '@shared/pubsub'
@@ -12,7 +8,7 @@ import './events'
 import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
-// import { Log } from './lib/log'
+import { checkHealthRoute } from './checkhealth'
 
 connectPubClient((err) => {
   console.log(err)
@@ -25,33 +21,8 @@ Running in ${isDevMode() ? "Development" : "Production"} mode
 ------------------------------
 `)
 
-app.get('/', (req, res) => {
-  res.send(`
-<!doctype html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-  <div class="h-screen w-screen bg-black flex items-center justify-center">
-    <div style="width: 800px" class="text-gray-100 text-center">
-      <h1 class="text-5xl font-bold">The Backend is available !</h1>
-      <p class="mt-8">Last deployment time</p>
-      <p class="mt-2">${new Date()}</p>
-    </div>
-  </div>
-</body>
-</html>
-`)
-})
-
-app.get('/check-health', (req, res) => {
-  // Log.info('Heelo')
-  // Log.flush()
-  res.send(`🚀🎃🎃🎨🎨:e Site available ${new Date()} `)
-})
+app.get('/', checkHealthRoute)
+app.get('/check-health', checkHealthRoute)
 
 app.use(
   cors({
@@ -72,7 +43,7 @@ app.use((req, res, next) => {
 
 // Handling error middleware
 // See: https://expressjs.com/en/guide/using-middleware.html
-app.use((error, req, res, nextr) => {
+app.use((error, req, res, next) => {
   const statusCode = error.status || 500
   console.log(error)
   return res.status(statusCode).json({
