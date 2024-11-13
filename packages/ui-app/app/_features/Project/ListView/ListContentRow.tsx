@@ -1,3 +1,4 @@
+import CustomFieldCheckboxItem from "@/features/CustomFieldCheckbox/CustomFieldCheckboxItem"
 import CustomFieldDisplay from "@/features/CustomFieldDisplay"
 import CustomFieldInputFactory from "@/features/CustomFieldInput/CustomFieldInputFactory"
 import CustomFieldInputProvider from "@/features/CustomFieldInput/CustomFieldInputProvider"
@@ -39,6 +40,7 @@ export default function ListContentRow({ task }: { task: ExtendedTask }) {
   return <div className="list-row"
     key={task.id}>
 
+    <CustomFieldCheckboxItem taskId={task.id} />
     <CustomFieldDisplay>
       {(index, fieldData) => {
         const { id, type } = fieldData
