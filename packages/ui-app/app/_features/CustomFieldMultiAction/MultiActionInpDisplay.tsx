@@ -40,9 +40,9 @@ function MultiActionInpDisplay() {
       const data = JSON.stringify(field.data)
       const config = JSON.stringify(field.config)
 
-      return <div>
+      return <div key={fieldId}>
         <h2 className="text-xs mb-1">{field.name}</h2>
-        <div className="list-cell border rounded-md">
+        <div className="list-cell border dark:border-gray-700 rounded-md">
           <CustomFieldInputProvider onChange={(value) => {
             onChange(value, fieldId, field.type)
           }} >
