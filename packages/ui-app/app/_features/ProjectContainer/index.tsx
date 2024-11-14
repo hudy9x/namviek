@@ -24,6 +24,7 @@ import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 import { useGetCustomFields } from './useGetCustomFields'
 import useGetCustomData from './useGetCustomData'
+import ClearCheckedCheckboxes from '../CustomFieldCheckbox/ClearCheckedCheckboxes'
 
 function SaveRecentVisitPage() {
   const { projectId, orgName } = useParams()
@@ -94,5 +95,7 @@ export default function ProjectContainer() {
   return <>
     <PrefetchData />
     <SaveRecentVisitPage />
-    <ProjectNav /></>
+    <ProjectNav />
+    <ClearCheckedCheckboxes />
+  </>
 }

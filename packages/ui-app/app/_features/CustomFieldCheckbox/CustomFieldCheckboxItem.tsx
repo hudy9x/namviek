@@ -1,5 +1,5 @@
 import { Form, randomId } from "@shared/ui";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useCheckboxStore } from "./useCheckboxStore";
 
 export default function CustomFieldCheckboxItem({ taskId, groupId = 'ALL' }: { taskId: string, groupId?: string }) {
@@ -11,15 +11,9 @@ export default function CustomFieldCheckboxItem({ taskId, groupId = 'ALL' }: { t
 
     return groupIdSet
   })
-  const [checked, setChecked] = useState(false)
-  const id = randomId()
+  const id = useMemo(() => randomId(), [])
 
-
-  console.log('ids set', ids)
-
-
-
-  return <label htmlFor={id} className="list-cell cursor-pointer px-3 py-1">
+  return <label htmlFor={id} className="list-cell cursor-pointer px-3 py-1.5">
     <Form.Checkbox
       size="lg"
       uid={id}

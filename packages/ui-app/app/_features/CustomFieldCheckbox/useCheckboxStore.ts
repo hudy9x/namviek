@@ -10,12 +10,22 @@ interface CheckboxState {
   ids: Record<string, Set<string>>
   toggleCheckboxAll: (checked: boolean, ids: string[], groupId: string) => void
   toogleCheckbox: (checked: boolean, id: string, groupId: string) => void
+  clear: () => void
 }
 
 export const useCheckboxStore = create<CheckboxState>(set => ({
   checkAlls: new Set([]),
 
   ids: {},
+
+  clear: () =>
+    set(
+      produce((state: CheckboxState) => {
+        state.checkAlls = new Set([])
+        state.ids = {}
+      })
+    ),
+
 
   toggleCheckboxAll: (checked: boolean, ids: string[], groupId: string) =>
     set(
