@@ -106,72 +106,25 @@ export default class TaskCustomFieldService {
     try {
       const { limit = 50, cursor } = pagination
       const safeLimit = Math.min(limit, 100)
-
-      const query = this.buildCustomFieldQuery(filter)
-
-      // Base filter with project ID
-      const _filter = {
-        projectId: {
-          $eq: { $oid: projectId }
-        },
-        ...query
-      }
-
-      // If cursor exists, add the cursor condition
-      if (cursor) {
-        _filter['_id'] = { $gt: cursor }
-      }
-
-      console.log('filter', JSON.stringify(_filter, null, ' '))
-
+      
+      // Build and execute query
+      const query = this.buildQueryFilter(projectId, filter, cursor)
       const results = await pmClient.task.findRaw({
-        filter: _filter,
+        filter: query,
         options: {
           limit: safeLimit + 1,
           sort: { id: 1 },
         }
       })
 
-
-
-      // Convert MongoDB extended JSON format
-      const resultsArray = Array.from(results as unknown as Record<string, any>[])
-      const normalizedResults = resultsArray.map(task => {
-        const normalized = { ...task }
-
-        // Convert _id and other ObjectId fields
-        if (normalized._id?.$oid) normalized._id = normalized._id.$oid
-        normalized.id = normalized._id
-        if (normalized.projectId?.$oid) normalized.projectId = normalized.projectId.$oid
-
-        // Convert date fields
-        if (normalized.createdAt?.$date) normalized.createdAt = normalized.createdAt.$date
-        if (normalized.updatedAt?.$date) normalized.updatedAt = normalized.updatedAt.$date
-        if (normalized.dueDate?.$date) normalized.dueDate = normalized.dueDate.$date
-        if (normalized.startDate?.$date) normalized.startDate = normalized.startDate.$date
-        if (normalized.plannedStartDate?.$date) normalized.plannedStartDate = normalized.plannedStartDate.$date
-        if (normalized.plannedDueDate?.$date) normalized.plannedDueDate = normalized.plannedDueDate.$date
-
-        if (Array.isArray(normalized.assigneeIds)) {
-          normalized.assigneeIds = normalized.assigneeIds.map(id => id?.$oid || id)
-        }
-
-        if (Array.isArray(normalized.fileIds)) {
-          normalized.fileIds = normalized.fileIds.map(id => id?.$oid || id)
-        }
-
-        return normalized
-      })
-
+      // Process results
+      const normalizedResults = this.normalizeMongoResults(results as unknown as Record<string, any>[])
       const items = normalizedResults.slice(0, safeLimit)
       const hasNextPage = normalizedResults.length > safeLimit
       const nextCursor = hasNextPage ? items[items.length - 1].id : null
 
-      console.log('items', items.length)
-
       return {
         status: 200,
-        // data: results
         data: items,
         pageInfo: {
           hasNextPage,
@@ -182,5 +135,45 @@ export default class TaskCustomFieldService {
       console.error('Custom field query error:', error)
       throw error
     }
+  }
+
+  private buildQueryFilter(projectId: string, filter: IFilterAdvancedData, cursor?: string) {
+    const baseFilter = {
+      projectId: { $eq: { $oid: projectId } },
+      ...this.buildCustomFieldQuery(filter)
+    }
+
+    if (cursor) {
+      baseFilter['_id'] = { $gt: cursor }
+    }
+
+    return baseFilter
+  }
+
+  private normalizeMongoResults(results: Record<string, any>[]) {
+    return Array.from(results).map(task => {
+      const normalized = { ...task }
+
+      // Handle ObjectIds
+      if (normalized._id?.$oid) normalized._id = normalized._id.$oid
+      normalized.id = normalized._id
+      if (normalized.projectId?.$oid) normalized.projectId = normalized.projectId.$oid
+
+      // Handle Dates
+      const dateFields = ['createdAt', 'updatedAt', 'dueDate', 'startDate', 'plannedStartDate', 'plannedDueDate']
+      dateFields.forEach(field => {
+        if (normalized[field]?.$date) normalized[field] = normalized[field].$date
+      })
+
+      // Handle Arrays
+      if (Array.isArray(normalized.assigneeIds)) {
+        normalized.assigneeIds = normalized.assigneeIds.map(id => id?.$oid || id)
+      }
+      if (Array.isArray(normalized.fileIds)) {
+        normalized.fileIds = normalized.fileIds.map(id => id?.$oid || id)
+      }
+
+      return normalized
+    })
   }
 }
