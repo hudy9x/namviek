@@ -25,7 +25,7 @@ export default function CustomFieldMultiAction() {
 
   if (!display) return null
 
-  return <div className="fixed top-0 right-0 h-full w-[300px] z-40 bg-white dark:bg-gray-900 dark:border-gray-700 border-l shadow-md">
+  return <div style={{ height: 'calc(100vh - 78px)', top: 78 }} className="fixed right-0 h-full w-[300px] z-40 bg-white dark:bg-gray-900 dark:border-gray-700 border-l shadow-md">
     <div className="space-y-2 py-3">
       <div className="border-b dark:border-gray-700 pb-3">
         <h2 className="mx-3 rounded-md bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 px-2 py-1.5 text-sm">Total: {length}</h2>

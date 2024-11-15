@@ -13,10 +13,13 @@ import { useParams } from "next/navigation"
 import { useEffect } from "react"
 import { getProjectFilter, setProjectFilter } from "@shared/libs"
 import { HiOutlineSave } from "react-icons/hi"
+import { useFilterAdvanced } from "./useFilterAdvancedStore"
 
 function AddFilter() {
+
   const customFields = useProjectCustomFieldStore(state => state.customFields)
-  const addFilter = useFilterAdvancedStore(state => state.addFilter)
+  // const addFilter = useFilterAdvancedStore(state => state.addFilter)
+  const { addFilter } = useFilterAdvanced()
 
   if (!customFields) return null
 
@@ -49,8 +52,10 @@ function FilterEmpty({ enable }: { enable: boolean }) {
 }
 
 function FilterCondition({ index }: { index: number }) {
-  const condition = useFilterAdvancedStore(state => state.filter.condition)
-  const switchCondition = useFilterAdvancedStore(state => state.switchCondition)
+  // const condition = useFilterAdvancedStore(state => state.filter.condition)
+  // const switchCondition = useFilterAdvancedStore(state => state.switchCondition)
+  const { switchCondition, filter } = useFilterAdvanced()
+  const condition = filter.condition
 
   return <div className="w-[100px]">
     {index === 0
@@ -65,11 +70,19 @@ function FilterItem({ index, filterItem }: {
   index: number,
   filterItem: TFilterAdvancedItem
 }) {
-  const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
-  const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
-  const changeValue = useFilterAdvancedStore(state => state.changeValue)
-  const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
-  const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
+  // const changeFieldType = useFilterAdvancedStore(state => state.changeFieldType)
+  // const changeFilterOperator = useFilterAdvancedStore(state => state.changeFilterOperator)
+  // const changeValue = useFilterAdvancedStore(state => state.changeValue)
+  // const changeSubValue = useFilterAdvancedStore(state => state.changeSubValue)
+  // const deleteFilter = useFilterAdvancedStore(state => state.deleteFilter)
+
+
+  const {
+    changeFieldType,
+    changeFilterOperator,
+    changeValue,
+    changeSubValue,
+    deleteFilter } = useFilterAdvanced()
 
   return (
     <div className="flex items-center justify-between gap-2">
@@ -107,6 +120,16 @@ function FilterItem({ index, filterItem }: {
   )
 }
 
+function ApplyFilter() {
+  const updateFilter = useFilterAdvancedStore(state => state.initializeFilter)
+  const { filter } = useFilterAdvanced()
+
+  const onUpdate = () => {
+    console.log('apply filter', filter)
+    updateFilter(filter)
+  }
+  return <Button title="Apply filter" ghost onClick={onUpdate} />
+}
 function SaveFilter() {
   const { projectId } = useParams()
   const filter = useFilterAdvancedStore(state => state.filter)
@@ -128,9 +151,10 @@ function SaveFilter() {
   )
 }
 
-export default function FilterAdvancedModal() {
+export default function FilterAdvancedModal2() {
 
-  const filter = useFilterAdvancedStore(state => state.filter)
+  // const filter = useFilterAdvancedStore(state => state.filter)
+  const { filter } = useFilterAdvanced()
   return (
     <div className="border bg-white dark:bg-gray-800 dark:border-gray-700 rounded-md shadow-lg min-w-[300px] text-sm">
       <div className="space-y-2 px-3 py-3">
@@ -146,7 +170,10 @@ export default function FilterAdvancedModal() {
       </div>
       <div className="px-3 py-2 flex items-center justify-between gap-3 border-t dark:border-gray-700">
         <AddFilter />
-        <SaveFilter />
+        <div className="flex items-center gap-2">
+          <SaveFilter />
+          <ApplyFilter />
+        </div>
       </div>
     </div>
   )

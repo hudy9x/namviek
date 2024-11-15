@@ -27,6 +27,7 @@ export default function useGetCustomData() {
     //   }))
     // })
 
+    console.log('call taskGetCustomData query')
     taskGetCustomQuery(projectId, filter, controller.signal)
       .then(res => {
         const { data: resData } = res.data
