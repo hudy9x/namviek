@@ -4,6 +4,8 @@ import FilterAutoApply from "./FilterAutoApply";
 import './style.css'
 import { FilterAdvancedProvider } from "./FilterAdvancedProvider";
 import FilterAdvancedModal from "./FilterAdvancedModal";
+import SaveFilter from "./SaveFilter";
+import ApplyFilter from "./ApplyFilter";
 
 export default function FilterAdvanced() {
   return <>
@@ -17,7 +19,10 @@ export default function FilterAdvanced() {
           </div>
         }
         content={
-          <FilterAdvancedModal />
+          <FilterAdvancedModal>
+            <SaveFilter />
+            <ApplyFilter />
+          </FilterAdvancedModal>
         }
       // content={<FilterAdvancedModal />}
       />
