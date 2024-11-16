@@ -17,7 +17,6 @@ export default function ListViewContainer() {
           : null
         }
 
-        {/* <ListCreateTask type={filter.groupBy} groupId={group.id} /> */}
       </div>
       <TaskMultipleActions />
     </div>
