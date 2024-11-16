@@ -29,8 +29,15 @@ export interface IFilterAdvancedData {
 interface PaginationOptions {
   limit?: number
   cursor?: string
+  page?: number
 }
 
+interface PaginationInfo {
+  hasNextPage: boolean
+  nextCursor: string | null
+  totalPages: number
+  currentPage: number
+}
 
 export default class TaskCustomFieldService {
   customFieldRepo: TaskCustomFieldRepository
@@ -104,9 +111,17 @@ export default class TaskCustomFieldService {
     pagination: PaginationOptions = {}
   ) {
     try {
-      const { limit = 50, cursor } = pagination
+      const { limit = 50, cursor, page = 1 } = pagination
       const safeLimit = Math.min(limit, 100)
       
+      // Get total count for pagination info
+      const countQuery = this.buildQueryFilter(projectId, filter)
+      let countResults = await pmClient.task.findRaw({
+        filter: countQuery
+      })
+      const totalCount = Array.isArray(countResults) ? countResults.length : 0
+      countResults = null
+        
       // Build and execute query
       const query = this.buildQueryFilter(projectId, filter, cursor)
       const results = await pmClient.task.findRaw({
@@ -128,7 +143,9 @@ export default class TaskCustomFieldService {
         data: items,
         pageInfo: {
           hasNextPage,
-          nextCursor
+          nextCursor,
+          totalPages: Math.ceil(totalCount / safeLimit),
+          currentPage: page
         }
       }
     } catch (error) {
