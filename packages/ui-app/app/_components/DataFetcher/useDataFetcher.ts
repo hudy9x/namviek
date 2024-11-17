@@ -12,7 +12,6 @@ export function useDataFetcher<Selected>(
 ) {
   const context = useContext(DataFetcherContext)
 
-  console.log(context)
   //   const previousRef = useRef<Selected | undefined>()
   const selectedValue = useMemo(
     () => selector && context ? selector(context) : context,

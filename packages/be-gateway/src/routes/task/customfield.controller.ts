@@ -35,7 +35,8 @@ export default class TaskCustomFieldController extends BaseController {
       const { filter, projectId, options } = body
       console.log('1', options)
       const result = await this.customFieldService.queryCustomField(projectId, filter, {
-        limit: options ? options.limit : 50
+        limit: options ? options.limit : 50,
+        cursor: options ? options.cursor : ''
       })
       return result
     } catch (error) {

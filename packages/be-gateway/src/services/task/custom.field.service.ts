@@ -113,7 +113,7 @@ export default class TaskCustomFieldService {
     try {
       const { limit = 50, cursor, page = 1 } = pagination
       const safeLimit = Math.min(limit, 100)
-      
+
       // Get total count for pagination info
       const countQuery = this.buildQueryFilter(projectId, filter)
       let countResults = await pmClient.task.findRaw({
@@ -121,14 +121,16 @@ export default class TaskCustomFieldService {
       })
       const totalCount = Array.isArray(countResults) ? countResults.length : 0
       countResults = null
-        
+
+      console.log('cursor', cursor)
       // Build and execute query
       const query = this.buildQueryFilter(projectId, filter, cursor)
+      console.log('query', JSON.stringify(query, null, ' '))
       const results = await pmClient.task.findRaw({
         filter: query,
         options: {
           limit: safeLimit + 1,
-          sort: { id: 1 },
+          sort: { _id: 1 },
         }
       })
 
@@ -161,13 +163,14 @@ export default class TaskCustomFieldService {
     }
 
     if (cursor) {
-      baseFilter['_id'] = { $gt: cursor }
+      baseFilter['_id'] = { $gt: { $oid: cursor } }
     }
 
     return baseFilter
   }
 
   private normalizeMongoResults(results: Record<string, any>[]) {
+    console.log('results', results)
     return Array.from(results).map(task => {
       const normalized = { ...task }
 

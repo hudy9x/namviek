@@ -18,7 +18,7 @@ export default function DataFetcher({
   filter = { condition: EFilterCondition.AND, list: [] },
   groupBy = '',
   initialCursor,
-  limit = 20,
+  limit = 3,
   orderBy = { id: 'asc' }
 }: DataFetcherProps) {
   const { projectId } = useParams()

@@ -41,6 +41,8 @@ export function useTaskFetcher({
       const { data: resData } = res.data
       const { data: items, pageInfo, status } = resData
 
+      console.log('pageInfo', pageInfo)
+
       if (status === 200) {
         if (nextCursor) {
           setData(prev => [...prev, ...items])
@@ -67,8 +69,6 @@ export function useTaskFetcher({
       fetchData(cursor)
     }
   }, [hasNextPage, cursor, isLoading, fetchData])
-
-  console.log('new data', data)
 
   return {
     data,
