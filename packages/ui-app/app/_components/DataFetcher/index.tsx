@@ -6,6 +6,7 @@ import { DataFetcherContext, DataFetcherContextType } from './context'
 
 interface DataFetcherProps {
   children: ReactNode
+  groupBy?: string
   filter?: IFilterAdvancedData
   initialCursor?: string
   limit?: number
@@ -15,14 +16,22 @@ interface DataFetcherProps {
 export default function DataFetcher({
   children,
   filter = { condition: EFilterCondition.AND, list: [] },
+  groupBy = '',
   initialCursor,
   limit = 20,
   orderBy = { id: 'asc' }
 }: DataFetcherProps) {
   const { projectId } = useParams()
-
-  const { data, cursor, isLoading, hasNextPage, fetchNextPage, fetchData } = useTaskFetcher({
+  const {
+    data,
+    cursor,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    fetchData
+  } = useTaskFetcher({
     projectId,
+    groupBy,
     filter,
     limit,
     orderBy,

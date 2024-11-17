@@ -4,10 +4,10 @@ import { useTaskStore } from '@/store/task'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 
 import ListRowContainer from './ListRowContainer'
-import { PaginationProvider } from '@/components/Pagination/PaginationContext'
 import DataFetcher from '@/components/DataFetcher'
 import { useDataFetcher } from '@/components/DataFetcher/useDataFetcher'
 import TestList from './TestList'
+import ListDataFilter from './ListDataFilter'
 
 // export default function ListViewContainer() {
 //   const { tasks, taskLoading } = useTaskStore()
@@ -32,11 +32,11 @@ export default function ListViewContainer() {
 
   return (
     <div className="pb-[300px]">
-      <PaginationProvider>
+      <ListDataFilter>
         <DataFetcher>
           <TestList />
         </DataFetcher>
-      </PaginationProvider>
+      </ListDataFilter>
     </div>
   )
 }

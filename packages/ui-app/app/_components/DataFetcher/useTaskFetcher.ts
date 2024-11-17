@@ -7,6 +7,7 @@ interface UseTaskFetcherProps {
   projectId: string
   filter: IFilterAdvancedData
   limit: number
+  groupBy: string
   orderBy: { [key: string]: 'asc' | 'desc' }
   initialCursor?: string
 }
@@ -27,8 +28,6 @@ export function useTaskFetcher({
     const controller = new AbortController()
     setIsLoading(true)
 
-
-    console.log('called fetch data', limit)
     taskGetCustomQuery(
       projectId,
       filter,
@@ -41,8 +40,6 @@ export function useTaskFetcher({
     ).then(res => {
       const { data: resData } = res.data
       const { data: items, pageInfo, status } = resData
-
-      console.log('return fetched data', items, status, nextCursor, pageInfo)
 
       if (status === 200) {
         if (nextCursor) {
