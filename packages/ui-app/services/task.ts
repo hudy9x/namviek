@@ -100,10 +100,20 @@ export const serviceTask = {
   }
 }
 
-export const taskGetCustomQuery = (projectId: string, filter: IFilterAdvancedData, signal?: AbortSignal) => {
+export const taskGetCustomQuery = (
+  projectId: string, 
+  filter: IFilterAdvancedData, 
+  signal?: AbortSignal,
+  options?: {
+    cursor?: string
+    limit?: number
+    orderBy?: { [key: string]: 'asc' | 'desc' }
+  }
+) => {
   return httpPost('/api/project/task/custom-field/query', {
     projectId,
-    filter
+    filter,
+    options
   }, {
     signal
   })
