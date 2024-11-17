@@ -1,20 +1,11 @@
-import { useCallback, useEffect, useState, createContext, useContext, useMemo, useRef } from 'react'
+import { useEffect, ReactNode } from 'react'
 import { useParams } from 'next/navigation'
 import { EFilterCondition, IFilterAdvancedData } from '@/features/FilterAdvanced/type'
-import { ExtendedTask } from '@/store/task'
-import { useTaskFetcher } from './hooks/useTaskFetcher'
-
-interface DataFetcherContextType {
-  data: ExtendedTask[]
-  isLoading: boolean
-  hasNextPage: boolean
-  fetchNextPage: () => void
-}
-
-const DataFetcherContext = createContext<DataFetcherContextType | null>(null)
+import { useTaskFetcher } from './useTaskFetcher'
+import { DataFetcherContext, DataFetcherContextType } from './context'
 
 interface DataFetcherProps {
-  children: React.ReactNode
+  children: ReactNode
   filter?: IFilterAdvancedData
   initialCursor?: string
   limit?: number
@@ -25,12 +16,12 @@ export default function DataFetcher({
   children,
   filter = { condition: EFilterCondition.AND, list: [] },
   initialCursor,
-  limit = 50,
+  limit = 20,
   orderBy = { id: 'asc' }
 }: DataFetcherProps) {
   const { projectId } = useParams()
 
-  const { data, isLoading, hasNextPage, fetchNextPage, fetchData } = useTaskFetcher({
+  const { data, cursor, isLoading, hasNextPage, fetchNextPage, fetchData } = useTaskFetcher({
     projectId,
     filter,
     limit,
@@ -44,6 +35,7 @@ export default function DataFetcher({
   }, [JSON.stringify(filter), projectId, limit, JSON.stringify(orderBy)])
 
   const contextValue: DataFetcherContextType = {
+    cursor,
     data,
     isLoading,
     hasNextPage,

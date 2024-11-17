@@ -101,8 +101,8 @@ export const serviceTask = {
 }
 
 export const taskGetCustomQuery = (
-  projectId: string, 
-  filter: IFilterAdvancedData, 
+  projectId: string,
+  filter: IFilterAdvancedData,
   signal?: AbortSignal,
   options?: {
     cursor?: string
@@ -110,6 +110,7 @@ export const taskGetCustomQuery = (
     orderBy?: { [key: string]: 'asc' | 'desc' }
   }
 ) => {
+  console.log('taskget custom query', filter, options)
   return httpPost('/api/project/task/custom-field/query', {
     projectId,
     filter,

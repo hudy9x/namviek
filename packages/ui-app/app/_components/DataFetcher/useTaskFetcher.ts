@@ -19,7 +19,7 @@ export function useTaskFetcher({
   initialCursor
 }: UseTaskFetcherProps) {
   const [data, setData] = useState<ExtendedTask[]>([])
-  const [cursor, setCursor] = useState<string | null>(initialCursor || null)
+  const [cursor, setCursor] = useState<string>(initialCursor || '')
   const [hasNextPage, setHasNextPage] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -27,6 +27,8 @@ export function useTaskFetcher({
     const controller = new AbortController()
     setIsLoading(true)
 
+
+    console.log('called fetch data', limit)
     taskGetCustomQuery(
       projectId,
       filter,
@@ -39,6 +41,8 @@ export function useTaskFetcher({
     ).then(res => {
       const { data: resData } = res.data
       const { data: items, pageInfo, status } = resData
+
+      console.log('return fetched data', items, status, nextCursor, pageInfo)
 
       if (status === 200) {
         if (nextCursor) {
@@ -67,8 +71,11 @@ export function useTaskFetcher({
     }
   }, [hasNextPage, cursor, isLoading, fetchData])
 
+  console.log('new data', data)
+
   return {
     data,
+    cursor,
     isLoading,
     hasNextPage,
     fetchNextPage,

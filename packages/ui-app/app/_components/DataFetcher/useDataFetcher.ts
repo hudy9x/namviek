@@ -4,35 +4,37 @@ import { DataFetcherContext, DataFetcherContextType } from './context'
 export function useDataFetcher(): DataFetcherContextType
 export function useDataFetcher<Selected>(
   selector: (state: DataFetcherContextType) => Selected,
-  equalityFn?: (a: Selected, b: Selected ) => boolean
+  equalityFn?: (a: Selected, b: Selected) => boolean
 ): Selected
 export function useDataFetcher<Selected>(
   selector?: (state: DataFetcherContextType) => Selected,
-//   equalityFn?: (a: Selected, b: Selected) => boolean
+  //   equalityFn?: (a: Selected, b: Selected) => boolean
 ) {
   const context = useContext(DataFetcherContext)
-//   const previousRef = useRef<Selected | undefined>()
+
+  console.log(context)
+  //   const previousRef = useRef<Selected | undefined>()
   const selectedValue = useMemo(
     () => selector && context ? selector(context) : context,
     [context, selector]
   )
 
-  if (!context) {
-    throw new Error('useDataFetcher must be used within a DataFetcherProvider')
-  }
+  // if (!context) {
+  //   throw new Error('useDataFetcher must be used within a DataFetcherProvider')
+  // }
 
   if (!selector) {
     return context
   }
 
-//   if (
-//     equalityFn && 
-//     previousRef.current !== undefined &&  selectedValue &&
-//     equalityFn(previousRef.current, selectedValue)
-//   ) {
-//     return previousRef.current
-//   }
+  //   if (
+  //     equalityFn && 
+  //     previousRef.current !== undefined &&  selectedValue &&
+  //     equalityFn(previousRef.current, selectedValue)
+  //   ) {
+  //     return previousRef.current
+  //   }
 
-//   previousRef.current = selectedValue
+  //   previousRef.current = selectedValue
   return selectedValue
 } 

@@ -22,11 +22,21 @@ export default class TaskCustomFieldController extends BaseController {
   }
 
   @Post('/query')
-  async queryCustomField(@Body() body: { projectId: string, filter: IFilterAdvancedData }) {
+  async queryCustomField(@Body() body: {
+    projectId: string,
+    filter: IFilterAdvancedData,
+    options: {
+      cursor?: string
+      limit?: number
+      orderBy?: { [key: string]: 'asc' | 'desc' }
+    }
+  }) {
     try {
-      console.log('1')
-      const { filter, projectId } = body
-      const result = await this.customFieldService.queryCustomField(projectId, filter)
+      const { filter, projectId, options } = body
+      console.log('1', options)
+      const result = await this.customFieldService.queryCustomField(projectId, filter, {
+        limit: options ? options.limit : 50
+      })
       return result
     } catch (error) {
       console.error('Custom query error:', error)
