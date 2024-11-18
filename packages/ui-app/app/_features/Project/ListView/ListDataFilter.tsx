@@ -5,9 +5,8 @@ import { ReactNode } from "react";
 export default function ListDataFilter({ children }: { children: ReactNode }) {
   const filter = useFilterAdvancedStore(state => state.filter)
 
-  console.log('update filter', filter)
-
   return <DataFetcher
+    limit={5}
     filter={filter}
     initialCursor={''}>
     {children}

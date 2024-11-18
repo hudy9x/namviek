@@ -53,6 +53,7 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
             onChange(value, id, type)
           }} >
             <CustomFieldInputFactory
+              rowId={task.id}
               data={data}
               config={config}
               type={type}

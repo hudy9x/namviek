@@ -7,10 +7,12 @@ import FileCarousel from './FileCarousel'
 export default function FileKitProviderContainer({
   taskId,
   fileIds,
+  onChange,
   children
 }: {
   taskId: string
   fileIds: string[]
+  onChange?: (fileIds: string[]) => void
   children: ReactNode
 }) {
   const [loading, setLoading] = useState(true)
@@ -21,6 +23,7 @@ export default function FileKitProviderContainer({
   return (
     <FileKitProvider
       value={{
+        onChange,
         taskId,
         uploading,
         setUploading,

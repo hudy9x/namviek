@@ -48,6 +48,7 @@ export default function ListCellCustomFieldValues({ data, taskId }: { data: Pris
           onChange(value, field.id, field.type)
         }} >
           <CustomFieldInputFactory
+            rowId={taskId}
             data={data}
             config={config}
             type={type}

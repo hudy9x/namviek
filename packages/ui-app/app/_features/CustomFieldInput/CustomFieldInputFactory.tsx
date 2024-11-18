@@ -13,6 +13,7 @@ import { memo } from "react"
 import CustomFieldInpFile from "./CustomFieldInpFile"
 
 type ICustomFieldInputFactoryProps = {
+  rowId: string
   data: string
   config: string
   type: FieldType
@@ -20,6 +21,7 @@ type ICustomFieldInputFactoryProps = {
 }
 
 function CustomFieldInputFactory({
+  rowId,
   data, config,
   type,
   value }: ICustomFieldInputFactoryProps) {
@@ -29,7 +31,7 @@ function CustomFieldInputFactory({
       case FieldType.TEXT:
         return <CustomFieldInpText value={value} />
       case FieldType.FILES:
-        return <CustomFieldInpFile value={value} />
+        return <CustomFieldInpFile rowId={rowId} value={value} />
 
       case FieldType.EMAIL:
         return <CustomFieldInpEmail value={value} config={config} />
