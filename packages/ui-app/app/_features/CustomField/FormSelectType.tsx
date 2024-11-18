@@ -1,6 +1,9 @@
 import { FieldType } from "@prisma/client"
 import { GoNumber } from "react-icons/go"
-import { HiMiniAtSymbol, HiOutlineArrowDownCircle, HiOutlineCalendar, HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet, HiOutlineUser } from "react-icons/hi2"
+import {
+  HiMiniAtSymbol, HiOutlineArrowDownCircle, HiOutlineCalendar,
+  HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet, HiOutlineUser, HiOutlineDocument
+} from "react-icons/hi2"
 import { RxText } from "react-icons/rx";
 import { useCustomFieldStore } from "./store";
 
@@ -12,6 +15,7 @@ export const types = [
   { icon: <HiOutlineArrowDownCircle className="w-4 h-4" />, title: 'Select', type: FieldType.SELECT },
   { icon: <HiOutlineListBullet className="w-4 h-4" />, title: 'Multi Select', type: FieldType.MULTISELECT },
   { icon: <HiOutlineCheckCircle className="w-4 h-4" />, title: 'Checkbox', type: FieldType.CHECKBOX },
+  { icon: <HiOutlineDocument className="w-4 h-4" />, title: 'File', type: FieldType.FILES },
   { icon: <HiOutlineLink className="w-4 h-4" />, title: 'Url', type: FieldType.URL },
   { icon: <HiMiniAtSymbol className="w-4 h-4" />, title: 'Email', type: FieldType.EMAIL },
 ]

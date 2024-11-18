@@ -12,7 +12,6 @@ import { messageSuccess } from "@shared/ui"
 const useOnChangeCustomFieldInput = (taskId: string) => {
 
   const onChange = (value: string | string[], fieldId: string, type: FieldType) => {
-    console.log(value)
     taskCustomFieldSv.update({
       taskId,
       type,
@@ -33,7 +32,6 @@ const useOnChangeCustomFieldInput = (taskId: string) => {
 
 function ListContentRow({ task }: { task: ExtendedTask }) {
 
-  console.log('task.id', task.id)
   const taskCustomData = task.customFields
   const customData = (taskCustomData || {}) as Prisma.JsonObject
   // const customFields = useProjectCustomFieldStore(state => state.customFields)

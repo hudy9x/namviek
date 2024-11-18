@@ -10,6 +10,7 @@ import CustomFieldInpUrl from "./CustomFieldInpUrl"
 import CustomFieldInpEmail from "./CustomFieldInpEmail"
 import CustomFieldInpPerson from "./CustomFieldInpPerson"
 import { memo } from "react"
+import CustomFieldInpFile from "./CustomFieldInpFile"
 
 type ICustomFieldInputFactoryProps = {
   data: string
@@ -27,6 +28,8 @@ function CustomFieldInputFactory({
     switch (type) {
       case FieldType.TEXT:
         return <CustomFieldInpText value={value} />
+      case FieldType.FILES:
+        return <CustomFieldInpFile value={value} />
 
       case FieldType.EMAIL:
         return <CustomFieldInpEmail value={value} config={config} />

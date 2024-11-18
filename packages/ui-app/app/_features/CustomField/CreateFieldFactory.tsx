@@ -19,6 +19,7 @@ export default function CreateFieldFactory() {
       case FieldType.URL:
       case FieldType.TEXT:
       case FieldType.CHECKBOX:
+      case FieldType.FILES:
         return <CreateFieldText />
 
       case FieldType.NUMBER:
