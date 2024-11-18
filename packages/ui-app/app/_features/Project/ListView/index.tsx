@@ -1,8 +1,6 @@
 'use client'
 
-import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRowContainer from './ListRowContainer'
-import DataFetcher from '@/components/DataFetcher'
 import { useDataFetcher } from '@/components/DataFetcher/useDataFetcher'
 import ListDataFilter from './ListDataFilter'
 
@@ -12,13 +10,10 @@ export default function ListViewContainer() {
 
     <div className="pb-[300px]">
       <ListDataFilter>
-        <DataFetcher>
-          <div className="divide-y dark:divide-gray-800">
-            <TaskData />
-          </div>
-        </DataFetcher>
+        <div className="divide-y dark:divide-gray-800">
+          <TaskData />
+        </div>
       </ListDataFilter>
-      <TaskMultipleActions />
     </div>
 
   )
@@ -26,7 +21,6 @@ export default function ListViewContainer() {
 
 function TaskData() {
   const data = useDataFetcher(state => state.data)
-
   return (
     <ListRowContainer tasks={data} />
   )

@@ -1,6 +1,7 @@
 import { Button } from "@shared/ui"
 import { useFilterAdvancedStore } from "./store"
 import { useFilterAdvanced } from "./useFilterAdvancedStore"
+import { HiOutlineCheck } from "react-icons/hi2"
 
 export default function ApplyFilter() {
   const updateFilter = useFilterAdvancedStore(state => state.initializeFilter)
@@ -10,5 +11,5 @@ export default function ApplyFilter() {
     console.log('apply filter', filter)
     updateFilter(filter)
   }
-  return <Button title="Apply filter" ghost onClick={onUpdate} />
+  return <Button leadingIcon={<HiOutlineCheck />} title="Apply filter" size="sm" ghost onClick={onUpdate} />
 }

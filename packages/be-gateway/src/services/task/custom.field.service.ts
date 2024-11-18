@@ -147,6 +147,7 @@ export default class TaskCustomFieldService {
           hasNextPage,
           nextCursor,
           totalPages: Math.ceil(totalCount / safeLimit),
+          totalRecords: totalCount,
           currentPage: page
         }
       }

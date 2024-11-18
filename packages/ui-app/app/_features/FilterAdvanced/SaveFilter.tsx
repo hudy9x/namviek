@@ -2,7 +2,8 @@ import { useParams } from "next/navigation"
 import { useFilterAdvancedStore } from "./store"
 import { setProjectFilter } from "@shared/libs"
 import { Button, messageSuccess } from "@shared/ui"
-import { HiOutlineSave } from "react-icons/hi"
+import { PiFloppyDisk } from "react-icons/pi"
+import { HiOutlineBriefcase } from "react-icons/hi2"
 
 export default function SaveFilter() {
   const { projectId } = useParams()
@@ -18,7 +19,7 @@ export default function SaveFilter() {
     <Button
       ghost
       size="sm"
-      leadingIcon={<HiOutlineSave className="w-4 h-4" />}
+      leadingIcon={<HiOutlineBriefcase className="w-4 h-4" />}
       onClick={handleSave}
       title="Save Filter"
     />

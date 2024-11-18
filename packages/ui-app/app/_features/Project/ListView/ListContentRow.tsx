@@ -1,3 +1,4 @@
+import { memo } from "react";
 import CustomFieldCheckboxItem from "@/features/CustomFieldCheckbox/CustomFieldCheckboxItem"
 import CustomFieldDisplay from "@/features/CustomFieldDisplay"
 import CustomFieldInputFactory from "@/features/CustomFieldInput/CustomFieldInputFactory"
@@ -30,8 +31,9 @@ const useOnChangeCustomFieldInput = (taskId: string) => {
   }
 }
 
-export default function ListContentRow({ task }: { task: ExtendedTask }) {
+function ListContentRow({ task }: { task: ExtendedTask }) {
 
+  console.log('task.id', task.id)
   const taskCustomData = task.customFields
   const customData = (taskCustomData || {}) as Prisma.JsonObject
   // const customFields = useProjectCustomFieldStore(state => state.customFields)
@@ -97,3 +99,4 @@ export default function ListContentRow({ task }: { task: ExtendedTask }) {
     {/* <div className="list-cell"></div> */}
   </div>
 }
+export default memo(ListContentRow)

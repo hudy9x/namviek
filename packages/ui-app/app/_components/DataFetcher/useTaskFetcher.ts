@@ -19,12 +19,15 @@ export function useTaskFetcher({
   orderBy,
   initialCursor
 }: UseTaskFetcherProps) {
+  console.log('update cursor', initialCursor || 'EMPTY')
   const [data, setData] = useState<ExtendedTask[]>([])
   const [cursor, setCursor] = useState<string>(initialCursor || '')
   const [hasNextPage, setHasNextPage] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [totalRecords, setTotalRecords] = useState(0)
 
-  const fetchData = useCallback((nextCursor?: string) => {
+  // const fetchData = useCallback((nextCursor?: string) => {
+  const fetchData = (nextCursor?: string) => {
     const controller = new AbortController()
     setIsLoading(true)
 
@@ -47,11 +50,15 @@ export function useTaskFetcher({
         if (nextCursor) {
           setData(prev => [...prev, ...items])
         } else {
+          console.log('reset data')
           setData(items)
         }
 
+        console.log('update nextpage, cursor')
         setHasNextPage(pageInfo.hasNextPage)
         setCursor(pageInfo.nextCursor)
+        setTotalRecords(pageInfo.totalRecords)
+
       } else {
         setData([])
       }
@@ -62,7 +69,8 @@ export function useTaskFetcher({
     })
 
     return controller
-  }, [filter, projectId, limit, orderBy])
+  }
+  // }, [filter, projectId, limit, orderBy])
 
   const fetchNextPage = useCallback(() => {
     if (hasNextPage && cursor && !isLoading) {
@@ -70,9 +78,12 @@ export function useTaskFetcher({
     }
   }, [hasNextPage, cursor, isLoading, fetchData])
 
+  console.log('totalRecords', totalRecords, data.length)
   return {
     data,
     cursor,
+    restRecords: Math.max(0, totalRecords - data.length),
+    totalRecords,
     isLoading,
     hasNextPage,
     fetchNextPage,

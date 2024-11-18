@@ -1,9 +1,9 @@
+import { useDataFetcher } from "@/components/DataFetcher/useDataFetcher";
 import CustomFieldCheckboxAll from "@/features/CustomFieldCheckbox/CustomFieldCheckboxAll";
-import { useTaskStore } from "@/store/task";
 
 export default function ListHeadingCheckbox() {
 
-  const taskIds = useTaskStore(state => state.tasks.map(t => t.id))
+  const taskIds = useDataFetcher(state => state.data.map(d => d.id))
 
   return <CustomFieldCheckboxAll taskIds={taskIds} />
 }

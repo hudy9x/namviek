@@ -18,7 +18,7 @@ export default function DataFetcher({
   filter = { condition: EFilterCondition.AND, list: [] },
   groupBy = '',
   initialCursor,
-  limit = 3,
+  limit = 20,
   orderBy = { id: 'asc' }
 }: DataFetcherProps) {
   const { projectId } = useParams()
@@ -27,6 +27,8 @@ export default function DataFetcher({
     cursor,
     isLoading,
     hasNextPage,
+    totalRecords,
+    restRecords,
     fetchNextPage,
     fetchData
   } = useTaskFetcher({
@@ -39,17 +41,21 @@ export default function DataFetcher({
   })
 
   useEffect(() => {
-    const controller = fetchData()
+    const controller = fetchData(initialCursor)
     return () => controller.abort()
-  }, [JSON.stringify(filter), projectId, limit, JSON.stringify(orderBy)])
+  }, [JSON.stringify(filter), initialCursor, projectId, limit, JSON.stringify(orderBy)])
 
   const contextValue: DataFetcherContextType = {
     cursor,
     data,
+    totalRecords,
+    restRecords,
     isLoading,
     hasNextPage,
     fetchNextPage
   }
+
+  console.log('contextValue', contextValue)
 
   return (
     <DataFetcherContext.Provider value={contextValue}>
