@@ -44,19 +44,19 @@ export default function FileList({ files }: { files: IFileItem[] }) {
             }
           />
         ) : null}
-        <div>
-          <label className='btn sm cursor-pointer' style={{ margin: 0 }} htmlFor='upload-more'>Add new file</label>
-          <input
-            id={'upload-more'}
-            multiple
-            className="hidden"
-            type="file"
-            onChange={ev => {
-              const files = ev.target.files
-              files && files.length && onInputChange(files)
-            }}
-          />
-        </div>
+        {/* <div> */}
+        {/*   <label className='btn sm cursor-pointer' style={{ margin: 0 }} htmlFor='upload-more'>Add new file</label> */}
+        {/*   <input */}
+        {/*     id={'upload-more'} */}
+        {/*     multiple */}
+        {/*     className="hidden" */}
+        {/*     type="file" */}
+        {/*     onChange={ev => { */}
+        {/*       const files = ev.target.files */}
+        {/*       files && files.length && onInputChange(files) */}
+        {/*     }} */}
+        {/*   /> */}
+        {/* </div> */}
       </div>
     </div>
   )

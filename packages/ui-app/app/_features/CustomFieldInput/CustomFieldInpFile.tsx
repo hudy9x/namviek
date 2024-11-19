@@ -49,7 +49,7 @@ function UploadButton({ show }: { show: () => void }) {
 function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
 
   return createPortal(<div className="fixed top-0 left-0 w-full h-full z-[60] flex items-center justify-center">
-    <div className="relative z-10 bg-white dark:bg-gray-900 rounded-md border dark:border-gray-700 shadow-sm">
+    <div className="relative z-10 bg-white dark:bg-gray-900 rounded-md border border-gray-400 dark:border-gray-700">
       {/* <FilePaste /> */}
       <FileDrop className="w-[500px] h-[500px]">
         <div className="px-6 py-6">
@@ -61,7 +61,7 @@ function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
         </div>
       </FileDrop>
     </div>
-    <div className="absolute top-0 left-0 w-full h-full" onClick={hide}></div>
+    <div className="absolute top-0 left-0 bg-black/20 w-full h-full" onClick={hide}></div>
   </div>, document.body)
 }
 
