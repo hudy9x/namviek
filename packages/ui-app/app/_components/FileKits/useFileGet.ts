@@ -11,6 +11,7 @@ export default function useFileGet(fileIds: string[]) {
     // if (fileIds.length && !filled.current) {
     setLoading(true)
     if (fileIds.length) {
+      console.log('gettinog files ', fileIds)
       storageGetFiles(fileIds)
         .then(res => {
           const files = res.data.data as FileStorage[]
