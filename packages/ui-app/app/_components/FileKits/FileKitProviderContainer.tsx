@@ -1,10 +1,10 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, memo, useState } from 'react'
 import { FileKitProvider, IFileItem } from './context'
 import './style.css'
 import FileGet from './FileGet'
 import FileCarousel from './FileCarousel'
 
-export default function FileKitProviderContainer({
+function FileKitProviderContainer({
   taskId,
   fileIds,
   onChange,
@@ -42,3 +42,5 @@ export default function FileKitProviderContainer({
     </FileKitProvider>
   )
 }
+
+export default memo(FileKitProviderContainer)

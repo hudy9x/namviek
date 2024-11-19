@@ -52,8 +52,11 @@ function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
     <div className="relative z-10 bg-white dark:bg-gray-900 rounded-md border dark:border-gray-700 shadow-sm">
       {/* <FilePaste /> */}
       <FileDrop className="w-[500px] h-[500px]">
-        <div className="p-3">
-          <h2 className="pb-3">Upload zone</h2>
+        <div className="px-6 py-6">
+          <div className="text-center pb-6">
+            <h2 className="text-xl font-bold">Upload your files</h2>
+            <p className="text-sm text-gray-500">Files should be .gif, .png, .jpg, .jpeg, ....</p>
+          </div>
           <FileControl />
         </div>
       </FileDrop>
