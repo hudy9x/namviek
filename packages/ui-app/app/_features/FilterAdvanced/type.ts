@@ -87,6 +87,10 @@ const personOperators = [
 ]
 filterOperatorMap.set(FieldType.PERSON, personOperators)
 
+filterOperatorMap.set(FieldType.FILES, [
+  ...emptyOperators
+])
+
 // =================== Field value ===========================
 export const RELATIVE_TIME_VALUES = [
   'days ago',
