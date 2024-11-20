@@ -68,8 +68,9 @@ function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
   </div>, document.body)
 }
 
-function CustomFieldFilePreview() {
+function CustomFieldFilePreview({ maxDisplayed = 3 }: { maxDisplayed?: number }) {
   const { previewFiles, setSelected } = useFileKitContext()
+
   const onClickPreview = (id: string) => {
     const idx = previewFiles.findIndex(pf => pf.id === id)
     if (idx !== -1) {
@@ -77,14 +78,28 @@ function CustomFieldFilePreview() {
       window.stopEscapeKeyCloseModal = true
     }
   }
+
+  const visibleFiles = previewFiles.slice(0, maxDisplayed)
+  const remainingCount = previewFiles.length - maxDisplayed
+
   return <div className="cf-file-preview flex items-center gap-2">
-    {previewFiles.map((file, findex) => {
+    {visibleFiles.map((file, findex) => {
       const fileIsImage = isImage(file.mimeType)
       const src = fileIsImage ? file.url : getIconUrl(file.ext)
       return <img
         onClick={() => file.id && onClickPreview(file.id)}
-        className="max-h-[27px] max-w-[50px] cursor-pointer hover:opacity-80" key={findex} src={src} />
+        className="max-h-[27px] max-w-[50px] cursor-pointer hover:opacity-80"
+        key={findex}
+        src={src}
+      />
     })}
+    {remainingCount > 0 && (
+      <button
+        onClick={() => previewFiles[3]?.id && onClickPreview(previewFiles[3].id)}
+        className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+      >
+        +{remainingCount} more
+      </button>
+    )}
   </div>
-
 }
