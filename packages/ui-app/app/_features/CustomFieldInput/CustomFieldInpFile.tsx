@@ -10,11 +10,14 @@ import FileControl from "@/components/FileKits/FileControl"
 
 export default function CustomFieldInpFile({ rowId, value }: { rowId: string, value: string }) {
 
-  const fileIds = value.split(',').filter(Boolean)
+  const [fileIds, setFileIds] = useState(value.split(',').filter(Boolean))
   const [display, setDisplay] = useState(false)
   const { onChange } = useCustomFieldInputContext()
   const handleUpdate = (uploadedFileIds: string[]) => {
-    onChange(uploadedFileIds.concat(fileIds).join(','))
+    const mergedFileIds = uploadedFileIds.concat(fileIds).join(',')
+
+    onChange(mergedFileIds)
+    setFileIds(fileIds)
   }
 
   const onHideHandler = useCallback(() => {
@@ -50,7 +53,7 @@ function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
 
   return createPortal(<div className="fixed top-0 left-0 w-full h-full z-[60] flex items-center justify-center">
     <div className="relative z-10 bg-white dark:bg-gray-900 rounded-md border border-gray-400 dark:border-gray-700">
-      {/* <FilePaste /> */}
+      <FilePaste />
       <FileDrop className="w-[500px] h-[500px]">
         <div className="px-6 py-6">
           <div className="text-center pb-6">
