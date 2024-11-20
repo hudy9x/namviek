@@ -66,6 +66,7 @@
     "bullmq": "^5.1.4",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
+    "docx-preview": "^0.3.3",
     "dotenv": "^16.3.1",
     "emoji-picker-react": "^4.5.16",
     "express": "^4.18.1",

@@ -66,37 +66,7 @@
   @apply block;
 }
 
-/* .list-cell .select-button { */
-/*     padding: 0; */
-/*     white-space: nowrap; */
-/* } */
-/**/
-/* .list-cell .select-button .trailing-icon { */
-/*     display: none; */
-/* } */
-/**/
-/* .custom-field-date .form-input { */
-/*   padding: 0px; */
-/*   border: 0px; */
-/*   @apply bg-transparent shadow-none; */
-/**/
-/*   & + svg { */
-/*     @apply hidden; */
-/*   } */
-/* } */
-/**/
-/* .custom-field-select { */
-/**/
-/* } */
-
-/* .custom-field-multiselect .selected-item-container { */
-/*   flex-wrap: nowrap; */
-/**/
-/* } */
-
-/* .custom-field-inp input { */
-/*     padding: 0; */
-/*     border: none; */
-/*     outline: none; */
-/*     border-radius: 0; */
-/* } */
+.cf-file-container .file-list-containers {
+  @apply overflow-x-hidden overflow-y-auto;
+  max-height: calc(100vh - 384px)
+}

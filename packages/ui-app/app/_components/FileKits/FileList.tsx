@@ -18,7 +18,7 @@ export default function FileList({ files }: { files: IFileItem[] }) {
 
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 file-list-containers" >
       <div className='space-y-2'>
         {files.slice(0, n).map((file, id) => {
           return <FileItem key={id} data={file} />

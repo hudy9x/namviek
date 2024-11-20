@@ -45,7 +45,7 @@ export default function CustomFieldInpFile({ rowId, value }: { rowId: string, va
 function UploadButton({ show }: { show: () => void }) {
   return <HiOutlineUpload
     onClick={show}
-    className="absolute text-gray-600 top-1.5 hidden group-hover:block right-2 w-6 h-6 p-1 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800" />
+    className="absolute text-gray-600 top-1.5 hidden group-hover:block right-2 w-6 h-6 p-1 rounded-md cursor-pointer border bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800" />
 
 }
 
@@ -54,7 +54,7 @@ function CustomFieldFileUploadZone({ hide }: { hide: () => void }) {
   return createPortal(<div className="fixed top-0 left-0 w-full h-full z-[60] flex items-center justify-center">
     <div className="relative z-10 bg-white dark:bg-gray-900 rounded-md border border-gray-400 dark:border-gray-700">
       <FilePaste />
-      <FileDrop className="w-[500px] h-[500px]">
+      <FileDrop className="cf-file-container w-[500px]">
         <div className="px-6 py-6">
           <div className="text-center pb-6">
             <h2 className="text-xl font-bold">Upload your files</h2>
