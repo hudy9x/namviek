@@ -3,7 +3,7 @@ import { Button } from '@shared/ui'
 import { HiOutlineXMark } from 'react-icons/hi2'
 import { useServiceTaskUpdate } from "@/hooks/useServiceTaskUpdate";
 
-function RemoveTaskFromGoal({ taskId }: { taskId: string }) {
+function RemoveTaskFromGoal({ taskId, className }: { taskId: string, className?: string }) {
   const { updateTaskData } = useServiceTaskUpdate()
   const onRemove = () => {
     console.log('taskId', taskId)
@@ -16,7 +16,7 @@ function RemoveTaskFromGoal({ taskId }: { taskId: string }) {
   return <Button
     onClick={onRemove}
     leadingIcon={<HiOutlineXMark />}
-    size='sm' className='group-hover:block hidden' />
+    size='sm' className={className} />
 }
 
 export default memo(RemoveTaskFromGoal)

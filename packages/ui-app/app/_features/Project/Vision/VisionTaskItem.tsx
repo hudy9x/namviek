@@ -24,7 +24,7 @@ export default function VisionTaskItem2({
       <div className='px-3 pt-1 flex items-center justify-between'>
         <TaskStatus withName={true} taskId={id} value={statusId} />
         {visionId ?
-          <RemoveTaskFromGoal taskId={id} />
+          <RemoveTaskFromGoal className=" opacity-0 group-hover:opacity-100 transition-all" taskId={id} />
           : null}
       </div>
     </div>
