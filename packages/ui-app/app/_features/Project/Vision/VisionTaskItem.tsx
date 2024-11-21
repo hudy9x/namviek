@@ -1,6 +1,4 @@
-import { Button } from '@shared/ui'
 import TaskStatus from 'packages/ui-app/app/[orgName]/project/[projectId]/views/TaskStatus'
-import { HiOutlineXMark } from 'react-icons/hi2'
 import RemoveTaskFromGoal from './RemoveTaskFromGoal'
 
 export default function VisionTaskItem2({

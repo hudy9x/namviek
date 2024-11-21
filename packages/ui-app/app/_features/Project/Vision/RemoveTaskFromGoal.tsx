@@ -6,7 +6,6 @@ import { useServiceTaskUpdate } from "@/hooks/useServiceTaskUpdate";
 function RemoveTaskFromGoal({ taskId, className }: { taskId: string, className?: string }) {
   const { updateTaskData } = useServiceTaskUpdate()
   const onRemove = () => {
-    console.log('taskId', taskId)
     updateTaskData({
       id: taskId,
       visionId: ''
