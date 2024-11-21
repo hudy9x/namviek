@@ -277,6 +277,7 @@ export const mdTaskUpdateMany = async (ids: string[], data: Partial<Task>) => {
 
 export const mdTaskUpdate = async (data: Partial<Task>) => {
   const { id, ...rest } = data
+  console.log('md task update', id, rest)
   return taskModel.update({
     where: {
       id
