@@ -6,10 +6,12 @@ export default function VisionTaskItemDraggable({
   id,
   title,
   index,
+  visionId,
   statusId,
 }: {
   id: string
   statusId: string
+  visionId?: string
   title: string
   index: number
 }) {
@@ -22,6 +24,6 @@ export default function VisionTaskItemDraggable({
     draggable={true}
     onDragStart={onDragStart}
     className="text-sm bg-white border rounded-md shadow-md shadow-indigo-100 dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900">
-    <VisionTaskItem id={id} title={title} statusId={statusId} />
+    <VisionTaskItem visionId={visionId} id={id} title={title} statusId={statusId} />
   </div>
 }

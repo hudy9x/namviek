@@ -281,6 +281,10 @@ export const useTaskStore = create<TaskState>(set => ({
           task.visionId = visionId
         }
 
+        if (!visionId) {
+          task.visionId = ''
+        }
+
         task.updatedAt = new Date()
       })
     ),
