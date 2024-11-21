@@ -24,6 +24,7 @@ interface TaskState {
   addAllTasks: (data: Task[]) => void
   addTasks: (data: Task[]) => void
   delTask: (id: string) => void
+  delTasks: (ids: string[]) => void
   updateChecklistCounter: (taskId: string, done: number, todo: number) => void
 }
 
@@ -125,6 +126,14 @@ export const useTaskStore = create<TaskState>(set => ({
       produce((state: TaskState) => {
         state.tasks = state.tasks.filter(t => {
           return t.id !== id
+        })
+      })
+    ),
+  delTasks: (ids: string[]) =>
+    set(
+      produce((state: TaskState) => {
+        state.tasks = state.tasks.filter(t => {
+          return !ids.includes(t.id)
         })
       })
     ),

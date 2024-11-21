@@ -29,7 +29,7 @@ export const useEventSyncProjectTask = (projectId: string) => {
       channelTeamCollab.bind(eventUpdateName, (data: {
         triggerBy: string,
         data: Task,
-        type: 'update' | 'delete' | 'create' | 'update-many'
+        type: 'update' | 'delete' | 'create' | 'update-many' | 'delete-many'
       }) => {
         const { triggerBy, data: taskData, type } = data
 
@@ -44,6 +44,11 @@ export const useEventSyncProjectTask = (projectId: string) => {
         }
 
         if (type === 'update-many') {
+          fetchNCache()
+          return
+        }
+
+        if (type === 'delete-many') {
           fetchNCache()
           return
         }

@@ -1,9 +1,21 @@
+import { useServiceTaskDel } from "@/hooks/useServiceTaskDel"
 import { useTaskStore } from "@/store/task"
+import { confirmAlert } from "@shared/ui"
 
 export const useMultipleDelete = () => {
   const { selected, clearAllSelected } = useTaskStore()
-  const onDeleteMany = () => {
-    console.log('1', selected)
+  const { deleteMultiTask } = useServiceTaskDel()
+  const deleteAnyway = (cb?: () => void) => {
+    deleteMultiTask(selected)
+    cb && cb()
+  }
+  const onDeleteMany = (cb?: () => void) => {
+    confirmAlert({
+      message: 'Are you sure you want to delete these tasks ?',
+      yes: () => {
+        deleteAnyway(cb)
+      }
+    })
   }
   return {
     onDeleteMany

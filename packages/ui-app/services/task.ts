@@ -68,6 +68,12 @@ export const taskDelete = (data: { projectId: string; id: string }) => {
   })
 }
 
+export const taskDeletes = (data: { projectId: string; ids: string[] }) => {
+  return httpDel('/api/project/tasks', {
+    params: data
+  })
+}
+
 export const taskAddMany = (data: {
   data: ITaskFields[]
   projectId: string
