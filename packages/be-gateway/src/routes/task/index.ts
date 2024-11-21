@@ -400,7 +400,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   const taskUpdateService = new TaskUpdateService()
   const { id: userId } = req.authen
   try {
-    console.log('do update ', req.body)
     const result = await taskUpdateService.doUpdate({
       userId,
       body: req.body as Task

@@ -43,7 +43,6 @@ export default class TaskUpdateService {
         isDueDateChanged
       } = await this._genUpdateData({ body, userId })
 
-      console.log('taskDDatta', taskData)
       const result = await mdTaskUpdate(taskData)
 
       console.log('task update', result)
