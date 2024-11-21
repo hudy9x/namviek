@@ -7,11 +7,12 @@ import { Button, DatePicker } from '@shared/ui'
 import { useMultipleUpdate, defaultData } from './useMultipleUpdate'
 import { useEscapeKeyPressed } from '@/hooks/useEscapeKeyPressed'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
+import { useMultipleDelete } from './useMultipleDelete'
 
 export default function TaskMultipleActions() {
   const { onUpdate, hasSelected, selected, clearAllSelected, data, setData } =
     useMultipleUpdate()
-  // const { onDeleteMany } = useMultipleDelete()
+  const { onDeleteMany } = useMultipleDelete()
   const { date, point, assignee, status, priority, type } = data
 
   const updateFieldValue = (
@@ -30,10 +31,11 @@ export default function TaskMultipleActions() {
     }
   )
 
-  // const onDeleteAction = () => {
-  //   onDeleteMany()
-  //   onClose()
-  // }
+  const onDeleteAction = () => {
+    onDeleteMany(() => {
+      onClose()
+    })
+  }
 
   const onClose = () => {
     if (!hasSelected) return
@@ -98,7 +100,7 @@ export default function TaskMultipleActions() {
           className="task-filter-member-picker"
         />
         <Button title="Update" primary onClick={onUpdate} />
-        {/* <Button title="Delete" danger onClick={onDeleteAction} /> */}
+        <Button title="Delete" danger onClick={onDeleteAction} />
         <Button title="Close" onClick={onClose} />
       </div>
     </div>
