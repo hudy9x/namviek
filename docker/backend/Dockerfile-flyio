@@ -44,4 +44,4 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 
 # Use a shell to start the app with explicit host and port
-CMD HOST=0.0.0.0 PORT=3000 node main.js
+CMD node main.js
