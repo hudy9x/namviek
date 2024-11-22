@@ -16,7 +16,8 @@
         "tsConfig": "packages/be-gateway/tsconfig.app.json",
         "assets": ["packages/be-gateway/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "packages/be-gateway/webpack.config.js"
+        "webpackConfig": "packages/be-gateway/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
