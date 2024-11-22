@@ -4,7 +4,18 @@
 	"affected": {
 		"defaultBase": "master"
 	},
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": true
+    }
+  },
 	"targetDefaults": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "generatePackageJson": true
+      }
+    },
 		"test": {
 			"inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
 		},
