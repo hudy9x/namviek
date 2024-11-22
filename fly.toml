@@ -1,13 +1,15 @@
-app = "namviek"  # replace with your app name
-primary_region = "sin"  # replace with your preferred region, e.g., sin for Singapore
+app = 'namviek'
+primary_region = 'sin'
+
+[build]
+  dockerfile = 'docker/backend/Dockerfile-flyio'
 
 [env]
-JWT_VERIFY_USER_LINK_TOKEN_EXPIRED = "10m"
-JWT_SECRET_KEY = "09123skjdhfwe"
-JWT_TOKEN_EXPIRED = "30m"
-JWT_REFRESH_KEY = "Iw98erhsd"
-JWT_REFRESH_EXPIRED = "2d"
-PORT = "3000"
+  JWT_REFRESH_EXPIRED = '2d'
+  JWT_TOKEN_EXPIRED = '30m'
+  JWT_VERIFY_USER_LINK_TOKEN_EXPIRED = '10m'
+  HOST = '0.0.0.0'
+  PORT = '3000'
 
 [http_service]
   internal_port = 3000
@@ -15,9 +17,13 @@ PORT = "3000"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1
-  processes = ["app"]
+  processes = ['app']
+
+[scale]
+  count = 1
+  max = 1
 
 [[vm]]
-  cpu_kind = "shared"
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 1024
