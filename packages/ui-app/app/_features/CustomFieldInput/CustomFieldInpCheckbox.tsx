@@ -1,5 +1,5 @@
 import { useCustomFieldInputContext } from "./context"
-import { useId, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { HiOutlineCheck } from "react-icons/hi2"
 
 export default function CustomFieldInpCheckbox({ value }: { value: string }) {
@@ -8,6 +8,10 @@ export default function CustomFieldInpCheckbox({ value }: { value: string }) {
   const checkboxId = `checkbox-${id}`
   const [checked, setChecked] = useState(value === 'true')
   const { onChange } = useCustomFieldInputContext()
+
+  useEffect(() => {
+    setChecked(value === 'true')
+  }, [value])
 
   return <div className="cf-input-container">
     <input id={checkboxId} className="hidden" type="checkbox" checked={checked} onChange={ev => {

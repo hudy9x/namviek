@@ -32,17 +32,28 @@ interface PaginationOptions {
   page?: number
 }
 
-interface PaginationInfo {
-  hasNextPage: boolean
-  nextCursor: string | null
-  totalPages: number
-  currentPage: number
-}
-
 export default class TaskCustomFieldService {
   customFieldRepo: TaskCustomFieldRepository
   constructor() {
     this.customFieldRepo = new TaskCustomFieldRepository()
+  }
+
+  async updateMany(rowIds: string[], data: {
+    [fieldId: string]: { value: string, type: FieldType }
+  }) {
+    console.log(rowIds, data)
+    const promises = []
+    for (const rowId of rowIds) {
+      promises.push(this.customFieldRepo.updateMultiField({
+        id: rowId,
+        data
+      }))
+    }
+
+    const results = await Promise.allSettled(promises)
+
+    console.log('results', JSON.stringify(results[0], null, ' '))
+    return results
   }
 
   async update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {

@@ -30,6 +30,7 @@ export default function DataFetcher({
     totalRecords,
     restRecords,
     fetchNextPage,
+    updateCustomFields,
     fetchData
   } = useTaskFetcher({
     projectId,
@@ -52,7 +53,8 @@ export default function DataFetcher({
     restRecords,
     isLoading,
     hasNextPage,
-    fetchNextPage
+    fetchNextPage,
+    updateCustomFields
   }
 
   console.log('contextValue', contextValue)

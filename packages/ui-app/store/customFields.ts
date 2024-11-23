@@ -32,7 +32,6 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
     if (!fieldData) {
       return
     }
-    console.log('update field width')
 
     state.customFields[index] = {
       ...fieldData,
@@ -52,14 +51,11 @@ export const useProjectCustomFieldStore = create<FieldState>(set => ({
       return cf
     })
 
-    console.log('newCustomFields', newCustomFields)
     state.customFields = newCustomFields
 
   })),
 
   addAllCustomField: (fields: Field[]) => set(produce((state: FieldState) => {
-    console.log('add custom fields', fields)
-
     state.customFields = fields
 
   })),

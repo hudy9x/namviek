@@ -22,7 +22,7 @@ export class TaskCustomFieldRepository {
   async update({ id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
     const oldTask = await taskModel.findFirst({ where: { id } })
     const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
-    console.log('type', type)
+
     const result = await taskModel.update({
       where: {
         id
@@ -36,6 +36,40 @@ export class TaskCustomFieldRepository {
     })
 
     console.log('update data', result)
+
+    return result
+  }
+
+  async updateMultiField({ id, data }: {
+    id: string, data: {
+      [fieldId: string]: { value: string, type: FieldType }
+    }
+  }) {
+
+    const oldTask = await taskModel.findFirst({ where: { id } })
+    const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
+
+    const convertedData = {}
+
+    for (const key in data) {
+      const dt = data[key]
+      convertedData[key] = this.convertType(dt.type, dt.value)
+    }
+
+    console.log('convertedDAta', convertedData)
+
+    const result = await taskModel.update({
+      where: {
+        id
+      },
+      data: {
+        customFields: {
+          ...oldCustomData,
+          ...convertedData
+        }
+      }
+    })
+
 
     return result
   }

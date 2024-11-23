@@ -69,6 +69,13 @@ export default function CustomFieldInpNumber({ value, config }: { value: string,
   const ref = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    setVal(prev => {
+      if (prev !== value) return value
+      return prev
+    })
+  }, [value])
+
+  useEffect(() => {
     const inpElem = ref.current
     if (enableEdit && inpElem) {
 

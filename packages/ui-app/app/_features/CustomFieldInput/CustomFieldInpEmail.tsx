@@ -15,6 +15,10 @@ export default function CustomFieldInpEmail({ value, config }: { value: string, 
     }
   }, [enableEdit, ref])
 
+  useEffect(() => {
+    setVal(value)
+  }, [value])
+
   return <div className="cf-input-container">
     {enableEdit ?
       <input ref={ref} className="cf-edit"

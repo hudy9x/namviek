@@ -17,7 +17,6 @@ export function useDataFetcher<Selected>(
   )
 
   if (!selector) {
-    console.log('return context', context)
     return context
   }
 

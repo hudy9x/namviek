@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { taskGetCustomQuery } from '@/services/task'
 import { IFilterAdvancedData } from '@/features/FilterAdvanced/type'
 import { ExtendedTask } from '@/store/task'
+import { FieldType } from '@prisma/client'
 
 interface UseTaskFetcherProps {
   projectId: string
@@ -12,6 +13,10 @@ interface UseTaskFetcherProps {
   initialCursor?: string
 }
 
+type FieldValues = {
+  [fieldId: string]: { value: string, type: FieldType }
+}
+
 export function useTaskFetcher({
   projectId,
   filter,
@@ -19,15 +24,14 @@ export function useTaskFetcher({
   orderBy,
   initialCursor
 }: UseTaskFetcherProps) {
-  console.log('update cursor', initialCursor || 'EMPTY')
   const [data, setData] = useState<ExtendedTask[]>([])
   const [cursor, setCursor] = useState<string>(initialCursor || '')
   const [hasNextPage, setHasNextPage] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [totalRecords, setTotalRecords] = useState(0)
 
-  // const fetchData = useCallback((nextCursor?: string) => {
-  const fetchData = (nextCursor?: string) => {
+  const fetchData = useCallback((nextCursor?: string) => {
+    // const fetchData = (nextCursor?: string) => {
     const controller = new AbortController()
     setIsLoading(true)
 
@@ -44,17 +48,13 @@ export function useTaskFetcher({
       const { data: resData } = res.data
       const { data: items, pageInfo, status } = resData
 
-      console.log('pageInfo', pageInfo)
-
       if (status === 200) {
         if (nextCursor) {
           setData(prev => [...prev, ...items])
         } else {
-          console.log('reset data')
           setData(items)
         }
 
-        console.log('update nextpage, cursor')
         setHasNextPage(pageInfo.hasNextPage)
         setCursor(pageInfo.nextCursor)
         setTotalRecords(pageInfo.totalRecords)
@@ -69,14 +69,39 @@ export function useTaskFetcher({
     })
 
     return controller
-  }
-  // }, [filter, projectId, limit, orderBy])
+    // }
+  }, [filter, projectId, limit, orderBy])
 
   const fetchNextPage = useCallback(() => {
     if (hasNextPage && cursor && !isLoading) {
       fetchData(cursor)
     }
   }, [hasNextPage, cursor, isLoading, fetchData])
+
+  const updateCustomFields = useCallback((taskIds: string[], customFields: FieldValues) => {
+
+    const newCustomFields = Object.entries(customFields)
+      .reduce((acc, [fieldId, { value }]) => ({
+          ...acc,
+        [fieldId]: value
+      }), {})
+
+    setData(prevData => {
+      const result = prevData.map(task => {
+        if (!taskIds.includes(task.id)) {
+          return task
+        }
+
+        return {
+          ...task,
+          customFields: { ...Object(task.customFields), ...newCustomFields }
+        }
+      })
+      return result
+    }
+      
+    )
+  }, [])
 
   console.log('totalRecords', totalRecords, data.length)
   return {
@@ -87,6 +112,7 @@ export function useTaskFetcher({
     isLoading,
     hasNextPage,
     fetchNextPage,
-    fetchData
+    fetchData,
+    updateCustomFields
   }
 } 

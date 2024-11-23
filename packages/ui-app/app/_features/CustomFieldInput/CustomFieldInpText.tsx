@@ -15,6 +15,7 @@ export default function CustomFieldInpText({ value }: { value: string }) {
   return <div className="cf-input-container">
     <input className="cf-display bg-transparent"
       ref={ref}
+      key={value}
       onKeyUp={ev => {
         const target = ev.target as HTMLInputElement
         if (ev.key === 'Enter') {

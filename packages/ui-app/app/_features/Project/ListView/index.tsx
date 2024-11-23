@@ -3,6 +3,7 @@
 import ListRowContainer from './ListRowContainer'
 import { useDataFetcher } from '@/components/DataFetcher/useDataFetcher'
 import ListDataFilter from './ListDataFilter'
+import CustomFieldMultiAction from '@/features/CustomFieldMultiAction'
 
 export default function ListViewContainer() {
 
@@ -13,6 +14,7 @@ export default function ListViewContainer() {
         <div className="divide-y dark:divide-gray-800">
           <TaskData />
         </div>
+        <CustomFieldMultiAction />
       </ListDataFilter>
     </div>
 

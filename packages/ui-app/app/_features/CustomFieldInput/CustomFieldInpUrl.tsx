@@ -9,6 +9,10 @@ export default function CustomFieldInpUrl({ value, config }: { value: string, co
   const ref = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    setVal(value)
+  }, [value])
+
+  useEffect(() => {
     const inpElem = ref.current
     if (enableEdit && inpElem) {
       inpElem.focus()

@@ -9,6 +9,7 @@ export interface DataFetcherContextType {
   isLoading: boolean
   hasNextPage: boolean
   fetchNextPage: () => void
+  updateCustomFields: (taskIds: string[], customFields: Record<string, any>) => void
 }
 
 export const DataFetcherContext = createContext<DataFetcherContextType>({
@@ -18,5 +19,6 @@ export const DataFetcherContext = createContext<DataFetcherContextType>({
   restRecords: 0,
   isLoading: false,
   hasNextPage: false,
-  fetchNextPage: () => console.log(1)
+  fetchNextPage: () => console.log(1),
+  updateCustomFields: () => console.log(1)
 })

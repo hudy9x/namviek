@@ -21,6 +21,21 @@ export default class TaskCustomFieldController extends BaseController {
     return ret
   }
 
+  @Put('/update-many')
+  async updateMany(@Body() body: {
+    taskIds: string[],
+    data: {
+      [fieldId: string]: { value: string, type: FieldType }
+    }
+  }) {
+
+    console.log('Update multi field called')
+    const ret = await this.customFieldService.updateMany(body.taskIds, body.data)
+
+    return ret
+
+  }
+
   @Post('/query')
   async queryCustomField(@Body() body: {
     projectId: string,
@@ -33,7 +48,6 @@ export default class TaskCustomFieldController extends BaseController {
   }) {
     try {
       const { filter, projectId, options } = body
-      console.log('1', options)
       const result = await this.customFieldService.queryCustomField(projectId, filter, {
         limit: options ? options.limit : 50,
         cursor: options ? options.cursor : ''

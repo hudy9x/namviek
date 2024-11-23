@@ -17,17 +17,6 @@ export default function useGetCustomData() {
     const controller = new AbortController()
     setTaskLoading(true)
 
-    // console.log('Filter being sent to API:', {
-    //   condition: filter.condition,
-    //   list: filter.list.map(item => ({
-    //     id: item.id,
-    //     type: item.type,
-    //     operator: item.operator,
-    //     value: item.value
-    //   }))
-    // })
-
-    console.log('call taskGetCustomData query')
     taskGetCustomQuery(projectId, filter, controller.signal)
       .then(res => {
         const { data: resData } = res.data

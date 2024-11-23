@@ -29,6 +29,14 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
   const [counter, setCounter] = useState(0)
   const { onChange } = useCustomFieldInputContext()
 
+  // re-render when value prop changes
+  useEffect(() => {
+    const defaultSelected = value ? options.find(opt => opt.id === value) : options[0]
+    if (defaultSelected) {
+      setSelected(defaultSelected)
+    }
+  }, [value])
+
   // re-render options as user update field's data
   useEffect(() => {
     const { options: dataOptions } = JSON.parse(data) as { options: TCustomFieldOption[] }

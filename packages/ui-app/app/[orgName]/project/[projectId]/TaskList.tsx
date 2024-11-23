@@ -2,7 +2,7 @@ import ListViewContainer from '@/features/Project/ListView'
 import ListMode from './views/ListMode'
 import TaskFilter from '@/features/TaskFilter'
 import FilterAdvanced from '@/features/FilterAdvanced'
-import CustomFieldMultiAction from '@/features/CustomFieldMultiAction'
+
 
 export default function TaskList() {
   return (
@@ -13,7 +13,7 @@ export default function TaskList() {
       {/* <TaskFilter /> */}
       {/* <ListMode /> */}
       <ListViewContainer />
-      <CustomFieldMultiAction />
+
     </div>
   )
 }

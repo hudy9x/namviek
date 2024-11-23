@@ -6,11 +6,8 @@ export default function ListLoadMore() {
     fetchNextPage,
     hasNextPage,
     isLoading,
-    totalRecords,
     restRecords,
   } = useDataFetcher()
-
-  console.log('restRecords loadmore', restRecords, totalRecords)
 
   if (!hasNextPage) return null
 
