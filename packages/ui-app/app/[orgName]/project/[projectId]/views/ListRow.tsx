@@ -17,7 +17,6 @@ import TaskChecklist from '@/features/TaskChecklist'
 import TaskProgress from './TaskProgress'
 import { useMemo } from 'react'
 import TaskTitle from './TaskTitle'
-import ListCellCustomFieldValues from './ListCellCustomFieldValues'
 
 export default function ListRow({ task }: { task: ExtendedTask }) {
   const isRandomId = task.id.includes('TASK-ID-RAND')
@@ -30,7 +29,7 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
 
   return (
     <div
-      className="px-3 py-2 text-sm sm:flex items-center group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
+      className="px-3 py-2 text-sm sm:flex items-center justify-between group relative transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
       key={task.id}>
       <div className="flex items-center gap-2 dark:text-gray-300">
         <TaskCheckbox id={task.id} selected={task.selected} />
@@ -38,27 +37,27 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
 
         {isRandomId ? <Loading enabled={true} spinnerSpeed="fast" /> : null}
-        <div
-          className="cursor-pointer"
-          key={task.id}
-          onClick={() => {
-            if (isRandomId) {
-              messageWarning('This task has been creating by server !')
-              return
-            }
-            console.log('replace link with taskid')
-            replace(
-              `${params.orgID}/project/${task.projectId}?mode=${getSp(
-                'mode'
-              )}&taskId=${task.id}`
-            )
-          }}
-        // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
-        //   'mode'
-        // )}&taskId=${task.id}`}
-        >
-          <div className="w-full">{task.title}</div>
-        </div>
+        {/* <div */}
+        {/*   className="cursor-pointer" */}
+        {/*   key={task.id} */}
+        {/*   onClick={() => { */}
+        {/*     if (isRandomId) { */}
+        {/*       messageWarning('This task has been creating by server !') */}
+        {/*       return */}
+        {/*     } */}
+        {/*     console.log('replace link with taskid') */}
+        {/*     replace( */}
+        {/*       `${params.orgID}/project/${task.projectId}?mode=${getSp( */}
+        {/*         'mode' */}
+        {/*       )}&taskId=${task.id}` */}
+        {/*     ) */}
+        {/*   }} */}
+        {/* // href={`${params.orgID}/project/${task.projectId}?mode=${getSp( */}
+        {/* //   'mode' */}
+        {/* // )}&taskId=${task.id}`} */}
+        {/* > */}
+        {/*   <div className="w-full">{task.title}</div> */}
+        {/* </div> */}
         <TaskTitle id={task.id} projectId={task.projectId} title={task.title} />
         <TaskActions
           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
@@ -92,8 +91,16 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         </ListCell>
         <ListCell className="hidden sm:block" width={70}>
           <TaskProgress progress={progress} taskId={task.id} />
+          {/* <div className='group/progress relative'> */}
+          {/*   <ProgressBar color="green" progress={task.progress || 0} /> */}
+          {/*   <div className='group-hover/progress:block hidden absolute z-10 top-2 right-0'> */}
+          {/*     <div className='p-3 border bg-white rounded-md'> */}
+          {/*       <TaskChecklist /> */}
+          {/*     </div> */}
+          {/**/}
+          {/*   </div> */}
+          {/* </div> */}
         </ListCell>
-
       </div>
     </div>
   )

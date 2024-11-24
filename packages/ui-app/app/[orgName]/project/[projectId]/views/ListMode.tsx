@@ -9,8 +9,6 @@ import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
-import CreateField from '@/features/CustomField/CreateField'
-import ListCellCustomFields from './ListCellCustomFields'
 
 export default function ListMode() {
   const {
@@ -31,7 +29,7 @@ export default function ListMode() {
           <div
             className="bg-white dark:bg-gray-900 mb-4 rounded-md border dark:border-gray-800 mx-4 relative mt-4"
             key={group.id}>
-            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[40px] bg-white dark:bg-gray-900 rounded-t-md flex items-center z-10">
+            <div className="px-3 py-2 border-b dark:border-b-gray-800 sticky top-[40px] bg-white dark:bg-gray-900 rounded-t-md flex items-center justify-between z-10">
               <div
                 style={{ color: group.color }}
                 className="flex gap-2 items-center text-xs uppercase font-bold">
@@ -61,6 +59,7 @@ export default function ListMode() {
                 <ListCell width={50}>Point</ListCell>
                 <ListCell width={110}>Duedate</ListCell>
                 <ListCell width={70}>Progress</ListCell>
+                {/* <ListCell width={100}>Created by</ListCell> */}
               </div>
             </div>
             <div className="divide-y dark:divide-gray-800">
@@ -96,7 +95,6 @@ export default function ListMode() {
 
                   return <ListRow key={task.id} task={task} />
                 })}
-
               <ListCreateTask type={filter.groupBy} groupId={group.id} />
             </div>
           </div>
