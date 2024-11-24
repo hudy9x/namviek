@@ -2,6 +2,10 @@
   @apply relative;
 }
 
+.list-view-container .list-cell {
+  height: initial !important;
+}
+
 .task-assignee .select-button,
 .task-type-cell .select-button,
 .task-priority .select-button,
