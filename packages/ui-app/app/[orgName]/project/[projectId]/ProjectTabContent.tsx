@@ -27,6 +27,10 @@ const Vision = dynamic(() => import('@/features/Project/Vision'), {
   loading: () => <ProjectContentLoading />
 })
 
+const Grid = dynamic(() => import('@/features/Project/Grid'), {
+  loading: () => <ProjectContentLoading />
+})
+
 const Settings = dynamic(() => import('./settings'), {
   loading: () => <ProjectContentLoading />
 })
@@ -109,6 +113,9 @@ export default function ProjectTabContent() {
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.BOARD)}>
         <Board />
+      </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.GRID)}>
+        <Grid />
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.LIST)}>
         <TaskList />

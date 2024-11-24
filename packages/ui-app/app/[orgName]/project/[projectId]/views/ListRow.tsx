@@ -38,27 +38,27 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
         <TaskStatus taskId={task.id} value={task.taskStatusId || ''} />
 
         {isRandomId ? <Loading enabled={true} spinnerSpeed="fast" /> : null}
-        {/* <div */}
-        {/*   className="cursor-pointer" */}
-        {/*   key={task.id} */}
-        {/*   onClick={() => { */}
-        {/*     if (isRandomId) { */}
-        {/*       messageWarning('This task has been creating by server !') */}
-        {/*       return */}
-        {/*     } */}
-        {/*     console.log('replace link with taskid') */}
-        {/*     replace( */}
-        {/*       `${params.orgID}/project/${task.projectId}?mode=${getSp( */}
-        {/*         'mode' */}
-        {/*       )}&taskId=${task.id}` */}
-        {/*     ) */}
-        {/*   }} */}
-        {/* // href={`${params.orgID}/project/${task.projectId}?mode=${getSp( */}
-        {/* //   'mode' */}
-        {/* // )}&taskId=${task.id}`} */}
-        {/* > */}
-        {/*   <div className="w-full">{task.title}</div> */}
-        {/* </div> */}
+        <div
+          className="cursor-pointer"
+          key={task.id}
+          onClick={() => {
+            if (isRandomId) {
+              messageWarning('This task has been creating by server !')
+              return
+            }
+            console.log('replace link with taskid')
+            replace(
+              `${params.orgID}/project/${task.projectId}?mode=${getSp(
+                'mode'
+              )}&taskId=${task.id}`
+            )
+          }}
+        // href={`${params.orgID}/project/${task.projectId}?mode=${getSp(
+        //   'mode'
+        // )}&taskId=${task.id}`}
+        >
+          <div className="w-full">{task.title}</div>
+        </div>
         <TaskTitle id={task.id} projectId={task.projectId} title={task.title} />
         <TaskActions
           className="opacity-0 group-hover:opacity-100 transition-all duration-100"
@@ -73,29 +73,27 @@ export default function ListRow({ task }: { task: ExtendedTask }) {
             uids={task.assigneeIds}
           />
         </ListCell>
-        {/* <ListCell width={115}> */}
-        {/*   <TaskTypeCell type={task.type} taskId={task.id} /> */}
-        {/* </ListCell> */}
-        {/* <ListCell width={75} className="hidden sm:block"> */}
-        {/*   <TaskPriorityCell taskId={task.id} value={task.priority} /> */}
-        {/* </ListCell> */}
-        {/* <ListCell className="hidden sm:w-[50px] sm:block"> */}
-        {/*   <TaskPoint taskId={task.id} value={task.taskPoint} /> */}
-        {/* </ListCell> */}
-        {/* <ListCell */}
-        {/*   className={`ml-6 sm:ml-0 sm:w-[110px]`}> */}
-        {/*   <TaskDate */}
-        {/*     toNow={true} */}
-        {/*     taskId={task.id} */}
-        {/*     date={task.dueDate ? new Date(task.dueDate) : null} */}
-        {/*   /> */}
-        {/* </ListCell> */}
-        {/* <ListCell className="hidden sm:block" width={70}> */}
-        {/*   <TaskProgress progress={progress} taskId={task.id} /> */}
-        {/* </ListCell> */}
-        <ListCellCustomFieldValues taskId={task.id} data={task.customFields} />
-        <ListCell width={40}>
+        <ListCell width={115}>
+          <TaskTypeCell type={task.type} taskId={task.id} />
         </ListCell>
+        <ListCell width={75} className="hidden sm:block">
+          <TaskPriorityCell taskId={task.id} value={task.priority} />
+        </ListCell>
+        <ListCell className="hidden sm:w-[50px] sm:block">
+          <TaskPoint taskId={task.id} value={task.taskPoint} />
+        </ListCell>
+        <ListCell
+          className={`ml-6 sm:ml-0 sm:w-[110px]`}>
+          <TaskDate
+            toNow={true}
+            taskId={task.id}
+            date={task.dueDate ? new Date(task.dueDate) : null}
+          />
+        </ListCell>
+        <ListCell className="hidden sm:block" width={70}>
+          <TaskProgress progress={progress} taskId={task.id} />
+        </ListCell>
+
       </div>
     </div>
   )

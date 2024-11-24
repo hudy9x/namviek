@@ -56,16 +56,11 @@ export default function ListMode() {
               </div>
               <div className="hidden sm:flex items-center gap-3 text-xs uppercase font-medium text-gray-500">
                 <ListCell width={150}>Assignee</ListCell>
-                {/* <ListCell width={115}>Type</ListCell> */}
-                {/* <ListCell width={75}>Priority</ListCell> */}
-                {/* <ListCell width={50}>Point</ListCell> */}
-                {/* <ListCell width={110}>Duedate</ListCell> */}
-                {/* <ListCell width={70}>Progress</ListCell> */}
-                <ListCellCustomFields />
-                <ListCell width={40}>
-                  <CreateField />
-                </ListCell>
-                {/* <ListCell width={100}>Created by</ListCell> */}
+                <ListCell width={115}>Type</ListCell>
+                <ListCell width={75}>Priority</ListCell>
+                <ListCell width={50}>Point</ListCell>
+                <ListCell width={110}>Duedate</ListCell>
+                <ListCell width={70}>Progress</ListCell>
               </div>
             </div>
             <div className="divide-y dark:divide-gray-800">

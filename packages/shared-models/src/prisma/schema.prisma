@@ -351,7 +351,6 @@ model ProjectSettingNotification {
 }
 
 enum ProjectViewType {
-  DASHBOARD
   LIST
   BOARD
   CALENDAR
@@ -359,6 +358,8 @@ enum ProjectViewType {
   GOAL
   TEAM
   ACTIVITY
+  DASHBOARD
+  GRID
 }
 
 model ProjectView {
