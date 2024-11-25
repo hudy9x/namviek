@@ -11,6 +11,8 @@ import CustomFieldInpEmail from "./CustomFieldInpEmail"
 import CustomFieldInpPerson from "./CustomFieldInpPerson"
 import { memo } from "react"
 import CustomFieldInpFile from "./CustomFieldInpFile"
+import CustomFieldInpCreatedAt from "./CustomFieldInpCreatedAt"
+import CustomFieldInpCreatedBy from "./CustomFieldInpCreatedBy"
 
 type ICustomFieldInputFactoryProps = {
   rowId: string
@@ -32,6 +34,14 @@ function CustomFieldInputFactory({
         return <CustomFieldInpText value={value} />
       case FieldType.FILES:
         return <CustomFieldInpFile rowId={rowId} value={value} />
+
+      case FieldType.CREATED_AT:
+      case FieldType.UPDATED_AT:
+        return <CustomFieldInpCreatedAt value={value} config={config} />
+
+      case FieldType.CREATED_BY:
+      case FieldType.UPDATED_BY:
+        return <CustomFieldInpCreatedBy value={value} />
 
       case FieldType.EMAIL:
         return <CustomFieldInpEmail value={value} config={config} />

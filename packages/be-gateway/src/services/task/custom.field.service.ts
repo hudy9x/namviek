@@ -38,13 +38,13 @@ export default class TaskCustomFieldService {
     this.customFieldRepo = new TaskCustomFieldRepository()
   }
 
-  async updateMany(rowIds: string[], data: {
+  async updateMany(uid: string, rowIds: string[], data: {
     [fieldId: string]: { value: string, type: FieldType }
   }) {
     console.log(rowIds, data)
     const promises = []
     for (const rowId of rowIds) {
-      promises.push(this.customFieldRepo.updateMultiField({
+      promises.push(this.customFieldRepo.updateMultiField(uid, {
         id: rowId,
         data
       }))
@@ -56,10 +56,10 @@ export default class TaskCustomFieldService {
     return results
   }
 
-  async update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
+  async update(uid: string, data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     try {
 
-      const result = await this.customFieldRepo.update({
+      const result = await this.customFieldRepo.update(uid, {
         id: data.taskId,
         fieldId: data.fieldId,
         type: data.type,

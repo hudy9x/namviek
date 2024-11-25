@@ -38,7 +38,8 @@ export const useCustomFieldStore = create<CustomState>(set => ({
   setType: (type: FieldType) => set(produce((state: CustomState) => {
     state.display = true
     state.data.type = type
-    state.data.name = type.slice(0, 1) + type.slice(1, type.length).toLowerCase()
+    const name = type.slice(0, 1) + type.slice(1, type.length).toLowerCase()
+    state.data.name = name.replace('_', ' ') // only for fields such as: updated_at, updated_by, created_at, created_by
   })),
 
   setData: (data: Partial<Field>) => set(produce((state: CustomState) => {

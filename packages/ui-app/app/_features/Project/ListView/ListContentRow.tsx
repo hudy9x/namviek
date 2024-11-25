@@ -38,6 +38,28 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
   // const customFields = useProjectCustomFieldStore(state => state.customFields)
   const { onChange } = useOnChangeCustomFieldInput(task.id)
 
+  const getFixedValue = (type: FieldType, defaultData: string) => {
+
+    switch (type) {
+      case FieldType.CREATED_BY:
+        return task.createdBy || ''
+
+      case FieldType.CREATED_AT:
+        return task.createdAt ? task.createdAt.toString() : ''
+
+      case FieldType.UPDATED_AT:
+        return task.updatedAt ? task.updatedAt.toString() : ''
+
+      case FieldType.UPDATED_BY:
+        return task.updatedBy || ''
+      default:
+        return defaultData
+
+    }
+
+
+  }
+
   return <div className="list-row"
     key={task.id}>
 
@@ -48,10 +70,10 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
         const data = JSON.stringify(fieldData.data)
         const config = JSON.stringify(fieldData.config)
         const dataValue = customData[id] // convert all to string
-        console.log('dataValue', dataValue)
+        const dataStrValue = getFixedValue(type, dataValue ? (dataValue + '') : '')
+
         return <>
           <CustomFieldInputProvider onChange={(value) => {
-            console.log(id, value)
             onChange(value, id, type)
           }} >
             <CustomFieldInputFactory
@@ -59,7 +81,7 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
               data={data}
               config={config}
               type={type}
-              value={dataValue ? (dataValue + '') : ''} />
+              value={dataStrValue} />
           </CustomFieldInputProvider>
         </>
       }}

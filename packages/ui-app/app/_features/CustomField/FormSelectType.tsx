@@ -2,7 +2,7 @@ import { FieldType } from "@prisma/client"
 import { GoNumber } from "react-icons/go"
 import {
   HiMiniAtSymbol, HiOutlineArrowDownCircle, HiOutlineCalendar,
-  HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet, HiOutlineUser, HiOutlineDocument
+  HiOutlineCheckCircle, HiOutlineLink, HiOutlineListBullet, HiOutlineUser, HiOutlineDocument, HiOutlineUserPlus, HiOutlineUsers, HiOutlineCalendarDays, HiOutlineClock
 } from "react-icons/hi2"
 import { RxText } from "react-icons/rx";
 import { useCustomFieldStore } from "./store";
@@ -18,6 +18,11 @@ export const types = [
   { icon: <HiOutlineDocument className="w-4 h-4" />, title: 'File', type: FieldType.FILES },
   { icon: <HiOutlineLink className="w-4 h-4" />, title: 'Url', type: FieldType.URL },
   { icon: <HiMiniAtSymbol className="w-4 h-4" />, title: 'Email', type: FieldType.EMAIL },
+
+  { icon: <HiOutlineUserPlus className="w-4 h-4" />, title: 'Created By', type: FieldType.CREATED_BY },
+  { icon: <HiOutlineClock className="w-4 h-4" />, title: 'Created At', type: FieldType.CREATED_AT },
+  { icon: <HiOutlineUsers className="w-4 h-4" />, title: 'Updated By', type: FieldType.UPDATED_BY },
+  { icon: <HiOutlineClock className="w-4 h-4" />, title: 'Updated At', type: FieldType.UPDATED_AT },
 ]
 export default function FormSelectType() {
   const { setType, display } = useCustomFieldStore()

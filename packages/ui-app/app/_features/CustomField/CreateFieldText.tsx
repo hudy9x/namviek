@@ -6,7 +6,7 @@ export default function CreateFieldText() {
   const { name, desc } = data
 
   return <div className="space-y-3">
-    <Form.Input value={name || ''} onChange={ev => {
+    <Form.Input value={name} onChange={ev => {
       setData({ name: ev.target.value })
     }} title="Field name" placeholder="Input your field name" required className="w-full" />
 

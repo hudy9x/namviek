@@ -1,7 +1,8 @@
 import { FieldType } from "@prisma/client";
-import { BaseController, UseMiddleware, Controller, Put, Post, Body } from "../../core";
+import { BaseController, UseMiddleware, Controller, Put, Post, Body, Req } from "../../core";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
 import TaskCustomFieldService, { IFilterAdvancedData } from "../../services/task/custom.field.service";
+import { AuthRequest } from "../../types";
 
 
 @Controller('/project/task/custom-field')
@@ -15,14 +16,15 @@ export default class TaskCustomFieldController extends BaseController {
   }
 
   @Put('')
-  async update(@Body() body: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
-    console.log('body 1', body)
-    const ret = await this.customFieldService.update(body)
+  async update(@Req() req: AuthRequest, @Body() body: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
+    const { id: uid } = req.authen
+    console.log('body 1', body, uid)
+    const ret = await this.customFieldService.update(uid, body)
     return ret
   }
 
   @Put('/update-many')
-  async updateMany(@Body() body: {
+  async updateMany(@Req() req: AuthRequest, @Body() body: {
     taskIds: string[],
     data: {
       [fieldId: string]: { value: string, type: FieldType }
@@ -30,7 +32,8 @@ export default class TaskCustomFieldController extends BaseController {
   }) {
 
     console.log('Update multi field called')
-    const ret = await this.customFieldService.updateMany(body.taskIds, body.data)
+    const { id: uid } = req.authen
+    const ret = await this.customFieldService.updateMany(uid, body.taskIds, body.data)
 
     return ret
 

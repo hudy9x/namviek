@@ -46,7 +46,7 @@ function DateFormat() {
 
   return <List title="Date format"
     value={selected}
-    onChange={val => {
+    onChange={(val: ListItemValue) => {
       setSelected(val)
       setCounter(counter => counter + 1)
     }}>

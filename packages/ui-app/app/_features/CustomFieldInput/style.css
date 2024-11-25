@@ -10,6 +10,16 @@
   @apply absolute top-0 left-0 w-full h-full; 
 }
 
+.cf-edit.form-control.cf-inp-date [data-state="open"] {
+  @apply relative;
+}
+
+.cf-inp-date [data-state="open"]:before { 
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full;
+  @apply border border-indigo-500 dark:border-indigo-200;
+}
+
 .cf-edit.form-control.cf-inp-date {
   @apply p-0;
 

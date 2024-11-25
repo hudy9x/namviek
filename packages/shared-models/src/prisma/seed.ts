@@ -82,7 +82,7 @@ password: ${process.env.DEFAULT_PWD || '123123123'}
       break;
     case 'truncate':
       // truncateCustomField('667547bbe186cf14067ef458')
-      truncateData('666fdd0faf8bcc274d3044a1')
+      truncateData('667547bbe186cf14067ef458')
       break;
     case 'custom-field':
       await generateCustomFieldData('666fdd0faf8bcc274d3044a1', 10);

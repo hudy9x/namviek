@@ -82,7 +82,7 @@ export function useTaskFetcher({
 
     const newCustomFields = Object.entries(customFields)
       .reduce((acc, [fieldId, { value }]) => ({
-          ...acc,
+        ...acc,
         [fieldId]: value
       }), {})
 
@@ -94,16 +94,16 @@ export function useTaskFetcher({
 
         return {
           ...task,
+          updatedAt: new Date(),
           customFields: { ...Object(task.customFields), ...newCustomFields }
         }
       })
       return result
     }
-      
+
     )
   }, [])
 
-  console.log('totalRecords', totalRecords, data.length)
   return {
     data,
     cursor,

@@ -22,6 +22,14 @@ export default function CreateFieldFactory() {
       case FieldType.FILES:
         return <CreateFieldText />
 
+      case FieldType.CREATED_BY:
+      case FieldType.UPDATED_BY:
+        return <CreateFieldText />
+
+      case FieldType.UPDATED_AT:
+      case FieldType.CREATED_AT:
+        return <CreateFieldDate />
+
       case FieldType.NUMBER:
         return <CreateFieldNumber />
 

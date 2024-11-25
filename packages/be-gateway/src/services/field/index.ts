@@ -108,6 +108,9 @@ export class FieldService {
         biggestOrder = field.order + 1
       }
 
+      console.log('fieldConfig', fieldConfig)
+      console.log('restdata', restData)
+
       const createdField = await tx.field.create({
         data: {
           ...{

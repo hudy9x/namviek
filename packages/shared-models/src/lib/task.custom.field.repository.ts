@@ -19,7 +19,7 @@ export class TaskCustomFieldRepository {
     return value
   }
 
-  async update({ id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
+  async update(uid: string, { id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
     const oldTask = await taskModel.findFirst({ where: { id } })
     const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
 
@@ -28,6 +28,8 @@ export class TaskCustomFieldRepository {
         id
       },
       data: {
+        updatedAt: new Date(),
+        updatedBy: uid,
         customFields: {
           ...oldCustomData,
           [fieldId]: this.convertType(type, value)
@@ -40,7 +42,7 @@ export class TaskCustomFieldRepository {
     return result
   }
 
-  async updateMultiField({ id, data }: {
+  async updateMultiField(uid: string, { id, data }: {
     id: string, data: {
       [fieldId: string]: { value: string, type: FieldType }
     }
@@ -63,6 +65,8 @@ export class TaskCustomFieldRepository {
         id
       },
       data: {
+        updatedAt: new Date(),
+        updatedBy: uid,
         customFields: {
           ...oldCustomData,
           ...convertedData

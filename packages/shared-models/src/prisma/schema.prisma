@@ -155,6 +155,10 @@ enum FieldType {
   FILES
   PHONE
   PERSON
+  CREATED_AT
+  CREATED_BY
+  UPDATED_AT
+  UPDATED_BY
 }
 
 model Field {
@@ -207,6 +211,21 @@ model Task {
   taskPoint        Int?
 
   customFields Json?
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
+model Grid {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  cover     String?
+  projectId String  @db.ObjectId
+
+  customFields Json?
+  isDeleted    Boolean?
 
   createdBy String?
   createdAt DateTime?
