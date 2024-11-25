@@ -27,7 +27,7 @@ function MultiActionInpDisplay({ onFieldChange }: MultiActionInpDisplayProps) {
       const data = JSON.stringify(field.data)
       const config = JSON.stringify(field.config)
 
-      if (type === FieldType.FILES) {
+      if (type === FieldType.FILES || type === FieldType.CREATED_AT || type === FieldType.CREATED_BY || type === FieldType.UPDATED_AT || type === FieldType.UPDATED_BY) {
         return null
       }
 
