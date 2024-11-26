@@ -25,6 +25,7 @@ export default function DataFetcher({
   const {
     data,
     cursor,
+    setData,
     isLoading,
     hasNextPage,
     totalRecords,
@@ -48,6 +49,7 @@ export default function DataFetcher({
 
   const contextValue: DataFetcherContextType = {
     cursor,
+    setData,
     data,
     totalRecords,
     restRecords,
@@ -56,8 +58,6 @@ export default function DataFetcher({
     fetchNextPage,
     updateCustomFields
   }
-
-  console.log('contextValue', contextValue)
 
   return (
     <DataFetcherContext.Provider value={contextValue}>

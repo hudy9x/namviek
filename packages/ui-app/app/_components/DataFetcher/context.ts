@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { Dispatch, SetStateAction, createContext } from 'react'
 import { ExtendedTask } from '@/store/task'
 
 export interface DataFetcherContextType {
@@ -8,6 +8,7 @@ export interface DataFetcherContextType {
   restRecords: number
   isLoading: boolean
   hasNextPage: boolean
+  setData: Dispatch<SetStateAction<ExtendedTask[]>>
   fetchNextPage: () => void
   updateCustomFields: (taskIds: string[], customFields: Record<string, any>) => void
 }
@@ -19,6 +20,7 @@ export const DataFetcherContext = createContext<DataFetcherContextType>({
   restRecords: 0,
   isLoading: false,
   hasNextPage: false,
+  setData: () => console.log(1),
   fetchNextPage: () => console.log(1),
   updateCustomFields: () => console.log(1)
 })

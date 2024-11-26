@@ -3,25 +3,19 @@ import CustomFieldCheckboxItem from "@/features/CustomFieldCheckbox/CustomFieldC
 import CustomFieldDisplay from "@/features/CustomFieldDisplay"
 import CustomFieldInputFactory from "@/features/CustomFieldInput/CustomFieldInputFactory"
 import CustomFieldInputProvider from "@/features/CustomFieldInput/CustomFieldInputProvider"
-import { taskCustomFieldSv } from "@/services/task.customfield"
-import { useProjectCustomFieldStore } from "@/store/customFields"
 import { ExtendedTask } from "@/store/task"
 import { FieldType, Prisma } from "@prisma/client"
-import { messageSuccess } from "@shared/ui"
+import { useTaskUpdate } from "@/components/DataFetcher/useTaskUpdate";
 
 const useOnChangeCustomFieldInput = (taskId: string) => {
 
+  const { updateOneField } = useTaskUpdate()
   const onChange = (value: string | string[], fieldId: string, type: FieldType) => {
-    taskCustomFieldSv.update({
+    updateOneField({
       taskId,
       type,
       value,
       fieldId
-    }).then(res => {
-      const { data, status } = res.data
-      console.log('returned data:', data, status)
-      if (status !== 200) return
-      messageSuccess('Update field value sucecss')
     })
   }
 
@@ -60,7 +54,7 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
 
   }
 
-  return <div className="list-row"
+  return <div data-testid={task.id} className="list-row"
     key={task.id}>
 
     <CustomFieldCheckboxItem taskId={task.id} />

@@ -1,5 +1,6 @@
 import { FieldType } from "@prisma/client"
-import { httpPut } from "./_req"
+import { httpPost, httpPut } from "./_req"
+import { ExtendedTask } from "@/store/task"
 
 export interface ICustomFieldData {
   [fieldId: string]: { value: string, type: FieldType }
@@ -17,6 +18,9 @@ export const taskCustomFieldSv = {
       taskIds,
       data
     })
-  }
+  },
 
+  create(data: ExtendedTask) {
+    return httpPost('/api/project/task/custom-field/create', data)
+  }
 }

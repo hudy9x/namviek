@@ -1,4 +1,4 @@
-import { FieldType, Prisma } from "@prisma/client"
+import { FieldType, Prisma, Task, TaskPriority, TaskType } from "@prisma/client"
 import { taskModel } from "./_prisma"
 
 export class TaskCustomFieldRepository {
@@ -40,6 +40,44 @@ export class TaskCustomFieldRepository {
     console.log('update data', result)
 
     return result
+  }
+
+  async create(uid: string, data: Partial<Task>) {
+    const newTask = await taskModel.create({
+      data: {
+        title: '',
+        cover: null,
+        order: 1,
+        type: TaskType.TASK,
+        startDate: null,
+        dueDate: null,
+        plannedStartDate: null,
+        plannedDueDate: null,
+        assigneeIds: [],
+        checklistDone: 0,
+        checklistTodos: 0,
+        desc: '',
+        done: false,
+        customFields: {},
+        fileIds: [],
+        projectId: data.projectId,
+        priority: TaskPriority.LOW,
+        taskStatusId: null,
+        tagIds: [],
+        visionId: null,
+        parentTaskId: null,
+        taskPoint: null,
+        createdBy: uid,
+        createdAt: new Date(),
+        updatedAt: null,
+        updatedBy: null,
+        progress: 0
+      }
+    });
+
+    console.log('create data', newTask);
+
+    return newTask;
   }
 
   async updateMultiField(uid: string, { id, data }: {

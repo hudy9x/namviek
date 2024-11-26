@@ -61,4 +61,15 @@ export default class TaskCustomFieldController extends BaseController {
       return { status: 500, error: error.message }
     }
   }
+
+  @Post('/create')
+  async create(@Req() req: AuthRequest, @Body() body: {
+    projectId: string,
+  }) {
+    const { id: uid } = req.authen
+    const ret = await this.customFieldService.create(uid, {
+      projectId: body.projectId
+    })
+    return ret
+  }
 }

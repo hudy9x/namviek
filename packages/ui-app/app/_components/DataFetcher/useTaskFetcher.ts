@@ -106,6 +106,7 @@ export function useTaskFetcher({
 
   return {
     data,
+    setData,
     cursor,
     restRecords: Math.max(0, totalRecords - data.length),
     totalRecords,

@@ -24,5 +24,6 @@ export default function CustomFieldInpCreatedAt({ value, config }: { value: stri
 
     return format(d, 'PP')
   }
-  return <div className="cf-edit">{value ? showDateStr(new Date(value)) : null}</div>
+  console.log('value', value)
+  return <div key={value} className="cf-edit">{value ? showDateStr(new Date(value)) : null}</div>
 }

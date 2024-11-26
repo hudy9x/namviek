@@ -88,6 +88,18 @@ export default class TaskCustomFieldService {
     }
   }
 
+  async create(uid: string, data: { projectId: string }) {
+    try {
+      const result = await this.customFieldRepo.create(uid, {
+        projectId: data.projectId,
+      })
+
+      return result
+    } catch (error) {
+      console.log('Create Custom field error:', error)
+      return null
+    }
+  }
   private buildSingleFieldQuery(item: TFilterAdvancedItem) {
     const fieldPath = `customFields.${item.id}`
 
@@ -182,7 +194,6 @@ export default class TaskCustomFieldService {
   }
 
   private normalizeMongoResults(results: Record<string, any>[]) {
-    console.log('results', results)
     return Array.from(results).map(task => {
       const normalized = { ...task }
 
