@@ -9,7 +9,7 @@ export const applicationSv = {
     return httpGet(`/api/apps/${orgId}`)
   },
 
-  create(data: any) {
+  create(data: { name: string, desc?: string, orgId: string }) {
     return httpPost('/api/apps', data)
   },
 
