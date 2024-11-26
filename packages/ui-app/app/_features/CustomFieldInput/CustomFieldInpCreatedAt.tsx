@@ -3,7 +3,7 @@ export default function CustomFieldInpCreatedAt({ value, config }: { value: stri
 
   const defaultConfig = (JSON.parse(config) || {}) as { format: string, includeTime: boolean }
 
-  const includeTime = defaultConfig.includeTime ? 'HH:mm' : ''
+  const includeTime = defaultConfig.includeTime ? ' HH:mm' : ''
   const toNow = defaultConfig.format === 'from-now'
   const dateFormat = defaultConfig.format + includeTime
 
