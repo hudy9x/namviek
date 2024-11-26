@@ -12,6 +12,7 @@ export const taskChecklistModel = pmClient.taskChecklist
 export const tagModel = pmClient.tag
 export const favModel = pmClient.favorites
 export const taskModel = pmClient.task
+export const gridModel = pmClient.grid
 export const memberModel = pmClient.members
 export const userModel = pmClient.user
 export const orgModel = pmClient.organization

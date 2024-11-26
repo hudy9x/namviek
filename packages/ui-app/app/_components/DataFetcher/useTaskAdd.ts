@@ -2,7 +2,7 @@ import { useDataFetcher } from "./useDataFetcher"
 import { randomId } from "@shared/ui"
 import { useParams } from "next/navigation"
 import { ExtendedTask } from "@/store/task"
-import { taskCustomFieldSv } from "@/services/task.customfield"
+import { projectGridSv } from "@/services/project.grid"
 
 export const useTaskAdd = () => {
   const { setData } = useDataFetcher()
@@ -24,7 +24,7 @@ export const useTaskAdd = () => {
       ]
     })
 
-    taskCustomFieldSv.create(insertedData).then(res => {
+    projectGridSv.create(insertedData).then(res => {
       console.log(res)
       const { data, status } = res.data
       if (status !== 200) return

@@ -1,7 +1,7 @@
 import { FieldType, Prisma, Task, TaskPriority, TaskType } from "@prisma/client"
-import { taskModel } from "./_prisma"
+import { gridModel } from "./_prisma"
 
-export class TaskCustomFieldRepository {
+export class GridRepository {
 
   private convertType(type: FieldType, value: string | string[]) {
     if (type === FieldType.MULTISELECT && Array.isArray(value)) {
@@ -20,10 +20,10 @@ export class TaskCustomFieldRepository {
   }
 
   async update(uid: string, { id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
-    const oldTask = await taskModel.findFirst({ where: { id } })
+    const oldTask = await gridModel.findFirst({ where: { id } })
     const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
 
-    const result = await taskModel.update({
+    const result = await gridModel.update({
       where: {
         id
       },
@@ -43,35 +43,16 @@ export class TaskCustomFieldRepository {
   }
 
   async create(uid: string, data: Partial<Task>) {
-    const newTask = await taskModel.create({
+    const newTask = await gridModel.create({
       data: {
-        title: '',
+        title: 'Untitled',
         cover: null,
-        order: 1,
-        type: TaskType.TASK,
-        startDate: null,
-        dueDate: null,
-        plannedStartDate: null,
-        plannedDueDate: null,
-        assigneeIds: [],
-        checklistDone: 0,
-        checklistTodos: 0,
-        desc: '',
-        done: false,
         customFields: {},
-        fileIds: [],
         projectId: data.projectId,
-        priority: TaskPriority.LOW,
-        taskStatusId: null,
-        tagIds: [],
-        visionId: null,
-        parentTaskId: null,
-        taskPoint: null,
         createdBy: uid,
         createdAt: new Date(),
         updatedAt: null,
         updatedBy: null,
-        progress: 0
       }
     });
 
@@ -86,7 +67,7 @@ export class TaskCustomFieldRepository {
     }
   }) {
 
-    const oldTask = await taskModel.findFirst({ where: { id } })
+    const oldTask = await gridModel.findFirst({ where: { id } })
     const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
 
     const convertedData = {}
@@ -98,7 +79,7 @@ export class TaskCustomFieldRepository {
 
     console.log('convertedDAta', convertedData)
 
-    const result = await taskModel.update({
+    const result = await gridModel.update({
       where: {
         id
       },

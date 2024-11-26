@@ -5,9 +5,9 @@ import GridService, { IFilterAdvancedData } from "../../services/task/custom.fie
 import { AuthRequest } from "../../types";
 
 
-@Controller('/project/task/custom-field')
+@Controller('/project/grid')
 @UseMiddleware([authMiddleware, beProjectMemberMiddleware])
-export default class TaskCustomFieldController extends BaseController {
+export default class ProjectGridController extends BaseController {
   private gridService: GridService
 
   constructor() {

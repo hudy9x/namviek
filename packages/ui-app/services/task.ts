@@ -1,6 +1,6 @@
 import { Task, TaskPriority } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
-import { IFilterAdvancedData } from '@/app/_features/FilterAdvanced/type'
+import { IFilterAdvancedData } from '@/features/FilterAdvanced/type'
 
 type ITaskFields = Partial<Task>
 

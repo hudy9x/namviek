@@ -1,6 +1,6 @@
 import { useDataFetcher } from "./useDataFetcher"
 import { messageSuccess } from "@shared/ui"
-import { taskCustomFieldSv } from "@/services/task.customfield"
+import { projectGridSv } from "@/services/project.grid"
 import { FieldType } from "@prisma/client"
 import { useUser } from "@goalie/nextjs"
 
@@ -26,7 +26,7 @@ export const useTaskUpdate = () => {
       return dt
     }))
 
-    taskCustomFieldSv.update({
+    projectGridSv.update({
       taskId,
       type,
       value,

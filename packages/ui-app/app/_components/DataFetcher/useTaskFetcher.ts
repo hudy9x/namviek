@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
-import { taskGetCustomQuery } from '@/services/task'
 import { IFilterAdvancedData } from '@/features/FilterAdvanced/type'
 import { ExtendedTask } from '@/store/task'
 import { FieldType } from '@prisma/client'
+import { projectGridSv } from '@/services/project.grid'
 
 interface UseTaskFetcherProps {
   projectId: string
@@ -35,7 +35,7 @@ export function useTaskFetcher({
     const controller = new AbortController()
     setIsLoading(true)
 
-    taskGetCustomQuery(
+    projectGridSv.get(
       projectId,
       filter,
       controller.signal,

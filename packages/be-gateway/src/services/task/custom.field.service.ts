@@ -5,7 +5,7 @@ import { buildNumberQuery } from "./builders/number.builder"
 import { buildDateQuery } from "./builders/date.builder"
 import { buildSelectQuery } from "./builders/select.builder"
 import { buildBooleanQuery } from "./builders/boolean.builder"
-import { TaskCustomFieldRepository } from "@shared/models"
+import { GridRepository } from "@shared/models"
 import { buildPersonQuery } from "./builders/person.builder"
 
 export enum EFilterCondition {
@@ -32,10 +32,10 @@ interface PaginationOptions {
   page?: number
 }
 
-export default class TaskCustomFieldService {
-  customFieldRepo: TaskCustomFieldRepository
+export default class GridService {
+  gridRepo: GridRepository
   constructor() {
-    this.customFieldRepo = new TaskCustomFieldRepository()
+    this.gridRepo = new GridRepository()
   }
 
   async updateMany(uid: string, rowIds: string[], data: {
@@ -44,7 +44,7 @@ export default class TaskCustomFieldService {
     console.log(rowIds, data)
     const promises = []
     for (const rowId of rowIds) {
-      promises.push(this.customFieldRepo.updateMultiField(uid, {
+      promises.push(this.gridRepo.updateMultiField(uid, {
         id: rowId,
         data
       }))
@@ -59,7 +59,7 @@ export default class TaskCustomFieldService {
   async update(uid: string, data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
     try {
 
-      const result = await this.customFieldRepo.update(uid, {
+      const result = await this.gridRepo.update(uid, {
         id: data.taskId,
         fieldId: data.fieldId,
         type: data.type,
@@ -90,7 +90,7 @@ export default class TaskCustomFieldService {
 
   async create(uid: string, data: { projectId: string }) {
     try {
-      const result = await this.customFieldRepo.create(uid, {
+      const result = await this.gridRepo.create(uid, {
         projectId: data.projectId,
       })
 
@@ -139,17 +139,16 @@ export default class TaskCustomFieldService {
 
       // Get total count for pagination info
       const countQuery = this.buildQueryFilter(projectId, filter)
-      let countResults = await pmClient.task.findRaw({
+      let countResults = await pmClient.grid.findRaw({
         filter: countQuery
       })
       const totalCount = Array.isArray(countResults) ? countResults.length : 0
       countResults = null
 
-      console.log('cursor', cursor)
       // Build and execute query
       const query = this.buildQueryFilter(projectId, filter, cursor)
       console.log('query', JSON.stringify(query, null, ' '))
-      const results = await pmClient.task.findRaw({
+      const results = await pmClient.grid.findRaw({
         filter: query,
         options: {
           limit: safeLimit + 1,
@@ -160,6 +159,7 @@ export default class TaskCustomFieldService {
       // Process results
       const normalizedResults = this.normalizeMongoResults(results as unknown as Record<string, any>[])
       const items = normalizedResults.slice(0, safeLimit)
+      console.log('items', items.length)
       const hasNextPage = normalizedResults.length > safeLimit
       const nextCursor = hasNextPage ? items[items.length - 1].id : null
 

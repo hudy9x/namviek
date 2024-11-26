@@ -57,11 +57,10 @@ export const generateCustomFieldData = async (projectId: string, totalRecords = 
         customFields[field.id] = await generateFieldValue(field.type, field.config, field.data, memberIds)
       }
 
-      const result = await pmClient.task.create({
+      const result = await pmClient.grid.create({
         data: {
           title: faker.lorem.sentence(),
           projectId,
-          order: i,
           customFields,
           createdAt: new Date(),
           updatedAt: new Date()
@@ -81,7 +80,7 @@ export const generateCustomFieldData = async (projectId: string, totalRecords = 
 
 export const truncateCustomField = async (projectId: string) => {
   const promises = []
-  promises.push(pmClient.task.deleteMany({
+  promises.push(pmClient.grid.deleteMany({
     where: {
       projectId
     }

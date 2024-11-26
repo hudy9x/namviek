@@ -3,7 +3,7 @@ import { useCheckboxStore } from "../CustomFieldCheckbox/useCheckboxStore";
 import MultiActionInpDisplay from "./MultiActionInpDisplay";
 import { useState } from "react";
 import { FieldType } from "@prisma/client";
-import { taskCustomFieldSv } from "@/services/task.customfield";
+import { projectGridSv } from "@/services/project.grid";
 import { useDataFetcher } from "@/components/DataFetcher/useDataFetcher";
 // Define type for field values
 type FieldValues = {
@@ -52,7 +52,7 @@ export default function CustomFieldMultiAction() {
     setFieldValues({})
     clear()
 
-    taskCustomFieldSv.updateMany(ids, fieldValues).then(res => {
+    projectGridSv.updateMany(ids, fieldValues).then(res => {
       console.log('respomd', res)
       messageSuccess('Multiple update successfully')
     })
@@ -61,7 +61,7 @@ export default function CustomFieldMultiAction() {
 
   if (!display) return null
 
-  return <div style={{ height: 'calc(100vh - 78px)', top: 78 }} className="fixed right-0 h-full w-[300px] z-40 bg-white dark:bg-gray-900 dark:border-gray-700 border-l shadow-md">
+  return <div style={{ height: 'calc(100vh - 78px)', top: 78 }} className="fixed right-0 h-full w-[300px] z-40 bg-white dark:bg-gray-900 dark:border-gray-700 border-t border-l shadow-md">
     <div className="space-y-2 py-3">
       <div className="border-b dark:border-gray-700 pb-3">
         <h2 className="mx-3 rounded-md bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 px-2 py-1.5 text-sm">Total: {length}</h2>

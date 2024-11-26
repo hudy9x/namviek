@@ -23,7 +23,6 @@ import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 import { useGetCustomFields } from './useGetCustomFields'
-import useGetCustomData from './useGetCustomData'
 import ClearCheckedCheckboxes from '../CustomFieldCheckbox/ClearCheckedCheckboxes'
 
 function SaveRecentVisitPage() {
@@ -74,14 +73,13 @@ function PrefetchData() {
   useUpdateGroupbyItem()
   useTodoFilter()
   useGetProjectStatus()
-  // useGetTask()
+  useGetTask()
   useGetMembers()
   useGetProjectPoint()
   useGetProjectViewList()
   useGetAutomationRulesByProject()
   useGetCustomFields()
 
-  useGetCustomData()
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible
