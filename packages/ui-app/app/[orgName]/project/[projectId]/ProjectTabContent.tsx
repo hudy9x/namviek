@@ -27,7 +27,7 @@ const Vision = dynamic(() => import('@/features/Project/Vision'), {
   loading: () => <ProjectContentLoading />
 })
 
-const Grid = dynamic(() => import('@/features/Project/Grid'), {
+const Grid = dynamic(() => import('@/features/Project/GridView'), {
   loading: () => <ProjectContentLoading />
 })
 

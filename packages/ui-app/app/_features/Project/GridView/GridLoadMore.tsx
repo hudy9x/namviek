@@ -1,7 +1,7 @@
 import { useDataFetcher } from "@/components/DataFetcher/useDataFetcher"
 import { Button } from "@shared/ui"
 
-export default function ListLoadMore() {
+export default function GridLoadMore() {
   const {
     fetchNextPage,
     hasNextPage,

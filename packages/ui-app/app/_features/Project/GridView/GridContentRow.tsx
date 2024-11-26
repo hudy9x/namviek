@@ -24,7 +24,7 @@ const useOnChangeCustomFieldInput = (taskId: string) => {
   }
 }
 
-function ListContentRow({ task }: { task: ExtendedTask }) {
+function GridContentRow({ task }: { task: ExtendedTask }) {
 
   const taskCustomData = task.customFields
   // console.log('taskCustomData', taskCustomData)
@@ -83,4 +83,4 @@ function ListContentRow({ task }: { task: ExtendedTask }) {
 
   </div>
 }
-export default memo(ListContentRow)
+export default memo(GridContentRow)

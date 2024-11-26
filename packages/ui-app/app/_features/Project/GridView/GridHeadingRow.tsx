@@ -1,12 +1,12 @@
 import CustomFieldDisplay from "@/features/CustomFieldDisplay";
 import CustomFieldAction from "@/features/CustomFieldDisplay/CustomFieldAction";
 import CustomFieldResize from "@/features/CustomFieldDisplay/CustomFieldResize";
-import ListHeadingCheckbox from "./ListHeadingCheckbox";
+import GridHeadingCheckbox from "./GridHeadingCheckbox";
 
-export default function ListHeadingRow() {
+export default function GridHeadingRow() {
 
   return <div className="list-heading list-row">
-    <ListHeadingCheckbox />
+    <GridHeadingCheckbox />
     <CustomFieldDisplay sortable={true} createBtn={true}>
       {(index, fieldData) => {
         const { name, width, id } = fieldData
