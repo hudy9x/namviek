@@ -29,7 +29,7 @@ const ApplicationCard = ({ application }: { application: Application }) => {
     <Card className="p-4">
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-lg font-medium">{application.name}</h3>
+          <h3 className="text-xl font-medium">{application.name}</h3>
           <div className="mt-2 space-y-2">
             <div className='flex items-center gap-3'>
               <span className="text-gray-500 shrink-0">Client ID: </span>
