@@ -86,6 +86,11 @@ router.post('/sign-up', async (req, res) => {
       return res.json({ status: 404, error: errorArr })
     }
 
+    if (process.env.NEXT_PUBLIC_DISABLE_REGISTRATION === "1") {
+      return res.json({ status: 500, error: "Registration is currently unavailable. Please contact the website administrator for further assistance" })
+
+    }
+
     const resultData = data as User
     const hashedPwd = hashPassword(resultData.password)
 
