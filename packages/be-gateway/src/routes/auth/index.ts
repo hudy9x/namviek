@@ -8,13 +8,14 @@ import {
   generateVerifyToken
 } from '../../lib/jwt'
 import { hashPassword } from '../../lib/password'
-import { JWTPayload } from '../../types'
+import { AuthRequest, JWTPayload } from '../../types'
 import JwtProvider from '../../providers/JwtProvider'
 import EmailAuthProvider from '../../providers/auth/EmailAuthProvider'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
 import GoogleAuthProvider from '../../providers/auth/GoogleAuthProvider'
 import { isDevMode, isEmailVerificationEnabled } from '../../lib/utils'
 import { sendDiscordLog } from '../../lib/log'
+import { authMiddleware } from '../../middlewares'
 
 const mainRouter = Router()
 const router = Router()
@@ -76,6 +77,59 @@ router.post('/sign-in', async (req, res) => {
     res.json({ status: error.status, error })
   }
 })
+
+router.post('/sign-up-private', [authMiddleware], async (req: AuthRequest, res) => {
+  try {
+    const body = req.body as User
+    const { id: uid } = req.authen
+    const { error, errorArr, data } = validateRegisterUser(body)
+
+    if (error && errorArr) {
+      return res.json({ status: 404, error: errorArr })
+    }
+
+    const resultData = data as User
+    const hashedPwd = hashPassword(resultData.password)
+    const userStatus = body.status
+
+    const insertedData = {
+      email: resultData.email,
+      password: hashedPwd,
+      name: resultData.name,
+      country: null,
+      bio: null,
+      dob: null,
+      status: userStatus,
+      photo: null,
+      settings: {},
+      createdAt: new Date(),
+      createdBy: uid,
+      updatedAt: null,
+      updatedBy: null
+    }
+
+    const user = await mdUserAdd(insertedData)
+
+    console.log('inserted new user', user)
+
+    res.json({
+      status: 200,
+      data: user
+    })
+  } catch (error) {
+    console.log(error)
+    let errorMessage = 'Internal Server Error'
+    if (error && error.code === 'P2002') {
+      errorMessage = 'Duplicate Email'
+    }
+    res.json({
+      status: 500,
+      error: errorMessage
+    })
+  }
+
+})
+
 
 router.post('/sign-up', async (req, res) => {
   try {
