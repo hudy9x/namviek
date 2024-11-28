@@ -9,6 +9,13 @@ export class ApplicationRepository {
     })
   }
 
+  async update(id: string, data: Partial<Application>) {
+    return mdApp.update({
+      where: { id },
+      data
+    })
+  }
+
   async getByOrgId(organizationId: string) {
     return mdApp.findMany({
       where: {
@@ -17,6 +24,12 @@ export class ApplicationRepository {
       orderBy: {
         createdAt: 'desc'
       }
+    })
+  }
+
+  async delete(id: string) {
+    return mdApp.delete({
+      where: { id }
     })
   }
 }

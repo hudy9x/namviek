@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Application } from '@prisma/client'
 import { useApplicationStore } from '@/store/application'
-import { Button, Card } from '@shared/ui'
-import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { Button, Card, confirmAlert, messageSuccess } from '@shared/ui'
+import { FiEye, FiEyeOff, FiCopy, FiTrash2 } from 'react-icons/fi'
 import { useGetParams } from '@/hooks/useGetParams'
 
 export const ApplicationList = () => {
@@ -24,6 +24,30 @@ export const ApplicationList = () => {
 
 const ApplicationCard = ({ application }: { application: Application }) => {
   const [showSecret, setShowSecret] = useState(false)
+  const { deleteApplication } = useApplicationStore()
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        messageSuccess('Copied to clipboard')
+        // Optionally, you can show a toast or notification here
+        console.log('Copied to clipboard')
+      })
+      .catch((err) => {
+        console.error('Failed to copy: ', err)
+      })
+  }
+
+  const handleDelete = async () => {
+    confirmAlert({
+      title: 'Delete Application',
+      message: 'Are you sure you want to delete this application?',
+      yes: async () => {
+        await deleteApplication(application.id)
+        messageSuccess('Application deleted successfully')
+      }
+    })
+  }
 
   return (
     <Card className="p-4">
@@ -33,27 +57,40 @@ const ApplicationCard = ({ application }: { application: Application }) => {
           <div className="mt-2 space-y-2">
             <div className='flex items-center gap-3'>
               <span className="text-gray-500 shrink-0">Client ID: </span>
-              <code className="">{application.clientId}</code>
+              <span className="">{application.clientId}</span>
+              <Button
+                size="sm"
+                onClick={() => copyToClipboard(application.clientId)}
+                leadingIcon={<FiCopy size={16} />}
+                aria-label="Copy Client ID"
+              />
             </div>
             <div className='flex items-center gap-3'>
               <span className="text-gray-500 shrink-0">Client Secret: </span>
               <div className="flex items-center gap-2">
-                <code className="">
+                <span className="">
                   {showSecret ? application.clientSecret : '••••••••••••••••'}
-                </code>
+                </span>
                 <Button
-                  ghost
                   size="sm"
                   onClick={() => setShowSecret(!showSecret)}
                   leadingIcon={showSecret ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                />
+                <Button
+                  size="sm"
+                  onClick={() => copyToClipboard(application.clientSecret)}
+                  leadingIcon={<FiCopy size={16} />}
+                  aria-label="Copy Client Secret"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div>
-          {application.status}
-        </div>
+        <Button
+          size="sm"
+          onClick={handleDelete}
+          leadingIcon={<FiTrash2 size={16} />}
+        />
       </div>
     </Card>
   )

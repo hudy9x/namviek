@@ -2,7 +2,6 @@ import { NextFunction, Response } from 'express';
 import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken } from '../lib/jwt';
 import { AuthRequest, JWTPayload } from '../types';
 import { pmClient } from 'packages/shared-models/src/lib/_prisma';
-import { ApplicationStatus } from '@prisma/client';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const headers = req.headers;
@@ -18,7 +17,6 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
       where: {
         clientId,
         clientSecret,
-        status: ApplicationStatus.ACTIVE
       }
     })
 

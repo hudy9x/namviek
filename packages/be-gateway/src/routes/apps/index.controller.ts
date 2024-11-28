@@ -1,4 +1,3 @@
-import { ApplicationStatus } from '@prisma/client'
 import {
   BaseController,
   Body,
@@ -14,6 +13,7 @@ import { authMiddleware } from '../../middlewares'
 import { ApplicationRepository } from '@shared/models'
 import { randomBytes } from 'crypto'
 import { AuthRequest } from '../../types'
+import { Application } from '@prisma/client'
 
 @Controller('/apps')
 @UseMiddleware([authMiddleware])
@@ -47,15 +47,14 @@ export class ApplicationController extends BaseController {
       throw new Error('Name and Organization are required')
     }
 
-    const clientId = randomBytes(16).toString('hex')
-    const clientSecret = randomBytes(32).toString('hex')
+    const clientId = randomBytes(8).toString('hex')
+    const clientSecret = randomBytes(16).toString('hex')
 
     const result = await this.appRepo.create({
       name,
       description: desc || '',
       organizationId: orgId,
       clientId,
-      status: ApplicationStatus.INACTIVE,
       scopes: [],
       clientSecret,
       updatedBy: null,
@@ -68,12 +67,35 @@ export class ApplicationController extends BaseController {
   }
 
   @Put('')
-  async update() {
-    console.log(1)
+  async update(@Body() body: Application, @Req() req: AuthRequest) {
+    const { id, ...rest } = body
+    const { id: uid } = req.authen
+
+
+    if (!id) {
+      throw new Error('Application ID and status are required')
+    }
+
+    const result = await this.appRepo.update(id, {
+      ...rest,
+      updatedBy: uid,
+      updatedAt: new Date()
+    })
+
+    return result
   }
 
-  @Delete('')
-  async delete() {
-    console.log(1)
+  @Delete('/:id')
+  async delete(@Req() req: AuthRequest) {
+    const { id } = req.params
+
+    console.log('1')
+
+    if (!id) {
+      throw new Error('Application ID is required')
+    }
+
+    const result = await this.appRepo.delete(id)
+    return result
   }
 }

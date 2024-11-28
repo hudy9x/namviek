@@ -1,44 +1,31 @@
 'use client'
 
 import { useGetParams } from '@/hooks/useGetParams'
-import { applicationSv } from '@/services/apps'
 import { useApplicationStore } from '@/store/application'
-import { Button, Dialog, Form, messageError, messageSuccess } from '@shared/ui'
+import { Button, Dialog, Form, messageError } from '@shared/ui'
 import { useState } from 'react'
 
 export default function CreateApplication() {
-  const addApplication = useApplicationStore(state => state.addApplication)
+  const { addApplication, isLoading } = useApplicationStore()
   const { orgId } = useGetParams()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
-  const onAdd = () => {
+  const onAdd = async () => {
     if (!name || !orgId) {
       messageError('Name and Organization are required')
       return
     }
 
-    addApplication({
+    await addApplication({
       name,
       orgId,
       desc
     })
 
-    // applicationSv.create({
-    //   name,
-    //   orgId,
-    //   desc
-    // }).then(res => {
-    //   console.log(res)
-    //   const { data, status } = res.data
-    //   if (status !== 200) {
-    //     messageError('Failed to create application')
-    //     return
-    //   }
-    //   messageSuccess('Application created successfully')
-    //   setOpen(false)
-    //   addApplication(data)
-    // })
+    setOpen(false)
+    setName('')
+    setDesc('')
   }
 
   return (
@@ -59,7 +46,7 @@ export default function CreateApplication() {
             <Form.Input title='Name' required value={name} onChange={ev => setName(ev.target.value)} />
             <Form.Textarea title='Description' value={desc} onChange={ev => setDesc(ev.target.value)} />
             <div>
-              <Button primary onClick={onAdd} title='Create' block />
+              <Button loading={isLoading} primary onClick={onAdd} title='Create' block />
             </div>
           </div>
         </Dialog.Content>

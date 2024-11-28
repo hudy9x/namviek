@@ -1,8 +1,9 @@
+import { Application } from "@prisma/client"
 import { httpPost, httpPut, httpGet, httpDel } from "./_req"
 
 export const applicationSv = {
-  update(data: any) {
-    return httpPut('/api/apps', data)
+  update(data: Partial<Application>) {
+    return httpPut(`/api/apps`, data)
   },
 
   get(orgId: string) {
