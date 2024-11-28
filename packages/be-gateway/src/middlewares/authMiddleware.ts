@@ -1,11 +1,39 @@
 import { NextFunction, Response } from 'express';
 import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken } from '../lib/jwt';
 import { AuthRequest, JWTPayload } from '../types';
+import { pmClient } from 'packages/shared-models/src/lib/_prisma';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const headers = req.headers;
   const authorization = headers.authorization;
   const refreshToken = headers.refreshtoken as string;
+  const clientId = headers['x-client-id'] as string;
+  const clientSecret = headers['x-client-secret'] as string;
+
+  console.log('auth middleware run', clientId, clientSecret)
+
+  if (clientId && clientSecret) {
+    const application = await pmClient.application.findFirst({
+      where: {
+        clientId,
+        clientSecret,
+      }
+    })
+
+    if (!application) {
+      console.log('Application is INACTIVE or doesnt exist')
+      return res.status(401).end();
+    }
+
+    req.authen = {
+      id: application.id,
+      email: application.name,
+      name: application.name,
+      photo: ''
+    }
+
+    return next();
+  }
 
   try {
     const validToken = extractToken(authorization);

@@ -522,3 +522,18 @@ model Comment {
   createdAt DateTime
   updatedAt DateTime
 }
+
+model Application {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String?
+  clientId       String   @unique
+  clientSecret   String
+  organizationId String   @db.ObjectId
+  scopes         String[] // Array of permitted scopes
+
+  createdAt DateTime?
+  createdBy String?
+  updatedAt DateTime?
+  updatedBy String?
+}

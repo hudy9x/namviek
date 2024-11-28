@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 import { AiOutlineAppstoreAdd, AiOutlineCloudDownload } from 'react-icons/ai'
 import { HiOutlineInformationCircle, HiOutlineUserCircle } from 'react-icons/hi'
-import { HiOutlineServerStack } from 'react-icons/hi2'
+import { HiOutlineRocketLaunch, HiOutlineServerStack } from 'react-icons/hi2'
 
 export default function SettingTabLayout() {
   const { orgRole } = useUserRole()
@@ -35,14 +35,14 @@ export default function SettingTabLayout() {
     //   active: false,
     //   enable: true
     // },
-    // {
-    //   title: 'Apps',
-    //   name: 'apps',
-    //   href: '#',
-    //   icon: AiOutlineAppstoreAdd,
-    //   active: false,
-    //   enable: true
-    // },
+    {
+      title: 'Apps',
+      name: 'apps',
+      href: '#',
+      icon: HiOutlineRocketLaunch,
+      active: pathname.includes('/setting/apps'),
+      enable: true
+    },
     {
       title: 'Export',
       name: 'export-import',

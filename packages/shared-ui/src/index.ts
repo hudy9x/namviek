@@ -17,6 +17,7 @@ import TabContainer from './components/Tab'
 import PopoverContainer from './components/Controls/PopoverControl'
 import SwitchContainer from './components/Switch'
 import DialogContainer from "./components/Dialog";
+import CardContainer from './components/Card'
 import IconColorPickerContainer, { colors as colorPickers } from "./components/IconColorPicker";
 
 export {
@@ -28,6 +29,7 @@ export {
 export { setFixLoading } from './components/Loading'
 
 export const Dialog = DialogContainer
+export const Card = CardContainer
 export const Switch = SwitchContainer
 export const Popover = PopoverContainer
 export const Modal = ModalComp

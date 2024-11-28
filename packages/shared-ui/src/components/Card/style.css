@@ -1,0 +1,46 @@
+.card {
+  @apply bg-white rounded-lg;
+  @apply dark:bg-gray-900;
+}
+
+.card.bordered {
+  @apply border border-gray-200;
+  @apply dark:border-gray-700;
+}
+
+.card.hoverable {
+  @apply transition-shadow duration-200;
+  @apply hover:shadow-md;
+}
+
+/* Padding variants */
+.card.p-none {
+  @apply p-0;
+}
+
+.card.p-sm {
+  @apply p-3;
+}
+
+.card.p-base {
+  @apply p-4;
+}
+
+.card.p-lg {
+  @apply p-6;
+}
+
+/* Sub-components */
+.card-header {
+  @apply px-6 py-4 border-b border-gray-200;
+  @apply dark:border-gray-700;
+}
+
+.card-body {
+  @apply p-6;
+}
+
+.card-footer {
+  @apply px-6 py-4 border-t border-gray-200;
+  @apply dark:border-gray-700;
+}
