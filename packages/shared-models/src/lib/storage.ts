@@ -44,6 +44,16 @@ export const mdStorageGetByOwner = async (
   })
 }
 
+export const mdStorageGetByCreator = async (
+  createdBy: string,
+) => {
+  return fileStorageModel.findMany({
+    where: {
+      createdBy: createdBy,
+    }
+  })
+}
+
 export const mdStorageDelMany = async (ids: string[]) => {
   return fileStorageModel.updateMany({
     where: {

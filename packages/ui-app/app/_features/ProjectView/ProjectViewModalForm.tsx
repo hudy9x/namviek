@@ -18,6 +18,7 @@ import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { useReRenderView } from './useReRenderView'
 import { projectViewMap } from './useProjectViewList'
 import { useUser } from '@goalie/nextjs'
+import ProjectViewFilterByWhiteboard from '../ProjectViewFilter/WhiteboardFilter'
 
 export default function ProjectViewModalForm({
   type,
@@ -163,6 +164,7 @@ export default function ProjectViewModalForm({
       <ProjectViewFilterByGoal type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
       <ProjectViewFilterByTeam type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
       <ProjectViewFilterByDashboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByWhiteboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
     </div>
   )
 }

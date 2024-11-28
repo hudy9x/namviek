@@ -42,6 +42,10 @@ const AutomateMenu = dynamic(
   }
 )
 
+const Whiteboard = dynamic(() => import('@/features/Project/Whiteboard'), {
+  loading: () => <ProjectContentLoading />
+})
+
 function AnimateView({
   visible,
   children
@@ -125,6 +129,10 @@ export default function ProjectTabContent() {
       <AnimateView visible={isView(ProjectViewType.TEAM)}>
         <DynamicTeamView />
       </AnimateView>
+      <AnimateView visible={isView(ProjectViewType.WHITEBOARD)}>
+        <Whiteboard />
+      </AnimateView>
+
       {mode === 'setting' && <Settings />}
       {mode === 'automation-create' ? <Automation /> : null}
       {mode === 'automation' ? <AutomateMenu /> : null}

@@ -6,6 +6,7 @@ import {
   mdOrgGetOne,
   mdStorageAdd,
   mdStorageGet,
+  mdStorageGetByCreator,
   mdStorageGetByOwner,
   mdStorageGetOne,
   mdTaskGetOne,
@@ -133,6 +134,20 @@ router.get('/get-files-by-owner', async (req: AuthRequest, res) => {
     }
 
     const result = await mdStorageGetByOwner(ownerId, ownerType)
+
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+router.get('/get-files-by-creator', async (req: AuthRequest, res) => {
+  try {
+    const { createdBy } = req.query as {
+      createdBy: string
+    }
+
+    const result = await mdStorageGetByCreator(createdBy)
 
     res.json({ status: 200, data: result })
   } catch (error) {

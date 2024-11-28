@@ -19,7 +19,7 @@ export default function FileDrop({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`file-drop-zone`}
+      className={`file-drop-zone w-full h-full`}
       onDrop={onDropFileChange}
       onDragOver={ev => {
         ev.preventDefault()

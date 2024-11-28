@@ -11,7 +11,7 @@ export default function FileKitContainer({
   fileIds,
   children
 }: {
-  taskId: string
+  taskId?: string
   fileIds: string[]
   children: ReactNode
 }) {

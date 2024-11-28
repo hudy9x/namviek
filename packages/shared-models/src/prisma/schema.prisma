@@ -329,6 +329,7 @@ enum ProjectViewType {
   GOAL
   TEAM
   ACTIVITY
+  WHITEBOARD
 }
 
 model ProjectView {

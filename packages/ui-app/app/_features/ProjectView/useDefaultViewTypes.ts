@@ -53,6 +53,12 @@ export const useDefaultViewTypes = () => {
       type: ProjectViewType.DASHBOARD,
       title: 'Dashboard',
       desc: 'Have a overlook view'
+    },
+    {
+      icon: 'HiOutlineRectangleGroup',
+      type: ProjectViewType.WHITEBOARD,
+      title: 'Whiteboard',
+      desc: 'Express your ideas'
     }
   ]
 

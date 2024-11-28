@@ -20,7 +20,7 @@ export type IFileUploadItem = {
 }
 
 interface IFileKitContextProps {
-  taskId: string
+  taskId?: string
   uploading: boolean
   setUploading: Dispatch<SetStateAction<boolean>>
   loading: boolean

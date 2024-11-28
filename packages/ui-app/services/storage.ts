@@ -29,6 +29,7 @@ export const storageGetFiles = (ids: string[]) => {
     }
   })
 }
+
 export const storageDelFile = ({ id, projectId, orgId }: {
   id: string,
   projectId: string,
@@ -45,6 +46,10 @@ export const storagePutFile = (presignedUrl: string, data: File) => {
 
 export const storageSaveToDrive = (data: Partial<FileStorage>) => {
   return httpPost('/api/storage/save-to-drive', data)
+}
+
+export const storageGetFilesByCreator = () => {
+  return httpGet('/api/storage/get-files-by-creator')
 }
 
 // export const storageGetObjectUrl = (name: string) => {
