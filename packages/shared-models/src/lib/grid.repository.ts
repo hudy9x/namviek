@@ -1,4 +1,4 @@
-import { FieldType, Grid, Prisma, Task, TaskPriority, TaskType } from "@prisma/client"
+import { FieldType, Grid, Prisma } from "@prisma/client"
 import { gridModel } from "./_prisma"
 
 export class GridRepository {
@@ -121,4 +121,14 @@ export class GridRepository {
 
     return result;
   }
+
+  async deleteMany(rowIds: string[]) {
+    const result = await gridModel.deleteMany({
+      where: {
+        id: { in: rowIds }
+      }
+    })
+    return result
+  }
+
 }

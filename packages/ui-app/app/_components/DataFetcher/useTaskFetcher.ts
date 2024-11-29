@@ -104,6 +104,16 @@ export function useTaskFetcher({
     )
   }, [])
 
+  const deleteRow = (ids: string | string[]) => {
+    const deletedIds = Array.isArray(ids) ? ids : [ids]
+
+    setData(prevData => {
+      return prevData.filter(dt => {
+        return deletedIds.includes(dt.id) ? false : true
+      })
+    })
+  }
+
   return {
     data,
     setData,
@@ -114,6 +124,7 @@ export function useTaskFetcher({
     hasNextPage,
     fetchNextPage,
     fetchData,
+    deleteRow,
     updateCustomFields
   }
 } 

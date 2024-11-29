@@ -6,6 +6,7 @@ import CustomFieldInputProvider from "@/features/CustomFieldInput/CustomFieldInp
 import { ExtendedTask } from "@/store/task"
 import { FieldType, Prisma } from "@prisma/client"
 import { useTaskUpdate } from "@/components/DataFetcher/useTaskUpdate";
+import GridBtnActions from "./GridBtnActions";
 
 const useOnChangeCustomFieldInput = (taskId: string) => {
 
@@ -66,6 +67,8 @@ function GridContentRow({ task }: { task: ExtendedTask }) {
         const dataValue = customData[id] // convert all to string
         const dataStrValue = getFixedValue(type, dataValue ? (dataValue + '') : '')
 
+        console.log('index', index, id)
+
         return <>
           <CustomFieldInputProvider onChange={(value) => {
             onChange(value, id, type)
@@ -76,6 +79,8 @@ function GridContentRow({ task }: { task: ExtendedTask }) {
               config={config}
               type={type}
               value={dataStrValue} />
+
+            <GridBtnActions display={index === 0} rowId={task.id} />
           </CustomFieldInputProvider>
         </>
       }}

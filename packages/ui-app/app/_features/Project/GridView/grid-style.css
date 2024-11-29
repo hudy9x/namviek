@@ -16,6 +16,15 @@
   @apply bg-white dark:bg-gray-900;
 }
 
+.list-row .list-cell .grid-actions { 
+  @apply absolute top-1.5 right-2 opacity-0 pointer-events-none;
+  @apply transition-all;
+}
+
+.list-row:hover .list-cell .grid-actions {
+  @apply opacity-100 pointer-events-auto;
+}
+
 .list-cell-sortable-hover {
   border: 2px solid #6366f1 !important; 
 }

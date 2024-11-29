@@ -1,5 +1,5 @@
 import { FieldType } from "@prisma/client"
-import { httpPost, httpPut } from "./_req"
+import { httpDel, httpPost, httpPut } from "./_req"
 import { ExtendedTask } from "@/store/task"
 import { IFilterAdvancedData } from "@/features/FilterAdvanced/type"
 
@@ -42,5 +42,13 @@ export const projectGridSv = {
 
   create(data: ExtendedTask) {
     return httpPost('/api/project/grid/create', data)
+  },
+
+  delete(rowIds: string[]) {
+    return httpDel('/api/project/grid/delete', {
+      params: {
+        rowIds
+      }
+    })
   }
 }

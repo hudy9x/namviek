@@ -279,4 +279,16 @@ export default class GridService {
       throw new Error(error)
     }
   }
+
+  async deleteRows(rowIds: string[]) {
+    try {
+      // Delete the grid rows
+      await this.gridRepo.deleteMany(rowIds);
+
+      return 1
+    } catch (error) {
+      console.error('Error deleting grid rows:', error);
+      throw error;
+    }
+  }
 }

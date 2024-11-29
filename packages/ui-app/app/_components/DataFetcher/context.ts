@@ -8,6 +8,7 @@ export interface DataFetcherContextType {
   restRecords: number
   isLoading: boolean
   hasNextPage: boolean
+  deleteRow: (ids: string | string[]) => void
   setData: Dispatch<SetStateAction<ExtendedTask[]>>
   fetchNextPage: () => void
   updateCustomFields: (taskIds: string[], customFields: Record<string, any>) => void
@@ -20,6 +21,7 @@ export const DataFetcherContext = createContext<DataFetcherContextType>({
   restRecords: 0,
   isLoading: false,
   hasNextPage: false,
+  deleteRow: () => console.log(1),
   setData: () => console.log(1),
   fetchNextPage: () => console.log(1),
   updateCustomFields: () => console.log(1)

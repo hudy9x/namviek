@@ -1,5 +1,5 @@
 import { FieldType } from "@prisma/client";
-import { BaseController, UseMiddleware, Controller, Put, Post, Body, Req } from "../../core";
+import { BaseController, UseMiddleware, Controller, Put, Post, Body, Req, Delete, Param, Query } from "../../core";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
 import GridService, { IFilterAdvancedData } from "../../services/grid/grid.service";
 import { AuthRequest } from "../../types";
@@ -97,6 +97,16 @@ export default class ProjectGridController extends BaseController {
       projectId: body.projectId,
       rows: body.rows
     });
+    return result;
+  }
+
+  @Delete('/delete')
+  async deleteRows(@Req() req: AuthRequest, @Query() params: {
+    rowIds: string[]
+  }) {
+    const { id: uid } = req.authen
+    console.log('params delete', params)
+    const result = await this.gridService.deleteRows(params.rowIds);
     return result;
   }
 }

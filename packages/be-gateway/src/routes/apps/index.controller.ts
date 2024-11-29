@@ -89,7 +89,7 @@ export class ApplicationController extends BaseController {
   async delete(@Req() req: AuthRequest) {
     const { id } = req.params
 
-    console.log('1')
+    console.log('1', id)
 
     if (!id) {
       throw new Error('Application ID is required')

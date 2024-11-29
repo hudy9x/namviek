@@ -28,6 +28,7 @@ export default function DataFetcher({
     setData,
     isLoading,
     hasNextPage,
+    deleteRow,
     totalRecords,
     restRecords,
     fetchNextPage,
@@ -50,6 +51,7 @@ export default function DataFetcher({
   const contextValue: DataFetcherContextType = {
     cursor,
     setData,
+    deleteRow,
     data,
     totalRecords,
     restRecords,
