@@ -192,6 +192,16 @@ export const mdTaskDelete = (id: string) => {
   })
 }
 
+export const mdTaskDeleteMany = async (ids: string[]) => {
+  return taskModel.deleteMany({
+    where: {
+      id: {
+        in: ids
+      }
+    }
+  })
+}
+
 export const mdTaskGetAll = (query: ITaskQuery) => {
   let take = query.take
   let skip = query.skip

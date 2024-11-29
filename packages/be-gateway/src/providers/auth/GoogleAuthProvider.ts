@@ -16,7 +16,7 @@ export default class GoogleAuthProvider extends BaseAuthProvider {
       let user = await serviceGetUserByEmail(this.email)
       const verifiedUser = await getAuth().verifyIdToken(this.password)
 
-      if (!user) {
+      if (!user && process.env.NEXT_PUBLIC_DISABLE_REGISTRATION !== "1") {
         user = await mdUserAdd({
           email: verifiedUser.email,
           password: '1',

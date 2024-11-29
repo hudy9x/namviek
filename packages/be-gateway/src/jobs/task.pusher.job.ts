@@ -10,7 +10,7 @@ export default class TaskPusherJob {
   }: {
     projectId: string
     uid: string
-    type?: 'delete' | 'update' | 'create' | 'update-many'
+    type?: 'delete' | 'update' | 'create' | 'update-many' | 'delete-many'
     data?: Partial<Task>
   }) {
     console.log('task-pusher-job triggered: ', type)

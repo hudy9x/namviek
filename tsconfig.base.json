@@ -16,9 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["packages/ui-app/app/_components/*"],
+      "@/events/*": ["packages/ui-app/app/_events/*"],
       "@/features/*": ["packages/ui-app/app/_features/*"],
       "@/hooks/*": ["packages/ui-app/app/_hooks/*"],
-      "@/events/*": ["packages/ui-app/app/_events/*"],
       "@/services/*": ["packages/ui-app/services/*"],
       "@/store/*": ["packages/ui-app/store/*"],
       "@be/storage": ["packages/be-storage/src/index.ts"],

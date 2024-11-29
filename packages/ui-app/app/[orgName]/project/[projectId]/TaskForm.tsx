@@ -66,8 +66,8 @@ export default function TaskForm({
   const refDefaultValue = useRef<ITaskDefaultValues>(defaultValue)
   // const submitTimeout = useRef(0)
 
-  if(user?.id) {
-    refDefaultValue.current = { ...refDefaultValue.current, assigneeIds:[user.id] }
+  if (user?.id) {
+    refDefaultValue.current = { ...refDefaultValue.current, assigneeIds: [user.id] }
   }
 
   if (dueDate) {
@@ -197,20 +197,20 @@ export default function TaskForm({
               formik.setFieldValue('dueDate', d)
             }}
           />
-          <DatePicker
-            title="Planned Start date"
-            value={formik.values.planedStartDate}
-            onChange={d => {
-              formik.setFieldValue('plannedStartDate', d)
-            }}
-          />
-          <DatePicker
-            title="Planned Due date"
-            value={formik.values.plannedDueDate}
-            onChange={d => {
-              formik.setFieldValue('plannedDueDate', d)
-            }}
-          />
+          {/* <DatePicker */}
+          {/*   title="Planned Start date" */}
+          {/*   value={formik.values.planedStartDate} */}
+          {/*   onChange={d => { */}
+          {/*     formik.setFieldValue('plannedStartDate', d) */}
+          {/*   }} */}
+          {/* /> */}
+          {/* <DatePicker */}
+          {/*   title="Planned Due date" */}
+          {/*   value={formik.values.plannedDueDate} */}
+          {/*   onChange={d => { */}
+          {/*     formik.setFieldValue('plannedDueDate', d) */}
+          {/*   }} */}
+          {/* /> */}
           <div className="text-right">
             {/* <Button title="Close" onClick={onClose} /> */}
             <Button type="submit" loading={loading} title="Submit" primary />

@@ -272,28 +272,28 @@ export default function TaskDetail({
               />
             </div>
           </div>
-          <div className="task-info-item">
-            <div className="task-info-label">
-              <HiOutlineCalendar /> <span>Planned date</span>
-            </div>
-            <div className="task-info-content">
-              <div className="flex items-center gap-2">
-                <DatePicker
-                  value={formik.values.planedStartDate}
-                  onChange={d => {
-                    formik.setFieldValue('plannedStartDate', d)
-                  }}
-                />
-                <span>-</span>
-                <DatePicker
-                  value={formik.values.plannedDueDate}
-                  onChange={d => {
-                    formik.setFieldValue('plannedDueDate', d)
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+          {/* <div className="task-info-item"> */}
+          {/*   <div className="task-info-label"> */}
+          {/*     <HiOutlineCalendar /> <span>Planned date</span> */}
+          {/*   </div> */}
+          {/*   <div className="task-info-content"> */}
+          {/*     <div className="flex items-center gap-2"> */}
+          {/*       <DatePicker */}
+          {/*         value={formik.values.planedStartDate} */}
+          {/*         onChange={d => { */}
+          {/*           formik.setFieldValue('plannedStartDate', d) */}
+          {/*         }} */}
+          {/*       /> */}
+          {/*       <span>-</span> */}
+          {/*       <DatePicker */}
+          {/*         value={formik.values.plannedDueDate} */}
+          {/*         onChange={d => { */}
+          {/*           formik.setFieldValue('plannedDueDate', d) */}
+          {/*         }} */}
+          {/*       /> */}
+          {/*     </div> */}
+          {/*   </div> */}
+          {/* </div> */}
           <div className="flex flex-col items-start pt-2">
             <div className="task-info-label">
               <GoTasklist /> <span>Checklist</span>

@@ -197,6 +197,8 @@ export default class TaskUpdateService {
 
     if (visionId) {
       taskData.visionId = visionId
+    } else {
+      taskData.visionId = null
     }
 
     taskData.updatedAt = new Date()

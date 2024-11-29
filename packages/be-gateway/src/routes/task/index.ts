@@ -10,7 +10,8 @@ import {
   mdTaskStatusQuery,
   mdMemberGetProject,
   mdTaskDelete,
-  mdTaskUpdateMany
+  mdTaskUpdateMany,
+  mdTaskDeleteMany
 } from '@shared/models'
 
 import { Task, TaskStatus } from '@prisma/client'
@@ -329,6 +330,44 @@ router.post('/project/tasks', async (req: AuthRequest, res) => {
   }
 })
 
+router.delete('/project/tasks', async (req: AuthRequest, res) => {
+  const { ids, projectId } = req.query as { ids: string[]; projectId: string }
+  console.log('delete multiple task', ids, projectId)
+  try {
+    // Get tasks before deletion for cleanup purposes
+    // const tasksToDelete = await mdTaskGetAll({ id: { in: ids } })
+    
+    // Delete all tasks in a single operation
+    await mdTaskDeleteMany(ids)
+    
+    const key = [CKEY.TASK_QUERY, projectId]
+
+    // Clean up related data
+    // for (const task of tasksToDelete) {
+    //   taskReminderJob.delete(task.id)
+    //   if (!task.done && task.assigneeIds && task.assigneeIds[0]) {
+    //     await deleteTodoCounter([task.assigneeIds[0], projectId])
+    //   }
+    // }
+
+    await findNDelCaches(key)
+    taskPusherJob.triggerUpdateEvent({
+      projectId,
+      type: 'delete-many',
+      data: null,
+      uid: req.authen.id
+    })
+
+    res.json({
+      status: 200,
+      data: { deletedCount: ids.length }
+    })
+  } catch (error) {
+    console.log('error delete multiple', error)
+    res.status(500).json({ error: 'Failed to delete tasks' })
+  }
+})
+
 router.delete('/project/task', async (req: AuthRequest, res) => {
   // const { id: uid } = req.authen
   const { id, projectId } = req.query as { id: string; projectId: string }
@@ -402,7 +441,6 @@ router.put('/project/task', async (req: AuthRequest, res) => {
   const taskUpdateService = new TaskUpdateService()
   const { id: userId } = req.authen
   try {
-    console.log('do update ')
     const result = await taskUpdateService.doUpdate({
       userId,
       body: req.body as Task
@@ -414,6 +452,7 @@ router.put('/project/task', async (req: AuthRequest, res) => {
       data: result
     })
   } catch (error) {
+    console.log('error update task', error)
     res.status(500).send(error)
   }
 })

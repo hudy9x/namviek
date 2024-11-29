@@ -11,8 +11,8 @@ interface ITaskActionsProps {
 export default function TaskActions({ className, taskId }: ITaskActionsProps) {
   return (
     <div className={`task-actions ${className}`}>
-      <Button leadingIcon={<LuGitBranchPlus />} />
-      <Button leadingIcon={<HiOutlineDocumentDuplicate />} />
+      {/* <Button leadingIcon={<LuGitBranchPlus />} /> */}
+      {/* <Button leadingIcon={<HiOutlineDocumentDuplicate />} /> */}
       <TaskDeleteAction id={taskId} />
     </div>
   )

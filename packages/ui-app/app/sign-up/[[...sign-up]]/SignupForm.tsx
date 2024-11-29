@@ -1,14 +1,17 @@
 'use client'
 
-import { Button, Form, Loading, messageError, useForm } from '@shared/ui'
+import { Button, Form, Loading, messageError, messageSuccess, useForm } from '@shared/ui'
 import { validateRegisterUser } from '@shared/validation'
 import Link from 'next/link'
 import Logo from '../../../components/Logo'
 import { useState } from 'react'
 import { signup } from '@goalie/nextjs'
 import { motion } from 'framer-motion'
+import { UserStatus } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 export default function SignupForm() {
+  const { push } = useRouter()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const { regField, regHandleSubmit } = useForm({
@@ -27,7 +30,6 @@ export default function SignupForm() {
       signup(values)
         .then(res => {
           const { data, error } = res.data
-          console.log(data, error)
 
           if (error) {
             if (error.meta.target === 'User_email_key') {
@@ -37,6 +39,13 @@ export default function SignupForm() {
 
             messageError('Error')
             console.log(error)
+            return
+          }
+
+          if (data && data.status === UserStatus.ACTIVE) {
+            console.log('done')
+            messageSuccess('Congratulations! Your account has been successfully created !')
+            push('/sign-in')
             return
           }
 

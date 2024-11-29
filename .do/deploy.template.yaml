@@ -1,0 +1,41 @@
+spec:
+  name: namviek
+  services:
+    - name: namviek-backend
+      git:
+        branch: main
+        repo_clone_url: https://github.com/hudy9x/namviek
+      build_command: yarn install && yarn generate2 && yarn build:be
+      run_command: yarn prod:be
+      envs:
+        - key: REDIS_HOST
+          value: <redis host >
+        - key: NEXT_PUBLIC_FE_GATEWAY
+          value: <vercel url>
+        - key: MONGODB_URL
+          value: <mongodb url>
+
+        - key: JWT_VERIFY_USER_LINK_TOKEN_EXPIRED
+          value: 10m
+        - key: JWT_TOKEN_EXPIRED
+          value: 2d
+        - key: JWT_REFRESH_EXPIRED
+          value: 4d
+        - key: JWT_SECRET_KEY
+          value: S3cre23sdu
+        - key: JWT_REFRESH_KEY
+          value: jhiu23867sD
+        
+      instance_count: 1
+      instance_size_slug: basic-xs
+      health_check:
+        http_path: /check-health
+        period_seconds: 10
+        timeout_seconds: 5
+        success_threshold: 1
+        failure_threshold: 3
+      # routes:
+      #   - path: /
+      #     preserve_path_prefix: true
+      # source_dir: ./dist/packages/be-gateway
+

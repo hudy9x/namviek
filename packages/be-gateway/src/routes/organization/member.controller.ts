@@ -60,8 +60,6 @@ export class OrganizationMemberController extends BaseController {
       email: string
     }
 
-    console.log('123o9')
-
     const foundUser = await mdUserFindEmail(email)
     if (!foundUser) {
       console.log(1)

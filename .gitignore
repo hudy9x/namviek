@@ -41,6 +41,7 @@ Thumbs.db
 # Next.js
 .next
 .env.local
+.env.flyio
 .env
 pm2.json
 

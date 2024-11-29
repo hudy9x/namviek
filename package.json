@@ -25,8 +25,7 @@
     "seed": "prisma db seed --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
     "pushdb2": "prisma db push --schema=./packages/shared-models/src/prisma/schema.prisma",
-    "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma",
-    "postinstall": "yarn generate2"
+    "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
