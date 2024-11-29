@@ -36,7 +36,6 @@ import ReportController from './report'
 import { createModuleLog } from '../lib/log'
 import { LoadTestController } from './test/loadtest.controller'
 import FieldController from './fields'
-import TaskCustomFieldController from './task/customfield.controller'
 import ProjectGridController from './grid'
 import { ApplicationController } from './apps/index.controller'
 

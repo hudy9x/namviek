@@ -1,7 +1,7 @@
 import { FieldType } from "@prisma/client";
 import { BaseController, UseMiddleware, Controller, Put, Post, Body, Req } from "../../core";
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
-import GridService, { IFilterAdvancedData } from "../../services/task/custom.field.service";
+import GridService, { IFilterAdvancedData } from "../../services/grid/grid.service";
 import { AuthRequest } from "../../types";
 
 
@@ -66,6 +66,7 @@ export default class ProjectGridController extends BaseController {
     projectId: string,
     row: Record<string, string>
   }) {
+    console.log('1')
     const { id: uid } = req.authen
     const ret = await this.gridService.createRow(uid, {
       projectId: body.projectId,
