@@ -1,9 +1,9 @@
-import { FieldType, Prisma, Task, TaskPriority, TaskType } from "@prisma/client"
+import { FieldType, Grid, Prisma, Task, TaskPriority, TaskType } from "@prisma/client"
 import { gridModel } from "./_prisma"
 
 export class GridRepository {
 
-  private convertType(type: FieldType, value: string | string[]) {
+  convertType(type: FieldType, value: string | string[]) {
     if (type === FieldType.MULTISELECT && Array.isArray(value)) {
       return value
     }
@@ -42,12 +42,12 @@ export class GridRepository {
     return result
   }
 
-  async create(uid: string, data: Partial<Task>) {
+  async create(uid: string, data: Partial<Grid>) {
     const newTask = await gridModel.create({
       data: {
         title: 'Untitled',
         cover: null,
-        customFields: {},
+        customFields: data.customFields || {},
         projectId: data.projectId,
         createdBy: uid,
         createdAt: new Date(),
@@ -95,5 +95,30 @@ export class GridRepository {
 
 
     return result
+  }
+
+  async createMany(uid: string, data: {
+    projectId: string,
+    rows: { customFields: Record<string, any> }[]
+  }) {
+    const now = new Date();
+    const tasks = data.rows.map(row => ({
+      title: 'Untitled',
+      cover: null,
+      customFields: row.customFields,
+      projectId: data.projectId,
+      createdBy: uid,
+      createdAt: now,
+      updatedAt: null,
+      updatedBy: null,
+    }));
+
+    const result = await gridModel.createMany({
+      data: tasks
+    });
+
+    console.log('create many data', result);
+
+    return result;
   }
 }

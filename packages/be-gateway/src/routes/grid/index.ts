@@ -61,6 +61,19 @@ export default class ProjectGridController extends BaseController {
     }
   }
 
+  @Post('/create-row')
+  async createRow(@Req() req: AuthRequest, @Body() body: {
+    projectId: string,
+    datas: Record<string, string>
+  }) {
+    const { id: uid } = req.authen
+    const ret = await this.gridService.createRow(uid, {
+      projectId: body.projectId,
+      datas: body.datas
+    })
+    return ret
+  }
+
   @Post('/create')
   async create(@Req() req: AuthRequest, @Body() body: {
     projectId: string,
@@ -70,5 +83,18 @@ export default class ProjectGridController extends BaseController {
       projectId: body.projectId
     })
     return ret
+  }
+
+  @Post('/create-rows')
+  async createRows(@Req() req: AuthRequest, @Body() body: {
+    projectId: string,
+    rows: Record<string, string>[]
+  }) {
+    const { id: uid } = req.authen
+    const result = await this.gridService.createRows(uid, {
+      projectId: body.projectId,
+      rows: body.rows
+    });
+    return result;
   }
 }

@@ -50,19 +50,19 @@ const ApplicationCard = ({ application }: { application: Application }) => {
   }
 
   return (
-    <Card className="p-4">
+    <Card className="p-4 group">
       <div className="flex justify-between items-start">
         <div>
           <h3 className="text-xl font-medium">{application.name}</h3>
-          <div className="mt-2 space-y-2">
+          <div className="mt-2 text-sm space-y-2">
             <div className='flex items-center gap-3'>
               <span className="text-gray-500 shrink-0">Client ID: </span>
               <span className="">{application.clientId}</span>
               <Button
+                className='group-hover:opacity-100 opacity-0 transition-all'
                 size="sm"
                 onClick={() => copyToClipboard(application.clientId)}
                 leadingIcon={<FiCopy size={16} />}
-                aria-label="Copy Client ID"
               />
             </div>
             <div className='flex items-center gap-3'>
@@ -72,15 +72,16 @@ const ApplicationCard = ({ application }: { application: Application }) => {
                   {showSecret ? application.clientSecret : '••••••••••••••••'}
                 </span>
                 <Button
+                  className='group-hover:opacity-100 opacity-0 transition-all'
                   size="sm"
                   onClick={() => setShowSecret(!showSecret)}
                   leadingIcon={showSecret ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                 />
                 <Button
+                  className='group-hover:opacity-100 opacity-0 transition-all'
                   size="sm"
                   onClick={() => copyToClipboard(application.clientSecret)}
                   leadingIcon={<FiCopy size={16} />}
-                  aria-label="Copy Client Secret"
                 />
               </div>
             </div>
