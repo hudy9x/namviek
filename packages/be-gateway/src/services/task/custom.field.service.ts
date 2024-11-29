@@ -154,7 +154,7 @@ export default class GridService {
         filter: query,
         options: {
           limit: safeLimit + 1,
-          sort: { _id: 1 },
+          sort: { _id: -1 },
         }
       })
 
@@ -224,18 +224,18 @@ export default class GridService {
 
   async createRow(uid: string, params: {
     projectId: string,
-    datas: Record<string, string>
+    data: Record<string, string>
   }) {
-    const { projectId, datas } = params
+    const { projectId, data } = params
     // 1. Get all fields for the project
     const projectFields = await this.fieldRepo.getAllByProjectId(projectId);
 
     // 2. Create customFields object by mapping field names to field IDs
     const customFields = {};
     for (const field of projectFields) {
-      if (datas[field.name]) {
+      if (data[field.name]) {
         // Use convertType to ensure proper data type conversion
-        customFields[field.id] = this.gridRepo.convertType(field.type, datas[field.name]);
+        customFields[field.id] = this.gridRepo.convertType(field.type, data[field.name]);
       }
     }
 
@@ -252,26 +252,31 @@ export default class GridService {
     projectId: string,
     rows: Record<string, string>[]
   }) {
-    // 1. Get all fields for the project
-    const projectFields = await this.fieldRepo.getAllByProjectId(params.projectId);
-    
-    // 2. Create customFields objects for each row
-    const rows = params.rows.map(rowData => {
-      const customFields = {};
-      for (const field of projectFields) {
-        if (rowData[field.name]) {
-          customFields[field.id] = this.gridRepo.convertType(field.type, rowData[field.name]);
+    try {
+
+      // 1. Get all fields for the project
+      const projectFields = await this.fieldRepo.getAllByProjectId(params.projectId);
+
+      // 2. Create customFields objects for each row
+      const rows = params.rows.map(rowData => {
+        const customFields = {};
+        for (const field of projectFields) {
+          if (rowData[field.name]) {
+            customFields[field.id] = this.gridRepo.convertType(field.type, rowData[field.name]);
+          }
         }
-      }
-      return { customFields };
-    });
+        return { customFields };
+      });
 
-    // 3. Create multiple grid rows using gridRepo
-    const result = await this.gridRepo.createMany(uid, {
-      projectId: params.projectId,
-      rows
-    });
+      // 3. Create multiple grid rows using gridRepo
+      const result = await this.gridRepo.createMany(uid, {
+        projectId: params.projectId,
+        rows
+      });
 
-    return result;
+      return result;
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 }
