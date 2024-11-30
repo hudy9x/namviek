@@ -112,6 +112,11 @@ export default class GridService {
       case FieldType.DATE:
         return buildDateQuery(fieldPath, item.operator, item.value, item.subValue)
 
+      case FieldType.CREATED_AT:
+        return buildDateQuery('createdAt', item.operator, item.value, item.subValue)
+      case FieldType.UPDATED_AT:
+        return buildDateQuery('updatedAt', item.operator, item.value, item.subValue)
+
       case FieldType.SELECT:
       case FieldType.MULTISELECT:
         return buildSelectQuery(fieldPath, item.operator, item.value)
@@ -121,6 +126,10 @@ export default class GridService {
 
       case FieldType.PERSON:
         return buildPersonQuery(fieldPath, item.operator, item.value)
+      case FieldType.CREATED_BY:
+        return buildPersonQuery('createdBy', item.operator, item.value)
+      case FieldType.UPDATED_BY:
+        return buildPersonQuery('updatedBy', item.operator, item.value)
 
       case FieldType.TEXT:
       case FieldType.URL:

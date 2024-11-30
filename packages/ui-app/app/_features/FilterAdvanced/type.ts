@@ -60,14 +60,18 @@ filterOperatorMap.set(FieldType.CHECKBOX, [
   ...emptyOperators
 ])
 
-filterOperatorMap.set(FieldType.DATE, [
+const dateOperators = [
   'is',
   'is not',
   'is before',
   'is after',
   // 'is within',
   ...emptyOperators
-])
+]
+
+filterOperatorMap.set(FieldType.DATE, dateOperators)
+filterOperatorMap.set(FieldType.CREATED_AT, dateOperators)
+filterOperatorMap.set(FieldType.UPDATED_AT, dateOperators)
 
 const selectOperators = [
   'contains',
@@ -86,6 +90,8 @@ const personOperators = [
   ...emptyOperators
 ]
 filterOperatorMap.set(FieldType.PERSON, personOperators)
+filterOperatorMap.set(FieldType.CREATED_BY, personOperators)
+filterOperatorMap.set(FieldType.UPDATED_BY, personOperators)
 
 filterOperatorMap.set(FieldType.FILES, [
   ...emptyOperators

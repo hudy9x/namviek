@@ -119,10 +119,11 @@ export class StorageService {
   }
 
 
-  async createPresignedUrl({ projectId, type, name }: { projectId: string, name: string, type: string }) {
+  async createPresignedUrl({ path, type, name }: { path: string, name: string, type: string }) {
 
+    path = [this.orgId, path].filter(Boolean).join('/')
     const s3Store = await this.initS3Client()
-    const randName = `${this.orgId}/${projectId}/` + s3Store.randomObjectKeyName(name)
+    const randName = `${path}/` + s3Store.randomObjectKeyName(name)
 
     try {
       const presignedUrl = await s3Store.createPresignedUrlWithClient(randName, type)

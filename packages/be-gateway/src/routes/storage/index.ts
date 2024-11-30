@@ -60,7 +60,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
     }
 
     const { presignedUrl, randName, url } = await storageService.createPresignedUrl({
-      projectId,
+      path: projectId,
       name,
       type
     })

@@ -10,7 +10,7 @@ interface FilterSubValueProps {
 }
 
 export default function FilterSubValue({ type, subValue, value, onChange }: FilterSubValueProps) {
-  if (type !== FieldType.DATE) return null
+  if (type !== FieldType.DATE && type !== FieldType.CREATED_AT && type !== FieldType.UPDATED_AT) return null
 
 
   // Show number input for relative time values

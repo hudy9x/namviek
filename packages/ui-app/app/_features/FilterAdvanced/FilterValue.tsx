@@ -20,6 +20,8 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
 
   switch (type) {
     case FieldType.DATE:
+    case FieldType.CREATED_AT:
+    case FieldType.UPDATED_AT:
       return <FieldValueDate value={value} onChange={onChange} />
 
     case FieldType.SELECT:
@@ -41,6 +43,8 @@ export default function FilterValue({ type, operator, onChange, fieldId, value }
       return <FilterValueCheckbox value={value} onChange={onChange} />
 
     case FieldType.PERSON:
+    case FieldType.CREATED_BY:
+    case FieldType.UPDATED_BY:
       return <FilterValuePerson
         fieldId={fieldId}
         value={value}
