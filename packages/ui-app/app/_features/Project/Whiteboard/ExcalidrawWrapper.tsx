@@ -1,5 +1,6 @@
 'use client'
 import useFileUpload from '@/components/FileKits/useFileUpload'
+import { useUrl } from '@/hooks/useUrl'
 import {
   Excalidraw,
   MainMenu,
@@ -14,8 +15,6 @@ import { useWhiteBoardContext } from './context'
 import FilesOpenModal from './FilesOpenModal'
 
 
-// import "@excalidraw/excalidraw/index.css";
-
 const prepareFile = async (file: File) => {
   const randId = randomId()
   return {
@@ -29,6 +28,9 @@ const ExcalidrawWrapper: React.FC = () => {
   const [excalidrawAPI, setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null)
   const [showFilesModal, setShowFilesModal] = useState(false)
+
+  const { getSp } = useUrl()
+  const drawId = getSp('draw')
 
   const { files, setFiles, selectedFile } = useWhiteBoardContext()
 

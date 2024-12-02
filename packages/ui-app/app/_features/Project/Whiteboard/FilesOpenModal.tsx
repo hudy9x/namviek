@@ -1,8 +1,10 @@
-import { Dialog } from '@shared/ui'
-import { useWhiteBoardContext } from './context'
+import { useUrl } from '@/hooks/useUrl'
 import { FileStorage } from '@prisma/client'
-import { FaEdit } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md'
+import { Dialog } from '@shared/ui'
+import { useParams } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { MdDelete, MdOutlineOpenInNew } from 'react-icons/md'
+import { useWhiteBoardContext } from './context'
 
 const FilesOpenModal = ({
   visible,
@@ -52,6 +54,20 @@ const FilesList = () => {
     files.push(obj)
   }
 
+  const { push } = useRouter()
+  const params = useParams()
+
+  const { getSp } = useUrl()
+  const mode = getSp('mode')
+
+  const handleSelectFile = (file: FileStorage) => {
+    setSelectedFile(file)
+
+    push(
+      `${params.orgName}/project/${params.projectId}?mode=${mode}&draw=${file.id}`
+    )
+  }
+
   const headerClass = 'whitespace-nowrap px-4 py-2 font-medium text-gray-900'
   const dataClass = 'whitespace-nowrap px-4 py-2 text-gray-700'
 
@@ -73,7 +89,7 @@ const FilesList = () => {
 
             <tbody className="divide-y divide-gray-200">
               {files.map(file => (
-                <tr key={file.id} className='odd:bg-gray-50'>
+                <tr key={file.id} className="odd:bg-gray-50">
                   <td className={dataClass}>{file.name}</td>
                   <td className={dataClass}>
                     {file.createdAt?.toLocaleString()}
@@ -81,9 +97,9 @@ const FilesList = () => {
                   <td className={dataClass}>{file.url}</td>
                   <td className={dataClass}>
                     <div className="flex gap-3">
-                      <FaEdit
+                      <MdOutlineOpenInNew
                         size={20}
-                        onClick={() => setSelectedFile(file)}
+                        onClick={() => handleSelectFile(file)}
                         color="green"
                         className="cursor-pointer"
                       />
