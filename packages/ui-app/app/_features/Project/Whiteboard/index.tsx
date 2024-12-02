@@ -1,4 +1,3 @@
-import FileKitContainer from '@/components/FileKits'
 import dynamic from 'next/dynamic'
 import { WhiteBoardProvider } from './context'
 

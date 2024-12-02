@@ -2,26 +2,16 @@
 import useFileUpload from '@/components/FileKits/useFileUpload'
 import {
   Excalidraw,
-  convertToExcalidrawElements,
-  exportToClipboard,
-  useHandleLibrary,
-  MIME_TYPES,
-  sceneCoordsToViewportCoords,
-  viewportCoordsToSceneCoords,
-  restoreElements,
-  LiveCollaborationTrigger,
-  serializeAsJSON,
-  MainMenu
+  MainMenu,
+  serializeAsJSON
 } from '@excalidraw/excalidraw'
-import { Button, randomId } from '@shared/ui'
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types'
-import { useState } from 'react'
 import { FileStorage } from '@prisma/client'
+import { randomId } from '@shared/ui'
+import { useEffect, useState } from 'react'
+import { IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5'
 import { useWhiteBoardContext } from './context'
 import FilesOpenModal from './FilesOpenModal'
-import { useEffect } from 'react'
-import { IoCloudDownloadOutline } from 'react-icons/io5'
-import { IoCloudUploadOutline } from "react-icons/io5";
 
 
 // import "@excalidraw/excalidraw/index.css";
@@ -86,10 +76,10 @@ const ExcalidrawWrapper: React.FC = () => {
       <MainMenu>
         <MainMenu.DefaultItems.SaveAsImage />
         <MainMenu.DefaultItems.Export />
-        <MainMenu.Separator />
+        {/* <MainMenu.Separator />
         <MainMenu.Group title="Excalidraw links">
           <MainMenu.DefaultItems.Socials />
-        </MainMenu.Group>
+        </MainMenu.Group> */}
         <MainMenu.Separator />
         <MainMenu.ItemCustom>
           <span className="flex items-center gap-3 cursor-pointer" onClick={setShowFilesModal.bind(null,true)}>
@@ -103,7 +93,7 @@ const ExcalidrawWrapper: React.FC = () => {
             <p>Save to storage</p>
           </span>
         </MainMenu.ItemCustom>
-        <MainMenu.DefaultItems.Help />
+        {/* <MainMenu.DefaultItems.Help /> */}
       </MainMenu>
     )
   }
