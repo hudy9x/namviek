@@ -1,21 +1,20 @@
 import FileKitContainer from '@/components/FileKits'
 import { storageGetFilesByCreator } from '@/services/storage'
 import { FileStorage } from '@prisma/client'
-import { ReactNode, useContext, useEffect, useState } from 'react'
-import { createContext } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
 interface IWhiteBoardContext {
   files: FileStorage[]
   setFiles: (files: FileStorage[]) => void
-  selectedFile: FileStorage | null
-  setSelectedFile: (file: FileStorage) => void
+  selectedFile?: FileStorage | null
+  setSelectedFile: (file?: FileStorage) => void
 }
 const WhiteBoardContext = createContext<IWhiteBoardContext>({
   files: [],
   setFiles: () => {
     console.log(1)
   },
-  selectedFile: null,
+  selectedFile: undefined,
   setSelectedFile: () => {
     console.log(1)
   }
@@ -23,8 +22,7 @@ const WhiteBoardContext = createContext<IWhiteBoardContext>({
 
 const WhiteBoardProvider = ({ children }: { children: ReactNode }) => {
   const [files, setFiles] = useState<FileStorage[]>([])
-  const [selectedFile, setSelectedFile] = useState<FileStorage | null>(null)
-  
+  const [selectedFile, setSelectedFile] = useState<FileStorage | undefined>(undefined)
 
   useEffect(() => {
     storageGetFilesByCreator()
@@ -40,13 +38,11 @@ const WhiteBoardProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="h-full">
-      {' '}
       <WhiteBoardContext.Provider
         value={{ files, setFiles, selectedFile, setSelectedFile }}>
         <FileKitContainer fileIds={files.map(f => f.id)}>
           {children}
         </FileKitContainer>
-        {/* {children} */}
       </WhiteBoardContext.Provider>
     </div>
   )

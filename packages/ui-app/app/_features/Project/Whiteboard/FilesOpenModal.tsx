@@ -1,8 +1,5 @@
-import { useUrl } from '@/hooks/useUrl'
 import { FileStorage } from '@prisma/client'
 import { Dialog } from '@shared/ui'
-import { useParams } from 'next/navigation'
-import { useRouter } from 'next/router'
 import { MdDelete, MdOutlineOpenInNew } from 'react-icons/md'
 import { useWhiteBoardContext } from './context'
 
@@ -13,7 +10,7 @@ const FilesOpenModal = ({
 }: {
   visible: boolean
   setVisible: () => void
-  onSubmit?: (cb: () => void) => void
+  onSubmit: (file: FileStorage) => void
 }) => {
   return (
     <Dialog.Root
@@ -23,14 +20,18 @@ const FilesOpenModal = ({
       }}>
       <Dialog.Portal>
         <Dialog.Content size="lg">
-          <FilesList />
+          <FilesList onFileSubmit={onSubmit} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
   )
 }
 
-const FilesList = () => {
+const FilesList = ({
+  onFileSubmit
+}: {
+  onFileSubmit: (file: FileStorage) => void
+}) => {
   const {
     // files,
     setSelectedFile
@@ -54,18 +55,9 @@ const FilesList = () => {
     files.push(obj)
   }
 
-  const { push } = useRouter()
-  const params = useParams()
-
-  const { getSp } = useUrl()
-  const mode = getSp('mode')
-
   const handleSelectFile = (file: FileStorage) => {
     setSelectedFile(file)
-
-    push(
-      `${params.orgName}/project/${params.projectId}?mode=${mode}&draw=${file.id}`
-    )
+    onFileSubmit(file)
   }
 
   const headerClass = 'whitespace-nowrap px-4 py-2 font-medium text-gray-900'
