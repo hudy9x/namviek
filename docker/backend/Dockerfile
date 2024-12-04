@@ -1,5 +1,5 @@
 # ----------------------- base -----------------
-FROM node:lts-alpine AS base
+FROM node:22-alpine AS base
 
 USER root
 # Update image
@@ -36,7 +36,7 @@ RUN yarn generate2
 RUN yarn build:be
 
 # ------------------------ runner ---------------------
-FROM node:lts-alpine AS runner
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 
