@@ -1,13 +1,13 @@
 import { NextFunction, Response } from 'express'
 import { mdMemberBelongToProject } from '@shared/models'
-import { AuthRequest } from '../types'
+import { AuthRequest, JWTType } from '../types'
 
 export const beProjectMemberMiddleware = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.authen
+  const { id, type } = req.authen
   const { body, query, params } = req
   const projectId = query.projectId || body.projectId || params.projectId
   const projectIds = query.projectIds as string[]
@@ -20,6 +20,11 @@ export const beProjectMemberMiddleware = async (
   }
 
   if (projectId === 'all' || (projectIds && projectIds.includes('ALL'))) {
+    next()
+    return
+  }
+
+  if (type === JWTType.APP) {
     next()
     return
   }

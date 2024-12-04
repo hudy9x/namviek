@@ -17,6 +17,8 @@ import TabContainer from './components/Tab'
 import PopoverContainer from './components/Controls/PopoverControl'
 import SwitchContainer from './components/Switch'
 import DialogContainer from "./components/Dialog";
+import CardContainer from './components/Card'
+import IconColorPickerContainer, { colors as colorPickers } from "./components/IconColorPicker";
 
 export {
   messageInfo,
@@ -27,6 +29,7 @@ export {
 export { setFixLoading } from './components/Loading'
 
 export const Dialog = DialogContainer
+export const Card = CardContainer
 export const Switch = SwitchContainer
 export const Popover = PopoverContainer
 export const Modal = ModalComp
@@ -44,6 +47,9 @@ export const Timeline = TimelineContainer
 export const DropdownMenu = DropdownMenuContainer
 export const Tab = TabContainer
 
+export const IconColorPicker = IconColorPickerContainer
+export const colors = colorPickers
+// export * from './components/IconColorPicker'
 export * from './components/Confirmbox'
 export * from './components/Timeline/type'
 

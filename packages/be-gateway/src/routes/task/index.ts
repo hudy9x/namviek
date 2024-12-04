@@ -34,6 +34,8 @@ import TaskCreateService from '../../services/task/create.service'
 import TaskUpdateService from '../../services/task/update.service'
 import TaskReminderJob from '../../jobs/reminder.job'
 import TaskPusherJob from '../../jobs/task.pusher.job'
+import { FieldType } from '@prisma/client'
+
 
 const taskPusherJob = new TaskPusherJob()
 

@@ -1,5 +1,6 @@
 import { Task, TaskPriority } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
+import { IFilterAdvancedData } from '@/features/FilterAdvanced/type'
 
 type ITaskFields = Partial<Task>
 
@@ -103,4 +104,23 @@ export const serviceTask = {
   reorder: (data: { updatedOrder: [string, number][]; projectId: string }) => {
     return httpPost('/api/task/reorder', data)
   }
+}
+
+export const taskGetCustomQuery = (
+  projectId: string,
+  filter: IFilterAdvancedData,
+  signal?: AbortSignal,
+  options?: {
+    cursor?: string
+    limit?: number
+    orderBy?: { [key: string]: 'asc' | 'desc' }
+  }
+) => {
+  return httpPost('/api/project/task/custom-field/query', {
+    projectId,
+    filter,
+    options
+  }, {
+    signal
+  })
 }
