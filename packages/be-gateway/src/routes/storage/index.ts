@@ -13,12 +13,13 @@ import {
   mdTaskUpdate
 } from '@shared/models'
 import { FileOwnerType, FileStorage } from '@prisma/client'
-import { AuthRequest } from '../../types'
+import { AuthRequest, MulterRequest } from '../../types'
 import { fileStorageModel, pmClient } from 'packages/shared-models/src/lib/_prisma'
 import { CKEY, findNDelCaches } from '../../lib/redis'
 import StorageCache from '../../caches/StorageCache'
 import { StorageService } from '../../services/storage.service'
 import MaxStorageSizeException from '../../exceptions/MaxStorageSizeException'
+import { upload } from '../../middlewares/multerMiddleware'
 
 const router = Router()
 
@@ -149,6 +150,24 @@ router.get('/get-files-by-creator', async (req: AuthRequest, res) => {
 
     const result = await mdStorageGetByCreator(createdBy)
 
+    res.json({ status: 200, data: result })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+router.put('/update-s3-file', upload.single('file'), async (req: AuthRequest & MulterRequest, res) => {
+  try {
+    const { id, name, } = req.body as {
+      id: string
+      name: string
+    }
+    const fileBuffer = req.file.buffer;
+    const { orgId } = req.query as { id: string; projectId: string, orgId: string }
+
+    const storageService = new StorageService(orgId)
+
+    const result = await storageService.updateFileInStorage(name, fileBuffer, id)
     res.json({ status: 200, data: result })
   } catch (error) {
     res.status(500).send(error)

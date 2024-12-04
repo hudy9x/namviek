@@ -121,6 +121,19 @@ export default class AwsS3StorageProvider {
     })
     return getSignedUrl(this.client, command, { expiresIn: 3600 })
   }
+  
+  async updateObject(name: string, data: any) {
+    try {
+      await this.client.send(new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: name,
+        Body: data
+      }))
+    } catch (error) {
+      console.log('error update object', error)
+      throw error
+    }
+  }
 
   getObjectURL(name: string) {
     if (minioEndpoint) {

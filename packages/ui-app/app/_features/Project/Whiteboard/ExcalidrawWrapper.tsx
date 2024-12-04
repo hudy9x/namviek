@@ -1,7 +1,7 @@
 'use client'
 import useFileUpload from '@/components/FileKits/useFileUpload'
 import { useUrl } from '@/hooks/useUrl'
-import { storageGetFiles } from '@/services/storage'
+import { storageGetFiles, storageUpdateFile } from '@/services/storage'
 import {
   Excalidraw,
   Footer,
@@ -15,7 +15,7 @@ import _ from 'lodash'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { IoIosSave } from 'react-icons/io'
-import { IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5'
+import { IoCloudDownloadOutline } from 'react-icons/io5'
 import { MdOutlineDraw } from 'react-icons/md'
 import { useWhiteBoardContext } from './context'
 import FilesOpenModal from './FilesOpenModal'
@@ -63,6 +63,69 @@ const ExcalidrawWrapper: React.FC = () => {
     setSelectedFile
   ])
 
+  const uploadFile = useCallback(
+    async (file: File) => {
+      const preparedFile = await prepareFile(file)
+      return uploadFileToS3([preparedFile])
+    },
+    [uploadFileToS3]
+  )
+
+  const getDrawJson = useCallback(() => {
+    if (excalidrawAPI) {
+      const data = serializeAsJSON(
+        excalidrawAPI.getSceneElements(),
+        excalidrawAPI.getAppState(),
+        excalidrawAPI.getFiles(),
+        'local'
+      )
+      return data
+    }
+    return ''
+  }, [excalidrawAPI])
+
+  const onSave = useCallback(
+    async (filename?: string) => {
+      if (!excalidrawAPI) {
+        return false
+      }
+      const jsonData = getDrawJson()
+      console.log({ jsonData })
+      const blob = new Blob([jsonData], { type: 'application/json' })
+
+      // Create a File from the Blob
+      const file = new File([blob], `${filename || Date.now()}.excalidraw`, {
+        type: 'application/json'
+      })
+
+      const fileItems = await uploadFile(file)
+      if (!fileItems.length) {
+        return
+      }
+      const fileItem = fileItems[0]
+      console.log({ fileItem, files })
+      setFiles([...files, fileItem] as FileStorage[])
+    },
+    [excalidrawAPI, files, getDrawJson, setFiles, uploadFile]
+  )
+
+  const saveDraw = useCallback(async () => {
+    if (selectedFile && excalidrawAPI) {
+      const jsonData = getDrawJson()
+      const file = new File(
+        [new Blob([jsonData], { type: 'application/json' })],
+        selectedFile.name,
+        {
+          type: selectedFile.type
+        }
+      )
+      await storageUpdateFile(selectedFile, file)
+    } else {
+      onSave()
+    }
+    console.log('saved')
+  }, [excalidrawAPI, getDrawJson, onSave, selectedFile])
+
   const openDraw = useCallback(
     (file?: FileStorage) => {
       if (file)
@@ -80,11 +143,6 @@ const ExcalidrawWrapper: React.FC = () => {
   useEffect(() => {
     setShowFilesModal(false)
   }, [selectedFile])
-
-  const uploadFile = async (file: File) => {
-    const preparedFile = await prepareFile(file)
-    return uploadFileToS3([preparedFile])
-  }
 
   useEffect(() => {
     console.log({ drawId })
@@ -121,32 +179,6 @@ const ExcalidrawWrapper: React.FC = () => {
     })()
   }, [selectedFile, excalidrawAPI])
 
-  const onSave = async (filename?: string) => {
-    if (!excalidrawAPI) {
-      return false
-    }
-    const jsonData = serializeAsJSON(
-      excalidrawAPI.getSceneElements(),
-      excalidrawAPI.getAppState(),
-      excalidrawAPI.getFiles(),
-      'local'
-    )
-    console.log({ jsonData })
-    const blob = new Blob([jsonData], { type: 'application/json' })
-
-    // Create a File from the Blob
-    const file = new File([blob], `${filename || Date.now()}.excalidraw`, {
-      type: 'application/json'
-    })
-
-    const fileItems = await uploadFile(file)
-    if (!fileItems.length) {
-      return
-    }
-    const fileItem = fileItems[0]
-    console.log({ fileItem, files })
-    setFiles([...files, fileItem] as FileStorage[])
-  }
   // <MainMenu.DefaultItems.LiveCollaborationTrigger
   //   isCollaborating={isCollaborating}
   //   onSelect={() => window.alert("You clicked on collab button")}
@@ -170,14 +202,14 @@ const ExcalidrawWrapper: React.FC = () => {
             <p>Open from storage</p>
           </span>
         </MainMenu.ItemCustom>
-        <MainMenu.ItemCustom>
+        {/* <MainMenu.ItemCustom>
           <span
             className="flex items-center gap-3 cursor-pointer"
             onClick={onSave.bind(null, 'json')}>
             <IoCloudUploadOutline />
             <p>Save to storage</p>
           </span>
-        </MainMenu.ItemCustom>
+        </MainMenu.ItemCustom> */}
         <MainMenu.ItemCustom>
           <span
             className="flex items-center gap-3 cursor-pointer"
@@ -202,12 +234,14 @@ const ExcalidrawWrapper: React.FC = () => {
         {renderMenu()}
         <Footer>
           <button
-            className="flex items-center gap-3 cursor-pointer ToolIcon_type_button ToolIcon_size_medium ToolIcon_type_button--show ToolIcon"
-            onClick={() => console.log(`save file, num element: ${elements.length}`)}
-            // disabled={!isChanged}
-            type="button">
+            className="ml-2 w-9 h-9 flex justify-center items-center rounded-md border "
+            onClick={() => {
+              saveDraw()
+              console.log(`save file, num element: ${elements.length}`)
+            }}
+            type="button"
+            style={{ backgroundColor: !isChanged ? '#e0dfff' : '#f1f3f5' }}>
             <IoIosSave />
-            <p>Save</p>
           </button>
         </Footer>
       </Excalidraw>

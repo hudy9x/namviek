@@ -1,12 +1,12 @@
-import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
-import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
-import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
 import StorageCache from "../caches/StorageCache"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
-import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
+import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
 import { findNDelCaches } from "../lib/redis"
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
+import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
 
 export const MB = 1024 * 1024
 export const GB = 1024 * MB
@@ -87,6 +87,19 @@ export class StorageService {
     if (file && file.size) {
       storageCache.decrSize(file.size)
     }
+  }
+  
+  async updateFileInStorage(name: string, data: any, fileId: string) {
+
+    const fileStorage = await mdStorageGetOne(fileId)
+    if (!fileStorage) {
+      throw new Error('FILE_NOT_EXIST')
+    }
+
+    const s3Store = await this.initS3Client()
+    await s3Store.updateObject(name, data)
+
+    return fileStorage
   }
 
   async validateAwsConfig(awsConfig: Omit<IStorageAWSConfig, 'maxStorageSize'>) {

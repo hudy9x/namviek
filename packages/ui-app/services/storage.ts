@@ -1,6 +1,6 @@
-import axios from 'axios'
-import { httpDel, httpGet, httpPost } from './_req'
 import { FileStorage } from '@prisma/client'
+import axios from 'axios'
+import { httpDel, httpGet, httpPost, httpPut } from './_req'
 
 export const storageCreatePresignedUrl = ({
   orgId,
@@ -30,9 +30,13 @@ export const storageGetFiles = (ids: string[]) => {
   })
 }
 
-export const storageDelFile = ({ id, projectId, orgId }: {
-  id: string,
-  projectId: string,
+export const storageDelFile = ({
+  id,
+  projectId,
+  orgId
+}: {
+  id: string
+  projectId: string
   orgId: string
 }) => {
   return httpDel('/api/storage/del-file', {
@@ -42,6 +46,22 @@ export const storageDelFile = ({ id, projectId, orgId }: {
 
 export const storagePutFile = (presignedUrl: string, data: File) => {
   return axios.put(presignedUrl, data)
+}
+
+export const storageUpdateFile = (
+  data: Pick<FileStorage, 'id' | 'name'>,
+  file: File
+) => {
+  const form = new FormData()
+  form.append('id', data.id)
+  form.append('name', data.name)
+  form.append('file', file)
+
+  return httpPut('/api/storage/update-s3-file', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }
 
 export const storageSaveToDrive = (data: Partial<FileStorage>) => {
