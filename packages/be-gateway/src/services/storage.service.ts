@@ -12,6 +12,8 @@ export const MB = 1024 * 1024
 export const GB = 1024 * MB
 export const MAX_STORAGE_SIZE = 10 * GB // 10Gb
 
+const minioEndpoint = process.env.AWS_MINIO_ENDPOINT
+
 export class StorageService {
   protected orgId: string
   constructor(orgId: string) {
@@ -91,14 +93,25 @@ export class StorageService {
 
   async validateAwsConfig(awsConfig: Omit<IStorageAWSConfig, 'maxStorageSize'>) {
 
-    const client = new S3Client({
-
+    let s3Config = {
       region: awsConfig.region,
       credentials: {
         accessKeyId: awsConfig.accessKey,
         secretAccessKey: awsConfig.secretKey
       }
-    });
+    }
+
+    if (minioEndpoint) {
+      s3Config = {
+        ...s3Config,
+        ...{
+          endpoint: minioEndpoint,
+          forcePathStyle: true
+        }
+      }
+    }
+
+    const client = new S3Client(s3Config);
 
 
     const command = new PutObjectCommand({
