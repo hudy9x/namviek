@@ -1,7 +1,7 @@
 import { ReactNode, useRef, useState, DragEvent } from 'react'
 import useFileUpload from './useFileUpload'
 
-export default function FileDrop({ children }: { children: ReactNode }) {
+export default function FileDrop({ children, className }: { className?: string, children: ReactNode }) {
   const [dragging, setDragging] = useState(false)
   const { onFileHandler } = useFileUpload()
 
@@ -19,7 +19,7 @@ export default function FileDrop({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`file-drop-zone`}
+      className={`file-drop-zone ${className}`}
       onDrop={onDropFileChange}
       onDragOver={ev => {
         ev.preventDefault()

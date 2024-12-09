@@ -2,7 +2,7 @@ import { ProjectView, ProjectViewType } from '@prisma/client'
 import { IBoardFilter, useProjectViewContext } from './context'
 
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useProjectViewAdd } from './useProjectViewAdd'
 import ProjectViewFilterByBoard from '../ProjectViewFilter/BoardFilter'
 import ProjectViewFilterByList from '../ProjectViewFilter/ListFilter'
@@ -10,6 +10,7 @@ import ProjectViewFilterByCalendar from '../ProjectViewFilter/CalendarFilter'
 import ProjectViewFilterByGoal from '../ProjectViewFilter/GoalFilter'
 import ProjectViewFilterByTeam from '../ProjectViewFilter/TeamFilter'
 import ProjectViewFilterByDashboard from '../ProjectViewFilter/DashboardFilter'
+import ProjectViewFilterByGrid from '../ProjectViewFilter/GridFilter'
 import { Loading, messageError, messageSuccess } from '@shared/ui'
 import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
@@ -163,6 +164,7 @@ export default function ProjectViewModalForm({
       <ProjectViewFilterByGoal type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
       <ProjectViewFilterByTeam type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
       <ProjectViewFilterByDashboard type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
+      <ProjectViewFilterByGrid type={type} isUpdate={isUpdate} desc={desc} onAdd={onSubmit} />
     </div>
   )
 }

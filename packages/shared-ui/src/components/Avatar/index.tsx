@@ -14,6 +14,7 @@ interface IAvatar {
 }
 
 export default function Avatar({ src, name, size = 'base' }: IAvatar) {
+  const none = name?.toLowerCase() === 'none' ? 'avatar-none' : ''
   return (
     <Root className={`avatar-root size-${size} shrink-0`}>
       <AvatarImage
@@ -24,7 +25,7 @@ export default function Avatar({ src, name, size = 'base' }: IAvatar) {
       />
       <AvatarFallback
         title={name || ''}
-        className="avatar-fallback"
+        className={`avatar-fallback ${none}`}
         delayMs={600}>
         {(name || '').slice(0, 2).toUpperCase()}
       </AvatarFallback>

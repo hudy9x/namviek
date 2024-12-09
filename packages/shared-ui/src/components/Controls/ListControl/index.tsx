@@ -22,7 +22,7 @@ interface ListControlProps {
   value: ListItemValue | ListItemValue[]
   children: JSX.Element[]
   onFormikChange?: FormikFunc
-  onChange?: Dispatch<SetStateAction<ListItemValue>>
+  onChange?: Dispatch<SetStateAction<ListItemValue>> | ((val: ListItemValue) => void)
   onMultiChange?: Dispatch<SetStateAction<ListItemValue[]>>
 }
 

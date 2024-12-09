@@ -90,6 +90,10 @@ export default class AwsS3StorageProvider {
       }
     }
 
+    console.log('S3 configuration')
+    console.log('minio', minioEndpoint)
+    console.log(JSON.stringify(s3Config, null, ' '))
+
     this.client = new S3Client(s3Config)
 
     clientMapper.set(orgId, {

@@ -23,7 +23,7 @@ export default function ListMode() {
   const { tasks, taskLoading } = useTaskStore()
 
   return (
-    <div className="pb-[300px]">
+    <div className="list-view-container pb-[300px]">
       {groupByItems.map(group => {
         return (
           <div
