@@ -1,7 +1,9 @@
 export enum LCK {
   RECENT_VISIT = 'RECENT_VISIT_',
-  PROJECT_BADGE = 'PROJECT_BADGE'
+  PROJECT_BADGE = 'PROJECT_BADGE',
+  PROJECT_FILTER = 'PROJECT_FILTER_'
 }
+
 export const setLocalCache = (name: LCK | string, value: string) => {
   try {
     localStorage.setItem(name, value)
@@ -51,6 +53,25 @@ export const setRecentVist = (uid: string, value: string) => {
 export const getRecentVisit = (uid: string) => {
   try {
     return localStorage.getItem(LCK.RECENT_VISIT + uid)
+  } catch (error) {
+    return null
+  }
+}
+
+// Project filter cache methods
+export const setProjectFilter = (projectId: string, filter: any) => {
+  try {
+    localStorage.setItem(`${LCK.PROJECT_FILTER}${projectId}`, JSON.stringify(filter))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getProjectFilter = (projectId: string) => {
+  try {
+    const data = localStorage.getItem(`${LCK.PROJECT_FILTER}${projectId}`)
+    if (!data) return null
+    return JSON.parse(data)
   } catch (error) {
     return null
   }

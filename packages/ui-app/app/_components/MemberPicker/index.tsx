@@ -158,7 +158,7 @@ export default function MemberPicker({
       <List
         title={title}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setVal(val)
           // setUpdateCounter(updateCounter + 1)
           updateCounterHandler()

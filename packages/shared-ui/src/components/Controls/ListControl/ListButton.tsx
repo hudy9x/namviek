@@ -36,7 +36,7 @@ export default function ListButton({ size, children }: ListButtonProps) {
       ref={buttonRef}
       tabIndex={0}
       onClick={() => setVisible(!visible)}>
-      {multiple ? <div className="flex flex-wrap gap-2 pr-6 selected-item-container">{child()}</div> : child()}
+      {multiple ? <div className="flex flex-nowrap gap-2 pr-6 selected-item-container">{child()}</div> : child()}
       <div className="trailing-icon group-hover:text-gray-500">
         {children ? (
           <XIcon

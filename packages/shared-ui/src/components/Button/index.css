@@ -60,6 +60,10 @@
   @apply hover:bg-yellow-300 active:bg-yellow-500;
 }
 
+.btn.btn-ghost {
+  @apply bg-transparent border-transparent;
+}
+
 .btn.btn-sm {
   @apply px-2.5 py-1 text-sm rounded-md;
 }

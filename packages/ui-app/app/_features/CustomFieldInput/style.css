@@ -1,0 +1,82 @@
+.cf-input-container {
+  @apply relative h-full;
+}
+
+.cf-display, .cf-edit{
+  @apply w-full h-full px-3 py-2 text-sm;
+}
+
+.cf-edit{
+  @apply absolute top-0 left-0 w-full h-full; 
+}
+
+.cf-edit.form-control.cf-inp-date [data-state="open"] {
+  @apply relative;
+}
+
+.cf-inp-date [data-state="open"]:before { 
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full;
+  @apply border border-indigo-500 dark:border-indigo-200;
+}
+
+.cf-edit.form-control.cf-inp-date {
+  @apply p-0;
+
+  & .form-control-wrapper,
+  & .form-control-wrapper > div{
+    @apply h-full;
+  }
+  & .form-input {
+    @apply p-0 border-none shadow-none h-full;
+  }
+
+  & svg {
+    @apply hidden;
+  }
+  
+  /* & .form-input { */
+  /*   @apply px-3 py-2 */
+  /* } */
+}
+
+.cf-edit.form-control.cf-inp-date .form-input,
+.cf-input-container .select-container .select-button { 
+  @apply px-3 py-2
+}
+
+
+.cf-input-container .select-container{ 
+  @apply h-full;
+
+  & .select-wrapper, 
+  & .select-button{
+    @apply h-full;
+  }
+}
+.cf-input-container .select-container {
+
+  & .select-button {
+    @apply  border-none shadow-none;
+  }
+
+  & .trailing-icon {
+    @apply hidden;
+  }
+}
+
+.cf-checkbox {
+  @apply w-5 h-5 rounded border border-gray-400 dark:border-gray-500 inline-flex items-center justify-center;
+  & svg {
+    @apply hidden
+  }
+}
+
+.cf-input-container input:checked + .cf-edit .cf-checkbox svg {
+  @apply block;
+}
+
+.cf-file-container .file-list-containers {
+  @apply overflow-x-hidden overflow-y-auto;
+  max-height: calc(100vh - 384px)
+}

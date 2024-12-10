@@ -47,7 +47,8 @@ import {
   HiOutlineBars3,
   HiOutlineBars3BottomLeft,
   HiOutlineBars3BottomRight,
-  HiOutlineBars3CenterLeft
+  HiOutlineBars3CenterLeft,
+  HiOutlineTableCells
 } from 'react-icons/hi2'
 import { GoLaw, GoVersions, GoCodeOfConduct } from 'react-icons/go'
 
@@ -55,6 +56,7 @@ const icons: { [key: string]: IconType } = {
   GoLaw,
   GoVersions,
   GoCodeOfConduct,
+  HiOutlineTableCells,
 
   HiOutlineBattery0,
   HiOutlineBattery100,

@@ -7,7 +7,8 @@ import {
   Get,
   Post,
   Req,
-  Res
+  Res,
+  UseMiddleware
 } from '../../core'
 import { CounterType } from '@prisma/client'
 import {
@@ -21,8 +22,10 @@ import {
 } from '../../lib/redis'
 
 import { TaskQueue, getTaskQueueInstance } from '../../queues'
+import { authMiddleware } from '../../middlewares'
 
 @Controller('/test')
+@UseMiddleware([authMiddleware])
 export class TestController extends BaseController {
   taskQueue: TaskQueue
   constructor() {
@@ -35,7 +38,7 @@ export class TestController extends BaseController {
   async testHanetWebhook() {
     console.log(this.req.url, this.req.method)
     console.log('body:', this.req.body)
-    return 1
+    return 3
   }
 
   calculateSecondBetween2Date() {

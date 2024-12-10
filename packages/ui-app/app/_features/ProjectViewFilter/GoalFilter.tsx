@@ -9,10 +9,11 @@ export default function ProjectViewFilterByGoal({ type, desc, onAdd, isUpdate }:
   onAdd: () => void
 }) {
   if (type !== ProjectViewType.GOAL) return null
-  return <><img
-    className="mb-8"
-    src="https://app-cdn.clickup.com/gantt.b90233aaab6b219a391e08b8b5186915.svg"
-  />
+  return <>
+    <img
+      className="mb-8"
+      src="https://app-cdn.clickup.com/gantt.b90233aaab6b219a391e08b8b5186915.svg"
+    />
     <div className="">
       <h2 className="text-xl mb-3">Goal</h2>
       <p className="text-sm text-gray-500 mb-6">{desc}</p>

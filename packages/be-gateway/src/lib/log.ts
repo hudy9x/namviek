@@ -3,7 +3,21 @@ import { WinstonTransport as AxiomTransport } from '@axiomhq/winston';
 
 // const { combine, timestamp, label, prettyPrint, simple } = format
 
+const axiomDataset = process.env.AXIOM_DATASET || ''
+const axiomToken = process.env.AXIOM_TOKEN || ''
+
+const defaultLogger = {
+  info: (...args: any[]) => console.log(1),
+  error: (...args: any[]) => console.log(1),
+  debug: (...args: any[]) => console.log(1)
+
+}
+
 export const createModuleLog = (module: string) => {
+  if (!axiomToken && !axiomDataset) {
+    return defaultLogger
+  }
+
   return createLogger({
     // format: combine(label({ label: module }), timestamp(), prettyPrint()),
     // transports: [
@@ -17,8 +31,8 @@ export const createModuleLog = (module: string) => {
     defaultMeta: { service: 'user-service' },
     transports: [
       new AxiomTransport({
-        dataset: process.env.AXIOM_DATASET || '',
-        token: process.env.AXIOM_TOKEN || '',
+        dataset: axiomDataset,
+        token: axiomToken,
       }),
     ],
 

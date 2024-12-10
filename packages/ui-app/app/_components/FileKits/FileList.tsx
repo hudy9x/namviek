@@ -18,7 +18,7 @@ export default function FileList({ files }: { files: IFileItem[] }) {
 
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 file-list-containers" >
       <div className='space-y-2'>
         {files.slice(0, n).map((file, id) => {
           return <FileItem key={id} data={file} />
@@ -44,19 +44,19 @@ export default function FileList({ files }: { files: IFileItem[] }) {
             }
           />
         ) : null}
-        <div>
-          <label className='btn sm cursor-pointer' style={{ margin: 0 }} htmlFor='upload-more'>Add new file</label>
-          <input
-            id={'upload-more'}
-            multiple
-            className="hidden"
-            type="file"
-            onChange={ev => {
-              const files = ev.target.files
-              files && files.length && onInputChange(files)
-            }}
-          />
-        </div>
+        {/* <div> */}
+        {/*   <label className='btn sm cursor-pointer' style={{ margin: 0 }} htmlFor='upload-more'>Add new file</label> */}
+        {/*   <input */}
+        {/*     id={'upload-more'} */}
+        {/*     multiple */}
+        {/*     className="hidden" */}
+        {/*     type="file" */}
+        {/*     onChange={ev => { */}
+        {/*       const files = ev.target.files */}
+        {/*       files && files.length && onInputChange(files) */}
+        {/*     }} */}
+        {/*   /> */}
+        {/* </div> */}
       </div>
     </div>
   )
