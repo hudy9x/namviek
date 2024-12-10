@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:fe"
+  command = "npm run generate2 && npm run build:fe"
   publish = "./dist/packages/ui-app/.next"
 
 [[plugins]]
