@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for namviek on 2024-12-12T23:57:05+07:00
+# fly.toml app configuration file generated for namviek on 2024-12-13T21:55:03+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -14,9 +14,9 @@ primary_region = 'sin'
   JWT_REFRESH_EXPIRED = '2d'
   JWT_TOKEN_EXPIRED = '30m'
   JWT_VERIFY_USER_LINK_TOKEN_EXPIRED = '10m'
+  NODE_ENV = 'production'
   PORT = '3000'
-  NODE_ENV = "production"
-  PRISMA_CLI_BINARY_TARGETS = "linux-musl-openssl-1.1.x"
+  PRISMA_CLI_BINARY_TARGETS = 'linux-musl-openssl-1.1.x'
 
 [http_service]
   internal_port = 3000
