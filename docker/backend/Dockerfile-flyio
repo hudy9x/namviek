@@ -1,9 +1,15 @@
 # ----------------------- base -----------------
-FROM node:lts-alpine AS base
+FROM node:22-alpine AS base
 
 USER root
-# Update image
-RUN apk update && apk upgrade --available && apk add --no-cache g++ make python3
+# Update image and add dependencies with correct package names
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
+    g++ \
+    make \
+    python3 \
+    openssl \
+    openssl-dev
 
 COPY . /app
 WORKDIR /app
@@ -27,21 +33,32 @@ RUN yarn generate2
 RUN yarn build:be
 
 # ------------------------ runner ---------------------
-FROM node:lts-alpine AS runner
+FROM node:22-alpine AS runner
 
 WORKDIR /app
+
+# Install dependencies with correct package names
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
+    openssl \
+    openssl-dev \
+    libc6-compat
 
 COPY --from=builder /app/dist/packages/be-gateway ./
 COPY ./packages/shared-models/src/prisma/schema.prisma .
 COPY ./yarn.lock .
 
-RUN yarn install
+# Install production dependencies
+RUN yarn install --production --network-timeout 1000000
+RUN npx prisma generate
 
+# Copy Prisma engine files
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Set both HOST and PORT explicitly
 ENV HOST=0.0.0.0
 ENV PORT=3000
+ENV NODE_ENV=production
 
-# Use a shell to start the app with explicit host and port
 CMD node main.js
