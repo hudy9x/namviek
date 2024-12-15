@@ -12,11 +12,11 @@ export default function UserSection() {
   const { user } = useUser()
 
   const menus = [
-    // {
-    //   icon: TbUserCircle,
-    //   link: `/profile/${user?.id}`,
-    //   title: 'Update profile'
-    // },
+    {
+      icon: TbUserCircle,
+      link: `/profile/${user?.id}`,
+      title: 'Update profile'
+    },
     {
       icon: IoMdLogOut,
       link: `/sign-out`,

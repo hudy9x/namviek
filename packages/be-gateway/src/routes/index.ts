@@ -35,6 +35,9 @@ import TaskChecklistController from './task/checklist.controller'
 import ReportController from './report'
 import { createModuleLog } from '../lib/log'
 import { LoadTestController } from './test/loadtest.controller'
+import FieldController from './fields'
+import ProjectGridController from './grid'
+import { ApplicationController } from './apps/index.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -70,7 +73,11 @@ router.use(
     SchedulerController,
     TaskReorderController,
     TaskChecklistController,
-    ReportController
+    // TaskCustomFieldController,
+    ProjectGridController,
+    ApplicationController,
+    ReportController,
+    FieldController
   ])
 )
 // middlewares

@@ -20,6 +20,12 @@ export const useDefaultViewTypes = () => {
       title: 'Calendar',
       desc: 'Calendar view is your place for planning, scheduling, and resource management.'
     },
+    {
+      icon: 'HiOutlineTableCells',
+      type: ProjectViewType.GRID,
+      title: 'Grid',
+      desc: 'View your tasks in a grid layout for better visualization.'
+    },
   ]
 
   const otherViews = [

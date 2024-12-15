@@ -143,6 +143,38 @@ model Test {
   order Int
 }
 
+enum FieldType {
+  NUMBER
+  TEXT
+  DATE
+  SELECT
+  MULTISELECT
+  CHECKBOX
+  URL
+  EMAIL
+  FILES
+  PHONE
+  PERSON
+  CREATED_AT
+  CREATED_BY
+  UPDATED_AT
+  UPDATED_BY
+}
+
+model Field {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String    @db.ObjectId
+  name      String
+  type      FieldType
+  icon      String?
+  hidden    Boolean?
+  width     Int
+  order     Int
+  desc      String?
+  data      Json?
+  config    Json?
+}
+
 enum TaskType {
   TASK
   BUG
@@ -177,6 +209,23 @@ model Task {
   done             Boolean       @default(false)
   // do not store `point` as objectID, cuz we just need to fill the point value
   taskPoint        Int?
+
+  customFields Json?
+
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
+}
+
+model Grid {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  cover     String?
+  projectId String  @db.ObjectId
+
+  customFields Json?
+  isDeleted    Boolean?
 
   createdBy String?
   createdAt DateTime?
@@ -263,6 +312,7 @@ enum FileType {
 }
 
 enum FileOwnerType {
+  USER
   TASK
   DISCUSSION
   DOCUMENT
@@ -321,7 +371,6 @@ model ProjectSettingNotification {
 }
 
 enum ProjectViewType {
-  DASHBOARD
   LIST
   BOARD
   CALENDAR
@@ -329,6 +378,8 @@ enum ProjectViewType {
   GOAL
   TEAM
   ACTIVITY
+  DASHBOARD
+  GRID
 }
 
 model ProjectView {
@@ -471,4 +522,19 @@ model Comment {
   createdBy String
   createdAt DateTime
   updatedAt DateTime
+}
+
+model Application {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String?
+  clientId       String   @unique
+  clientSecret   String
+  organizationId String   @db.ObjectId
+  scopes         String[] // Array of permitted scopes
+
+  createdAt DateTime?
+  createdBy String?
+  updatedAt DateTime?
+  updatedBy String?
 }

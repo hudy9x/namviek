@@ -5,6 +5,8 @@ import './index.css'
 interface CheckboxProps {
   title?: string
   checked?: boolean
+  size?: 'base' | 'lg'
+  uid?: string
   name?: string
   onChange?: (checked: boolean) => void
   desc?: string | React.ReactNode
@@ -15,6 +17,8 @@ interface CheckboxProps {
 const CheckboxControl = ({
   title,
   checked,
+  uid,
+  size = 'base',
   onChange,
   name,
   desc,
@@ -22,7 +26,7 @@ const CheckboxControl = ({
   disabled
 }: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState<boolean>(!!checked)
-  const inputId = randomId()
+  const inputId = uid ?? randomId()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(event.target.checked)
@@ -31,6 +35,7 @@ const CheckboxControl = ({
   const classNames = [
     'inp-checkbox',
     disabled ? 'disabled' : null,
+    size ? `size-${size}` : null,
     className
   ].filter(Boolean)
 

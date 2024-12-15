@@ -22,6 +22,8 @@ import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
 import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
 import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
+import { useGetCustomFields } from './useGetCustomFields'
+import ClearCheckedCheckboxes from '../CustomFieldCheckbox/ClearCheckedCheckboxes'
 
 function SaveRecentVisitPage() {
   const { projectId, orgName } = useParams()
@@ -76,6 +78,8 @@ function PrefetchData() {
   useGetProjectPoint()
   useGetProjectViewList()
   useGetAutomationRulesByProject()
+  useGetCustomFields()
+
 
   // this hook generates objects in Map object
   // that helps to get task item as quickly as possible
@@ -89,5 +93,7 @@ export default function ProjectContainer() {
   return <>
     <PrefetchData />
     <SaveRecentVisitPage />
-    <ProjectNav /></>
+    <ProjectNav />
+    <ClearCheckedCheckboxes />
+  </>
 }

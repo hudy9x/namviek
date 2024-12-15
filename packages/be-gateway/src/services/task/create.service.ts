@@ -72,6 +72,7 @@ export default class TaskCreateService {
           checklistTodos: 0,
           desc,
           done,
+          customFields: {},
           fileIds: [],
           projectId,
           priority,

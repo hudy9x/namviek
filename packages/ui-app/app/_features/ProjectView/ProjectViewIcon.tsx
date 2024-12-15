@@ -6,7 +6,8 @@ import {
   HiOutlineRectangleGroup,
   HiOutlineRocketLaunch,
   HiOutlineUserGroup,
-  HiOutlineViewColumns
+  HiOutlineViewColumns,
+  HiOutlineTableCells
 } from 'react-icons/hi2'
 import { TbTimeline } from 'react-icons/tb'
 
@@ -37,6 +38,10 @@ export default function ProjectViewIcon({ type }: { type: ProjectViewType }) {
 
     if (type === ProjectViewType.ACTIVITY) {
       return <HiOutlineClipboardDocumentList />
+    }
+
+    if (type === ProjectViewType.GRID) {
+      return <HiOutlineTableCells />
     }
 
     return <HiOutlineRectangleGroup />

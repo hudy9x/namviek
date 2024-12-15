@@ -3,7 +3,7 @@
 }
 
 .inp-checkbox input[type='checkbox'] {
-  @apply h-4 w-4 rounded border-gray-300 text-indigo-600;
+  @apply rounded border-gray-300 text-indigo-600;
   @apply dark:bg-gray-800 dark:border-gray-700;
   @apply focus:ring-indigo-600;
 }
@@ -14,6 +14,14 @@
 
 .inp-checkbox [type='checkbox']:disabled {
   @apply bg-gray-300;
+}
+
+.inp-checkbox.size-base input[type='checkbox'] {
+  @apply h-4 w-4 
+}
+
+.inp-checkbox.size-lg input[type='checkbox'] {
+  @apply h-5 w-5 
 }
 
 /* .inp-checkbox input[checked] { */

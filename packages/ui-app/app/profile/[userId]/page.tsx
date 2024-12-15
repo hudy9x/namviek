@@ -1,3 +1,5 @@
+import Profile from "@/features/Profile";
+
 export default function Page() {
-  return <div>Page </div>
+  return <Profile />
 }

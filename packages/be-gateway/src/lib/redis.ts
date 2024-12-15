@@ -51,11 +51,16 @@ try {
     console.log('redis connection established')
   })
 
-  redis.on('error', err => {
-    if (error) return
-    console.log('redis connection error')
+  redis.on('connect', () => {
+    connected = true
     error = true
-    // console.log(error)
+  })
+
+  redis.on('error', err => {
+    connected = false
+    error = true
+    console.log('redis connection error')
+    if (error) return
   })
 } catch (error) {
   console.log('redis connection error')

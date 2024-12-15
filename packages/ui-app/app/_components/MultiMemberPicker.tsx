@@ -1,7 +1,7 @@
 import { getGoalieUser } from '@goalie/nextjs'
 import { UserMember, useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 const List = Form.List
 
 interface IMemberPicker {
@@ -11,141 +11,82 @@ interface IMemberPicker {
   title?: string
   value?: string[]
   onChange?: (val: string[]) => void
+  displayedOptions?: string[]
 }
 
 const defaultAssignee: ListItemValue = { id: 'NONE', title: 'No assignee' }
-let defaultAssigneeArr: ListItemValue[] = [defaultAssignee]
 
-function SelectedMembers({
-  selected,
-  members,
-  compact
-}: {
-  selected: ListItemValue[]
-  members: UserMember[]
-  compact?: boolean
-}) {
-
-  const selectedMembers = members.filter(m =>
-    selected.some(s => s.id === m.id)
-  )
+const SelectedMembers = ({ selected, members, compact }: { selected: ListItemValue[], members: ListItemValue[], compact?: boolean }) => {
+  const selectedMembers = members.filter(m => selected.some(s => s.id === m.id))
 
   if (selected.find(s => s.id === 'ALL')) {
-    return (
-      <div className="flex gap-2 items-center shrink-0 selected-member">
-        <Avatar name={'ALL'} size="sm" src={''} /> All
-      </div>
-    )
+    return <MemberDisplay name="ALL" />
   }
-
 
   if (!selectedMembers.length) {
-    return (
-      <div className="flex gap-2 items-center shrink-0 selected-member">
-        <Avatar name={'None'} size="sm" src={''} /> No one
-      </div>
-    )
+    return <MemberDisplay name="None" />
   }
 
-  const reverseMembers = selectedMembers.reverse().slice(0, 3)
-  const TheFirstThreeItem = reverseMembers.map(sm => {
-    return (
-      <div
-        key={sm.id}
-        className="flex gap-2 items-center shrink-0 selected-member">
-        <Avatar name={sm.name || ''} size="sm" src={sm.photo || ''} />{' '}
-        {compact ? null : (
-          <span className="name">{sm && sm.name ? sm.name : 'None'}</span>
-        )}
-      </div>
-    )
-  })
-
-  const n = selectedMembers.length - reverseMembers.length
-  const Rest = (
-    <div
-      title={`and ${n} more`}
-      className="flex gap-2 items-center justify-center shrink-0 selected-member w-6 h-6 bg-gray-100 rounded-full">
-      +{n}
-    </div>
-  )
+  const displayedMembers = selectedMembers.slice(-3).reverse()
+  const additionalCount = selectedMembers.length - displayedMembers.length
 
   return (
     <>
-      {TheFirstThreeItem}{' '}
-      {reverseMembers.length < selectedMembers.length ? Rest : null}
+      {displayedMembers.map(sm => <MemberDisplay key={sm.id} name={sm.title || ''} photo={sm.icon || ''} compact={compact} />)}
+      {additionalCount > 0 && <AdditionalMembers count={additionalCount} />}
     </>
   )
 }
 
-function useRefactorMemberOptions({ all, setOptions }:
-  {
-    all?: boolean,
-    setOptions: Dispatch<SetStateAction<ListItemValue[]>>
-  }) {
+const MemberDisplay = ({ name, photo, compact }: { name: string, photo?: string, compact?: boolean }) => (
+  <div className="flex gap-2 items-center shrink-0 selected-member">
+    <Avatar name={name} size="sm" src={photo || ''} />
+    {!compact && <span className="name">{name}</span>}
+  </div>
+)
+
+const AdditionalMembers = ({ count }: { count: number }) => (
+  <div title={`and ${count} more`} className="flex gap-2 items-center justify-center shrink-0 selected-member w-6 h-6 bg-gray-100 rounded-full">
+    +{count}
+  </div>
+)
+
+const useMemberOptions = (all: boolean) => {
   const { members } = useMemberStore(state => state)
-  // update project member into list
+  const [options, setOptions] = useState<ListItemValue[]>([defaultAssignee])
+
   useEffect(() => {
     const user = getGoalieUser()
-    const listMembers = members.map(mem => {
-      let title = mem.name
-      if (user?.id === mem.id) {
-        title = 'Me'
-      }
+    const listMembers: ListItemValue[] = members.map(mem => ({
+      id: mem.id,
+      icon: mem.photo || '',
+      title: user?.id === mem.id ? 'Me' : (mem.name || '')
+    }))
+    if (all) listMembers.push({ id: 'ALL', title: 'All members' })
 
-      return { id: mem.id, title }
-    })
-    all && listMembers.push({ id: 'ALL', title: 'All member' })
+    setOptions(listMembers)
+  }, [members, all])
 
-    defaultAssigneeArr = listMembers as ListItemValue[]
-    setOptions(listMembers as ListItemValue[])
-  }, [members])
-
+  return options
 }
 
-function useOnUserChangeOption({ onChange, val }: {
-  onChange?: (val: string[]) => void
-  val: ListItemValue[]
-}) {
-  const [updateCounter, setUpdateCounter] = useState(0)
+const useSelectedMembers = (options: ListItemValue[], value: string[], onChange: (val: string[]) => void) => {
+  const [selected, setSelected] = useState<ListItemValue[]>([])
 
-  // call onChange everytime user select an other assignee
   useEffect(() => {
-    updateCounter > 0 &&
-      onChange &&
-      onChange(val.map(v => v.id).filter(m => m !== defaultAssignee.id))
-  }, [updateCounter])
+    const selectedMembers = options.filter(option => value.includes(option.id))
+    setSelected(selectedMembers.length ? selectedMembers : [defaultAssignee])
+  }, [options, value])
 
-  const updateCounterHandler = () => {
-    setUpdateCounter(updateCounter + 1)
+  const handleSelectionChange = (val: SetStateAction<ListItemValue[]>) => {
+    setSelected(prevSelected => {
+      const newSelected = typeof val === 'function' ? val(prevSelected) : val
+      onChange(newSelected.map(v => v.id).filter(id => id !== defaultAssignee.id))
+      return newSelected
+    })
   }
 
-  return { updateCounterHandler }
-}
-
-function useSetSelectedVal({
-  options,
-  selectedOption,
-  value,
-  setVal
-}: {
-  selectedOption: ListItemValue[]
-  options: ListItemValue[],
-  value?: string[]
-  setVal: Dispatch<SetStateAction<ListItemValue[]>>
-}) {
-  useEffect(() => {
-    if (selectedOption) {
-      setVal(selectedOption)
-    }
-  }, [value])
-
-  useEffect(() => {
-    const selectedMembers = options.filter(
-      m => value && value.some(v => v === m.id)
-    )
-    selectedMembers.length ? setVal(selectedMembers) : setVal(defaultAssigneeArr)
-  }, [options])
+  return { selected, handleSelectionChange }
 }
 
 export default function MultiMemberPicker({
@@ -154,61 +95,35 @@ export default function MultiMemberPicker({
   compact = false,
   onChange,
   value,
-  className
+  className,
+  displayedOptions
 }: IMemberPicker) {
-  const { members } = useMemberStore(state => state)
-  const [options, setOptions] = useState<ListItemValue[]>(defaultAssigneeArr)
-
-  const selectedOption = options.filter(
-    opt => value && value.some(v => v === opt.id)
-  )
-  const [val, setVal] = useState(
-    selectedOption.length ? selectedOption : [options[0]]
-  )
-
-  const { updateCounterHandler } = useOnUserChangeOption({ onChange, val })
-
-  // update project member into list
-  useRefactorMemberOptions({ setOptions, all })
-
-  useSetSelectedVal({
-    selectedOption,
-    options,
-    setVal,
-    value
-  })
+  const options = useMemberOptions(all)
+  const filteredOptions = useMemo(() => {
+    if (!displayedOptions || !displayedOptions.length) return options
+    return options.filter(option => displayedOptions.includes(option.id))
+  }, [options, displayedOptions])
+  const { selected, handleSelectionChange } = useSelectedMembers(options, value || [], onChange || (() => { console.log(1) }))
 
   return (
     <div className={className}>
       <List
         multiple
         title={title}
-        value={val}
-        onMultiChange={val => {
-          setVal(val)
-          // setUpdateCounter(updateCounter + 1)
-          updateCounterHandler()
-        }}>
-        {/* <List.Button>{getSelectedMember(val)}</List.Button> */}
+        value={selected}
+        onMultiChange={handleSelectionChange}>
         <List.Button>
-          <SelectedMembers selected={val} members={members} compact={compact} />
+          <SelectedMembers selected={selected} members={options} compact={compact} />
         </List.Button>
         <List.Options width={200}>
-          {options.map(option => {
-            const user = members.find(m => m.id === option.id)
-            return (
-              <List.Item keepMeOnly={option.id === 'ALL'} key={option.id} value={option}>
-                <div className="flex gap-2.5 items-center">
-                  <Avatar
-                    src={user?.photo || ''}
-                    size="md"
-                    name={option.title || ''}
-                  />
-                  {option.title}
-                </div>
-              </List.Item>
-            )
-          })}
+          {filteredOptions.map(option => (
+            <List.Item keepMeOnly={option.id === 'ALL'} key={option.id} value={option}>
+              <div className="flex gap-2.5 items-center">
+                <Avatar src={option.icon || ''} size="md" name={option.title || ''} />
+                {option.title}
+              </div>
+            </List.Item>
+          ))}
         </List.Options>
       </List>
     </div>

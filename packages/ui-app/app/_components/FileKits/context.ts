@@ -27,6 +27,7 @@ interface IFileKitContextProps {
   setLoading: Dispatch<SetStateAction<boolean>>
   previewFiles: IFileItem[]
   selected: number
+  onChange?: (fileIds: string[]) => void
   setPreviewFiles: Dispatch<SetStateAction<IFileItem[]>>
   setSelected: Dispatch<SetStateAction<number>>
 }
@@ -37,6 +38,7 @@ const FileKitContext = createContext<IFileKitContextProps>({
   uploading: false,
   previewFiles: [],
   selected: -1,
+  onChange: () => console.log(1),
   setUploading: () => {
     console.log(1)
   },

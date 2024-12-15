@@ -1,0 +1,22 @@
+.filter-input .cf-checkbox {
+  display: flex !important;
+}
+
+.cf-checkbox {
+  @apply w-5 h-5 rounded border border-gray-400 dark:border-gray-500;
+  @apply relative;
+
+  & svg {
+    @apply absolute hidden top-0.5 left-0.5;
+  }
+}
+
+.filter-input {
+  @apply rounded-md border-gray-300 shadow-sm w-full cursor-pointer;
+  @apply focus:border-indigo-500 focus:ring-indigo-200 sm:text-sm focus:ring-2;
+  margin-bottom: 0px !important;
+}
+
+.filter-input-container input:checked + .filter-input .cf-checkbox svg {
+  @apply block;
+}

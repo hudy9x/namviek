@@ -9,15 +9,20 @@ import { useEffect } from 'react'
 import PdfViewer from '../PdfViewer'
 import './carousel.css'
 import { createPortal } from 'react-dom'
+import DocViewer from '../DocViewer'
 
 function FileCarouselDisplay({ file }: { file: IFileItem }) {
   if (!file) return null
 
   const isPdf = file.ext.toLowerCase() === 'pdf'
+  const isDoc = ['doc', 'docx'].includes(file.ext.toLowerCase())
   const isVideo = file.ext.toLowerCase() === 'mp4'
   const url = isImage(file.mimeType) ? file.url : getIconUrl(file.ext)
 
   const getPreview = () => {
+    if (isDoc && file.url) {
+      return <DocViewer className="pt-[180px] pb-[100px]" src={file.url} />
+    }
     if (isPdf && file.url) {
       return (
         <div className="pt-[50px]">
@@ -27,7 +32,6 @@ function FileCarouselDisplay({ file }: { file: IFileItem }) {
     }
 
     if (isVideo) {
-      console.log(file)
       return (
         <div>
           <video
@@ -118,7 +122,7 @@ export default function FileCarousel() {
 
   const view = (
     <div
-      className={`file-carousel z-50 fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`file-carousel z-[170] fixed top-0 left-0 w-full h-full bg-black/80 mt-0 ${selected !== -1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}>
       <div className="border-b border-b-gray-700 bg-black dark:border-gray-700 px-4 py-3 flex items-center justify-between text-gray-300">
         <div></div>
