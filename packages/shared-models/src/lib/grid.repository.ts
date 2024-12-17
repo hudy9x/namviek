@@ -21,7 +21,8 @@ export class GridRepository {
 
   async update(uid: string, { id, fieldId, value, type }: { id: string, type: FieldType, value: string | string[], fieldId: string }) {
     const oldTask = await gridModel.findFirst({ where: { id } })
-    const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
+    const oldCustomFields = oldTask && oldTask.customFields ? oldTask.customFields : {}
+    const oldCustomData = oldCustomFields as Prisma.JsonObject
 
     const result = await gridModel.update({
       where: {
@@ -48,7 +49,7 @@ export class GridRepository {
         title: 'Untitled',
         cover: null,
         customFields: data.customFields || {},
-        projectId: data.projectId,
+        projectId: data.projectId || '',
         createdBy: uid,
         createdAt: new Date(),
         updatedAt: null,
@@ -68,9 +69,10 @@ export class GridRepository {
   }) {
 
     const oldTask = await gridModel.findFirst({ where: { id } })
-    const oldCustomData = (oldTask.customFields || {}) as Prisma.JsonObject
+    const oldCustomFields = oldTask && oldTask.customFields ? oldTask.customFields : {}
+    const oldCustomData = oldCustomFields as Prisma.JsonObject
 
-    const convertedData = {}
+    const convertedData: Record<string, string | number | string[]> = {}
 
     for (const key in data) {
       const dt = data[key]
