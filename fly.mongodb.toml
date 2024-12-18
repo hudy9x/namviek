@@ -1,0 +1,38 @@
+app = "namviek-mongodb"
+primary_region = "sin"
+
+[build]
+  dockerfile = "docker/services/Dockerfile-mongodb"
+  context = "docker/services"
+
+[env]
+  MONGO_INITDB_DATABASE = "namviek"
+
+[[mounts]]
+  source = "mongodb_data_sin"
+  destination = "/data/db"
+  region = "sin"
+
+[services]
+  internal_port = 27017
+  protocol = "tcp"
+  
+  [[services.ports]]
+    port = 27017
+    handlers = ["tls", "proxy_proto"]
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+
+[services.concurrency]
+  type = "connections"
+  hard_limit = 25
+  soft_limit = 20
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+  region = "sin"
