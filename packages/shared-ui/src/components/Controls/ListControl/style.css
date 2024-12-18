@@ -45,6 +45,7 @@
 }
 
 .select-options {
+  @apply pointer-events-auto;
   @apply py-1.5 bg-white rounded-md border shadow-sm;
   @apply absolute mt-1.5 left-0 w-full z-10 overflow-y-auto;
   max-height: 200px;
