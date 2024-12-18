@@ -70,7 +70,7 @@ export default function PrioritySelect({
         title={title}
         placeholder={placeholder}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>

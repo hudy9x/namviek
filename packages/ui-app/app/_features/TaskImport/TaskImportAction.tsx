@@ -100,6 +100,7 @@ export default function TaskImportAction() {
         type: TaskType.TASK,
         checklistDone: 0,
         checklistTodos: 0,
+        customFields: {},
         cover: null,
         order: -1,
         plannedStartDate: null,

@@ -28,7 +28,7 @@ export default function OperatorSelect({
       <List
         title={title}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setval(val)
         }}>
         <List.Button>{val.title}</List.Button>

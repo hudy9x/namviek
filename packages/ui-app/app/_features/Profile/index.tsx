@@ -4,19 +4,24 @@ import MemberAvatar from '@/components/MemberAvatar'
 import { Button, Form, Dialog } from '@shared/ui'
 import { useUser } from '@goalie/nextjs'
 import useAvatarUpload from './useAvatarUpload'
+import { useGetParams } from '@/hooks/useGetParams'
+import { useParams } from 'next/navigation'
 
 export default function Profile() {
   const { user } = useUser()
   const [isUploading, setIsUploading] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const { uploadAvatar } = useAvatarUpload()
+  // const { orgId } = useGetParams()
+  // const { projectId } = useParams()
 
   // In your file input handler:
   const handleAvatarChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    const result = await uploadAvatar(file, user?.id || '', orgId, projectId)
+    const result = await uploadAvatar(file, user?.id || '', 'orgId', 'projectId')
+
     // if (result) {
     //   // Update avatar URL in your UI
     //   setAvatarUrl(result.url)

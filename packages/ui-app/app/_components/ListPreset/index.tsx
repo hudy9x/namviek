@@ -53,7 +53,7 @@ function ListPreset({
         title={title}
         error={error}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>

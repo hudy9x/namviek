@@ -58,7 +58,7 @@ export default function TaskTypeSelect({
         title={title}
         placeholder={placeholder}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>

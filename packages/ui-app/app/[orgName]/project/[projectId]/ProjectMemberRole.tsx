@@ -53,8 +53,8 @@ export default function ProjectMemberRole({
     <div className="project-member-permission">
       <List
         value={value}
-        onChange={val => {
-          onUpdate(val as ListItemValue)
+        onChange={(val: ListItemValue) => {
+          onUpdate(val)
         }}>
         <List.Button>{value.title}</List.Button>
         <List.Options>

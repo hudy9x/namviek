@@ -81,7 +81,7 @@ export default function PointSelect({
         title={title}
         placeholder={placeholder}
         value={val}
-        onChange={val => {
+        onChange={(val: ListItemValue) => {
           setVal(val)
           setUpdateCounter(updateCounter + 1)
         }}>
