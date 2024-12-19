@@ -76,10 +76,13 @@ export const mdMemberBelongToProject = async (
   })
 }
 
-export const mdMemberGetAllByProjectId = async (projectId: string) => {
+export const mdMemberGetAllByProjectId = async (projectId: string | string[]) => {
+  const projectIds = Array.isArray(projectId) ? projectId : [projectId]
   return memberModel.findMany({
     where: {
-      projectId
+      projectId: {
+        in: projectIds
+      }
     },
     include: {
       users: true

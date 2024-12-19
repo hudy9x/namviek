@@ -4,6 +4,8 @@ import {
   DashboardComponentType
 } from '@prisma/client'
 import { dboardComponentModal, dboardModel, taskModel } from './_prisma'
+import { mdMemberBelongToProject, mdMemberGetAllByProjectId } from './member'
+import { mdTaskStatusQuery } from './taskStatus'
 
 export const mdDBoardGetComponents = async (dboardId: string) => {
   return dboardComponentModal.findMany({
@@ -526,12 +528,30 @@ export const mdDBoardQueryColumn = async ({
   config.startDate = startDate
   config.endDate = endDate
 
+  console.log('config', xAxis, series, projectIds)
+
+  const pids = projectIds.filter(p => p !== 'in')
+
   if (xAxis && xAxis.assigneeIds) {
     config.assigneeIds = xAxis.assigneeIds
+    if (xAxis.assigneeIds.includes('ALL') && pids.length) {
+      const members = await mdMemberGetAllByProjectId(pids)
+      config.assigneeIds = members.map(r => {
+        return r.uid
+      })
+    }
   }
 
   if (series && series.statusIds) {
+    const [operator, ...restStatusIds] = series.statusIds
     config.statusIds = series.statusIds
+
+    if (restStatusIds.includes('ALL') && pids.length) {
+      const status = await mdTaskStatusQuery({ projectIds: pids })
+      const statusIds = status.map(stt => stt.id)
+      config.statusIds = [operator, ...statusIds]
+      series.statusIds = [operator, ...statusIds]
+    }
   }
 
   if (projectIds) {
@@ -559,6 +579,8 @@ export const mdDBoardQueryColumn = async ({
     xAxis,
     series
   })
+
+  console.log('results', result)
 
   const columns = result[0] as ColumnConfig
   const xAxises = result[1] as string[]
