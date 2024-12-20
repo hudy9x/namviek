@@ -8,6 +8,7 @@ import { HiOutlineSaveAs } from 'react-icons/hi'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import { dboardUpdateLayout } from '@/services/dashboard'
+import DboardResizeHandle from './DboardResizeHandle'
 
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
@@ -72,6 +73,9 @@ export default function DboardComponentList() {
         onLayoutChange={handleLayoutChange}
         isDraggable={true}
         isResizable={true}
+        draggableHandle=".drag-handle"
+        // resizeHandle={<DboardResizeHandle/>}
+      // resizeHandle=".resize-handle"
       >
         {components.map(component => (
           <div key={component.id}>

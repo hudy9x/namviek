@@ -12,6 +12,7 @@ export default function DbComponent({
   const configJson = config as unknown as { [key: string]: unknown }
   return (
     <>
+      <div className="drag-handle absolute top-0 left-0 w-6 h-6 z-10 bg-red-500"></div>
       {type === DashboardComponentType.SUMMARY ? (
         <DbCompSummary id={id} title={title || ''} config={configJson} />
       ) : null}

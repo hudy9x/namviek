@@ -11,7 +11,7 @@ interface ChartColumnContext {
 }
 const ChartColContext = createContext<ChartColumnContext>({
   columns: [],
-  chartHeight: 300,
+  chartHeight: 273,
   heightPerRow: 30,
   yaxis: [],
   max: 0
@@ -81,7 +81,7 @@ interface IChartColumnOption {
 
 const useChartColumn = (options: IChartColumnOption) => {
   let max = 0
-  const chartHeight = 300
+  const chartHeight = 260
   const heightPerRow = 30
   const yaxisLen = Math.ceil(chartHeight / heightPerRow)
   const type = options.xaxis.type
@@ -223,7 +223,7 @@ const ChartColumnX = () => {
             style={{
               width: `calc(${columnWidth}% - ${columnGap}px - ${columnXOffset}px)`
             }}
-            className="h-full hover:bg-gray-100 flex flex-col-reverse relative">
+            className="h-full dark:hover:bg-gray-900/50 hover:bg-gray-100 flex flex-col-reverse relative">
             <ChartColumnXName {...col} />
             {colDatas.map((cd, cdidx) => {
               let color
