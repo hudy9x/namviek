@@ -11,7 +11,8 @@ import {
   mdDBoardQueryColumn,
   mdDBoardQueryBurnChart,
   mdDBoardQuerySum,
-  mdDboardGetDefault
+  mdDboardGetDefault,
+  mdDBoardUpdateLayout
 } from '@shared/models'
 import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 
@@ -91,10 +92,14 @@ router.post('/dboard/component', async (req: AuthRequest, res) => {
       dashboardId,
       type,
       config,
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 3,
       createdAt: new Date(),
       createdBy: uid,
-      updatedAt: null,
-      updatedBy: null
+      updatedAt: new Date(),
+      updatedBy: uid
     })
     res.json({ status: 200, data: result })
   } catch (error) {
@@ -144,6 +149,27 @@ router.post('/dboard/query-burnchart/:type', async (req: AuthRequest, res) => {
     res.json({ status: 200, data: result })
   } catch (error) {
     console.log(error)
+    res.json({ status: 500, error })
+  }
+})
+
+router.post('/dboard/update-layout', async (req, res) => {
+  try {
+    const { components } = req.body as {
+      components: {
+        id: string
+        x: number
+        y: number
+        width: number
+        height: number
+      }[]
+    }
+
+    await mdDBoardUpdateLayout(components)
+
+    res.json({ status: 200, message: 'Success' })
+  } catch (error) {
+    console.error('Failed to update layout:', error)
     res.json({ status: 500, error })
   }
 })
