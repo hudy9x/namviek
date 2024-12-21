@@ -25,6 +25,8 @@ export default function DboardComponentList() {
     h: component.height ?? 1
   }))
 
+  console.log('layout', layout)
+
   const handleLayoutChange = (newLayout: Layout[]) => {
     setCurrentLayout(newLayout)
   }

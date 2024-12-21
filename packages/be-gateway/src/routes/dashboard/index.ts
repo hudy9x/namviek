@@ -84,8 +84,10 @@ router.post('/dboard/component', async (req: AuthRequest, res) => {
       Omit<DashboardComponent, 'id'>
     >
 
-    console.log('create component')
-    console.log(req.body)
+    // Set default dimensions based on component type
+    const defaultDimensions = type === DashboardComponentType.COLUMN
+      ? { width: 6, height: 4 }
+      : { width: 3, height: 1 }
 
     const result = await mdDBoardAddComponent({
       title,
@@ -94,8 +96,7 @@ router.post('/dboard/component', async (req: AuthRequest, res) => {
       config,
       x: 0,
       y: 0,
-      width: 2,
-      height: 3,
+      ...defaultDimensions,
       createdAt: new Date(),
       createdBy: uid,
       updatedAt: new Date(),
