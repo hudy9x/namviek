@@ -593,3 +593,27 @@ export const mdDBoardQueryColumn = async ({
     columns
   }
 }
+
+export const mdDBoardUpdateLayout = async (components: {
+  id: string
+  x: number
+  y: number
+  width: number
+  height: number
+}[]) => {
+  const updates = await Promise.all(
+    components.map(component => 
+      dboardComponentModal.update({
+        where: { id: component.id },
+        data: {
+          x: component.x,
+          y: component.y,
+          width: component.width,
+          height: component.height,
+          updatedAt: new Date()
+        }
+      })
+    )
+  )
+  return updates
+}

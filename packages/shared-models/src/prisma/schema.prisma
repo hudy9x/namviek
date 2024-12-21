@@ -459,6 +459,10 @@ model DashboardComponent {
   title       String?
   type        DashboardComponentType?
   config      Json?
+  x           Int?                    @default(0)
+  y           Int?                    @default(0)
+  width       Int?                    @default(3)
+  height      Int?                    @default(1)
 
   createdBy String?
   createdAt DateTime?

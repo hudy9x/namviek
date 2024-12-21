@@ -75,3 +75,14 @@ export const dboardQueryColumn = (query: IDBComponentConfig) => {
 export const dboardQueryBurnChart = (query: IDBComponentConfig, type: DashboardComponentType) => {
   return httpPost(`/api/dboard/query-burnchart/${type}`, query)
 }
+
+export interface IUpdateLayoutComponent extends DashboardComponent {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+export const dboardUpdateLayout = (components: Partial<IUpdateLayoutComponent>[]) => {
+  return httpPost('/api/dboard/update-layout', { components })
+}

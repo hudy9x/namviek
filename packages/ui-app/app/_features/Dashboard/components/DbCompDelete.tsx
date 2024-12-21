@@ -2,6 +2,7 @@ import { dboardComponentDel } from '@/services/dashboard'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { useOverviewContext } from '../../Project/Overview/context'
 import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { MouseEvent } from 'react'
 
 export default function DbCompDelete({ id }: { id: string }) {
   const { delComponent } = useOverviewContext()
@@ -18,7 +19,9 @@ export default function DbCompDelete({ id }: { id: string }) {
       messageSuccess('Deleted component')
     })
   }
-  const onDelete = () => {
+  const onDelete = (ev: MouseEvent<HTMLDivElement>) => {
+    ev.stopPropagation()
+
     confirmAlert({
       message: 'Are you sure you want to delete this component ?',
       yes: () => {
