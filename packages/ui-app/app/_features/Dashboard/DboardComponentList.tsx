@@ -7,7 +7,7 @@ import { HiOutlineSaveAs } from 'react-icons/hi'
 
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import { dboardUpdateLayout } from '@/services/dashboard'
+import { IUpdateLayoutComponent, dboardUpdateLayout } from '@/services/dashboard'
 import DboardResizeHandle from './DboardResizeHandle'
 
 
@@ -38,16 +38,16 @@ export default function DboardComponentList() {
         if (layoutItem) {
           return {
             ...component,
-            x: layoutItem.x,
-            y: layoutItem.y,
-            width: layoutItem.w,
-            height: layoutItem.h
+            x: layoutItem.x || 0,
+            y: layoutItem.y || 0,
+            width: layoutItem.w || 2,
+            height: layoutItem.h || 1
           }
         }
         return component
       })
 
-      await dboardUpdateLayout(updatedComponents)
+      await dboardUpdateLayout(updatedComponents as unknown as IUpdateLayoutComponent[])
       setComponents(updatedComponents)
     } catch (error) {
       messageError('Failed to save layout')
@@ -76,7 +76,7 @@ export default function DboardComponentList() {
         isDraggable={true}
         isResizable={true}
         draggableHandle=".drag-handle"
-        // resizeHandle={<DboardResizeHandle/>}
+      // resizeHandle={<DboardResizeHandle/>}
       // resizeHandle=".resize-handle"
       >
         {components.map(component => (
