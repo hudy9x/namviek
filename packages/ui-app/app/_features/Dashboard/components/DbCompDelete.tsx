@@ -1,7 +1,7 @@
 import { dboardComponentDel } from '@/services/dashboard'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { useOverviewContext } from '../../Project/Overview/context'
-import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { Button, confirmAlert, messageError, messageSuccess } from '@shared/ui'
 import { MouseEvent } from 'react'
 
 export default function DbCompDelete({ id }: { id: string }) {
@@ -19,7 +19,7 @@ export default function DbCompDelete({ id }: { id: string }) {
       messageSuccess('Deleted component')
     })
   }
-  const onDelete = (ev: MouseEvent<HTMLDivElement>) => {
+  const onDelete = (ev: MouseEvent<HTMLButtonElement>) => {
     ev.stopPropagation()
 
     confirmAlert({
@@ -30,8 +30,10 @@ export default function DbCompDelete({ id }: { id: string }) {
     })
   }
   return (
-    <div className="absolute top-3 right-3 z-10" onClick={onDelete}>
-      <AiOutlineDelete className="text-gray-400" />
-    </div>
+    <Button
+      size='sm'
+      leadingIcon={
+        <AiOutlineDelete style={{ color: '#ff7777' }} />
+      } className="" onClick={onDelete} />
   )
 }

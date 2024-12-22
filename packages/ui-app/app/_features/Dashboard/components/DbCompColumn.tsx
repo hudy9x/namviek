@@ -119,13 +119,19 @@ export default function DbCompColumn({ id, config, title }: IDbCompProps) {
         <DbCompDragHandler />
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
-        <Button
-          onClick={() => setUpdateCounter(updateCounter + 1)}
-          leadingIcon={<AiOutlineSync />}
-          size="sm"
-        />
       </h2>
-      <DbCompDelete id={id} />
+
+      <div className='group-hover:opacity-100 group-hover:pointer-events-auto transition-all opacity-0 pointer-events-none absolute top-3 right-5'>
+        <div className='flex items-center gap-1'>
+          <Button
+            onClick={() => setUpdateCounter(updateCounter + 1)}
+            leadingIcon={<AiOutlineSync />}
+            size="sm"
+          />
+          <DbCompDelete id={id} />
+        </div>
+      </div>
+
       <div className="bg-indigo-50/20 dark:bg-[#182031] dark:border-gray-700 border border-indigo-50 rounded pb-5 mt-3">
         <ChartColumn options={options} />
       </div>

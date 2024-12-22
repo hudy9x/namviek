@@ -59,10 +59,12 @@ export default function DbCompSummary({
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
       </h2>
+      <div className='group-hover:opacity-100 group-hover:pointer-events-auto transition-all opacity-0 pointer-events-none absolute top-3.5 right-5'>
+        <DbCompDelete id={id} />
+      </div>
       <div className="font-bold text-[40px] leading-none mt-1">
         {data.summary > 9 ? data.summary : `0${data.summary}`}
       </div>
-      <DbCompDelete id={id} />
     </div>
   )
 }
