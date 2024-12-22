@@ -3,6 +3,7 @@ import { Button, Modal } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import DashboardComponentUpdateForm from './DashboardComponentUpdateForm'
 import './dboard-component-create.css'
+import { HiOutlinePlus } from 'react-icons/hi2'
 
 interface IChartType {
   type: DashboardComponentType
@@ -18,12 +19,12 @@ const charts: IChartType[] = [
     desc: 'See how many tasks are in progress in any location',
     icon: '🚀'
   },
-  {
-    type: DashboardComponentType.SUMMARY,
-    title: 'Number of Tasks Closed',
-    desc: 'See how many tasks are closed in any location',
-    icon: '🎄'
-  },
+  // {
+  //   type: DashboardComponentType.SUMMARY,
+  //   title: 'Number of Tasks Closed',
+  //   desc: 'See how many tasks are closed in any location',
+  //   icon: '🎄'
+  // },
   {
     type: DashboardComponentType.SUMMARY,
     title: 'Number of Upcoming Tasks',
@@ -54,18 +55,18 @@ const charts: IChartType[] = [
     desc: 'Display the total amount of task by status',
     icon: '🚦'
   },
-  {
-    type: DashboardComponentType.BURNDOWN,
-    title: 'Burndown Chart',
-    desc: 'Utilize the Burndown Chart to analyze the progress of tasks.',
-    icon: '📉'
-  },
-  {
-    type: DashboardComponentType.BURNUP,
-    title: 'Burnup Chart',
-    desc: 'Utilize the Burnup Chart to analyze the progress of tasks.',
-    icon: '📈'
-  }
+  // {
+  //   type: DashboardComponentType.BURNDOWN,
+  //   title: 'Burndown Chart',
+  //   desc: 'Utilize the Burndown Chart to analyze the progress of tasks.',
+  //   icon: '📉'
+  // },
+  // {
+  //   type: DashboardComponentType.BURNUP,
+  //   title: 'Burnup Chart',
+  //   desc: 'Utilize the Burnup Chart to analyze the progress of tasks.',
+  //   icon: '📈'
+  // }
   // { type: DashboardComponentType.PIE, desc: '', icon: '' },
   // { type: DashboardComponentType.BURNDOWN, desc: '', icon: '' },
   // { type: DashboardComponentType.LIST, desc: '', icon: '' }
@@ -93,7 +94,9 @@ export default function DashboardComponentCreate() {
         size={showSettingForm ? 'base' : `lg`}
         triggerBy={
           <div>
-            <Button size="sm" title="Create component" />
+            <Button
+              leadingIcon={<HiOutlinePlus />}
+              title="Create component" />
           </div>
         }
         content={

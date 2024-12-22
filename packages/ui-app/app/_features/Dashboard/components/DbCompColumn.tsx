@@ -6,6 +6,7 @@ import { Button } from '@shared/ui'
 import { useProjectStatusStore } from '@/store/status'
 import ChartColumn, { ISerieItem } from '@/components/ChartColumn'
 import DbCompDelete from './DbCompDelete'
+import DbCompDragHandler from './DbCompDragHandler'
 
 interface IChartColumnOption {
   series: ISerieItem[]
@@ -113,17 +114,24 @@ export default function DbCompColumn({ id, config, title }: IDbCompProps) {
   }, [updateCounter, config])
 
   return (
-    <div className="col-span-2 py-4 px-5 w-[] dark:border-gray-700 dark:bg-gray-900 dark:shadow-gray-900 border rounded-md bg-white shadow-sm hover:shadow-lg hover:shadow-gray-200 transition-all relative overflow-hidden group cursor-pointer">
+    <div className="dboard-component-item group">
       <h2 className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 ">
+        <DbCompDragHandler />
         {config.fixed ? <AiOutlineLock /> : null}
         {data.title}
-        <Button
-          onClick={() => setUpdateCounter(updateCounter + 1)}
-          leadingIcon={<AiOutlineSync />}
-          size="sm"
-        />
       </h2>
-      <DbCompDelete id={id} />
+
+      <div className='group-hover:opacity-100 group-hover:pointer-events-auto transition-all opacity-0 pointer-events-none absolute top-3 right-5'>
+        <div className='flex items-center gap-1'>
+          <Button
+            onClick={() => setUpdateCounter(updateCounter + 1)}
+            leadingIcon={<AiOutlineSync />}
+            size="sm"
+          />
+          <DbCompDelete id={id} />
+        </div>
+      </div>
+
       <div className="bg-indigo-50/20 dark:bg-[#182031] dark:border-gray-700 border border-indigo-50 rounded pb-5 mt-3">
         <ChartColumn options={options} />
       </div>

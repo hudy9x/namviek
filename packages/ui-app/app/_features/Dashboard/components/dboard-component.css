@@ -1,0 +1,7 @@
+.dboard-component-item {
+  @apply col-span-2 py-4 px-5 dark:border-gray-700 dark:bg-gray-900 dark:shadow-gray-900;
+  @apply border rounded-md bg-white shadow-sm;
+  @apply hover:shadow-lg hover:shadow-gray-200 dark:hover:shadow-gray-900;
+  @apply transition-all relative overflow-hidden cursor-pointer;
+  @apply h-full;
+}

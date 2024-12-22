@@ -51,14 +51,14 @@ export default function OverviewContent() {
         </div>
       ) : null}
 
-      {dboardId ? (
-        <header className="py-3 p-4 bg-white dark:bg-gray-900 dark:border-gray-700 border rounded-md mb-3 ">
-          <h2 className="text-gray-800 dark:text-gray-300 font-bold text-2xl">
-            Hi, {user?.name}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p>
-        </header>
-      ) : null}
+      {/* {dboardId ? ( */}
+      {/*   <header className="py-3 p-4 bg-white dark:bg-gray-900 dark:border-gray-700 border rounded-md mb-3 "> */}
+      {/*     <h2 className="text-gray-800 dark:text-gray-300 font-bold text-2xl"> */}
+      {/*       Hi, {user?.name} */}
+      {/*     </h2> */}
+      {/*     <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">{`Welcome back to Overview dashboard. Have a bird's eye view of your project`}</p> */}
+      {/*   </header> */}
+      {/* ) : null} */}
       <div className="w-full group">
         {!loading && !dboardId ? (
           <div className="flex items-center gap-2 w-[720px] text-gray-500 justify-center m-auto mt-[175px] bg-white dark:bg-gray-900 dark:border-gray-700 dark:shadow-gray-900 dark:text-gray-400 px-10 py-6 rounded-lg shadow-xl shadow-indigo-100 border-4 border-gray-200 hover:border-indigo-400 transition-all">
@@ -86,10 +86,11 @@ export default function OverviewContent() {
           </div>
         ) : null}
 
-        {dboardId ? <DashboardComponentCreate /> : null}
       </div>
       <main className="mt-3">
-        <DboardComponentList />
+        {dboardId ?
+          <DboardComponentList />
+          : null}
       </main>
     </div>
   )
