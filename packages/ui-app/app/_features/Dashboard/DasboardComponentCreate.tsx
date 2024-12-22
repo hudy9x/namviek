@@ -3,6 +3,7 @@ import { Button, Modal } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import DashboardComponentUpdateForm from './DashboardComponentUpdateForm'
 import './dboard-component-create.css'
+import { HiOutlinePlus } from 'react-icons/hi2'
 
 interface IChartType {
   type: DashboardComponentType
@@ -93,7 +94,9 @@ export default function DashboardComponentCreate() {
         size={showSettingForm ? 'base' : `lg`}
         triggerBy={
           <div>
-            <Button size="sm" title="Create component" />
+            <Button
+              leadingIcon={<HiOutlinePlus />}
+              title="Create component" />
           </div>
         }
         content={
