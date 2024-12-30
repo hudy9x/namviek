@@ -9,6 +9,7 @@ import { ReactNode, useEffect } from 'react'
 import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
 import { setLocalCache } from '@shared/libs'
+import Upsale from '@/features/UpsaleDialog'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
@@ -29,6 +30,7 @@ function OrgDetailContent({ children }: { children: ReactNode }) {
     <PrefetchOrgData />
     <EventUserProjectUpdate />
     <ProjectSidebar />
+    <Upsale />
     <main
       className="main-content w-full"
       style={{ width: 'calc(100% - 251px)' }}>
