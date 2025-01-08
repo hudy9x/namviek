@@ -171,7 +171,7 @@ export default function SigninForm() {
         style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
           onSubmit={regHandleSubmit}
-          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-l-md">
+          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md px-[100px] py-[150px] w-[450px] sm:w-[550px] rounded-l-md">
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">
