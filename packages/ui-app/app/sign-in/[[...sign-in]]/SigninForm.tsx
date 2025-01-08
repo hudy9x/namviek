@@ -156,8 +156,6 @@ export default function SigninForm() {
     }
   }
 
-  console.log('NEXT_PUBLIC_BE_GATEWAY', process.env.NEXT_PUBLIC_BE_GATEWAY)
-
   return (
     <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
       <motion.div
@@ -173,7 +171,7 @@ export default function SigninForm() {
         style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
           onSubmit={regHandleSubmit}
-          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md">
+          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-l-md">
           <div className="flex gap-2 items-center">
             <Logo />
             <h2 className="text-xl sm:text-2xl font-bold">
@@ -222,6 +220,45 @@ export default function SigninForm() {
             </Link>
           </div>
         </form>
+
+{/* https://dribbble.com/shots/24565993-Create-account-Untitled-UI */}
+        <div className="bg-gray-50 dark:bg-gray-900 backdrop-blur-md p-8 w-[500px] rounded-r-md flex flex-col">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center">
+              <img src="/ai-avatar.png" alt="AI Assistant" className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">AI Assistant</h3>
+              <p className="text-sm text-gray-500">Here to help you</p>
+            </div>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto mb-4 min-h-[300px]">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
+              <p className="text-gray-600 dark:text-gray-300">
+                Hello and welcome! I'm your AI assistant, here to help you with anything you need. 
+                Whether you have questions, need recommendations, or want to manage your tasks, 
+                I'm here to make your life easier. Just type in what you need assistance with, 
+                and I'll do my best to provide the information or support you're looking for. 
+                Let's get started! How can I assist you?
+              </p>
+            </div>
+          </div>
+
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Ask me anything"
+              className="w-full p-3 pr-12 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800"
+              disabled
+            />
+            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
         {isUserInactive && (
           <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center">
