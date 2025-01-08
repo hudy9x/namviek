@@ -222,7 +222,7 @@ export default function SigninForm() {
         </form>
 
 {/* https://dribbble.com/shots/24565993-Create-account-Untitled-UI */}
-        <div className="bg-gray-50 dark:bg-gray-900 backdrop-blur-md p-8 w-[500px] rounded-r-md flex flex-col">
+        <div className="bg-gray-50 dark:bg-gray-900 backdrop-blur-md p-8 w-[650px] rounded-r-md flex flex-col">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center">
               <img src="/ai-avatar.png" alt="AI Assistant" className="w-8 h-8" />
