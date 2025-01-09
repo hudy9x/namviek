@@ -27,6 +27,8 @@ import { BsMailbox } from 'react-icons/bs'
 import { getRecentVisit } from '@shared/libs'
 import { signinWithGoogle } from 'packages/ui-app/libs/firebase'
 import { GAAction, GACategory, trackingEvent } from '@/components/GA/utils'
+import SignCarousel from './SignCarousel'
+import SignInactiveUser from './SignInactiveUser'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -167,7 +169,7 @@ export default function SigninForm() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 100, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="flex border-4 border-white/30 dark:border-gray-800/50 "
+        className="flex border-2 border-zinc-100 shadow-lg dark:border-gray-800/50 "
         style={{ borderRadius: `calc(0.375rem + 4px)` }}>
         <form
           onSubmit={regHandleSubmit}
@@ -221,71 +223,11 @@ export default function SigninForm() {
           </div>
         </form>
 
-{/* https://dribbble.com/shots/24565993-Create-account-Untitled-UI */}
-        <div className="bg-gray-50 dark:bg-gray-900 backdrop-blur-md p-8 w-[650px] rounded-r-md flex flex-col">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center">
-              <img src="/ai-avatar.png" alt="AI Assistant" className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg">AI Assistant</h3>
-              <p className="text-sm text-gray-500">Here to help you</p>
-            </div>
-          </div>
-          
-          <div className="flex-1 overflow-y-auto mb-4 min-h-[300px]">
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-              <p className="text-gray-600 dark:text-gray-300">
-                Hello and welcome! I'm your AI assistant, here to help you with anything you need. 
-                Whether you have questions, need recommendations, or want to manage your tasks, 
-                I'm here to make your life easier. Just type in what you need assistance with, 
-                and I'll do my best to provide the information or support you're looking for. 
-                Let's get started! How can I assist you?
-              </p>
-            </div>
-          </div>
 
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Ask me anything"
-              className="w-full p-3 pr-12 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800"
-              disabled
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <SignCarousel />
 
-        {isUserInactive && (
-          <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center">
-            <div
-              onClick={() => setIsUserInactive(false)}
-              className="absolute top-0 left-0 w-full h-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-md"></div>
-            <div className="relative z-10 w-[400px] rounded-md py-8 px-8 bg-white dark:bg-gray-900 border-2 border-indigo-500 mt-6 text-sm text-center text-gray-400">
-              <BsMailbox className="w-14 h-14 rounded-md py-2 px-3 bg-indigo-500/80 dark:bg-indigo-500/60 text-white inline-block" />
-              <h2 className="text-2xl font-bold mt-4 text-gray-600 dark:text-gray-200">
-                Verify your email !
-              </h2>
-              <p className="mt-4">
-                We found that you are already signed up your account. But have
-                not verify it via email.
-              </p>
-              <p>Click on the below button to resend a verification email</p>
-              <Button
-                className="mt-4"
-                loading={sending}
-                primary
-                block
-                title="Send now"
-                onClick={onResend}
-              />
-            </div>
-          </div>
-        )}
+        <SignInactiveUser email={email} enable={isUserInactive} setIsUserInactive={() => setIsUserInactive(false)} />
+
       </motion.div>
     </div>
   )
