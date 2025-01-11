@@ -4,8 +4,6 @@ import {
   Button,
   Form,
   messageError,
-  messageSuccess,
-  messageWarning,
   setFixLoading,
   useForm
 } from '@shared/ui'
@@ -19,11 +17,10 @@ import Logo from '../../../components/Logo'
 import {
   ISignin,
   getGoalieUser,
-  resendVerifyEmail,
   signin,
   useUser
 } from '@goalie/nextjs'
-import { BsMailbox } from 'react-icons/bs'
+
 import { getRecentVisit } from '@shared/libs'
 import { signinWithGoogle } from 'packages/ui-app/libs/firebase'
 import { GAAction, GACategory, trackingEvent } from '@/components/GA/utils'
@@ -35,7 +32,6 @@ export default function SigninForm() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [isUserInactive, setIsUserInactive] = useState(false)
-  const [sending, setSending] = useState(false)
   const { setUser } = useUser()
 
   const { regField, regHandleSubmit } = useForm({
@@ -129,106 +125,101 @@ export default function SigninForm() {
       })
   }
 
-  const onResend = async () => {
-    if (sending) return
-    setSending(true)
-
-    const cachedExpiredTime = localStorage.getItem('sendEmailExpired')
-    if (cachedExpiredTime) {
-      const expiredTime = new Date(cachedExpiredTime)
-      const now = new Date()
-      const second = (now.getTime() - expiredTime.getTime()) / 1000 // second
-      if (second < 60) {
-        messageWarning(`Please try to resend after ${Math.round(60 - second)}s`)
-        setSending(false)
-        return
-      }
-    }
-
-    try {
-      localStorage.setItem('sendEmailExpired', new Date().toString())
-      await resendVerifyEmail(email)
-      messageSuccess('Activation email sent')
-      setSending(false)
-      setTimeout(() => {
-        setIsUserInactive(false)
-      }, 300)
-    } catch (error) {
-      messageError('Error sending activation email')
-    }
-  }
-
   return (
     <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 100, scale: 1 }}
-        transition={{ delay: 0.5, duration: 2 }}
-        className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 100, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex border-2 border-zinc-100 shadow-lg dark:border-gray-800/50 "
-        style={{ borderRadius: `calc(0.375rem + 4px)` }}>
-        <form
-          onSubmit={regHandleSubmit}
-          className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-md px-[100px] py-[150px] w-[450px] sm:w-[550px] rounded-l-md">
-          <div className="flex gap-2 items-center">
-            <Logo />
-            <h2 className="text-xl sm:text-2xl font-bold">
-              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
-            </h2>
-          </div>
-          <p className="text-gray-400 text-sm mt-3">
-            Enter your email and password to access to your workspace.
-          </p>
 
-          <div className="flex flex-col gap-4 mt-6">
-            <Button
-              onClick={signInWithThirdParty}
-              block
-              leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
-              title="Sign in with google"
-            />
-            <div className="relative mt-2 pb-1">
-              <span className="text-sm bg-white/95 dark:bg-gray-900/80 px-1 rounded-md absolute -top-[10px] left-1/2 -translate-x-1/2 z-10 text-gray-400">
-                or
-              </span>
-              <div className="absolute top-0 w-full border-b dark:border-gray-700"></div>
+      {/* <motion.div */}
+      {/*   initial={{ opacity: 0, scale: 0.9 }} */}
+      {/*   animate={{ opacity: 100, scale: 1 }} */}
+      {/*   transition={{ delay: 0.5, duration: 2 }} */}
+      {/*   className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div> */}
+
+      {/* <motion.div */}
+      {/*   initial={{ opacity: 0, y: 50 }} */}
+      {/*   animate={{ opacity: 100, y: 0 }} */}
+      {/*   transition={{ duration: 0.8 }} */}
+      {/*   className="flex border-2 border-zinc-100 shadow-lg dark:border-gray-800/50 " */}
+      {/*   style={{ borderRadius: `calc(0.375rem + 4px)` }}> */}
+      {/**/}
+      {/* </motion.div> */}
+
+      <div className='relative shadow-lg dark:border-gray-800/50 w-[1491px] h-[873px]'>
+
+        <div className='absolute top-0 left-0  w-[1511px] h-[893px] border-[10px] border-[#afafc6] bg-[#afafc6] shadow-lg rounded-lg'></div>
+        <div className='absolute top-0 left-0  w-[1511px] h-[893px] border border-[#9494b3] bg-transparent shadow-lg rounded-lg'></div>
+
+        <div className='absolute top-[10px] left-[10px] w-[1491px] h-[873px] flex shadow-md'>
+          <form
+            onSubmit={regHandleSubmit}
+            className="bg-white dark:bg-gray-900/90 backdrop-blur-md rounded-l-md w-full px-32 pt-14">
+            <div className='flex items-center gap-1'>
+              <Logo />
+              <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
             </div>
-            <Form.Input title="Email" {...regField('email')} />
-            <Form.Input
-              title="Password"
-              type="password"
-              {...regField('password')}
-            />
 
-            <div className="space-y-3 mt-2">
-              <Button
-                loading={loading}
-                title="Sign in"
-                type="submit"
-                block
-                primary
+            <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
+
+            <p className="text-[19px] mt-6 text-[#7A8799]">Select your prefer sign-in methods to access
+              to the workspace.</p>
+
+            <div className="flex flex-col gap-4 mt-7">
+              <button onClick={ev => {
+                ev.preventDefault()
+                signInWithThirdParty()
+              }} className='border bg-white hover:bg-zinc-50 shadow border-[#D0D5E1] rounded-lg text-base text-zinc-600 w-full flex items-center justify-center py-2.5 active:shadow-inner transition-all'>
+                <img src="/google.png" className="w-4 h-4 mr-2" />
+                Sign in with Google
+              </button>
+
+              {/* <Button */}
+              {/*   onClick={signInWithThirdParty} */}
+              {/*   block */}
+              {/*   leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />} */}
+              {/*   title="Sign in with google" */}
+              {/* /> */}
+
+              <div className="relative mt-2 pb-1">
+                <span className="text-base bg-white/95 dark:bg-gray-900/80 px-1 rounded-md absolute -top-[13px] left-1/2 -translate-x-1/2 z-10 text-gray-400">
+                  or
+                </span>
+                <div className="absolute top-0 w-full border-b dark:border-gray-700"></div>
+              </div>
+
+              <Form.Input size='md' title="Email" {...regField('email')} />
+              <Form.Input
+                size='md'
+                title="Password"
+                type="password"
+                {...regField('password')}
               />
+
+              <div className="space-y-3 mt-2">
+                <Button
+                  size='md'
+                  loading={loading}
+                  title="Sign in"
+                  type="submit"
+                  block
+                  primary
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="mt-6 text-sm text-center text-gray-400">
-            {`Don't have any account ? `}
-            <Link className="text-indigo-600 hover:underline" href={'/sign-up'}>
-              Register
-            </Link>
-          </div>
-        </form>
+            <div className="mt-6 text-center text-gray-400">
+              {`Don't have any account ? `}
+              <Link className="text-indigo-600 hover:underline" href={'/sign-up'}>
+                Register
+              </Link>
+            </div>
+          </form>
 
 
-        <SignCarousel />
+          <SignCarousel />
 
-        <SignInactiveUser email={email} enable={isUserInactive} setIsUserInactive={() => setIsUserInactive(false)} />
+        </div>
 
-      </motion.div>
+      </div>
+      <SignInactiveUser email={email} enable={isUserInactive} setIsUserInactive={() => setIsUserInactive(false)} />
     </div>
   )
 }

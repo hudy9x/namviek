@@ -42,7 +42,11 @@
 }
 
 .form-control.sm .form-input{
-@apply py-1 px-1.5 text-xs;
+  @apply py-1 px-1.5 text-xs;
+}
+
+.form-control.md .form-input{
+  @apply py-2.5 px-3.5 text-base rounded-lg;
 }
 
 

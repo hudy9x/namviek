@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for namviek on 2024-12-13T21:55:03+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'namviek-sin'
+primary_region = 'sin'
+
+[build]
+  dockerfile = 'docker/backend/Dockerfile-flyio'
+
+[env]
+  HOST = '0.0.0.0'
+  JWT_REFRESH_EXPIRED = '2d'
+  JWT_TOKEN_EXPIRED = '30m'
+  JWT_VERIFY_USER_LINK_TOKEN_EXPIRED = '10m'
+  NODE_ENV = 'production'
+  PORT = '3000'
+  PRISMA_CLI_BINARY_TARGETS = 'linux-musl-openssl-1.1.x'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
