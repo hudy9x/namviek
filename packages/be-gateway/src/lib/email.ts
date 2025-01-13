@@ -10,6 +10,7 @@ try {
 
 const supportEmail = 'support.dev'
 const productionAddress = 'Kampuni.dev'
+const resendFromEmail = `${process.env.RESEND_EMAIL_DOMAIN || 'noreply@resend.dev'}` // noreply@domain.com
 
 interface IEmailFields {
   subject: string
@@ -31,7 +32,7 @@ const _cannotSendEmail = () => {
 export const sendEmail = ({ emails, html, subject }: IEmailFields) => {
   if (_cannotSendEmail()) return
   return resend.emails.send({
-    from: `Noreply <noreply@${process.env.RESEND_EMAIL_DOMAIN}>`,
+    from: `Noreply <${resendFromEmail}>`,
     to: emails,
     subject,
     html
