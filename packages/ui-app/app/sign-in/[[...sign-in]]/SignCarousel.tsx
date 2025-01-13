@@ -1,22 +1,25 @@
+import { Button } from "@shared/ui";
+import Link from "next/link";
+
 {/* https://dribbble.com/shots/24565993-Create-account-Untitled-UI */ }
 export default function SignCarousel() {
 
-  return <div className="bg-blue-50/40 w-[810px] shrink-0 border-l dark:bg-gray-900 px-32 rounded-r-md flex flex-col">
+  return <div className="sign-carousel pt-14 w-[810px] shrink-0 border-l dark:bg-gray-900 px-32 rounded-r-md flex flex-col">
 
-    <div className="w-[500px]">
-      <div className="flex items-center gap-4 mb-6">
-        <div>
-          <h3 className="font-medium text-4xl">The simplest way to manage your workforce</h3>
-          <p className="text-sm text-gray-500">Enter your credentials to access your account</p>
-        </div>
-      </div>
+    <h2 className='mt-[95px] text-[42px] font-extrabold leading-tight text-white sign-text-shadow'>Save 90% operation cost by hosting Namviek</h2>
 
-      <div className="flex-1 overflow-y-auto mb-4 min-h-[300px]">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-          <p className="text-gray-600 dark:text-gray-300"></p>
-        </div>
-      </div>
+    <p className="text-[19px] mt-6 text-[#CCE1FB] sign-text-shadow">It’s a free open-source project management tool<br /> for teams of 15 members</p>
+
+    <img src="/sign-background-cover1.png" className="w-[1100px] mt-7 -ml-[60px]" style={{ maxWidth: 'initial' }} />
+
+    <div>
+      <Link href={'https://docs.namviek.com/visual'} target="_blank">
+        <Button size="md" primary title="Deploy it now" />
+      </Link>
     </div>
 
+    <div>
+
+    </div>
   </div>
 }
