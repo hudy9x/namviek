@@ -8,9 +8,9 @@ try {
   console.warn("Resend token is missing")
 }
 
-const supportEmail = 'support.dev'
-const productionAddress = 'Kampuni.dev'
 const resendFromEmail = `${process.env.RESEND_EMAIL_DOMAIN || 'noreply@resend.dev'}` // noreply@domain.com
+const resendFromEmailName = `${process.env.RESEND_EMAIL_NAME || 'Noreply'}`
+const appName = `${process.env.NEXT_PUBLIC_APP_NAME || 'Namviek'}`
 
 interface IEmailFields {
   subject: string
@@ -32,7 +32,7 @@ const _cannotSendEmail = () => {
 export const sendEmail = ({ emails, html, subject }: IEmailFields) => {
   if (_cannotSendEmail()) return
   return resend.emails.send({
-    from: `Noreply <${resendFromEmail}>`,
+    from: `${resendFromEmailName} <${resendFromEmail}>`,
     to: emails,
     subject,
     html
@@ -68,36 +68,31 @@ export const sendVerifyEmail = ({
   const verificationLink = `${process.env.NEXT_PUBLIC_FE_GATEWAY}email-verification?token=${token}`
   return sendEmail({
     emails: [email],
-    subject: '[Kampuni] Invitation email for joining organization',
+    subject: `[${appName}]: Please Verify Your Email Address`,
     html: `
-
-    <p>Dear <strong>${userName}</strong>,</p>
-
-    <p>Thank you for signing up with <strong>Kampuni</strong>! We're thrilled to have you as part of our community.</p>
-  
-    <p>To complete your registration and ensure the security of your account, we need to verify your email address. Verifying your email will allow you to enjoy all the benefits and features of our platform.</p>
-  
-    <p>Please follow these simple steps to verify your email:</p>
-  
-    <ol>
-      <li>Click on the verification link below (or copy and paste it into your web browser):<br>
-        <a href=${verificationLink}>Verify Your Email</a></li>
-  
-      <li>Once the link is opened, you'll be redirected to our website, and your email will be automatically verified.</li>
-    </ol>
-  
-    <p>Please note that this verification link is only valid for the next 24 hours. If you don't verify your email within this time frame, you may need to request a new verification email.</p>
-  
-    <p>If you didn't create an account with us or believe this email was sent to you in error, please disregard it.</p>
-  
-    <p>If you encounter any issues during the verification process, or if you have any questions about your account, please don't hesitate to contact our support team at <a href="mailto:${supportEmail}">${supportEmail}</a>.</p>
-  
-    <p>We're excited to have you on board, and we can't wait to provide you with a fantastic experience!</p>
-  
-    <p>Best regards,<br>
-      Kampuni<br>
-      <a href=${productionAddress}>${productionAddress}</a>
-    </p>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f8f8; border-radius: 5px;">
+        <tr>
+            <td style="padding: 20px;">
+                <h1 style="color: #4a4a4a; text-align: center;">Email Verification</h1>
+                <p style="font-size: 16px;">Hello <strong>${userName}</strong>,</p>
+                <p style="font-size: 16px;">Thank you for signing up! To complete your registration, please verify your email address by clicking the button below:</p>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" style="padding: 20px 0;">
+                            <a href="${verificationLink}" style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Verify Email</a>
+                        </td>
+                    </tr>
+                </table>
+                <p style="font-size: 16px;">If the button doesn't work, you can also copy and paste the following link into your browser:</p>
+                <p style="font-size: 14px; word-break: break-all; color: #0066cc;">${verificationLink}</p>
+                <p style="font-size: 16px;">If you didn't create an account, please ignore this email.</p>
+                <p style="font-size: 16px;">Best regards,<br>${appName} Team</p>
+            </td>
+        </tr>
+    </table>
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 20px;">This is an automated message, please do not reply to this email.</p>
+</body>
 `
   })
 }
