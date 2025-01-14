@@ -12,10 +12,11 @@ export const mdOrgGetOne = async (orgId: string | string[]) => {
   });
 };
 
-export const mdOrgGetOneBySlug = async (slug: string) => {
+export const mdOrgGetOneBySlug = async (slug: string, uid: string) => {
   return orgModel.findUnique({
     where: {
       slug,
+      createdBy: uid
     }
   });
 };

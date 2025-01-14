@@ -43,8 +43,10 @@ export class OrganizationController extends BaseController {
 
   @Get('/query/slug')
   async getOrgBySlug() {
+    const req = this.req as AuthRequest
     const { slug } = this.req.query as { slug: string }
-    const result = await mdOrgGetOneBySlug(slug)
+    const { id } = req.authen
+    const result = await mdOrgGetOneBySlug(slug, id)
 
     return result
   }
@@ -52,7 +54,7 @@ export class OrganizationController extends BaseController {
   @Get('')
   async getOrgByUid() {
     const req = this.req as AuthRequest
-    const res = this.res
+    // const res = this.res
 
     try {
       const { id } = req.authen
