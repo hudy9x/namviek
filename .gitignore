@@ -42,6 +42,8 @@ Thumbs.db
 .next
 .env.local
 .env.flyio
+.env.sin
+.env.vir
 .env
 pm2.json
 
