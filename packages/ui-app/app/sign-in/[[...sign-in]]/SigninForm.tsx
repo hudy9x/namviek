@@ -160,8 +160,7 @@ export default function SigninForm() {
 
             <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
 
-            <p className="text-[19px] mt-6 text-[#7A8799]">Choose your prefer sign-in methods to access
-              to the workspace.</p>
+            <p className="text-[19px] mt-6 text-[#7A8799]">Select your preferred sign-in method to jump right back into your projects.</p>
 
             <div className="flex flex-col gap-4 mt-7">
               <button onClick={ev => {

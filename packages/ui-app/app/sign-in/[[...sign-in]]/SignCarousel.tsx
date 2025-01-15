@@ -8,7 +8,7 @@ export default function SignCarousel() {
 
     <h2 className='mt-[95px] text-[42px] font-extrabold leading-tight text-white sign-text-shadow'>Saving up to 90% on <br/>operational costs</h2>
 
-    <p className="text-[19px] mt-6 text-[#CCE1FB] sign-text-shadow">It’s a free open-source project management tool<br /> for teams of 15 members</p>
+    <p className="text-[19px] mt-6 text-[#CCE1FB] sign-text-shadow">Switch to our free, open-source solution and <br/>slash your project management expenses immediately.</p>
 
     <img src="/sign-background-cover1.png" className="w-[1100px] mt-7 -ml-[60px]" style={{ maxWidth: 'initial' }} />
 
