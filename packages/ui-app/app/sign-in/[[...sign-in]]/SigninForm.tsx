@@ -158,25 +158,26 @@ export default function SigninForm() {
               <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
             </div>
 
-            <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
+            <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F] dark:text-zinc-300'>{`Welcome Back, Let's Get Started`}</h2>
 
             <p className="text-[19px] mt-6 text-[#7A8799]">Select your preferred sign-in method to jump right back into your projects.</p>
 
             <div className="flex flex-col gap-4 mt-7">
-              <button onClick={ev => {
-                ev.preventDefault()
-                signInWithThirdParty()
-              }} className='border bg-white hover:bg-zinc-50 shadow border-[#D0D5E1] rounded-lg text-base text-zinc-600 w-full flex items-center justify-center py-2.5 active:shadow-inner transition-all'>
-                <img src="/google.png" className="w-4 h-4 mr-2" />
-                Sign in with Google
-              </button>
+              {/* <button onClick={ev => { */}
+              {/*   ev.preventDefault() */}
+              {/*   signInWithThirdParty() */}
+              {/* }} className='border bg-white hover:bg-zinc-50 shadow border-[#D0D5E1] rounded-lg text-base text-zinc-600 w-full flex items-center justify-center py-2.5 active:shadow-inner transition-all'> */}
+              {/*   <img src="/google.png" className="w-4 h-4 mr-2" /> */}
+              {/*   Sign in with Google */}
+              {/* </button> */}
 
-              {/* <Button */}
-              {/*   onClick={signInWithThirdParty} */}
-              {/*   block */}
-              {/*   leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />} */}
-              {/*   title="Sign in with google" */}
-              {/* /> */}
+              <Button
+                size='md'
+                onClick={signInWithThirdParty}
+                block
+                leadingIcon={<img src="/google.png" className="w-4 h-4 mr-2" />}
+                title="Sign in with google"
+              />
 
               <div className="relative mt-2 pb-1">
                 <span className="text-base bg-white/95 dark:bg-gray-900/80 px-1 rounded-md absolute -top-[13px] left-1/2 -translate-x-1/2 z-10 text-gray-400">

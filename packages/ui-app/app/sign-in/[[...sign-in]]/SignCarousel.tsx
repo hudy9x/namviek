@@ -4,7 +4,7 @@ import Link from "next/link";
 {/* https://dribbble.com/shots/24565993-Create-account-Untitled-UI */ }
 export default function SignCarousel() {
 
-  return <div className="sign-carousel pt-14 w-full shrink-0 border-l dark:bg-gray-900 px-32 flex flex-col">
+  return <div className="sign-carousel pt-14 w-full shrink-0 px-32 flex flex-col">
 
     <h2 className='mt-[95px] text-[42px] font-extrabold leading-tight text-white sign-text-shadow'>Saving up to 90% on <br/>operational costs</h2>
 
