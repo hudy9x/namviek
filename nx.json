@@ -38,8 +38,5 @@
 				"linter": "eslint"
 			}
 		}
-	},
-	"implicitDependencies": {
-		// Remove or update any be-gateway references here
 	}
 }
