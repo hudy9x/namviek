@@ -143,15 +143,16 @@ export default function SigninForm() {
       {/**/}
       {/* </motion.div> */}
 
-      <div className='relative shadow-lg dark:border-gray-800/50 w-[1491px] h-[873px]'>
+      <div className='relative shadow-lg dark:border-gray-800/50 w-screen h-screen'>
 
-        <div className='absolute top-0 left-0  w-[1511px] h-[893px] border-[10px] border-[#afafc6] bg-[#afafc6] shadow-lg rounded-lg'></div>
-        <div className='absolute top-0 left-0  w-[1511px] h-[893px] border border-[#9494b3] bg-transparent shadow-lg rounded-lg'></div>
+        {/* <div className='sign-border'></div> */}
+        {/* <div className='absolute top-0 left-0  w-[1511px] h-[893px] border border-[#9494b3] bg-transparent shadow-lg rounded-lg'></div> */}
 
-        <div className='absolute top-[10px] left-[10px] w-[1491px] h-[873px] flex shadow-md'>
+        {/* <div className='absolute top-[10px] left-[10px] w-[1491px] h-[873px] flex shadow-md'> */}
+        <div className='absolute top-0 left-0 h-full w-full flex shadow-md'>
           <form
             onSubmit={regHandleSubmit}
-            className="bg-white dark:bg-gray-900/90 backdrop-blur-md rounded-l-md w-full px-32 pt-14">
+            className="bg-white dark:bg-gray-900/90 backdrop-blur-md w-[600px] shrink-0 px-24 pt-14">
             <div className='flex items-center gap-1'>
               <Logo />
               <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
@@ -159,7 +160,7 @@ export default function SigninForm() {
 
             <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
 
-            <p className="text-[19px] mt-6 text-[#7A8799]">Select your prefer sign-in methods to access
+            <p className="text-[19px] mt-6 text-[#7A8799]">Choose your prefer sign-in methods to access
               to the workspace.</p>
 
             <div className="flex flex-col gap-4 mt-7">
