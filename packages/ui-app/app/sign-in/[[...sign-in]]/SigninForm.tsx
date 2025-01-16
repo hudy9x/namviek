@@ -159,7 +159,7 @@ export default function SigninForm() {
               <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
             </div>
 
-            <h2 className='mt-[45px] text-[42px] font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
+            <h2 className='mt-[45px] text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>{`Welcome Back, Let's Get Started`}</h2>
 
             <p className="text-[19px] mt-6 text-[#7A8799]">Select your preferred sign-in method to jump right back into your projects.</p>
 
