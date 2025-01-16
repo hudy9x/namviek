@@ -1,0 +1,22 @@
+name: Fly Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy apps
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy to Singapore
+        run: flyctl deploy --remote-only --app namviek-sin
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Deploy to Virginia
+        run: flyctl deploy --remote-only --app namviek-vir
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
