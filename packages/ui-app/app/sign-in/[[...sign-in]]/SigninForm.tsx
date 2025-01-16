@@ -92,7 +92,8 @@ export default function SigninForm() {
           const recentVisit = getRecentVisit(user.id)
 
           setFixLoading(true, {
-            title: 'Redirecting to main screen ...'
+            title: 'Redirecting to main screen ...',
+            solid: true
           })
           if (recentVisit) {
             const location = window.location

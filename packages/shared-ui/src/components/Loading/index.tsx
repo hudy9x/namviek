@@ -12,14 +12,15 @@ const createLoadingContainer = () => {
 
 export const setFixLoading: SetFixLoading = (
   enabled,
-  { title, icon, className, border } = {}
+  { title, icon, className, border, solid } = {}
 ) => {
   const loadingWrapper = document.querySelector('#loading-wrapper')
   if (!loadingWrapper) {
     const container = createLoadingContainer()
+    solid && container.classList.add('solid')
     const root = createRoot(container)
 
-    root.render(<Loading {...{ enabled, title , icon, className, border }} />)
+    root.render(<Loading {...{ enabled, title, icon, className, border }} />)
   }
 
   enabled

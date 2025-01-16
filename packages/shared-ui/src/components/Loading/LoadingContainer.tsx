@@ -8,6 +8,7 @@ export interface ILoadingProps {
   size?: 'base' | 'sm' | 'lg'
   spinnerSpeed?: 'normal' | 'fast' | 'vfast'
   className?: string
+  solid?: boolean
   enabled?: boolean
   border?: boolean
 }
