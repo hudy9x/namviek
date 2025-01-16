@@ -10,9 +10,8 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
   const clientId = headers['x-client-id'] as string;
   const clientSecret = headers['x-client-secret'] as string;
 
-  console.log('auth middleware run', clientId, clientSecret)
-
   if (clientId && clientSecret) {
+    console.log('app authentication ', clientId, clientSecret)
     const application = await pmClient.application.findFirst({
       where: {
         clientId,
@@ -80,7 +79,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
 
       console.log('genereated succesfully');
 
-      req.authen = {...user, type: JWTType.USER};
+      req.authen = { ...user, type: JWTType.USER };
       return next();
     }
 
