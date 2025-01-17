@@ -19,34 +19,39 @@ import { cronJob } from './cronJob'
 //   })
 // }
 
-connectPubClient((err, redis) => {
-  if (err) return
 
-  // run every minute
-  const fixedCronId = 'fixed-cron-id'
-  cronJob.create(fixedCronId, { every: 'minute' }, () => {
-    const CHANNEL_RUN_EVERY_MINUTE = 'fixed:run-every-minute'
-    // sendNotice(CHANNEL_RUN_EVERY_MINUTE)
-    redis.publish(CHANNEL_RUN_EVERY_MINUTE, 'Hello')
+export const runScheduler = () => {
+
+  connectPubClient((err, redis) => {
+    if (err) return
+
+    // run every minute
+    const fixedCronId = 'fixed-cron-id'
+    cronJob.create(fixedCronId, { every: 'minute' }, () => {
+      const CHANNEL_RUN_EVERY_MINUTE = 'fixed:run-every-minute'
+      // sendNotice(CHANNEL_RUN_EVERY_MINUTE)
+      redis.publish(CHANNEL_RUN_EVERY_MINUTE, 'Hello')
+    })
+
+    // run every 20pm
+    const runAt20h = 'runAt20pm'
+    cronJob.create(runAt20h, '5 12,18,20 * * *', () => {
+      // cronJob.create(runAt20h, { every: "minute" }, () => {
+      const CHANNEL_DAY_STATS = 'stats:day-stats'
+      redis.publish(CHANNEL_DAY_STATS, 'heelo')
+    })
   })
 
-  // run every 20pm
-  const runAt20h = 'runAt20pm'
-  cronJob.create(runAt20h, '5 12,18,20 * * *', () => {
-    // cronJob.create(runAt20h, { every: "minute" }, () => {
-    const CHANNEL_DAY_STATS = 'stats:day-stats'
-    redis.publish(CHANNEL_DAY_STATS, 'heelo')
+  connectSubClient((err, redis) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    // for automation scheduler that was setting up be each project
+    const schedulerAction = new SchedulerAction(redis)
+    schedulerAction.register(new NotificationAction())
+    schedulerAction.run()
   })
-})
 
-connectSubClient((err, redis) => {
-  if (err) {
-    console.log(err)
-    return
-  }
-
-  // for automation scheduler that was setting up be each project
-  const schedulerAction = new SchedulerAction(redis)
-  schedulerAction.register(new NotificationAction())
-  schedulerAction.run()
-})
+}

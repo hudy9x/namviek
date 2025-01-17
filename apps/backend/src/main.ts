@@ -9,6 +9,9 @@ import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
 import { checkHealthRoute } from './checkhealth'
+import { runScheduler } from "@/scheduler";
+
+runScheduler()
 
 connectPubClient((err) => {
   console.log(err)
