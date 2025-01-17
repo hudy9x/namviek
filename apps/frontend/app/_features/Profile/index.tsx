@@ -2,7 +2,7 @@
 import { ChangeEvent, useState } from 'react'
 import MemberAvatar from '@/components/MemberAvatar'
 import { Button, Form, Dialog } from '@shared/ui'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import useAvatarUpload from './useAvatarUpload'
 import { useGetParams } from '@/hooks/useGetParams'
 import { useParams } from 'next/navigation'

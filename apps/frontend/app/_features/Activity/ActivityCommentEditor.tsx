@@ -4,7 +4,7 @@ import { useTaskStore } from '@/store/task'
 import { useActivityContext } from './context'
 import { Form } from '@shared/ui'
 import MemberAvatar from '@/components/MemberAvatar'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export default function ActivityCommentEditor() {
   const { taskId, addActivity } = useActivityContext()

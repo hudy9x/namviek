@@ -1,6 +1,6 @@
 import { useSearchParams } from 'next/navigation'
 
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useDebounce } from '@/hooks/useDebounce'
 import useTaskFilterContext from './useTaskFilterContext'
 

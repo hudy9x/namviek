@@ -1,5 +1,5 @@
 'use client'
-import { clearAllGoalieToken, clearGoalieUser, useUser } from '@goalie/nextjs'
+import { clearAllGoalieToken, clearGoalieUser, useUser } from '@auth-client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import localforage from 'localforage'

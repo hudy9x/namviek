@@ -1,5 +1,5 @@
 import { useParams } from 'next/navigation'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useTaskStore } from '../../../../../store/task'
 import { taskUpdate } from '../../../../../services/task'
 import { messageError, messageSuccess, messageWarning } from '@shared/ui'

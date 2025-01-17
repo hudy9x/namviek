@@ -1,4 +1,4 @@
-import { getGoalieUser } from '@goalie/nextjs'
+import { getGoalieUser } from '@auth-client'
 import { UserMember, useMemberStore } from '../../store/member'
 import { Avatar, Form, ListItemValue } from '@shared/ui'
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'

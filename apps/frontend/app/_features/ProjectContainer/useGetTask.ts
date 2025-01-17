@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { messageError } from '@shared/ui'
 import localforage from 'localforage'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
-import { getGoalieUser } from '@goalie/nextjs'
+import { getGoalieUser } from '@auth-client'
 
 const getAssigneeIds = (assigneeIds: string[]) => {
   if (!assigneeIds || !assigneeIds.length) return ['null']

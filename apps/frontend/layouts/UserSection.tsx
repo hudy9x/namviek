@@ -1,4 +1,4 @@
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Avatar, Popover } from '@shared/ui'
 import ThemeSelection from './ThemeSelection'
 import { HiOutlineChevronUp, HiOutlineCog, HiOutlineCog6Tooth, HiOutlineUser, HiOutlineUserPlus } from 'react-icons/hi2'

@@ -1,6 +1,6 @@
 import { useEventTaskReorder } from '@/events/useEventTaskReorder'
 import { useBoardDndAction } from './useBoardDndAction'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useEventMoveTaskToOtherBoard } from '@/events/useEventMoveTaskToOtherBoard'
 
 export const useBoardRealtimeUpdate = () => {

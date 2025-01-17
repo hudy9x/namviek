@@ -7,7 +7,7 @@ import ProjectMemberRole from './ProjectMemberRole'
 import ProjectMemberDel from './ProjectMemberDel'
 import { useState } from 'react'
 import HasRole from '@/features/UserPermission/HasRole'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export default function ProjectMemberManager() {
   const { members } = useMemberStore()

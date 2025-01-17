@@ -1,7 +1,7 @@
 import { Comment } from '@prisma/client'
 import TaskComment from './TaskComment'
 import { useState } from 'react'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useCommentContext } from './context'
 import { dateFormat } from '@shared/libs'
 import { Button } from '@shared/ui'

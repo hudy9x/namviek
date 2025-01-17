@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { usePusher } from './usePusher'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 import { useGetTaskHandler } from '@/features/ProjectContainer/useGetTask'
 import { messageInfo } from '@shared/ui'

@@ -1,4 +1,4 @@
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import TaskComment from './TaskComment'
 import { useCommentContext } from './context'
 import { useCallback } from 'react'

@@ -14,7 +14,7 @@ import { useProjectViewList } from '../ProjectView/useProjectViewList'
 import { ProjectViewType } from '@prisma/client'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import useTaskFilterContext from './useTaskFilterContext'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 let timeout = 0
 interface ITaskFilterProps {

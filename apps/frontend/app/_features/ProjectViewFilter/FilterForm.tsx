@@ -7,7 +7,7 @@ import { useProjectViewContext } from '../ProjectView/context'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'
 import { ProjectViewType } from '@prisma/client'
 import MultiMemberPicker from '@/components/MultiMemberPicker'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export default function FilterForm({ type }: { type?: ProjectViewType }) {
   const { customView, setCustomView, filter, setFilterValue } =

@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import * as PusherPushNotifications from '@pusher/push-notifications-web'
 import { useEffect } from 'react'
 

@@ -8,7 +8,7 @@ import { Task, TaskPriority } from '@prisma/client'
 import { useTaskFilter } from '@/features/TaskFilter/context'
 import { useParams } from 'next/navigation'
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export const BoardActionCreateTaskWithIcon = ({
   groupId

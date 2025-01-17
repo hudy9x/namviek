@@ -1,7 +1,7 @@
 import { ETaskFilterGroupByType } from '@/features/TaskFilter/context'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Task, TaskPriority } from '@prisma/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState, KeyboardEvent } from 'react'

@@ -1,6 +1,6 @@
 'use client'
 
-import { resendVerifyEmail } from "@goalie/nextjs"
+import { resendVerifyEmail } from "@auth-client"
 import { Button, messageError, messageSuccess, messageWarning } from "@shared/ui"
 import { useState } from "react"
 import { BsMailbox } from "react-icons/bs"

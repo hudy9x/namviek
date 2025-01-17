@@ -1,6 +1,6 @@
 import { useMemberStore } from '@/store/member'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useMemo } from 'react'
 
 export const useUserRole = () => {

@@ -5,7 +5,7 @@ import {
   isSessionExpired,
   saveGoalieRefreshToken,
   saveGoalieToken
-} from '@goalie/nextjs'
+} from '@auth-client'
 import { messageError } from '@shared/ui'
 import axios from 'axios'
 

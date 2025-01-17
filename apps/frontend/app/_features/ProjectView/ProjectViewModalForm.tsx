@@ -18,7 +18,7 @@ import { projectView } from '@/services/projectView'
 import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { useReRenderView } from './useReRenderView'
 import { projectViewMap } from './useProjectViewList'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export default function ProjectViewModalForm({
   type,

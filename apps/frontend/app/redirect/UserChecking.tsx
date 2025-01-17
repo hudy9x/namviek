@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useEffect } from 'react'
 import { getRecentVisit } from '@shared/libs'
 

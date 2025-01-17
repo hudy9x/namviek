@@ -11,7 +11,7 @@ import { useProjectStatusStore } from 'apps/frontend/store/status'
 import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',

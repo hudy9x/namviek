@@ -5,7 +5,7 @@ import {
   commentGetAllByTask,
   commentUpdate
 } from '@/services/comment'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Comment } from '@prisma/client'
 import { messageError } from '@shared/ui'
 import compareAsc from 'date-fns/compareAsc'

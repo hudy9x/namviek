@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { usePusher } from './usePusher'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 import { useGetStatusHandler } from '@/features/ProjectContainer/useGetProjectStatus'
 

@@ -4,7 +4,7 @@ import './darkmode.css'
 import './style/index.css'
 import { Inter } from 'next/font/google'
 import RootLayoutComp from '../layouts/RootLayout'
-import { GoalieProvider } from '@goalie/nextjs'
+import { GoalieProvider } from '@auth-client'
 
 import dynamic from 'next/dynamic'
 import GoogleAnalytics from './_components/GA'

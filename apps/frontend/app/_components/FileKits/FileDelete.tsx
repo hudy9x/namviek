@@ -3,7 +3,7 @@ import { Button, confirmAlert, messageError, messageSuccess } from '@shared/ui'
 import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, useFileKitContext } from './context'
 import { useTaskStore } from '@/store/task'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { useGetParams } from '@/hooks/useGetParams'
 
 export default function FileDelete({ id }: { id: string }) {

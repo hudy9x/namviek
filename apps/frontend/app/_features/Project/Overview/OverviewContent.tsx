@@ -1,5 +1,5 @@
 import './style.css'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Button } from '@shared/ui'
 import { dboardCreate } from '@/services/dashboard'
 import { useParams } from 'next/navigation'

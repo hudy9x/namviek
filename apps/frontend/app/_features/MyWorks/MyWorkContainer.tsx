@@ -6,7 +6,7 @@ import MyUpcomingTasks from './MyUpcommingTasks'
 import MyUrgentTasks from './MyUrgentTasks'
 import MyWorkMembers from './MyWorkMembers'
 import { MyWorkProvider } from './context'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import MyWorkProject from './MyworkProject'
 
 export default function MyworkContainer() {

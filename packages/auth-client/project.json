@@ -1,7 +1,7 @@
 {
-	"name": "goalie-nextjs",
+	"name": "auth-client",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "packages/goalie-nextjs/src",
+	"sourceRoot": "packages/auth-client/src",
 	"projectType": "library",
 	"tags": [],
 	"targets": {
@@ -9,14 +9,14 @@
 			"executor": "@nx/linter:eslint",
 			"outputs": ["{options.outputFile}"],
 			"options": {
-				"lintFilePatterns": ["packages/goalie-nextjs/**/*.{ts,tsx,js,jsx}"]
+				"lintFilePatterns": ["packages/auth-client/**/*.{ts,tsx,js,jsx}"]
 			}
 		},
 		"test": {
 			"executor": "@nx/jest:jest",
 			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
 			"options": {
-				"jestConfig": "packages/goalie-nextjs/jest.config.ts",
+				"jestConfig": "packages/auth-client/jest.config.ts",
 				"passWithNoTests": true
 			},
 			"configurations": {

@@ -19,7 +19,7 @@ import {
   getGoalieUser,
   signin,
   useUser
-} from '@goalie/nextjs'
+} from '@auth-client'
 
 import { getRecentVisit } from '@shared/libs'
 import { signinWithGoogle } from 'apps/frontend/libs/firebase'

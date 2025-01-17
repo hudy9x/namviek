@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { usePusher } from './usePusher'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { projectGet } from '@/services/project'
 import { useUrl } from '@/hooks/useUrl'
 import { useProjectStore } from '@/store/project'

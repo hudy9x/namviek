@@ -1,6 +1,6 @@
 import MultiMemberPicker from "@/components/MultiMemberPicker";
 import { useTaskFilter } from "@/features/TaskFilter/context";
-import { useUser } from "@goalie/nextjs";
+import { useUser } from "@auth-client";
 import { memo } from "react";
 
 function TimelineTaskFilter() {

@@ -2,7 +2,7 @@ import { useDataFetcher } from "./useDataFetcher"
 import { messageSuccess } from "@shared/ui"
 import { projectGridSv } from "@/services/project.grid"
 import { FieldType } from "@prisma/client"
-import { useUser } from "@goalie/nextjs"
+import { useUser } from "@auth-client"
 
 export const useTaskUpdate = () => {
   const { setData } = useDataFetcher()

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
 import { Button, Scrollbar } from '@shared/ui'
 import { useEffect, useState } from 'react'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 
 
 import VisionTaskItemDraggable from './VisionTaskItemDraggable'

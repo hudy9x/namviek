@@ -1,7 +1,7 @@
 
 import { useTaskAdd } from '@/components/DataFetcher/useTaskAdd'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Task } from '@prisma/client'
 import { useParams } from 'next/navigation'
 

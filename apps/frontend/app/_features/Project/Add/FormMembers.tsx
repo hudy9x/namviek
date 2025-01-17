@@ -1,5 +1,5 @@
 import { OrgMember, useOrgMemberStore } from '@/store/orgMember'
-import { useUser } from '@goalie/nextjs'
+import { useUser } from '@auth-client'
 import { Avatar, Form, messageWarning } from '@shared/ui'
 import { useEffect, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
