@@ -3,7 +3,7 @@ import { usePusher } from './usePusher'
 import { useUser } from '@auth-client'
 
 import { useGetTaskHandler } from '@/features/ProjectContainer/useGetTask'
-import { messageInfo } from '@shared/ui'
+import { messageInfo } from '@ui-components'
 import { Task } from '@prisma/client'
 import { useTaskUpdate } from '../[orgName]/project/[projectId]/views/useTaskUpdate'
 import { useServiceTaskDel } from '@/hooks/useServiceTaskDel'

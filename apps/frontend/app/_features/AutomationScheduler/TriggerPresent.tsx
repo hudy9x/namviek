@@ -1,4 +1,4 @@
-import { Button } from "@shared/ui"
+import { Button } from "@ui-components"
 import { useSchedulerContext } from "./context"
 import { HiOutlineTrash, HiOutlineXCircle } from "react-icons/hi2"
 

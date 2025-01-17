@@ -1,5 +1,5 @@
 import { ProjectView } from "@prisma/client";
-import ProjectViewRepository from "packages/shared-models/src/lib/project.view.repository";
+import ProjectViewRepository from "packages/database/src/lib/project.view.repository";
 import DataAccessException from "../../exceptions/DataAccessException";
 
 export default class ProjectViewService {

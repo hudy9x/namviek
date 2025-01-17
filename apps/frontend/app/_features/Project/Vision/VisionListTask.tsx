@@ -4,7 +4,7 @@ import ListBoxCreate from '@/components/ListBox/ListBoxCreate'
 import { useServiceTaskAdd } from '@/hooks/useServiceTaskAdd'
 import { useParams } from 'next/navigation'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
-import { Button, Scrollbar } from '@shared/ui'
+import { Button, Scrollbar } from '@ui-components'
 import { useEffect, useState } from 'react'
 import { useUser } from '@auth-client'
 

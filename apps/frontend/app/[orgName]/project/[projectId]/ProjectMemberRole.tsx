@@ -1,5 +1,5 @@
 import { MemberRole } from '@prisma/client'
-import { Form, ListItemValue, messageError } from '@shared/ui'
+import { Form, ListItemValue, messageError } from '@ui-components'
 import { useParams } from 'next/navigation'
 import { memUpdateRole } from '../../../../services/member'
 import { useMemberStore } from '../../../../store/member'

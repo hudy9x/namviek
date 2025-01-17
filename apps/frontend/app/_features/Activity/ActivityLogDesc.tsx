@@ -1,5 +1,5 @@
 import { Activity, ActivityType } from '@prisma/client'
-import { ActivityLogData } from '@shared/models'
+import { ActivityLogData } from '@database'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
 import { diffText } from '@shared/libs'

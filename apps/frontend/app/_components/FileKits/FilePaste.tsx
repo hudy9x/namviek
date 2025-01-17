@@ -1,4 +1,4 @@
-import { messageSuccess } from '@shared/ui'
+import { messageSuccess } from '@ui-components'
 import { useEffect } from 'react'
 import useFileUpload from './useFileUpload'
 import { useFileKitContext } from './context'

@@ -1,4 +1,4 @@
-import { messageWarning } from "@shared/ui"
+import { messageWarning } from "@ui-components"
 import { pushState } from "apps/frontend/libs/pushState"
 
 export default function TaskTitle({ id, projectId, title }: { id: string, projectId: string, title: string }) {

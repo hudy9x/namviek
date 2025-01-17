@@ -1,5 +1,5 @@
 import { TaskType } from '@prisma/client'
-import { Form, ListItemValue } from '@shared/ui'
+import { Form, ListItemValue } from '@ui-components'
 import { useEffect, useState } from 'react'
 import TaskTypeIcon, { taskTypeColors } from './Icon'
 

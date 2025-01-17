@@ -1,4 +1,4 @@
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { pmClient } from 'packages/database/src/lib/_prisma'
 import {
   BaseController,
   Body,
@@ -6,7 +6,7 @@ import {
   Get,
   Post,
 } from '../../core'
-import { mdTaskGetAll } from '@shared/models'
+import { mdTaskGetAll } from '@database'
 
 @Controller('/test-perf')
 export class LoadTestController extends BaseController {

@@ -5,7 +5,7 @@ import {
   Modal,
   messageError,
   messageInfo
-} from '@shared/ui'
+} from '@ui-components'
 import {
   ChangeEvent,
   Dispatch,

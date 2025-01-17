@@ -4,7 +4,7 @@ import {
   storageSaveToDrive
 } from '@/services/storage'
 import { FileOwnerType, FileType } from '@prisma/client'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 
 interface AvatarUploadResult {
   url: string

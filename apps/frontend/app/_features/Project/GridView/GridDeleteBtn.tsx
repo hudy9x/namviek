@@ -1,6 +1,6 @@
 import { useDataFetcher } from "@/components/DataFetcher/useDataFetcher";
 import { projectGridSv } from "@/services/project.grid";
-import { Button, confirmAlert, messageSuccess } from "@shared/ui";
+import { Button, confirmAlert, messageSuccess } from "@ui-components";
 import { HiOutlineTrash } from "react-icons/hi2";
 
 export default function GridDeleteBtn({ rowId }: { rowId: string }) {

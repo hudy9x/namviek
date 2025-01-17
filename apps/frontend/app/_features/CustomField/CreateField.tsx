@@ -1,4 +1,4 @@
-import Button from "packages/shared-ui/src/components/Button";
+import Button from "packages/ui-components/src/components/Button";
 import { HiOutlinePlus } from "react-icons/hi2";
 import { useCustomFieldStore } from "./store";
 

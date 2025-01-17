@@ -1,4 +1,4 @@
-import { Dialog } from "@shared/ui";
+import { Dialog } from "@ui-components";
 import { useEffect, useState } from "react";
 import CreateFieldContainer from "./CreateFieldContainer";
 import { useCustomFieldStore } from "./store";

@@ -2,7 +2,7 @@
 
 ```tsx
 // You need to import it first
-import { Dialog } from '@shared/ui'
+import { Dialog } from '@ui-components'
 
 // How to use it
 const MyDialog = () => {
@@ -31,7 +31,7 @@ const MyDialog = () => {
 ## Button
 ```tsx
 // You need to import it first
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 
 // How to use it
 const MyButton = () => {
@@ -72,7 +72,7 @@ const MyButton = () => {
 ## Card
 ```tsx
 // You need to import it first
-import { Card } from '@shared/ui'
+import { Card } from '@ui-components'
 
 // How to use it
 const MyCard = () => {
@@ -83,7 +83,7 @@ const MyCard = () => {
 ## Input  
 ```tsx
 // You need to import it first
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 
 // How to use it
 const MyInput = () => {
@@ -121,7 +121,7 @@ const MyInput = () => {
 ## Select
 ```tsx
 // You need to import it first
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 
 // How to use it
 const MySelect = () => {

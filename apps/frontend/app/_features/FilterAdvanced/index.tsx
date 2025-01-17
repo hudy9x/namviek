@@ -1,4 +1,4 @@
-import { Popover } from "@shared/ui";
+import { Popover } from "@ui-components";
 import FilterButton from "./FilterButton";
 import FilterAutoApply from "./FilterAutoApply";
 import './style.css'

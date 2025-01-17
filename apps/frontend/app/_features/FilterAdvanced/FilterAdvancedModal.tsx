@@ -1,5 +1,5 @@
 import FieldSelect from "./FieldSelect"
-import { Button } from "@shared/ui"
+import { Button } from "@ui-components"
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2"
 import { TFilterAdvancedItem } from "./type"
 import ConditionSelect from "./ConditionSelect"

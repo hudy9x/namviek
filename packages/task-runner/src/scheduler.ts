@@ -2,7 +2,7 @@ import { Redis } from 'ioredis'
 import { Scheduler } from '@prisma/client'
 import { TTrigger, cronJob } from './cronJob'
 import { BaseAction } from './actions/BaseAction'
-import { SchedulerRepository } from '@shared/models'
+import { SchedulerRepository } from '@database'
 
 export const EVENT = {
   SCHEDULER_DELETE: 'scheduler:delete',

@@ -2,7 +2,7 @@ import { useUrl } from '@/hooks/useUrl'
 import NotifySettingContainer from './NotifySettingContainer'
 import { useEffect, useState } from 'react'
 import { projectSettingNotify } from '@/services/projectSettingNotify'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { ProjectSettingNotification } from '@prisma/client'
 
 export default function ProjectNotificationSetting() {

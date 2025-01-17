@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, Modal } from '@shared/ui'
+import { Dialog, Modal } from '@ui-components'
 import { useState, ReactNode } from 'react'
 import ProjectAddForm from './ProjectAddForm'
 

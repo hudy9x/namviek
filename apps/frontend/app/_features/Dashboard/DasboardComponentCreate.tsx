@@ -1,5 +1,5 @@
 import { DashboardComponentType } from '@prisma/client'
-import { Button, Modal } from '@shared/ui'
+import { Button, Modal } from '@ui-components'
 import { useEffect, useState } from 'react'
 import DashboardComponentUpdateForm from './DashboardComponentUpdateForm'
 import './dboard-component-create.css'

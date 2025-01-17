@@ -1,6 +1,6 @@
 import { useProjectStore } from '@/store/project'
 import { useMemberStore } from '../../store/member'
-import { Avatar, Form, ListItemValue } from '@shared/ui'
+import { Avatar, Form, ListItemValue } from '@ui-components'
 import { useEffect, useState } from 'react'
 const List = Form.List
 

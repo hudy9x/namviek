@@ -8,7 +8,7 @@ import {
   IAutomateWhenProps,
   useAutomationStore
 } from '@/store/automation'
-import { messageSuccess, randomId } from '@shared/ui'
+import { messageSuccess, randomId } from '@ui-components'
 
 export const useServiceAutomation = () => {
   const {

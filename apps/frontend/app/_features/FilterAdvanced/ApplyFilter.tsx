@@ -1,4 +1,4 @@
-import { Button } from "@shared/ui"
+import { Button } from "@ui-components"
 import { useFilterAdvancedStore } from "./store"
 import { useFilterAdvanced } from "./useFilterAdvancedStore"
 import { HiOutlineCheck } from "react-icons/hi2"

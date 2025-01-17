@@ -1,4 +1,4 @@
-import { mdMemberBelongToProject } from "@shared/models";
+import { mdMemberBelongToProject } from "@database";
 import { BaseController, Body, Controller, Get, Param, Query } from "../../core";
 
 @Controller('/user-permission')

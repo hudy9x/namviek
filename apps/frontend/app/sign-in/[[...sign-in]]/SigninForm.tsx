@@ -6,7 +6,7 @@ import {
   messageError,
   setFixLoading,
   useForm
-} from '@shared/ui'
+} from '@ui-components'
 import { validateLoginUser } from '@shared/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

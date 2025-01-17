@@ -1,5 +1,5 @@
 import { User, UserStatus } from '@prisma/client'
-import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@shared/models'
+import { mdUserAdd, mdUserFindEmail, mdUserUpdate } from '@database'
 import { validateRegisterUser } from '@shared/validation'
 import { Router } from 'express'
 import { sendVerifyEmail } from '../../lib/email'

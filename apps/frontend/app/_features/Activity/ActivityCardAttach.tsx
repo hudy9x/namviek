@@ -1,5 +1,5 @@
 import { Activity } from '@prisma/client'
-import { ActivityAttachData } from '@shared/models'
+import { ActivityAttachData } from '@database'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
 import { MdOutlineAttachFile } from 'react-icons/md'

@@ -5,7 +5,7 @@ import { taskUpdate } from '@/services/task'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { Task, TaskPriority } from '@prisma/client'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 // import { useRef } from "react"

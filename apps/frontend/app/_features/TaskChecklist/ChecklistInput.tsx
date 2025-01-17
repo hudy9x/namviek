@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useChecklistStore } from "./store"
 import { taskChecklistSv } from "@/services/task.checklist"
-import { messageSuccess } from "@shared/ui"
+import { messageSuccess } from "@ui-components"
 
 export default function ChecklistInput({ id, value, taskId }: {
   id: string,

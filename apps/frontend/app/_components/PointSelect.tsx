@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from '@shared/ui'
+import { Form, ListItemValue } from '@ui-components'
 import { useProjectPointStore } from 'apps/frontend/store/point'
 import { useEffect, useState } from 'react'
 import { AiOutlineStar } from 'react-icons/ai'

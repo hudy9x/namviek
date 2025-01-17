@@ -1,4 +1,4 @@
-import { mdProjectGetReportSetting, mdProjectUpdateReportSetting } from "@shared/models"
+import { mdProjectGetReportSetting, mdProjectUpdateReportSetting } from "@database"
 
 export interface IProjectReportSettingBody {
   projectId: string,

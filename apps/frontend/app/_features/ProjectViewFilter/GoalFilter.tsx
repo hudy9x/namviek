@@ -1,5 +1,5 @@
 import { ProjectViewType } from "@prisma/client";
-import { Button } from "@shared/ui";
+import { Button } from "@ui-components";
 import ProjectViewForMe from "../ProjectView/ProjectViewForMe";
 
 export default function ProjectViewFilterByGoal({ type, desc, onAdd, isUpdate }: {

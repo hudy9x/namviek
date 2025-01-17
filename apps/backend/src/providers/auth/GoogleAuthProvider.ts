@@ -3,7 +3,7 @@ import { serviceGetUserByEmail } from '../../services/user'
 import CredentialInvalidException from '../../exceptions/CredentialInvalidException'
 import { BaseAuthProvider } from './BaseAuthProvider'
 import { getAuth } from 'firebase-admin/auth'
-import { mdUserAdd } from '@shared/models'
+import { mdUserAdd } from '@database'
 import InactiveAccountException from '../../exceptions/InactiveAccountException'
 
 export default class GoogleAuthProvider extends BaseAuthProvider {

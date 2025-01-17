@@ -1,4 +1,4 @@
-import { mdProjectGet } from '@shared/models'
+import { mdProjectGet } from '@database'
 import { CKEY, hgetAll, hset } from '../lib/redis'
 
 export const serviceGetProjectById = async (id: string) => {

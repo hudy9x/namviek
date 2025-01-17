@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useFileKitContext } from './context'
-import { Loading, randomId } from '@shared/ui'
+import { Loading, randomId } from '@ui-components'
 import FileDesc from './FileDesc'
 import FileListWrapper from './FileListWrapper'
 import useFileUpload from './useFileUpload'

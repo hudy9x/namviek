@@ -8,10 +8,10 @@ import {
   mdStorageGetOne,
   mdTaskGetOne,
   mdTaskUpdate
-} from '@shared/models'
+} from '@database'
 import { FileOwnerType, FileStorage } from '@prisma/client'
 import { AuthRequest } from '../../types'
-import { fileStorageModel, pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { fileStorageModel, pmClient } from 'packages/database/src/lib/_prisma'
 import { CKEY, findNDelCaches } from '../../lib/redis'
 import StorageCache from '../../caches/StorageCache'
 import { StorageService } from '../../services/storage.service'

@@ -7,7 +7,7 @@ import {
   confirmAlert,
   messageError,
   messageSuccess
-} from '@shared/ui'
+} from '@ui-components'
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { useUserRole } from '../UserPermission/useUserRole'

@@ -1,4 +1,4 @@
-import { Form, Loading, messageSuccess } from "@shared/ui";
+import { Form, Loading, messageSuccess } from "@ui-components";
 import { useChecklistStore } from "./store";
 import { HiOutlineX } from "react-icons/hi";
 import { taskChecklistSv } from "@/services/task.checklist";

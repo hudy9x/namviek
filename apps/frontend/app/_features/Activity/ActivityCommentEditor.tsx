@@ -2,7 +2,7 @@ import { Activity, ActivityObjectType, ActivityType } from '@prisma/client'
 import { activityCreate } from '@/services/activity'
 import { useTaskStore } from '@/store/task'
 import { useActivityContext } from './context'
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import MemberAvatar from '@/components/MemberAvatar'
 import { useUser } from '@auth-client'
 

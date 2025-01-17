@@ -1,7 +1,7 @@
 import { notifyToWebUsers } from '../lib/buzzer'
 import { getJSONCache } from '../lib/redis'
 import TaskReminderJob from '../jobs/reminder.job'
-import { mdUserFindEmailsByUids } from '@shared/models'
+import { mdUserFindEmailsByUids } from '@database'
 import { sendEmail } from '../lib/email'
 
 type RemindPayload = {

@@ -1,5 +1,5 @@
 import { FieldType } from '@prisma/client'
-import { DatePicker, Form } from '@shared/ui'
+import { DatePicker, Form } from '@ui-components'
 import { RELATIVE_TIME_VALUES } from './type'
 
 interface FilterSubValueProps {

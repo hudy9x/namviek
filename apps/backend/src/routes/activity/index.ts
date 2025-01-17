@@ -3,7 +3,7 @@ import {
   mdActivityAdd,
   mdActivityGetAllByTask,
   mdActivityUpdate
-} from '@shared/models'
+} from '@database'
 import { Activity } from '@prisma/client'
 import {
   BaseController,

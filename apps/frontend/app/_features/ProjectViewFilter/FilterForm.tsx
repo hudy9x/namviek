@@ -1,7 +1,7 @@
 import ListPreset from '@/components/ListPreset'
 import PointSelect from '@/components/PointSelect'
 import PrioritySelect from '@/components/PrioritySelect'
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { useProjectViewContext } from '../ProjectView/context'
 import StatusSelectMultiple from '@/components/StatusSelectMultiple'

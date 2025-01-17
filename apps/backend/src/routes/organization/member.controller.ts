@@ -6,7 +6,7 @@ import {
   mdOrgMemberGetAll,
   mdOrgMemberSeach,
   mdUserFindEmail
-} from '@shared/models'
+} from '@database'
 import {
   BaseController,
   Controller,

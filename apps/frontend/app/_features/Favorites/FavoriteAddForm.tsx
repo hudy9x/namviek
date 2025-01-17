@@ -1,10 +1,10 @@
 'use client'
 
-import { Form, Button } from '@shared/ui'
+import { Form, Button } from '@ui-components'
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import EmojiInput from '@/components/EmojiInput'
-import FormGroup from 'packages/shared-ui/src/components/FormGroup'
+import FormGroup from 'packages/ui-components/src/components/FormGroup'
 import useServiceFavoriteUpdate from '@/hooks/useServiceFavoriteUpdate'
 import { useUrl } from '@/hooks/useUrl'
 import './favorite-modal.css'

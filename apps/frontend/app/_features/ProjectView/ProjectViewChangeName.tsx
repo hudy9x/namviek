@@ -1,6 +1,6 @@
 import { projectView } from "@/services/projectView";
 import { useProjectViewStore } from "@/store/projectView";
-import { Button, Form, messageError, messageSuccess } from "@shared/ui";
+import { Button, Form, messageError, messageSuccess } from "@ui-components";
 import { useState } from "react";
 import ProjectViewIcon from "./ProjectViewIcon";
 import { ProjectViewType } from "@prisma/client";

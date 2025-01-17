@@ -1,5 +1,5 @@
 import { Activity, ActivityType } from '@prisma/client'
-import { ActivityLogData } from '@shared/models'
+import { ActivityLogData } from '@database'
 import { useProjectStatusStore } from '@/store/status'
 import { useMemberStore } from '@/store/member'
 import MemberAvatar from '@/components/MemberAvatar'

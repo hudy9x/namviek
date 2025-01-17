@@ -1,4 +1,4 @@
-import { mdOrgGetOne } from "@shared/models";
+import { mdOrgGetOne } from "@database";
 import { CKEY, decrByCache, getCache, incrByCache } from "../lib/redis";
 
 const cachedStorage = new Map<string, number>()

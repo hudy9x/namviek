@@ -1,4 +1,4 @@
-import { Button, Form, randomId } from "@shared/ui";
+import { Button, Form, randomId } from "@ui-components";
 import { useReportSavedListContext } from "./context";
 import { useState } from "react";
 import { useReportContext } from "../Report/context";

@@ -3,7 +3,7 @@
 import { ITaskQuery, taskGetByCond } from '@/services/task'
 import { Task } from '@prisma/client'
 import { useEffect, useMemo, useState } from 'react'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 import { MdOutlineRefresh } from 'react-icons/md'
 import { useMyworkContext } from './context'
 import MyworkLoading from './MyworkLoading'

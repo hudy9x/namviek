@@ -5,7 +5,7 @@ import {
   mdTaskStatusGetByProjectId,
   mdTaskStatusUpdate,
   mdTaskStatusDel
-} from '@shared/models'
+} from '@database'
 import { StatusType, TaskStatus } from '@prisma/client'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 import StatusPusherJob from '../../jobs/status.pusher.job'

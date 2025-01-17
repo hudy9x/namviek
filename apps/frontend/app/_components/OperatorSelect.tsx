@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from '@shared/ui'
+import { Form, ListItemValue } from '@ui-components'
 import { useState } from 'react'
 const List = Form.List
 const operators: ListItemValue[] = [

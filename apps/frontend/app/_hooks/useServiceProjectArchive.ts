@@ -2,7 +2,7 @@ import { projectGet, projectService } from '@/services/project'
 import { useProjectArchiveStore } from '@/store/projecArchived'
 import { useProjectStore } from '@/store/project'
 import { Project } from '@prisma/client'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 import { useParams } from 'next/navigation'
 import { useGetParams } from './useGetParams'
 

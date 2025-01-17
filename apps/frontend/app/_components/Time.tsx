@@ -1,5 +1,5 @@
 import { dateFormat } from '@shared/libs'
-import { Tooltip } from '@shared/ui'
+import { Tooltip } from '@ui-components'
 
 export default function Time({ date }: { date: Date }) {
   const time = dateFormat(date, 'Pp')

@@ -1,4 +1,4 @@
-import ProjectRepository from "packages/shared-models/src/lib/project.repository";
+import ProjectRepository from "packages/database/src/lib/project.repository";
 
 export default class ProjectService {
   projectRepo: ProjectRepository

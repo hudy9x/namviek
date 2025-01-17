@@ -14,7 +14,7 @@ import {
   messageSuccess,
   messageWarning,
   setFixLoading
-} from '@shared/ui'
+} from '@ui-components'
 import { format } from 'date-fns'
 import {
   ChangeEvent,

@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from "@shared/ui";
+import { Form, ListItemValue } from "@ui-components";
 import { useCustomFieldStore } from "./store";
 import { useEffect, useMemo, useState } from "react";
 import { Prisma } from "@prisma/client";

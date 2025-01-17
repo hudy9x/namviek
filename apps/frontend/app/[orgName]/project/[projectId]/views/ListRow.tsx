@@ -10,7 +10,7 @@ import TaskDate from './TaskDate'
 import ProgressBar from '@/components/ProgressBar'
 import { useParams, useRouter } from 'next/navigation'
 import { useUrl } from '@/hooks/useUrl'
-import { Loading, messageWarning } from '@shared/ui'
+import { Loading, messageWarning } from '@ui-components'
 
 import TaskTypeCell from './TaskTypeCell'
 import TaskChecklist from '@/features/TaskChecklist'

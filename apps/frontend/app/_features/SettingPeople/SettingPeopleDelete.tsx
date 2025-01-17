@@ -3,7 +3,7 @@ import {
   Button,
   confirmAlert,
   messageSuccess
-} from '@shared/ui'
+} from '@ui-components'
 import { HiOutlineTrash } from 'react-icons/hi2'
 import { useUserRole } from '../UserPermission/useUserRole'
 

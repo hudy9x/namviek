@@ -1,4 +1,4 @@
-import { mdProjectView } from '@shared/models'
+import { mdProjectView } from '@database'
 import {
   BaseController,
   Controller,

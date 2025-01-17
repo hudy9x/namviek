@@ -1,4 +1,4 @@
-import { SchedulerRepository } from '@shared/models'
+import { SchedulerRepository } from '@database'
 import {
   BaseController,
   Body,

@@ -1,4 +1,4 @@
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { useTaskImport } from './context'
 import { useState } from 'react'
 import TaskImportAction from './TaskImportAction'

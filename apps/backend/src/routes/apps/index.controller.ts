@@ -10,7 +10,7 @@ import {
   UseMiddleware
 } from '../../core'
 import { authMiddleware } from '../../middlewares'
-import { ApplicationRepository } from '@shared/models'
+import { ApplicationRepository } from '@database'
 import { randomBytes } from 'crypto'
 import { AuthRequest } from '../../types'
 import { Application } from '@prisma/client'

@@ -1,4 +1,4 @@
-import { Button, Form, FormGroup } from '@shared/ui'
+import { Button, Form, FormGroup } from '@ui-components'
 import { useState } from 'react'
 import { HiOutlineBell, HiOutlineSquare2Stack } from 'react-icons/hi2'
 import { useSchedulerContext } from './context'

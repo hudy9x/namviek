@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from "@shared/ui";
+import { Form, ListItemValue } from "@ui-components";
 import { EFilterCondition } from "./type";
 import { useMemo, useState } from "react";
 

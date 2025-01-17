@@ -1,4 +1,4 @@
-import { mdTaskStatusGetById } from '@shared/models'
+import { mdTaskStatusGetById } from '@database'
 import { CKEY, hgetAll, hset } from '../lib/redis'
 
 export const serviceGetStatusById = async (id: string) => {

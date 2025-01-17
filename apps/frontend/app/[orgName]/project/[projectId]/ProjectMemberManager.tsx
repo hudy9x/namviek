@@ -1,6 +1,6 @@
 import { useOrgMemberGet } from '../../../../services/organizationMember'
 import { useMemberStore } from '../../../../store/member'
-import Avatar from 'packages/shared-ui/src/components/Avatar'
+import Avatar from 'packages/ui-components/src/components/Avatar'
 import { HiOutlineSearch } from 'react-icons/hi'
 import ProjectMemberAdd from './ProjectMemberAdd'
 import ProjectMemberRole from './ProjectMemberRole'

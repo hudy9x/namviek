@@ -1,6 +1,6 @@
 import { useOrgMemberStore } from "@/store/orgMember"
 import { useReportContext } from "./context"
-import { Avatar } from "@shared/ui"
+import { Avatar } from "@ui-components"
 
 export default function ReportFilterMember() {
   const { orgMembers } = useOrgMemberStore()

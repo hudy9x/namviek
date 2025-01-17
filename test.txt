@@ -1,7 +1,7 @@
 yarn run v1.22.19
-$ prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma test
+$ prisma db seed --schema=./packages/database/src/prisma/schema.prisma test
 Environment variables loaded from .env
-Running seed command `ts-node ./packages/shared-models/src/prisma/seed test` ...
+Running seed command `ts-node ./packages/database/src/prisma/seed test` ...
 >>>>>>
 type test
 value undefined

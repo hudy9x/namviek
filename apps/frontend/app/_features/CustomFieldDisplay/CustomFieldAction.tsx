@@ -1,4 +1,4 @@
-import { DropdownMenu, confirmAlert, messageSuccess } from '@shared/ui'
+import { DropdownMenu, confirmAlert, messageSuccess } from '@ui-components'
 import { IoMdArrowDropdown } from 'react-icons/io'
 import { useCustomFieldStore } from '../CustomField/store'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi2'

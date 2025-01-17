@@ -6,7 +6,7 @@ import {
   messageError,
   setFixLoading,
   messageSuccess
-} from '@shared/ui'
+} from '@ui-components'
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
@@ -15,7 +15,7 @@ import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
 import { useGetParams } from '@/hooks/useGetParams'
 import EmojiInput, { randIcon } from '@/components/EmojiInput'
-import FormGroup from 'packages/shared-ui/src/components/FormGroup'
+import FormGroup from 'packages/ui-components/src/components/FormGroup'
 import FormMember from './FormMembers'
 import FormProjectView from './FormProjectView'
 

@@ -1,6 +1,6 @@
 import { useProjectCustomFieldStore } from "@/store/customFields"
 import { TCustomFieldOption } from "../CustomField/store"
-import { Form, ListItemValue } from "@shared/ui"
+import { Form, ListItemValue } from "@ui-components"
 import { useMemo, useState } from "react"
 
 const List = Form.List

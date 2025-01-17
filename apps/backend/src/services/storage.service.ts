@@ -1,10 +1,10 @@
 import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
 import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
 import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@database"
 import StorageCache from "../caches/StorageCache"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
-import { fileStorageModel } from "packages/shared-models/src/lib/_prisma"
+import { fileStorageModel } from "packages/database/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 

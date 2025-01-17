@@ -1,6 +1,6 @@
 'use client'
 
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { useState, useEffect } from 'react'
 import { renderAsync } from 'docx-preview'
 

@@ -1,5 +1,5 @@
 import { useDataFetcher } from "./useDataFetcher"
-import { randomId } from "@shared/ui"
+import { randomId } from "@ui-components"
 import { useParams } from "next/navigation"
 import { ExtendedTask } from "@/store/task"
 import { projectGridSv } from "@/services/project.grid"

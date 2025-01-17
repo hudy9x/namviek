@@ -1,4 +1,4 @@
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { HTMLAttributes } from 'react'
 import './index.css'
 

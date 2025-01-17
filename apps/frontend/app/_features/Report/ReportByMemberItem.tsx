@@ -1,7 +1,7 @@
 
 import { reportService } from '@/services/report'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { Avatar, Loading } from '@shared/ui'
+import { Avatar, Loading } from '@ui-components'
 import { useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
 import { HiOutlineX } from 'react-icons/hi'

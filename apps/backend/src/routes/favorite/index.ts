@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
-import { mdFavAdd, mdFavDel, mdFavGet } from '@shared/models'
+import { mdFavAdd, mdFavDel, mdFavGet } from '@database'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()

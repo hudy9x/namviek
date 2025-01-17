@@ -1,5 +1,5 @@
 import { useTaskStore } from '@/store/task'
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import { useEffect, useState } from 'react'
 export default function TaskCheckbox({
   id,

@@ -1,5 +1,5 @@
 import { UserMember, useMemberStore } from '@/store/member'
-import { Avatar, Form, ListItemValue } from '@shared/ui'
+import { Avatar, Form, ListItemValue } from '@ui-components'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import './style.css'
 import { getGoalieUser } from '@auth-client'

@@ -2,7 +2,7 @@ import ListBoxCreate from '@/components/ListBox/ListBoxCreate'
 import { useParams } from 'next/navigation'
 import { useVisionContext } from './context'
 import { endOfMonth } from 'date-fns'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 import { useGetParams } from '@/hooks/useGetParams'
 
 export default function VisionCreate() {

@@ -1,4 +1,4 @@
-import { Button } from "@shared/ui";
+import { Button } from "@ui-components";
 
 interface IMyworkPaginate {
   enable: boolean

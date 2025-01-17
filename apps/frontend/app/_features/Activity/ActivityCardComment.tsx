@@ -1,5 +1,5 @@
 import { Activity } from '@prisma/client'
-import { ActivityCommentData } from '@shared/models'
+import { ActivityCommentData } from '@database'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
 import MemberName from '@/components/MemberName'

@@ -1,5 +1,5 @@
 import DynamicIcon from '../DynamicIcon'
-import { DropdownMenu } from '@shared/ui'
+import { DropdownMenu } from '@ui-components'
 import './style.css'
 import { useState } from 'react'
 

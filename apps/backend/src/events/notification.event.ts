@@ -1,4 +1,4 @@
-import { mdMemberGetAllByProjectId } from "@shared/models"
+import { mdMemberGetAllByProjectId } from "@database"
 import { notifyToWebUsers } from "../lib/buzzer"
 
 export class NotificationEvent {

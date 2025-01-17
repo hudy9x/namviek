@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { CommentRepository } from '@shared/models'
+import { CommentRepository } from '@database'
 import { Comment } from '@prisma/client'
 import {
   BaseController,

@@ -1,4 +1,4 @@
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import TaskDeleteAction from './TaskDeleteAction'
 import './style.css'
 import { HiOutlineDocumentDuplicate } from 'react-icons/hi2'

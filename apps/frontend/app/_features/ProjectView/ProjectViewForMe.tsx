@@ -1,4 +1,4 @@
-import { Form } from "@shared/ui";
+import { Form } from "@ui-components";
 import { useProjectViewContext } from "./context";
 
 export default function ProjectViewForMe() {

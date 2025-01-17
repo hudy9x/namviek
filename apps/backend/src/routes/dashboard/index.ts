@@ -13,7 +13,7 @@ import {
   mdDBoardQuerySum,
   mdDboardGetDefault,
   mdDBoardUpdateLayout
-} from '@shared/models'
+} from '@database'
 import { DashboardComponent, DashboardComponentType } from '@prisma/client'
 
 const router = Router()

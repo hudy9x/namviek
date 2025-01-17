@@ -6,7 +6,7 @@ import {
   mdMemberDel,
   mdMemberGetAllByProjectId,
   mdMemberUpdateRole
-} from '@shared/models'
+} from '@database'
 import { MemberRole, User } from '@prisma/client'
 import {
   CKEY,

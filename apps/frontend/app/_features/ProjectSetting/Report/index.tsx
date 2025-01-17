@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReportSettingContainer from "./ReportSettingContainer";
 import { projectSettingReport } from "@/services/projectSettingReport";
 import { useParams } from "next/navigation";
-import { Loading } from "@shared/ui";
+import { Loading } from "@ui-components";
 
 export default function ProjectReportSetting() {
   const { projectId } = useParams()

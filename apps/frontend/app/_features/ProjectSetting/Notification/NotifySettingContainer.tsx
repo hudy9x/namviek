@@ -1,6 +1,6 @@
 import { useUrl } from '@/hooks/useUrl'
 import { projectSettingNotify } from '@/services/projectSettingNotify'
-import { Form, Switch } from '@shared/ui'
+import { Form, Switch } from '@ui-components'
 import { useState } from 'react'
 
 let t1 = 0

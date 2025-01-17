@@ -7,7 +7,7 @@ import {
   mdTaskGetOne,
   mdTaskStatusWithDoneType,
   mdTaskUpdate
-} from '@shared/models'
+} from '@database'
 import { deleteTodoCounter } from '..//todo.counter'
 import { genFrontendUrl } from '../../lib/url'
 import { notifyToWebUsers } from '../../lib/buzzer'

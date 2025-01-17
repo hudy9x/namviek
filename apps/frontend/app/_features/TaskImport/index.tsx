@@ -1,5 +1,5 @@
 import { Row } from 'read-excel-file'
-import { Button, DropdownMenu, Modal } from '@shared/ui'
+import { Button, DropdownMenu, Modal } from '@ui-components'
 import { useEffect, useState } from 'react'
 import { AiOutlineCloudUpload, AiOutlineFileText } from 'react-icons/ai'
 import { PiFileCsv, PiMicrosoftExcelLogo, PiTableLight } from 'react-icons/pi'

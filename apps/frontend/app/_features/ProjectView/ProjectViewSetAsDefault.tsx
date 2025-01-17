@@ -1,7 +1,7 @@
 import { projectView } from "@/services/projectView";
 import useServiceProject from "@/services/useServiceProject";
 import { useProjectViewStore } from "@/store/projectView";
-import { DropdownMenu, confirmWarning, messageError, messageSuccess } from "@shared/ui";
+import { DropdownMenu, confirmWarning, messageError, messageSuccess } from "@ui-components";
 import { useParams } from "next/navigation";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { PiAnchorBold } from "react-icons/pi";

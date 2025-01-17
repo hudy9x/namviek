@@ -2,7 +2,7 @@ import { Layout, Responsive, WidthProvider } from 'react-grid-layout'
 import { useOverviewContext } from '../Project/Overview/context'
 import DbComponent from './components/DbComponent'
 import { useState } from 'react'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
@@ -12,7 +12,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 
 import './style.css'
 import { HiOutlineCheckCircle } from 'react-icons/hi2'
-import { LoadingSpinnerIcon } from 'packages/shared-ui/src/components/Loading/Icon'
+import { LoadingSpinnerIcon } from 'packages/ui-components/src/components/Loading/Icon'
 
 
 const ResponsiveGridLayout = WidthProvider(Responsive)

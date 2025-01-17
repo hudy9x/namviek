@@ -1,5 +1,5 @@
 import { useDataFetcher } from "./useDataFetcher"
-import { messageSuccess } from "@shared/ui"
+import { messageSuccess } from "@ui-components"
 import { projectGridSv } from "@/services/project.grid"
 import { FieldType } from "@prisma/client"
 import { useUser } from "@auth-client"

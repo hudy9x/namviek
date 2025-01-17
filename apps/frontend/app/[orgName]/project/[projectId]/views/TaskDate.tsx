@@ -1,4 +1,4 @@
-import { DatePickerBorderless } from '@shared/ui'
+import { DatePickerBorderless } from '@ui-components'
 import { useEffect, useState } from 'react'
 import { useTaskUpdate } from './useTaskUpdate'
 import { differenceInDays } from 'date-fns'

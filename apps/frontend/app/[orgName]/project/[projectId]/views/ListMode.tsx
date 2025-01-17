@@ -4,7 +4,7 @@ import { useTaskStore } from '../../../../../store/task'
 
 import TaskCheckAll from './TaskCheckAll'
 import ListCell from './ListCell'
-import { Avatar, Loading } from '@shared/ui'
+import { Avatar, Loading } from '@ui-components'
 import ListCreateTask from './ListCreateTask'
 import TaskMultipleActions from '@/features/TaskMultipleActions'
 import ListRow from './ListRow'

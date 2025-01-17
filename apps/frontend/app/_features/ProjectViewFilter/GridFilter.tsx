@@ -2,7 +2,7 @@
 import { ProjectViewType } from '@prisma/client'
 import { useProjectViewContext } from '../ProjectView/context'
 import ProjectViewForMe from '../ProjectView/ProjectViewForMe'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 
 export default function ProjectViewFilterByGrid({
   type,

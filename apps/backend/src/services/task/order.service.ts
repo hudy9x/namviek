@@ -1,4 +1,4 @@
-import { TaskRepository } from '@shared/models'
+import { TaskRepository } from '@database'
 import { CKEY, findNDelCaches } from '../../lib/redis'
 
 interface IReorderData {

@@ -1,4 +1,4 @@
-import { Button, messageError, messageWarning } from '@shared/ui'
+import { Button, messageError, messageWarning } from '@ui-components'
 import { useTaskImport } from './context'
 import { Task, TaskPriority, TaskType } from '@prisma/client'
 import { useMemberStore } from '@/store/member'

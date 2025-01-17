@@ -5,7 +5,7 @@ import {
   mdAutomationDel,
   mdAutomationGet,
   mdAutomationPost
-} from '@shared/models'
+} from '@database'
 import { TaskAutomation } from '@prisma/client'
 
 const router = Router()

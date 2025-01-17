@@ -1,4 +1,4 @@
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import FileItem from './FileItem'
 import { IFileItem } from './context'
 import { useState } from 'react'

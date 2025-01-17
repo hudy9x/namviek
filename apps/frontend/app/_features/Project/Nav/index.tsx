@@ -8,7 +8,7 @@ import { Project } from '@prisma/client'
 import ProjectNavItem from './ProjectNavItem'
 import { useProjectPinUnpin } from '@/hooks/useProjectPinUnPin'
 import { useTodoCounter } from '@/hooks/useTodoCounter'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { useServiceProject } from '@/services/hooks/useServiceProject'
 
 export default function ProjectList() {

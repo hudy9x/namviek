@@ -1,5 +1,5 @@
 import { Stats } from "@prisma/client"
-import StatsRepository from "packages/shared-models/src/lib/stats.repository"
+import StatsRepository from "packages/database/src/lib/stats.repository"
 
 export default class StatsService {
   statsRepo: StatsRepository

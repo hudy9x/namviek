@@ -1,4 +1,4 @@
-import { Button } from "@shared/ui";
+import { Button } from "@ui-components";
 import Link from "next/link";
 import { HiOutlineRocketLaunch } from "react-icons/hi2";
 import { FaGithub } from "react-icons/fa";

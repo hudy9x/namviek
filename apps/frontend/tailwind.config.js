@@ -11,7 +11,7 @@ module.exports = {
     ),
     join(
       __dirname,
-      '../../packages/shared-ui/src/**/*!(*.stories|*.spec).{ts,tsx}'
+      '../../packages/ui-components/src/**/*!(*.stories|*.spec).{ts,tsx}'
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],

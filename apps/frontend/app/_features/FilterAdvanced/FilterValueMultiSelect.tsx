@@ -1,7 +1,7 @@
 import { useProjectCustomFieldStore } from "@/store/customFields"
 import { FieldType } from "@prisma/client"
 import { TCustomFieldOption } from "../CustomField/store"
-import { Form, ListItemValue } from "@shared/ui"
+import { Form, ListItemValue } from "@ui-components"
 import { SetStateAction, useState } from "react"
 
 const List = Form.List

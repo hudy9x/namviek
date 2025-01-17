@@ -4,7 +4,7 @@ import ActionList from './ActionList'
 import { useState } from 'react'
 import { ISchedulerTrigger, SchedulerProvider } from './context'
 import TriggerPresent from './TriggerPresent'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { HiOutlineChevronLeft } from 'react-icons/hi2'
 
 export default function AutomateSchedulerCreate({

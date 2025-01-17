@@ -1,4 +1,4 @@
-import { Form } from "@shared/ui"
+import { Form } from "@ui-components"
 import { useCustomFieldStore } from "./store"
 import MultiMemberPicker from "../../_components/MultiMemberPicker"
 import { ChangeEvent, useEffect } from "react"

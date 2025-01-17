@@ -1,6 +1,6 @@
 import { StatsType, StatusType } from "@prisma/client";
 import { lastDayOfMonth } from "date-fns";
-import { pmClient } from "packages/shared-models/src/lib/_prisma";
+import { pmClient } from "packages/database/src/lib/_prisma";
 import { sendDiscordLog } from "../../lib/log";
 
 export default class StatsUnDoneTaskService {

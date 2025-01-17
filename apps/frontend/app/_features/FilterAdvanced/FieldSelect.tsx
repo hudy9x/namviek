@@ -1,6 +1,6 @@
 import { useProjectCustomFieldStore } from "@/store/customFields";
 import { FieldType } from "@prisma/client";
-import { Form, ListItemValue } from "@shared/ui";
+import { Form, ListItemValue } from "@ui-components";
 import { useEffect, useMemo, useState } from "react";
 
 const List = Form.List

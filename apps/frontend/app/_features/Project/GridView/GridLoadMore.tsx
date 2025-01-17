@@ -1,5 +1,5 @@
 import { useDataFetcher } from "@/components/DataFetcher/useDataFetcher"
-import { Button } from "@shared/ui"
+import { Button } from "@ui-components"
 
 export default function GridLoadMore() {
   const {

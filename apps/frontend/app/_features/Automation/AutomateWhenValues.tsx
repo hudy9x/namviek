@@ -1,4 +1,4 @@
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import { WHEN, useAutomateContext } from './context'
 import StatusSelect from '@/components/StatusSelect'
 import PrioritySelect from '@/components/PrioritySelect'

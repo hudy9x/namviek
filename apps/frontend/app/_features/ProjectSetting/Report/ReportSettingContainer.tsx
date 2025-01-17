@@ -1,5 +1,5 @@
 import { projectSettingReport } from "@/services/projectSettingReport";
-import { Switch, messageSuccess } from "@shared/ui";
+import { Switch, messageSuccess } from "@ui-components";
 import { useState } from "react";
 
 export default function ReportSettingContainer({ id, countProjectTask, countMemberTask }: {

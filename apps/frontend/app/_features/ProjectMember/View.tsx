@@ -1,5 +1,5 @@
 import { useMemberStore } from '@/store/member'
-import { Avatar, Tooltip } from '@shared/ui'
+import { Avatar, Tooltip } from '@ui-components'
 import { HiOutlinePlus } from 'react-icons/hi2'
 import ProjectMemberAdd from '../../[orgName]/project/[projectId]/ProjectMemberAdd'
 

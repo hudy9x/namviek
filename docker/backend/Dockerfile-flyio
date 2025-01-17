@@ -45,7 +45,7 @@ RUN apk update && apk upgrade && \
     libc6-compat
 
 COPY --from=builder /app/dist/packages/be-gateway ./
-COPY ./packages/shared-models/src/prisma/schema.prisma .
+COPY ./packages/database/src/prisma/schema.prisma .
 COPY ./yarn.lock .
 
 # Install production dependencies

@@ -1,5 +1,5 @@
 import { ProjectViewType } from "@prisma/client";
-import { Button } from "@shared/ui";
+import { Button } from "@ui-components";
 import FilterForm from "./FilterForm";
 import ProjectViewForMe from "../ProjectView/ProjectViewForMe";
 

@@ -1,7 +1,7 @@
 import { } from "react";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { useVisionContext } from "../Vision/context";
-import { confirmAlert } from "@shared/ui";
+import { confirmAlert } from "@ui-components";
 
 function TimelineItemDelete({ id }: { id: string }) {
   const { deleteVision } = useVisionContext()

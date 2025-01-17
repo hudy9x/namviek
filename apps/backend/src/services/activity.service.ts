@@ -8,7 +8,7 @@ import {
   ActivityLogData,
   mdActivityAddMany,
   mdStorageGet
-} from '@shared/models'
+} from '@database'
 import { isSameDay } from 'date-fns'
 
 export default class ActivityService {

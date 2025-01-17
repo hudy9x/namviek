@@ -1,7 +1,7 @@
 import './style.css'
 import { useVisionContext } from '../Vision/context'
 
-import { Timeline } from '@shared/ui'
+import { Timeline } from '@ui-components'
 import VisionCreate from '../Vision/VisionCreate'
 import TimelineItem from './TimelineItem'
 import { AnimatePresence, motion } from 'framer-motion'

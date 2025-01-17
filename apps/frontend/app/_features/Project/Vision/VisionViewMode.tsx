@@ -1,4 +1,4 @@
-import { Button, FormGroup } from '@shared/ui'
+import { Button, FormGroup } from '@ui-components'
 import { HiOutlineCalendar, HiOutlineViewColumns } from 'react-icons/hi2'
 import { EVisionViewMode, useVisionContext } from './context'
 

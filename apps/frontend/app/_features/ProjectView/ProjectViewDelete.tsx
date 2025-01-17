@@ -1,6 +1,6 @@
 import { projectView } from "@/services/projectView";
 import { useProjectViewStore } from "@/store/projectView";
-import { DropdownMenu, confirmWarning, messageError, messageSuccess } from "@shared/ui";
+import { DropdownMenu, confirmWarning, messageError, messageSuccess } from "@ui-components";
 import { HiOutlineTrash } from "react-icons/hi2";
 
 export default function ProjectViewDelete({ id }: { id: string }) {

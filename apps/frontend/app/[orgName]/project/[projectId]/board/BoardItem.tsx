@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation'
 
 import { useUrl } from '@/hooks/useUrl'
 import PriorityText from '@/components/PriorityText'
-import { Loading, Popover, Tooltip, messageWarning } from '@shared/ui'
+import { Loading, Popover, Tooltip, messageWarning } from '@ui-components'
 
 import differenceInDays from 'date-fns/differenceInDays'
 import { useStatusUtils } from '@/hooks/useStatusUtils'

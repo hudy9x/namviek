@@ -1,6 +1,6 @@
 'use client'
 
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'

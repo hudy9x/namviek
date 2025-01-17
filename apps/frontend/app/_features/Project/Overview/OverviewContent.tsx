@@ -1,13 +1,13 @@
 import './style.css'
 import { useUser } from '@auth-client'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { dboardCreate } from '@/services/dashboard'
 import { useParams } from 'next/navigation'
 import DashboardComponentCreate from '../../Dashboard/DasboardComponentCreate'
 import DboardComponentList from '../../Dashboard/DboardComponentList'
 import { useOverviewContext } from './context'
 import Image from 'next/image'
-import { LoadingSpinnerIcon } from 'packages/shared-ui/src/components/Loading/Icon'
+import { LoadingSpinnerIcon } from 'packages/ui-components/src/components/Loading/Icon'
 
 export default function OverviewContent() {
   const { user } = useUser()

@@ -1,4 +1,4 @@
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { pmClient } from 'packages/database/src/lib/_prisma'
 import {
   BaseController,
   Controller,

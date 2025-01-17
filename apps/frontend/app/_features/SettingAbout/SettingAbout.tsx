@@ -9,7 +9,7 @@ import {
   FormGroup,
   confirmAlert,
   messageSuccess
-} from '@shared/ui'
+} from '@ui-components'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useUserRole } from '../UserPermission/useUserRole'

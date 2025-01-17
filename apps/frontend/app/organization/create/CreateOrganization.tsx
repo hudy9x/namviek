@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Form, FormGroup, Loading, messageError, messageWarning } from '@shared/ui'
+import { Button, Form, FormGroup, Loading, messageError, messageWarning } from '@ui-components'
 import { useFormik } from 'formik'
 import { orgCreate } from '../../../services/organization'
 import { Organization } from '@prisma/client'

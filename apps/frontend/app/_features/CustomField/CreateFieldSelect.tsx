@@ -1,4 +1,4 @@
-import { Button, Form, IconColorPicker, colors } from "@shared/ui";
+import { Button, Form, IconColorPicker, colors } from "@ui-components";
 import { TCustomFieldOption, useCustomFieldStore } from "./store";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi2";
 import { useCallback, useState } from "react";

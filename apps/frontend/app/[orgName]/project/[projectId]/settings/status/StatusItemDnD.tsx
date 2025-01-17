@@ -4,7 +4,7 @@ import { ReactNode, useCallback, useRef } from 'react'
 import { KEY } from './type'
 import { useProjectStatusStore } from '../../../../../../store/status'
 import { projectStatusUpdateOrder } from '../../../../../../services/status'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 
 interface IItemStatus {
   status: TaskStatus

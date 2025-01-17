@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from "@shared/ui"
+import { Form, ListItemValue } from "@ui-components"
 import { useCustomFieldInputContext } from "./context"
 import { TCustomFieldOption } from "../CustomField/store"
 import { useEffect, useMemo, useState } from "react"

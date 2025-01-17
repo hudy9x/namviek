@@ -1,4 +1,4 @@
-import { Dialog, messageError, messageSuccess } from '@shared/ui'
+import { Dialog, messageError, messageSuccess } from '@ui-components'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ITaskDefaultValues, defaultFormikValues } from './TaskForm'
 import { useTaskStore } from '@/store/task'

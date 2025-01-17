@@ -1,4 +1,4 @@
-import { Form, ListItemValue } from '@shared/ui'
+import { Form, ListItemValue } from '@ui-components'
 import { useEffect, useState, memo } from 'react'
 import './style.css'
 

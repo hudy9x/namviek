@@ -1,4 +1,4 @@
-import { Dialog } from '@shared/ui'
+import { Dialog } from '@ui-components'
 import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'

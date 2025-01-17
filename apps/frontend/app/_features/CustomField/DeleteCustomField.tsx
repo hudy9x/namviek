@@ -1,6 +1,6 @@
 import { HiOutlineTrash } from "react-icons/hi2";
 import { fieldSv } from "@/services/field";
-import { messageSuccess } from "@shared/ui";
+import { messageSuccess } from "@ui-components";
 import { useProjectCustomFieldStore } from "@/store/customFields";
 import localforage from "localforage";
 import { useParams } from "next/navigation";

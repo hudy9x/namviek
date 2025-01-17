@@ -4,7 +4,7 @@ import useServiceFavoriteUpdate, {
 import useServiceProjectArchive from '@/hooks/useServiceProjectArchive'
 import { projectService } from '@/services/project'
 import { Project } from '@prisma/client'
-import { DropdownMenu } from '@shared/ui'
+import { DropdownMenu } from '@ui-components'
 import { useParams } from 'next/navigation'
 import { HiOutlineArchive, HiOutlineDotsVertical } from 'react-icons/hi'
 import { HiOutlineStar } from 'react-icons/hi2'

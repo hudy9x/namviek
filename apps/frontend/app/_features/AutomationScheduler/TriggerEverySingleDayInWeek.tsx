@@ -1,5 +1,5 @@
 import ListPreset from '@/components/ListPreset'
-import { Button, Form } from '@shared/ui'
+import { Button, Form } from '@ui-components'
 import { useState } from 'react'
 import {
   ISchedulerTriggerAtField,

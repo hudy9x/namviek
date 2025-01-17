@@ -1,4 +1,4 @@
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 
 export default function MyworkLoading({ loading }: { loading: boolean }) {
   if (!loading) return null

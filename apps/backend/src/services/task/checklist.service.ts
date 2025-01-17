@@ -1,6 +1,6 @@
 import { Task, TaskChecklist } from "@prisma/client"
 import BadRequestException from "../../exceptions/BadRequestException"
-import { TaskChecklistRepository, mdTaskGetOne, mdTaskUpdate } from "@shared/models"
+import { TaskChecklistRepository, mdTaskGetOne, mdTaskUpdate } from "@database"
 import { CKEY, findNDelCaches } from "../../lib/redis"
 
 export default class TaskChecklistService {

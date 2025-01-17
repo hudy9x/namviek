@@ -1,4 +1,4 @@
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 
 export default function TaskDescUpdate({
   defaultValue,

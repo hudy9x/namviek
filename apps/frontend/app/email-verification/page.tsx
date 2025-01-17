@@ -1,7 +1,7 @@
 'use client'
 
 import { httpGet } from '@/services/_req'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'

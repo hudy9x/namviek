@@ -1,7 +1,7 @@
 import { projectPin, projectUnpin } from '@/services/project'
 import { PinnedProjectSetting, useProjectStore } from '@/store/project'
 import { Project } from '@prisma/client'
-import { messageSuccess, messageWarning } from '@shared/ui'
+import { messageSuccess, messageWarning } from '@ui-components'
 
 export const useProjectPinUnpin = () => {
   const { pin, unpin } = useProjectStore()

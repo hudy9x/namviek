@@ -13,7 +13,7 @@ import {
   mdProjectView,
   mdTaskPointAddMany,
   mdTaskStatusAddMany
-} from '@shared/models'
+} from '@database'
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
@@ -23,7 +23,7 @@ import PointRouter from './point'
 import StatusRouter from './status'
 import TagRouter from './tag'
 import PinRouter from './pin'
-import { pmClient } from 'packages/shared-models/src/lib/_prisma'
+import { pmClient } from 'packages/database/src/lib/_prisma'
 
 const router = Router()
 

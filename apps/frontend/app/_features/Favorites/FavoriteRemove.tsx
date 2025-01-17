@@ -1,5 +1,5 @@
 import useServiceFavoriteUpdate from '@/hooks/useServiceFavoriteUpdate'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { RiUnpinLine } from 'react-icons/ri'
 
 export default function FavoriteRemove({

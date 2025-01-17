@@ -1,4 +1,4 @@
-import { Button, Dialog, Form, Loading, Switch, messageError, messageInfo, messageSuccess } from "@shared/ui";
+import { Button, Dialog, Form, Loading, Switch, messageError, messageInfo, messageSuccess } from "@ui-components";
 import { useState } from "react";
 import { HiOutlineUserPlus } from "react-icons/hi2";
 import { useUserRole } from "../UserPermission/useUserRole";

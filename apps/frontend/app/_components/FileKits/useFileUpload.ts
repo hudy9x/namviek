@@ -13,7 +13,7 @@ import {
   messageError,
   messageWarning,
   randomId
-} from '@shared/ui'
+} from '@ui-components'
 import { AxiosError } from 'axios'
 import { useSetDefaultCover } from './useSetDefaultCover'
 import { useGetParams } from '@/hooks/useGetParams'

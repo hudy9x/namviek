@@ -1,6 +1,6 @@
 import { useGetParams } from "@/hooks/useGetParams";
 import { meetingService } from "@/services/meeting";
-import { Button, Form, randomId, setFixLoading } from "@shared/ui";
+import { Button, Form, randomId, setFixLoading } from "@ui-components";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

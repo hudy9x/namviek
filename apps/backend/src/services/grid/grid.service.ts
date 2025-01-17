@@ -1,11 +1,11 @@
 import { FieldType } from "@prisma/client"
-import { pmClient } from "packages/shared-models/src/lib/_prisma"
+import { pmClient } from "packages/database/src/lib/_prisma"
 import { buildTextQuery } from "./builders/text.builder"
 import { buildNumberQuery } from "./builders/number.builder"
 import { buildDateQuery } from "./builders/date.builder"
 import { buildSelectQuery } from "./builders/select.builder"
 import { buildBooleanQuery } from "./builders/boolean.builder"
-import { FieldRepository, GridRepository } from "@shared/models"
+import { FieldRepository, GridRepository } from "@database"
 import { buildPersonQuery } from "./builders/person.builder"
 
 export enum EFilterCondition {

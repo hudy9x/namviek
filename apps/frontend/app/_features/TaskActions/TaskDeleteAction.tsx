@@ -1,5 +1,5 @@
 import { useServiceTaskDel } from '@/hooks/useServiceTaskDel'
-import { Button, confirmAlert } from '@shared/ui'
+import { Button, confirmAlert } from '@ui-components'
 import localforage from 'localforage'
 import { useParams } from 'next/navigation'
 import { HiOutlineTrash } from 'react-icons/hi2'

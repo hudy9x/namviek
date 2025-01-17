@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-ui',
+  displayName: 'ui-components',
   preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
@@ -9,5 +9,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/shared-ui',
+  coverageDirectory: '../../coverage/packages/ui-components',
 };

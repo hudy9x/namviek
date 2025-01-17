@@ -9,7 +9,7 @@ import {
   HiOutlineServerStack,
   HiOutlineVideoCamera,
 } from 'react-icons/hi2'
-import { Button, Scrollbar } from '@shared/ui'
+import { Button, Scrollbar } from '@ui-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectAddModal from '@/features/Project/Add/ProjectAddModal'
 import { useMemo } from 'react'

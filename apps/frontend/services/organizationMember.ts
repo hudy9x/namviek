@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { httpDel, httpGet, httpPost } from './_req'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 import { useOrgMemberStore } from '../store/orgMember'
 import { useGetParams } from '@/hooks/useGetParams'
 

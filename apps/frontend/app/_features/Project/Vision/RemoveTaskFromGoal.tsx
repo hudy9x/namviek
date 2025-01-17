@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { HiOutlineXMark } from 'react-icons/hi2'
 import { useServiceTaskUpdate } from "@/hooks/useServiceTaskUpdate";
 

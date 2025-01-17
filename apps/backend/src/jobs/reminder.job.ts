@@ -1,5 +1,5 @@
 import { extracDatetime, padZero } from '@shared/libs'
-import { mdProjectGet } from '@shared/models'
+import { mdProjectGet } from '@database'
 import { genFrontendUrl } from '../lib/url'
 import {
   delCache,

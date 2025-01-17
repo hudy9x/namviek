@@ -1,6 +1,6 @@
 import ProgressBar from "@/components/ProgressBar";
 import TaskChecklist from "@/features/TaskChecklist";
-import { Popover } from "@shared/ui";
+import { Popover } from "@ui-components";
 import { useState } from "react";
 
 export default function TaskProgress({ progress, taskId }: { progress: number, taskId: string }) {

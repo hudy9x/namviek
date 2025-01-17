@@ -1,4 +1,4 @@
-import { Form, randomId } from "@shared/ui";
+import { Form, randomId } from "@ui-components";
 import { useMemo, useState } from "react";
 import { useCheckboxStore } from "./useCheckboxStore";
 

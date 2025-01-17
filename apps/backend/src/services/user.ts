@@ -1,4 +1,4 @@
-import { mdUserFindEmail, mdUserFindFirst } from '@shared/models'
+import { mdUserFindEmail, mdUserFindFirst } from '@database'
 import { CKEY, hgetAll, hset } from '../lib/redis'
 
 export const serviceGetUserById = async (id: string) => {

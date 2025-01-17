@@ -2,7 +2,7 @@
 import { fieldSv } from "@/services/field";
 import { useProjectCustomFieldStore } from "@/store/customFields";
 import { Field } from "@prisma/client";
-import { messageSuccess } from "@shared/ui";
+import { messageSuccess } from "@ui-components";
 import { DragEvent, ReactNode } from "react";
 
 let draggedItem: number | null = null

@@ -1,7 +1,7 @@
 import useServiceFavoriteUpdate, {
   IFavoriteProps
 } from '@/hooks/useServiceFavoriteUpdate'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { HiOutlineStar } from 'react-icons/hi2'
 
 export default function FavoriteAdd({

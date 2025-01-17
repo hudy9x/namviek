@@ -1,7 +1,7 @@
 import { dboardComponentDel } from '@/services/dashboard'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { useOverviewContext } from '../../Project/Overview/context'
-import { Button, confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { Button, confirmAlert, messageError, messageSuccess } from '@ui-components'
 import { MouseEvent } from 'react'
 
 export default function DbCompDelete({ id }: { id: string }) {

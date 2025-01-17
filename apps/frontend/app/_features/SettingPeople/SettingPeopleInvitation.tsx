@@ -8,8 +8,8 @@ import {
   Form,
   messageError,
   messageSuccess
-} from '@shared/ui'
-import FormGroup from 'packages/shared-ui/src/components/FormGroup'
+} from '@ui-components'
+import FormGroup from 'packages/ui-components/src/components/FormGroup'
 import { useState } from 'react'
 import { HiOutlineMail } from 'react-icons/hi'
 

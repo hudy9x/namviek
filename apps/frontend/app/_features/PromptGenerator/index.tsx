@@ -1,4 +1,4 @@
-import { Button, Modal } from '@shared/ui'
+import { Button, Modal } from '@ui-components'
 import { useState } from 'react'
 import { HiOutlineChatBubbleLeftEllipsis } from 'react-icons/hi2'
 import PromptContainer from './PromptContainer'

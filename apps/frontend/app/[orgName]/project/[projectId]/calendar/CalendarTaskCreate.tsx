@@ -1,4 +1,4 @@
-import { Modal, messageError, messageSuccess } from '@shared/ui'
+import { Modal, messageError, messageSuccess } from '@ui-components'
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskForm, { ITaskDefaultValues } from '../TaskForm'

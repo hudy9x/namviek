@@ -2,7 +2,7 @@ import { useParams } from 'next/navigation'
 import { memDeleteFromProject } from '../../../../services/member'
 import { HiX } from 'react-icons/hi'
 import { useMemberStore } from '../../../../store/member'
-import { confirmAlert, messageError } from '@shared/ui'
+import { confirmAlert, messageError } from '@ui-components'
 
 export default function ProjectMemberDel({ uid }: { uid: string }) {
   const { projectId } = useParams()

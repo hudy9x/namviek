@@ -1,4 +1,4 @@
-import { Avatar } from '@shared/ui'
+import { Avatar } from '@ui-components'
 import { useMemberStore } from '../../store/member'
 import { useMemo } from 'react'
 

@@ -2,7 +2,7 @@
 
 import { useOrgMemberGet } from '@/services/organizationMember'
 import { useOrgMemberStore } from '@/store/orgMember'
-import { Avatar } from '@shared/ui'
+import { Avatar } from '@ui-components'
 import { MdOutlineRefresh } from 'react-icons/md'
 import { useMyworkContext } from './context'
 import { AiOutlineCheck } from 'react-icons/ai'

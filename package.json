@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "prisma": {
-    "seed": "ts-node ./packages/shared-models/src/prisma/seed"
+    "seed": "ts-node ./packages/database/src/prisma/seed"
   },
   "scripts": {
     "vercel-build": "next build",
@@ -23,9 +23,9 @@
     "generate": "prisma generate --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "pushdb": "prisma db push --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
     "seed": "prisma db seed --schema=.\\packages\\shared-models\\src\\prisma\\schema.prisma",
-    "generate2": "prisma generate --schema=./packages/shared-models/src/prisma/schema.prisma",
-    "pushdb2": "prisma db push --schema=./packages/shared-models/src/prisma/schema.prisma",
-    "seed2": "prisma db seed --schema=./packages/shared-models/src/prisma/schema.prisma"
+    "generate2": "prisma generate --schema=./packages/database/src/prisma/schema.prisma",
+    "pushdb2": "prisma db push --schema=./packages/database/src/prisma/schema.prisma",
+    "seed2": "prisma db seed --schema=./packages/database/src/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {

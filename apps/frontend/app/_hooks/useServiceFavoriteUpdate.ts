@@ -1,7 +1,7 @@
 import { favDel, favPost } from '@/services/favorite'
 import { useFavStore } from '@/store/favorite'
 import { Favorites } from '@prisma/client'
-import { messageSuccess, randomId } from '@shared/ui'
+import { messageSuccess, randomId } from '@ui-components'
 import { useGetParams } from './useGetParams'
 
 export interface IFavoriteProps {

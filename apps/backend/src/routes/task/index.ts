@@ -12,7 +12,7 @@ import {
   mdTaskDelete,
   mdTaskUpdateMany,
   mdTaskDeleteMany
-} from '@shared/models'
+} from '@database'
 
 import { Task, TaskStatus } from '@prisma/client'
 import {

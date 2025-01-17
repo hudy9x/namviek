@@ -1,4 +1,4 @@
-import { Button, Loading, messageSuccess, messageWarning } from '@shared/ui'
+import { Button, Loading, messageSuccess, messageWarning } from '@ui-components'
 import FileThumb from './FileThumb'
 import { IFileItem, isImage, useFileKitContext } from './context'
 import FileDelete from './FileDelete'

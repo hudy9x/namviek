@@ -1,4 +1,4 @@
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import MemberAvatar from '@/components/MemberAvatar'
 import './style.css'
 import { useEffect, useState } from 'react'

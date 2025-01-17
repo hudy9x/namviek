@@ -4,7 +4,7 @@ import {
   IAutomateWhenProps,
   IAutomationItem
 } from '@/store/automation'
-import { confirmWarning } from '@shared/ui'
+import { confirmWarning } from '@ui-components'
 import { HiOutlineTrash } from 'react-icons/hi2'
 import { THEN, WHEN, dueDateOptions, thenOptions, whenOptions } from './context'
 import { useProjectStatusStore } from '@/store/status'

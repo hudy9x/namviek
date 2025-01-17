@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Application } from '@prisma/client'
 import { useApplicationStore } from '@/store/application'
-import { Button, Card, confirmAlert, messageSuccess } from '@shared/ui'
+import { Button, Card, confirmAlert, messageSuccess } from '@ui-components'
 import { FiEye, FiEyeOff, FiCopy, FiTrash2 } from 'react-icons/fi'
 import { useGetParams } from '@/hooks/useGetParams'
 

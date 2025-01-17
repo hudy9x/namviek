@@ -1,6 +1,6 @@
 import { useServiceTaskDel } from "@/hooks/useServiceTaskDel"
 import { useTaskStore } from "@/store/task"
-import { confirmAlert } from "@shared/ui"
+import { confirmAlert } from "@ui-components"
 
 export const useMultipleDelete = () => {
   const { selected, clearAllSelected } = useTaskStore()

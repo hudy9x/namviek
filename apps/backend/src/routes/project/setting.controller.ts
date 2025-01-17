@@ -9,7 +9,7 @@ import {
 } from '../../core'
 import { AuthRequest } from '../../types'
 import { authMiddleware } from '../../middlewares'
-import { ProjectSettingRepository } from '@shared/models'
+import { ProjectSettingRepository } from '@database'
 import BadRequestException from '../../exceptions/BadRequestException'
 import ProjectSettingReportService, { IProjectReportSettingBody } from '../../services/project/setting.report.service'
 

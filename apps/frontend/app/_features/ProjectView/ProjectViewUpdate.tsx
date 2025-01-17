@@ -1,4 +1,4 @@
-import { Dialog, messageError } from '@shared/ui'
+import { Dialog, messageError } from '@ui-components'
 import { useEffect, useState } from 'react'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewModalProvider } from './context'

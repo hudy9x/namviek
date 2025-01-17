@@ -6,7 +6,7 @@ import {
   mdTaskPointGetByProjectId,
   mdTaskPointDelOne,
   mdTaskPointUpdateOne
-} from '@shared/models'
+} from '@database'
 import { CKEY, delCache, getJSONCache, setJSONCache } from '../../lib/redis'
 
 const router = Router()

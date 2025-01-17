@@ -4,7 +4,7 @@ import StatusSelect from '@/components/StatusSelect'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
 import ListPreset from '@/components/ListPreset'
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 // import TaskForm from '../../[orgID]/project/[projectId]/TaskForm'
 
 const DynamicTaskForm = dynamic(

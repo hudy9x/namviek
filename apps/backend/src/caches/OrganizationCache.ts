@@ -1,4 +1,4 @@
-import { mdOrgGetOne } from "@shared/models"
+import { mdOrgGetOne } from "@database"
 import { CKEY, getCache, setCache } from "../lib/redis"
 
 export default class OrganizationCache {

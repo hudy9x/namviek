@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Tab, messageWarning } from '@shared/ui'
+import { Button, DatePicker, Form, Tab, messageWarning } from '@ui-components'
 import MemberPicker from '@/components/MemberPicker'
 import PrioritySelect from '@/components/PrioritySelect'
 import StatusSelect from '@/components/StatusSelect'

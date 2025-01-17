@@ -5,7 +5,7 @@ import {
   mdProjectPinAdd,
   mdProjectPinGet,
   mdProjectUnpin
-} from '@shared/models'
+} from '@database'
 
 const router = Router()
 

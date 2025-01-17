@@ -1,4 +1,4 @@
-import { mdProjectArchive } from '@shared/models'
+import { mdProjectArchive } from '@database'
 import {
   BaseController,
   Body,

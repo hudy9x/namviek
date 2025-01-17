@@ -7,7 +7,7 @@ import {
   mdVisionGetByOrg,
   mdVisionGetByProject,
   mdVisionUpdate
-} from '@shared/models'
+} from '@database'
 import { Vision } from '@prisma/client'
 import { CKEY, getJSONCache, setJSONCache } from '../../lib/redis'
 

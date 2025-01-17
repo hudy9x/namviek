@@ -2,7 +2,7 @@
 
 import { useGetParams } from '@/hooks/useGetParams'
 import { useApplicationStore } from '@/store/application'
-import { Button, Dialog, Form, messageError } from '@shared/ui'
+import { Button, Dialog, Form, messageError } from '@ui-components'
 import { useState } from 'react'
 
 export default function CreateApplication() {

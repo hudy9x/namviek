@@ -7,7 +7,7 @@ import {
 } from '@/services/comment'
 import { useUser } from '@auth-client'
 import { Comment } from '@prisma/client'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 import compareAsc from 'date-fns/compareAsc'
 import { useSearchParams } from 'next/navigation'
 import {

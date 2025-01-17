@@ -5,8 +5,8 @@ import { Field, FieldType, Prisma } from "@prisma/client";
 // import { FieldDateStrategy } from "./create.date.field.strategy";
 // import { FieldSelectStrategy } from "./create.select.field.strategy";
 // import { FieldCheckboxStrategy } from "./create.checkbox.field.strategy";
-import { FieldRepository } from "@shared/models";
-import { pmClient } from "packages/shared-models/src/lib/_prisma";
+import { FieldRepository } from "@database";
+import { pmClient } from "packages/database/src/lib/_prisma";
 
 export class FieldService {
   fieldRepo: FieldRepository

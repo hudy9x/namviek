@@ -1,4 +1,4 @@
-import { Button, confirmAlert } from '@shared/ui'
+import { Button, confirmAlert } from '@ui-components'
 import { HiOutlineTrash } from 'react-icons/hi2'
 import { useVisionContext } from './context'
 

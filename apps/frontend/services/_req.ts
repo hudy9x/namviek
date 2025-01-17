@@ -6,7 +6,7 @@ import {
   saveGoalieRefreshToken,
   saveGoalieToken
 } from '@auth-client'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 import axios from 'axios'
 
 console.log('=================================')

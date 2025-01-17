@@ -1,7 +1,7 @@
 import { useUrl } from "@/hooks/useUrl"
 import { taskMakeCover } from "@/services/task"
 import { useTaskStore } from "@/store/task"
-import { messageSuccess } from "@shared/ui"
+import { messageSuccess } from "@ui-components"
 import { useSearchParams } from "next/navigation"
 import { useFileKitContext } from "./context"
 

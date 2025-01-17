@@ -8,7 +8,7 @@ import {
   mdOrgUpdate,
   mdOrgGetOneBySlug,
   generateSlug,
-} from '@shared/models'
+} from '@database'
 import {
   BaseController,
   Controller,

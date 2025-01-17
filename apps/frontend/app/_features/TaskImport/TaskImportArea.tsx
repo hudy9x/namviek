@@ -2,7 +2,7 @@ import readXlsxFile from 'read-excel-file'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { useTaskImport } from './context'
 import DropFileZone from '@/components/DropFileZone'
-import { messageError } from '@shared/ui'
+import { messageError } from '@ui-components'
 
 export default function TaskImportArea() {
   const { setRows, setHeading, setOriginRows } = useTaskImport()

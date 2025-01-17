@@ -1,5 +1,5 @@
 import { storageDelFile } from '@/services/storage'
-import { Button, confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { Button, confirmAlert, messageError, messageSuccess } from '@ui-components'
 import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, useFileKitContext } from './context'
 import { useTaskStore } from '@/store/task'

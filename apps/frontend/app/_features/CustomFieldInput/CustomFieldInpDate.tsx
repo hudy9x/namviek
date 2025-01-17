@@ -1,4 +1,4 @@
-import { DatePickerBorderless } from "@shared/ui"
+import { DatePickerBorderless } from "@ui-components"
 import { useCustomFieldInputContext } from "./context"
 
 export default function CustomFieldInpDate({ value, config }: { value: string, config: string }) {

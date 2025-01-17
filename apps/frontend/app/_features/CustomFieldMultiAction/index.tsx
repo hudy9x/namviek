@@ -1,4 +1,4 @@
-import { Button, messageSuccess } from "@shared/ui";
+import { Button, messageSuccess } from "@ui-components";
 import { useCheckboxStore } from "../CustomFieldCheckbox/useCheckboxStore";
 import MultiActionInpDisplay from "./MultiActionInpDisplay";
 import { useState } from "react";

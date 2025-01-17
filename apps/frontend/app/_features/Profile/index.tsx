@@ -1,7 +1,7 @@
 'use client'
 import { ChangeEvent, useState } from 'react'
 import MemberAvatar from '@/components/MemberAvatar'
-import { Button, Form, Dialog } from '@shared/ui'
+import { Button, Form, Dialog } from '@ui-components'
 import { useUser } from '@auth-client'
 import useAvatarUpload from './useAvatarUpload'
 import { useGetParams } from '@/hooks/useGetParams'

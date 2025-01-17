@@ -1,4 +1,4 @@
-import { ITimelineItem } from '@shared/ui'
+import { ITimelineItem } from '@ui-components'
 import { useVisionContext } from '../Vision/context'
 import { isSameDay } from 'date-fns'
 import { HiOutlineFlag } from 'react-icons/hi2'

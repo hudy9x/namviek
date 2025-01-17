@@ -1,5 +1,5 @@
 import { useUser } from '@auth-client'
-import { Avatar, Popover } from '@shared/ui'
+import { Avatar, Popover } from '@ui-components'
 import ThemeSelection from './ThemeSelection'
 import { HiOutlineChevronUp, HiOutlineCog, HiOutlineCog6Tooth, HiOutlineUser, HiOutlineUserPlus } from 'react-icons/hi2'
 import Link from 'next/link'

@@ -1,4 +1,4 @@
-import { Avatar } from '@shared/ui'
+import { Avatar } from '@ui-components'
 import { useMemberStore } from 'apps/frontend/store/member'
 
 export default function OverviewMemberProgress() {

@@ -4,7 +4,7 @@ import {
   activityDelete
 } from '@/services/activity'
 import { Activity, ActivityType } from '@prisma/client'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 import {
   PropsWithChildren,
   createContext,

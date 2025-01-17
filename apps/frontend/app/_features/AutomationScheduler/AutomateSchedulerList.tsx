@@ -2,7 +2,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { schedulerService } from '@/services/scheduler'
 import { Scheduler } from '@prisma/client'
 import { dateFormat } from '@shared/libs'
-import { Button, Loading, confirmWarning } from '@shared/ui'
+import { Button, Loading, confirmWarning } from '@ui-components'
 
 import { useParams } from 'next/navigation'
 import { useState } from 'react'

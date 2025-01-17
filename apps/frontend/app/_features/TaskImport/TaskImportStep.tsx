@@ -1,6 +1,6 @@
 import { AiOutlineCheck } from 'react-icons/ai'
 import { useTaskImport } from './context'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 
 export default function TaskImportStep() {
   const { step } = useTaskImport()

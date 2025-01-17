@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { decodeToken, extractToken, generateRefreshToken, generateToken, verifyRefreshToken } from '../lib/jwt';
 import { AuthRequest, JWTPayload, JWTType } from '../types';
-import { pmClient } from 'packages/shared-models/src/lib/_prisma';
+import { pmClient } from 'packages/database/src/lib/_prisma';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const headers = req.headers;

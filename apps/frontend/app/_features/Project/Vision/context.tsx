@@ -1,6 +1,6 @@
 import { visionAdd, visionDelete, visionUpdate } from '@/services/vision'
 import { Vision } from '@prisma/client'
-import { messageError, messageSuccess, randomId } from '@shared/ui'
+import { messageError, messageSuccess, randomId } from '@ui-components'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 
 export type VisionField = Omit<Vision, 'createdAt' | 'createdBy'>

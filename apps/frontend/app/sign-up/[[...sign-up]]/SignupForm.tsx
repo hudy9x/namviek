@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Form, Loading, messageError, messageSuccess, useForm } from '@shared/ui'
+import { Button, Form, Loading, messageError, messageSuccess, useForm } from '@ui-components'
 import { validateRegisterUser } from '@shared/validation'
 import Link from 'next/link'
 import Logo from '../../../components/Logo'

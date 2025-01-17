@@ -1,4 +1,4 @@
-import { Form } from "@shared/ui"
+import { Form } from "@ui-components"
 import { useEffect, useId, useState } from "react"
 import { HiOutlineCheck } from "react-icons/hi2"
 

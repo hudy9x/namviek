@@ -10,7 +10,7 @@ import {
   projectPointDelete,
   projectPointUpdate
 } from '@/services/point'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 import HasRole from '@/features/UserPermission/HasRole'
 import { useUserRole } from '@/features/UserPermission/useUserRole'
 

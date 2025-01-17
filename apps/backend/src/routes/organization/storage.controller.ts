@@ -1,4 +1,4 @@
-import { OrgStorageRepository } from '@shared/models'
+import { OrgStorageRepository } from '@database'
 import { BaseController, Controller, Get, Post, Put, UseMiddleware } from '../../core'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'

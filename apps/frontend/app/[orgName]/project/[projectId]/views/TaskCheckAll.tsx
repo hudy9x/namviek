@@ -1,7 +1,7 @@
 import useTaskFilterContext from '@/features/TaskFilter/useTaskFilterContext'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
-import { Form } from '@shared/ui'
+import { Form } from '@ui-components'
 import { useEffect, useMemo, useState } from 'react'
 
 export default function TaskCheckAll({ groupId }: { groupId: string }) {

@@ -1,4 +1,4 @@
-import { Form } from "@shared/ui";
+import { Form } from "@ui-components";
 import { useState } from "react";
 export default function FilterValueInput({ value, onChange }: {
   value: string

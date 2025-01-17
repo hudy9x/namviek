@@ -1,4 +1,4 @@
-import { Avatar } from '@shared/ui'
+import { Avatar } from '@ui-components'
 import React from 'react'
 
 const TeamMemberInfo = ({ name, photo }: { name: string; photo: string }) => {

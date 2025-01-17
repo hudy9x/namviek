@@ -1,7 +1,7 @@
 import { HiOutlinePlus } from "react-icons/hi2";
 import { useChecklistStore } from "./store";
 import { useRef } from "react";
-import { randomId } from "@shared/ui";
+import { randomId } from "@ui-components";
 import { taskChecklistSv } from "@/services/task.checklist";
 import { TaskChecklist } from "@prisma/client";
 

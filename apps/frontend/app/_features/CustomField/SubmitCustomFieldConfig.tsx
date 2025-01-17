@@ -1,4 +1,4 @@
-import { Button, messageError } from "@shared/ui"
+import { Button, messageError } from "@ui-components"
 import { useCustomFieldStore } from "./store"
 import { fieldSv } from "@/services/field"
 import { useParams } from "next/navigation"

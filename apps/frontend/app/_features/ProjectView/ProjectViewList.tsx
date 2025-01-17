@@ -6,7 +6,7 @@ import { useProjectViewList } from './useProjectViewList'
 import ProjectViewIcon from './ProjectViewIcon'
 import ProjectViewItemDropdown from './ProjectViewItemDropdown'
 import DynamicIcon from '@/components/DynamicIcon'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 import { HiOutlineEye } from 'react-icons/hi2'
 
 function OnlyMeIcon({ enabled }: { enabled: boolean }) {

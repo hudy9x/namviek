@@ -2,7 +2,7 @@ import { taskAdd } from '@/services/task'
 import { useTaskStore } from '@/store/task'
 import { useUser } from '@auth-client'
 import { Task, TaskPriority } from '@prisma/client'
-import { messageError, messageSuccess } from '@shared/ui'
+import { messageError, messageSuccess } from '@ui-components'
 
 export const useServiceTaskAdd = () => {
   const { user } = useUser()

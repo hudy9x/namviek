@@ -1,4 +1,4 @@
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { useAutomateContext } from './context'
 import { useParams, useRouter } from 'next/navigation'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'

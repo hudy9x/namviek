@@ -1,4 +1,4 @@
-import { FieldRepository } from "@shared/models";
+import { FieldRepository } from "@database";
 import { FieldCreate, FieldFactoryBase } from "./type";
 import { Field, Prisma } from "@prisma/client";
 

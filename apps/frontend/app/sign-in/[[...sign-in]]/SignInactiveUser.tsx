@@ -1,7 +1,7 @@
 'use client'
 
 import { resendVerifyEmail } from "@auth-client"
-import { Button, messageError, messageSuccess, messageWarning } from "@shared/ui"
+import { Button, messageError, messageSuccess, messageWarning } from "@ui-components"
 import { useState } from "react"
 import { BsMailbox } from "react-icons/bs"
 

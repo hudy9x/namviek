@@ -1,5 +1,5 @@
 import { useAutomationStore } from '@/store/automation'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { HiOutlinePlus } from 'react-icons/hi2'

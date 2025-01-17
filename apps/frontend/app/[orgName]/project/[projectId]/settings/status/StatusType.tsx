@@ -1,5 +1,5 @@
 import { StatusType } from '@prisma/client'
-import { DropdownMenu } from '@shared/ui'
+import { DropdownMenu } from '@ui-components'
 
 export const StatusItemType = ({
   type,

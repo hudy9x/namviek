@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useUser } from '@auth-client'
 import { useCommentContext } from './context'
 import { dateFormat } from '@shared/libs'
-import { Button } from '@shared/ui'
+import { Button } from '@ui-components'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi2'
 
 export default function TaskCommentListItem(comment: Comment) {

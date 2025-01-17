@@ -7,10 +7,10 @@ import {
 import { useProjectStatusStore } from '../../../../../../store/status'
 import { KeyboardEvent, useRef } from 'react'
 import { HiOutlineBars3 } from 'react-icons/hi2'
-import { Popover } from 'packages/shared-ui/src/components/Controls'
+import { Popover } from 'packages/ui-components/src/components/Controls'
 import { KEY, colors } from './type'
 import { IoIosClose } from 'react-icons/io'
-import { confirmAlert, messageError, messageSuccess } from '@shared/ui'
+import { confirmAlert, messageError, messageSuccess } from '@ui-components'
 
 interface IItemStatus {
   status: TaskStatus

@@ -1,4 +1,4 @@
-import { OrgStorageRepository } from "@shared/models";
+import { OrgStorageRepository } from "@database";
 export interface IStorageAWSConfig {
   bucketName: string
   region: string

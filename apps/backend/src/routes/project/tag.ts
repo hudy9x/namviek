@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AuthRequest } from '../../types';
-import { mdTagGetByProjectId } from '@shared/models';
+import { mdTagGetByProjectId } from '@database';
 
 const router = Router();
 

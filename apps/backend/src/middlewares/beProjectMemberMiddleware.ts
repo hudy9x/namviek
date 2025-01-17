@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express'
-import { mdMemberBelongToProject } from '@shared/models'
+import { mdMemberBelongToProject } from '@database'
 import { AuthRequest, JWTType } from '../types'
 
 export const beProjectMemberMiddleware = async (

@@ -1,6 +1,6 @@
 import { OrgMember, useOrgMemberStore } from '@/store/orgMember'
 import { useUser } from '@auth-client'
-import { Avatar, Form, messageWarning } from '@shared/ui'
+import { Avatar, Form, messageWarning } from '@ui-components'
 import { useEffect, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { HiOutlineCheck } from 'react-icons/hi2'

@@ -1,4 +1,4 @@
-import { DropdownMenu, Modal } from '@shared/ui'
+import { DropdownMenu, Modal } from '@ui-components'
 import { useState } from 'react'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { GoTypography } from 'react-icons/go'

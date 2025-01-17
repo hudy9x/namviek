@@ -4,7 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { MdClose } from 'react-icons/md'
 import './styles.css'
 import { SetStateAction } from 'react'
-import { Loading } from '@shared/ui'
+import { Loading } from '@ui-components'
 
 interface ModalProps {
   triggerBy?: React.ReactNode
