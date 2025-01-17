@@ -7,7 +7,7 @@ interface InputBaseProps {
   value: string
   name: string
   type: string
-  size: 'sm' | 'lg' | 'base'
+  size: 'sm' | 'md' | 'lg' | 'base'
   onChange: (ev: ChangeEvent<HTMLInputElement>) => void
   onBlur: (ev: FocusEvent<HTMLInputElement>) => void
   onEnter: (val: string, target: HTMLInputElement) => void

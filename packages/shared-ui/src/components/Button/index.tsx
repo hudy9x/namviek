@@ -25,7 +25,7 @@ interface IButtonProps {
   disabled?: boolean
   className?: string
   block?: boolean
-  size?: 'sm' | 'base' | 'lg'
+  size?: 'sm' | 'md' | 'base' | 'lg'
   type?: 'button' | 'reset' | 'submit'
 }
 

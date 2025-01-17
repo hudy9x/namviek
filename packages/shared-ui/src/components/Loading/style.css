@@ -5,6 +5,10 @@
   z-index: 9999;
 }
 
+#loading-wrapper.solid {
+  @apply bg-white dark:bg-gray-900;
+}
+
 #loading-wrapper.loading-hidden {
   @apply hidden;
 }

@@ -1,0 +1,22 @@
+.sign-carousel {
+  background-image: url('/sign-background-1.png');
+  background-size: 100% 100%;
+}
+
+.sign-text-shadow {
+  text-shadow: 0px 2px 6px rgba(0,0,0, .3);
+}
+
+.sign-border {
+@apply absolute top-0 left-0  w-[1511px] h-[893px] border-[10px] border-[#afafc6] bg-[#afafc6] shadow-lg rounded-lg;
+}
+
+.sign-carousel .btn-ghost {
+  @apply text-zinc-300 bg-zinc-900/50 border-zinc-700;
+  @apply hover:bg-zinc-800 cursor-pointer;
+
+  & svg {
+    @apply text-white;
+  }
+}
+
