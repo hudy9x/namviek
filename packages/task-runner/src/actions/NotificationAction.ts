@@ -1,4 +1,4 @@
-import { publish } from '@shared/pubsub'
+import { publish } from '@event-bus'
 import { BaseAction } from './BaseAction'
 import { Scheduler } from '@prisma/client'
 

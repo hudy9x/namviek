@@ -1,21 +1,21 @@
 {
-  "name": "shared-pubsub",
+  "name": "event-bus",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/shared-pubsub/src",
+  "sourceRoot": "packages/event-bus/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/shared-pubsub/**/*.ts"]
+        "lintFilePatterns": ["packages/event-bus/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/shared-pubsub/jest.config.ts",
+        "jestConfig": "packages/event-bus/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

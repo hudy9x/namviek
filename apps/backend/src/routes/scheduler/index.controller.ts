@@ -8,7 +8,7 @@ import {
   Param,
   Post
 } from '../../core'
-import { publish } from '@shared/pubsub'
+import { publish } from '@event-bus'
 import { CHANNEL_SCHEDULER_CREATE, EVENT } from '../../events'
 
 interface IObject {

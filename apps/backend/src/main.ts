@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express, { Application } from 'express'
-import { connectPubClient } from '@shared/pubsub'
+import { connectPubClient } from '@event-bus'
 import cors from 'cors'
 import './lib/redis'
 import './lib/firebase-admin'

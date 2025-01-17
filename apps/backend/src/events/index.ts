@@ -1,4 +1,4 @@
-import { connectSubClient } from '@shared/pubsub'
+import { connectSubClient } from '@event-bus'
 import { NotificationEvent } from './notification.event'
 import { ReminderEvent } from './reminder.event'
 import StatsByDayEvent from './stats.day.event'

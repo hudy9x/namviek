@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { connectPubClient, connectSubClient } from '@shared/pubsub'
+import { connectPubClient, connectSubClient } from '@event-bus'
 import { SchedulerAction } from './scheduler'
 import { NotificationAction } from './actions/NotificationAction'
 import { cronJob } from './cronJob'
