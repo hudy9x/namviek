@@ -1,13 +1,13 @@
 {
-  "name": "be-scheduler-e2e",
+  "name": "task-runner-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["be-scheduler"],
+  "implicitDependencies": ["task-runner"],
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "packages/be-scheduler-e2e/jest.config.ts",
+        "jestConfig": "packages/task-runner-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -15,7 +15,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/be-scheduler-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["packages/task-runner-e2e/**/*.{js,ts}"]
       }
     }
   }

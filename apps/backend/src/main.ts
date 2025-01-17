@@ -9,7 +9,7 @@ import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
 import { checkHealthRoute } from './checkhealth'
-import { runScheduler } from "@/scheduler";
+import { runScheduler } from "@task-runner";
 
 runScheduler()
 

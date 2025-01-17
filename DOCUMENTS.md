@@ -77,7 +77,7 @@ export default class StatsByDayEvent {
 ```
 
 ### Step 2 - Publish to the above event
-After registering event we need to publish message to trigger it. Open `packages/be-scheduler/src/main.ts` and create a cronjob as follows
+After registering event we need to publish message to trigger it. Open `packages/task-runner/src/main.ts` and create a cronjob as follows
 
 ```typescript
 connectPubClient((err, redis) => {
