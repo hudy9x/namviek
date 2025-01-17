@@ -22,7 +22,6 @@
       "@/services/*": ["apps/frontend/services/*"],
       "@/store/*": ["apps/frontend/store/*"],
       "@task-runner": ["packages/task-runner/src/main.ts"],
-      "@be/storage": ["packages/be-storage/src/index.ts"],
       "@goalie/nextjs": ["packages/goalie-nextjs/src/index.ts"],
       "@goalie/nextjs/server": ["packages/goalie-nextjs/src/server.ts"],
       "@shared/libs": ["packages/shared-libs/src/index.ts"],
