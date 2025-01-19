@@ -1,6 +1,6 @@
 'use client'
 
-import { getLocalCache } from '@shared/libs'
+import { getLocalCache } from '@namviek/core'
 import { ThemeProvider } from 'next-themes'
 import { pdfjs } from 'react-pdf'
 

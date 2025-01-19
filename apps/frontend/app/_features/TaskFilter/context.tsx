@@ -3,7 +3,7 @@ import { useMemberStore } from '@/store/member'
 import { useProjectStatusStore } from '@/store/status'
 import { useTaskStore } from '@/store/task'
 import { TaskPriority } from '@prisma/client'
-import { getLastDateOfMonth } from '@shared/libs'
+import { getLastDateOfMonth } from '@namviek/core'
 import { useParams } from 'next/navigation'
 
 import {

@@ -18,7 +18,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@auth-client'
 import { Form, messageSuccess } from '@ui-components'
 import { HiOutlineDuplicate, HiOutlineX } from 'react-icons/hi'
-import { copyToClipboard } from '@shared/libs'
+import { copyToClipboard } from '@namviek/core'
 import './style.css'
 import { HiOutlineInformationCircle } from 'react-icons/hi2'
 

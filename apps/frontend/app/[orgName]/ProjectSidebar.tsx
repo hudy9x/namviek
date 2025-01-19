@@ -9,7 +9,7 @@ import {
 import { useState } from 'react'
 import OrgSection from 'apps/frontend/layouts/OrgSection'
 import ProjectNavList from '@/features/Project/Nav/List'
-import { getLocalCache, setLocalCache } from '@shared/libs'
+import { getLocalCache, setLocalCache } from '@namviek/core/client'
 
 function ProjectSidebarContainer() {
   const defaultCompactMode = getLocalCache('COMPACT_MENU') || ''

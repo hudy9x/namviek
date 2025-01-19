@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation"
 import { useFilterAdvancedStore } from "./store"
 import { useEffect } from "react"
-import { getProjectFilter } from "@shared/libs"
+import { getProjectFilter } from "@namviek/core"
 import { useFilterAdvanced } from "./useFilterAdvancedStore"
 
 const initialFilter = {

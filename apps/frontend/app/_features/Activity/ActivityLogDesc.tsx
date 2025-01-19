@@ -2,7 +2,7 @@ import { Activity, ActivityType } from '@prisma/client'
 import { ActivityLogData } from '@database'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
-import { diffText } from '@shared/libs'
+import { diffText } from '@namviek/core'
 import MemberName from '@/components/MemberName'
 
 interface IActivityLog {

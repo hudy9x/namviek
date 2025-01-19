@@ -1,4 +1,4 @@
-import { genAWeekOfDate, genCalendarArr } from '@shared/libs'
+import { genAWeekOfDate, genCalendarArr } from '@namviek/core'
 import CalMonthCell from './CalMonthCell'
 import { DragDropContext } from 'react-beautiful-dnd'
 import useCalendarAction from './useCalendarAction'

@@ -7,7 +7,7 @@ import {
   ICalendarView,
   useCalendarContext
 } from '../../[orgName]/project/[projectId]/calendar/context'
-import { getMonthList } from '@shared/libs'
+import { getMonthList } from '@namviek/core'
 import useTaskFilterContext from './useTaskFilterContext'
 
 const CalendarFilter = () => {

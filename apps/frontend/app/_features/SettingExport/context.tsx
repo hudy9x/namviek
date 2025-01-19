@@ -1,7 +1,7 @@
 'use client'
 import { useMemberStore } from '@/store/member'
 import { TaskPriority } from '@prisma/client'
-import { getLastDateOfMonth } from '@shared/libs'
+import { getLastDateOfMonth } from '@namviek/core'
 import {
   createContext,
   useContext,

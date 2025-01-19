@@ -1,4 +1,4 @@
-import { genAWeekOfDate } from "@shared/libs"
+import { genAWeekOfDate } from "@namviek/core"
 import { ICalendarView, useCalendarContext } from "./context"
 import { isToday } from "date-fns"
 

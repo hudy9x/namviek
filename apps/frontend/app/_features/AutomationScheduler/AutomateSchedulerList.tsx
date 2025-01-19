@@ -1,7 +1,7 @@
 import { useDebounce } from '@/hooks/useDebounce'
 import { schedulerService } from '@/services/scheduler'
 import { Scheduler } from '@prisma/client'
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import { Button, Loading, confirmWarning } from '@ui-components'
 
 import { useParams } from 'next/navigation'

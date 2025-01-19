@@ -1,4 +1,4 @@
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import { Tooltip } from '@ui-components'
 
 export default function Time({ date }: { date: Date }) {

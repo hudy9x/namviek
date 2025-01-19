@@ -1,4 +1,4 @@
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import { HiOutlineCalendar } from 'react-icons/hi2'
 
 let prevDate = ''

@@ -4,7 +4,7 @@ import { useProjectStatusStore } from '@/store/status'
 import { useMemberStore } from '@/store/member'
 import MemberAvatar from '@/components/MemberAvatar'
 import Time from '@/components/Time'
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import MemberName from '@/components/MemberName'
 
 interface IActivityLog {

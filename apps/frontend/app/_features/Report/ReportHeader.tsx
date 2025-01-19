@@ -1,5 +1,5 @@
 import ListPreset from "@/components/ListPreset";
-import { dateFormat, genCalendarArr, getLastDateOfMonth, getMonthList } from "@shared/libs";
+import { dateFormat, genCalendarArr, getLastDateOfMonth, getMonthList } from "@namviek/core";
 import { Button, FormGroup, ListItemValue } from "@ui-components";
 import { useEffect } from "react";
 import { IReportTimeFilter, useReportContext } from "./context";

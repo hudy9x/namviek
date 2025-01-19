@@ -1,6 +1,6 @@
 import { orgGetBySlug } from '@/services/organization'
 import { useGlobalDataStore } from '@/store/global'
-import { getLocalCache, setLocalCache } from '@shared/libs'
+import { getLocalCache, setLocalCache } from '@namviek/core/client'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 

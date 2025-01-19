@@ -1,6 +1,6 @@
 import { useUrl } from '@/hooks/useUrl'
 import { httpPost } from '@/services/_req'
-// import { channelTeamCollab } from '@shared/libs'
+// import { channelTeamCollab } from '@namviek/core'
 import { useEffect } from 'react'
 import { usePusher } from './usePusher'
 

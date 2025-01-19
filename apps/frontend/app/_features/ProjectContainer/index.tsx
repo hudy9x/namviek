@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { setRecentVist } from '@shared/libs'
+import { setRecentVist } from '@namviek/core'
 import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
 import { useUrl } from '@/hooks/useUrl'

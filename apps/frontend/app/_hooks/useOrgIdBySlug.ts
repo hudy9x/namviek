@@ -1,5 +1,5 @@
 import { orgGetBySlug } from '@/services/organization'
-import { getLocalCache, setLocalCache } from '@shared/libs'
+import { getLocalCache, setLocalCache } from '@namviek/core/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 

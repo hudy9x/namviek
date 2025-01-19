@@ -1,7 +1,7 @@
 import { useVisionContext } from './context'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 
-import { isDateEqual } from '@shared/libs'
+import { isDateEqual } from '@namviek/core'
 import VisionCalendar from './VisionCalendar'
 
 export default function VisionCalendarContainer() {

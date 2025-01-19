@@ -5,7 +5,7 @@ import { Organization } from '@prisma/client'
 import Link from 'next/link'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { orgGet } from '../../services/organization'
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { setOrgInfo } from 'apps/frontend/layouts/OrgSection'
 import { motion } from "framer-motion";

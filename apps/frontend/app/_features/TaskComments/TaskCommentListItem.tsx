@@ -3,7 +3,7 @@ import TaskComment from './TaskComment'
 import { useState } from 'react'
 import { useUser } from '@auth-client'
 import { useCommentContext } from './context'
-import { dateFormat } from '@shared/libs'
+import { dateFormat } from '@namviek/core'
 import { Button } from '@ui-components'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi2'
 

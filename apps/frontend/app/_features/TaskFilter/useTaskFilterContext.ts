@@ -4,7 +4,7 @@ import {
   ITaskFilterFields,
   TaskFilterContext
 } from './context'
-import { getLastDateOfMonth } from '@shared/libs'
+import { getLastDateOfMonth } from '@namviek/core'
 
 const d = new Date()
 const firstDate = new Date(d.getFullYear(), d.getMonth(), 1)

@@ -1,4 +1,4 @@
-import { extracDatetime, padZero } from '@shared/libs'
+import { extracDatetime, padZero } from '@namviek/core'
 import { mdProjectGet } from '@database'
 import { genFrontendUrl } from '../lib/url'
 import {

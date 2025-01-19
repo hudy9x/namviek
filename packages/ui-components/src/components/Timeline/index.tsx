@@ -1,5 +1,5 @@
 import './style.css'
-import { genCalendarArr, getDayName, isSunSat, isToday } from '@shared/libs'
+import { genCalendarArr, getDayName, isSunSat, isToday } from '@namviek/core'
 
 import TimelineTrack from './TimelineTrack'
 import { useMemo } from 'react'

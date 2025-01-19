@@ -1,6 +1,6 @@
 import { useParams } from "next/navigation"
 import { useFilterAdvancedStore } from "./store"
-import { setProjectFilter } from "@shared/libs"
+import { setProjectFilter } from "@namviek/core"
 import { Button, messageSuccess } from "@ui-components"
 import { PiFloppyDisk } from "react-icons/pi"
 import { HiOutlineBriefcase } from "react-icons/hi2"

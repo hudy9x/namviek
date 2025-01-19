@@ -1,7 +1,7 @@
 import { useAutomationStore } from '@/store/automation'
 import { ITaskDefaultValues } from '../[orgName]/project/[projectId]/TaskForm'
 import { THEN, WHEN } from '@/features/Automation/context'
-import { fromDateStringToDate } from '@shared/libs'
+import { fromDateStringToDate } from '@namviek/core'
 
 export const useTaskAutomation = () => {
   const { automations } = useAutomationStore()

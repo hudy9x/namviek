@@ -1,4 +1,4 @@
-import { genCalendarArr } from '@shared/libs'
+import { genCalendarArr } from '@namviek/core'
 import CalendarDay from './CalendarDay'
 import './style.css'
 import { ReactNode, useMemo } from 'react'

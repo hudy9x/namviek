@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { extractDueDate } from '@shared/libs'
+import { extractDueDate } from '@namviek/core'
 import { ExtendedTask, useTaskStore } from '@/store/task'
 import { taskGetByCond } from '@/services/task'
 import { useParams } from 'next/navigation'

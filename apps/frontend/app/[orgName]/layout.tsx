@@ -8,7 +8,7 @@ import { Loading } from '@ui-components'
 import { ReactNode, useEffect } from 'react'
 import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
-import { setLocalCache } from '@shared/libs'
+import { setLocalCache } from '@namviek/core/client'
 import Upsale from '@/features/UpsaleDialog'
 
 // NOTE: do not move these following function inside ProjectLayout
