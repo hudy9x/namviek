@@ -21,7 +21,7 @@ import {
   useUser
 } from '@auth-client'
 
-import { getRecentVisit } from '@shared/libs'
+import { getRecentVisit } from '@namviek/core/client'
 import { signinWithGoogle } from 'apps/frontend/libs/firebase'
 import { GAAction, GACategory, trackingEvent } from '@/components/GA/utils'
 import SignCarousel from './SignCarousel'
