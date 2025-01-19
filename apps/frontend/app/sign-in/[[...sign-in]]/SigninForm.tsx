@@ -7,7 +7,7 @@ import {
   setFixLoading,
   useForm
 } from '@ui-components'
-import { validateLoginUser } from '@shared/validation'
+import { validateLoginUser } from '@namviek/core/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

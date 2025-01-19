@@ -27,6 +27,7 @@
       "@event-bus": ["packages/event-bus/src/index.ts"],
       
       "@namviek/core": ["packages/core/src/index.ts"],
+      "@namviek/core/*": ["packages/core/src/*"],
       "@namviek/core/client": ["packages/core/src/client/index.ts"],
 
       "@shared/libs": ["packages/shared-libs/src/index.ts"],

@@ -1,5 +1,5 @@
 import { FormikConfig, useFormik, FormikValues } from "formik";
-import { ParseResult } from "@shared/validation";
+import { ParseResult } from "@namviek/core/validation";
 import { useState } from "react";
 
 type UseFormValues = {

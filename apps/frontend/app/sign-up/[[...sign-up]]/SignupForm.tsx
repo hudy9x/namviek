@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, Form, Loading, messageError, messageSuccess, useForm } from '@ui-components'
-import { validateRegisterUser } from '@shared/validation'
+import { validateRegisterUser } from '@namviek/core/validation'
 import Link from 'next/link'
 import Logo from '../../../components/Logo'
 import { useState } from 'react'

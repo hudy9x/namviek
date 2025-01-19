@@ -10,7 +10,7 @@ import {
 import { useFormik } from 'formik'
 import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'next/navigation'
-import { validateQuickAddProject } from '@shared/validation'
+import { validateQuickAddProject } from '@namviek/core/validation'
 import { projectQuickAdd } from '@/services/project'
 import { useProjectStore } from '@/store/project'
 import { useGetParams } from '@/hooks/useGetParams'
