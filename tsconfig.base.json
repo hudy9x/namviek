@@ -25,6 +25,10 @@
       "@auth-client/server": ["packages/auth-client/src/server.ts"],
       "@database": ["packages/database/src/index.ts"],
       "@event-bus": ["packages/event-bus/src/index.ts"],
+      
+      "@namviek/core": ["packages/core/src/index.ts"],
+      "@namviek/core/client": ["packages/core/src/client/index.ts"],
+
       "@shared/libs": ["packages/shared-libs/src/index.ts"],
       "@shared/validation": ["packages/shared-validation/src/index.ts"],
       "@task-runner": ["packages/task-runner/src/main.ts"],
