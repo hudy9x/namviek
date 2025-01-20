@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'be-scheduler',
+  displayName: 'task-runner',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
