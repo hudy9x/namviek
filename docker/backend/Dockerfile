@@ -40,7 +40,7 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/packages/be-gateway ./
+COPY --from=builder /app/dist/apps/backend ./
 COPY ./packages/database/src/prisma/schema.prisma .
 COPY ./yarn.lock .
 

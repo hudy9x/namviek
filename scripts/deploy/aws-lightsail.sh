@@ -62,4 +62,4 @@ sudo yarn generate2
 sudo yarn build:be
 
 # start backend
-sudo pm2 start ./dist/packages/be-gateway/main.js
+sudo pm2 start ./dist/apps/backend/main.js

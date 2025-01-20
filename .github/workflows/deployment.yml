@@ -39,7 +39,7 @@ jobs:
           
       - name: add environment variables
         run: |
-          date > ./packages/be-gateway/built.time
+          date > ./apps/backend/built.time
           echo "NEXT_PUBLIC_FE_GATEWAY=${{ vars.NEXT_PUBLIC_FE_GATEWAY }}
            NEXT_PUBLIC_BE_GATEWAY=
            PORT=${{ vars.PORT }}
