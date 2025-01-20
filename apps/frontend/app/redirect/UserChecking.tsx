@@ -2,7 +2,7 @@
 
 import { useUser } from '@auth-client'
 import { useEffect } from 'react'
-import { getRecentVisit } from '@namviek/core'
+import { getRecentVisit } from '@namviek/core/client'
 
 export default function UserChecking() {
   const { user } = useUser()
