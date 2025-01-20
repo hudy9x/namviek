@@ -21,6 +21,7 @@
       "@/hooks/*": ["apps/frontend/app/_hooks/*"],
       "@/services/*": ["apps/frontend/services/*"],
       "@/store/*": ["apps/frontend/store/*"],
+       
       "@auth-client": ["packages/auth-client/src/index.ts"],
       "@auth-client/server": ["packages/auth-client/src/server.ts"],
       "@database": ["packages/database/src/index.ts"],
@@ -30,8 +31,6 @@
       "@namviek/core/*": ["packages/core/src/*"],
       "@namviek/core/client": ["packages/core/src/client/index.ts"],
 
-      "@shared/libs": ["packages/shared-libs/src/index.ts"],
-      "@shared/validation": ["packages/shared-validation/src/index.ts"],
       "@task-runner": ["packages/task-runner/src/main.ts"],
       "@ui-components": ["packages/ui-components/src/index.ts"],
       "@ui-components/server": ["packages/ui-components/src/server.ts"]
