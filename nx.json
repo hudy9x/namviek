@@ -1,42 +1,47 @@
 {
-	"extends": "nx/presets/npm.json",
-	"$schema": "./node_modules/nx/schemas/nx-schema.json",
-	"affected": {
-		"defaultBase": "master"
-	},
+  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "affected": {
+    "defaultBase": "master"
+  },
   "pluginsConfig": {
     "@nx/js": {
       "analyzeSourceFiles": true
     }
   },
-	"targetDefaults": {
+  "targetDefaults": {
     "build": {
       "executor": "@nx/webpack:webpack",
       "options": {
         "generatePackageJson": true
       }
     },
-		"test": {
-			"inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
-		},
-		"lint": {
-			"inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
-		}
-	},
-	"generators": {
-		"@nx/react": {
-			"application": {
-				"babel": true
-			},
-			"library": {
-				"unitTestRunner": "jest"
-			}
-		},
-		"@nx/next": {
-			"application": {
-				"style": "css",
-				"linter": "eslint"
-			}
-		}
-	}
+    "test": {
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore"
+      ]
+    }
+  },
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true
+      },
+      "library": {
+        "unitTestRunner": "jest"
+      }
+    },
+    "@nx/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "nxCloudId": "678e09016a1c444aab5d64a6"
 }
