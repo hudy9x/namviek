@@ -15,21 +15,25 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["packages/ui-app/app/_components/*"],
-      "@/events/*": ["packages/ui-app/app/_events/*"],
-      "@/features/*": ["packages/ui-app/app/_features/*"],
-      "@/hooks/*": ["packages/ui-app/app/_hooks/*"],
-      "@/services/*": ["packages/ui-app/services/*"],
-      "@/store/*": ["packages/ui-app/store/*"],
-      "@be/storage": ["packages/be-storage/src/index.ts"],
-      "@goalie/nextjs": ["packages/goalie-nextjs/src/index.ts"],
-      "@goalie/nextjs/server": ["packages/goalie-nextjs/src/server.ts"],
-      "@shared/libs": ["packages/shared-libs/src/index.ts"],
-      "@shared/models": ["packages/shared-models/src/index.ts"],
-      "@shared/pubsub": ["packages/shared-pubsub/src/index.ts"],
-      "@shared/ui": ["packages/shared-ui/src/index.ts"],
-      "@shared/ui/server": ["packages/shared-ui/src/server.ts"],
-      "@shared/validation": ["packages/shared-validation/src/index.ts"]
+      "@/components/*": ["apps/frontend/app/_components/*"],
+      "@/events/*": ["apps/frontend/app/_events/*"],
+      "@/features/*": ["apps/frontend/app/_features/*"],
+      "@/hooks/*": ["apps/frontend/app/_hooks/*"],
+      "@/services/*": ["apps/frontend/services/*"],
+      "@/store/*": ["apps/frontend/store/*"],
+       
+      "@auth-client": ["packages/auth-client/src/index.ts"],
+      "@auth-client/server": ["packages/auth-client/src/server.ts"],
+      "@database": ["packages/database/src/index.ts"],
+      "@event-bus": ["packages/event-bus/src/index.ts"],
+      
+      "@namviek/core": ["packages/core/src/index.ts"],
+      "@namviek/core/*": ["packages/core/src/*"],
+      "@namviek/core/client": ["packages/core/src/client/index.ts"],
+
+      "@task-runner": ["packages/task-runner/src/main.ts"],
+      "@ui-components": ["packages/ui-components/src/index.ts"],
+      "@ui-components/server": ["packages/ui-components/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

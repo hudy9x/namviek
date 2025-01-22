@@ -45,9 +45,9 @@ FROM node:22-alpine AS runner
 # USER namviek
 WORKDIR /app
 
-COPY --from=builder /app/dist/packages/ui-app/.next/standalone ./
-COPY --from=builder /app/dist/packages/ui-app/.next/static ./dist/packages/ui-app/.next/static
-COPY --from=builder /app/dist/packages/ui-app/public ./packages/ui-app/public
+COPY --from=builder /app/dist/apps/frontend/.next/standalone ./
+COPY --from=builder /app/dist/apps/frontend/.next/static ./dist/apps/frontend/.next/static
+COPY --from=builder /app/dist/apps/frontend/public ./apps/frontend/public
 
 RUN chmod -R 0777  *
 
@@ -59,4 +59,4 @@ ENV PORT=3000
 # Expose the port the app runs on
 EXPOSE 3000
 
-CMD HOSTNAME="0.0.0.0" node ./packages/ui-app/server.js
+CMD HOSTNAME="0.0.0.0" node ./apps/frontend/server.js

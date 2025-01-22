@@ -40,8 +40,8 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/packages/be-gateway ./
-COPY ./packages/shared-models/src/prisma/schema.prisma .
+COPY --from=builder /app/dist/apps/backend ./
+COPY ./packages/database/src/prisma/schema.prisma .
 COPY ./yarn.lock .
 
 # Only need MONGODB_URL in .env file

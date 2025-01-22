@@ -44,8 +44,8 @@ RUN apk update && apk upgrade && \
     openssl-dev \
     libc6-compat
 
-COPY --from=builder /app/dist/packages/be-gateway ./
-COPY ./packages/shared-models/src/prisma/schema.prisma .
+COPY --from=builder /app/dist/apps/backend ./
+COPY ./packages/database/src/prisma/schema.prisma .
 COPY ./yarn.lock .
 
 # Install production dependencies

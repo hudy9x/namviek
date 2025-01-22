@@ -46,7 +46,7 @@ To run a task in schedule, for example: run a task per 1h, run a task per Monday
 Do the following steps:
 
 ### Step 1 - Create an event in backend
-Open `packages/be-gateway/src/events/index.ts` then create an event name and add a handler to it.
+Open `apps/backend/src/events/index.ts` then create an event name and add a handler to it.
 
 ```typescript
 
@@ -64,7 +64,7 @@ redis.on('message', async (channel: string, data: string) => {
 })
 ```
 
-Next, create the event handler at `packages/be-gateway/src/events/` folder. Ex: `stats.day.event.ts`
+Next, create the event handler at `apps/backend/src/events/` folder. Ex: `stats.day.event.ts`
 ```typescript
 export default class StatsByDayEvent {
   constructor() {
@@ -77,7 +77,7 @@ export default class StatsByDayEvent {
 ```
 
 ### Step 2 - Publish to the above event
-After registering event we need to publish message to trigger it. Open `packages/be-scheduler/src/main.ts` and create a cronjob as follows
+After registering event we need to publish message to trigger it. Open `packages/task-runner/src/main.ts` and create a cronjob as follows
 
 ```typescript
 connectPubClient((err, redis) => {

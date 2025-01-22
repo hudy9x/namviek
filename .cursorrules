@@ -3,14 +3,14 @@ Guide to use packages and components
 - Only use icons from the react-icons package.
 
 Guide to create/update/delete api endpoints
-- Any api endpoints should be imported in the packages/be-gateway/src/routes/index.ts file.
-- To update the api endpoints, you need to find the corresponding file in the packages/be-gateway/src/routes folder and update the file.
-- To delete the api endpoints, you need to find the corresponding file in the packages/be-gateway/src/routes folder and delete the file.
-- To create the api endpoints, you need to create a new file in the packages/be-gateway/src/routes folder and add the file.
+- Any api endpoints should be imported in the apps/backend/src/routes/index.ts file.
+- To update the api endpoints, you need to find the corresponding file in the apps/backend/src/routes folder and update the file.
+- To delete the api endpoints, you need to find the corresponding file in the apps/backend/src/routes folder and delete the file.
+- To create the api endpoints, you need to create a new file in the apps/backend/src/routes folder and add the file.
 
 Guide to create/update/delete services from client side
-- Any services should be created in the packages/ui-app/src/services folder
-- To update the services, you need to find the corresponding file in the packages/ui-app/src/services folder and update the file.
-- To delete the services, you need to find the corresponding file in the packages/ui-app/src/services folder and delete the file.
-- To create the services, you need to create a new file in the packages/ui-app/src/services folder and add the file.
+- Any services should be created in the apps/frontend/src/services folder
+- To update the services, you need to find the corresponding file in the apps/frontend/src/services folder and update the file.
+- To delete the services, you need to find the corresponding file in the apps/frontend/src/services folder and delete the file.
+- To create the services, you need to create a new file in the apps/frontend/src/services folder and add the file.
 

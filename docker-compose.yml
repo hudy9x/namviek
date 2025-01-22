@@ -41,7 +41,7 @@ services:
     ports:
       - '3005:3000'
     # command: /bin/sh -c "./docker/fe-entrypoint.sh && yarn prod:fe"
-    command: /bin/sh -c 'HOSTNAME="0.0.0.0" node ./packages/ui-app/server.js'
+    command: /bin/sh -c 'HOSTNAME="0.0.0.0" node ./apps/frontend/server.js'
     depends_on:
       - backend
     networks:
