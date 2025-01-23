@@ -7,19 +7,22 @@ services:
   envVars:
   - key: REDIS_HOST
     sync: false
-  - key: NEXT_PUBLIC_FE_GATEWAY
-    sync: false
   - key: MONGODB_URL
     sync: false
   - key: JWT_VERIFY_USER_LINK_TOKEN_EXPIRED
+    value: 1h
     sync: false
   - key: JWT_TOKEN_EXPIRED
+    value: 30m
     sync: false
   - key: JWT_SECRET_KEY
+    generateValue: true
     sync: false
   - key: JWT_REFRESH_KEY
+    generateValue: true
     sync: false
   - key: JWT_REFRESH_EXPIRED
+    value: 4h
     sync: false
   region: singapore
   buildCommand: yarn --frozen-lockfile install; yarn pushdb2; yarn generate2; yarn
