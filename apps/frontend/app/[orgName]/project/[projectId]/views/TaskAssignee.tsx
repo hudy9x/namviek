@@ -1,5 +1,6 @@
-import MemberPicker from '../../../../_components/MemberPicker'
 import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
+import MultiMemberPicker from "@/components/MultiMemberPicker"
+import './TaskAssignee.css'
 
 export default function TaskAssignee({
   taskId,
@@ -14,8 +15,7 @@ export default function TaskAssignee({
 }) {
   const { updateTaskData } = useServiceTaskUpdate()
 
-  const onUpdate = (assigneeId: string) => {
-    const assigneeIds = [assigneeId]
+  const onUpdate = (assigneeIds: string[]) => {
     updateTaskData({
       id: taskId,
       assigneeIds
@@ -23,14 +23,14 @@ export default function TaskAssignee({
   }
 
   const classes = ['task-assignee']
-
   className && classes.push(className)
   noName && classes.push('no-name')
 
   return (
-    <MemberPicker
+    <MultiMemberPicker
+      compact={true}
       className={classes.join(' ')}
-      value={uids ? uids[0] : ''}
+      value={uids}
       onChange={onUpdate}
     />
   )

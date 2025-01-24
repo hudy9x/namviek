@@ -12,6 +12,7 @@ import FileControl from '@/components/FileKits/FileControl'
 import Activity from '@/features/Activity'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
 import { useUser } from '@auth-client'
+import MultiMemberPicker from '@/components/MultiMemberPicker'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -166,9 +167,9 @@ export default function TaskForm({
           <TaskTypeSelect value={formik.values.type} onChange={val => {
             formik.setFieldValue('type', val)
           }} title="Task types" />
-          <MemberPicker
+          <MultiMemberPicker
             title="Assignees"
-            value={formik.values.assigneeIds[0]}
+            value={formik.values.assigneeIds}
             onChange={val => {
               console.log('assignee:', val)
               formik.setFieldValue('assigneeIds', val)

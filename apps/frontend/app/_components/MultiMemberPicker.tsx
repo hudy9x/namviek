@@ -46,7 +46,7 @@ const MemberDisplay = ({ name, photo, compact }: { name: string, photo?: string,
 )
 
 const AdditionalMembers = ({ count }: { count: number }) => (
-  <div title={`and ${count} more`} className="flex gap-2 items-center justify-center shrink-0 selected-member w-6 h-6 bg-gray-100 rounded-full">
+  <div title={`and ${count} more`} className="more flex gap-2 items-center justify-center shrink-0 selected-member w-6 h-6 bg-gray-100 rounded-full">
     +{count}
   </div>
 )

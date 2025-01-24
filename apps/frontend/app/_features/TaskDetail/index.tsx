@@ -28,6 +28,7 @@ import TaskDescUpdate from './TaskDescUpdate'
 import TaskTypeSelect from '@/components/TaskTypeSelect'
 import TaskChecklist from '../TaskChecklist'
 import { GoTasklist } from 'react-icons/go'
+import MultiMemberPicker from '@/components/MultiMemberPicker'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -207,8 +208,8 @@ export default function TaskDetail({
               <HiOutlineUser /> <span>Assignees</span>
             </div>
             <div className="task-info-content">
-              <MemberPicker
-                value={formik.values.assigneeIds[0]}
+              <MultiMemberPicker
+                value={formik.values.assigneeIds}
                 onChange={val => {
                   console.log('assignee:', val)
                   formik.setFieldValue('assigneeIds', val)

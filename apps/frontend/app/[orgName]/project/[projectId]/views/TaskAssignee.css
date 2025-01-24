@@ -1,0 +1,13 @@
+.task-assignee.no-name .selected-item-container {
+  gap: 0 !important;
+}
+
+.task-assignee.no-name .more {
+  height: 1rem;
+  width: 1rem;
+  @apply text-xs;
+}
+
+.task-assignee.no-name .selected-member:not(:first-child) {
+  margin-left: -4px;
+}

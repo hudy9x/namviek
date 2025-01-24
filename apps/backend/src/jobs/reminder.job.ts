@@ -87,6 +87,8 @@ export default class TaskReminderJob {
 
     if (d1 <= now) {
       console.log('Can not create reminder, because remind time less than now')
+      console.log(d1)
+      console.log(now)
       return
     }
 
