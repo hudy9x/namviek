@@ -13,7 +13,6 @@ try {
     secretKey: process.env.PUSHER_SECRET_KEY
   }
   if (Object.values(pusherConfig).every(Boolean)) {
-    console.log('pusherConfig', pusherConfig)
     beamsClient = new PushNotifications(pusherConfig)
     ready = true
   } else {
@@ -25,7 +24,6 @@ try {
 }
 
 const _cannotPushNotification = () => {
-  console.log('cannnot', ready)
   if (!ready) {
     throwErrMess()
     return true
