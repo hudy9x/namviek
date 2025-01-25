@@ -157,6 +157,11 @@ export default function DatePicker({
                 showOutsideDays
                 fixedWeeks
                 onSelect={onDatepickerChangeHandler}
+                captionLayout="dropdown-buttons"
+                fromYear={1900}
+                toYear={2100}
+                numberOfMonths={1}
+                defaultMonth={selected || new Date()}
               />
 
               <div className="rdp-timer-container">
