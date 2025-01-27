@@ -1,10 +1,17 @@
 import { OrgStorageRepository } from "@database";
+import { OrgStorageType } from "@prisma/client";
+
 export interface IStorageAWSConfig {
   bucketName: string
   region: string
   secretKey: string
   accessKey: string
   maxStorageSize: number
+}
+
+export interface IStorageConfig {
+  type: OrgStorageType
+  config: IStorageAWSConfig
 }
 
 export default class OrganizationStorageService {
@@ -16,15 +23,16 @@ export default class OrganizationStorageService {
     this.orgId = orgId
   }
 
-  async getConfig() {
-    const config = await this.repo.getAwsConfig(this.orgId)
+  async getConfig(): Promise<IStorageConfig | null> {
+    const storage = await this.repo.getAwsConfig(this.orgId)
 
-    if (!config) {
+    if (!storage) {
       return null
     }
 
-    const awsConfig = config.config as unknown as IStorageAWSConfig
-    return awsConfig
-
+    return {
+      type: storage.type,
+      config: storage.config as unknown as IStorageAWSConfig
+    }
   }
 }

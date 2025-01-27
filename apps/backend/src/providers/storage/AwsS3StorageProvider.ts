@@ -1,4 +1,3 @@
-
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -7,6 +6,7 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { randomUUID } from 'crypto'
+import { IStorageProvider } from './IStorageProvider'
 
 interface IConfig {
   region: string,
@@ -21,7 +21,17 @@ const clientMapper = new Map<string, {
 
 const minioEndpoint = process.env.AWS_MINIO_ENDPOINT
 
-export default class AwsS3StorageProvider {
+interface AwsS3Config {
+  region: string
+  bucketName: string
+  accessKey: string
+  secretKey: string
+  orgId: string
+  endpoint?: string
+  forcePathStyle?: boolean
+}
+
+export default class AwsS3StorageProvider implements IStorageProvider {
   protected client: S3Client
   protected bucket: string
   protected region: string
@@ -33,20 +43,19 @@ export default class AwsS3StorageProvider {
     secretKey: ''
   }
 
-  constructor({ orgId, region, bucketName, secretKey, accessKey }: { region: string, bucketName: string, accessKey: string, secretKey: string, orgId: string }) {
-
-    this.bucket = bucketName
-    this.region = region
-    this.orgId = orgId
+  constructor(config: AwsS3Config) {
+    this.bucket = config.bucketName
+    this.region = config.region
+    this.orgId = config.orgId
 
     this.config = {
-      region,
-      secretKey,
-      accessKey
+      region: config.region,
+      secretKey: config.secretKey,
+      accessKey: config.accessKey
     }
 
-    if (clientMapper.has(orgId)) {
-      const cachedClient = clientMapper.get(orgId)
+    if (clientMapper.has(this.orgId)) {
+      const cachedClient = clientMapper.get(this.orgId)
       const config = cachedClient.config
 
       if (this.isConfigChanged(config)) {

@@ -118,13 +118,39 @@ const MyInput = () => {
 }
 ```
 
-## Select
+## List (or Selectbox)
 ```tsx
 // You need to import it first
-import { Form } from '@ui-components'
+import { Form, ListItemValue } from '@ui-components'
+
+const List = Form.List
+
+const options: ListItemValue[] = [
+  { id: 'list-item-1', title: 'List Item 1' },
+  { id: 'list-item-2', title: 'List Item 2' },
+  { id: 'list-item-3', title: 'List Item 3' },
+  { id: 'list-item-4', title: 'List Item 4' }
+]
 
 // How to use it
 const MySelect = () => {
-  return <Form.Select name="name" title="Name" />
+  const [value, setValue] = useState<ListItemValue>({options[0])
+
+  return <List
+    value={value}
+    onChange={(val: ListItemValue) => {
+      setValue(val)
+      }}>
+      <List.Button>{value.title}</List.Button>
+      <List.Options>
+        {options.map(option => {
+          return (
+            <List.Item key={option.id} value={option}>
+              {option.title}
+            </List.Item>
+          )
+        })}
+      </List.Options>
+    </List>
 }
 ```

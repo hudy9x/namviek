@@ -1,4 +1,4 @@
-import { Organization } from '@prisma/client';
+import { Organization, OrgStorageType } from '@prisma/client';
 import { httpGet, httpPost, httpPut } from './_req';
 
 export const orgCreate = (data: Partial<Organization>) => {
@@ -9,16 +9,20 @@ export const orgUpdate = (data: Partial<Organization>) => {
   return httpPut('/api/org', data);
 };
 
-export const orgUpdateStorageConfig = (orgId: string, config: {
-  bucketName: string
-  region: string
-  secretKey: string
-  accessKey: string
-  maxStorageSize: string
+export const orgUpdateStorageConfig = (orgId: string, data: {
+  type: OrgStorageType,
+  config: {
+    bucketName: string
+    region: string
+    secretKey: string
+    accessKey: string
+    maxStorageSize: string
+    endpoint?: string
+  }
 }) => {
   return httpPut('/api/org-storage', {
     orgId,
-    config
+    ...data
   })
 }
 

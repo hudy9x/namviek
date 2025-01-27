@@ -18,7 +18,7 @@ export class ReminderEvent {
   async run() {
     try {
       const now = new Date()
-      console.log('reminder.event called', now)
+      // console.log('reminder.event called', now)
 
       const results = await this.taskReminderJob.findByTime(now)
 

@@ -27,6 +27,16 @@ export default function useFileUpload() {
 
   const { updateTaskData } = useServiceTaskUpdate()
 
+  const verifyFileUrl = (url: string, backupUrl: string) => {
+    try {
+      new URL(url)
+      return url
+    } catch (error) {
+      const urlObject = new URL(backupUrl)
+      return `${urlObject.origin}${urlObject.pathname}`
+    }
+  }
+
   const doUpload = async (f: IFileUploadItem): Promise<IFileItem | null> => {
     try {
       if (!orgId) return null
@@ -43,7 +53,12 @@ export default function useFileUpload() {
 
       const { name, presignedUrl, url } = res.data.data
       const keyName = name as string
-      await storagePutFile(presignedUrl, file)
+
+      console.log('storage create presign', res, res.data)
+
+      const ret = await storagePutFile(presignedUrl, file)
+
+      console.log('ret', ret)
 
       const result = await storageSaveToDrive({
         organizationId: orgId,
@@ -51,7 +66,7 @@ export default function useFileUpload() {
         name: file.name,
         keyName,
         type: FileType.FILE,
-        url,
+        url: verifyFileUrl(url, presignedUrl),
         size: file.size,
         mimeType: file.type,
         owner: taskId,

@@ -50,6 +50,7 @@ router.post('/create-presigned-url', async (req, res, next) => {
   }
 
   try {
+    console.log('initiate storage service', orgId)
     const storageService = new StorageService(orgId)
 
     const isExceed = await storageService.exceedMaxStorageSize()
@@ -57,13 +58,15 @@ router.post('/create-presigned-url', async (req, res, next) => {
       throw new MaxStorageSizeException()
     }
 
+    console.log('start generating presigned url')
+
     const { presignedUrl, randName, url } = await storageService.createPresignedUrl({
       path: projectId,
       name,
       type
     })
 
-    console.log('generate presigned', presignedUrl)
+    console.log('generate presigned 2', presignedUrl)
 
     res.status(200).json({
       data: {
