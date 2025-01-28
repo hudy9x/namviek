@@ -135,7 +135,7 @@ export default class AwsS3StorageProvider implements IStorageProvider {
     return getSignedUrl(this.client, command, { expiresIn: 3600 })
   }
 
-  getObjectURL(name: string) {
+  async getObjectURL(name: string): Promise<string> {
     if (minioEndpoint) {
       return `${minioEndpoint}/${this.bucket}/${name}`
     }

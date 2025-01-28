@@ -190,14 +190,25 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
   }
 })
 
-// router.get('/get-object-url', async (req, res, next) => {
-//   try {
-//     const { name } = req.query as { name: string }
-//     const url = await getObject(name)
-//     res.json({ data: url })
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// })
+router.get('/get-object-url', async (req, res) => {
+  const { keyName, orgId } = req.query as { keyName: string; orgId: string }
+  
+  try {
+    if (!keyName || !orgId) {
+      return res.status(400).send('KEY_NAME_AND_ORG_ID_REQUIRED')
+    }
+
+    const storageService = new StorageService(orgId)
+    const url = await storageService.getObjectUrl(keyName)
+
+    res.json({ 
+      status: 200,
+      data: { url } 
+    })
+  } catch (error) {
+    console.log('Error generating view URL:', error)
+    res.status(500).send(error)
+  }
+})
 
 export const storageRouter = router

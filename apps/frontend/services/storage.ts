@@ -47,8 +47,9 @@ export const storageSaveToDrive = (data: Partial<FileStorage>) => {
   return httpPost('/api/storage/save-to-drive', data)
 }
 
-// export const storageGetObjectUrl = (name: string) => {
-//   return httpGet('/api/storage/get-object-url', {
-//     params: { name }
-//   })
-// }
+export const storageGetObjectUrl = async (params: { 
+  keyName: string; 
+  orgId: string 
+}) => {
+  return httpGet('/api/storage/get-object-url', { params })
+}

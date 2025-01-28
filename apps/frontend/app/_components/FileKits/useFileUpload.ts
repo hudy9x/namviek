@@ -2,7 +2,8 @@ import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import {
   storageCreatePresignedUrl,
   storagePutFile,
-  storageSaveToDrive
+  storageSaveToDrive,
+  storageGetObjectUrl
 } from '@/services/storage'
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
@@ -27,13 +28,27 @@ export default function useFileUpload() {
 
   const { updateTaskData } = useServiceTaskUpdate()
 
-  const verifyFileUrl = (url: string, backupUrl: string) => {
+  const verifyFileUrl = async (keyName: string, url: string, backupUrl: string) => {
     try {
-      new URL(url)
-      return url
+      const parsedUrl = new URL(url)
+
+      console.log('1')
+      if (parsedUrl.hostname.includes('s3.amazonaws.com')) {
+        return url
+      }
+
+
     } catch (error) {
-      const urlObject = new URL(backupUrl)
-      return `${urlObject.origin}${urlObject.pathname}`
+      console.log('keyname', keyName)
+
+      const response = await storageGetObjectUrl({
+        keyName,
+        orgId
+      })
+
+      console.log('respone', response)
+
+      return response.data.data.url
     }
   }
 
@@ -60,13 +75,15 @@ export default function useFileUpload() {
 
       console.log('ret', ret)
 
+      const verifiedUrl = await verifyFileUrl(name, url, presignedUrl)
+
       const result = await storageSaveToDrive({
         organizationId: orgId,
         projectId,
         name: file.name,
         keyName,
         type: FileType.FILE,
-        url: verifyFileUrl(url, presignedUrl),
+        url: verifiedUrl,
         size: file.size,
         mimeType: file.type,
         owner: taskId,

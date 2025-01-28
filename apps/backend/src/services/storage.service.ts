@@ -39,10 +39,6 @@ export class StorageService {
     return storage
   }
 
-  protected getObjectUrl() {
-    return ''
-  }
-
   protected async initStorageProvider(): Promise<IStorageProvider> {
     if (this.storageProvider) {
       return this.storageProvider
@@ -272,5 +268,10 @@ export class StorageService {
     }
 
     return false
+  }
+
+  public async getObjectUrl(keyName: string): Promise<string> {
+    const provider = await this.initStorageProvider()
+    return provider.getObjectURL(keyName)
   }
 }

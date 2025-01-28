@@ -12,6 +12,9 @@ export interface IDigitalOceanConfig {
   endpoint?: string;
 }
 
+const DAY = 1 * 24 * 60 * 60
+const YEAR = 365 * DAY
+
 export default class DigitalOceanStorageProvider implements IStorageProvider {
   private client: S3Client;
   private bucket: string;
@@ -45,15 +48,29 @@ export default class DigitalOceanStorageProvider implements IStorageProvider {
       Bucket: this.bucket,
       Key: name,
       ContentType: type,
-      ACL: "public-read"
+      // ACL: "public-read" // not working in digital ocean
     });
     console.log('command', command)
     const signedUrl = getSignedUrl(this.client, command, { expiresIn: 3600 });
     return signedUrl
   }
 
-  getObjectURL(name: string): string {
-    return `https://${this.endpoint}/${encodeURIComponent(name)}`;
+  async getObjectURL(name: string): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucket,
+      Key: name
+    });
+
+    try {
+      // Set expiration to 7 days (maximum allowed)
+      const signedUrl = await getSignedUrl(this.client, command, {
+        expiresIn: 10 * YEAR // 7 days in seconds
+      });
+      return signedUrl;
+    } catch (error) {
+      console.log('Error generating signed URL:', error);
+      throw new Error('Failed to generate signed URL for object');
+    }
   }
 
   async getObject(name: string): Promise<string | null> {
