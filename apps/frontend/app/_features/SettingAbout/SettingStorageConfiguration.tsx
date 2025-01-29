@@ -4,6 +4,7 @@ import { orgUpdateStorageConfig } from '@/services/organization'
 import {
   Button,
   Form,
+  ListItemValue,
   confirmAlert,
   messageError,
   messageSuccess,
@@ -13,10 +14,11 @@ import { useState } from 'react'
 import { useUserRole } from '../UserPermission/useUserRole'
 import { useGetParams } from '@/hooks/useGetParams'
 import ListPreset from '@/components/ListPreset'
+import { OrgStorageType } from '@prisma/client'
 
 const STORAGE_TYPES = [
-  { id: 'AWS_S3', title: 'AWS S3' },
-  { id: 'DIGITAL_OCEAN_S3', title: 'Digital Ocean Spaces' }
+  { id: OrgStorageType.AWS_S3, title: 'AWS S3' },
+  { id: OrgStorageType.DIGITAL_OCEAN_S3, title: 'Digital Ocean Spaces' }
 ]
 
 const List = Form.List
@@ -27,7 +29,7 @@ export default function SettingStorageConfiguration() {
   const [loading, setLoading] = useState(false)
   const formik = useFormik({
     initialValues: {
-      type: 'AWS_S3',
+      type: OrgStorageType.AWS_S3,
       bucketName: '',
       region: '',
       accessKey: '',
@@ -95,14 +97,18 @@ export default function SettingStorageConfiguration() {
     }
   }
 
-  const isDigitalOcean = formik.values.type === 'DIGITAL_OCEAN_S3'
+  const valueType = formik.values.type as OrgStorageType
+  const isDigitalOcean = valueType === OrgStorageType.DIGITAL_OCEAN_S3
 
   return (
     <>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <List
           value={STORAGE_TYPES.find(t => t.id === formik.values.type) || STORAGE_TYPES[0]}
-          onChange={(val) => formik.setFieldValue('type', val.id)}
+          onChange={(val: ListItemValue) => {
+            console.log('val', val)
+            formik.setFieldValue('type', val.id as OrgStorageType)
+          }}
         >
           <List.Button>
             {STORAGE_TYPES.find(t => t.id === formik.values.type)?.title || STORAGE_TYPES[0].title}
@@ -134,16 +140,16 @@ export default function SettingStorageConfiguration() {
           type="password"
           {...registerForm('secretKey', formik)}
         />
-        <Form.Input 
-          title={isDigitalOcean ? "Region (e.g., nyc3)" : "AWS Region"} 
-          {...registerForm('region', formik)} 
+        <Form.Input
+          title={isDigitalOcean ? "Region (e.g., nyc3)" : "AWS Region"}
+          {...registerForm('region', formik)}
         />
         <Form.Input
           title={isDigitalOcean ? "Space Name" : "Bucket Name"}
           {...registerForm('bucketName', formik)}
         />
-        
-        <ListPreset 
+
+        <ListPreset
           title='Max storage size'
           value={formik.values.maxStorageSize}
           onChange={val => {
@@ -155,9 +161,9 @@ export default function SettingStorageConfiguration() {
             { id: '20', title: '20GB' },
             { id: '50', title: '50GB' },
             { id: '100', title: '100GB' },
-          ]} 
+          ]}
         />
-        
+
         <div className="mt-4 text-right">
           <Button loading={loading} type="submit" title="Save it" primary />
         </div>
