@@ -28,27 +28,29 @@ export default function useFileUpload() {
 
   const { updateTaskData } = useServiceTaskUpdate()
 
-  const verifyFileUrl = async (keyName: string, url: string, backupUrl: string) => {
+  const verifyFileUrl = async (url: string) => {
     try {
-      const parsedUrl = new URL(url)
-
-      console.log('1')
+      console.log('Verifying URL:', url);
+      const parsedUrl = new URL(url);
+      
+      // Check if it's an S3 URL
       if (parsedUrl.hostname.includes('s3.amazonaws.com')) {
-        return url
+        console.log('Detected S3 URL, returning as is');
+        return url;
+      }
+      
+      // Check if it's a Digital Ocean URL
+      if (parsedUrl.hostname.includes('digitaloceanspaces.com')) {
+        console.log('Detected Digital Ocean URL, removing search params');
+        parsedUrl.search = ''; // Remove query parameters
+        return parsedUrl.toString();
       }
 
-
+      console.log('Unknown URL type:', parsedUrl.hostname);
+      return url;
     } catch (error) {
-      console.log('keyname', keyName)
-
-      const response = await storageGetObjectUrl({
-        keyName,
-        orgId
-      })
-
-      console.log('respone', response)
-
-      return response.data.data.url
+      console.error('Error parsing URL:', error);
+      return url;
     }
   }
 
@@ -67,21 +69,20 @@ export default function useFileUpload() {
       })
 
       const { name, presignedUrl, url } = res.data.data
-      const keyName = name as string
 
-      console.log('storage create presign', res, res.data)
+      console.log('storage create presign', res.data.data, url, presignedUrl)
 
       const ret = await storagePutFile(presignedUrl, file)
 
       console.log('ret', ret)
 
-      const verifiedUrl = await verifyFileUrl(name, url, presignedUrl)
+      const verifiedUrl = await verifyFileUrl(url || presignedUrl)
 
       const result = await storageSaveToDrive({
         organizationId: orgId,
         projectId,
         name: file.name,
-        keyName,
+        keyName: name,
         type: FileType.FILE,
         url: verifiedUrl,
         size: file.size,

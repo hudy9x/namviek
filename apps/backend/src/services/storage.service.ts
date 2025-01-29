@@ -239,7 +239,7 @@ export class StorageService {
       return {
         randName,
         presignedUrl,
-        url: provider.getObjectURL(randName)
+        url: await provider.getObjectURL(randName)
       }
     } catch (error) {
       console.log(error)

@@ -40,7 +40,15 @@ export const storageDelFile = ({ id, projectId, orgId }: {
 }
 
 export const storagePutFile = (presignedUrl: string, data: File) => {
-  return axios.put(presignedUrl, data)
+  const url = new URL(presignedUrl);
+  const headers: Record<string, string> = {};
+  
+  // Only add x-amz-acl header for Digital Ocean URLs
+  if (url.hostname.includes('digitaloceanspaces.com')) {
+    headers['x-amz-acl'] = 'public-read';
+  }
+
+  return axios.put(presignedUrl, data, { headers })
 }
 
 export const storageSaveToDrive = (data: Partial<FileStorage>) => {
