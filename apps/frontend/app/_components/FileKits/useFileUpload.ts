@@ -2,7 +2,8 @@ import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import {
   storageCreatePresignedUrl,
   storagePutFile,
-  storageSaveToDrive
+  storageSaveToDrive,
+  storageGetObjectUrl
 } from '@/services/storage'
 import { FileOwnerType, FileStorage, FileType } from '@prisma/client'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
@@ -27,6 +28,32 @@ export default function useFileUpload() {
 
   const { updateTaskData } = useServiceTaskUpdate()
 
+  const verifyFileUrl = async (url: string) => {
+    try {
+      console.log('Verifying URL:', url);
+      const parsedUrl = new URL(url);
+      
+      // Check if it's an S3 URL
+      if (parsedUrl.hostname.includes('s3.amazonaws.com')) {
+        console.log('Detected S3 URL, returning as is');
+        return url;
+      }
+      
+      // Check if it's a Digital Ocean URL
+      if (parsedUrl.hostname.includes('digitaloceanspaces.com')) {
+        console.log('Detected Digital Ocean URL, removing search params');
+        parsedUrl.search = ''; // Remove query parameters
+        return parsedUrl.toString();
+      }
+
+      console.log('Unknown URL type:', parsedUrl.hostname);
+      return url;
+    } catch (error) {
+      console.error('Error parsing URL:', error);
+      return url;
+    }
+  }
+
   const doUpload = async (f: IFileUploadItem): Promise<IFileItem | null> => {
     try {
       if (!orgId) return null
@@ -42,16 +69,22 @@ export default function useFileUpload() {
       })
 
       const { name, presignedUrl, url } = res.data.data
-      const keyName = name as string
-      await storagePutFile(presignedUrl, file)
+
+      console.log('storage create presign', res.data.data, url, presignedUrl)
+
+      const ret = await storagePutFile(presignedUrl, file)
+
+      console.log('ret', ret)
+
+      const verifiedUrl = await verifyFileUrl(url || presignedUrl)
 
       const result = await storageSaveToDrive({
         organizationId: orgId,
         projectId,
         name: file.name,
-        keyName,
+        keyName: name,
         type: FileType.FILE,
-        url,
+        url: verifiedUrl,
         size: file.size,
         mimeType: file.type,
         owner: taskId,

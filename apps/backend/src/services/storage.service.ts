@@ -7,6 +7,10 @@ import IncorrectConfigurationException from "../exceptions/IncorrectConfiguratio
 import { fileStorageModel } from "packages/database/src/lib/_prisma"
 import { findNDelCaches } from "../lib/redis"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { IStorageProvider } from '../providers/storage/IStorageProvider';
+import DigitalOceanStorageProvider from '../providers/storage/DigitalOceanStorageProvider';
+import { OrgStorageType } from "@prisma/client"
+import { HeadBucketCommand } from "@aws-sdk/client-s3"
 
 export const MB = 1024 * 1024
 export const GB = 1024 * MB
@@ -16,35 +20,72 @@ const minioEndpoint = process.env.AWS_MINIO_ENDPOINT
 
 export class StorageService {
   protected orgId: string
+  private storageProvider: IStorageProvider
+
   constructor(orgId: string) {
     this.orgId = orgId
   }
 
   protected async getStorageConfig() {
     const orgStorageService = new OrganizationStorageService(this.orgId)
-    const awsConfig = await orgStorageService.getConfig()
+    const storage = await orgStorageService.getConfig()
 
-    if (!awsConfig) {
+    console.log('get storage config', storage)
+
+    if (!storage) {
       throw new StorageConfigurationNotFoundException()
     }
 
-    return awsConfig
-
+    return storage
   }
 
-  protected getObjectUrl() {
-    return ''
-  }
+  protected async initStorageProvider(): Promise<IStorageProvider> {
+    if (this.storageProvider) {
+      return this.storageProvider
+    }
 
-  protected async initS3Client() {
-    const awsConfig = await this.getStorageConfig()
-    const s3Store = new AwsS3StorageProvider({ orgId: this.orgId, ...awsConfig })
+    const storage = await this.getStorageConfig()
+    const config = storage.config
 
-    return s3Store
+    console.log('storage type', storage.type)
+
+    switch (storage.type) {
+      case OrgStorageType.DIGITAL_OCEAN_S3:
+        this.storageProvider = new DigitalOceanStorageProvider({
+          region: config.region,
+          accessKey: config.accessKey,
+          secretKey: config.secretKey,
+          bucketName: config.bucketName,
+          orgId: this.orgId
+        })
+        break
+
+      case OrgStorageType.AWS_S3:
+        if (minioEndpoint) {
+          // Minio configuration
+          this.storageProvider = new AwsS3StorageProvider({
+            orgId: this.orgId,
+            ...config,
+            endpoint: minioEndpoint,
+            forcePathStyle: true
+          })
+        } else {
+          // Standard AWS S3 configuration
+          this.storageProvider = new AwsS3StorageProvider({
+            orgId: this.orgId,
+            ...config
+          })
+        }
+        break
+
+      default:
+        throw new Error(`Unsupported storage type: ${storage.type}`)
+    }
+
+    return this.storageProvider
   }
 
   async removeFileFromOwner(owner: string, fileId: string) {
-
     const task = await mdTaskGetOne(owner)
 
     const { fileIds } = task
@@ -73,14 +114,12 @@ export class StorageService {
     )
 
     await Promise.all(promises)
-
   }
 
   async removeFileFromStorage(name: string, key: string[], fileId: string) {
-
     const storageCache = new StorageCache(this.orgId)
-    const s3Store = await this.initS3Client()
-    await s3Store.deleteObject(name)
+    const provider = await this.initStorageProvider()
+    await provider.deleteObject(name)
 
     await findNDelCaches(key)
 
@@ -91,13 +130,41 @@ export class StorageService {
     }
   }
 
-  async validateAwsConfig(awsConfig: Omit<IStorageAWSConfig, 'maxStorageSize'>) {
+  async validateConfig({ type, config }: {
+    type: OrgStorageType,
+    config: {
+      bucketName: string,
+      region: string,
+      secretKey: string,
+      accessKey: string,
+      endpoint?: string
+    }
+  }): Promise<boolean> {
+    try {
+      if (type === OrgStorageType.AWS_S3) {
+        return await this.validateAwsConfig(config)
+      } else if (type === OrgStorageType.DIGITAL_OCEAN_S3) {
+        return await this.validateDigitalOceanConfig(config)
+      }
+      return false
+    } catch (error) {
+      console.error('Storage validation error:', error)
+      return false
+    }
+  }
 
+  private async validateAwsConfig(config: {
+    bucketName: string,
+    region: string,
+    secretKey: string,
+    accessKey: string,
+    endpoint?: string
+  }): Promise<boolean> {
     let s3Config = {
-      region: awsConfig.region,
+      region: config.region,
       credentials: {
-        accessKeyId: awsConfig.accessKey,
-        secretAccessKey: awsConfig.secretKey
+        accessKeyId: config.accessKey,
+        secretAccessKey: config.secretKey
       }
     }
 
@@ -113,9 +180,8 @@ export class StorageService {
 
     const client = new S3Client(s3Config);
 
-
     const command = new PutObjectCommand({
-      Bucket: awsConfig.bucketName,
+      Bucket: config.bucketName,
       Key: "hello-s3.txt",
       Body: "Hello S3!",
     });
@@ -128,29 +194,57 @@ export class StorageService {
       console.error(err);
       return false
     }
-
   }
 
+  private async validateDigitalOceanConfig(config: {
+    bucketName: string,
+    region: string,
+    secretKey: string,
+    accessKey: string,
+    endpoint?: string
+  }): Promise<boolean> {
+    try {
+      const s3 = new S3Client({
+        credentials: {
+          accessKeyId: config.accessKey,
+          secretAccessKey: config.secretKey,
+        },
+        // https://docs.digitalocean.com/products/spaces/how-to/use-aws-sdks/#configure-a-client
+        endpoint: `https://${config.region}.digitaloceanspaces.com`,
+        region: 'us-east-1',
+        forcePathStyle: false,
+      })
+
+      await s3.send(new PutObjectCommand({
+        Bucket: config.bucketName,
+        Key: "test-connection.txt",
+        Body: "Testing Digital Ocean Spaces connection",
+      }));
+
+      return true
+    } catch (error) {
+      console.error('Digital Ocean validation error:', error)
+      return false
+    }
+  }
 
   async createPresignedUrl({ path, type, name }: { path: string, name: string, type: string }) {
-
     path = [this.orgId, path].filter(Boolean).join('/')
-    const s3Store = await this.initS3Client()
-    const randName = `${path}/` + s3Store.randomObjectKeyName(name)
+    const provider = await this.initStorageProvider()
+    console.log('provider', provider)
+    const randName = `${path}/` + provider.randomObjectKeyName(name)
 
     try {
-      const presignedUrl = await s3Store.createPresignedUrlWithClient(randName, type)
-      console.log('presignedUrl', presignedUrl)
+      const presignedUrl = await provider.createPresignedUrlWithClient(randName, type)
       return {
         randName,
         presignedUrl,
-        url: s3Store.getObjectURL(randName)
+        url: await provider.getObjectURL(randName)
       }
     } catch (error) {
       console.log(error)
       throw new IncorrectConfigurationException()
     }
-
   }
 
   async exceedMaxStorageSize() {
@@ -174,5 +268,10 @@ export class StorageService {
     }
 
     return false
+  }
+
+  public async getObjectUrl(keyName: string): Promise<string> {
+    const provider = await this.initStorageProvider()
+    return provider.getObjectURL(keyName)
   }
 }

@@ -7,7 +7,7 @@ export class OrgStorageRepository {
     return orgStorage.findFirst({
       where: {
         organizationId: orgId,
-        type: OrgStorageType.AWS_S3
+        // type: OrgStorageType.AWS_S3
       }
     })
   }
@@ -16,17 +16,20 @@ export class OrgStorageRepository {
     const result = await orgStorage.findFirst({
       where: {
         organizationId: orgId,
-        type: OrgStorageType.AWS_S3
+        // type: OrgStorageType.AWS_S3
       }
     })
 
     if (!data.config) return null
     const config = data.config as { [key: string]: string }
+    const type = data.type
 
     const TB = 1024 * 1024 * 1024 * 1024 // 1TB
     await mdOrgUpdate(orgId, {
       maxStorageSize: 9999 * TB
     })
+
+    console.log('data', data)
 
     if (result) {
       return orgStorage.update({
@@ -34,6 +37,7 @@ export class OrgStorageRepository {
           id: result.id
         },
         data: {
+          type,
           config: config,
           updatedAt: data.updatedAt,
           updatedBy: data.updatedBy
@@ -47,6 +51,7 @@ export class OrgStorageRepository {
     return orgStorage.create({
       data: {
         ...data, config: {
+          type,
           bucketName: config.bucketName,
           region: config.region,
           secretKey: config.secretKey,

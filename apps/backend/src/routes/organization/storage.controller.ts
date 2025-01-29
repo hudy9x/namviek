@@ -35,10 +35,13 @@ export class OrganizationStorageController extends BaseController {
   async updateOrgStorage() {
     const req = this.req as AuthRequest
     try {
-      const { orgId, config } = req.body as {
+      const { orgId, type, config } = req.body as {
         orgId: string
-        config: IStorageAWSConfig
+        type: OrgStorageType
+        config: IStorageAWSConfig & { endpoint?: string }
       }
+
+      console.log('storage configuration', req.body)
 
       const { id } = req.authen
 
@@ -46,7 +49,7 @@ export class OrganizationStorageController extends BaseController {
       let maxStorageSize = parseInt(config.maxStorageSize + "", 10)
 
       if (!bucketName || !region || !secretKey || !accessKey || !maxStorageSize) {
-        throw new Error('Invalid AWS S3 configuration ')
+        throw new Error('Invalid storage configuration')
       }
 
       if (isNaN(maxStorageSize)) {
@@ -63,15 +66,21 @@ export class OrganizationStorageController extends BaseController {
         throw new Error('Storage size must be greater than or equal 1GB')
       }
 
-      const valid = await this.storageService.validateAwsConfig({
-        bucketName,
-        region,
-        secretKey,
-        accessKey,
+      console.log('Start validating storage configuration')
+      // Validate config based on storage type
+      const valid = await this.storageService.validateConfig({
+        type,
+        config: {
+          bucketName,
+          region,
+          secretKey,
+          accessKey,
+          endpoint: config.endpoint
+        }
       })
 
       if (!valid) {
-        throw new Error('Invalid AWS S3 configuration')
+        throw new Error(`Invalid ${type} configuration`)
       }
 
       const orgRepo = new OrgStorageRepository()
@@ -82,9 +91,10 @@ export class OrganizationStorageController extends BaseController {
           region,
           secretKey,
           accessKey,
-          maxStorageSize
+          maxStorageSize,
+          endpoint: config.endpoint
         },
-        type: OrgStorageType.AWS_S3,
+        type,
         createdAt: new Date(),
         createdBy: id,
         updatedAt: null,
@@ -95,7 +105,7 @@ export class OrganizationStorageController extends BaseController {
 
       return result
     } catch (error) {
-      console.log('create or update  org storage error', error)
+      console.log('create or update org storage error', error)
       throw new Error(error)
     }
   }
