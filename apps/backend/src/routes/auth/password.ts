@@ -21,7 +21,8 @@ interface ResetPasswordBody {
 const ENV = {
   JWT_KEY: process.env.JWT_SECRET_KEY!,
   APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'Namviek',
-  FE_GATEWAY: process.env.NEXT_PUBLIC_FE_GATEWAY!
+  FE_GATEWAY: process.env.NEXT_PUBLIC_FE_GATEWAY!,
+  RESEND_TOKEN: process.env.RESEND_TOKEN!
 } as const
 
 const RESET_PASSWORD_EXPIRY = '15m'
@@ -33,10 +34,10 @@ export default class PasswordController extends BaseController {
   constructor() {
     super()
     this.name = 'password'
-    
-    // Throw error if JWT_KEY exists but FE_GATEWAY is missing
-    if (ENV.JWT_KEY && !ENV.FE_GATEWAY) {
-      throw new Error('NEXT_PUBLIC_FE_GATEWAY is required for password reset functionality')
+
+    // Check for all required environment variables
+    if (!ENV.JWT_KEY || !ENV.FE_GATEWAY || !ENV.RESEND_TOKEN) {
+      console.error('Forgot password not working. Required environment variables: JWT_SECRET_KEY, NEXT_PUBLIC_FE_GATEWAY, RESEND_TOKEN')
     }
   }
 

@@ -1,4 +1,4 @@
-const frontendUrl = process.env.NEXT_PUBLIC_FE_GATEWAY.replace(/\/*$/, '')
+const frontendUrl = (process.env.NEXT_PUBLIC_FE_GATEWAY || '').replace(/\/*$/, '')
 
 const _clean = (url: string) => {
   return url.replace(/^\/*/, '')
