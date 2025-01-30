@@ -12,6 +12,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from '../../../components/Logo'
 import { resetPassword } from '@auth-client'
+import { safeParse } from '@namviek/core/validation'
+import { z } from 'zod'
 
 interface Props {
   token: string
@@ -21,24 +23,24 @@ export default function ResetPasswordForm({ token }: Props) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  const passwordSchema = z.object({
+    password: z.string()
+      .min(1, 'Password is required')
+      .min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string()
+      .min(1, 'Confirm password is required')
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"]
+  })
+
   const { regField, regHandleSubmit } = useForm({
     values: {
       password: '',
       confirmPassword: ''
     },
     validateFn: values => {
-      const errors: Record<string, string> = {}
-      if (!values.password) {
-        errors.password = 'Password is required'
-      } else if (values.password.length < 6) {
-        errors.password = 'Password must be at least 6 characters'
-      }
-      if (!values.confirmPassword) {
-        errors.confirmPassword = 'Confirm password is required'
-      } else if (values.password !== values.confirmPassword) {
-        errors.confirmPassword = 'Passwords do not match'
-      }
-      return errors
+      return safeParse(passwordSchema, values)
     },
     onSubmit: values => {
       submitHandler(values.password)

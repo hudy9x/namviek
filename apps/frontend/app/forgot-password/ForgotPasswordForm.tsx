@@ -7,12 +7,13 @@ import {
   messageSuccess,
   useForm
 } from '@ui-components'
-import { validateEmail } from '@namviek/core/validation'
+import { ParseResult, validateEmail, safeParse } from '@namviek/core/validation'
 import Link from 'next/link'
 import { useState } from 'react'
 import Logo from '../../components/Logo'
 import { forgotPassword } from '@auth-client'
 import { useCooldown } from '@/hooks/useCooldown'
+import { z } from 'zod'
 
 export default function ForgotPasswordForm() {
   const [loading, setLoading] = useState(false)
@@ -21,18 +22,18 @@ export default function ForgotPasswordForm() {
     duration: 30
   })
 
+  const emailSchema = z.object({
+    email: z.string()
+      .min(1, 'Email is required')
+      .email('Invalid email format')
+  })
+
   const { regField, regHandleSubmit } = useForm({
     values: {
       email: ''
     },
     validateFn: values => {
-      const errors: Record<string, string> = {}
-      if (!values.email) {
-        errors.email = 'Email is required'
-      } else if (!validateEmail(values.email)) {
-        errors.email = 'Invalid email format'
-      }
-      return errors
+      return safeParse(emailSchema, values)
     },
     onSubmit: values => {
       submitHandler(values.email)

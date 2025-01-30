@@ -13,7 +13,7 @@ export default function SuccessPage() {
         <p className="text-gray-500 text-sm">Your password has been successfully reset. You can now sign in with your new password.</p>
         <div className="pt-2">
           <Link href="/sign-in">
-            <Button secondary size="md" leadingIcon={<HiOutlineArrowLeft />} title="Go to login" />
+            <Button size="md" leadingIcon={<HiOutlineArrowLeft />} title="Go to login" />
           </Link>
         </div>
       </div>
