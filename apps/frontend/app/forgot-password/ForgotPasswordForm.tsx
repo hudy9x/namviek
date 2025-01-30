@@ -12,9 +12,14 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Logo from '../../components/Logo'
 import { forgotPassword } from '@auth-client'
+import { useCooldown } from '@/hooks/useCooldown'
 
 export default function ForgotPasswordForm() {
   const [loading, setLoading] = useState(false)
+  const { cooldownTime, isInCooldown, startCooldown } = useCooldown({
+    key: 'lastForgotPasswordSubmit',
+    duration: 30
+  })
 
   const { regField, regHandleSubmit } = useForm({
     values: {
@@ -35,12 +40,13 @@ export default function ForgotPasswordForm() {
   })
 
   const submitHandler = async (email: string) => {
-    if (loading) return
+    if (loading || isInCooldown) return
     setLoading(true)
 
     try {
       await forgotPassword(email)
       messageSuccess('Password reset instructions have been sent to your email')
+      startCooldown()
     } catch (error) {
       messageError('Failed to process your request. Please try again.')
     } finally {
@@ -71,10 +77,11 @@ export default function ForgotPasswordForm() {
                 <Button
                   size='md'
                   loading={loading}
-                  title="Send Reset Instructions"
+                  title={isInCooldown ? `Wait ${cooldownTime}s` : "Send Reset Instructions"}
                   type="submit"
                   block
                   primary
+                  disabled={isInCooldown}
                 />
               </div>
             </div>
