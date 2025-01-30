@@ -23,6 +23,7 @@ export default class GoogleAuthProvider extends BaseAuthProvider {
           name: verifiedUser.name,
           country: null,
           bio: null,
+          resetToken: null,
           dob: null,
           status: UserStatus.ACTIVE,
           photo: verifiedUser.picture,

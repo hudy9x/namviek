@@ -1,4 +1,5 @@
 export * from './project'
 export * from './task'
 export * from './user'
+export * from './email'
 export * from './_utils'

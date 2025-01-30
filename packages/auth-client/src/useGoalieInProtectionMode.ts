@@ -12,14 +12,25 @@ export default function useGoalieInProtectionMode({
 }: {
   user: GoalieUser | null
 }) {
-  const publicPages = ['/sign-in', '/sign-up']
+  const publicPages = [
+    '/sign-in',
+    '/sign-up',
+    '/forgot-password',
+    '/reset-password'
+  ]
 
   const pathname = usePathname()
   const { push } = useRouter()
 
   const onAuth = (pathname: string) => {
-    const isInsidePublicPages = publicPages.some(p => p === pathname)
+    // For reset-password with token, we need to check the base path
+    const currentPath = pathname.startsWith('/reset-password/') 
+      ? '/reset-password'
+      : pathname
 
+    const isInsidePublicPages = publicPages.some(p => p === currentPath)
+
+    console.log('isInsidePublicPages', isInsidePublicPages)
     if (isSessionExpired() && !isInsidePublicPages) {
       clearGoalieUser()
       return push('/sign-in')

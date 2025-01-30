@@ -69,3 +69,29 @@ export const signin = ({
 export const resendVerifyEmail = (email: string) => {
   return httpPost('/api/auth/resend-verify-email', { email })
 }
+
+export const forgotPassword = (email: string) => {
+  return httpPost('/api/auth/forgot-password', { email })
+}
+
+export interface ResetPasswordParams {
+  token: string
+  password: string
+}
+
+export const resetPassword = ({ token, password }: ResetPasswordParams) => {
+  return httpPost('/api/auth/reset-password', { token, password })
+    .then(res => {
+      const { status } = res.data
+
+      if (status !== 200) {
+        return Promise.reject('RESET_PASSWORD_FAILED')
+      }
+
+      return Promise.resolve('SUCCESS')
+    })
+    .catch(error => {
+      console.error('error reset password', error)
+      return Promise.reject(error)
+    })
+} 

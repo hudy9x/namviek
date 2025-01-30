@@ -25,7 +25,7 @@ import { TaskQueue, getTaskQueueInstance } from '../../queues'
 import { authMiddleware } from '../../middlewares'
 
 @Controller('/test')
-@UseMiddleware([authMiddleware])
+// @UseMiddleware([authMiddleware])
 export class TestController extends BaseController {
   taskQueue: TaskQueue
   constructor() {

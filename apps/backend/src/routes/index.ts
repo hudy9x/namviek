@@ -37,6 +37,7 @@ import { LoadTestController } from './test/loadtest.controller'
 import FieldController from './fields'
 import ProjectGridController from './grid'
 import { ApplicationController } from './apps/index.controller'
+import PasswordController from './auth/password'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -66,6 +67,7 @@ router.use(
     ProjectViewController,
     ProjectSetting,
     PermissionController,
+    PasswordController,
     OrganizationController,
     OrganizationStorageController,
     OrganizationMemberController,
