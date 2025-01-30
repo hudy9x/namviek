@@ -59,6 +59,7 @@ model User {
   bio                 String?
   photo               String?
   dob                 DateTime?
+  resetToken          String?
   members             Members[]
   settings            Json?
   organizationMembers OrganizationMembers[]

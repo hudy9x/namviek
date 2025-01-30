@@ -64,6 +64,12 @@ export default class PasswordController extends BaseController {
       )
       console.log('[Forgot Password] Reset token generated for user:', user.id)
 
+      // Save the reset token to user model
+      await mdUserUpdate(user.id, {
+        resetToken
+      })
+      console.log('[Forgot Password] Reset token saved to user model')
+
       const resetUrl = `${ENV.FE_GATEWAY.replace(/\/+$/, '')}/reset-password/${resetToken}`
       console.log('[Forgot Password] Reset URL generated:', resetUrl)
 
@@ -130,8 +136,8 @@ export default class PasswordController extends BaseController {
       const user = await mdUserFindEmail(decoded.email)
       console.log('[Reset Password] User found:', !!user)
 
-      if (!user) {
-        console.log('[Reset Password] User not found for email:', decoded.email)
+      if (!user || user.resetToken !== token) {
+        console.log('[Reset Password] Invalid token or user not found')
         return {
           status: 400,
           message: 'Invalid reset token'
@@ -141,10 +147,12 @@ export default class PasswordController extends BaseController {
       const hashedPassword = await hashPassword(password)
       console.log('[Reset Password] Password hashed successfully')
 
+      // Update password and clear the reset token
       await mdUserUpdate(user.id, {
-        password: hashedPassword
+        password: hashedPassword,
+        resetToken: null
       })
-      console.log('[Reset Password] Password updated for user:', user.id)
+      console.log('[Reset Password] Password updated and reset token cleared for user:', user.id)
 
       return {
         status: 200,

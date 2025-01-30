@@ -104,6 +104,7 @@ router.post('/sign-up-private', [authMiddleware], async (req: AuthRequest, res) 
       settings: {},
       createdAt: new Date(),
       createdBy: uid,
+      resetToken: null,
       updatedAt: null,
       updatedBy: null
     }
@@ -151,6 +152,7 @@ router.post('/sign-up', async (req, res) => {
     const user = await mdUserAdd({
       email: resultData.email,
       password: hashedPwd,
+      resetToken: null,
       name: resultData.name,
       country: null,
       bio: null,
