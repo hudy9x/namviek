@@ -55,7 +55,7 @@ export default function ResetPasswordForm({ token }: Props) {
     try {
       await resetPassword({ token, password })
       messageSuccess('Password has been reset successfully')
-      router.push('/sign-in')
+      router.push('/reset-password/success')
     } catch (error) {
       messageError('Failed to reset password. The link may be invalid or expired.')
     } finally {
