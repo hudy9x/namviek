@@ -14,6 +14,7 @@ import Logo from '../../../components/Logo'
 import { resetPassword } from '@auth-client'
 import { safeParse } from '@namviek/core/validation'
 import { z } from 'zod'
+import { HiEye, HiEyeOff } from 'react-icons/hi'
 
 interface Props {
   token: string
@@ -21,6 +22,8 @@ interface Props {
 
 export default function ResetPasswordForm({ token }: Props) {
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const router = useRouter()
 
   const passwordSchema = z.object({
@@ -56,7 +59,7 @@ export default function ResetPasswordForm({ token }: Props) {
 
     try {
       await resetPassword({ token, password })
-      messageSuccess('Password has been reset successfully')
+      // messageSuccess('Password has been reset successfully')
       router.push('/reset-password/success')
     } catch (error) {
       messageError('Failed to reset password. The link may be invalid or expired.')
@@ -82,18 +85,37 @@ export default function ResetPasswordForm({ token }: Props) {
             <p className="text-[19px] mt-6 text-[#7A8799]">Please enter your new password below.</p>
 
             <div className="flex flex-col gap-4 mt-7">
-              <Form.Input
-                size='md'
-                title="New Password"
-                type="password"
-                {...regField('password')}
-              />
-              <Form.Input
-                size='md'
-                title="Confirm Password"
-                type="password"
-                {...regField('confirmPassword')}
-              />
+              <div className="relative">
+                <Form.Input
+                  size='md'
+                  title="New Password"
+                  type={showPassword ? "text" : "password"}
+                  {...regField('password')}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                  {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                </button>
+              </div>
+
+              <div className="relative">
+                <Form.Input
+                  size='md'
+                  title="Confirm Password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...regField('confirmPassword')}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                  {showConfirmPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                </button>
+              </div>
 
               <div className="space-y-3 mt-2">
                 <Button

@@ -67,7 +67,7 @@ export default function ForgotPasswordForm() {
               <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
             </div>
 
-            <h2 className='mt-[45px] whitespace-nowrap text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>Reset Your Password</h2>
+            <h2 className='mt-[45px] whitespace-nowrap text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>Forgot your password ?</h2>
 
             <p className="text-[19px] mt-6 text-[#7A8799]">Enter your email address and we'll send you instructions to reset your password.</p>
 
