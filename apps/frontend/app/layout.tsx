@@ -8,6 +8,7 @@ import { GoalieProvider } from '@auth-client'
 
 import dynamic from 'next/dynamic'
 import GoogleAnalytics from './_components/GA'
+import { CSPostHogProvider } from './providers'
 const inter = Inter({ subsets: ['latin'] })
 
 const PushNotification = dynamic(
@@ -26,17 +27,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <GoalieProvider>
-      <html lang="en">
-        <head>
-          <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
-        </head>
-        <body className={inter.className}>
-          <RootLayoutComp>{children}</RootLayoutComp>
-          <PushNotification />
-          <GoogleAnalytics />
-        </body>
-      </html>
-    </GoalieProvider>
+    <CSPostHogProvider>
+      <GoalieProvider>
+        <html lang="en">
+          <head>
+            <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
+          </head>
+          <body className={inter.className}>
+            <RootLayoutComp>{children}</RootLayoutComp>
+            <PushNotification />
+            <GoogleAnalytics />
+          </body>
+        </html>
+      </GoalieProvider>
+    </CSPostHogProvider>
   )
 }
