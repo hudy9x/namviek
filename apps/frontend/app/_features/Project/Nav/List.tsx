@@ -52,30 +52,12 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
       children: ProjectList
     },
     {
-      title: 'Meeting',
-      href: `/${orgName}/meeting`,
-      icon: HiOutlineVideoCamera,
-      active: pathname.includes('/meeting')
-    },
-    // {
-    //   title: 'Favorites',
-    //   // href: `/${orgName}/favorites`,
-    //   icon: HiOutlineStar,
-    //   active: pathname.includes('/favorites'),
-    //   children: Favorites
-    // },
-    {
       title: 'Reports',
       href: `/${orgName}/report`,
       icon: HiOutlineChartPie,
       active: pathname.includes(`${orgName}/report`)
     },
-    // {
-    //   title: 'Settings',
-    //   href: `/${orgName}/setting/people`,
-    //   icon: HiOutlineCog6Tooth,
-    //   active: pathname.includes(`${orgName}/setting`)
-    // }
+  
   ]
 
 
