@@ -1,15 +1,12 @@
 'use client'
 
 import { AiOutlineStar } from 'react-icons/ai'
-import ProjectPoint from './ProjectPoint'
-import { HiOutlineBellAlert, HiOutlineChartBar, HiOutlineRectangleStack } from 'react-icons/hi2'
-import { ProjectStatus } from './status/index'
+import { HiOutlineBellAlert, HiOutlineRectangleStack } from 'react-icons/hi2'
 import { HiOutlineUsers } from 'react-icons/hi'
 import './style.css'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import ProjectMemberManager from '../ProjectMemberManager'
 import ProjectNotificationSetting from '@/features/ProjectSetting/Notification'
-import ProjectReportSetting from '@/features/ProjectSetting/Report'
 
 const Setting = () => {
   const { push } = useRouter()
@@ -18,36 +15,7 @@ const Setting = () => {
   const tab = searchParams.get('tab')
 
   const settings = [
-    {
-      icon: (
-        <AiOutlineStar className="shrink-0 text-orange-400 w-6 h-6 bg-orange-100/50 dark:bg-orange-500/50 rounded-full p-1" />
-      ),
-      title: 'Points',
-      active: !tab ? true : tab === 'points' ? true : false,
-      content: <ProjectPoint />,
-      href: `${orgName}/project/${projectId}?mode=setting&tab=points`,
-      desc: 'Story points are an Agile estimation technique that gives you a relative estimate of how much work and effort will go into a particular task.'
-    },
-    {
-      icon: (
-        <HiOutlineRectangleStack className="shrink-0 text-blue-500 w-6 h-6 bg-blue-100/90 dark:bg-blue-500/50 rounded-full p-1.5" />
-      ),
-      title: 'Statuses',
-      active: tab === 'statuses',
-      href: `${orgName}/project/${projectId}?mode=setting&tab=statuses`,
-      content: <ProjectStatus />,
-      desc: 'Project status refers to the level of progress it achieves in working toward an end goal.'
-    },
-    // {
-    //   icon: (
-    //     <HiOutlineLink className="shrink-0 text-violet-600 w-6 h-6 bg-violet-100/80 rounded-full p-1.5" />
-    //   ),
-    //   title: 'Integrations',
-    //   active: tab === 'integrations',
-    //   href: `${orgID}/project/${projectId}?mode=setting&tab=integrations`,
-    //   content: <ProjectPoint />,
-    //   desc: 'Tools you can incorporate into the Slack interface to expand your remote work capabilities. It lets you access more functionalities from a single platform.'
-    // },
+   
     {
       icon: (
         <HiOutlineUsers className="shrink-0 text-green-600 w-6 h-6 bg-green-100/80 rounded-full p-1.5" />
@@ -67,16 +35,6 @@ const Setting = () => {
       href: `${orgName}/project/${projectId}?mode=setting&tab=notification`,
       content: <ProjectNotificationSetting />,
       desc: 'Enable automatic notifications to stay on top of important tasks'
-    },
-    {
-      icon: (
-        <HiOutlineChartBar className="shrink-0 text-lime-600 w-6 h-6 bg-lime-100/80 rounded-full p-1.5" />
-      ),
-      title: 'Report',
-      active: tab === 'report',
-      href: `${orgName}/project/${projectId}?mode=setting&tab=report`,
-      content: <ProjectReportSetting />,
-      desc: 'Automatic collect completed or incomplete works daily.'
     }
   ]
 

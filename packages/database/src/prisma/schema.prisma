@@ -280,33 +280,6 @@ type taskAutomateWhenType {
   equal     String?
 }
 
-model TaskAutomation {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String    @db.ObjectId
-  projectId      String    @db.ObjectId
-  when           Json
-  then           Json
-  createdBy      String?
-  createdAt      DateTime?
-  updatedBy      String?
-  updatedAt      DateTime?
-}
-
-model Scheduler {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  organizationId String  @db.ObjectId
-  projectId      String  @db.ObjectId
-  cronId         String?
-
-  trigger Json
-  action  Json
-
-  createdBy String?
-  createdAt DateTime?
-  updatedBy String?
-  updatedAt DateTime?
-}
-
 enum FileType {
   FILE
   FOLDER

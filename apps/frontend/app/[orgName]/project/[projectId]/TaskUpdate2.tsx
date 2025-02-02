@@ -5,7 +5,6 @@ import { useTaskStore } from '@/store/task'
 import { useUser } from '@auth-client'
 import { taskUpdate } from '@/services/task'
 import { Task } from '@prisma/client'
-import { useTaskAutomation } from '@/hooks/useTaskAutomation'
 import FileKitContainer from '@/components/FileKits'
 import TaskDetail from '@/features/TaskDetail'
 import { deleteState, onPushStateRun } from 'apps/frontend/libs/pushState'
@@ -75,8 +74,6 @@ export const TaskUpdate2 = () => {
   const [taskId, setTaskId] = useState('')
   const { syncRemoteTaskById, tasks, updateTask } = useTaskStore()
 
-  const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
-
   const [currentTask, setCurrentTask] =
     useState<ITaskDefaultValues>(defaultFormikValues)
   const refCurrentTask = useRef<Task>()
@@ -108,7 +105,6 @@ export const TaskUpdate2 = () => {
 
     updateTask(dataUpdate)
     closeTheModal()
-    refactorTaskFieldByAutomationConfig('task', dataUpdate)
 
     // clear fileIds cuz we've updated fileIds already
     // see <FileUpload /> component

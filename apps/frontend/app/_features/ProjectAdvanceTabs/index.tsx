@@ -1,6 +1,6 @@
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import HasRole from "../UserPermission/HasRole";
-import { HiOutlineCog6Tooth, HiOutlineCpuChip } from "react-icons/hi2";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
 
 export default function ProjectAdvanceTabs() {
   const searchParams = useSearchParams()
@@ -19,17 +19,7 @@ export default function ProjectAdvanceTabs() {
 
   return <div className="project-advance-tabs flex items-center gap-2">
     <div className="tab">
-      <HasRole projectRoles={['MANAGER', 'LEADER']}>
-        <div
-          className={`tab-item ${['automation', 'automation-create'].includes(mode || '')
-            ? 'active'
-            : ''
-            }`}
-          onClick={() => onMoveTabAdvance('automation', 'rule')}>
-          <HiOutlineCpuChip />
-          <span>Automation</span>
-        </div>
-      </HasRole>
+      
       <HasRole projectRoles={['MANAGER', 'LEADER', 'MEMBER']}>
         <div
           className={`tab-item ${mode === 'setting' ? 'active' : ''}`}

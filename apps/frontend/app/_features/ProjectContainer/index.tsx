@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { setRecentVist } from '@namviek/core/client'
-import { useServiceAutomation } from '@/hooks/useServiceAutomation'
 import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
 import { useUrl } from '@/hooks/useUrl'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -54,17 +52,6 @@ function useRegisterEvents() {
   useEventSyncProjectTask(projectId)
 }
 
-function useGetAutomationRulesByProject() {
-  const { projectId } = useParams()
-  const { getAutomationByProject } = useServiceAutomation()
-  useEffect(() => {
-    if (projectId) {
-      getAutomationByProject(projectId)
-    }
-  }, [projectId])
-
-}
-
 function PrefetchData() {
   // realtime events
   useRegisterEvents()
@@ -77,7 +64,6 @@ function PrefetchData() {
   useGetMembers()
   useGetProjectPoint()
   useGetProjectViewList()
-  useGetAutomationRulesByProject()
   useGetCustomFields()
 
 

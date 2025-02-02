@@ -35,17 +35,6 @@ const Settings = dynamic(() => import('./settings'), {
   loading: () => <ProjectContentLoading />
 })
 
-const Automation = dynamic(() => import('@/features/Automation'), {
-  loading: () => <ProjectContentLoading />
-})
-
-const AutomateMenu = dynamic(
-  () => import('@/features/Automation/AutomateMenu'),
-  {
-    loading: () => <ProjectContentLoading />
-  }
-)
-
 function AnimateView({
   visible,
   children
@@ -91,7 +80,7 @@ export default function ProjectTabContent() {
   const mode = searchParams.get('mode')
 
   const isIgnored = useCallback(() => {
-    const ignored = ['setting', 'automation', 'automation-create']
+    const ignored = ['setting']
     return ignored.includes(mode || '')
   }, [mode])
 
@@ -133,8 +122,6 @@ export default function ProjectTabContent() {
         <DynamicTeamView />
       </AnimateView>
       {mode === 'setting' && <Settings />}
-      {mode === 'automation-create' ? <Automation /> : null}
-      {mode === 'automation' ? <AutomateMenu /> : null}
     </div>
   }, [cls, type, isIgnored, mode, isView, counter])
 

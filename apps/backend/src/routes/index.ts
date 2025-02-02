@@ -5,7 +5,6 @@ import projectMemberRouter from './member'
 import taskRouter from './task'
 import dboardRouter from './dashboard'
 import favRouter from './favorite'
-import automationRouter from './automation'
 import visionRouter from './vision'
 import { storageRouter } from './storage'
 import buzzerRouter from './buzzer'
@@ -23,7 +22,6 @@ import { AppRoutes } from '../core/AppRoutes'
 import { OrganizationStorageController } from './organization/storage.controller'
 import { OrganizationController } from './organization/index.controller'
 import { OrganizationMemberController } from './organization/member.controller'
-import { SchedulerController } from './scheduler/index.controller'
 import TaskReorderController from './task/reorder.controller'
 import { EventController } from './event/index.controller'
 import { TestController } from './test'
@@ -69,7 +67,6 @@ router.use(
     OrganizationController,
     OrganizationStorageController,
     OrganizationMemberController,
-    SchedulerController,
     TaskReorderController,
     TaskChecklistController,
     // TaskCustomFieldController,
@@ -86,7 +83,6 @@ router.use('/storage', [authMiddleware, storageRouter])
 router.use(visionRouter)
 router.use(authRouter)
 router.use(favRouter)
-router.use(automationRouter)
 router.use(dboardRouter)
 // router.use(orgRouter)
 router.use(projectRouter)

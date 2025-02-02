@@ -4,7 +4,6 @@ import { PartialTask, useTaskStore } from '@/store/task'
 import { taskUpdate, taskUpdateMany } from '@/services/task'
 import { messageError, messageSuccess, messageWarning } from '@ui-components'
 import { Task, TaskPriority } from '@prisma/client'
-import { useTaskAutomation } from './useTaskAutomation'
 import { ITaskDefaultValues } from '../[orgName]/project/[projectId]/TaskForm'
 import { useProjectStatusStore } from '@/store/status'
 import localforage from 'localforage'
@@ -14,7 +13,6 @@ export const useServiceTaskUpdate = () => {
   const { projectId } = useParams()
   const { updateTask, updateMultipleTask } = useTaskStore()
   const { statusDoneId } = useProjectStatusStore()
-  const { refactorTaskFieldByAutomationConfig } = useTaskAutomation()
 
   const _isRandomId = (id: string) => {
     return id.includes('TASK-ID-RAND')
@@ -33,9 +31,6 @@ export const useServiceTaskUpdate = () => {
     }
 
     console.log('first', JSON.stringify(data))
-
-    refactorTaskFieldByAutomationConfig('task', data as ITaskDefaultValues)
-    console.log('next', JSON.stringify(data))
 
     return data
   }
@@ -96,11 +91,6 @@ export const useServiceTaskUpdate = () => {
       if (taskData.taskStatusId) {
         taskData.done = taskData.taskStatusId === statusDoneId
       }
-
-      refactorTaskFieldByAutomationConfig(
-        'task',
-        taskData as ITaskDefaultValues
-      )
 
       updateTask({
         updatedBy: user?.id,

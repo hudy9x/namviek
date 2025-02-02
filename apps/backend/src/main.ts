@@ -4,14 +4,10 @@ import { connectPubClient } from '@event-bus'
 import cors from 'cors'
 import './lib/redis'
 import './lib/firebase-admin'
-import './events'
 import Routes from './routes'
 import ApiNotFoundException from './exceptions/ApiNotFoundException'
 import { isDevMode } from './lib/utils'
 import { checkHealthRoute } from './checkhealth'
-import { runScheduler } from "@task-runner";
-
-runScheduler()
 
 connectPubClient((err) => {
   console.log(err)
