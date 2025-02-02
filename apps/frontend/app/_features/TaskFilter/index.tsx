@@ -7,7 +7,6 @@ import { DatePicker } from '@ui-components'
 import FormGroup from 'packages/ui-components/src/components/FormGroup'
 import { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
-import CalendarModeFilter from './CalendarModeFilter'
 import { ETaskFilterGroupByType, useTaskFilter } from './context'
 import './style.css'
 import { useProjectViewList } from '../ProjectView/useProjectViewList'
@@ -97,25 +96,9 @@ export default function TaskFilter({
 
       <div className="task-filter-actions">
         <FormGroup>
-          {isCalendarMode ? (
-            <CalendarModeFilter />
-          ) : (
+        (
             <>
-              {/* {date && showOperator.includes(date) && ( */}
-              {/*   <ListPreset */}
-              {/*     value={dateOperator} */}
-              {/*     onChange={val => { */}
-              {/*       setFilterValue('dateOperator', val) */}
-              {/*     }} */}
-              {/*     className="w-[100px] mr-1" */}
-              {/*     width={100} */}
-              {/*     options={[ */}
-              {/*       { id: '=', title: 'Equal' }, */}
-              {/*       { id: '>', title: 'After' }, */}
-              {/*       { id: '<', title: 'Before' } */}
-              {/*     ]} */}
-              {/*   /> */}
-              {/* )} */}
+              
               <ListPreset
                 className="w-[150px]"
                 value={date}
@@ -137,7 +120,7 @@ export default function TaskFilter({
                 ]}
               />
             </>
-          )}
+          )
           {isDateRange && !isCalendarMode ? (
             <>
               <DatePicker
