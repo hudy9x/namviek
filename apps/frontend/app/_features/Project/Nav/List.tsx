@@ -42,18 +42,7 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
   const { push } = useRouter()
 
   const menus = [
-    // {
-    //   title: 'Back',
-    //   href: `/organization`,
-    //   icon: HiArrowLeft,
-    //   active: false
-    // },
-    {
-      title: 'My works',
-      href: `/${orgName}/my-works`,
-      icon: HiOutlineBriefcase,
-      active: pathname.includes('/my-works')
-    },
+
     {
       title: 'Projects',
       href: `/${orgName}/project`,
