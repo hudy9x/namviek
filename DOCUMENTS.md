@@ -1,154 +1,88 @@
-## Coding style guide
-### Using Pusher/channel
+## Project Overview
 
-We're using Pusher/channel to push a message from server to client. For instance:
-- When a user type a new comment, the other user will receive this comment immediately.
-- Or when a new user was added to a new project, he/she will be see it right after the manager update member list
+Namviek is an open source project management tool that helps you reduce the operational cost by 90%. 
 
-To use it, in your backend code, import the `pusherTrigger` and trigger an event as follows:
-```javascript
-import { pusherTrigger } from '../../lib/pusher-server'
+It is a web application that is built with:
+- NextJS
+- TailwindCSS
+- ExpressJS
+- MongoDB
+- Redis
 
-const eventName = `event-delete-task-comment`
+## Code Structure
 
-pusherTrigger('team-collab', eventName, {
-    id,
-    triggerBy: updatedBy
-})
-```
-
-Next, on the client side, create a new file in format as follow `ui-app/app/_events/useEvent<event-name>.ts`
-```javascript
-// ui-app/app/_events/useEventDeleteComment.ts
-
-import { usePusher } from './usePusher' // search usePusher in /ui-app
-
-export const useEventDeleteComment = () => {
-
-  useEffect(() => {
-    const eventName = `event-delete-task-comment`
-
-    channelTeamCollab &&
-      channelTeamCollab.bind(eventName, (data) => {
-        console.log(data)
-      })
-
-    return () => {
-      channelTeamCollab && channelTeamCollab.unbind(eventName)
-    }
-  }, [channelTeamCollab])
-}
-```
-
-## Create a task scheduler
-
-To run a task in schedule, for example: run a task per 1h, run a task per Monday at 20h
-Do the following steps:
-
-### Step 1 - Create an event in backend
-Open `apps/backend/src/events/index.ts` then create an event name and add a handler to it.
-
-```typescript
-
-export const CHANNEL_DAY_STATS = 'stats:day-stats'
-
-// We must subscribe channels first
-redis.subscribe(CHANNEL_DAY_STATS)
-
-// After that, we can listen messages from them
-redis.on('message', async (channel: string, data: string) => {
-    if (channel === CHANNEL_DAY_STATS) {
-      const dayStats = new StatsByDayEvent()
-      dayStats.run()
-    }
-})
-```
-
-Next, create the event handler at `apps/backend/src/events/` folder. Ex: `stats.day.event.ts`
-```typescript
-export default class StatsByDayEvent {
-  constructor() {
-
-  }
-  async run() {
-
-  }
-}
-```
-
-### Step 2 - Publish to the above event
-After registering event we need to publish message to trigger it. Open `packages/task-runner/src/main.ts` and create a cronjob as follows
-
-```typescript
-connectPubClient((err, redis) => {
-  if (err) return
-
-  // run every 20pm
-  const runAt20h = 'runAt20pm'
-  cronJob.create(runAt20h, '5 12,20 * * *', () => {
-
-    // Remember that, channel name must be same as Event name
-    const CHANNEL_DAY_STATS = 'stats:day-stats'
-    redis.publish(CHANNEL_DAY_STATS, 'heelo')
-  })
-})
+The project is monorepo project with multiple apps and packages. It's using NX to manage the project.
 
 ```
+namviek
+├── apps
+│   ├── backend
+│   ├── frontend
+├── docker
+├── package.json
+├── packages
+│   ├── auth-client
+│   ├── core
+│   ├── database
+│   ├── event-bus
+│   ├── task-runner
+│   └── ui-components
+├── scripts
+```
+### Directory Overview
 
+#### Apps
+The `apps` directory contains the main applications of our project:
 
+| Application | Description |
+| :- | :- |
+| `frontend` | Next.js web application|
+| `backend` | Express.js server application|
 
-## Configure environment variables
-### Required configs
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|NEXT_PUBLIC_FE_GATEWAY|http://localhost:4200/|Frontend url|✔️|
-|NEXT_PUBLIC_BE_GATEWAY|http://localhost:3333/|Backend api url|✔️|
-|NEXT_PUBLIC_APP_NAME|Namviek Dev|App name|✔️|
-|MONGODB_URL|mongodb+srv://<user>:<pass>@<host>/<db>?retryWrites=true&w=majority|Database uri|✔️|
-|JWT_SECRET_KEY|12GUY3N76U21d4IJ|Secret key|✔️|
-|JWT_REFRESH_KEY|7us9s88o121ieeuo|Refresh key|✔️|
-|JWT_VERIFY_USER_LINK_TOKEN_EXPIRED|1h|Expired time|✔️|
-|JWT_TOKEN_EXPIRED|30m|Expired time|✔️|
-|JWT_REFRESH_EXPIRED|4h|Expired time|✔️|
-|REDIS_HOST||Redis host|✔️|
+#### Docker
+The `docker` directory contains containerization configurations:
+- Dockerfile for each service
+- Docker Compose configurations
+- Environment-specific docker settings
+- Container orchestration files
 
-### Configure Email notification and Storage
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|RESEND_TOKEN||Token for sending email. Visit: https://resend.com||
-|RESEND_EMAIL_DOMAIN|namviek.com|Email Domain||
-|AWS_ACCESS_KEY||AWS s3 access key||
-|AWS_SECRET_ACCESS_KEY||AWS s3 secret key||
-|AWS_REGION|ap-southeast-1|Aws region||
-|AWS_S3_BUCKET|kampunistore|Aws bucket name||
+#### Scripts
+The `scripts` directory contains utility scripts:
+- AWS Lightsail deployment scripts
+- Database backup and restore utilities (WIP)
+- Environment setup scripts (WIP)
+- CI/CD helper scripts (WIP)
 
-### Configure Push notification using Pusher.js
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|NEXT_PUBLIC_PUSHER_INSTANCE_ID||Pusher beam instance id||
-|PUSHER_INSTANCE_ID||Pusher beam instance id||
-|PUSHER_SECRET_KEY||Pusher beam secret key||
-|NEXT_PUBLIC_PUSHER_CHANNEL_APP_KEY||Push channel app key||
-|NEXT_PUBLIC_PUSHER_CHANNEL_APP_CLUSTER|ap1|Pusher channel app cluster||
-|PUSHER_CHANNEL_APP_ID|1710577|Pusher channel app id||
-|PUSHER_CHANNEL_SECRET||Pusher channel secret||
+#### Packages
+The `packages` directory contains shared libraries and modules that can be used across different applications:
 
-### Configure Livekit for online meeting
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|LIVEKIT_API_KEY|ANSWjslSNAwexMy|Livekit api key||
-LIVEKIT_API_SECRET||Livekit api secret||
-NEXT_PUBLIC_LIVEKIT_URL|wss://namviek-hmunmehy.livekit.cloud|Livekit url||
+| Package | Purpose |
+| :- | :- |
+| `auth-client` | Authentication and authorization |
+| `core` | Core business logic and utilities:<br/>- Common interfaces<br/>- Shared constants<br/>- Helper functions<br/>- Base configurations<br/>- Common types |
+| `database` | Prisma schema, migration and repository |
+| `event-bus` | Event handling system |
+| `task-runner` | Scheduled tasks |
+| `ui-components` | Reusable UI component library |
 
-### Configure log server
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|AXIOM_DATASET|namviek|Axiom dataset name||
-|AXIOM_TOKEN|namviek|Axiom token||
+### Project Overview
 
-### Configure firebase for email verification
-|Name|Value|Desc|Required|
-|-|-|-|-|
-|FIREBASE_PROJECT_ID|namviek-4234|Project id||
-|FIREBASE_CLIENT_EMAIL|adminsdk-123sd@na.iam.gserviceaccount.com|Client email generated by Firebase||
-|FIREBASE_PRIVATE_KEY||Firebase private key||
+- User have to create their own organization before they can start using the app
+- Organization can have multiple projects
+- Project can have multiple tasks
+- Project can have multiple members
+- Project can have multiple views: board, calendar, list, goal, dashboard, team, grid.
+
+## Backend 
+
+- Router is put in `apps/backend/src/routes`
+- Each folder in `src/routes` includes controllers. When define a new controller, please follow the `apps/backend/src/routes/example/index.ts` file.
+- Business logic is put in `apps/backend/src/services`
+- Models are put in `packages/database/src/lib` 
+- Database schema is put in `packages/database/src/prisma/schema.prisma`
+
+## Frontend
+
+- Routes should only contain the route definition, and the route logic should be put in `apps/frontend/src/_features` folder.
+- Every component should be imported from `@ui-components` package.
+
