@@ -12,7 +12,8 @@ export function CSPostHogProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     posthog.init(POSTHOG_KEY, {
       api_host: POSTHOG_HOST,
-      capture_pageview: false // Disable automatic pageview capture, as we capture manually
+      capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+      capture_pageleave: true
     })
   }, [])
 
