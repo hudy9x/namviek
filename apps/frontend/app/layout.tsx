@@ -9,7 +9,12 @@ import { GoalieProvider } from '@auth-client'
 import dynamic from 'next/dynamic'
 import GoogleAnalytics from './_components/GA'
 import { CSPostHogProvider } from './providers'
+
 const inter = Inter({ subsets: ['latin'] })
+
+const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
+  ssr: false,
+})
 
 const PushNotification = dynamic(
   () => import('./_components/PushNotification'),
@@ -34,6 +39,7 @@ export default function RootLayout({
             <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
           </head>
           <body className={inter.className}>
+            <PostHogPageView />
             <RootLayoutComp>{children}</RootLayoutComp>
             <PushNotification />
             <GoogleAnalytics />
