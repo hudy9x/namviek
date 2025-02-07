@@ -10,7 +10,7 @@ import {
 import { ParseResult, validateEmail, safeParse } from '@namviek/core/validation'
 import Link from 'next/link'
 import { useState } from 'react'
-import Logo from '../../components/Logo'
+import Logo from '../../../components/Logo'
 import { forgotPassword } from '@auth-client'
 import { useCooldown } from '@/hooks/useCooldown'
 import { z } from 'zod'

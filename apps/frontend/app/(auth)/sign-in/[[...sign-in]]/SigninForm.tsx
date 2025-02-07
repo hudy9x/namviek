@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { motion } from "framer-motion";
-import Logo from '../../../components/Logo'
+import Logo from '../../../../components/Logo'
 
 import {
   ISignin,

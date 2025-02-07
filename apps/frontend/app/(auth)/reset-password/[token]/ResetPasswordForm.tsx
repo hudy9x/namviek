@@ -10,7 +10,7 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Logo from '../../../components/Logo'
+import Logo from '../../../../components/Logo'
 import { resetPassword } from '@auth-client'
 import { safeParse } from '@namviek/core/validation'
 import { z } from 'zod'

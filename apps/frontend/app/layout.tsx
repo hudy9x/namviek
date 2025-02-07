@@ -1,7 +1,6 @@
 // app/layout.tsx
 import './global.css'
 import './darkmode.css'
-import './style/index.css'
 import { Inter } from 'next/font/google'
 import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@auth-client'
