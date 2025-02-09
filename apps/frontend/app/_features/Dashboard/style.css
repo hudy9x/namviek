@@ -1,3 +1,0 @@
-.react-grid-item > .react-resizable-handle::after{
-  @apply dark:border-gray-400;
-}

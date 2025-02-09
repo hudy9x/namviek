@@ -31,24 +31,6 @@ enum InvitationStatus {
   INVITING
 }
 
-enum TaskPriority {
-  URGENT
-  HIGH
-  NORMAL
-  LOW
-}
-
-enum StatusType {
-  DONE
-  INPROCESS
-  TODO
-}
-
-enum ActivityObjectType {
-  TASK
-  PROJECT
-}
-
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -126,18 +108,6 @@ model OrganizationMembers {
   updatedBy      String?
 }
 
-enum CounterType {
-  TASK
-  PROJECT
-  ORGANIZATION
-}
-
-model Counter {
-  id      String      @id @default(auto()) @map("_id") @db.ObjectId
-  type    CounterType
-  counter Int
-}
-
 model Test {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   title String
@@ -176,49 +146,6 @@ model Field {
   config    Json?
 }
 
-enum TaskType {
-  TASK
-  BUG
-  NEW_FEATURE
-  IMPROVEMENT
-}
-
-model Task {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  desc    String?
-  dueDate DateTime?
-  order   Int
-  type    TaskType?
-
-  checklistDone  Int?
-  checklistTodos Int?
-
-  cover            String?
-  plannedStartDate DateTime?
-  plannedDueDate   DateTime?
-  startDate        DateTime?
-  projectId        String        @db.ObjectId
-  priority         TaskPriority?
-  visionId         String?       @db.ObjectId
-  taskStatusId     String?       @db.ObjectId
-  tagIds           String[]      @db.ObjectId
-  assigneeIds      String[]      @db.ObjectId
-  fileIds          String[]      @db.ObjectId
-  parentTaskId     String?       @db.ObjectId
-  progress         Int?
-  done             Boolean       @default(false)
-  // do not store `point` as objectID, cuz we just need to fill the point value
-  taskPoint        Int?
-
-  customFields Json?
-
-  createdBy String?
-  createdAt DateTime?
-  updatedBy String?
-  updatedAt DateTime?
-}
-
 model Grid {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   title     String
@@ -232,52 +159,6 @@ model Grid {
   createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
-}
-
-model TaskStatus {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  color     String
-  order     Int
-  projectId String     @db.ObjectId
-  type      StatusType @default(TODO)
-}
-
-model TaskChecklist {
-  id     String    @id @default(auto()) @map("_id") @db.ObjectId
-  taskId String    @db.ObjectId
-  title  String
-  order  Int
-  done   Boolean?
-  doneAt DateTime?
-}
-
-// Tag used for Projects and Tasks
-model Tag {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  color     String
-  projectId String @db.ObjectId
-}
-
-model TaskPoint {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  point     Int
-  projectId String  @db.ObjectId
-  icon      String?
-}
-
-type taskAutomateThenType {
-  change String
-  value  String
-}
-
-type taskAutomateWhenType {
-  happens   String
-  is        String
-  valueFrom String?
-  valueTo   String?
-  equal     String?
 }
 
 enum FileType {
@@ -332,18 +213,6 @@ model Project {
   updatedAt      DateTime?
 }
 
-model ProjectSettingNotification {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  uid         String   @db.ObjectId
-  projectId   String   @db.ObjectId
-  taskChanges Boolean? @default(false)
-  remind      Boolean? @default(false)
-  overdue     Boolean? @default(false)
-
-  createdBy String?
-  createdAt DateTime?
-}
-
 enum ProjectViewType {
   LIST
   BOARD
@@ -372,19 +241,6 @@ model ProjectView {
   updatedAt DateTime?
 }
 
-model Vision {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  projectId      String?   @db.ObjectId
-  organizationId String?   @db.ObjectId
-  parentId       String?   @db.ObjectId
-  startDate      DateTime?
-  dueDate        DateTime?
-  progress       Int?
-  createdBy      String?
-  createdAt      DateTime?
-}
-
 model Members {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   projectId String     @db.ObjectId
@@ -395,111 +251,6 @@ model Members {
   createdAt DateTime?
   updatedBy String?
   updatedAt DateTime?
-}
-
-enum StatsType {
-  PROJECT_TASK_BY_DAY
-  MEMBER_TASK_BY_DAY
-}
-
-model Stats {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  type      StatsType
-  data      Json?
-  uid       String?   @db.ObjectId
-  projectId String?   @db.ObjectId
-  orgId     String?   @db.ObjectId
-  year      Int
-  month     Int
-  date      Int
-  updatedAt DateTime?
-}
-
-enum DashboardComponentType {
-  LINE
-  SUMMARY
-  PIE
-  LISTTAB
-  LIST
-  COLUMN
-  BURNDOWN
-  BURNUP
-}
-
-model DashboardComponent {
-  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
-  dashboard   Dashboard?              @relation(fields: [dashboardId], references: [id])
-  dashboardId String?                 @db.ObjectId
-  title       String?
-  type        DashboardComponentType?
-  config      Json?
-  x           Int?                    @default(0)
-  y           Int?                    @default(0)
-  width       Int?                    @default(3)
-  height      Int?                    @default(1)
-
-  createdBy String?
-  createdAt DateTime?
-  updatedBy String?
-  updatedAt DateTime?
-}
-
-model Dashboard {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  dashboardComponents DashboardComponent[]
-  title               String?              @default("Untitled")
-  projectId           String?              @db.ObjectId
-  isDefault           Boolean?             @default(false)
-}
-
-enum ActivityType {
-  TASK_CREATED
-  // TASK_CHANGED // change due date, task title, description
-  TASK_TITLE_CHANGED
-  TASK_DESC_CHANGED
-  TASK_DUEDATE_CHANGED
-
-  TASK_ASSIGNEE_ADDED
-  TASK_ASSIGNEE_REMOVED
-
-  TASK_STATUS_CREATED
-  TASK_STATUS_CHANGED
-
-  TASK_PROGRESS_CHANGED
-  TASK_PRIORITY_CHANGED
-  TASK_POINT_CHANGED
-  TASK_VISION_CHANGED
-
-  TASK_COMMENT_CREATED
-  TASK_COMMENT_CHANGED
-  TASK_COMMENT_REMOVED
-
-  TASK_ATTACHMENT_ADDED
-  TASK_ATTACHMENT_REMOVED
-}
-
-model Activity {
-  id         String             @id @default(auto()) @map("_id") @db.ObjectId
-  objectId   String
-  objectType ActivityObjectType
-  type       ActivityType
-  createdBy  String
-  data       Json?
-  createdAt  DateTime
-  updatedAt  DateTime?
-  updatedBy  String?
-}
-
-model Comment {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  taskId    String @db.ObjectId
-  projectId String @db.ObjectId
-
-  content String
-
-  createdBy String
-  createdAt DateTime
-  updatedAt DateTime
 }
 
 model Application {

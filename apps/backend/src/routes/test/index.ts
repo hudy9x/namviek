@@ -10,7 +10,6 @@ import {
   Res,
   UseMiddleware
 } from '../../core'
-import { CounterType } from '@prisma/client'
 import {
   CKEY,
   delCache,
@@ -131,122 +130,18 @@ export class TestController extends BaseController {
   }
   @Get('/update-task-order')
   async updateTaskOrder(@Res() res: ExpressResponse) {
-    const { projectId } = this.req.query as { projectId: string }
-    const tasks = await pmClient.task.findMany({
-      where: {
-        projectId
-      },
-      orderBy: {
-        createdAt: 'asc'
-      }
-    })
 
-    const projects = await pmClient.project.findMany({})
+    return 1
 
-    console.log('reset all project counter')
-    for (let j = 0; j < projects.length; j++) {
-      const p = projects[j]
-
-      const counterKey = [CKEY.PROJECT_TASK_COUNTER, p.id]
-      await setCache(counterKey, 0)
-    }
-
-    console.log('start updating order by each project')
-    const updateData = []
-    for (let index = 0; index < tasks.length; index++) {
-      const task = tasks[index]
-      if (!task.projectId) continue
-
-      const counterKey = [CKEY.PROJECT_TASK_COUNTER, task.projectId]
-      const order = await incrCache(counterKey)
-
-      updateData.push(
-        pmClient.task.update({
-          where: {
-            id: task.id
-          },
-          data: {
-            order
-          },
-          select: {
-            id: true,
-            order: true,
-            title: true
-          }
-        })
-      )
-    }
-
-    console.log('waiting for all updates done')
-    const result = await Promise.allSettled(updateData)
-    console.log('==> ok it is done')
-
-    res.json({
-      data: result
-    })
   }
   @Get('/counter')
   async increaseTaskCounter(@Res() res: ExpressResponse) {
-    const d = new Date()
-    try {
-      const counter = await pmClient.$transaction(async tx => {
-        const result = await tx.counter.findFirst({
-          where: {
-            type: CounterType.TASK
-          }
-        })
-
-        let total = 0
-
-        if (result && result.counter) {
-          total = result.counter
-        }
-
-        const counter = total + 1
-
-        await tx.counter.update({
-          where: {
-            id: result.id
-          },
-          data: {
-            counter
-          }
-        })
-
-        return counter
-      })
-
-      const result = await pmClient.test.create({
-        data: {
-          title: 'Unititled ' + d.toString(),
-          order: counter
-        }
-      })
-
-      console.log(result.order, counter)
-
-      res.json({
-        result,
-        counter
-      })
-    } catch (error) {
-      console.log('failed', d.toString())
-      res.status(500).send(error)
-    }
+    return 1
   }
 
   @Get('/create-counter')
   async createCounter(@Res() res: ExpressResponse) {
-    const result = await pmClient.counter.create({
-      data: {
-        type: CounterType.TASK,
-        counter: 0
-      }
-    })
-
-    res.json({
-      result
-    })
+    return 1
   }
 
   @Get('/cache-counter')

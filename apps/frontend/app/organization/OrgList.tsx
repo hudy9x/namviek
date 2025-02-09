@@ -1,11 +1,9 @@
 'use client'
-import { useEffect, useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Organization } from '@prisma/client'
 import Link from 'next/link'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { orgGet } from '../../services/organization'
-import { dateFormat } from '@namviek/core'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { setOrgInfo } from 'apps/frontend/layouts/OrgSection'
 import { motion } from "framer-motion";
@@ -93,7 +91,7 @@ export default function OrgList() {
                   name: org.name,
                   cover: org.cover || ''
                 })
-              }} key={org.id} href={`/${org.slug}/my-works`}>
+              }} key={org.id} href={`/${org.slug}/project`}>
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}

@@ -1,14 +1,11 @@
 'use client'
 
-import ProjectOverview from '@/features/Project/Overview'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 import ProjectContentLoading from './ProjectContentLoading'
-import TaskList from './TaskList'
 import { useProjectViewStore } from '@/store/projectView'
 import { ProjectViewType } from '@prisma/client'
 import { Loading } from '@ui-components'
-import { useProjectStatusStore } from '@/store/status'
 import { projectViewMap } from '@/features/ProjectView/useProjectViewList'
 import React, { useCallback, useMemo } from 'react'
 import { useReRenderView } from '@/features/ProjectView/useReRenderView'
@@ -63,9 +60,8 @@ function AnimateView({
 function ProjectTabContentLoading() {
 
   const { loading } = useProjectViewStore()
-  const { statusLoading } = useProjectStatusStore()
 
-  if (loading || statusLoading) {
+  if (loading) {
     return <div className="px-3">
       <Loading.Absolute title="Preparing view ..." enabled={true} />
     </div>
@@ -98,7 +94,7 @@ export default function ProjectTabContent() {
     return <div className={cls} style={{ height: 'calc(100vh - 83px)' }}>
       <ProjectTabContentLoading />
       <AnimateView visible={type === 'NONE' && !isIgnored()}>
-        <TaskList />
+        <>Preparing the view</>
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.BOARD)}>
         <Board />
@@ -107,7 +103,7 @@ export default function ProjectTabContent() {
         <Grid />
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.LIST)}>
-        <TaskList />
+        This is the list view
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.CALENDAR)}>
         <Calendar />
@@ -116,7 +112,7 @@ export default function ProjectTabContent() {
         <Vision />
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.DASHBOARD)}>
-        <ProjectOverview />
+        This is dashboard view
       </AnimateView>
       <AnimateView visible={isView(ProjectViewType.TEAM)}>
         <DynamicTeamView />

@@ -2,26 +2,18 @@
 
 import { useParams } from 'next/navigation'
 import { setRecentVist } from '@namviek/core/client'
-import { useTodoFilter } from '@/features/TaskFilter/useTodoFilter'
 import { useUrl } from '@/hooks/useUrl'
 import { useDebounce } from '@/hooks/useDebounce'
 
 import ProjectNav from '../../[orgName]/project/[projectId]/ProjectNav'
-import useGetProjectStatus from './useGetProjectStatus'
-import useGetTask from './useGetTask'
 import { useGetMembers } from './useGetMembers'
-import useGetProjectPoint from './useGetProjectPoint'
 import { useUser } from '@auth-client'
-import { useGenTaskMappingObject } from '@/hooks/useGenTaskMappingObject'
-import useUpdateGroupbyItem from '../TaskFilter/useUpdateGroupbyItem'
 import useSetProjectViewCache from './useSetProjectViewCache'
 import { useEventSyncProjectMember } from '@/events/useEventSyncProjectMember'
 import { useEventSyncProjectView } from '@/events/useEventSyncProjectView'
-import { useEventSyncProjectStatus } from '@/events/useEventSyncProjectStatus'
 import { useGetProjectViewList } from './useGetProjectViewList'
-import { useEventSyncProjectTask } from '@/events/useEventSyncProjectTask'
 import { useGetCustomFields } from './useGetCustomFields'
-import ClearCheckedCheckboxes from '../CustomFieldCheckbox/ClearCheckedCheckboxes'
+import ClearCustomFieldCheckedCheckboxes from '../CustomFieldCheckbox/ClearCheckedCheckboxes'
 
 function SaveRecentVisitPage() {
   const { projectId, orgName } = useParams()
@@ -48,8 +40,6 @@ function useRegisterEvents() {
   // realtime events
   useEventSyncProjectMember(projectId)
   useEventSyncProjectView(projectId)
-  useEventSyncProjectStatus(projectId)
-  useEventSyncProjectTask(projectId)
 }
 
 function PrefetchData() {
@@ -57,21 +47,10 @@ function PrefetchData() {
   useRegisterEvents()
 
   useSetProjectViewCache()
-  useUpdateGroupbyItem()
-  useTodoFilter()
-  useGetProjectStatus()
-  useGetTask()
   useGetMembers()
-  useGetProjectPoint()
   useGetProjectViewList()
   useGetCustomFields()
 
-
-  // this hook generates objects in Map object
-  // that helps to get task item as quickly as possible
-  // by using task'id
-  // Ex: tasks[id] or task[order]
-  useGenTaskMappingObject()
   return <></>
 }
 export default function ProjectContainer() {
@@ -80,6 +59,6 @@ export default function ProjectContainer() {
     <PrefetchData />
     <SaveRecentVisitPage />
     <ProjectNav />
-    <ClearCheckedCheckboxes />
+    <ClearCustomFieldCheckedCheckboxes />
   </>
 }

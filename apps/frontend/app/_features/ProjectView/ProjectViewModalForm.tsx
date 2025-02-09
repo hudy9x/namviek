@@ -15,7 +15,6 @@ import { Loading, messageError, messageSuccess } from '@ui-components'
 import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
 import { projectView } from '@/services/projectView'
-import useTaskFilterContext from '../TaskFilter/useTaskFilterContext'
 import { useReRenderView } from './useReRenderView'
 import { projectViewMap } from './useProjectViewList'
 import { useUser } from '@auth-client'
@@ -35,7 +34,6 @@ export default function ProjectViewModalForm({
   const [loading, setLoading] = useState(false)
   const { addProjectView } = useProjectViewAdd()
   const { isUpdate, updateId } = useProjectViewUpdateContext()
-  const { setFilter } = useTaskFilterContext()
   const { updateView } = useProjectViewStore()
   const { doReRender } = useReRenderView()
 
@@ -113,18 +111,7 @@ export default function ProjectViewModalForm({
       doReRender()
     }
 
-    // update project filter
-    setFilter(filter => ({
-      ...filter,
-      ...{
-        date: newDataFilter.date,
-        groupBy: newDataFilter.groupBy,
-        priority: newDataFilter.priority,
-        statusIds: newDataFilter.statusIds,
-        point: newDataFilter.point,
-        assigneeIds: newDataFilter.assigneeIds
-      }
-    }))
+
 
     hideModal()
 

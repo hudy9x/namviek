@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction, createContext } from 'react'
-import { ExtendedTask } from '@/store/task'
+import { Grid } from '@prisma/client'
 
 export interface DataFetcherContextType {
-  data: ExtendedTask[]
+  data: Grid[]
   cursor: string
   totalRecords: number
   restRecords: number
   isLoading: boolean
   hasNextPage: boolean
   deleteRow: (ids: string | string[]) => void
-  setData: Dispatch<SetStateAction<ExtendedTask[]>>
+  setData: Dispatch<SetStateAction<Grid[]>>
   fetchNextPage: () => void
   updateCustomFields: (taskIds: string[], customFields: Record<string, any>) => void
 }

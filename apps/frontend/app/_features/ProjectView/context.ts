@@ -1,12 +1,10 @@
 import { TaskPriority } from '@prisma/client'
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
-import { ETaskFilterGroupByType } from '../TaskFilter/context'
 
 export interface IBoardFilter {
   date: string
   priority: TaskPriority | 'ALL',
   point: string
-  groupBy: ETaskFilterGroupByType
   statusIds: string[]
   assigneeIds: string[]
 }
@@ -50,7 +48,6 @@ const ProjectViewContext = createContext<IProjectViewContextProps>({
     point: "-1",
     statusIds: ['ALL'],
     assigneeIds: ['ME'],
-    groupBy: ETaskFilterGroupByType.STATUS
   },
   setFilter: () => { console.log(1) }
 })
@@ -65,7 +62,7 @@ export const useProjectViewContext = () => {
 
   const setFilterValue = (
     name: keyof IBoardFilter,
-    val: string | string[] | ETaskFilterGroupByType | boolean
+    val: string | string[] | boolean
   ) => {
     setFilter(filter => ({ ...filter, [name]: val }))
   }

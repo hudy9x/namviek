@@ -1,13 +1,13 @@
-import { ExtendedTask } from "@/store/task";
 import './grid-style.css'
 import CreateNewRow from "./CreateNewRow";
 import GridHeadingRow from "./GridHeadingRow";
 import GridContentRow from "./GridContentRow";
 import GridLoadMore from "./GridLoadMore";
+import { Grid } from "@prisma/client";
 
 
 export default function GridRowContainer({ tasks }: {
-  tasks: ExtendedTask[],
+  tasks: Grid[],
 }) {
 
   return <div>

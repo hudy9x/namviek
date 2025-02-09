@@ -6,7 +6,6 @@ import { useProjectStatusStore } from '@/store/status'
 import { Row } from 'read-excel-file'
 import { useCallback, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { taskAddMany, taskGetAll } from '@/services/task'
 import { useTaskStore } from '@/store/task'
 
 type ITaskWithoutId = Omit<Task, 'id'>
@@ -159,46 +158,9 @@ export default function TaskImportAction() {
 
     nextStep()
     console.log('start importing')
-    taskAddMany({ data: tasks, projectId })
-      .then(res => {
-        const { status, error } = res.data
-        if (status !== 200) {
-          messageError(error)
-          return false
-        }
+    setVisible(false)
+    setLoading(false)
 
-        return true
-      })
-      .then(needToFetch => {
-        return new Promise((resolve, reject) => {
-          if (!needToFetch) return reject(0)
-
-          nextStep()
-          console.log('delay 2s before fetching data')
-          setTimeout(() => {
-            console.log('fetching task for updating')
-            nextStep()
-            taskGetAll(projectId).then(result => {
-              const { data, status } = result.data
-              nextStep()
-              if (status !== 200) {
-                messageWarning(
-                  'Refetching data error, please reload app to update latest data'
-                )
-                reject(0)
-                return
-              }
-
-              addAllTasks(data)
-              setVisible(false)
-              resolve(1)
-            })
-          }, 5000)
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
   }, [rows, loading, tasks])
 
   return (

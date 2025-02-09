@@ -1,21 +1,21 @@
 import { useDataFetcher } from "./useDataFetcher"
 import { randomId } from "@ui-components"
 import { useParams } from "next/navigation"
-import { ExtendedTask } from "@/store/task"
 import { projectGridSv } from "@/services/project.grid"
+import { Grid } from "@prisma/client"
 
 export const useTaskAdd = () => {
   const { setData } = useDataFetcher()
   const { projectId } = useParams()
 
-  const addNewRow = (data?: Partial<ExtendedTask>) => {
+  const addNewRow = (data?: Partial<Grid>) => {
     const id = `TASK_RAND_${randomId()}`
     const insertedData = {
       id,
       title: '',
       projectId,
       customFields: {}
-    } as ExtendedTask
+    } as Grid
 
     setData(prevData => {
       return [

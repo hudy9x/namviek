@@ -1,4 +1,3 @@
-import { useServiceTaskUpdate } from '@/hooks/useServiceTaskUpdate'
 import {
   storageCreatePresignedUrl,
   storagePutFile,
@@ -16,17 +15,13 @@ import {
   randomId
 } from '@ui-components'
 import { AxiosError } from 'axios'
-import { useSetDefaultCover } from './useSetDefaultCover'
 import { useGetParams } from '@/hooks/useGetParams'
 
 export default function useFileUpload() {
   const { uploading, setUploading, onChange, setPreviewFiles, taskId } = useFileKitContext()
-  const { setDefaultCover } = useSetDefaultCover()
   const { orgId } = useGetParams()
   const { projectId, orgName } = useParams()
   const { push } = useRouter()
-
-  const { updateTaskData } = useServiceTaskUpdate()
 
   const verifyFileUrl = async (url: string) => {
     try {
@@ -194,23 +189,7 @@ export default function useFileUpload() {
       return fileItems
     }
 
-    taskId &&
-      fileIds.length &&
-      updateTaskData({
-        id: taskId,
-        fileIds
-      }).then(() => {
 
-        // set default cover image
-        for (let i = 0; i < fileItems.length; i++) {
-          const file = fileItems[i];
-          if (isImage(file.mimeType)) {
-            setDefaultCover(file.url)
-            break
-          }
-
-        }
-      })
 
     return fileItems
   }

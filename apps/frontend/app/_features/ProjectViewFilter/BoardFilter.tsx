@@ -1,6 +1,5 @@
 import { ProjectViewType } from '@prisma/client'
 import { Button } from '@ui-components'
-import FilterForm from './FilterForm'
 import ProjectViewForMe from '../ProjectView/ProjectViewForMe'
 
 export default function ProjectViewFilterByBoard({
@@ -27,7 +26,6 @@ export default function ProjectViewFilterByBoard({
         <h2 className="text-xl mb-3">Board</h2>
         <p className="text-sm text-gray-500 mb-6">{desc}</p>
 
-        <FilterForm type="BOARD" />
         <ProjectViewForMe />
 
         <div className="text-right">

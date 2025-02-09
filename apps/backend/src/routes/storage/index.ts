@@ -5,14 +5,11 @@ import {
   mdStorageAdd,
   mdStorageGet,
   mdStorageGetByOwner,
-  mdStorageGetOne,
-  mdTaskGetOne,
-  mdTaskUpdate
 } from '@database'
 import { FileOwnerType, FileStorage } from '@prisma/client'
 import { AuthRequest } from '../../types'
-import { fileStorageModel, pmClient } from 'packages/database/src/lib/_prisma'
-import { CKEY, findNDelCaches } from '../../lib/redis'
+import { fileStorageModel } from 'packages/database/src/lib/_prisma'
+import { CKEY } from '../../lib/redis'
 import StorageCache from '../../caches/StorageCache'
 import { StorageService } from '../../services/storage.service'
 import MaxStorageSizeException from '../../exceptions/MaxStorageSizeException'
@@ -100,15 +97,14 @@ router.delete('/del-file', async (req: AuthRequest, res) => {
 
     if (ownerType === FileOwnerType.TASK) {
       // 2. remove the file from it's owner
-      storageService.removeFileFromOwner(owner, fileId)
-
       // 3. delete file from s3, clear cache and decrease current volume
       await storageService.removeFileFromStorage(keyName, key, fileId)
 
-      res.json({
-        status: 200,
-      })
     }
+
+    res.json({
+      status: 200,
+    })
 
   } catch (error) {
     res.status(500).send(error)
@@ -192,7 +188,7 @@ router.post('/save-to-drive', async (req: AuthRequest, res, next) => {
 
 router.get('/get-object-url', async (req, res) => {
   const { keyName, orgId } = req.query as { keyName: string; orgId: string }
-  
+
   try {
     if (!keyName || !orgId) {
       return res.status(400).send('KEY_NAME_AND_ORG_ID_REQUIRED')
@@ -201,9 +197,9 @@ router.get('/get-object-url', async (req, res) => {
     const storageService = new StorageService(orgId)
     const url = await storageService.getObjectUrl(keyName)
 
-    res.json({ 
+    res.json({
       status: 200,
-      data: { url } 
+      data: { url }
     })
   } catch (error) {
     console.log('Error generating view URL:', error)

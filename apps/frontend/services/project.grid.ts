@@ -1,6 +1,5 @@
-import { FieldType } from "@prisma/client"
+import { FieldType, Grid } from "@prisma/client"
 import { httpDel, httpPost, httpPut } from "./_req"
-import { ExtendedTask } from "@/store/task"
 import { IFilterAdvancedData } from "@/features/FilterAdvanced/type"
 
 export interface ICustomFieldData {
@@ -40,7 +39,7 @@ export const projectGridSv = {
     })
   },
 
-  create(data: ExtendedTask) {
+  create(data: Grid) {
     return httpPost('/api/project/grid/create', data)
   },
 

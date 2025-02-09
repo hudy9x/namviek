@@ -6,7 +6,6 @@ import RootLayoutComp from '../layouts/RootLayout'
 import { GoalieProvider } from '@auth-client'
 
 import dynamic from 'next/dynamic'
-import GoogleAnalytics from './_components/GA'
 import { CSPostHogProvider } from './providers'
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,7 +34,6 @@ export default function RootLayout({
           <body className={inter.className}>
             <RootLayoutComp>{children}</RootLayoutComp>
             <PushNotification />
-            <GoogleAnalytics />
           </body>
         </html>
       </GoalieProvider>

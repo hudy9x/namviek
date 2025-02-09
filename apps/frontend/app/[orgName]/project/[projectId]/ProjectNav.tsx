@@ -1,8 +1,6 @@
 'use client'
 import ProjectTabContent from './ProjectTabContent'
-import TaskCreate from './TaskCreate'
 import ProjectView from '@/features/ProjectView'
-import { TaskUpdate2 } from './TaskUpdate2'
 import ProjectAdvanceTabs from '@/features/ProjectAdvanceTabs'
 import ProjectHeader from '@/features/Project/Header'
 import CustomFieldModal from '@/features/CustomField/CustomFieldModal'
@@ -24,12 +22,8 @@ export default function ProjectNav() {
       </div>
       <div className="absolute bottom-10 right-10 z-[11]">
         <div className="hidden sm:flex items-center gap-2 ">
-          {/* <PromptGenerator /> */}
-          {/* <FavoriteAddModal /> */}
-          <TaskCreate />
         </div>
       </div>
-      <TaskUpdate2 />
       <CustomFieldModal />
     </div>
   )

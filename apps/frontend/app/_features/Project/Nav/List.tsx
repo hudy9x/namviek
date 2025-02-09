@@ -50,14 +50,7 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
       icon: HiOutlineServerStack,
       active: pathname.includes('/project/') || pathname.includes('/project'),
       children: ProjectList
-    },
-    {
-      title: 'Reports',
-      href: `/${orgName}/report`,
-      icon: HiOutlineChartPie,
-      active: pathname.includes(`${orgName}/report`)
-    },
-  
+    },  
   ]
 
 

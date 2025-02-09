@@ -1,7 +1,7 @@
 import StorageConfigurationNotFoundException from "../exceptions/StorageConfigurationNotFoundException"
 import OrganizationStorageService, { IStorageAWSConfig } from "./organizationStorage.service"
 import AwsS3StorageProvider from "../providers/storage/AwsS3StorageProvider"
-import { mdOrgGetOne, mdStorageGetOne, mdTaskGetOne, mdTaskUpdate } from "@database"
+import { mdStorageGetOne } from "@database"
 import StorageCache from "../caches/StorageCache"
 import IncorrectConfigurationException from "../exceptions/IncorrectConfigurationException"
 import { fileStorageModel } from "packages/database/src/lib/_prisma"
@@ -85,36 +85,6 @@ export class StorageService {
     return this.storageProvider
   }
 
-  async removeFileFromOwner(owner: string, fileId: string) {
-    const task = await mdTaskGetOne(owner)
-
-    const { fileIds } = task
-
-    if (!fileIds.includes(fileId)) {
-      // return 'FILE_NOT_EXIST_IN_TASK'
-      throw new Error('FILE_NOT_EXIST_IN_TASK')
-    }
-
-    task.fileIds = fileIds.filter(f => f !== fileId)
-
-    delete task.id
-
-    const promises = []
-    promises.push(
-      fileStorageModel.delete({
-        where: { id: fileId }
-      })
-    )
-
-    promises.push(
-      mdTaskUpdate({
-        id: owner,
-        ...task
-      })
-    )
-
-    await Promise.all(promises)
-  }
 
   async removeFileFromStorage(name: string, key: string[], fileId: string) {
     const storageCache = new StorageCache(this.orgId)

@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewModalProvider } from './context'
-import { ETaskFilterGroupByType } from '../TaskFilter/context'
 
 export default function ProjectViewCreate() {
   const [visible, setVisible] = useState(false)
@@ -17,7 +16,6 @@ export default function ProjectViewCreate() {
     point: "-1",
     statusIds: ['ALL'],
     assigneeIds: ['ME'],
-    groupBy: ETaskFilterGroupByType.STATUS
   })
 
   useEffect(() => {

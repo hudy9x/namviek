@@ -7,7 +7,7 @@ import { AuthRequest } from "../../types";
 
 @Controller('/project/grid')
 @UseMiddleware([authMiddleware, beProjectMemberMiddleware])
-export default class ProjectGridController extends BaseController {
+export default class GridController extends BaseController {
   private gridService: GridService
 
   constructor() {

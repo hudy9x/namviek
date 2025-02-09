@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react'
 import { IFilterAdvancedData } from '@/features/FilterAdvanced/type'
-import { ExtendedTask } from '@/store/task'
-import { FieldType } from '@prisma/client'
+import { FieldType, Grid } from '@prisma/client'
 import { projectGridSv } from '@/services/project.grid'
 
 interface UseTaskFetcherProps {
@@ -24,7 +23,7 @@ export function useTaskFetcher({
   orderBy,
   initialCursor
 }: UseTaskFetcherProps) {
-  const [data, setData] = useState<ExtendedTask[]>([])
+  const [data, setData] = useState<Grid[]>([])
   const [cursor, setCursor] = useState<string>(initialCursor || '')
   const [hasNextPage, setHasNextPage] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

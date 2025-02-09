@@ -2,7 +2,6 @@ import { Dialog, messageError } from '@ui-components'
 import { useEffect, useState } from 'react'
 import ProjectViewModal from './ProjectViewModal'
 import { IBoardFilter, ProjectViewModalProvider } from './context'
-import { ETaskFilterGroupByType } from '../TaskFilter/context'
 import { useProjectViewUpdateContext } from './updateContext'
 import { useProjectViewStore } from '@/store/projectView'
 
@@ -25,7 +24,6 @@ export default function ProjectViewUpdate({
     point: "-1",
     statusIds: ['ALL'],
     assigneeIds: ['ME'],
-    groupBy: ETaskFilterGroupByType.STATUS
   })
 
   useEffect(() => {
@@ -77,7 +75,6 @@ export default function ProjectViewUpdate({
         point: "-1",
         statusIds: ['ALL'],
         assigneeIds: ['ME'],
-        groupBy: ETaskFilterGroupByType.STATUS
       })
     }
 

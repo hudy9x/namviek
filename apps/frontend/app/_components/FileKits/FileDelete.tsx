@@ -2,15 +2,11 @@ import { storageDelFile } from '@/services/storage'
 import { Button, confirmAlert, messageError, messageSuccess } from '@ui-components'
 import { useParams, useSearchParams } from 'next/navigation'
 import { IFileItem, useFileKitContext } from './context'
-import { useTaskStore } from '@/store/task'
-import { useUser } from '@auth-client'
+
 import { useGetParams } from '@/hooks/useGetParams'
 
 export default function FileDelete({ id }: { id: string }) {
   const { previewFiles, setPreviewFiles, taskId } = useFileKitContext()
-
-  const { user } = useUser()
-  const { updateTask } = useTaskStore()
   const { projectId } = useParams()
   const { orgId } = useGetParams()
   // const sp = useSearchParams()
@@ -35,14 +31,6 @@ export default function FileDelete({ id }: { id: string }) {
     console.log('previewFiles', remainFileIds, remainFileItems)
 
     setPreviewFiles(remainFileItems)
-
-    updateTask({
-      updatedBy: user?.id,
-      ...{
-        id: taskId,
-        fileIds: remainFileIds
-      }
-    })
 
     if (orgId) {
       storageDelFile({

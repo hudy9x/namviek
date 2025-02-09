@@ -4,8 +4,6 @@ import { IFileItem, isImage, useFileKitContext } from './context'
 import FileDelete from './FileDelete'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useParams, useSearchParams } from 'next/navigation'
-import { taskMakeCover } from '@/services/task'
-import { useTaskStore } from '@/store/task'
 
 export default function FileItem({ data }: { data: IFileItem }) {
   const { name, url, ext, mimeType, uploading, id, createdAt } = data
@@ -13,7 +11,6 @@ export default function FileItem({ data }: { data: IFileItem }) {
   // const sp = useSearchParams()
   // const taskId = sp.get('taskId')
   const { projectId } = useParams()
-  const { updateTask } = useTaskStore()
 
   const createdDate = createdAt
     ? formatDistanceToNow(new Date(createdAt))
@@ -25,18 +22,7 @@ export default function FileItem({ data }: { data: IFileItem }) {
       messageWarning('Can not turn this to cover => TaskId not found')
       return
     }
-
-    updateTask({
-      id: taskId,
-      cover: url
-    })
-    taskMakeCover({
-      taskId,
-      url,
-      projectId
-    }).then(res => {
-      messageSuccess('updated cover')
-    })
+    
   }
 
   return (

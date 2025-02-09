@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Project, TaskPriority } from '@prisma/client'
+import { Project } from '@prisma/client'
 import { produce } from 'immer'
 
 export type PinnedProjectSetting = {
@@ -9,7 +9,6 @@ export type PinnedProjectSetting = {
 
 interface ProjectState {
   selectedProject: Project | null
-  priorities: TaskPriority[]
   loading: boolean
   projects: Project[]
   pinnedProjects: PinnedProjectSetting[]
@@ -26,12 +25,6 @@ interface ProjectState {
 
 export const useProjectStore = create<ProjectState>(set => ({
   loading: false,
-  priorities: [
-    TaskPriority.LOW,
-    TaskPriority.HIGH,
-    TaskPriority.NORMAL,
-    TaskPriority.URGENT
-  ],
   selectedProject: null,
   projects: [],
   pinnedProjects: [],

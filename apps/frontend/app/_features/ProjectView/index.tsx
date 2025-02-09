@@ -4,18 +4,11 @@ import ProjectViewCreate from './ProjectViewCreate'
 import './style.css'
 import { useProjectViewList } from './useProjectViewList'
 import HasRole from '../UserPermission/HasRole'
-import useSetViewFilter from './useSetViewFilter'
 import { useState } from 'react'
 import ProjectViewUpdate from './ProjectViewUpdate'
 import { ProjectViewUpdateProvider } from './updateContext'
 import ProjectViewList from './ProjectViewList'
 
-
-function SetProjectViewFilter() {
-  // set the view's filter data
-  useSetViewFilter()
-  return <></>
-}
 
 function VerticalSeparator() {
   const { views } = useProjectViewList()
@@ -35,7 +28,6 @@ export default function ProjectView() {
       updateId: projectViewId,
       setUpdateId: setProjectViewId
     }}>
-      <SetProjectViewFilter />
       <div className="project-view pl-1 relative">
 
         <ProjectViewList onUpdate={id => {

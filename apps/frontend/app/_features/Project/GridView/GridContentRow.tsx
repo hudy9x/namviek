@@ -3,8 +3,7 @@ import CustomFieldCheckboxItem from "@/features/CustomFieldCheckbox/CustomFieldC
 import CustomFieldDisplay from "@/features/CustomFieldDisplay"
 import CustomFieldInputFactory from "@/features/CustomFieldInput/CustomFieldInputFactory"
 import CustomFieldInputProvider from "@/features/CustomFieldInput/CustomFieldInputProvider"
-import { ExtendedTask } from "@/store/task"
-import { FieldType, Prisma } from "@prisma/client"
+import { FieldType, Grid, Prisma } from "@prisma/client"
 import { useTaskUpdate } from "@/components/DataFetcher/useTaskUpdate";
 import GridBtnActions from "./GridBtnActions";
 
@@ -25,7 +24,7 @@ const useOnChangeCustomFieldInput = (taskId: string) => {
   }
 }
 
-function GridContentRow({ task }: { task: ExtendedTask }) {
+function GridContentRow({ task }: { task: Grid }) {
 
   const taskCustomData = task.customFields
   // console.log('taskCustomData', taskCustomData)
