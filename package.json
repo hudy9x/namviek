@@ -32,7 +32,6 @@
     "@aws-sdk/client-s3": "3.590.0",
     "@aws-sdk/s3-request-presigner": "3.590.0",
     "@axiomhq/winston": "^1.0.0",
-    "@logtail/node": "^0.4.19",
     "@prisma/client": "5.2.0",
     "@pusher/push-notifications-server": "^1.2.6",
     "@pusher/push-notifications-web": "^1.1.0",

@@ -1,4 +1,4 @@
-import { MemberRole, ProjectViewType, StatusType } from "@prisma/client"
+import { MemberRole, ProjectViewType } from "@prisma/client"
 import { pmClient } from "../../lib/_prisma"
 
 export const createProject = async (body: {
@@ -32,41 +32,6 @@ export const createProject = async (body: {
     })
 
     // console.log('project created', result.id)
-
-    // Prepare default data - START
-
-    const initialPointData = [
-      { point: 1, projectId: result.id, icon: null },
-      { point: 2, projectId: result.id, icon: null },
-      { point: 3, projectId: result.id, icon: null },
-      { point: 5, projectId: result.id, icon: null },
-      { point: 8, projectId: result.id, icon: null }
-    ]
-
-    const initialStatusData = [
-      {
-        color: '#d9d9d9',
-        name: 'TODO',
-        order: 0,
-        projectId: result.id,
-        type: StatusType.TODO
-      },
-      {
-        color: '#4286f4',
-        name: 'INPROGRESS',
-        order: 1,
-        projectId: result.id,
-        type: StatusType.INPROCESS
-      },
-      {
-        color: '#4caf50',
-        name: 'CLOSED',
-        order: 2,
-        projectId: result.id,
-        type: StatusType.DONE
-      }
-    ]
-    // Prepare default data - END
 
     // Add default project views - START
 
@@ -123,7 +88,6 @@ export const createProject = async (body: {
 
     // Add default project views - END
 
-
     // Add project members - START
     const memberDatas = members.map(m => ({
       uid: m,
@@ -141,26 +105,10 @@ export const createProject = async (body: {
 
     // Add project members - END
 
-
-    // Add default project status - START
-    const projectStatusPromise = tx.taskStatus.createMany({
-      data: initialStatusData
-    })
-    // Add default project status - END
-
-
-    const taskPointPromise = tx.taskPoint.createMany({
-      data: initialPointData
-    })
-
     // console.log('start inserting default status, point and members')
     const promises = await Promise.all([
-      projectStatusPromise,
-      taskPointPromise,
       memberPromise
-
     ])
-
 
     await Promise.all(promises)
 

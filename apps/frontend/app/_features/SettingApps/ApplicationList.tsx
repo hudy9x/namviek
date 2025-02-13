@@ -14,15 +14,33 @@ export const ApplicationList = () => {
   }, [orgId])
 
   return (
-    <div className="space-y-4">
-      {applications.map((app: Application) => (
-        <ApplicationCard key={app.id} application={app} />
+    <div className="border dark:border-gray-700 rounded-lg overflow-hidden divide-y dark:divide-gray-700">
+      {/* Header */}
+      <div className="grid grid-cols-[2fr,2fr,2fr] gap-4 px-4 py-3 bg-gray-50 dark:bg-gray-800 font-medium text-gray-600 dark:text-gray-300">
+        <div>Name</div>
+        <div>Client ID</div>
+        <div>Client Secret</div>
+      </div>
+
+      {/* Rows */}
+      {applications.map((app: Application, index: number) => (
+        <TableRow 
+          key={app.id} 
+          application={app} 
+          isLast={index === applications.length - 1}
+        />
       ))}
     </div>
   )
 }
 
-const ApplicationCard = ({ application }: { application: Application }) => {
+const TableRow = ({ 
+  application, 
+  isLast 
+}: { 
+  application: Application
+  isLast: boolean 
+}) => {
   const [showSecret, setShowSecret] = useState(false)
   const { deleteApplication } = useApplicationStore()
 
@@ -30,7 +48,6 @@ const ApplicationCard = ({ application }: { application: Application }) => {
     navigator.clipboard.writeText(text)
       .then(() => {
         messageSuccess('Copied to clipboard')
-        // Optionally, you can show a toast or notification here
         console.log('Copied to clipboard')
       })
       .catch((err) => {
@@ -50,49 +67,50 @@ const ApplicationCard = ({ application }: { application: Application }) => {
   }
 
   return (
-    <Card className="p-4 group">
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="text-xl font-medium">{application.name}</h3>
-          <div className="mt-2 text-sm space-y-2">
-            <div className='flex items-center gap-3'>
-              <span className="text-gray-500 shrink-0">Client ID: </span>
-              <span className="">{application.clientId}</span>
-              <Button
-                className='group-hover:opacity-100 opacity-0 transition-all'
-                size="sm"
-                onClick={() => copyToClipboard(application.clientId)}
-                leadingIcon={<FiCopy size={16} />}
-              />
-            </div>
-            <div className='flex items-center gap-3'>
-              <span className="text-gray-500 shrink-0">Client Secret: </span>
-              <div className="flex items-center gap-2">
-                <span className="">
-                  {showSecret ? application.clientSecret : '••••••••••••••••'}
-                </span>
-                <Button
-                  className='group-hover:opacity-100 opacity-0 transition-all'
-                  size="sm"
-                  onClick={() => setShowSecret(!showSecret)}
-                  leadingIcon={showSecret ? <FiEyeOff size={16} /> : <FiEye size={16} />}
-                />
-                <Button
-                  className='group-hover:opacity-100 opacity-0 transition-all'
-                  size="sm"
-                  onClick={() => copyToClipboard(application.clientSecret)}
-                  leadingIcon={<FiCopy size={16} />}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className={`grid grid-cols-[2fr,2fr,2fr] gap-4 px-4 py-3 bg-white dark:bg-gray-900 
+      hover:bg-gray-50 dark:hover:bg-gray-800 items-center group
+      ${isLast ? 'rounded-b-lg' : ''}`}>
+      <div className="font-medium flex items-center justify-between dark:text-gray-200">
+        <span>{application.name}</span>
         <Button
           size="sm"
+          variant="ghost"
           onClick={handleDelete}
           leadingIcon={<FiTrash2 size={16} />}
+          className="opacity-0 group-hover:opacity-100 transition-all"
         />
       </div>
-    </Card>
+      
+      <div className="flex items-center gap-2 dark:text-gray-300">
+        <span className="truncate">{application.clientId}</span>
+        <Button
+          className="opacity-0 group-hover:opacity-100 transition-all"
+          size="sm"
+          variant="ghost"
+          onClick={() => copyToClipboard(application.clientId)}
+          leadingIcon={<FiCopy size={16} />}
+        />
+      </div>
+
+      <div className="flex items-center gap-2 dark:text-gray-300">
+        <span className="truncate">
+          {showSecret ? application.clientSecret : '••••••••••••••••'}
+        </span>
+        <Button
+          className="opacity-0 group-hover:opacity-100 transition-all"
+          size="sm"
+          variant="ghost"
+          onClick={() => setShowSecret(!showSecret)}
+          leadingIcon={showSecret ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+        />
+        <Button
+          className="opacity-0 group-hover:opacity-100 transition-all"
+          size="sm"
+          variant="ghost"
+          onClick={() => copyToClipboard(application.clientSecret)}
+          leadingIcon={<FiCopy size={16} />}
+        />
+      </div>
+    </div>
   )
 } 
