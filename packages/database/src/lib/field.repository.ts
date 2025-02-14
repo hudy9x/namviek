@@ -1,5 +1,5 @@
 import { Field } from '@prisma/client'
-import { fieldModel } from './_prisma'
+import { fieldModel, pmClient } from './_prisma'
 
 
 export class FieldRepository {
@@ -36,7 +36,57 @@ export class FieldRepository {
     })
   }
 
-  async delete(id: string) {
-    return fieldModel.delete({ where: { id } })
+  async delete(id: string, projectId: string) {
+    // return fieldModel.delete({ where: { id } })
+
+
+    try {
+      // Get field info first
+      const field = await pmClient.field.findUnique({
+        where: { id }
+      })
+      
+      if (!field) {
+        throw new Error('Field not found')
+      }
+
+      await pmClient.$transaction(async (tx) => {
+        // 1. Delete the field
+        await tx.field.delete({
+          where: { id }
+        })
+
+        console.log('id', id)
+        console.log('field.projectId', projectId)
+        
+        // 2. Cleanup customFields in all Grid records using update command
+        const result = await pmClient.$runCommandRaw({
+          update: "Grid",
+          updates: [
+            {
+              q: { 
+                projectId: { $oid: projectId }, 
+                [`customFields.${id}`]: { $exists: true }
+              },
+              u: { 
+                $unset: { [`customFields.${id}`]: "" }
+              },
+              multi: true
+            }
+          ],
+          ordered: false,
+          writeConcern: { w: "majority", wtimeout: 5000 }
+        })
+
+        console.log('result', result)
+      })
+
+      console.log('Field deleted successfully 2')
+
+    } catch (error) {
+      console.error('Error deleting field:', error) 
+      throw error
+    }
+
   }
 }

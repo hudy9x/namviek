@@ -27,7 +27,53 @@ export class FieldService {
   }
 
   async delete(id: string) {
-    await this.fieldRepo.delete(id)
+    try {
+      // Get field info first
+      const field = await pmClient.field.findUnique({
+        where: { id }
+      })
+      
+      if (!field) {
+        throw new Error('Field not found')
+      }
+
+      await pmClient.$transaction(async (tx) => {
+        // 1. Delete the field
+        await tx.field.delete({
+          where: { id }
+        })
+
+        console.log('id', id)
+        console.log('field.projectId', field.projectId)
+        
+        // 2. Cleanup customFields in all Grid records using update command
+        const result = await pmClient.$runCommandRaw({
+          update: "Grid",
+          updates: [
+            {
+              q: { 
+                projectId: { $oid: field.projectId }, 
+                [`customFields.${id}`]: { $exists: true }
+              },
+              u: { 
+                $unset: { [`customFields.${id}`]: "" }
+              },
+              multi: true
+            }
+          ],
+          ordered: false,
+          writeConcern: { w: "majority", wtimeout: 5000 }
+        })
+
+        console.log('result', result)
+      })
+
+      console.log('Field deleted successfully 2')
+
+    } catch (error) {
+      console.error('Error deleting field:', error) 
+      throw error
+    }
   }
 
   async sortable(items: { id: string, order: number }[]) {
