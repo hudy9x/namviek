@@ -90,10 +90,11 @@ export default class GridService {
     }
   }
 
-  async create(uid: string, data: { projectId: string }) {
+  async create(uid: string, data: { gridCollectionId: string }) {
     try {
       const result = await this.gridRepo.create(uid, {
-        projectId: data.projectId,
+        gridCollectionId: data.gridCollectionId,
+        // projectId: data.projectId,
       })
 
       return result
@@ -140,7 +141,7 @@ export default class GridService {
   }
 
   async queryCustomField(
-    projectId: string,
+    gridCollectionId: string,
     filter: IFilterAdvancedData,
     pagination: PaginationOptions = {}
   ) {
@@ -149,7 +150,7 @@ export default class GridService {
       const safeLimit = Math.min(limit, 100)
 
       // Get total count for pagination info
-      const countQuery = this.buildQueryFilter(projectId, filter)
+      const countQuery = this.buildQueryFilter(gridCollectionId, filter)
       let countResults = await pmClient.grid.findRaw({
         filter: countQuery
       })
@@ -157,7 +158,7 @@ export default class GridService {
       countResults = null
 
       // Build and execute query
-      const query = this.buildQueryFilter(projectId, filter, cursor)
+      const query = this.buildQueryFilter(gridCollectionId, filter, cursor)
       console.log('query', JSON.stringify(query, null, ' '))
       const results = await pmClient.grid.findRaw({
         filter: query,
@@ -191,9 +192,9 @@ export default class GridService {
     }
   }
 
-  private buildQueryFilter(projectId: string, filter: IFilterAdvancedData, cursor?: string) {
+  private buildQueryFilter(gridCollectionId: string, filter: IFilterAdvancedData, cursor?: string) {
     const baseFilter = {
-      projectId: { $eq: { $oid: projectId } },
+      gridCollectionId: { $eq: { $oid: gridCollectionId } },
       ...this.buildCustomFieldQuery(filter)
     }
 
@@ -211,7 +212,7 @@ export default class GridService {
       // Handle ObjectIds
       if (normalized._id?.$oid) normalized._id = normalized._id.$oid
       normalized.id = normalized._id
-      if (normalized.projectId?.$oid) normalized.projectId = normalized.projectId.$oid
+      if (normalized.gridCollectionId?.$oid) normalized.gridCollectionId = normalized.gridCollectionId.$oid
 
       // Handle Dates
       const dateFields = ['createdAt', 'updatedAt', 'dueDate', 'startDate', 'plannedStartDate', 'plannedDueDate']
@@ -232,12 +233,12 @@ export default class GridService {
   }
 
   async createRow(uid: string, params: {
-    projectId: string,
+    gridCollectionId: string,
     data: Record<string, string>
   }) {
-    const { projectId, data } = params
+    const { gridCollectionId, data } = params
     // 1. Get all fields for the project
-    const projectFields = await this.fieldRepo.getAllByProjectId(projectId);
+    const projectFields = await this.fieldRepo.getAllByGridCollectionId(gridCollectionId);
 
     // 2. Create customFields object by mapping field names to field IDs
     const customFields = {};
@@ -250,7 +251,7 @@ export default class GridService {
 
     // 3. Create new grid row using gridRepo
     const newTask = await this.gridRepo.create(uid, {
-      projectId,
+      gridCollectionId: null,
       customFields
     });
 
@@ -258,13 +259,13 @@ export default class GridService {
   }
 
   async createRows(uid: string, params: {
-    projectId: string,
+    gridCollectionId: string,
     rows: Record<string, string>[]
   }) {
     try {
 
       // 1. Get all fields for the project
-      const projectFields = await this.fieldRepo.getAllByProjectId(params.projectId);
+      const projectFields = await this.fieldRepo.getAllByGridCollectionId(params.gridCollectionId);
 
       // 2. Create customFields objects for each row
       const rows = params.rows.map(rowData => {
@@ -279,7 +280,7 @@ export default class GridService {
 
       // 3. Create multiple grid rows using gridRepo
       const result = await this.gridRepo.createMany(uid, {
-        projectId: params.projectId,
+        gridCollectionId: params.gridCollectionId,
         rows
       });
 

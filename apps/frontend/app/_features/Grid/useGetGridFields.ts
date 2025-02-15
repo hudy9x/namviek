@@ -38,7 +38,7 @@ export const useGetCustomFieldHandler = (gridId: string) => {
   }
 }
 
-export const useGetCustomFields = () => {
+export const useGetGridFields = () => {
   const { gridId } = useParams()
   const addAllCustomField = useProjectCustomFieldStore(state => state.addAllCustomField)
   const { fetch } = useGetCustomFieldHandler(gridId)

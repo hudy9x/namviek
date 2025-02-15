@@ -133,24 +133,36 @@ enum FieldType {
 }
 
 model Field {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  gridCollectionId String    @db.ObjectId
+  name             String
+  type             FieldType
+  icon             String?
+  hidden           Boolean?
+  width            Int
+  order            Int
+  desc             String?
+  data             Json?
+  config           Json?
+}
+
+model GridCollection {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  projectId String    @db.ObjectId
-  name      String
-  type      FieldType
+  title     String
   icon      String?
-  hidden    Boolean?
-  width     Int
-  order     Int
-  desc      String?
-  data      Json?
-  config    Json?
+  projectId String    @db.ObjectId
+  createdBy String?
+  createdAt DateTime?
+  updatedBy String?
+  updatedAt DateTime?
 }
 
 model Grid {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  cover     String?
-  projectId String  @db.ObjectId
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  gridCollectionId String  @db.ObjectId // Reference to GridCollection
+  title            String
+  cover            String?
+  icon             String?
 
   customFields Json?
   isDeleted    Boolean?

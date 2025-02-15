@@ -14,64 +14,23 @@ export class FieldService {
     this.fieldRepo = new FieldRepository()
   }
 
-  async getAllByProjectId(projectId: string) {
+  async getAllByGridCollectionId(gridCollectionId: string) {
     try {
-      const result = await this.fieldRepo.getAllByProjectId(projectId)
+      const result = await this.fieldRepo.getAllByGridCollectionId(gridCollectionId)
       const sorted = result.sort((a, b) => a.order - b.order)
 
       return sorted
     } catch (error) {
       console.log(error)
-      throw new Error('FieldService.getAllByProjectId error')
+      throw new Error('FieldService.getAllByGridCollectionId error')
     }
   }
 
   async delete(id: string) {
     try {
-      // Get field info first
-      const field = await pmClient.field.findUnique({
-        where: { id }
-      })
-      
-      if (!field) {
-        throw new Error('Field not found')
-      }
-
-      await pmClient.$transaction(async (tx) => {
-        // 1. Delete the field
-        await tx.field.delete({
-          where: { id }
-        })
-
-        console.log('id', id)
-        console.log('field.projectId', field.projectId)
-        
-        // 2. Cleanup customFields in all Grid records using update command
-        const result = await pmClient.$runCommandRaw({
-          update: "Grid",
-          updates: [
-            {
-              q: { 
-                projectId: { $oid: field.projectId }, 
-                [`customFields.${id}`]: { $exists: true }
-              },
-              u: { 
-                $unset: { [`customFields.${id}`]: "" }
-              },
-              multi: true
-            }
-          ],
-          ordered: false,
-          writeConcern: { w: "majority", wtimeout: 5000 }
-        })
-
-        console.log('result', result)
-      })
-
-      console.log('Field deleted successfully 2')
-
+      await this.fieldRepo.delete(id)
     } catch (error) {
-      console.error('Error deleting field:', error) 
+      console.error('Error deleting field:', error)
       throw error
     }
   }
@@ -139,7 +98,7 @@ export class FieldService {
     const result = await pmClient.$transaction(async (tx) => {
       const field = await tx.field.findFirst({
         where: {
-          projectId: data.projectId
+          gridCollectionId: data.gridCollectionId
         },
         orderBy: {
           order: 'desc'

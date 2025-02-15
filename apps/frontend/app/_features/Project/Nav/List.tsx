@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useParams, usePathname, useRouter } from 'next/navigation'
@@ -35,14 +34,12 @@ function ViewAllBtn() {
   )
 }
 
-
 function ProjectNavListContainer({ orgName }: { orgName: string }) {
   const { setVisible: setMenuVisible } = useMenuStore()
   const pathname = usePathname()
   const { push } = useRouter()
 
   const menus = [
-
     {
       title: 'Projects',
       href: `/${orgName}/project`,
@@ -53,7 +50,6 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
     },  
   ]
 
-
   return (<Scrollbar style={{ height: `calc(100vh - 141px)` }}>
     <section className="side-nav">
       {menus.map((menu, mindex) => {
@@ -63,7 +59,6 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
         const active = menu.active
         return (
           <div key={mindex} className="cursor-pointer">
-            {/* <Link href={menu.href}> */}
             <div
               onClick={() => {
                 menu.href && push(menu.href)
@@ -76,7 +71,6 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
               </div>
               {MenuBadge ? <MenuBadge /> : null}
             </div>
-            {/* </Link> */}
             {Child && <Child />}
           </div>
         )
@@ -85,7 +79,6 @@ function ProjectNavListContainer({ orgName }: { orgName: string }) {
   </Scrollbar>
   )
 }
-
 
 export default function ProjectNavList() {
   const { orgName } = useParams()

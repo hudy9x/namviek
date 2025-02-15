@@ -9,14 +9,13 @@ export default function SubmitCustomFieldConfig() {
   const data = useCustomFieldStore(state => state.data)
   const setVisible = useCustomFieldStore(state => state.setVisible)
   const addCustomField = useProjectCustomFieldStore(state => state.addCustomField)
-
   const updateCustomField = useProjectCustomFieldStore(state => state.updateCustomField)
 
-  const { projectId } = useParams()
+  const { gridId } = useParams()
 
   const updateCustomFieldHandler = async () => {
-    const updateData = { ...data, ...{ projectId } }
-    console.log('udpate field data', updateData)
+    const updateData = { ...data, gridCollectionId: gridId }
+    console.log('update field data', updateData)
     updateCustomField(updateData as Field)
     setVisible(false)
     const result = await fieldSv.update(updateData)
@@ -25,7 +24,7 @@ export default function SubmitCustomFieldConfig() {
   }
 
   const createCustomFieldHandler = async () => {
-    const insertData = { ...data, ...{ projectId } }
+    const insertData = { ...data, gridCollectionId: gridId }
     console.log('insertData', insertData)
     const result = await fieldSv.create(insertData)
     const { data: fieldData } = result.data
@@ -33,12 +32,11 @@ export default function SubmitCustomFieldConfig() {
     console.log('this is result', fieldData)
     addCustomField(fieldData)
     setVisible(false)
-
   }
 
   const onSubmit = async () => {
-    if (!projectId) {
-      messageError('Project id is not found !')
+    if (!gridId) {
+      messageError('Grid Collection ID is not found!')
       return
     }
 

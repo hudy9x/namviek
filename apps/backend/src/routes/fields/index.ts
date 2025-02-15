@@ -28,17 +28,14 @@ export default class FieldController extends BaseController {
     this.commonQueue = getCommonQueueInstance()
   }
 
-  @Get('/:projectId')
-  async getAllFieldsByProject(
+  @Get('/:gridCollectionId')
+  async getAllFieldsByGridCollection(
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    const { projectId } = req.params as { projectId: string }
-
-    console.log('projectId', req.params)
-
-    const result = await this.fieldService.getAllByProjectId(projectId)
-
+    const { gridCollectionId } = req.params as { gridCollectionId: string }
+    console.log('gridCollectionId', req.params)
+    const result = await this.fieldService.getAllByGridCollectionId(gridCollectionId)
     res.json({ status: 200, data: result })
   }
 
@@ -47,7 +44,6 @@ export default class FieldController extends BaseController {
     @Body() body: Omit<Field, 'id'>,
     @Res() res: ExpressResponse
   ) {
-
     console.log('Field data 2', body)
 
     const result = await this.fieldService.create(body.type, body)
@@ -55,7 +51,6 @@ export default class FieldController extends BaseController {
     console.log('ret data', result)
 
     res.json({ status: 200, data: result })
-
   }
 
   @Put('')
@@ -72,7 +67,6 @@ export default class FieldController extends BaseController {
     const { items } = req.body as { items: { id: string, order: number }[] }
 
     await this.commonQueue.addJob('fieldSortable', items)
-    // await this.fieldService.sortable(items)
     console.log('done 1')
     res.json({ status: 200, data: 1 })
   }

@@ -12,7 +12,7 @@ export const projectGridSv = {
   },
 
   get(
-    projectId: string,
+    gridId: string,
     filter: IFilterAdvancedData,
     signal?: AbortSignal,
     options?: {
@@ -22,7 +22,7 @@ export const projectGridSv = {
     }
   ) {
     return httpPost('/api/project/grid/query', {
-      projectId,
+      gridCollectionId: gridId,
       filter,
       options
     }, {

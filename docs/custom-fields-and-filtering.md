@@ -79,7 +79,7 @@ Context Interface:
 Key Hooks:
 - useTaskFetcher: Main data fetching
 - useTaskUpdate: Field value updates
-- useTaskAdd: New row creation
+- useGridRowAdd: New row creation
 
 
 3. DATA FLOW

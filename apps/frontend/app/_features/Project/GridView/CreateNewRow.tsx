@@ -1,9 +1,9 @@
 
-import { useTaskAdd } from '@/components/DataFetcher/useTaskAdd'
+import { useGridRowAdd } from '@/components/DataFetcher/useGridRowAdd'
 import { useUser } from '@auth-client'
 
 export default function CreateNewRow() {
-  const { addNewRow } = useTaskAdd()
+  const { addNewRow } = useGridRowAdd()
   const { user } = useUser()
 
   const onAdd = () => {

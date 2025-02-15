@@ -21,7 +21,7 @@ export default function DataFetcher({
   limit = 20,
   orderBy = { id: 'asc' }
 }: DataFetcherProps) {
-  const { projectId } = useParams()
+  const { gridId } = useParams()
   const {
     data,
     cursor,
@@ -35,7 +35,7 @@ export default function DataFetcher({
     updateCustomFields,
     fetchData
   } = useTaskFetcher({
-    projectId,
+    gridId,
     groupBy,
     filter,
     limit,
@@ -46,7 +46,7 @@ export default function DataFetcher({
   useEffect(() => {
     const controller = fetchData(initialCursor)
     return () => controller.abort()
-  }, [JSON.stringify(filter), initialCursor, projectId, limit, JSON.stringify(orderBy)])
+  }, [JSON.stringify(filter), initialCursor, gridId, limit, JSON.stringify(orderBy)])
 
   const contextValue: DataFetcherContextType = {
     cursor,

@@ -4,18 +4,19 @@ import { useParams } from "next/navigation"
 import { projectGridSv } from "@/services/project.grid"
 import { Grid } from "@prisma/client"
 
-export const useTaskAdd = () => {
+export const useGridRowAdd = () => {
   const { setData } = useDataFetcher()
-  const { projectId } = useParams()
+  const { projectId, gridId } = useParams()
 
   const addNewRow = (data?: Partial<Grid>) => {
     const id = `TASK_RAND_${randomId()}`
     const insertedData = {
       id,
       title: '',
+      gridCollectionId: gridId,
       projectId,
       customFields: {}
-    } as Grid
+    } as unknown as Grid
 
     setData(prevData => {
       return [

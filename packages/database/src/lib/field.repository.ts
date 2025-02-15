@@ -4,23 +4,6 @@ import { fieldModel, pmClient } from './_prisma'
 
 export class FieldRepository {
 
-  async getAllByProjectId(projectId: string) {
-    return fieldModel.findMany({
-      where: {
-        projectId
-      }
-    })
-  }
-
-  async countProjectCustomField(projectId: string) {
-
-    return fieldModel.count({
-      where: {
-        projectId
-      }
-    })
-  }
-
   async create(data: Omit<Field, 'id'>) {
 
     return fieldModel.create({
@@ -36,10 +19,7 @@ export class FieldRepository {
     })
   }
 
-  async delete(id: string, projectId: string) {
-    // return fieldModel.delete({ where: { id } })
-
-
+  async delete(id: string) {
     try {
       // Get field info first
       const field = await pmClient.field.findUnique({
@@ -55,17 +35,14 @@ export class FieldRepository {
         await tx.field.delete({
           where: { id }
         })
-
-        console.log('id', id)
-        console.log('field.projectId', projectId)
         
-        // 2. Cleanup customFields in all Grid records using update command
+        // 2. Cleanup customFields in all Grid records
         const result = await pmClient.$runCommandRaw({
           update: "Grid",
           updates: [
             {
               q: { 
-                projectId: { $oid: projectId }, 
+                gridCollectionId: field.gridCollectionId,
                 [`customFields.${id}`]: { $exists: true }
               },
               u: { 
@@ -87,6 +64,13 @@ export class FieldRepository {
       console.error('Error deleting field:', error) 
       throw error
     }
+  }
 
+  async getAllByGridCollectionId(gridCollectionId: string) {
+    return fieldModel.findMany({
+      where: {
+        gridCollectionId
+      }
+    })
   }
 }

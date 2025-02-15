@@ -9,10 +9,10 @@ export const fieldSv = {
     return httpPost('/api/fields', data)
   },
 
-  getByProjectId(projectId: string,
+  getByGridCollectionId(gridId: string,
     abortSignal?: AbortSignal
   ) {
-    return httpGet(`/api/fields/${projectId}`, {
+    return httpGet(`/api/fields/${gridId}`, {
       signal: abortSignal
     })
   },
