@@ -14,4 +14,5 @@ export const orgStorage = pmClient.organizationStorage
 export const orgMemberModel = pmClient.organizationMembers
 export const fileStorageModel = pmClient.fileStorage
 export const fieldModel = pmClient.field
+export const gridCollectionModel = pmClient.gridCollection
 

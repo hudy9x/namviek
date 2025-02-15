@@ -7,7 +7,7 @@ import {
   saveGoalieToken
 } from '@auth-client'
 import { messageError } from '@ui-components'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 console.log('=================================')
 console.log('process.env', process.env.NEXT_PUBLIC_BE_GATEWAY)
@@ -72,7 +72,33 @@ instance.interceptors.response.use(
 )
 
 export const req = instance
+
+interface ApiResponse<T> {
+  data: T | null
+  error: any | null
+  response: AxiosResponse
+}
+
 export const httpGet = req.get
+
+export const httpGet2 = async <T>(...args: Parameters<typeof req.get>): Promise<ApiResponse<T>> => {
+  try {
+    const axiosResponse = await req.get(...args)
+    const { data } = axiosResponse.data
+    return {
+      data: data as T,
+      error: null,
+      response: axiosResponse
+    }
+  } catch (error) {
+    return {
+      data: null,
+      error,
+      response: (error as any)?.response || null
+    }
+  }
+}
+
 export const httpPost = req.post
 export const httpPut = req.put
 export const httpDel = req.delete

@@ -49,7 +49,7 @@ export class GridRepository {
         title: 'Untitled',
         cover: null,
         customFields: data.customFields || {},
-        projectId: data.projectId || '',
+        gridCollectionId: data.gridCollectionId,
         createdBy: uid,
         createdAt: new Date(),
         updatedAt: null,
@@ -100,7 +100,7 @@ export class GridRepository {
   }
 
   async createMany(uid: string, data: {
-    projectId: string,
+    gridCollectionId: string,
     rows: { customFields: Record<string, any> }[]
   }) {
     const now = new Date();
@@ -108,7 +108,7 @@ export class GridRepository {
       title: 'Untitled',
       cover: null,
       customFields: row.customFields,
-      projectId: data.projectId,
+      gridCollectionId: data.gridCollectionId,
       createdBy: uid,
       createdAt: now,
       updatedAt: null,

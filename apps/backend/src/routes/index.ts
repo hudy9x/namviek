@@ -23,6 +23,7 @@ import FieldController from './fields'
 import GridController from './grid'
 import { ApplicationController } from './apps/index.controller'
 import PasswordController from './auth/password'
+import GridCollectionController from './grid/grid.collection.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -53,7 +54,8 @@ router.use(
     OrganizationMemberController,
     GridController,
     ApplicationController,
-    FieldController
+    FieldController,
+    GridCollectionController
   ])
 )
 // middlewares

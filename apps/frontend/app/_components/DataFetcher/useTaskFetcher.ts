@@ -4,7 +4,7 @@ import { FieldType, Grid } from '@prisma/client'
 import { projectGridSv } from '@/services/project.grid'
 
 interface UseTaskFetcherProps {
-  projectId: string
+  gridId: string
   filter: IFilterAdvancedData
   limit: number
   groupBy: string
@@ -17,7 +17,7 @@ type FieldValues = {
 }
 
 export function useTaskFetcher({
-  projectId,
+  gridId,
   filter,
   limit,
   orderBy,
@@ -35,7 +35,7 @@ export function useTaskFetcher({
     setIsLoading(true)
 
     projectGridSv.get(
-      projectId,
+      gridId,
       filter,
       controller.signal,
       {
@@ -69,7 +69,7 @@ export function useTaskFetcher({
 
     return controller
     // }
-  }, [filter, projectId, limit, orderBy])
+  }, [filter, gridId, limit, orderBy])
 
   const fetchNextPage = useCallback(() => {
     if (hasNextPage && cursor && !isLoading) {

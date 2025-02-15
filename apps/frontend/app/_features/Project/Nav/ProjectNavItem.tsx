@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu'
 import { useProjectViewStore } from '@/store/projectView'
 import { GoDot } from 'react-icons/go'
+import GridCollectionList from '@/features/Grid/GridCollectionList'
 
 export default function ProjectNavItem({
   pinned = false,
@@ -28,6 +29,7 @@ export default function ProjectNavItem({
   const active = params.projectId === id
   const href = `${params.orgName}/project/${id}?mode=${view}`
   const { selectProject } = useProjectStore(state => state)
+
   const onSelectProject = (id: string) => {
     selectProject(id)
   }
@@ -50,24 +52,27 @@ export default function ProjectNavItem({
     push(link)
   }
 
-  
-
   return (
-    <div
-      className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
-        } transition-all duration-300`}
-      onClick={() => {
-        onSelectItem(href)
-      }}
-      title={name}>
-      <div className="left">
-        {/* <GoDot className="ml-0.5 text-gray-400 dark:text-gray-500 shrink-0" /> */}
-        <img className="w-5 h-5 mr-2" src={icon || ''} />
-        <span className="whitespace-nowrap truncate">{name}</span>
+    <>
+      <div
+        className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+          } transition-all duration-300`}
+        onClick={() => {
+          onSelectItem(href)
+        }}
+        title={name}>
+        <div className="left">
+          {/* <GoDot className="ml-0.5 text-gray-400 dark:text-gray-500 shrink-0" /> */}
+          <img className="w-5 h-5 mr-2" src={icon || ''} />
+          <span className="whitespace-nowrap truncate">{name}</span>
+        </div>
+        <div className="right relative group-hover:opacity-100 opacity-0 transition-all">
+          <ProjectPin projectId={id} pinned={pinned} />
+        </div>
       </div>
-      <div className="right relative group-hover:opacity-100 opacity-0 transition-all">
-        <ProjectPin projectId={id} pinned={pinned} />
-      </div>
-    </div>
+      {active && (
+        <GridCollectionList projectId={id} />
+      )}
+    </>
   )
 }

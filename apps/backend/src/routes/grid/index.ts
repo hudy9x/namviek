@@ -40,7 +40,7 @@ export default class GridController extends BaseController {
 
   @Post('/query')
   async queryCustomField(@Body() body: {
-    projectId: string,
+    gridCollectionId: string,
     filter: IFilterAdvancedData,
     options: {
       cursor?: string
@@ -49,8 +49,9 @@ export default class GridController extends BaseController {
     }
   }) {
     try {
-      const { filter, projectId, options } = body
-      const result = await this.gridService.queryCustomField(projectId, filter, {
+      const { filter, gridCollectionId, options } = body
+      console.log('body', body)
+      const result = await this.gridService.queryCustomField(gridCollectionId, filter, {
         limit: options ? options.limit : 50,
         cursor: options ? options.cursor : ''
       })
@@ -63,13 +64,13 @@ export default class GridController extends BaseController {
 
   @Post('/create-row')
   async createRow(@Req() req: AuthRequest, @Body() body: {
-    projectId: string,
+    gridCollectionId: string,
     row: Record<string, string>
   }) {
     console.log('1')
     const { id: uid } = req.authen
     const ret = await this.gridService.createRow(uid, {
-      projectId: body.projectId,
+      gridCollectionId: body.gridCollectionId,
       data: body.row
     })
     return ret
@@ -77,24 +78,25 @@ export default class GridController extends BaseController {
 
   @Post('/create')
   async create(@Req() req: AuthRequest, @Body() body: {
-    projectId: string,
+    gridCollectionId: string,
   }) {
     const { id: uid } = req.authen
+    console.log('grid-row:create', body)
     const ret = await this.gridService.create(uid, {
-      projectId: body.projectId
+      gridCollectionId: body.gridCollectionId
     })
     return ret
   }
 
   @Post('/create-rows')
   async createRows(@Req() req: AuthRequest, @Body() body: {
-    projectId: string,
+    gridCollectionId: string,
     rows: Record<string, string>[]
   }) {
     const { id: uid } = req.authen
     console.log('rows', body.rows)
     const result = await this.gridService.createRows(uid, {
-      projectId: body.projectId,
+      gridCollectionId: body.gridCollectionId,
       rows: body.rows
     });
     return result;
