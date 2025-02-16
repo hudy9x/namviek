@@ -8,6 +8,7 @@ import CreateFieldNumber from "./CreateFieldNumber";
 import CreateFieldDate from "./CreateFieldDate";
 import CreateFieldSelect from "./CreateFieldSelect";
 import CreateFieldPerson from "./CreateFieldPerson";
+import CreateFieldConnector from "./CreateFieldConnector";
 
 export default function CreateFieldFactory() {
 
@@ -39,10 +40,12 @@ export default function CreateFieldFactory() {
       case FieldType.DATE:
         return <CreateFieldDate />
 
-
       case FieldType.SELECT:
       case FieldType.MULTISELECT:
         return <CreateFieldSelect />
+
+      case FieldType.CONNECTOR:
+        return <CreateFieldConnector />
 
       default:
         return null

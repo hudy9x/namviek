@@ -1,0 +1,177 @@
+Creating a New Field Type
+========================
+
+This guide explains the step-by-step process of adding a new custom field type to the application.
+
+1. Update Schema
+---------------
+First, add the new field type to the FieldType enum in packages/database/src/prisma/schema.prisma:
+
+enum FieldType {
+  // ... existing types ...
+  NEW_FIELD_TYPE  // Add your new type here
+}
+
+After updating the schema, run prisma generate to update the client:
+$ npm run prisma:generate
+
+
+2. Add to Field Type Selection
+-----------------------------
+Update the field type options in apps/frontend/app/_features/CustomField/FormSelectType.tsx:
+
+export const types = [
+  // ... existing types ...
+  { 
+    icon: <IconComponent className="w-4 h-4" />,  // Choose appropriate icon
+    title: 'Your Field Name', 
+    type: FieldType.NEW_FIELD_TYPE 
+  }
+]
+
+
+3. Create Configuration Component
+-------------------------------
+Create a new component for field configuration in apps/frontend/app/_features/CustomField/CreateFieldYourType.tsx:
+
+import { useCustomFieldStore } from "./store"
+
+export default function CreateFieldYourType() {
+  const { data, setData } = useCustomFieldStore()
+
+  return (
+    <div className="space-y-4">
+      {/* Basic field name input */}
+      <div>
+        <label>Field Name</label>
+        <input
+          type="text"
+          value={data.name || ''}
+          onChange={(e) => setData({ ...data, name: e.target.value })}
+        />
+      </div>
+
+      {/* Add your custom configuration inputs here */}
+      {/* Example:
+      <div>
+        <label>Custom Setting</label>
+        <input
+          type="text"
+          value={data.config?.customSetting || ''}
+          onChange={(e) => 
+            setData({ 
+              ...data, 
+              config: { 
+                ...data.config, 
+                customSetting: e.target.value 
+              } 
+            })
+          }
+        />
+      </div>
+      */}
+    </div>
+  )
+}
+
+
+4. Add to Field Factory
+----------------------
+Update the field factory in apps/frontend/app/_features/CustomField/CreateFieldFactory.tsx:
+
+import CreateFieldYourType from "./CreateFieldYourType"
+
+export default function CreateFieldFactory() {
+  const generateForm = () => {
+    switch (data.type) {
+      // ... existing cases ...
+      case FieldType.NEW_FIELD_TYPE:
+        return <CreateFieldYourType />
+      default:
+        return null
+    }
+  }
+}
+
+
+5. Field Configuration Structure
+------------------------------
+Define the configuration interface for your field type:
+
+interface YourFieldConfig {
+  // Define your configuration properties
+  setting1: string
+  setting2: boolean
+  // etc...
+}
+
+Example usage when creating field:
+const fieldData = {
+  name: "Your Field",
+  type: FieldType.NEW_FIELD_TYPE,
+  config: {
+    setting1: "value",
+    setting2: true
+  },
+  data: {} // Any additional data needed
+}
+
+
+6. Example Implementation (Connector Field)
+----------------------------------------
+Here's a real example of implementing a Connector field type:
+
+a. Schema Update:
+enum FieldType {
+  // ... existing types ...
+  CONNECTOR
+}
+
+b. Form Select Type:
+{ 
+  icon: <HiOutlineLink className="w-4 h-4" />, 
+  title: 'Connector', 
+  type: FieldType.CONNECTOR 
+}
+
+c. Configuration Component (CreateFieldConnector.tsx):
+export default function CreateFieldConnector() {
+  const { data, setData } = useCustomFieldStore()
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label>Field Name</label>
+        <input
+          type="text"
+          value={data.name || ''}
+          onChange={(e) => setData({ ...data, name: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Target Grid</label>
+        <select
+          value={data.config?.targetGridCollectionId || ''}
+          onChange={(e) => 
+            setData({ 
+              ...data, 
+              config: { 
+                ...data.config, 
+                targetGridCollectionId: e.target.value 
+              } 
+            })
+          }
+        >
+          <option value="">Select a grid</option>
+        </select>
+      </div>
+    </div>
+  )
+}
+
+d. Configuration Interface:
+interface ConnectorFieldConfig {
+  targetGridCollectionId: string
+  displayField: string
+  allowMultiple: boolean
+} 

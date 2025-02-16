@@ -4,6 +4,7 @@ import CustomFieldModal from "../CustomField/CustomFieldModal"
 import GridViewContainer from "../Project/GridView/GridViewContainer"
 import { useGetMembers } from "../ProjectContainer/useGetMembers"
 import { useGetGridFields } from "./useGetGridFields"
+import './style.css'
 
 export default function GridContainer() {
   useGetGridFields()
