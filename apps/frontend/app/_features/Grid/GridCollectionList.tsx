@@ -88,7 +88,7 @@ export default function GridCollectionList({ projectId }: GridCollectionListProp
   }, [projectId])
 
   return (
-    <div className="pl-8 pr-2 mt-1">
+    <div className="pl-3 pr-2 mt-1">
       {collections.map((collection) => (
         <Link
           key={collection.id}

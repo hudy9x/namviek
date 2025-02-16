@@ -55,7 +55,7 @@ export default function ProjectNavItem({
   return (
     <>
       <div
-        className={`${active ? 'active' : ''} nav-item group ${visible ? 'opacity-100' : 'opacity-0'
+        className={`nav-item group ${visible ? 'opacity-100' : 'opacity-0'
           } transition-all duration-300`}
         onClick={() => {
           onSelectItem(href)
