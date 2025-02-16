@@ -22,4 +22,12 @@ export class GridCollectionRepository {
 
     return collection
   }
+
+  async findById(id: string) {
+    return gridCollectionModel.findUnique({
+      where: {
+        id
+      }
+    })
+  }
 } 

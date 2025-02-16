@@ -12,5 +12,9 @@ export const gridCollectionSv = {
       params: { projectId },
       signal: abortSignal
     })
+  },
+
+  getById(id: string) {
+    return httpGet2<GridCollection>(`/api/grid-collections/${id}`)
   }
 } 

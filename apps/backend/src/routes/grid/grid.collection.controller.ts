@@ -7,7 +7,8 @@ import {
   Body,
   UseMiddleware,
   Query,
-  Req
+  Req,
+  Param
 } from '../../core'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
@@ -48,6 +49,23 @@ export default class GridCollectionController extends BaseController {
     } catch (error) {
       console.error('[Get Grid Collections] Error:', error)
       throw new Error('Failed to fetch grid collections')
+    }
+  }
+
+  @Get('/:id')
+  async getGridCollectionById(@Param() params) {
+    try {
+      const { id } = params
+
+      if (!id) {
+        throw new Error('Grid Collection ID is required')
+      }
+
+      const collection = await this.repository.findById(id)
+      return collection
+    } catch (error) {
+      console.error('[Get Grid Collection] Error:', error)
+      throw new Error('Failed to fetch grid collection')
     }
   }
 
