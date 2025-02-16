@@ -71,7 +71,8 @@
 }
 
 .btn.btn-ghost {
-  @apply bg-transparent border-transparent;
+  @apply bg-transparent border-transparent shadow-none;
+  @apply hover:bg-gray-50 active:bg-gray-100;
 }
 
 .btn.btn-sm {

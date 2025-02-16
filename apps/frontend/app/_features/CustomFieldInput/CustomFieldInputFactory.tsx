@@ -13,6 +13,7 @@ import { memo } from "react"
 import CustomFieldInpFile from "./CustomFieldInpFile"
 import CustomFieldInpCreatedAt from "./CustomFieldInpCreatedAt"
 import CustomFieldInpCreatedBy from "./CustomFieldInpCreatedBy"
+import CustomFieldInpConnector from "./CustomFieldInpConnector"
 
 type ICustomFieldInputFactoryProps = {
   rowId: string
@@ -66,6 +67,9 @@ function CustomFieldInputFactory({
 
       case FieldType.MULTISELECT:
         return <CustomFieldInpMultiSelect data={data} value={value} />
+
+      case FieldType.CONNECTOR:
+        return <CustomFieldInpConnector value={value} config={config} />
 
       default:
         return null

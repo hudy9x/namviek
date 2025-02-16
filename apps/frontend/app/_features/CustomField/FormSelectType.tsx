@@ -18,6 +18,7 @@ export const types = [
   { icon: <HiOutlineDocument className="w-4 h-4" />, title: 'File', type: FieldType.FILES },
   { icon: <HiOutlineLink className="w-4 h-4" />, title: 'Url', type: FieldType.URL },
   { icon: <HiMiniAtSymbol className="w-4 h-4" />, title: 'Email', type: FieldType.EMAIL },
+  { icon: <HiOutlineLink className="w-4 h-4" />, title: 'Connector', type: FieldType.CONNECTOR },
 
   { icon: <HiOutlineUserPlus className="w-4 h-4" />, title: 'Created By', type: FieldType.CREATED_BY },
   { icon: <HiOutlineClock className="w-4 h-4" />, title: 'Created At', type: FieldType.CREATED_AT },

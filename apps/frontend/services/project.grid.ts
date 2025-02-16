@@ -49,5 +49,20 @@ export const projectGridSv = {
         rowIds
       }
     })
+  },
+
+  // New method for connector field
+  getConnectorOptions(gridCollectionId: string) {
+    return this.get(
+      gridCollectionId,
+      {
+        condition: 'AND',
+        list: []
+      },
+      undefined,
+      {
+        limit: 20
+      }
+    )
   }
 }

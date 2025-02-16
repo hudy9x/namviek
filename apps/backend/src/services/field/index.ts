@@ -7,6 +7,7 @@ import { Field, FieldType, Prisma } from "@prisma/client";
 // import { FieldCheckboxStrategy } from "./create.checkbox.field.strategy";
 import { FieldRepository } from "@database";
 import { pmClient } from "packages/database/src/lib/_prisma";
+import { FieldConnectorStrategy } from './create.connector.field.strategy'
 
 export class FieldService {
   fieldRepo: FieldRepository
@@ -88,14 +89,17 @@ export class FieldService {
   }
 
   async create(type: FieldType, data: Omit<Field, 'id'>) {
-
-    console.log('create custom field', type)
-
     const { data: fData, config: fConfig, ...restData } = data
-    const fieldConfig = fConfig as Prisma.JsonObject
+    let fieldConfig = fConfig as Prisma.JsonObject
     const fieldData = fData as Prisma.JsonObject
 
     const result = await pmClient.$transaction(async (tx) => {
+      // Handle connector field config
+      if (type === FieldType.CONNECTOR) {
+        const connectorStrategy = new FieldConnectorStrategy()
+        fieldConfig = await connectorStrategy.prepareConfig(fieldConfig, tx)
+      }
+
       const field = await tx.field.findFirst({
         where: {
           gridCollectionId: data.gridCollectionId
@@ -113,9 +117,6 @@ export class FieldService {
         biggestOrder = field.order + 1
       }
 
-      console.log('fieldConfig', fieldConfig)
-      console.log('restdata', restData)
-
       const createdField = await tx.field.create({
         data: {
           ...{
@@ -129,7 +130,6 @@ export class FieldService {
       })
 
       return createdField
-
     })
 
     return result

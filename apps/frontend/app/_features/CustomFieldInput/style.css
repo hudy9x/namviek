@@ -80,3 +80,7 @@
   @apply overflow-x-hidden overflow-y-auto;
   max-height: calc(100vh - 384px)
 }
+
+.cf-input-container.connector-field .select-button{
+  @apply flex items-center gap-2;
+}
