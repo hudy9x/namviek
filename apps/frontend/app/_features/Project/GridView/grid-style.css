@@ -2,6 +2,10 @@
   @apply divide-y dark:divide-gray-700;
 }
 
+.list-table-body {
+  @apply overflow-y-auto w-full;
+}
+
 .list-heading {
   @apply bg-gray-50 dark:bg-gray-800;
 }
@@ -14,6 +18,7 @@
 .list-cell {
   @apply leading-[20px] h-[35px] shrink-0 truncate text-ellipsis;
   @apply bg-white dark:bg-gray-900;
+  @apply border-b 
 }
 
 .list-row .list-cell .grid-actions { 

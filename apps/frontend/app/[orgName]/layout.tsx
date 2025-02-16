@@ -32,7 +32,7 @@ function OrgDetailContent({ children }: { children: ReactNode }) {
     <ProjectSidebar />
     <Upsale />
     <main
-      className="main-content w-full"
+      className="main-content w-full fixed top-0 left-[251px] overflow-hidden"
       style={{ width: 'calc(100% - 251px)' }}>
       <HamburgerMenu />
       {children}

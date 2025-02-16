@@ -12,10 +12,12 @@ export default function GridRowContainer({ tasks }: {
 
   return <div>
     <div className="list-table">
-      <GridHeadingRow />
-      {tasks.map(task => {
-        return <GridContentRow task={task} key={task.id} />
-      })}
+      <div className='list-table-body'>
+        <GridHeadingRow />
+        {tasks.map(task => {
+          return <GridContentRow task={task} key={task.id} />
+        })}
+      </div>
       <CreateNewRow />
       <GridLoadMore />
     </div>
