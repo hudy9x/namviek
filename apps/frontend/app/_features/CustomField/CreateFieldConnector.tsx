@@ -44,7 +44,7 @@ export default function CreateFieldConnector() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-          Target Grid
+          Connect to Grid
         </label>
         <select
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -66,6 +66,27 @@ export default function CreateFieldConnector() {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="allowMultiple"
+          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600"
+          checked={data.config?.allowMultiple || false}
+          onChange={(e) =>
+            setData({
+              ...data,
+              config: {
+                ...data.config,
+                allowMultiple: e.target.checked
+              }
+            })
+          }
+        />
+        <label htmlFor="allowMultiple" className="ml-2 block text-sm text-gray-700 dark:text-gray-200">
+          Allow multiple values
+        </label>
       </div>
     </div>
   )

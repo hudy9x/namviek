@@ -66,8 +66,6 @@ function GridContentRow({ task }: { task: Grid }) {
         const dataValue = customData[id] // convert all to string
         const dataStrValue = getFixedValue(type, dataValue ? (dataValue + '') : '')
 
-        console.log('index', index, id)
-
         return <>
           <CustomFieldInputProvider onChange={(value) => {
             onChange(value, id, type)

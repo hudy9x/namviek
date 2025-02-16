@@ -2,23 +2,25 @@ import { useEffect, useState } from "react"
 import { useCustomFieldInputContext } from "./context"
 import { Form, ListItemValue } from "@ui-components"
 import { projectGridSv } from "@/services/project.grid"
-import { HiOutlineLink } from "react-icons/hi"
+import { HiOutlineLink } from "react-icons/hi2"
+import { PiEmpty } from "react-icons/pi"
 
 const List = Form.List
 
 interface ConnectorFieldConfig {
   targetGridCollectionId: string
   displayFieldId: string
+  allowMultiple?: boolean
 }
 
 interface ConnectorFieldProps {
-  value: string // ID of the connected record
-  config: string // JSON string containing targetGridCollectionId and displayFieldId
+  value: string | string[] // Can be single ID or array of IDs
+  config: string
 }
 
 export default function CustomFieldInpConnector({ value, config }: ConnectorFieldProps) {
   const [options, setOptions] = useState<ListItemValue[]>([])
-  const [selected, setSelected] = useState<ListItemValue | null>(null)
+  const [selected, setSelected] = useState<ListItemValue[]>([])
   const { onChange } = useCustomFieldInputContext()
   const [loading, setLoading] = useState(true)
 
@@ -28,10 +30,8 @@ export default function CustomFieldInpConnector({ value, config }: ConnectorFiel
     const fetchTargetRecords = async () => {
       try {
         setLoading(true)
-
         const res = await projectGridSv.getConnectorOptions(parsedConfig.targetGridCollectionId)
-        const { data }  = res.data.data
-        console.log('data22', data)
+        const { data } = res.data.data
 
         const transformedOptions = data.map((record: any) => ({
           id: record.id,
@@ -39,18 +39,14 @@ export default function CustomFieldInpConnector({ value, config }: ConnectorFiel
           icon: null
         }))
 
-        console.log('transformedOptions', transformedOptions)
-
-        setOptions([
-          { id: '', title: '(Empty)', icon: null },
-          ...transformedOptions
-        ])
-
+        setOptions(transformedOptions.length ? transformedOptions : [{ id: '', title: '(Empty)', icon: null }])
+        // Handle initial value(s)
         if (value) {
-          const selectedOption = transformedOptions.find((opt: ListItemValue) => opt.id === value)
-          if (selectedOption) {
-            setSelected(selectedOption)
-          }
+          const values = Array.isArray(value) ? value : value.split(',')
+          const selectedOptions = values
+            .map(v => transformedOptions.find(opt => opt.id === v))
+            .filter(Boolean) as ListItemValue[]
+          setSelected(selectedOptions.length ? selectedOptions : [options[0]])
         }
       } catch (error) {
         console.error('Error fetching connector data:', error)
@@ -68,17 +64,45 @@ export default function CustomFieldInpConnector({ value, config }: ConnectorFiel
     </div>
   }
 
+  const handleSelectionChange = (value: ListItemValue[] | ((prev: ListItemValue[]) => ListItemValue[])) => {
+    const newValue = typeof value === 'function' ? value(selected) : value
+    setSelected(newValue)
+    onChange(newValue.map(v => v.id).filter(id => id !== ''))
+  }
+
+  const handleSingleChange = (value: ListItemValue) => {
+    setSelected([value])
+    onChange(value.id)
+  }
+  
   return (
     <div className="cf-input-container connector-field">
       <List
-        onChange={(val: ListItemValue) => {
-          setSelected(val)
-          onChange(val.id)
-        }}
-        value={selected || options[0]}>
+        multiple={parsedConfig.allowMultiple}
+        value={parsedConfig.allowMultiple ? selected : selected[0]}
+        onChange={parsedConfig.allowMultiple ? undefined : handleSingleChange}
+        onMultiChange={parsedConfig.allowMultiple ? handleSelectionChange : undefined}>
         <List.Button>
-          <div className="inline-flex items-center gap-2 px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md">
-            {selected?.title || '(Empty)'}
+          <div className="inline-flex items-center gap-2">
+            {selected.length > 0 ? (
+              <div className="flex flex-wrap gap-1 connector-item-container">
+                {parsedConfig.allowMultiple ? (
+                  // Multiple values display
+                  selected.map(item => (
+                    <span key={item.id} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md">
+                      {item.title}
+                    </span>
+                  ))
+                ) : (
+                  // Single value display
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md">
+                    {selected[0]?.title}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <PiEmpty className="w-3 h-3 text-gray-400" />
+            )}
           </div>
         </List.Button>
         <List.Options width={200}>

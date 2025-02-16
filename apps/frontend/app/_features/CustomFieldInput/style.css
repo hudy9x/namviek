@@ -84,3 +84,7 @@
 .cf-input-container.connector-field .select-button{
   @apply flex items-center gap-2;
 }
+
+.cf-input-container.connector-field .connector-item-container{
+  @apply flex flex-nowrap gap-1;
+}
