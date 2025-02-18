@@ -1,5 +1,6 @@
 import { Project } from '@prisma/client'
 import { httpDel, httpGet, httpPost, httpPut } from './_req'
+import { ProjectTemplate } from "@/types/template"
 
 type IProjectProps = Pick<Project, 'name' | 'desc' | 'organizationId' | 'icon'>
 
@@ -18,13 +19,17 @@ export const projectGet = ({
   })
 }
 
-export const projectQuickAdd = (
-  data: IProjectProps & {
-    views: string[]
-    members: string[]
-  }
-) => {
-  console.log('project add data', data)
+interface ProjectQuickAddParams {
+  icon: string
+  name: string
+  desc: string
+  views: string[]
+  members: string[]
+  organizationId: string
+  templateId?: string
+}
+
+export const projectQuickAdd = (data: ProjectQuickAddParams) => {
   return httpPost('/api/project', data)
 }
 

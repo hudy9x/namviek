@@ -63,6 +63,7 @@ function CustomFieldInputFactory({
         return <CustomFieldInpCheckbox value={value} />
 
       case FieldType.SELECT:
+        console.log('select data', data)
         return <CustomFieldInpSelect data={data} value={value} />
 
       case FieldType.MULTISELECT:

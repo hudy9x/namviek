@@ -18,7 +18,7 @@ export default function ProjectAddModal({
           {triggerComponent}
         </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Content>
+          <Dialog.Content size='lg'>
             <Dialog.Title>Create new project</Dialog.Title>
             <ProjectAddForm setVisible={setVisible} />
           </Dialog.Content>

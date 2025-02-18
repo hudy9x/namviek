@@ -92,6 +92,8 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
     return <span className="w-4 h-4 border rounded-md" style={{ backgroundColor: icon }}></span>
   }
 
+  console.log('select list', selected, options)
+
   return <div className="cf-input-container">
     <List
       onChange={(val: ListItemValue) => {
@@ -108,6 +110,7 @@ export default function CustomFieldInpSelect({ value, data }: { value: string, d
       <List.Options width={150}>
         {options.map(option => {
           const bg = colorMap.get(option.id)
+          console.log('option', option)
           return <List.Item key={option.id} value={option}>
             <div className="text-xs rounded-md p-1 inline-flex items-center gap-2" >
               {genIcon(option.icon || '')}

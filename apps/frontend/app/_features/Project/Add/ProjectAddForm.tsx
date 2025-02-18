@@ -18,6 +18,9 @@ import EmojiInput, { randIcon } from '@/components/EmojiInput'
 import FormGroup from 'packages/ui-components/src/components/FormGroup'
 import FormMember from './FormMembers'
 import FormProjectView from './FormProjectView'
+import { PROJECT_TEMPLATES } from '@namviek/core/templates'
+import { ProjectTemplate } from "@namviek/core/types/project";
+import TemplateSelector from './TemplateSelector'
 
 export default function ProjectAddForm({
   setVisible
@@ -33,7 +36,8 @@ export default function ProjectAddForm({
       name: '',
       views: [],
       members: [],
-      desc: ''
+      desc: '',
+      templateId: ''
     },
     onSubmit: values => {
       const { error, errorArr, data } = validateQuickAddProject(values)
@@ -49,11 +53,11 @@ export default function ProjectAddForm({
 
       setVisible(false)
       setFixLoading(true, { title: `Creating project ${values.name}` })
+      console.log('templateId', values)
       projectQuickAdd({
         ...values,
-        ...{
-          organizationId: orgId
-        }
+        organizationId: orgId,
+        templateId: values.templateId
       })
         .then(res => {
           const { status, data } = res.data
@@ -96,14 +100,14 @@ export default function ProjectAddForm({
             value={formik.values.name}
           />
         </FormGroup>
-
+        {/* 
         <Form.Textarea
           rows={2}
           title="Desciption"
           name="desc"
           onChange={formik.handleChange}
           value={formik.values.desc}
-        />
+        /> */}
 
         <FormProjectView
           onChange={views => {
@@ -118,6 +122,16 @@ export default function ProjectAddForm({
             formik.setFieldValue('members', uids)
           }}
         />
+
+        <FormGroup title="Project Template">
+          <TemplateSelector
+            templates={PROJECT_TEMPLATES}
+            value={formik.values.templateId}
+            onChange={templateId => {
+              formik.setFieldValue('templateId', templateId)
+            }}
+          />
+        </FormGroup>
 
         <div className="flex justify-end">
           <Button type="submit" title="Create new" block primary />

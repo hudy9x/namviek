@@ -93,7 +93,7 @@ export default function GridCollectionList({ projectId }: GridCollectionListProp
         <Link
           key={collection.id}
           href={`/${orgName}/proj/${projectId}/grid/${collection.id}`}
-          className={`flex items-center gap-2 px-2 py-1.5 rounded text-gray-500 hover:text-gray-700 cursor-pointer ${pathname.includes(`/grid/${collection.id}`) ? 'bg-gray-100' : ''
+          className={`flex items-center gap-4 px-2 py-1.5 rounded text-gray-500 hover:text-gray-700 cursor-pointer ${pathname.includes(`/grid/${collection.id}`) ? 'bg-gray-100' : ''
             }`}
         >
           <HiOutlineTableCells className="w-4 h-4" />
