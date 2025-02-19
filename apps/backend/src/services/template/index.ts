@@ -43,7 +43,6 @@ export class TemplateService {
         for (const field of collection.fields) {
           const fieldName = field.name
           const config = field.type !== FieldType.CONNECTOR ? (field.config || {}) : {}
-          console.log('config', config)
           const newField = await tx.field.create({
             data: {
               name: field.name,
@@ -107,6 +106,59 @@ export class TemplateService {
       }
 
       await Promise.all(fieldUpdatePromise)
+
+      // Step 4: Insert sample data
+      for (const collection of template.gridCollections) {
+        if (!collection.sampleData) continue
+        
+        const gridId = gridMap.get(collection.title)!
+        console.log(`Processing sample data for grid: ${collection.title}`)
+
+        // Map sample data to field IDs using fieldIdMap
+        const mappedSampleData = collection.sampleData.map(item => {
+          const rowData: Record<string, any> = {}
+          
+          // Map each field in the sample data
+          for (const field of collection.fields) {
+            if (field.type !== FieldType.CONNECTOR) {
+              const key = `${collection.title}-${field.name}`
+              const [fieldId] = fieldIdMap.get(key) || []
+              if (fieldId) {
+                rowData[fieldId] = item[field.name] || null
+              }
+            }
+          }
+
+          return {
+            gridCollectionId: gridId,
+            title: '',
+            customFields: rowData,
+            createdAt: new Date(),
+            createdBy: userId
+          }
+        })
+
+        console.log('Mapped sample data:', mappedSampleData)
+
+        // After mapping sample data
+        const gridRowMap = new Map<string, Map<string, string>>() // Map<GridTitle, Map<DisplayValue, RowId>>
+        const valueToIdMap = new Map<string, string>()
+        gridRowMap.set(collection.title, valueToIdMap)
+
+        // Insert all rows at once using createMany
+        const result = await tx.grid.createMany({
+          data: mappedSampleData
+        })
+
+        // // Get the created rows to build our value-to-id mapping
+        // const createdRows = await tx.grid.findMany({
+        //   where: { gridCollectionId: gridId },
+        //   orderBy: { createdAt: 'desc' },
+        //   take: mappedSampleData.length
+        // })
+
+        // console.log(`Created ${result.count} rows for ${collection.title}`)
+      }
 
       return true
     } catch (error) {

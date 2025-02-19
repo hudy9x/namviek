@@ -205,7 +205,7 @@ router.post('/project', async (req: AuthRequest, res) => {
         status: 200,
         data: retData
       })
-    }, { timeout: 25000 })
+    }, { timeout: 45000 })
   } catch (error) {
     console.error('Project creation failed:', error)
     res.status(500).send(error)
