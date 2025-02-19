@@ -30,7 +30,6 @@ export default function ListItem({
     const found = selected.find(s => s.id === value.id)
     active = found ? 'active' : ''
   } else {
-    console.log('selected', selected)
     const selectedId = selected ? selected.id : '';
     active = value.id === selectedId ? 'active' : ''
   }

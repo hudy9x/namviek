@@ -9,6 +9,7 @@ import { useGetGridCollection } from "./useGetGridCollection"
 import { ConnectorCacheProvider } from '../CustomFieldInput/ConnectorCache'
 import './style.css'
 import { HiOutlineTableCells } from "react-icons/hi2"
+// import EventGridChanges from "@/events/EventGridChanges"
 
 export default function GridContainer() {
   useGetGridFields()
@@ -35,6 +36,7 @@ export default function GridContainer() {
         </div>
         <GridViewContainer />
         <CustomFieldModal />
+        {/* {gridCollection && gridCollection.id ? <EventGridChanges gridId={gridCollection?.id} /> : null} */}
       </div>
     </ConnectorCacheProvider>
   )

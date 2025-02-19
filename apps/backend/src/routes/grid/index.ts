@@ -3,6 +3,7 @@ import { BaseController, UseMiddleware, Controller, Put, Post, Body, Req, Delete
 import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
 import GridService, { IFilterAdvancedData } from "../../services/grid/grid.service";
 import { AuthRequest } from "../../types";
+import { pusherTrigger } from "../../lib/pusher-server";
 
 
 @Controller('/project/grid')
@@ -67,12 +68,21 @@ export default class GridController extends BaseController {
     gridCollectionId: string,
     row: Record<string, string>
   }) {
-    console.log('1')
     const { id: uid } = req.authen
+    console.log('body', body)
     const ret = await this.gridService.createRow(uid, {
       gridCollectionId: body.gridCollectionId,
       data: body.row
     })
+
+    // Trigger real-time update for new row
+    console.log('gridCollectionId', `grid:changes.${body.gridCollectionId}`)
+    pusherTrigger('team-collab', `grid:changes.${body.gridCollectionId}`, {
+      action: 'create',
+      data: ret,
+      triggerBy: uid
+    })
+
     return ret
   }
 
@@ -94,11 +104,20 @@ export default class GridController extends BaseController {
     rows: Record<string, string>[]
   }) {
     const { id: uid } = req.authen
-    console.log('rows', body.rows)
     const result = await this.gridService.createRows(uid, {
       gridCollectionId: body.gridCollectionId,
       rows: body.rows
     });
+
+    // Trigger real-time update for new rows
+    // result.forEach(row => {
+    //   pusherTrigger('team-collab', `grid:changes.${body.gridCollectionId}`, {
+    //     action: 'create',
+    //     data: row,
+    //     triggerBy: uid
+    //   })
+    // })
+
     return result;
   }
 
@@ -107,8 +126,18 @@ export default class GridController extends BaseController {
     rowIds: string[]
   }) {
     const { id: uid } = req.authen
-    console.log('params delete', params)
-    const result = await this.gridService.deleteRows(params.rowIds);
+
+    const { result, row } = await this.gridService.deleteRows(params.rowIds);
+
+    console.log('deleted', result, row)
+
+    // Trigger real-time update for deleted rows
+    pusherTrigger('team-collab', `grid:changes.${row.gridCollectionId}`, {
+      action: 'delete',
+      data: params.rowIds,
+      triggerBy: uid
+    })
+
     return result;
   }
 }

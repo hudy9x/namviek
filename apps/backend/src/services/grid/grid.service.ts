@@ -251,7 +251,7 @@ export default class GridService {
 
     // 3. Create new grid row using gridRepo
     const newTask = await this.gridRepo.create(uid, {
-      gridCollectionId: null,
+      gridCollectionId: gridCollectionId,
       customFields
     });
 
@@ -293,9 +293,9 @@ export default class GridService {
   async deleteRows(rowIds: string[]) {
     try {
       // Delete the grid rows
-      await this.gridRepo.deleteMany(rowIds);
+      const result = await this.gridRepo.deleteMany(rowIds);
 
-      return 1
+      return result
     } catch (error) {
       console.error('Error deleting grid rows:', error);
       throw error;

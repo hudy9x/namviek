@@ -4,6 +4,7 @@ import { useDataFetcher } from '@/components/DataFetcher/useDataFetcher'
 import CustomFieldMultiAction from '@/features/CustomFieldMultiAction'
 import GridDataFilter from './GridDataFilter'
 import GridRowContainer from './GridRowContainer'
+import EventGridChanges from '@/events/EventGridChanges'
 
 export default function GridViewContainer() {
 
@@ -15,6 +16,7 @@ export default function GridViewContainer() {
           <TaskData />
         </div>
         <CustomFieldMultiAction />
+        <EventGridChanges />
       </GridDataFilter>
     </div>
 
@@ -23,6 +25,7 @@ export default function GridViewContainer() {
 
 function TaskData() {
   const data = useDataFetcher(state => state.data)
+  console.log('data', data)
   return (
     <GridRowContainer tasks={data} />
   )

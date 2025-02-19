@@ -125,12 +125,21 @@ export class GridRepository {
   }
 
   async deleteMany(rowIds: string[]) {
+    const deletedRow = await gridModel.findFirst({
+      where: {
+        id: { in: rowIds }
+      }
+    })
+
     const result = await gridModel.deleteMany({
       where: {
         id: { in: rowIds }
       }
     })
-    return result
+    return {
+      row: deletedRow,
+      result
+    }
   }
 
 }

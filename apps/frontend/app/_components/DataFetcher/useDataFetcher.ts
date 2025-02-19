@@ -10,7 +10,6 @@ export function useDataFetcher<Selected>(
   selector?: (state: DataFetcherContextType) => Selected,
 ) {
   const context = useContext(DataFetcherContext)
-
   const selectedValue = useMemo(
     () => selector && context ? selector(context) : context,
     [context, selector]

@@ -8,10 +8,8 @@ import { Organization } from "@prisma/client"
 import { getLocalCache, setLocalCache } from "@namviek/core/client"
 import { Loading, Popover } from "@ui-components"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { useState } from "react"
-import { AiOutlineCloudDownload } from "react-icons/ai"
-import { HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineInformationCircle, HiOutlineUserPlus } from "react-icons/hi2"
+import { HiOutlineBuildingOffice, HiOutlineChevronDown, HiOutlineInformationCircle, HiOutlineRocketLaunch, HiOutlineUserPlus } from "react-icons/hi2"
 
 export const setOrgInfo = ({ name, cover }: { name: string, cover: string }) => {
   name && setLocalCache('ORG_NAME', name)
@@ -81,9 +79,9 @@ function OrgPopMenu({ orgName }: { orgName: string }) {
       title: 'Members'
     },
     {
-      icon: AiOutlineCloudDownload,
-      link: `/${orgName}/setting/export-import`,
-      title: 'Export'
+      icon: HiOutlineRocketLaunch,
+      link: `/${orgName}/setting/apps`,
+      title: 'Application'
     },
     {
       icon: HiOutlineInformationCircle,
