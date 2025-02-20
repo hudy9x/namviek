@@ -12,6 +12,7 @@ import {
 } from '../../core'
 import { authMiddleware } from '../../middlewares'
 import { AuthRequest } from '../../types'
+import GridService from '../../services/grid/grid.service'
 
 interface CreateGridCollectionBody {
   title: string
@@ -27,11 +28,13 @@ interface GetGridCollectionsQuery {
 export default class GridCollectionController extends BaseController {
   name: string
   private repository: GridCollectionRepository
+  private gridService: GridService
 
   constructor() {
     super()
     this.name = 'grid-collection'
     this.repository = new GridCollectionRepository()
+    this.gridService = new GridService()
   }
 
   @Get('/')
@@ -81,6 +84,7 @@ export default class GridCollectionController extends BaseController {
         throw new Error('Title and project ID are required')
       }
 
+      // Create collection with default field
       const collection = await this.repository.create({
         title,
         projectId,
@@ -90,6 +94,9 @@ export default class GridCollectionController extends BaseController {
         updatedAt: null,
         updatedBy: null,
       })
+
+      // Create 4 default rows using GridService
+      await this.gridService.createMultiRow(userId, collection.id, 5)
 
       return collection
     } catch (error) {

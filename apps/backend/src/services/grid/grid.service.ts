@@ -301,4 +301,26 @@ export default class GridService {
       throw error;
     }
   }
+
+  async createMultiRow(uid: string, gridCollectionId: string, count = 4) {
+    try {
+      const rows = await this.gridRepo.createMany(uid, {
+        gridCollectionId,
+        rows: Array(count).fill({
+          title: '',
+          gridCollectionId,
+          customFields: {},
+          createdAt: new Date(),
+          createdBy: uid,
+          updatedAt: null,
+          updatedBy: null
+        })
+      })
+
+      return rows
+    } catch (error) {
+      console.error('Error creating multiple rows:', error)
+      throw error
+    }
+  }
 }
