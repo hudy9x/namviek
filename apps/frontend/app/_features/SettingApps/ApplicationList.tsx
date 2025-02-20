@@ -16,7 +16,7 @@ export const ApplicationList = () => {
   return (
     <div className="border dark:border-gray-700 rounded-lg overflow-hidden divide-y dark:divide-gray-700">
       {/* Header */}
-      <div className="grid grid-cols-[2fr,2fr,2fr] gap-4 px-4 py-3 bg-gray-50 dark:bg-gray-800 font-medium text-gray-600 dark:text-gray-300">
+      <div className="grid grid-cols-[2fr,2fr,2fr] gap-4 px-4 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-600 dark:text-gray-300">
         <div>Name</div>
         <div>Client ID</div>
         <div>Client Secret</div>
@@ -68,9 +68,9 @@ const TableRow = ({
 
   return (
     <div className={`grid grid-cols-[2fr,2fr,2fr] gap-4 px-4 py-3 bg-white dark:bg-gray-900 
-      hover:bg-gray-50 dark:hover:bg-gray-800 items-center group
+      hover:bg-gray-50 dark:hover:bg-gray-800 items-center group text-sm
       ${isLast ? 'rounded-b-lg' : ''}`}>
-      <div className="font-medium flex items-center justify-between dark:text-gray-200">
+      <div className="font-medium flex items-center justify-between dark:text-gray-200 shrink-0">
         <span>{application.name}</span>
         <Button
           size="sm"

@@ -48,9 +48,9 @@ function AddGridCollectionModal({ projectId, onSuccess }: AddGridCollectionModal
             <h3 className="text-lg font-medium mb-4">New Grid Collection</h3>
 
             <Form.Input
-              title='Enter your grid name'
               placeholder="Collection name"
               value={title}
+              helper='Enter your grid name'
               onChange={e => setTitle(e.target.value)}
             />
             <div className="flex justify-end gap-2 mt-4">

@@ -3,12 +3,20 @@ import { produce } from 'immer'
 import { Application } from '@prisma/client'
 import { applicationSv } from '@/services/apps'
 
+interface IAddAppParams {
+  name: string;
+  desc?: string;
+  orgId: string,
+  scopes: string[]
+}
+
+
 interface ApplicationState {
   applications: Application[]
   isLoading: boolean
   error: string | null
   fetchApplications: (orgId: string) => Promise<void>
-  addApplication: (data: { name: string; desc?: string; orgId: string }) => Promise<void>
+  addApplication: (data: IAddAppParams) => Promise<void>
   updateApplication: (id: string, data: Partial<Application>) => Promise<void>
   deleteApplication: (id: string) => Promise<void>
 }
@@ -31,7 +39,7 @@ export const useApplicationStore = create<ApplicationState>((set) => ({
     }
   },
 
-  addApplication: async (data: { name: string, desc?: string, orgId: string }) => {
+  addApplication: async (data: IAddAppParams) => {
     set({ isLoading: true, error: null })
     try {
       const res = await applicationSv.create(data)
