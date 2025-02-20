@@ -37,6 +37,8 @@ function useDeleteCustomField(id: string) {
 export default function CustomFieldAction({ data }: { data: Field }) {
   const setEditCustomField = useCustomFieldStore(state => state.setEditData)
   const { deleteCustomField } = useDeleteCustomField(data.id)
+  const config = data.config as { undeletable?: boolean }
+
   return <DropdownMenu>
     <DropdownMenu.Trigger
       size="sm"
@@ -51,11 +53,13 @@ export default function CustomFieldAction({ data }: { data: Field }) {
         icon={<PiPencilSimple />}
         title={'Edit'}
       />
-      <DropdownMenu.Item
-        onClick={deleteCustomField}
-        icon={<HiOutlineTrash className='text-red-500' />}
-        title={'Delete'}
-      />
+      {!config?.undeletable && (
+        <DropdownMenu.Item
+          onClick={deleteCustomField}
+          icon={<HiOutlineTrash className='text-red-500' />}
+          title={'Delete'}
+        />
+      )}
     </DropdownMenu.Content>
   </DropdownMenu>
 }

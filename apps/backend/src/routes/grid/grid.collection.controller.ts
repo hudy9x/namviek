@@ -82,8 +82,8 @@ export default class GridCollectionController extends BaseController {
       }
 
       const collection = await this.repository.create({
-        title: title,
-        projectId: projectId,
+        title,
+        projectId,
         icon: null,
         createdBy: userId,
         createdAt: new Date(),
