@@ -4,22 +4,40 @@ import { authMiddleware, beProjectMemberMiddleware } from "../../middlewares";
 import GridService, { IFilterAdvancedData } from "../../services/grid/grid.service";
 import { AuthRequest } from "../../types";
 import { pusherTrigger } from "../../lib/pusher-server";
+import { WebhookTriggerService } from '../../services/webhook/webhook.trigger.service'
 
 
 @Controller('/project/grid')
 @UseMiddleware([authMiddleware, beProjectMemberMiddleware])
 export default class GridController extends BaseController {
   private gridService: GridService
+  private webhookTriggerService: WebhookTriggerService
 
   constructor() {
     super()
     this.gridService = new GridService()
+    this.webhookTriggerService = new WebhookTriggerService()
   }
 
   @Put('')
-  async update(@Req() req: AuthRequest, @Body() body: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
+  async update(@Req() req: AuthRequest, @Body() body: { value: string | string[], rowId: string, fieldId: string, type: FieldType }) {
     const { id: uid } = req.authen
     const ret = await this.gridService.update(uid, body)
+
+    // Trigger webhooks
+    await this.webhookTriggerService.trigger(
+      ret.gridCollectionId,
+      'grid:row:updated',
+      ret
+    )
+
+    // Trigger real-time update
+    pusherTrigger('team-collab', `grid:changes.${ret.gridCollectionId}`, {
+      action: 'update',
+      data: ret,
+      triggerBy: uid
+    })
+
     return ret
   }
 
@@ -69,14 +87,19 @@ export default class GridController extends BaseController {
     row: Record<string, string>
   }) {
     const { id: uid } = req.authen
-    console.log('body', body)
     const ret = await this.gridService.createRow(uid, {
       gridCollectionId: body.gridCollectionId,
       data: body.row
     })
 
-    // Trigger real-time update for new row
-    console.log('gridCollectionId', `grid:changes.${body.gridCollectionId}`)
+    // Trigger webhooks
+    await this.webhookTriggerService.trigger(
+      body.gridCollectionId,
+      'grid:row:created',
+      ret
+    )
+
+    // Trigger real-time update
     pusherTrigger('team-collab', `grid:changes.${body.gridCollectionId}`, {
       action: 'create',
       data: ret,
@@ -126,18 +149,22 @@ export default class GridController extends BaseController {
     rowIds: string[]
   }) {
     const { id: uid } = req.authen
+    const { result, row } = await this.gridService.deleteRows(params.rowIds)
 
-    const { result, row } = await this.gridService.deleteRows(params.rowIds);
+    // Trigger webhooks
+    await this.webhookTriggerService.trigger(
+      row.gridCollectionId,
+      'grid:row:deleted',
+      { rowIds: params.rowIds, gridCollectionId: row.gridCollectionId }
+    )
 
-    console.log('deleted', result, row)
-
-    // Trigger real-time update for deleted rows
+    // Trigger real-time update
     pusherTrigger('team-collab', `grid:changes.${row.gridCollectionId}`, {
       action: 'delete',
       data: params.rowIds,
       triggerBy: uid
     })
 
-    return result;
+    return result
   }
 }

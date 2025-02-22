@@ -31,6 +31,11 @@ enum InvitationStatus {
   INVITING
 }
 
+enum WebhookStatus {
+  INACTIVE
+  ACTIVE
+}
+
 model User {
   id                  String                @id @default(auto()) @map("_id") @db.ObjectId
   email               String                @unique
@@ -279,4 +284,17 @@ model Application {
   createdBy String?
   updatedAt DateTime?
   updatedBy String?
+}
+
+model GridWebhook {
+  id               String        @id @default(auto()) @map("_id") @db.ObjectId
+  gridCollectionId String        @db.ObjectId
+  url              String
+  secret           String
+  status           WebhookStatus @default(ACTIVE)
+  events           String[]      // Array of event names
+  createdAt        DateTime?
+  createdBy        String?
+  updatedAt        DateTime?
+  updatedBy        String?
 }

@@ -7,6 +7,7 @@ import { buildSelectQuery } from "./builders/select.builder"
 import { buildBooleanQuery } from "./builders/boolean.builder"
 import { FieldRepository, GridRepository } from "@database"
 import { buildPersonQuery } from "./builders/person.builder"
+import axios from "axios"
 
 export enum EFilterCondition {
   AND = 'AND',
@@ -58,11 +59,11 @@ export default class GridService {
     return results
   }
 
-  async update(uid: string, data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
+  async update(uid: string, data: { value: string | string[], rowId: string, fieldId: string, type: FieldType }) {
     try {
 
       const result = await this.gridRepo.update(uid, {
-        id: data.taskId,
+        id: data.rowId,
         fieldId: data.fieldId,
         type: data.type,
         value: data.value

@@ -9,6 +9,7 @@ import { useGetGridCollection } from "./useGetGridCollection"
 import { ConnectorCacheProvider } from '../CustomFieldInput/ConnectorCache'
 import './style.css'
 import { HiOutlineTableCells } from "react-icons/hi2"
+import GridWebhooks from "../GridWebhooks"
 // import EventGridChanges from "@/events/EventGridChanges"
 
 export default function GridContainer() {
@@ -22,12 +23,16 @@ export default function GridContainer() {
       <div className="grid-view">
         <div className="grid-view-header flex items-center justify-between px-4 py-2 border-b bg-white dark:bg-gray-900 dark:border-gray-800">
           <div className="grid-view-header-left">
-            <div className="grid-view-header-left-title flex items-center gap-2">
+            <div className="grid-view-header-left-title flex items-center gap-3">
+              <div className="flex items-center gap-2">
               <HiOutlineTableCells className="w-4 h-4" />
               <span className="text-gray-500 font-medium text-sm">
                 {loading ? 'Loading...' : gridCollection?.title}
               </span>
+
+              </div>
               <FilterAdvanced />
+              <GridWebhooks />
             </div>
           </div>
           <div className="grid-view-header-right">

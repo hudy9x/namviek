@@ -2,7 +2,7 @@ import { Form, randomId } from "@ui-components";
 import { useMemo, useState } from "react";
 import { useCheckboxStore } from "./useCheckboxStore";
 
-export default function CustomFieldCheckboxItem({ taskId, groupId = 'ALL' }: { taskId: string, groupId?: string }) {
+export default function CustomFieldCheckboxItem({ rowId, groupId = 'ALL' }: { rowId: string, groupId?: string }) {
 
   const toggleCheckbox = useCheckboxStore(state => state.toogleCheckbox)
   const ids = useCheckboxStore(state => {
@@ -17,8 +17,8 @@ export default function CustomFieldCheckboxItem({ taskId, groupId = 'ALL' }: { t
     <Form.Checkbox
       size="lg"
       uid={id}
-      checked={ids.has(taskId)} onChange={(val) => {
-        toggleCheckbox(val, taskId, groupId)
+      checked={ids.has(rowId)} onChange={(val) => {
+        toggleCheckbox(val, rowId, groupId)
       }} />
 
   </label>

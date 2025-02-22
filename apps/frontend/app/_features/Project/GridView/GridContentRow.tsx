@@ -7,12 +7,12 @@ import { FieldType, Grid, Prisma } from "@prisma/client"
 import { useTaskUpdate } from "@/components/DataFetcher/useTaskUpdate";
 import GridBtnActions from "./GridBtnActions";
 
-const useOnChangeCustomFieldInput = (taskId: string) => {
+const useOnChangeCustomFieldInput = (rowId: string) => {
 
   const { updateOneField } = useTaskUpdate()
   const onChange = (value: string | string[], fieldId: string, type: FieldType) => {
     updateOneField({
-      taskId,
+      rowId,
       type,
       value,
       fieldId
@@ -24,28 +24,28 @@ const useOnChangeCustomFieldInput = (taskId: string) => {
   }
 }
 
-function GridContentRow({ task }: { task: Grid }) {
+function GridContentRow({ row }: { row: Grid }) {
 
-  const taskCustomData = task.customFields
+  const rowCustomData = row.customFields
   // console.log('taskCustomData', taskCustomData)
-  const customData = (taskCustomData || {}) as Prisma.JsonObject
+  const customData = (rowCustomData || {}) as Prisma.JsonObject
   // const customFields = useProjectCustomFieldStore(state => state.customFields)
-  const { onChange } = useOnChangeCustomFieldInput(task.id)
+  const { onChange } = useOnChangeCustomFieldInput(row.id)
 
   const getFixedValue = (type: FieldType, defaultData: string) => {
 
     switch (type) {
       case FieldType.CREATED_BY:
-        return task.createdBy || ''
+        return row.createdBy || ''
 
       case FieldType.CREATED_AT:
-        return task.createdAt ? task.createdAt.toString() : ''
+        return row.createdAt ? row.createdAt.toString() : ''
 
       case FieldType.UPDATED_AT:
-        return task.updatedAt ? task.updatedAt.toString() : ''
+        return row.updatedAt ? row.updatedAt.toString() : ''
 
       case FieldType.UPDATED_BY:
-        return task.updatedBy || ''
+        return row.updatedBy || ''
       default:
         return defaultData
 
@@ -54,10 +54,10 @@ function GridContentRow({ task }: { task: Grid }) {
 
   }
 
-  return <div data-testid={task.id} className="list-row"
-    key={task.id}>
+  return <div data-testid={row.id} className="list-row"
+    key={row.id}>
 
-    <CustomFieldCheckboxItem taskId={task.id} />
+    <CustomFieldCheckboxItem rowId={row.id} />
     <CustomFieldDisplay>
       {(index, fieldData) => {
         const { id, type } = fieldData
@@ -71,13 +71,13 @@ function GridContentRow({ task }: { task: Grid }) {
             onChange(value, id, type)
           }} >
             <CustomFieldInputFactory
-              rowId={task.id}
+              rowId={row.id}
               data={data}
               config={config}
               type={type}
               value={dataStrValue} />
 
-            <GridBtnActions display={index === 0} rowId={task.id} />
+            <GridBtnActions display={index === 0} rowId={row.id} />
           </CustomFieldInputProvider>
         </>
       }}

@@ -8,15 +8,15 @@ export const useTaskUpdate = () => {
   const { setData } = useDataFetcher()
   const { user } = useUser()
 
-  const updateOneField = ({ taskId, value, fieldId, type }: {
-    taskId: string,
+  const updateOneField = ({ rowId, value, fieldId, type }: {
+    rowId: string,
     value: string | string[],
     fieldId: string,
     type: FieldType
   }) => {
 
     setData(prevData => prevData.map(dt => {
-      if (dt.id === taskId) {
+      if (dt.id === rowId) {
         return {
           ...dt,
           updatedAt: new Date(),
@@ -27,7 +27,7 @@ export const useTaskUpdate = () => {
     }))
 
     projectGridSv.update({
-      taskId,
+      rowId,
       type,
       value,
       fieldId

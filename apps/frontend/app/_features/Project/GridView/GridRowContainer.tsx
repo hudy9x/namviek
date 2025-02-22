@@ -6,16 +6,16 @@ import GridLoadMore from "./GridLoadMore";
 import { Grid } from "@prisma/client";
 
 
-export default function GridRowContainer({ tasks }: {
-  tasks: Grid[],
+export default function GridRowContainer({ rows }: {
+  rows: Grid[],
 }) {
-  console.log('tasks', tasks)
+  console.log('rows', rows)
   return <div>
     <div className="list-table">
       <div className='list-table-body'>
         <GridHeadingRow />
-        {tasks.map(task => {
-          return <GridContentRow task={task} key={task.id} />
+        {rows.map(row => {
+          return <GridContentRow row={row} key={row.id} />
         })}
       </div>
       <CreateNewRow />

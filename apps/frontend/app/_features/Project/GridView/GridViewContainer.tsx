@@ -27,7 +27,7 @@ function TaskData() {
   const data = useDataFetcher(state => state.data)
   console.log('data', data)
   return (
-    <GridRowContainer tasks={data} />
+    <GridRowContainer rows={data} />
   )
 }
 

@@ -24,6 +24,7 @@ import GridController from './grid'
 import { ApplicationController } from './apps/index.controller'
 import PasswordController from './auth/password'
 import GridCollectionController from './grid/grid.collection.controller'
+import GridWebhookController from './grid/grid.webhook.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -55,7 +56,8 @@ router.use(
     GridController,
     ApplicationController,
     FieldController,
-    GridCollectionController
+    GridCollectionController,
+    GridWebhookController
   ])
 )
 // middlewares

@@ -15,4 +15,5 @@ export const orgMemberModel = pmClient.organizationMembers
 export const fileStorageModel = pmClient.fileStorage
 export const fieldModel = pmClient.field
 export const gridCollectionModel = pmClient.gridCollection
+export const gridWebhookModel = pmClient.gridWebhook
 

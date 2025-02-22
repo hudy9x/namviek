@@ -5,7 +5,7 @@ import { useUser } from '@auth-client'
 import { useParams } from 'next/navigation'
 
 interface GridChangePayload {
-  action: 'create' | 'delete'
+  action: 'create' | 'delete' | 'update'
   data: any  // Record data for create, string (id) for delete
   triggerBy: string
 }
@@ -43,6 +43,11 @@ export default function EventGridChanges() {
 
           console.log('delete id', deletedId)
           deleteRow(deletedId)
+          break
+
+        case 'update':
+          console.log('update', payload.data)
+          setData(prevData => prevData.map(row => row.id === payload.data.id ? payload.data : row))
           break
       }
     })

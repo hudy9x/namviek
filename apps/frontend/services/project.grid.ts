@@ -7,7 +7,7 @@ export interface ICustomFieldData {
 }
 
 export const projectGridSv = {
-  update(data: { value: string | string[], taskId: string, fieldId: string, type: FieldType }) {
+  update(data: { value: string | string[], rowId: string, fieldId: string, type: FieldType }) {
     return httpPut('/api/project/grid', data)
   },
 
