@@ -32,32 +32,29 @@ export class WebhookTriggerService {
     }
   }
 
-  async trigger(gridCollectionId: string, event: string, payload: any) {
-    try {
-      // Get all active webhooks for this grid collection that are subscribed to this event
-      const webhooks = await this.repository.findByGridCollectionId(gridCollectionId)
-      const relevantWebhooks = webhooks.filter(
-        webhook => webhook.status === WebhookStatus.ACTIVE && webhook.events.includes(event)
-      )
+  trigger(gridCollectionId: string, event: string, payload: any) {
+    // Use queueMicrotask for better performance and reliability
+    queueMicrotask(async () => {
+      try {
+        const webhooks = await this.repository.findByGridCollectionId(gridCollectionId)
+        const relevantWebhooks = webhooks.filter(
+          webhook => webhook.status === WebhookStatus.ACTIVE && webhook.events.includes(event)
+        )
 
-      if (!relevantWebhooks.length) {
-        console.log(`No active webhooks found for grid collection ${gridCollectionId} and event ${event}`)
-        return
-      }
-
-      // Send the webhook requests in parallel
-      await Promise.all(
-        relevantWebhooks.map(webhook => 
+        // Send webhooks in parallel without waiting
+        relevantWebhooks.forEach(webhook => {
           this.sendWebhookRequest(webhook, {
             event,
             gridCollectionId,
             timestamp: new Date().toISOString(),
             data: payload
+          }).catch(error => {
+            console.error('Webhook delivery failed:', error)
           })
-        )
-      )
-    } catch (error) {
-      console.error('Failed to trigger webhooks:', error)
-    }
+        })
+      } catch (error) {
+        console.error('Failed to trigger webhooks:', error)
+      }
+    })
   }
 } 

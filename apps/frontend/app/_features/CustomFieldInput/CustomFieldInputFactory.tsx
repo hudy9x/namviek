@@ -69,7 +69,7 @@ function CustomFieldInputFactory({
         return <CustomFieldInpMultiSelect data={data} value={value} />
 
       case FieldType.CONNECTOR:
-        return <CustomFieldInpConnector value={value} config={config} />
+        return <CustomFieldInpConnector fieldId="" value={value} config={config} />
 
       default:
         return null

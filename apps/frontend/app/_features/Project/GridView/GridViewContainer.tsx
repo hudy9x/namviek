@@ -25,7 +25,6 @@ export default function GridViewContainer() {
 
 function TaskData() {
   const data = useDataFetcher(state => state.data)
-  console.log('data', data)
   return (
     <GridRowContainer rows={data} />
   )

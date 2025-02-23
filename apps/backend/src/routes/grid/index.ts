@@ -25,7 +25,7 @@ export default class GridController extends BaseController {
     const ret = await this.gridService.update(uid, body)
 
     // Trigger webhooks
-    await this.webhookTriggerService.trigger(
+    this.webhookTriggerService.trigger(
       ret.gridCollectionId,
       'grid:row:updated',
       ret
@@ -93,7 +93,7 @@ export default class GridController extends BaseController {
     })
 
     // Trigger webhooks
-    await this.webhookTriggerService.trigger(
+    this.webhookTriggerService.trigger(
       body.gridCollectionId,
       'grid:row:created',
       ret
@@ -152,7 +152,7 @@ export default class GridController extends BaseController {
     const { result, row } = await this.gridService.deleteRows(params.rowIds)
 
     // Trigger webhooks
-    await this.webhookTriggerService.trigger(
+    this.webhookTriggerService.trigger(
       row.gridCollectionId,
       'grid:row:deleted',
       { rowIds: params.rowIds, gridCollectionId: row.gridCollectionId }

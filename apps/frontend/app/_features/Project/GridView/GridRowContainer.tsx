@@ -9,7 +9,6 @@ import { Grid } from "@prisma/client";
 export default function GridRowContainer({ rows }: {
   rows: Grid[],
 }) {
-  console.log('rows', rows)
   return <div>
     <div className="list-table">
       <div className='list-table-body'>
