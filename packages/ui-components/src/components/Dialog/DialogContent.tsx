@@ -28,10 +28,9 @@ export default function DialogContent({
     ev.stopPropagation()
   }
 
-  let pos = 'justify-center py-[100px]'
+  let pos = 'center'
   if (position === 'right') {
-    pos = 'justify-end p-3 '
-    classes.push('h-full')
+    pos = 'right'
   }
 
   return <div
@@ -40,7 +39,7 @@ export default function DialogContent({
     onClick={clickOutSide}>
     <div className={`dialog-backdrop ${visible}`}></div>
     <div className={`${open ? 'overflow-y-auto' : ''} h-full z-10 relative`}>
-      <div className={`flex items-center ${pos} h-full`}>
+      <div className={`dialog-content-wrapper ${pos} h-full`}>
         <div onClick={stopPropagation} className={`dialog-content ${classes.join(' ')}`}>
           <DialogClose />
           {children}

@@ -4,6 +4,20 @@
   /* @apply flex items-center justify-center; */
 }
 
+.dialog-content-wrapper:before, .dialog-content-wrapper:after {
+  content: '';
+  height: 100px;
+  display: block;
+}
+
+.dialog-content-wrapper.center .dialog-content {
+  margin: 0 auto;
+}
+
+.dialog-content-wrapper.right .dialog-content {
+  margin-left: auto;
+}
+
 .dialog-backdrop {
   @apply fixed top-0 left-0 w-full h-full backdrop-blur-sm pointer-events-none;
   @apply bg-black/30;
