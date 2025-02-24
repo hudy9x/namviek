@@ -110,7 +110,7 @@ function OrgPopMenu({ orgName }: { orgName: string }) {
 
 export default function OrgSection() {
   const { orgId, orgName } = useGetParams()
-  return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[20px] pb-[21px]">
+  return <section className="nav-org-section border-b dark:border-gray-800 px-3 pt-[9px] pb-[8px]">
     <div className="org-section-container flex items-center justify-between">
       {orgId && <OrgInfo id={orgId} />}
       <OrgPopMenu orgName={orgName} />
