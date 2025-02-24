@@ -3,10 +3,12 @@ import { clearAllGoalieToken, clearGoalieUser, useUser } from '@auth-client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import localforage from 'localforage'
+import { usePostHog } from 'posthog-js/react'
 
 export default function Signout() {
   const { user } = useUser()
   const { push } = useRouter()
+  const posthog = usePostHog()
 
   useEffect(() => {
     setTimeout(() => {
@@ -16,6 +18,7 @@ export default function Signout() {
       console.log('clear goalie user info')
       clearGoalieUser()
       console.log('redirecting to /sign-in ...')
+      posthog.reset()
       push('/sign-in')
     }, 500)
   }, [])

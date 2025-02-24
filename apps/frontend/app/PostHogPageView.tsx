@@ -4,11 +4,13 @@
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, Suspense } from "react"
 import { usePostHog } from 'posthog-js/react'
+import { useUser } from "@auth-client"
 
 function PostHogPageView(): null {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const posthog = usePostHog()
+  const { user } = useUser()
 
   // Track pageviews
   useEffect(() => {
@@ -21,6 +23,13 @@ function PostHogPageView(): null {
       posthog.capture('$pageview', { '$current_url': url })
     }
   }, [pathname, searchParams, posthog])
+
+  useEffect(() => {
+    if (user && user.id) {
+      posthog.identify(user.id, { email: user.email, name: user.name })
+    }
+
+  }, [user?.id])
 
   return null
 }
