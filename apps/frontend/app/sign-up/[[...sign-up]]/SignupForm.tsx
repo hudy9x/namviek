@@ -6,9 +6,9 @@ import Link from 'next/link'
 import Logo from '../../../components/Logo'
 import { useState } from 'react'
 import { signup } from '@auth-client'
-import { motion } from 'framer-motion'
 import { UserStatus } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import IntroSection from '@/features/IntroSection'
 
 export default function SignupForm() {
   const { push } = useRouter()
@@ -61,70 +61,84 @@ export default function SignupForm() {
 
   return (
     <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 100, scale: 1 }}
-        transition={{ delay: 0.5, duration: 2 }}
-        className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 100, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex border-4 border-white/30 dark:border-gray-800/50 " style={{ borderRadius: `calc(0.375rem + 4px)` }}>
-        <div
-          className={`w-[350px] sm:w-[400px] text-center p-8 rounded-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-md ${success ? '' : 'hidden'
-            }`}>
-          <img src="/email.svg" className="m-auto pb-6 w-[200px]" />
-          <h2 className="text-xl sm:text-2xl font-bold mt-3">
-            Successfully Registration
-          </h2>
-          <p className="text-gray-400 text-sm mt-3">
-            We have sent an activation link to your email to continue with the
-            registration process
-          </p>
-          <p className="mt-4">
-            <Link
-              className="text-sm text-indigo-600 hover:underline"
-              href={'/sign-in'}>
-              Back to Login
-            </Link>
-          </p>
+      <div className='relative dark:border-gray-800/50 w-screen h-screen'>
+        <div className='absolute top-0 left-0 h-full w-full flex shadow-md'>
+          {/* Success Form */}
+          <div className={`bg-white dark:bg-gray-900/90 backdrop-blur-md w-[600px] shrink-0 px-24 pt-14 ${success ? '' : 'hidden'}`}>
+            <div className='flex items-center gap-1'>
+              <Logo />
+              <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
+            </div>
+            
+            <div className="text-center mt-10">
+              <img src="/email.svg" className="m-auto pb-6 w-[200px]" />
+              <h2 className="text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]">
+                Successfully Registration
+              </h2>
+              <p className="text-[19px] mt-6 text-[#7A8799]">
+                We have sent an activation link to your email to continue with the
+                registration process
+              </p>
+              <p className="mt-8">
+                <Link
+                  className="text-indigo-600 hover:underline"
+                  href={'/sign-in'}>
+                  Back to Login
+                </Link>
+              </p>
+            </div>
+          </div>
+
+          {/* Registration Form */}
+          <form
+            onSubmit={regHandleSubmit}
+            className={`${success ? 'hidden' : ''} bg-white dark:bg-gray-900/90 backdrop-blur-md w-[600px] shrink-0 px-24 pt-14`}>
+            <div className='flex items-center gap-1'>
+              <Logo />
+              <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
+            </div>
+
+            <h2 className='mt-[45px] text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>Create Your Account Here</h2>
+
+            <p className="text-[19px] mt-6 text-[#7A8799]">
+              Our registration process is quick and easy, taking no more than 5 minutes to complete.
+            </p>
+
+            <div className="flex flex-col gap-4 mt-7">
+              
+
+              <Form.Input size='md' title="Fullname" {...regField('name')} />
+              <Form.Input size='md' title="Email" {...regField('email')} />
+              <Form.Input
+                size='md'
+                title="Password"
+                type="password"
+                {...regField('password')}
+              />
+
+              <div className="space-y-3 mt-2">
+                <Button
+                  size='md'
+                  loading={loading}
+                  title="Sign up"
+                  type="submit"
+                  block
+                  primary
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 text-center text-gray-400">
+              Already have an account?{' '}
+              <Link className="text-indigo-600 hover:underline" href={'/sign-in'}>
+                Sign in
+              </Link>
+            </div>
+          </form>
+
+          <IntroSection /> 
         </div>
-
-        <form
-          onSubmit={regHandleSubmit}
-          className={`${success ? 'hidden' : ''
-            } bg-white/90 dark:bg-gray-900/95 backdrop-blur-md p-8 w-[350px] sm:w-[400px] rounded-md`}>
-          <div className="flex gap-2 items-center">
-            <Logo />
-            <h2 className="text-xl sm:text-2xl font-bold">Sign up now</h2>
-          </div>
-          <p className="text-gray-400 text-sm mt-3">
-            Our registration process is quick and easy, taking no more than 5
-            minutes to complete.
-          </p>
-
-          <div className="flex flex-col gap-4 mt-6">
-            <Form.Input title="Fullname" {...regField('name')} />
-            <Form.Input title="Email" {...regField('email')} />
-            <Form.Input
-              title="Password"
-              type="password"
-              {...regField('password')}
-            />
-            <Button title="Sign up" type="submit" block primary />
-          </div>
-
-          <div className="mt-6 text-center text-gray-400 text-sm">
-            Have a account ?{' '}
-            <Link className="text-indigo-600 hover:underline" href={'/sign-in'}>
-              Login
-            </Link>
-          </div>
-        </form>
-      </motion.div>
-
-      {/* <SignUp /> */}
+      </div>
     </div>
   )
 }
