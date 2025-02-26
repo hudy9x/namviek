@@ -3,6 +3,7 @@ import { httpGet, httpPut } from "./_req";
 export interface ProfileUpdateData {
   name?: string;
   bio?: string;
+  photo?: string
 }
 
 export interface PasswordUpdateData {

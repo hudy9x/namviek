@@ -12,6 +12,7 @@ import { authMiddleware } from "../../middlewares";
 import { UserRepository } from "@database";
 import { AuthRequest } from "../../types";
 import { compareHashPassword, hashPassword } from "../../lib/password";
+import { CKEY, findNDelCaches } from "../../lib/redis";
 
 @Controller("/profile")
 @UseMiddleware([authMiddleware])
@@ -40,18 +41,27 @@ export class ProfileController extends BaseController {
   @Put("")
   async updateProfile(
     @Req() req: AuthRequest,
-    @Body() body: { name?: string; bio?: string }
+    @Body() body: { name?: string; bio?: string; photo?: string }
   ) {
     const userId = req.authen.id;
-    const { name, bio } = body;
+    const { name, bio, photo } = body;
     
     const updatedUser = await this.userRepo.update(userId, {
       name: name !== undefined ? name : undefined,
       bio: bio !== undefined ? bio : undefined,
+      photo
     });
-    
+
     // Remove sensitive information
     const { password, ...userInfo } = updatedUser;
+
+
+    await Promise.all([
+        findNDelCaches([CKEY.USER_PROJECT]),
+        findNDelCaches([CKEY.PROJECT_MEMBER])
+    ])
+
+    console.log('updated', userInfo)
     
     return userInfo
   }
