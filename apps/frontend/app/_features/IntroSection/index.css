@@ -1,0 +1,13 @@
+.intro-section {
+  background-image: url('/sign-background-1.png');
+  background-size: 100% 100%;
+}
+
+.intro-section .btn-ghost {
+  @apply text-zinc-300 bg-zinc-900/50 border-zinc-700;
+  @apply hover:bg-zinc-800 cursor-pointer;
+
+  & svg {
+    @apply text-white;
+  }
+}

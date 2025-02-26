@@ -38,6 +38,7 @@ import FieldController from './fields'
 import ProjectGridController from './grid'
 import { ApplicationController } from './apps/index.controller'
 import PasswordController from './auth/password'
+import { ProfileController } from './profile/profile.controller'
 
 const router = Router()
 const logger = createModuleLog('Request')
@@ -74,6 +75,7 @@ router.use(
     SchedulerController,
     TaskReorderController,
     TaskChecklistController,
+    ProfileController,
     // TaskCustomFieldController,
     ProjectGridController,
     ApplicationController,

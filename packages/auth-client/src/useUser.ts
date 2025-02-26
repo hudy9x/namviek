@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import { GoalieContext } from "./GoalierProvider";
+import { useContext } from 'react'
+import { GoalieContext } from './GoalierProvider'
 
 export const useUser = () => {
-	const { user, setUser } = useContext(GoalieContext);
+  const { user, setUser } = useContext(GoalieContext)
 
-	return {
+  return {
     user,
-		setUser
-	};
-};
+    setUser
+  }
+}

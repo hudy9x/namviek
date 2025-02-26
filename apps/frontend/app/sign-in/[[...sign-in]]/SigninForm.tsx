@@ -11,7 +11,6 @@ import { validateLoginUser } from '@namviek/core/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { motion } from "framer-motion";
 import Logo from '../../../components/Logo'
 
 import {
@@ -24,8 +23,8 @@ import {
 import { getRecentVisit } from '@namviek/core/client'
 import { signinWithGoogle } from 'apps/frontend/libs/firebase'
 import { GAAction, GACategory, trackingEvent } from '@/components/GA/utils'
-import SignCarousel from './SignCarousel'
 import SignInactiveUser from './SignInactiveUser'
+import IntroSection from '@/features/IntroSection'
 
 export default function SigninForm() {
   const { push } = useRouter()
@@ -128,28 +127,7 @@ export default function SigninForm() {
 
   return (
     <div className="sign-page relative h-screen w-screen flex items-center justify-center ">
-
-      {/* <motion.div */}
-      {/*   initial={{ opacity: 0, scale: 0.9 }} */}
-      {/*   animate={{ opacity: 100, scale: 1 }} */}
-      {/*   transition={{ delay: 0.5, duration: 2 }} */}
-      {/*   className='sign-page-background absolute top-0 left-0 w-full h-full'></motion.div> */}
-
-      {/* <motion.div */}
-      {/*   initial={{ opacity: 0, y: 50 }} */}
-      {/*   animate={{ opacity: 100, y: 0 }} */}
-      {/*   transition={{ duration: 0.8 }} */}
-      {/*   className="flex border-2 border-zinc-100 shadow-lg dark:border-gray-800/50 " */}
-      {/*   style={{ borderRadius: `calc(0.375rem + 4px)` }}> */}
-      {/**/}
-      {/* </motion.div> */}
-
-      <div className='relative shadow-lg dark:border-gray-800/50 w-screen h-screen'>
-
-        {/* <div className='sign-border'></div> */}
-        {/* <div className='absolute top-0 left-0  w-[1511px] h-[893px] border border-[#9494b3] bg-transparent shadow-lg rounded-lg'></div> */}
-
-        {/* <div className='absolute top-[10px] left-[10px] w-[1491px] h-[873px] flex shadow-md'> */}
+      <div className='relative dark:border-gray-800/50 w-screen h-screen'>
         <div className='absolute top-0 left-0 h-full w-full flex shadow-md'>
           <form
             onSubmit={regHandleSubmit}
@@ -223,7 +201,7 @@ export default function SigninForm() {
           </form>
 
 
-          <SignCarousel />
+          <IntroSection />
 
         </div>
 
