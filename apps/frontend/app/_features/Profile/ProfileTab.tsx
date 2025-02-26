@@ -75,7 +75,7 @@ export default function ProfileTab() {
           placeholder="Tell us about yourself..."
         />
 
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-3 mt-4">
           <Link href="/">
             <Button size="md" title="Cancel" />
           </Link>
