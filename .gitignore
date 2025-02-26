@@ -49,3 +49,5 @@ pm2.json
 
 logs/*
 .vercel
+
+.cursor/*
