@@ -56,7 +56,7 @@ export default function ProfileTab() {
     <div>
       
       {/* Profile Form Section */}
-      <form onSubmit={handleSubmit} className="mt-8 max-w-2xl">
+      <form onSubmit={handleSubmit} className="mt-8">
         <Form.Input
           title="Name"
           name="name"

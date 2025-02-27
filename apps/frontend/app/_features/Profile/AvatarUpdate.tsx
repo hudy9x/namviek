@@ -63,7 +63,7 @@ export default function AvatarUpdate() {
       </div>
 
       {showSelector && (
-        <div className="mb-8 bg-white rounded-lg p-4 shadow-md max-w-[300px] absolute left-[150px] top-16 z-20">
+        <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg w-[424px] absolute left-1/2 -translate-x-1/2 top-16 z-20">
           <AvatarSelector
             onSelect={handleAvatarSelect}
             currentAvatar={user?.photo || ''}

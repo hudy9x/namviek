@@ -78,7 +78,7 @@ export default function PasswordTab() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 max-w-2xl">
+    <form onSubmit={handleSubmit} className="mt-8">
       <p className="text-gray-500 mb-8">
         Enter your current password to change your password.
       </p>

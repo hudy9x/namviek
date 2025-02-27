@@ -40,8 +40,8 @@ export default function Profile() {
   ]
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-gray-900 py-[50px]">
-      <div className="max-w-[800px] pb-10 mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden">
+    <div className="w-full min-h-screen bg-white dark:bg-gray-800 py-[50px]">
+      <div className="max-w-[600px] pb-10 mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden">
         {/* Header with Gradient Background */}
         <div className="relative">
           <div className="h-48 w-full bg-gradient-to-r from-yellow-200 via-pink-300 to-purple-500" />
