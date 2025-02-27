@@ -28,19 +28,13 @@ export default function DialogContent({
     ev.stopPropagation()
   }
 
-  let pos = 'justify-center py-[100px]'
-  if (position === 'right') {
-    pos = 'justify-end p-3 '
-    classes.push('h-full')
-  }
-
   return <div
     className={`dialog-wrapper ${open ? "" : 'pointer-events-none -z-10'}`}
     style={!open ? { overflowY: 'hidden' } : {}}
     onClick={clickOutSide}>
     <div className={`dialog-backdrop ${visible}`}></div>
     <div className={`${open ? 'overflow-y-auto' : ''} h-full z-10 relative`}>
-      <div className={`flex items-center ${pos} h-full`}>
+      <div className={`dialog-wrapper-content ${position} h-full`}>
         <div onClick={stopPropagation} className={`dialog-content ${classes.join(' ')}`}>
           <DialogClose />
           {children}
