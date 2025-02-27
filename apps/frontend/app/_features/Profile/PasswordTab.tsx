@@ -115,7 +115,7 @@ export default function PasswordTab() {
 
       <div className="flex justify-end gap-3">
         <Link href="/">
-          <Button size="md" title="Cancel" />
+          <Button size="md" title="Back" />
         </Link>
         <Button 
           primary 
