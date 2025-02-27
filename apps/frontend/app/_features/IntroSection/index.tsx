@@ -2,10 +2,11 @@ import { Button } from "@ui-components";
 import Link from "next/link";
 import { HiOutlineRocketLaunch } from "react-icons/hi2";
 import { FaGithub } from "react-icons/fa";
+import './index.css'
 
-export default function SignCarousel() {
+export default function IntroSection() {
 
-  return <div className="sign-carousel pt-14 w-full shrink-0 dark:bg-gray-900 px-32 flex flex-col">
+  return <div className="intro-section pt-14 w-full shrink-0 dark:bg-gray-900 px-32 flex flex-col">
 
     <h2 className='mt-[95px] text-[42px] font-extrabold leading-tight text-white sign-text-shadow'>Saving up to 90% on <br />operational costs</h2>
 
