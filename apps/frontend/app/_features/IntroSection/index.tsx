@@ -6,7 +6,7 @@ import './index.css'
 
 export default function IntroSection() {
 
-  return <div className="intro-section pt-14 w-full shrink-0 dark:bg-gray-900 px-32 flex flex-col">
+  return <div className="intro-section overflow-hidden pt-14 w-full shrink-0 dark:bg-gray-900 px-32 flex flex-col">
 
     <h2 className='mt-[95px] text-[42px] font-extrabold leading-tight text-white sign-text-shadow'>Saving up to 90% on <br />operational costs</h2>
 
