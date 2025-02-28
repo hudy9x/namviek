@@ -1,4 +1,5 @@
 .intro-section {
+  height: 100vh;
   background-image: url('/sign-background-1.png');
   background-size: 100% 100%;
 }

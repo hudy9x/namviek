@@ -74,17 +74,17 @@ export default function ResetPasswordForm({ token }: Props) {
         <div className='absolute top-0 left-0 h-full w-full flex shadow-md'>
           <form
             onSubmit={regHandleSubmit}
-            className="bg-white dark:bg-gray-900/90 backdrop-blur-md w-[640px] shrink-0 px-24 pt-14">
+            className="bg-white dark:bg-gray-900/90 backdrop-blur-md w-full md:w-[640px] shrink-0 px-6 md:px-24 pt-10 md:pt-14 overflow-y-auto">
             <div className='flex items-center gap-1'>
               <Logo />
               <span className='font-medium text-zinc-400 text-[25px]'>namviek</span>
             </div>
 
-            <h2 className='mt-[45px] text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>Reset Your Password</h2>
+            <h2 className='mt-[30px] md:mt-[45px] text-[32px] md:text-[42px] dark:text-zinc-200 font-extrabold leading-tight text-[#2B3C4F]'>Reset Your Password</h2>
 
-            <p className="text-[19px] mt-6 text-[#7A8799]">Please enter your new password below.</p>
+            <p className="text-[16px] md:text-[19px] mt-4 md:mt-6 text-[#7A8799]">Please enter your new password below.</p>
 
-            <div className="flex flex-col gap-4 mt-7">
+            <div className="flex flex-col gap-4 mt-6 md:mt-7">
               <div className="relative">
                 <Form.Input
                   size='md'
@@ -129,7 +129,7 @@ export default function ResetPasswordForm({ token }: Props) {
               </div>
             </div>
 
-            <div className="mt-6 text-center text-gray-400">
+            <div className="mt-6 text-center text-gray-400 mb-6 md:mb-0">
               Remember your password?{' '}
               <Link className="text-indigo-600 hover:underline" href={'/sign-in'}>
                 Sign in
