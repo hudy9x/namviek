@@ -1,11 +1,13 @@
+'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { IoRocketOutline } from "react-icons/io5";
 
 function UpsaleDialog() {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  
+
   useEffect(() => {
     const hasSeenDialog = localStorage.getItem('hasSeenUpsaleDialog');
     if (!hasSeenDialog) {
@@ -38,12 +40,11 @@ function UpsaleDialog() {
   };
 
   return isVisible ? (
-    <div 
-      className={`w-[350px] fixed z-[9999] bottom-8 right-8 p-6 rounded-xl shadow-lg bg-white dark:bg-zinc-900 border dark:border-zinc-700 transition-all duration-300 ease-in-out ${
-        isAnimating 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-8'
-      }`}
+    <div
+      className={`upsale-dialog w-[350px] z-50 fixed z-[9999] bottom-8 right-8 p-6 rounded-xl shadow-lg bg-white dark:bg-zinc-900 border dark:border-zinc-700 transition-all duration-300 ease-in-out ${isAnimating
+        ? 'opacity-100 translate-y-0'
+        : 'opacity-0 translate-y-8'
+        }`}
     >
       <div className="relative">
         <h2 className="font-medium mb-2">Start Self-Hosting Now!</h2>
@@ -51,7 +52,7 @@ function UpsaleDialog() {
 
         <img className="rounded-lg border border-zinc-100/10" src="/dialog-background.png" />
 
-        <div 
+        <div
           onClick={handleClose}
           className="absolute top-0 right-0 text-sm w-6 h-6 rounded-md bg-gray-100 dark:bg-zinc-700 dark:text-zinc-200 text-center leading-[24px] cursor-pointer hover:bg-gray-200"
         >
@@ -67,7 +68,7 @@ function UpsaleDialog() {
       </div>
     </div>
   ) : (
-    <div 
+    <div
       onClick={handleShow}
       className="fixed z-[9999] bottom-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 shadow-lg transition-transform duration-300 hover:scale-110"
     >
@@ -82,5 +83,5 @@ export default function Upsale() {
     return null;
   }
 
-  return <UpsaleDialog />;
+  return createPortal(<UpsaleDialog />, document.body)
 }
