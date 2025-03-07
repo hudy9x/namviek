@@ -31,6 +31,7 @@ import { GoTasklist } from 'react-icons/go'
 import MultiMemberPicker from '@/components/MultiMemberPicker'
 import TimeTracker from '@/features/TimeTracker'
 import TimerHistory from '../TimeTracker/TimerHistory'
+import TimerButton from '../TimeTracker/TimerButton'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -159,7 +160,8 @@ export default function TaskDetail({
       className="task-form space-y-3 gap-6 relative">
       {cover ? <TaskCover url={cover || ''} /> : null}
       <div className="">
-        <div className="mb-2">
+        <div className="mb-2 flex items-center gap-2">
+          <TimerButton taskId={id} />
           <h2
             onClick={() => {
               setTitleVisible(false)
