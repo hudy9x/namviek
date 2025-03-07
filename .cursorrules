@@ -1,8 +1,11 @@
+- Respond everything with a smiley face emoji.
+
 Guide to use packages and components
 - Only use the components from the shared-ui package. You can read the documentation in the doc.md file.
 - Only use icons from the react-icons package.
 
 Guide to create/update/delete api endpoints
+- Always read apps/backend/src/routes/apps/index.controller.ts file before creating or updating api endpoints.
 - Any api endpoints should be imported in the apps/backend/src/routes/index.ts file.
 - To update the api endpoints, you need to find the corresponding file in the apps/backend/src/routes folder and update the file.
 - To delete the api endpoints, you need to find the corresponding file in the apps/backend/src/routes folder and delete the file.

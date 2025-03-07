@@ -4,12 +4,14 @@ import { TaskType } from '@prisma/client'
 import { memo } from 'react'
 
 function CalTaskInWeek({
+  id,
   color,
   time,
   type,
   title,
   assigneeId
 }: {
+  id: string
   color: string
   time: string
   type: TaskType

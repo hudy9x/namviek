@@ -53,6 +53,7 @@ export default function CalMonthTask({
                 <CalTaskInWeek
                   type={taskType}
                   time={time}
+                  id={id}
                   color={color}
                   title={title}
                   assigneeId={assigneeId}
@@ -60,6 +61,7 @@ export default function CalMonthTask({
               ) : (
                 <CalTaskInMonth
                   type={taskType}
+                  id={id}
                   time={time}
                   color={color}
                   title={title}
