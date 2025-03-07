@@ -10,6 +10,7 @@ import { useGlobalDataFetch } from '@/features/GlobalData/useGlobalDataFetch'
 import { useGlobalDataStore } from '@/store/global'
 import { setLocalCache } from '@namviek/core/client'
 import Upsale from '@/features/UpsaleDialog'
+import GlobalTimerDisplay from '@/features/TimeTracker/GlobalTimerDisplay'
 
 // NOTE: do not move these following function inside ProjectLayout
 // cuz it causes a re-render to the entire component
@@ -37,6 +38,7 @@ function OrgDetailContent({ children }: { children: ReactNode }) {
       <HamburgerMenu />
       {children}
     </main>
+    <GlobalTimerDisplay />
   </>
 }
 

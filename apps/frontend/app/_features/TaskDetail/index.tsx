@@ -29,6 +29,8 @@ import TaskTypeSelect from '@/components/TaskTypeSelect'
 import TaskChecklist from '../TaskChecklist'
 import { GoTasklist } from 'react-icons/go'
 import MultiMemberPicker from '@/components/MultiMemberPicker'
+import TimeTracker from '@/features/TimeTracker'
+import TimerHistory from '../TimeTracker/TimerHistory'
 
 export const defaultFormikValues: ITaskDefaultValues = {
   title: '',
@@ -314,6 +316,15 @@ export default function TaskDetail({
                   formik.setFieldValue('desc', v)
                 }}
               />
+            </div>
+          </div>
+          <div className="flex flex-col items-start pt-2">
+            <div className="task-info-label">
+              <HiOutlineClock /> <span>Time Tracking</span>
+            </div>
+            <div className="task-info-content w-full mt-4">
+              {/* <TimeTracker taskId={id} taskName={formik.values.title} /> */}
+              <TimerHistory taskId={id} />
             </div>
           </div>
         </section>
