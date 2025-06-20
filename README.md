@@ -4,7 +4,11 @@ Namviek is designed for development teams operating on limited budgets, providin
 
 ![App shot](https://github.com/hudy9x/namviek/assets/95471659/00cab20a-747a-4cf5-8f5e-105f314f7e2f)
 
-**Open-source project manager for small teams with low budget**
+![Commit Activity](https://img.shields.io/github/commit-activity/t/hudy9x/namviek.svg)
+![GitHub](https://img.shields.io/github/license/hudy9x/namviek.svg)
+![Last Commit](https://img.shields.io/github/last-commit/hudy9x/namviek.svg)
+![Open Issues](https://img.shields.io/github/issues/hudy9x/namviek.svg)
+![Contributors](https://img.shields.io/github/contributors/hudy9x/namviek.svg)
 
 ## 🎮 Demo
 
