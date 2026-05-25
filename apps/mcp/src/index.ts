@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { randomUUID } from 'node:crypto'
-import type { IncomingMessage } from 'node:http'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
@@ -19,6 +19,8 @@ import {
 
 const PORT = Number(process.env.PORT) || 4002
 const TRANSPORT = process.env.MCP_TRANSPORT || 'stdio'
+const MCP_API_KEY = process.env.API_KEY || 'namviek-mcp-dev-key'
+const ORIGINS = process.env.ORIGINS || '*'
 
 const TOOL_NAMES = [
   'mcp_help',
@@ -55,6 +57,31 @@ function headerValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value
 }
 
+function setCorsHeaders(res: ServerResponse, req: IncomingMessage) {
+  const origin = headerValue(req.headers['origin']) || ''
+  const isWildcard = ORIGINS === '*'
+  const allowed = isWildcard
+    ? origin || '*'
+    : ORIGINS.split(',').map(o => o.trim()).find(o => o === origin)
+
+  if (allowed) {
+    res.setHeader('Access-Control-Allow-Origin', allowed)
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-api-key, mcp-session-id')
+    if (!isWildcard) {
+      res.setHeader('Access-Control-Allow-Credentials', 'true')
+    }
+  }
+}
+
+function validateApiKey(req: IncomingMessage): boolean {
+  const fromHeader = headerValue(req.headers['x-api-key'])
+  if (fromHeader) return fromHeader === MCP_API_KEY
+
+  const fromQuery = new URL(req.url || '', 'http://localhost').searchParams.get('x-api-key')
+  return fromQuery === MCP_API_KEY
+}
+
 async function readJsonBody(req: IncomingMessage) {
   const chunks: Buffer[] = []
 
@@ -73,7 +100,18 @@ async function start() {
     const transports = new Map<string, StreamableHTTPServerTransport>()
 
     const httpServer = createServer(async (req, res) => {
-      if (req.method === 'GET' && req.url === '/') {
+      setCorsHeaders(res, req)
+
+      // Preflight
+      if (req.method === 'OPTIONS') {
+        res.writeHead(204)
+        res.end()
+        return
+      }
+
+      const pathname = new URL(req.url || '', 'http://localhost').pathname
+
+      if (req.method === 'GET' && pathname === '/') {
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({
           name: 'namviek-dynamic-field MCP server',
@@ -84,9 +122,16 @@ async function start() {
         return
       }
 
-      if (req.url !== '/mcp') {
+      if (pathname !== '/mcp') {
         res.writeHead(404)
         res.end('Not found')
+        return
+      }
+
+      // Authenticate /mcp requests
+      if (!validateApiKey(req)) {
+        res.writeHead(401, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Unauthorized: invalid or missing x-api-key' }))
         return
       }
 

@@ -1,6 +1,6 @@
 # MCP Agent Guide — Namviek Dynamic Field Server
 
-> **Stack:** Model Context Protocol · Hono API (port 4001) · MCP server (port 4002 / stdio)  
+> **Stack:** Model Context Protocol · Hono API (port 4001) · MCP server (port 4002 / stdio / remote HTTP)
 > **Entry point for agents:** call `mcp_help` first, then use task-specific tools.
 
 ---
@@ -32,9 +32,76 @@ PORT=4002             # only used when MCP_TRANSPORT=http
 
 ---
 
-## 3. Connect a Desktop AI Client (Claude Desktop)
+## 3. Connect via Remote HTTP (Any MCP Client)
 
-Add this to `claude_desktop_config.json`:
+Run the MCP server with `MCP_TRANSPORT=http` and expose port 4002. Set `ORIGINS` to control CORS access.
+
+```env
+MCP_TRANSPORT=http
+PORT=4002
+ORIGINS=*
+API_KEY=your-production-key
+```
+
+### Claude Desktop
+
+Add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "namviek": {
+      "type": "http",
+      "url": "http://YOUR_SERVER:4002/mcp",
+      "headers": { "x-api-key": "your-production-key" }
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "namviek": {
+      "type": "http",
+      "url": "http://YOUR_SERVER:4002/mcp",
+      "headers": { "x-api-key": "your-production-key" }
+    }
+  }
+}
+```
+
+### Gemini CLI
+
+```bash
+gemini --mcp-endpoint http://YOUR_SERVER:4002/mcp --mcp-header "x-api-key: your-production-key"
+```
+
+### Codex CLI
+
+```json
+{
+  "mcpServers": {
+    "namviek": {
+      "type": "http",
+      "url": "http://YOUR_SERVER:4002/mcp",
+      "headers": { "x-api-key": "your-production-key" }
+    }
+  }
+}
+```
+
+Replace `YOUR_SERVER` with your server hostname/IP and `your-production-key` with the actual API key.
+
+---
+
+## 4. Connect via Local CLI (Claude Desktop)
+
+Add this to `claude_desktop_config.json` (stdio mode):
 
 ```json
 {
@@ -59,9 +126,9 @@ pnpm --filter mcp build
 
 ---
 
-## 4. Tool Reference
+## 5. Tool Reference
 
-### 4.1 Discovery
+### 5.1 Discovery
 
 | Tool | Input | Description |
 |---|---|---|
@@ -71,7 +138,7 @@ pnpm --filter mcp build
 
 ---
 
-### 4.2 Database Tools
+### 5.2 Database Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -94,7 +161,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-### 4.3 Field Tools
+### 5.3 Field Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -109,7 +176,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-### 4.4 Record Tools
+### 5.4 Record Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -135,7 +202,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-### 4.5 Query Tools
+### 5.5 Query Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -151,7 +218,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-### 4.6 Stats Tools
+### 5.6 Stats Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -163,7 +230,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-### 4.7 User Tools
+### 5.7 User Tools
 
 | Tool | Required Input | Description |
 |---|---|---|
@@ -172,7 +239,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-## 5. Common Workflows
+## 6. Common Workflows
 
 ### Bootstrap a new database from a template
 
@@ -206,7 +273,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-## 6. Tips for Agents
+## 7. Tips for Agents
 
 - **Always call `mcp_help` on first interaction** to enumerate available tools.
 - **Prefer `humanReadableRecords`** from `query_records` / `search_records` — select and person values are already resolved to labels/names.
@@ -217,7 +284,7 @@ create_database_from_template_by_id { templateId: "...", name: "My CRM" }
 
 ---
 
-## 7. Error Handling
+## 8. Error Handling
 
 All tools return a `content` array with a JSON text body. On failure the API returns:
 

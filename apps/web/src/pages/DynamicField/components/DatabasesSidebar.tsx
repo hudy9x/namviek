@@ -1,4 +1,4 @@
-import { Plus, Database, LogOut } from 'lucide-react';
+import { Plus, Database, LogOut, Cable } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +12,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useNavigate } from 'react-router';
 import type { DynDatabase } from '../types';
 import { DatabaseIcon } from './DatabaseIcon';
 import { TemplateDialog } from './TemplateDialog';
@@ -32,6 +33,7 @@ export function DatabasesSidebar({
   onLogout,
 }: DatabasesSidebarProps) {
   const { open } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <Sidebar collapsible="icon" onClick={(e) => e.stopPropagation()}>
@@ -91,6 +93,12 @@ export function DatabasesSidebar({
             </SidebarMenuItem>
             <SidebarMenuItem>
               <TemplateDialog />
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => navigate('/mcp-setup')} tooltip="MCP Setup">
+                <Cable size={16} />
+                <span>MCP Setup</span>
+              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton onClick={onLogout} tooltip="Logout" className="text-destructive hover:bg-destructive/10">

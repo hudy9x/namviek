@@ -4,6 +4,7 @@ import { isAuthenticated } from '@/lib/auth-store';
 // Pages
 import LoginPage from './pages/LoginPage';
 import DynamicFieldPage from './pages/DynamicFieldPage';
+import McpSetupGuidePage from './pages/McpSetupGuidePage';
 import SetupPage from './pages/SetupPage';
 import NotFound from './pages/NotFound';
 
@@ -28,6 +29,11 @@ export const router = createBrowserRouter([
   {
     path: '/test/:databaseId',
     Component: DynamicFieldPage,
+  },
+  // Public: MCP setup guide (documentation, no sensitive data)
+  {
+    path: '/mcp-setup',
+    Component: McpSetupGuidePage,
   },
 
   // Root redirect
